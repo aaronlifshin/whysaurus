@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+<div id="content">
+{% if user %}
+	  USER ID = {{ user.id }} <br>
+	  USER NAME = {{ user.name|escape }}
+{% else %}
+  NO USER RECEIVED
+{% endif %}
+</div>
+{% endblock %}

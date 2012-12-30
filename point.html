@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+
+  <div id="content">
+			<div class="caseSummary boxedElement">
+				{% if user %}
+					<div class="caseSummaryEditToggle editable">
+					<button id="editPoint">EDIT POINT DETAILS</button>	
+					</div>		
+				  <div class="caseHistory editable">
+					<button id="viewHistory">VIEW POINT HISTORY</button>	
+					</div>		  
+					<div class="clear"></div>
+				{% endif %}
+				
+				<div style="float: left">[ {{point.voteTotal}} ]</div><div class="mainPointTitle editable">{{ point.title|escape }}</div>
+				<div class="mainPointContent editable">{{ point.content|safe }}</div>
+				<div class="mainPointInfo">
+					<div class="mainPointVersion">{{point.version}}</div>
+					<div class="mainPointAuthor">{{ point.authorName }}</div> 
+					<div class="mainPointDateEdited">{{point.dateEdited}}</div>	
+					<div class="mainPointViewCount">{{pointRoot.viewCount}}</div>	
+				</div>
+				
+				<div id="dialogForm" title="Edit Point">	
+				<form id='frmEditFields'><fieldset id='editFields'>
+
+				<textarea class="mceNoEditor titleEdit" name="titleEdit" ></textarea>
+
+				<textarea class="mceEditor textEdit" name="textEdit"></textarea>
+				</fieldset></form>
+				</div>
+      </div>
+      <div class="centered"> Supporting Points</div>
+				<!--<table class="pointTable">
+					<thead>
+						<tr><th>Vote Total</th><th>Point Title</th><th>Supporting Point Text</th>{% if user %}<th>Edit</th><th>Unlink</th>{% endif %}</tr>
+					</thead>
+					<tbody>
+					-->
+					{% for supportingPoint in supportingPoints %}
+					<div class="boxedElement centered" id="point_{{supportingPoint.url}}">	
+    					<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ point.title|escape }}</a></div>
+    					<div class="caseSummaryText">{{ supportingPoint.content|safe }}</div>
+    				<!--	<div class="caseInfo">
+    						<div class="caseVersion">{{point.version}}</div> 
+    						<div class="caseDateEdited">{{point.dateEdited}} </div>
+    					</div>-->
+    					<div class="mainPointInfo">
+  						<div class="mainPointAuthor">{{ supportingPoint.authorName }}</div> 
+  						</div> 
+    					<button id="editSupportingPoint_{{supportingPoint.url}}" onClick="javascript:function(){window.location.href="/point/{{supportingPoint.url}}"; }">WHY</button>
+    			</div>
+    			
+					<!--<div class="pointArea boxedElement" id="{{point.key}}">
+						<tr name="{{ supportingPoint.key }}">
+						  <td>{{ supportingPoint.voteTotal }}</td>
+						<td><div class="pointTitle" name="{{ supportingPoint.key }}"><a href="/point/{{supportingPoint.url}}">{{supportingPoint.title|escape}}</div></td>
+						<td><div class="pointSummary" name="{{ supportingPoint.key}}">{{supportingPoint.content|safe}}</div></td>
+						{% if user %}
+							<td><div class="pointEditToggle" name="{{ supportingPoint.key }}">				
+							<img class="pointEditToggle" src="/static/img/Text-Edit-icon.png"  alt="Edit point" onclick="javascript:supportingPointEdit('{{ supportingPoint.key }}')"; width="32" height="32" />
+							</td>
+							<td><div class="pointUnlink" name="{{ supportingPoint.key }}">				
+							<img class="pointUnlink" src="/static/img/Red-X-icon.png"  alt="Remove link to point" onclick="javascript:supportingPointUnlink('{{ supportingPoint.key }}')"; width="32" height="32" />
+							</td>
+						{% endif %}
+						</tr>-->
+					{% endfor %}
+					<!--
+					</tbody>
+				</table>
+				-->
+				{% if user %}
+				  <button id="addSupportingPoint">Create Supporting Point</button>
+				  <form action="/selectSupportingPoint" method="POST" style="display: inline">
+				  <input type="hidden" name="parentPointURL" value="{{point.url}}" />
+				  <button id="linkSupportingPoint" type="submit">Link Supporting Point</button>
+				  </form>
+				  <button id="upVote" background-image="/static/img/up-button.png">{{point.upVotes}}</button>
+				  <button id="downVote">{{point.downVotes}}</button>
+  				{% if user.admin %}
+    				<button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button>	  
+					{% endif %}
+				{% endif %}
+			
+			<div id="disqus_thread"></div>
+			<script type="text/javascript">
+			    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			    var disqus_shortname = 'whysaurus-beta'; // required: replace example with your forum shortname
+					var disqus_developer = {{devInt}};
+					var disqus_identifier = '{{point.url}}';
+					var disqus_title = '{{point.title}}';
+					
+			    /* * * DON'T EDIT BELOW THIS LINE * * */
+			    (function() {
+			        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+			        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			    })();
+			</script>
+
+			<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+			
+			<hr>
+			 <a href="/">Back to point listing</a>
+			<hr>
+			</div>
+			<script>
+				var latestPointVersionKey = '{{point.key}}';
+				var myVote = '{{voteValue}}';
+				
+				function callPointEdit(){
+					var ed = tinyMCE.get('textEdit');
+								
+					$.ajaxSetup({
+					   url: "/editPoint",
+					   global: false,
+					   type: "POST",
+						 data: {
+							'urlToEdit': "{{point.url}}",
+							'content': ed.getContent(),
+							'title': $('textarea.titleEdit').val()
+							},
+							success: function(data){ 
+								var ed = tinyMCE.get('textEdit');
+							  obj = JSON.parse(data);
+								$('.mainPointContent').html(ed.getContent()); 
+								$('.mainPointTitle').html($('textarea.titleEdit').val()); 
+								$('.mainPointVersion').html(obj.version);
+								$('.mainPointAuthor').html(obj.author);
+								$('.mainPointDateEdited').html(obj.dateEdited);		
+								latestPointVersionKey = obj.key;	
+								}
+					 });
+					$.ajax();
+						
+				}
+
+				function supportingPointEdit(pointKey) {
+					var edSummary = tinyMCE.get('textEdit');
+					var titleDOM = $('div.pointTitle#[name|="' + pointKey + '"]');
+					edSummary.setContent(
+					  $('div.pointSummary#[name|="' + pointKey + '"]').html()				
+					 );
+					// $('textarea.titleEdit').val($('div.pointTitle#[name|="' + pointKey + '"]').html());
+					$('textarea.titleEdit').val($("a",titleDOM).html());
+					var dialogButtons = {};
+					dialogButtons["Save Point"] = function() {
+					  var checkContentError = checkPointContent(edSummary.getContent());
+					  if (checkContentError != "") {
+					    alert(checkContentError);
+					  } else {
+					    editPointByKey(pointKey);
+					    $( this ).dialog( "close" );
+					  }
+					};
+					dialogButtons["Cancel"] = function() {$( this ).dialog( "close" );};
+					$( "#dialogForm" ).dialog({title:"Edit Supporting Point", buttons: dialogButtons}	);
+					$( "#dialogForm" ).dialog( "open" );
+				}
+
+        	function supportingPointUnlink(supportingPointKey) {
+  					$.ajaxSetup({
+  					   url: "/unlinkPoint",
+  					   global: false,
+  					   type: "POST",
+  						 data: {
+  							'mainPointKey': latestPointVersionKey,
+  							'supportingPointKey': supportingPointKey
+  							},
+  							success: function(data){ 
+  							  obj = JSON.parse(data);
+                  if (obj.result == true) {
+                    // REMOVE THE ROW WITH THE POINT FROM THE DOM
+    							  $('tr#[name|="' + supportingPointKey + '"]').remove(); 
+    							  latestPointVersionKey = obj.pointKey; 							  
+                  } else {
+                    alert(obj.result);
+                  }
+  							 }
+  					 });
+  					$.ajax();
+  				}
+
+			
+				function openEditPointDialog() {
+				  /*
+				  document.getElementById("textEdit_tbl").style.width='100%';
+          document.getElementById("textEdit_ifr").style.width='100%';
+          document.getElementById("textEdit_tbl").style.height='100%';
+          document.getElementById("textEdit_ifr").style.height='100%';
+          */
+					var ed = tinyMCE.get('textEdit');
+					$('textarea.titleEdit').val($('div.mainPointTitle').text());
+					ed.setContent($('.mainPointContent').html() );
+					
+					var dialogButtons = {};
+					dialogButtons["Save Point"] = function() {
+					  // search and see if there are multiple image tags been added
+					  var checkContentError = checkPointContent(ed.getContent());
+					  if (checkContentError != "") {
+					    alert(checkContentError);
+					  } else {
+  					  callPointEdit();
+  					  $( this ).dialog( "close" );
+					  }
+				  };
+					dialogButtons["Cancel"] = function() {	$( this ).dialog( "close" );};
+					$( "#dialogForm" ).dialog({title:"Edit Point", buttons: dialogButtons}	);
+					$( "#dialogForm" ).dialog( "open" );
+					
+				}				
+	       		
+				function openAddPointDialog() {		
+					var ed = tinyMCE.get('textEdit');
+					$('textarea.titleEdit').val('');
+					ed.setContent("");
+					var dialogButtons = {};
+					dialogButtons["Add Point"] = function() {
+					  var checkContentError = checkPointContent(ed.getContent());
+					  if (checkContentError != "") {
+					    alert(checkContentError);
+					  } else {
+					    addPoint();
+					    $( this ).dialog( "close" )
+				    }
+					};
+					dialogButtons["Cancel"] = function() { $( this ).dialog( "close" );};
+					$( "#dialogForm" ).dialog({title:"Add Point", buttons: dialogButtons});
+					$( "#dialogForm" ).dialog( "open" );
+				}
+									      
+				function editPointByKey(pointKey){
+					var ed = tinyMCE.get('textEdit');
+					$.ajaxSetup({
+					   url: "/editPoint",
+					   global: false,
+					   type: "POST",
+						 data: {
+							'pointKey': pointKey,
+							'content': ed.getContent(),
+							'title': $('textarea.titleEdit').val()
+							},
+							success: function(data){ 
+							  obj = JSON.parse(data);
+								$('.caseVersion').html(obj.version);
+								$('.caseAuthor').html(obj.author);
+								$('.caseDateEdited').html(obj.dateEdited);
+								
+								// Update to new edited text
+								var ed = tinyMCE.get('textEdit');
+								$('div.pointSummary#[name|="' + pointKey + '"]').html(ed.getContent());	
+								$('div.pointTitle#[name|="' + pointKey + '"]').html($('textarea.titleEdit').val());				
+							 }
+					 });
+					
+					$.ajax();
+				}
+			
+				function addPoint(){
+					var ed = tinyMCE.get('textEdit');
+					$.ajaxSetup({
+					   url: "/addSupportingPoint",
+					   global: false,
+					   type: "POST",
+						 data: {
+							'content': ed.getContent(),
+							'title': $('textarea.titleEdit').val(),
+							'pointUrl': "{{ point.url }}"
+							},
+              success: function(data){
+                
+                var ed = tinyMCE.get('textEdit');	
+                
+                // Check JSON result
+                if ($('.pointTable tbody > tr').length) {
+
+                  $('.pointTable tbody > tr:last').after($(data));
+                } else {
+                  $('.pointTable tbody').prepend($(data));
+                }
+          			$('textarea.titleEdit').val('');
+      					ed.setContent("");
+                latestPointVersionKey = $('div.pointKey',data).attr('id')
+              }
+						});
+						$.ajax();
+					}
+				
+				function updateVoteButtonLabels(newVote){
+				  var downvoteLabel = $( "#downVote" ).button("option", "label");
+				  var upvoteLabel = $( "#upVote" ).button("option", "label");
+				            
+				  if (myVote == 0 && newVote == 1) {// UPVOTE
+				    var newVal = parseInt(upvoteLabel) + 1;
+            $( "#upVote" ).button("option", "label", newVal.toString());    
+          } else if (myVote == 0 && newVote == -1) { // DOWNVOTE   
+            var newVal = parseInt(downvoteLabel) + 1;
+            $( "#downVote" ).button("option", "label", newVal.toString());    
+          } else if (myVote == 1  &&  newVote == 0) { // CANCEL UPVOTE
+            var newVal = parseInt(upvoteLabel) - 1;
+            $( "#upVote" ).button("option", "label", newVal.toString());    
+          } else if (myVote == -1  &&  newVote == 0) { // CANCEL DOWNVOTE  
+            var newVal = parseInt(downvoteLabel) - 1;
+            $( "#downVote" ).button("option", "label", newVal.toString());    
+          } else if (myVote == -1  &&  newVote == 1) { // DOWN TO UP
+            var newVal = parseInt(downvoteLabel) - 1;
+            $( "#downVote" ).button("option", "label", newVal.toString());
+            var newVal = parseInt(upvoteLabel) + 1;
+            $( "#upVote" ).button("option", "label", newVal.toString());            
+          } else if (myVote == 1  &&  newVote == -1) {// UP TO DOWN
+            var newVal = parseInt(downvoteLabel) + 1;
+            $( "#downVote" ).button("option", "label", newVal.toString());
+            var newVal = parseInt(upvoteLabel) - 1;
+            $( "#upVote" ).button("option", "label", newVal.toString());
+          }
+          myVote = newVote;
+				}
+								
+				function upVote() {
+				  $.ajaxSetup({
+					   url: "/vote",
+					   global: false,
+					   type: "POST",
+						 data: {
+							'vote': myVote == 1 ? 0 : 1,
+							'pointKey': latestPointVersionKey
+							},
+              success: function(data){ 
+                obj = JSON.parse(data);
+                if (obj.result == true) {
+                  updateVoteButtonLabels(obj.newVote);
+                } else {
+                  alert('An error happened and your vote may not have counted. Try a page refresh?');
+                }
+              }
+						});
+						$.ajax();
+				}
+				
+				function downVote() {
+				  $.ajaxSetup({
+					   url: "/vote",
+					   global: false,
+					   type: "POST",
+						 data: {
+							'vote': myVote == -1 ? 0 : -1,
+							'pointKey': latestPointVersionKey
+							},
+              success: function(data){ 
+                obj = JSON.parse(data);
+                if (obj.result == true) {
+                  updateVoteButtonLabels(obj.newVote);
+                } else {
+                  alert('An error happened and your vote may not have counted. Try a page refresh?');
+                }
+              }
+						});
+						$.ajax();
+				}
+				
+				function deletePoint(urlToDelete) {
+    			$.ajaxSetup({
+    			   url: "/deletePoint",
+    			   global: false,
+    			   type: "POST",
+    				 data: {
+    					'urlToDelete': urlToDelete
+    					},
+    					success: function(data){ 
+                  obj = JSON.parse(data);
+                  if (obj.result == true) {
+      						  alert('Deleted point ' + obj.deletedURL);	
+      						  window.location = "/";	  
+                  } else {
+                    alert(obj.error);
+                  }
+    						},
+              error: function (xhr, ajaxOptions, thrownError) {
+                alert('ERROR:' + xhr.status);
+                alert(thrownError);
+              }
+    				});
+    				$.ajax();
+    		}
+
+			$(document).ready(function(){
+					$("#dialogForm").dialog({
+						autoOpen: false,
+    				height: getWindowHeight() * .9,
+    				width: $(window).width()*.7,
+						modal: true
+				});
+					
+			});
+
+      window.onload = function(){ 
+         element = $("#dialogForm");
+         element.dialog('option', 'height', getWindowHeight() * .9);
+         element.dialog('option', 'width', $(window).width()*.7);
+         element.dialog('option', 'position', 'center');
+         toDialogFormHeight('frmEditFields', 30);
+         toDialogFormHeight('editFields', 30);
+         toDialogFormHeight('textEdit_tbl', 30);
+         toDialogFormHeight('textEdit_ifr', 30);        
+      }
+      
+      window.onresize = function(){ 
+         element = $("#dialogForm");
+         element.dialog('option', 'height', getWindowHeight() * .9);
+         element.dialog('option', 'width', $(window).width()*.7);
+         element.dialog('option', 'position', 'center');
+         toDialogFormHeight('frmEditFields', 30);
+         toDialogFormHeight('editFields', 30);
+         toDialogFormHeight('textEdit_tbl', 30);
+         toDialogFormHeight('textEdit_ifr', 30);
+      }
+    
+			$( "#linkSupportingPoint" )
+				.button()
+							
+			$( "#addSupportingPoint" )
+				.button()
+				.click(function() {
+					openAddPointDialog();
+				});
+
+			$( "#upVote" )
+				.button()
+				.click(function() {
+					upVote();
+				});
+			$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
+
+			$( "#downVote" )
+				.button()
+				.click(function() {
+					downVote();
+				});			
+			$('#downVote').button({ icons: {primary: 'ui-icon-down', secondary: null}});
+			
+			$( "#viewHistory" )
+				.button()
+				.click(function() {
+					window.location.href="/pointHistory?pointUrl={{point.url}}";
+				});
+					
+			$( "[id^=editSupportingPoint]" ).button();
+			$( "#editPoint" )
+				.button()
+				.click(function() {
+					openEditPointDialog();
+				});
+				
+				{}
+				{% if user.admin %}
+					$( "#deletePoint" ).button();
+				{% endif %}
+			</script>
+{% endblock %}

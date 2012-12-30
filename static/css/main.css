@@ -1,0 +1,247 @@
+<!-- IE in quirks mode -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+body{
+ margin:0;
+ padding:40px 0 20px 0;
+}
+div#header{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:60px;
+	background:#EFEFEF;
+	color:black;
+	z-index: 5;
+}
+div#footer{
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:100%;
+	height:20px;
+	background:#EFEFEF;
+	color:black;
+	z-index: 5;
+}
+@media screen{
+	body>div#header{
+		position:fixed;
+	}
+	body>div#footer{
+		position:fixed;
+	}
+}
+* html body{
+	overflow:hidden;
+	font-family: Verdana, Helvetica, sans-serif;
+	background-color: #DDDDDD;
+	position:absolute;
+} 
+* html div#content{
+	height:100%;
+	overflow:auto;
+	position:relative;
+	top:60px;
+}
+
+div#content{
+	height:100%;
+	overflow:auto;
+	position:relative;
+	top:60px;
+}
+
+img#logoImage{
+	vertical-align: middle;
+	height:100%;
+	z-index:1;
+}
+
+div#WAScaseSummary{
+	display:block;
+	position:relative;
+	top:25px;
+	right:25px;
+	width:190px;
+	height:140px;
+	margin:0;
+	padding:30px;
+	overflow:hidden;
+	background: url(http://static.tumblr.com/njty47g/yu0leufgq/post_shadow.png)
+}
+
+.caseTitle{font-size:1.2em;font-style:italic;margin-bottom:0.5em;margin-top:0.2em;position:relative;}
+.mainPointTitle{font-size:1.2em;font-style:italic;margin-bottom:0.5em;margin-top:0.2em;position:relative;}
+.caseSummaryText{margin-bottom:0.5em; margin-top:0.2em}
+.mainPointContent{margin-bottom:0.5em; margin-top:0.2em}
+.caseInfo{font-size:0.8em;font-style:italic;position:absolute;bottom:10px;right:10px;list-style: none;font-weight:bold}
+.mainPointInfo{font-size:0.8em;font-style:italic;position:absolute;bottom:10px;right:10px;list-style: none;font-weight:bold}
+.caseVersion:before{content:"Version: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointVersion:before{content:"Version: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.caseAuthor:before{content:"Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointAuthor:before{content:"Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.caseDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointViewCount:before{content:"ViewCount: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.centered{width:66%;margin-left: auto ; margin-right: auto ;}
+
+.editCaseButton {margin-bottom: 3px;margin-left: 5px;}
+.rightButton {margin-left: 125px; margin-top: -25px}
+.boxedElement { position: relative; margin-bottom: 10px; padding:10px;
+	background: #fff; 
+	-webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03) inset, 0 0 0 1px rgba(0,0,0,0.15); 
+	-moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03) inset, 0 0 0 1px rgba(0,0,0,0.15); 
+	box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03) inset, 0 0 0 1px rgba(0,0,0,0.15); 
+	z-index: 3;
+  word-wrap: break-word;
+}
+
+.userArea {position:relative; width:50%;text-align:right; float:right;margin-right: 20px; margin-top:-55px; font-style: italic; font-size:0.8em; z-index:-1;}
+.logoArea {position:relative;width:50%;float:left;}
+.caseSummarySaveToggle {float:left}
+.caseSummaryEditToggle {float:left}
+.footerCopyright {float:left}
+.footerMenu {text-align:right; margin-right: 40px}
+.pointSaveToggle {float:left}
+/*.pointTitle{font-size:1.2em;font-style:italic}
+.pointSummaryAuthor{font-size:0.8em;font-style:italic;position:absolute;bottom:10px;right:10px}*/
+.pointTextEdit {width:100%;}
+.pointTitleEdit {width:100%;}
+.clear{ clear:both; height:0; width:100%;}
+
+.pointTable { margin: 1em; border-collapse: collapse; font-size:0.8em;}
+.pointTable td, .pointTable th { padding: .3em; border: 1px #ccc solid; }
+.pointTable thead { background: #659FFF; }
+.pointTable tbody { background: #F5FFFA; }
+
+/* Dialog window stuff */
+
+label, input { display:block; }
+input.text { margin-bottom:12px; width:95%; padding: .4em; }
+fieldset { padding:0; border:0; margin-top:25px;}
+h1 { font-size: 1.2em; margin: .6em 0; }
+/*div#users-contain { width: 350px; margin: 20px 0; }
+div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+*/
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+.ui-button-text {font-size:13px;}
+.ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
+.ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
+
+/* Tiny MCE editor breakdown */
+.mceNoEditor.titleEdit { width:100%; height:1.2em }
+.mceEditor.textEdit { width:100% }
+#textEdit_tbl {width:100% !important;}
+#textEdit_ifr {width:100% !important;}
+
+/************************************************************************************
+THREE COLUMN LAYOUT STARTS HERE
+*************************************************************************************/
+#leftColumn {
+	width: 290px;
+	float: left;
+	padding: 5px 15px;
+}  
+
+
+
+#middleColumn {
+	width: 294px; /* Account for margins + border values */
+	float: left;
+	padding: 5px 15px;
+	margin: 0px 5px 5px 5px;
+}
+
+#rightColumn {
+	width: 270px;
+	padding: 5px 15px;
+	float: left;
+}
+#columnSupporter {
+	clear: both;
+	padding: 0 15px;
+}
+
+/************************************************************************************
+MEDIA QUERIES
+*************************************************************************************/
+/* for 980px or less */
+@media screen and (max-width: 980px) {
+	
+	#leftColumn {
+		width: 41%;
+		padding: 1% 4%;
+	}
+	#middleColumn {
+		width: 41%;
+		padding: 1% 4%;
+		margin: 0px 0px 5px 5px;
+		float: right;
+	}
+	
+	#rightColumn {
+		clear: both;
+		padding: 1% 4%;
+		width: auto;
+		float: none;
+	}
+
+	#columnSupporter {
+		padding: 1% 4%;
+	}
+}
+
+/* for 700px or less */
+@media screen and (max-width: 600px) {
+
+	#leftColumn {
+		width: auto;
+		float: none;
+	}
+	
+	#middleColumn {
+		width: auto;
+		float: none;
+		margin-left: 0px;
+	}
+	
+	#rightColumn {
+		width: auto;
+		float: none;
+	}
+
+}
+
+/* for 480px or less */
+@media screen and (max-width: 480px) {
+
+	h1 {
+		font-size: 24px;
+	}
+	#rightColumn {
+		display: none;
+	}
+
+}
+
+
+img {
+	max-width: 33%;
+	height: auto;
+	width: auto\9; /* ie8 */
+}
+
+.pointUnlink img{
+  max-width: none;
+	height: 32px;
+	width: 32px; 
+}
+
+.pointEditToggle img{
+  max-width: none;
+	height: 32px;
+	width: 32px; 
+}

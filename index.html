@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+
+  <div id="content">	  
+		{% if user %}
+			<button id="CreatePoint">MAKE A POINT</button>
+
+			<div id="dialogForm" title="Create Point">	
+			<form id='frmEditFields'><fieldset id='editFields'>
+			<label for="titleToEdit">Title</label>
+			<textarea class="mceNoEditor titleEdit" name="titleEdit" ></textarea>
+			<label for="textToEdit">Text</label>
+			<textarea class="mceEditor textEdit" name="textEdit" ></textarea>
+			</fieldset></form>
+			</div>	
+		{% endif %}
+
+		
+		<div id="leftColumn">
+		ALL POINTS
+		{% for point in points %} 
+		  <div class="boxedElement" id="point_{{point.url}}">	
+					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="caseSummaryText">{{ point.content|safe }}</div>
+				<!--	<div class="caseInfo">
+						<div class="caseVersion">{{point.version}}</div> 
+						<div class="caseAuthor">{{ point.authorName }}</div> 
+						<div class="caseDateEdited">{{point.dateEdited}} </div>
+					</div>-->
+					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
+			</div>
+		{% endfor %}
+    </div>
+    <div id="rightColumn">
+		<div class="preamble">
+      RECENTLY VIEWED
+		</div>
+		{% for point in recentlyViewed %} 
+		  <div class="boxedElement" id="point_{{point.url}}">	
+					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="caseSummaryText">{{ point.content|safe }}</div>
+				<!--	<div class="caseInfo">
+						<div class="caseVersion">{{point.version}}</div> 
+						<div class="caseAuthor">{{ point.authorName }}</div> 
+						<div class="caseDateEdited">{{point.dateEdited}} </div>
+					</div>-->
+					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
+			</div>
+		{% endfor %}
+    </div>
+    <div id="middleColumn">
+		EDITORS PICKS
+		{% for point in editorsPicks %} 
+		  <div class="boxedElement" id="point_{{point.url}}">	
+					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="caseSummaryText">{{ point.content|safe }}</div>
+				<!--	<div class="caseInfo">
+						<div class="caseVersion">{{point.version}}</div> 
+						<div class="caseAuthor">{{ point.authorName }}</div> 
+						<div class="caseDateEdited">{{point.dateEdited}} </div>
+					</div>-->
+					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
+			</div>
+		{% endfor %}
+    </div>
+    <div id="columnSupporter">
+  	</div>
+		<hr>
+	</div>
+	
+	<script>
+	
+		function newPoint() {
+			var ed = tinyMCE.get('textEdit');
+			$.ajaxSetup({
+				   url: "/newPoint",
+			   global: false,
+			   type: "POST",
+				 data: {
+					'content': ed.getContent(),
+					'title': $('textarea.titleEdit').val(),			
+					},
+          success: function(data){ 
+            var ed = tinyMCE.get('textEdit');	
+            // Data comes as ready HTML to be inserted 
+            $(data).insertAfter($('.preamble'));
+      			$( "[id^=editPoint]" ).button();
+						// $( "[id^=deletePoint]" ).button();
+      			$('textarea.titleEdit').val('');
+  					ed.setContent("");
+          }
+				});
+				$.ajax();
+		}
+				
+		function editPoint(pointUrl){
+			window.location.href="/point/" + pointUrl
+		}
+		
+		function openNewPointDialog() {	
+        document.getElementById("textEdit_tbl").style.width='100%';
+        document.getElementById("textEdit_ifr").style.width='100%';
+        document.getElementById("textEdit_tbl").style.height='100%';
+        document.getElementById("textEdit_ifr").style.height='100%';
+				var dialogButtons = {};
+				dialogButtons["Create Point"] = function() {
+				  var checkContentError = checkPointContent(tinyMCE.get('textEdit').getContent());
+				  if (checkContentError != "") {
+				    alert(checkContentError);
+				  } else {
+  				  newPoint();
+  				  $( this ).dialog( "close" )
+				  }
+				};
+				dialogButtons["Cancel"] = function() {	
+				  var edSummary = tinyMCE.get('textEdit');
+					edSummary.setContent('');
+					$('textarea.titleEdit').val('');
+				  $( this ).dialog( "close" );
+			  };
+				$( "#dialogForm" ).dialog({title:"New Point", buttons: dialogButtons});
+				$( "#dialogForm" ).dialog( "open" );
+			}
+
+      window.onload = function(){ 
+         element = $("#dialogForm");
+         element.dialog('option', 'height', getWindowHeight() * .9);
+         element.dialog('option', 'width', $(window).width()*.7);
+         element.dialog('option', 'position', 'center');
+         toDialogFormHeight('frmEditFields', 100);
+         toDialogFormHeight('editFields', 100);
+         toDialogFormHeight('textEdit_tbl', 100);
+         toDialogFormHeight('textEdit_ifr', 100);        
+      }
+      
+      window.onresize = function(){ 
+         element = $("#dialogForm");
+         element.dialog('option', 'height', getWindowHeight() * .9);
+         element.dialog('option', 'width', $(window).width()*.7);
+         element.dialog('option', 'position', 'center');
+         toDialogFormHeight('frmEditFields', 100);
+         toDialogFormHeight('editFields', 100);
+         toDialogFormHeight('textEdit_tbl', 100);
+         toDialogFormHeight('textEdit_ifr', 100);
+      }
+
+		$(document).ready(function(){
+
+			$("#dialogForm").dialog({
+				autoOpen: false,
+				height: $(window).height(),
+				width: $(window).width()*.7,
+				modal: true,
+				close: function() {
+				}
+			});			
+			
+
+			$( "#CreatePoint" )
+				.button()
+				.click(function() {
+					openNewPointDialog();
+				});
+
+			$( "[id^=deletePoint]" ).button();
+			$( "[id^=editPoint]" ).button();
+			$(" input:submit" ).button();
+					
+		});
+
+		</script>
+	
+{% endblock %}

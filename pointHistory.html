@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+
+  <div id="content">
+		<br>{{ num_points }} versions exist for <a href="/point/{{ latestPoint.url }}">{{ latestPoint.title|escape }}</a><br>
+
+		{% for fullPoint in mainAndSupporting %}
+		  <div class="boxedElement" id="case_"{{case.key}}>	
+					<div class="caseSummaryTitle">{{ fullPoint.mainPoint.title|escape }}</div>			
+					<div class="caseSummaryText">{{ fullPoint.mainPoint.content|safe }}</div>
+					<table class="pointTable">
+					<thead>
+						<tr><th>Point Title</th><th>Point Text</th><th>Author</th></tr>
+					</thead>
+					<tbody>
+					{% for point in fullPoint.supportingPoints %}
+						<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
+					{% endfor %}
+					</tbody>
+					</table>
+					<div class="caseInfo">
+						<div class="caseVersion">{{fullPoint.mainPoint.version}}</div> 
+						<div class="caseAuthor">{{ fullPoint.mainPoint.authorName }}</div> 
+						<div class="caseDateEdited">{{fullPoint.mainPoint.dateEdited}} </div>
+					</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

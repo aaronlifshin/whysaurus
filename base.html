@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
+		<link type="text/css" href="/static/css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+	  <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>	
+		<script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
+	  <script type="text/javascript">
+	  
+
+     // FACEBOOK STUFF START
+       window.fbAsyncInit = function() {
+         // init the FB JS SDK
+         FB.init({
+           // appId      : '460138394028773', // DEV IVE App ID from the App Dashboard
+           channelUrl : '{{fbsettings.FACEBOOK_CHANNEL_URL}}', // Channel File for x-domain communication        
+           appId      : '{{fbsettings.FACEBOOK_APP_ID}}', // LIVE  App ID from the App Dashboard      
+           status     : true, // check the login status upon init?
+           cookie     : true, // set sessions cookies to allow your server to access the session?
+           xfbml      : true  // parse XFBML tags on this page?
+         });
+
+         // Additional initialization code such as adding Event Listeners goes here
+         FB.Event.subscribe("auth.logout", function() {window.location.reload()});
+       };
+
+       // Load the SDK's source Asynchronously
+       (function(d, s, id) {
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) return;
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId={{fbsettings.FACEBOOK_APP_ID}}";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+
+        function afterFbLogin() {
+    		  window.location.reload();
+    	  }
+    // FACEBOOK STUFF END
+    
+  		tinyMCE.init({
+		        // General options
+		        mode : "textareas",
+		        theme : "advanced",
+		        editor_selector : "mceEditor",
+		        editor_deselector : "mceNoEditor",
+		        paste_text_sticky: true,
+            paste_text_sticky_default: true,
+		        plugins : "autolink,lists,spellchecker,advhr,advlink,iespell,inlinepopups,noneditable,paste",
+		        // Theme options
+		        theme_advanced_buttons1 : "bold,italic,underline,|,sub,sup,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,image,code,spellchecker",
+		        theme_advanced_buttons2 : "",
+		        theme_advanced_buttons3 : "",
+						theme_advanced_buttons4 : "",
+						theme_advanced_toolbar_location : "top",
+		        theme_advanced_toolbar_align : "left",
+		        theme_advanced_statusbar_location : "bottom",
+		        theme_advanced_resizing : false,
+		        // Skin options
+		        skin : "o2k7",
+		        skin_variant : "silver", 
+		        // Drop lists for link/image/media/template dialogs
+		        template_external_list_url : "js/template_list.js",
+		        external_link_list_url : "js/link_list.js",
+		        external_image_list_url : "js/image_list.js",
+		        media_external_list_url : "js/media_list.js",
+		});
+		
+		function checkPointContent(content) {
+		  var result = "";
+		  var firstImage = content.indexOf("<img");
+		  if (firstImage == 0) {
+		    result = "";
+		  } else if (firstImage > 4) {
+		    result = "Images must be placed at the beginning of the point."
+	    } else {
+		    var secondImage = content.indexOf("<img", firstImage+1);
+		    if (secondImage > 0) {
+	        result = "Cannot have more than one image in the point."
+		    }
+		  }
+		  return result;
+		}
+		function getWindowHeight() {
+		  var height;
+
+      if (typeof(window.innerHeight) == "number") //non-IE
+          height = window.innerHeight;
+      else if (document.documentElement && document.documentElement.clientHeight) //IE 6+ strict mode
+          height = document.documentElement.clientHeight;
+      else if (document.body && document.body.clientHeight) //IE 4 compatible / IE quirks mode
+          height = document.body.clientHeight;
+          
+      return height;
+		}
+		function toDialogFormHeight(id, minus) {
+        var height;
+        height = $(this).height( $('#dialogForm').closest('.ui-dialog').height());
+        document.getElementById(id).style.height = (height - minus) + "px";
+    }
+    
+		</script>
+	</head>
+	<body>
+  {% block mainPageContent %} {% endblock %}
+	<div id="header"> 
+		<div class="logoArea"><a href="/"><img id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
+		Version Alpha
+		</div>
+		<div class="userArea">		
+		{% if user %}
+			  <a href="{{ user.profile_url }}"><img src="http://graph.facebook.com/{{ user.id }}/picture?type=square"/></a>{{ user.name|escape }}
+		{% else %}
+		  NOT LOGGED IN
+		{% endif %}
+
+		<fb:login-button autologoutlink="true" scope="publish_stream" onlogin="afterFbLogin()" ></fb:login-button>
+
+		</div>
+  	<div class="clear"></div>
+	</div>
+
+	<div id="footer"> 
+		<div class="footerCopyright">(c) Whysaurus 2012 </div>
+		<div class="footerMenu"> <a href='/admin'>Admin</a> </div>
+		<div class="clear"></div>
+	</div>
+	</body>
+	  <div id="fb-root"></div>
+</html>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+  <div id="content">
+		FOR NOW YOU CAN LINK ONLY RECENTLY VIEWED POINTS
+		{% for point in points %} 
+		  <div class="boxedElement" id="point_{{point.url}}">	
+					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+					<button id="selectPoint_{{point.url}}" onClick="javascript:selectPoint('{{point.url}}', '{{parentPoint.url}}');"> MAKE SUPPORTING POINT </button>
+					</div>
+			</div>
+		{% endfor %}
+	</div>
+		
+		<script>
+		function selectPoint(pointUrl, parentPointUrl){
+		  	$.ajaxSetup({
+				   url: "/linkPoint",
+				   global: false,
+				   type: "POST",
+					 data: {
+						'supportingPointURL': pointUrl,
+						'parentPointURL': parentPointUrl
+						},
+						success: function(data){ 
+						  obj = JSON.parse(data);
+						  if (obj.result == true) {
+          			window.location.href="/point/" + "{{parentPoint.url}}"							  
+              } else {
+                alert(obj.result);
+              }
+						}
+				 });
+				$.ajax();
+		}
+			
+		$( "[id^=selectPoint]" ).button();
+		$( "[id^=selectPoint]" ).css("float","right");		
+		</script>
+
+    
+{% endblock %}

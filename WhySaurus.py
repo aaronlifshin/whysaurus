@@ -282,7 +282,7 @@ class PointHistory(WhysaurusRequestHandler):
       for mainPoint in points:
         supportingPoints = mainPoint.getSupportingPoints()
         mainAndSupporting.append({"mainPoint":mainPoint, "supportingPoints":supportingPoints})
-
+        
       template_values = {
         'latestPoint' : points[0],
         'points': points,
@@ -291,8 +291,8 @@ class PointHistory(WhysaurusRequestHandler):
         'user' : self.current_user
       }
 
-      self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-      self.response.out.write(resultJSON)
+    path = os.path.join(os.path.dirname(__file__), 'pointHistory.html')
+    self.response.out.write(template.render(path, template_values ))
 
 
 class AddSupportingPoint(WhysaurusRequestHandler):
@@ -316,8 +316,8 @@ class AddSupportingPoint(WhysaurusRequestHandler):
         'user' : user,
         'fbsettings':fbsettings
       })
-      path = os.path.join(os.path.dirname(__file__), 'newsupportingpoint.html')
-      self.response.out.write(template.render(path, template_values))
+      self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+      self.response.out.write(resultJSON)  
     else:
       self.response.out.write('Need to be logged in')
 

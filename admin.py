@@ -6,15 +6,14 @@ import wsgiref.handlers
 import os
 import WhySaurusModels
 
-import webapp2 as webapp
+import webapp2
 
 from google.appengine.ext.webapp import template
-from google.appengine.ext import db
 from google.appengine.api import users
 
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-class admin(webapp.RequestHandler):
+class admin(webapp2.RequestHandler):
 	def get(self):
 		
 		pointsCount = WhySaurusModels.Point.all().count()
@@ -27,9 +26,7 @@ class admin(webapp.RequestHandler):
 		path = os.path.join(os.path.dirname(__file__), 'admin.html')
 	 	self.response.out.write(template.render(path, templateArgs))
 		
-
-
-app = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
 	('/admin', admin)
 ], debug=True)
 

@@ -8,14 +8,14 @@
 		<script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
 	  <script type="text/javascript">
 	  
-
+/*
      // FACEBOOK STUFF START
        window.fbAsyncInit = function() {
          // init the FB JS SDK
          FB.init({
            // appId      : '460138394028773', // DEV IVE App ID from the App Dashboard
-           channelUrl : '{{fbsettings.FACEBOOK_CHANNEL_URL}}', // Channel File for x-domain communication        
-           appId      : '{{fbsettings.FACEBOOK_APP_ID}}', // LIVE  App ID from the App Dashboard      
+           channelUrl : '{{FACEBOOK_CHANNEL_URL}}', // Channel File for x-domain communication        
+           appId      : '{{FACEBOOK_APP_ID}}', // LIVE  App ID from the App Dashboard      
            status     : true, // check the login status upon init?
            cookie     : true, // set sessions cookies to allow your server to access the session?
            xfbml      : true  // parse XFBML tags on this page?
@@ -38,7 +38,7 @@
     		  window.location.reload();
     	  }
     // FACEBOOK STUFF END
-    
+ */   
   		tinyMCE.init({
 		        // General options
 		        mode : "textareas",
@@ -111,11 +111,13 @@
 		<div class="userArea">		
 		{% if user %}
 			  <a href="{{ user.profile_url }}"><img src="http://graph.facebook.com/{{ user.id }}/picture?type=square"/></a>{{ user.name|escape }}
+			  <a href="/logout" class="btn">Logout</a>
 		{% else %}
 		  NOT LOGGED IN
+		  <a href="/auth/facebook" class="btn">Login with Facebook</a>
 		{% endif %}
 
-		<fb:login-button autologoutlink="true" scope="publish_stream" onlogin="afterFbLogin()" ></fb:login-button>
+		<!--<fb:login-button autologoutlink="true" scope="publish_stream" onlogin="afterFbLogin()" ></fb:login-button>-->
 
 		</div>
   	<div class="clear"></div>
@@ -127,5 +129,5 @@
 		<div class="clear"></div>
 	</div>
 	</body>
-	  <div id="fb-root"></div>
+	  <!--<div id="fb-root"></div>-->
 </html>

@@ -1,33 +1,34 @@
 import re
 import logging
+import sys
 
 from google.appengine.ext import db
-from google.appengine.api import users
+from google.appengine.ext import ndb
+import webapp2_extras.appengine.auth.models as auth_models
+    
 
 # ***************************************************************************************
 #  POINT MANIPULATION FUNCTIONS
 # ***************************************************************************************
 
-class UserVote(db.Model):
-  userKey =  db.StringProperty(required=True)
-  pointRootKey = db.StringProperty(required=True)
-  value = db.IntegerProperty(required=True) # 1, 0, -1
+class UserVote(ndb.Model):
+  pointRootKey = ndb.StringProperty(required=True)
+  value = ndb.IntegerProperty(required=True) # 1, 0, -1
   
-class User(db.Model):
-  id = db.StringProperty(required=True)
-  created = db.DateTimeProperty(auto_now_add=True)
-  updated = db.DateTimeProperty(auto_now=True)
-  name = db.StringProperty(required=True)
-  profile_url = db.StringProperty(required=True)
-  access_token = db.StringProperty(required=True)
-  admin = db.BooleanProperty()
-  recentlyViewedRootKeys = db.StringListProperty()
+class WhysaurusUser(auth_models.User):
+  created = ndb.DateTimeProperty(auto_now_add=True)
+  updated = ndb.DateTimeProperty(auto_now=True)
+  # name = db.StringProperty(required=True)
+  # profile_url = db.StringProperty(required=True)
+  # access_token = db.StringProperty(required=True)
+  admin = ndb.BooleanProperty(default=False)
+  recentlyViewedRootKeys = ndb.StringProperty(repeated=True)
 
   @property
   def userVotes(self):
     if not hasattr(self, "_userVotes"):
-      qry = UserVote.gql("WHERE ANCESTOR IS :1", self)
-      votes = qry.run()
+      votes = UserVote.query(ancestor=self.key)
+      # votes = qry.run()
       self._userVotes = {}
       if votes:
         for vote in votes:
@@ -44,10 +45,9 @@ class User(db.Model):
       newVote.value = voteValue
     if not newVote: # Create a brand new one
       newVote = UserVote(
-        userKey=str(self.key()),
         pointRootKey= pointRootKey,
         value=voteValue,
-        parent=self
+        parent=self.key
         )
     newVote.put()
 
@@ -216,7 +216,6 @@ class Point(db.Model):
     point.title = title
     point.url = pointRoot.url			
     point.content = content
-    point.authorID = user.id
     point.authorName = user.name
     point.version = 1
     point.current = True
@@ -245,7 +244,6 @@ class Point(db.Model):
       else:
         newPoint.content = self.content
 
-      newPoint.authorID = user.id
       newPoint.authorName = user.name      
       if newSupportingPoint:
         newPoint.supportingPoints = self.supportingPoints + [newSupportingPoint]
@@ -269,7 +267,6 @@ class Point(db.Model):
   def removeSupportingPoint(self, supportingPointToRemove, user):
     if user:
       newPoint = Point(self.parent_key()) # All versions ancestors of the caseRoot
-      newPoint.authorID = user.id
       newPoint.authorName = user.name
       newPoint.supportingPoints = list(self.supportingPoints)
       newPoint.supportingPoints.remove(supportingPointToRemove)

@@ -6,10 +6,12 @@ import wsgiref.handlers
 import os
 import string
 import json
-import facebook
+import constants
 import logging
 
-import webapp2 as webapp
+import webapp2
+from webapp2 import Route, WSGIApplication
+from webapp2_extras import auth, sessions, jinja2
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
@@ -20,22 +22,9 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 from WhySaurusModels import Point
 from WhySaurusModels import PointRoot
-from WhySaurusModels import User
+from WhySaurusModels import WhysaurusUser
 
-DEV = os.environ['SERVER_SOFTWARE'].startswith('Development')
-
-if DEV:
-  fbsettings = {
-    'FACEBOOK_APP_ID':"460138394028773",
-    'FACEBOOK_APP_SECRET' : "ae64953822e937d9fed9daaa959390e9",
-    'FACEBOOK_CHANNEL_URL' : "//localhost:8081/channel.html"
-  }
-else:
-  fbsettings = {
-    'FACEBOOK_APP_ID' : "437336826315160",
-    'FACEBOOK_APP_SECRET' : "d09e82124bccb0336237f2b62a5187c4",
-    'FACEBOOK_CHANNEL_URL' : "http://whysaurus-beta.appspot.com/channel.html"
-  }
+from simpleauth import SimpleAuthHandler
 
 
 # ***************************************************************************************
@@ -44,7 +33,10 @@ else:
 def prepareTemplateValuesForMain(pageHandler):
   pointsQuery = Point.gql("WHERE current = TRUE ORDER BY dateEdited DESC")
   points = pointsQuery.fetch(100)
-  user = pageHandler.current_user
+  user = None
+  if pageHandler.logged_in:
+    user = pageHandler.current_user
+    
   # GET RECENTLY VIEWED
   if user:
     recentlyViewedPoints = user.getRecentlyViewed()
@@ -58,51 +50,184 @@ def prepareTemplateValuesForMain(pageHandler):
   	'points': points,
   	'editorsPicks':editorsPicksPoints,
   	'recentlyViewed':recentlyViewedPoints,
-    'dev': DEV,
+    # 'dev': DEV,
   	'user':user,
-  	'fbsettings':fbsettings
+  	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+  	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
   }
   return template_values
 		
-class WhysaurusRequestHandler(webapp.RequestHandler):
-  """Provides access to the active Facebook user in self.current_user
+class WhysaurusRequestHandler(webapp2.RequestHandler):
+  def dispatch(self):
+    # Get a session store for this request.
+    self.session_store = sessions.get_store(request=self.request)
 
-  The property is lazy-loaded on first access, using the cookie saved
-  by the Facebook JavaScript SDK to determine the user ID of the active
-  user. See http://developers.facebook.com/docs/authentication/ for
-  more information.
-  """
-  @property
+    try:
+     # Dispatch the request.
+     webapp2.RequestHandler.dispatch(self)
+    finally:
+     # Save all sessions.
+     self.session_store.save_sessions(self.response)
+         
+  @webapp2.cached_property
+  def session(self):
+    """Returns a session using the default cookie key"""
+    return self.session_store.get_session()
+
+  @webapp2.cached_property
+  def auth(self):
+    return auth.get_auth()
+
+  @webapp2.cached_property
   def current_user(self):
-    if not hasattr(self, "_current_user"):
-      self._current_user = None   
-      logging.info(">>> Cookies received: " + str(self.request.cookies) + " FB APP ID: " + fbsettings['FACEBOOK_APP_ID'])
-      cookie = facebook.get_user_from_cookie(
-        self.request.cookies, fbsettings['FACEBOOK_APP_ID'], fbsettings['FACEBOOK_APP_SECRET'])
-      if cookie:
-        logging.info(">>> Trying to get user: " + "fb:"+cookie["uid"])
-        # Store a local instance of the user data so we don't need
-        # a round-trip to Facebook on every request
-        user = User.get_by_key_name("fb:"+cookie["uid"])
-        if not user:
-          logging.info(">>> Did not get user. Going to facebook.")
-          graph = facebook.GraphAPI(cookie["access_token"])
-          profile = graph.get_object("me")
-          user = User(key_name="fb:"+str(profile["id"]),
-                      id=str(profile["id"]),
-                      name=profile["name"],
-                      profile_url=profile["link"],
-                      access_token=cookie["access_token"],
-                      admin=False,
-                      recentlyViewedRootKeys = [])
-          user.put()
-        elif user.access_token != cookie["access_token"]:
-          user.access_token = cookie["access_token"]
-          user.put()
-        self._current_user = user
-      return self._current_user
+    """Returns currently logged in user"""
+    user_dict = self.auth.get_user_by_session()
+    return self.auth.store.user_model.get_by_id(user_dict['user_id'])
+
+  @webapp2.cached_property
+  def logged_in(self):
+    """Returns true if a user is currently logged in, false otherwise"""
+    return self.auth.get_user_by_session() is not None
+    
+  def render(self, template_name, template_vars={}):
+    # Preset values for the template
+    values = {
+      'url_for': self.uri_for,
+      'logged_in': self.logged_in,
+      'flashes': self.session.get_flashes()
+    }
+
+    # Add manually supplied template values
+    values.update(template_vars)
+
+    # read the template or 404.html
+    try:
+      self.response.write(self.jinja2.render_template(template_name, **values))
+    except TemplateNotFound:
+      self.abort(404)
+
+  def head(self, *args):
+    """Head is used by Twitter. If not there the tweet button shows 0"""
+    pass     
+
+
+class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
+  """Inherits from gae-simpleaiuth (SimpleAuthHandler)
+     Authentication handler for OAuth 2.0, 1.0(a) and OpenID."""
+
+  # Enable optional OAuth 2.0 CSRF guard
+  OAUTH2_CSRF_STATE = True
+
+  USER_ATTRS = {
+    'facebook' : {
+      'id'     : lambda id: ('avatar_url', 
+        'http://graph.facebook.com/{0}/picture?type=large'.format(id)),
+      'name'   : 'name',
+      'link'   : 'link'
+    },
+    'google'   : {
+      'picture': 'avatar_url',
+      'name'   : 'name',
+      'link'   : 'link'
+    },
+    'windows_live': {
+      'avatar_url': 'avatar_url',
+      'name'      : 'name',
+      'link'      : 'link'
+    },
+    'twitter'  : {
+      'profile_image_url': 'avatar_url',
+      'screen_name'      : 'name',
+      'link'             : 'link'
+    },
+    'linkedin' : { # This is disable for now due to no lxml
+      'picture-url'       : 'avatar_url',
+      'first-name'        : 'name',
+      'public-profile-url': 'link'
+    },
+    'openid'   : {
+      'id'      : lambda id: ('avatar_url', '/img/missing-avatar.png'),
+      'nickname': 'name',
+      'email'   : 'link'
+    }
+  }
+
+  def _on_signin(self, data, auth_info, provider):
+    auth_id = '%s:%s' % (provider, data['id'])
+    logging.info('Looking for a user with id %s', auth_id)
+    
+    user = self.auth.store.user_model.get_by_auth_id(auth_id)
+    _attrs = self._to_user_model_attrs(data, self.USER_ATTRS[provider])
+    logging.info('User attrs: ' + str(_attrs))
+
+    if user:
+      logging.info('Found existing user to log in')
+      # Existing users might've changed their profile data so we update our
+      # local model anyway. This might result in quite inefficient usage
+      # of the Datastore, but we do this anyway for demo purposes.
+      #
+      # In a real app you could compare _attrs with user's properties fetched
+      # from the datastore and update local user in case something's changed.
+      user.populate(**_attrs)
+      user.put()
+      self.auth.set_session( self.auth.store.user_to_dict(user))
       
-class MainPage(WhysaurusRequestHandler):
+    else:
+      # check whether there's a user currently logged in
+      # then, create a new user if nobody's signed in, 
+      # otherwise add this auth_id to currently logged in user.
+
+      if self.logged_in:
+        logging.info('Updating currently logged in user')
+        
+        u = self.current_user
+        u.populate(**_attrs)
+        # The following will also do u.put(). Though, in a real app
+        # you might want to check the result, which is
+        # (boolean, info) tuple where boolean == True indicates success
+        # See webapp2_extras.appengine.auth.models.User for details.
+        u.add_auth_id(auth_id)
+        
+      else:
+        logging.info('Creating a brand new user')
+        ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
+        if ok:
+          self.auth.set_session(self.auth.store.user_to_dict(user))
+
+    # Remember auth data during redirect, just for this demo. You wouldn't
+    # normally do this.
+    # self.session.add_flash(data, 'data - from _on_signin(...)')
+    # self.session.add_flash(auth_info, 'auth_info - from _on_signin(...)')
+
+    # Go to the profile page
+    self.redirect('/')
+    
+  def logout(self):
+    self.auth.unset_session()
+    self.redirect('/')
+
+  def _callback_uri_for(self, provider):
+    return self.uri_for('auth_callback', provider=provider, _full=True)
+
+  def _get_consumer_info_for(self, provider):
+    """Should return a tuple (key, secret) for auth init requests.
+    For OAuth 2.0 you should also return a scope, e.g.
+    ('my app id', 'my app secret', 'email,user_about_me')
+    
+    The scope depends solely on the provider.
+    """
+    return constants.AUTH_CONFIG[provider]
+    
+  def _to_user_model_attrs(self, data, attrs_map):
+    """Get the needed information from the provider dataset."""
+    user_attrs = {}
+    for k, v in attrs_map.iteritems():
+      attr = (v, data.get(k)) if isinstance(v, str) else v(data.get(k))
+      user_attrs.setdefault(*attr)    
+    # THIS IS WHERE WE SHOULD ADD OUR DEFAULTS TO THE USER
+    return user_attrs
+        
+class MainPage(WhysaurusRequestHandler, SimpleAuthHandler):
 	def get(self):     
 		path = os.path.join(os.path.dirname(__file__), 'index.html')
 	 	self.response.out.write(template.render(path, prepareTemplateValuesForMain(self)))
@@ -112,7 +237,7 @@ class MainPage(WhysaurusRequestHandler):
 #  POINT HANDLERS
 # ***************************************************************************************
 
-class NewPoint(WhysaurusRequestHandler):
+class NewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     user = self.current_user
     if user:
@@ -120,7 +245,8 @@ class NewPoint(WhysaurusRequestHandler):
       template_values = {
         'point': newPoint,
         'user' : user,
-        'fbsettings':fbsettings
+        'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
       }
       path = os.path.join(os.path.dirname(__file__), 'newpoint.html')
       self.response.out.write(template.render(path, template_values))
@@ -128,7 +254,7 @@ class NewPoint(WhysaurusRequestHandler):
       self.response.out.write('Need to be logged in')
 
 
-class DeletePoint(WhysaurusRequestHandler):
+class DeletePoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False, 'error':'Point Not Found'})
     user = self.current_user
@@ -154,10 +280,10 @@ class DeletePoint(WhysaurusRequestHandler):
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
 
-class ViewPoint(WhysaurusRequestHandler):
+class ViewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self, pointURL):
     # check if dev environment for Disqus
-    if DEV:
+    if constants.DEV:
     	devInt = 1
     else:
     	devInt = 0
@@ -187,7 +313,8 @@ class ViewPoint(WhysaurusRequestHandler):
       	'user': user,
       	'devInt': devInt, # For Disqus
       	'voteValue': voteValue,
-      	'fbsettings': fbsettings
+      	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
       }
       path = os.path.join(os.path.dirname(__file__), 'point.html')
       self.response.out.write(template.render(path, template_values))
@@ -195,7 +322,7 @@ class ViewPoint(WhysaurusRequestHandler):
       self.response.out.write('Could not find point: ' + pointURL)
 
 # AJAX. CALLED FROM THE POINT VIEW PAGE
-class EditPoint(WhysaurusRequestHandler):
+class EditPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self): 
     resultJSON = json.dumps({'result':False})
     if self.request.get('pointKey'):
@@ -219,7 +346,7 @@ class EditPoint(WhysaurusRequestHandler):
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
     
-class UnlinkPoint(WhysaurusRequestHandler):
+class UnlinkPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
     if self.request.get('mainPointKey'):
@@ -231,7 +358,7 @@ class UnlinkPoint(WhysaurusRequestHandler):
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
     
-class LinkPoint(WhysaurusRequestHandler):
+class LinkPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
     supportingPointAndRoot = Point.getCurrentByUrl(self.request.get('supportingPointURL'))
@@ -253,7 +380,7 @@ class LinkPoint(WhysaurusRequestHandler):
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)   
 
-class SelectSupportingPoint(WhysaurusRequestHandler):
+class SelectSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     user = self.current_user
     # GET RECENTLY VIEWED
@@ -268,12 +395,13 @@ class SelectSupportingPoint(WhysaurusRequestHandler):
       'points': recentlyViewedPoints,
       'parentPoint': oldPoint,
 			'user' : user,
-			'fbsettings':fbsettings
+			'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+    	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
     }
     path = os.path.join(os.path.dirname(__file__), 'selectSupportingPoint.html')
     self.response.out.write(template.render(path, templateValues ))
   	
-class PointHistory(WhysaurusRequestHandler):
+class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self):
     points = Point.getAllByUrl(self.request.get('pointUrl'), "ORDER BY version DESC")
     mainAndSupporting = [] # An array of mainPoint - supportingPoints pairs
@@ -295,7 +423,7 @@ class PointHistory(WhysaurusRequestHandler):
       self.response.out.write(resultJSON)
 
 
-class AddSupportingPoint(WhysaurusRequestHandler):
+class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
     oldPointAndRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
@@ -314,14 +442,15 @@ class AddSupportingPoint(WhysaurusRequestHandler):
         'point': newPoint,
         'supportingPoint': supportingPointAndRoot['point'],
         'user' : user,
-        'fbsettings':fbsettings
+        'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
       })
       path = os.path.join(os.path.dirname(__file__), 'newsupportingpoint.html')
       self.response.out.write(template.render(path, template_values))
     else:
       self.response.out.write('Need to be logged in')
 
-class Vote(WhysaurusRequestHandler):
+class Vote(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
     point = Point.get(self.request.get('pointKey'))
@@ -332,32 +461,53 @@ class Vote(WhysaurusRequestHandler):
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
     
-class TestPage(WhysaurusRequestHandler):
+class TestPage(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self):
     user = self.current_user
     template_values = {
       'user' : user,
-      'fbsettings':fbsettings
+      'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+    	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
     }
     path = os.path.join(os.path.dirname(__file__), 'test.html')
     self.response.out.write(template.render(path, template_values))
-                   
-app = webapp.WSGIApplication([
-	(r'/', MainPage),
-  ('/newPoint', NewPoint),
-  ('/deletePoint', DeletePoint),
-	('/editPoint', EditPoint),
-	('/unlinkPoint', UnlinkPoint),
-	(r'/point/(.*)', ViewPoint),
-	('/addSupportingPoint', AddSupportingPoint),
-	('/selectSupportingPoint', SelectSupportingPoint),
-  ('/linkPoint', LinkPoint),	
-	('/vote', Vote),
-	('/testPage', TestPage),
-	('/pointHistory',PointHistory)
-], debug=True)
+
+# Map URLs to handlers
+routes = [
+	Route('/', MainPage),
+  Route('/newPoint', NewPoint),
+  Route('/deletePoint', DeletePoint),
+	Route('/editPoint', EditPoint),
+	Route('/unlinkPoint', UnlinkPoint),
+	Route('/point/<pointURL>', ViewPoint),
+	Route('/addSupportingPoint', AddSupportingPoint),
+	Route('/selectSupportingPoint', SelectSupportingPoint),
+  Route('/linkPoint', LinkPoint),	
+	Route('/vote', Vote),
+	Route('/testPage', TestPage),
+	Route('/pointHistory',PointHistory), 
+  # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
+  Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'), # , handler_method='logout', name='logout'),
+  Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login') , 
+  Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler:_auth_callback', name='auth_callback')
+]
+  
+# webapp2 config
+app_config = {
+  'webapp2_extras.sessions': {
+    'cookie_name': '_simpleauth_sess',
+    'secret_key': constants.SESSION_KEY
+  },
+  'webapp2_extras.auth': {
+    'user_attributes': [],
+    'user_model': WhysaurusUser
+  }
+}
+
+app = WSGIApplication(routes=routes, config=app_config, debug=True)
 
 def main():
+  logging.info('here')
   run_wsgi_app(app)
 
 if __name__ == '__main__':

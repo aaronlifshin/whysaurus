@@ -25,3 +25,11 @@ handlers:
 libraries:
 - name: django
   version: "1.2"
+
+# jinja is from gae-simpleauth, the others improve jinja functioning
+- name: markupsafe
+  version: "0.15"
+- name: setuptools
+  version: "0.6c11"
+- name: jinja2
+  version: "2.6"

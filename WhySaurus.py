@@ -410,7 +410,7 @@ class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
       for mainPoint in points:
         supportingPoints = mainPoint.getSupportingPoints()
         mainAndSupporting.append({"mainPoint":mainPoint, "supportingPoints":supportingPoints})
-
+        
       template_values = {
         'latestPoint' : points[0],
         'points': points,
@@ -419,8 +419,8 @@ class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
         'user' : self.current_user
       }
 
-      self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-      self.response.out.write(resultJSON)
+    path = os.path.join(os.path.dirname(__file__), 'pointHistory.html')
+    self.response.out.write(template.render(path, template_values ))
 
 
 class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
@@ -445,8 +445,8 @@ class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
         'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
       	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
       })
-      path = os.path.join(os.path.dirname(__file__), 'newsupportingpoint.html')
-      self.response.out.write(template.render(path, template_values))
+      self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+      self.response.out.write(resultJSON)  
     else:
       self.response.out.write('Need to be logged in')
 

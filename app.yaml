@@ -15,9 +15,10 @@ handlers:
 - url: /static/css
   static_dir: static/css
   
-- url: /admin
-  script: admin.app
-  login: admin
+# This is not being used for now
+# - url: /admin
+#  script: admin.app
+#  login: admin
   
 - url: /.*
   script: WhySaurus.app
@@ -33,3 +34,7 @@ libraries:
   version: "0.6c11"
 - name: jinja2
   version: "2.6"
+
+# Trying to get ndb
+- name: webapp2
+  version: latest

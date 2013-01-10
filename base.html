@@ -7,38 +7,6 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>	
 		<script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
 	  <script type="text/javascript">
-	  
-/*
-     // FACEBOOK STUFF START
-       window.fbAsyncInit = function() {
-         // init the FB JS SDK
-         FB.init({
-           // appId      : '460138394028773', // DEV IVE App ID from the App Dashboard
-           channelUrl : '{{FACEBOOK_CHANNEL_URL}}', // Channel File for x-domain communication        
-           appId      : '{{FACEBOOK_APP_ID}}', // LIVE  App ID from the App Dashboard      
-           status     : true, // check the login status upon init?
-           cookie     : true, // set sessions cookies to allow your server to access the session?
-           xfbml      : true  // parse XFBML tags on this page?
-         });
-
-         // Additional initialization code such as adding Event Listeners goes here
-         FB.Event.subscribe("auth.logout", function() {window.location.reload()});
-       };
-
-       // Load the SDK's source Asynchronously
-       (function(d, s, id) {
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) return;
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId={{fbsettings.FACEBOOK_APP_ID}}";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-
-        function afterFbLogin() {
-    		  window.location.reload();
-    	  }
-    // FACEBOOK STUFF END
- */   
   		tinyMCE.init({
 		        // General options
 		        mode : "textareas",
@@ -110,24 +78,20 @@
 		</div>
 		<div class="userArea">		
 		{% if user %}
-			  <a href="{{ user.profile_url }}"><img src="http://graph.facebook.com/{{ user.id }}/picture?type=square"/></a>{{ user.name|escape }}
-			  <a href="/logout" class="btn">Logout</a>
+      <a href="{{ user.link }}"><img src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
+      <a href="/logout" class="btn">Logout</a>
 		{% else %}
-		  NOT LOGGED IN
-		  <a href="/auth/facebook" class="btn">Login with Facebook</a>
+  		Login with
+		  <a href="/auth/facebook" class="btn"> Facebook</a><br>
+		  OR <a href="/auth/google" class="btn"> Google</a>
 		{% endif %}
-
-		<!--<fb:login-button autologoutlink="true" scope="publish_stream" onlogin="afterFbLogin()" ></fb:login-button>-->
-
 		</div>
   	<div class="clear"></div>
 	</div>
 
 	<div id="footer"> 
-		<div class="footerCopyright">(c) Whysaurus 2012 </div>
-		<div class="footerMenu"> <a href='/admin'>Admin</a> </div>
+    		<div class="footerCopyright">(c) Whysaurus 2012 </div>
 		<div class="clear"></div>
 	</div>
 	</body>
-	  <!--<div id="fb-root"></div>-->
 </html>

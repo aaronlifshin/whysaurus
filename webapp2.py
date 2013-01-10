@@ -549,7 +549,6 @@ class RequestHandler(object):
 
         method = getattr(self, method_name, None)
         if method is None:
-            logging.info('METHOD IS NONE: DENYING! Name was: ' + str(method_name))
             # 405 Method Not Allowed.
             # The response MUST include an Allow header containing a
             # list of valid methods for the requested resource.

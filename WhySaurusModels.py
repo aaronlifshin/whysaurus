@@ -12,7 +12,7 @@ import webapp2_extras.appengine.auth.models as auth_models
 # ***************************************************************************************
 
 class UserVote(ndb.Model):
-  pointRootKey = ndb.StringProperty(required=True)
+  pointRootKey = ndb.KeyProperty(required=True)
   value = ndb.IntegerProperty(required=True) # 1, 0, -1
   
 class WhysaurusUser(auth_models.User):
@@ -22,7 +22,7 @@ class WhysaurusUser(auth_models.User):
   # profile_url = db.StringProperty(required=True)
   # access_token = db.StringProperty(required=True)
   admin = ndb.BooleanProperty(default=False)
-  recentlyViewedRootKeys = ndb.StringProperty(repeated=True)
+  recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
 
   @property
   def userVotes(self):
@@ -36,7 +36,7 @@ class WhysaurusUser(auth_models.User):
     return self._userVotes
   
   def addVote(self, point, voteValue, updatePoint=True):
-    pointRootKey = str(point.parent().key())
+    pointRootKey = point.key.parent()
     previousVoteValue = 0
     newVote = None
     if pointRootKey in self.userVotes: # Vote already exists. Update      
@@ -101,26 +101,21 @@ class WhysaurusUser(auth_models.User):
           keysToGet.remove(x)
         except ValueError:
           pass
-    pointRoots = PointRoot.get(keysToGet)  
+    pointRoots = ndb.get_multi(keysToGet)  
     for pointRoot in pointRoots:
       if pointRoot:
         recentlyViewedPoints = recentlyViewedPoints + [pointRoot.getCurrent()]
     return recentlyViewedPoints
         
-class PointRoot(db.Model):
-  url = db.StringProperty()
-  numCopies = db.IntegerProperty()
-  pointsSupportedByMe = db.ListProperty(db.Key)
-  editorsPick = db.BooleanProperty()
-  viewCount = db.IntegerProperty()
+class PointRoot(ndb.Model):
+  url = ndb.StringProperty()
+  numCopies = ndb.IntegerProperty()
+  pointsSupportedByMe = ndb.KeyProperty(repeated=True)
+  editorsPick = ndb.BooleanProperty(default=False)
+  viewCount = ndb.IntegerProperty()
   
   def getCurrent(self):
-    pointQuery = Point.gql("WHERE ANCESTOR IS :1 and current = TRUE", self)
-    points = pointQuery.fetch(1)
-    if points:
-      return points[0]
-    else:
-      return None
+    return Point.query(Point.current == True, ancestor=self.key).get()
   
   def removeSupportedPoint(self, supportedPointKey):
     self.pointsSupportedByMe.remove(supportedPointKey)
@@ -145,43 +140,43 @@ class PointRoot(db.Model):
       editorsPicks = editorsPicks + [pointRoot.getCurrent()]
     return editorsPicks
 
-class Point(db.Model):
+class Point(ndb.Model):
   """Models an individual Point with an author, content, date and version."""
-  authorName = db.StringProperty()
-  authorID = db.StringProperty()
-  content = db.TextProperty()
-  title = db.StringProperty()
-  dateEdited = db.DateTimeProperty(auto_now_add=True)
-  version = db.IntegerProperty()
-  supportingPoints = db.StringListProperty()
-  current = db.BooleanProperty()
-  url = db.StringProperty()
-  upVotes = db.IntegerProperty()
-  downVotes = db.IntegerProperty()
-  voteTotal = db.IntegerProperty()
+  authorName = ndb.StringProperty()
+  authorID = ndb.StringProperty()
+  content = ndb.TextProperty()
+  title = ndb.StringProperty()
+  dateEdited = ndb.DateTimeProperty(auto_now_add=True)
+  version = ndb.IntegerProperty()
+  supportingPoints = ndb.KeyProperty(repeated=True)
+  current = ndb.BooleanProperty()
+  url = ndb.StringProperty()
+  upVotes = ndb.IntegerProperty()
+  downVotes = ndb.IntegerProperty()
+  voteTotal = ndb.IntegerProperty()
+  
+  @classmethod
+  def getByKey(cls, pointKey):  
+    return ndb.Key('Point', pointKey).get()
           
   @staticmethod
   def getCurrentByUrl(url):
     points = None
     pointRootQuery = PointRoot.gql("WHERE url= :1", url)
     pointRoot = pointRootQuery.get()
+    point = None
     if pointRoot:
-      pointQuery = Point.gql("WHERE ANCESTOR IS :1 and current = TRUE", pointRoot)
-      points = pointQuery.fetch(1)
-    if points:
-      return {"pointRoot":pointRoot, "point":points[0]} 
+      point = Point.query(Point.current == True, ancestor=pointRoot.key).get()
+    if point:
+      return point, pointRoot
     else:
-      return None
+      return (None, None)
 
   @staticmethod		
-  def getAllByUrl(url, orderByClause = ""):
-    # TODO: FIND A WAY TO DO THIS WITHOUT TWO FETCHES.  FIRST IS NEEDED ONLY TO SET THE FETCH AMOUNT
-    # 28/2/12 THIS IS ONLY USED AT POINT DELETE WHICH SHOULD NOT BE A COMMON OPERATION
-    # THIS CAN BE DONE BY PASSING PARENT KEY
-    pointRootQuery = PointRoot.gql("WHERE url= :1", url)
-    pointRoot = pointRootQuery.get()	
+  def getAllByUrl(url):
+    pointRoot = PointRoot.query(PointRoot.url == url).get()
     if pointRoot:
-      pointQuery = Point.gql("WHERE ANCESTOR IS :1 "+ orderByClause, pointRoot)
+      pointQuery = Point.query(ancestor=pointRoot.key).order(-Point.version)
       points = pointQuery.fetch(50) # Only 50 for now
       return points
     else:
@@ -212,7 +207,7 @@ class Point(db.Model):
       pointRoot.pointsSupportedByMe = [pointSupported]
     pointRoot.put()
 			
-    point = Point(parent=pointRoot)
+    point = Point(parent=pointRoot.key)
     point.title = title
     point.url = pointRoot.url			
     point.content = content
@@ -225,14 +220,14 @@ class Point(db.Model):
     point.put()
     
     user.addVote(point, voteValue=1, updatePoint=False)
-    user.updateRecentlyViewed(str(pointRoot.key()))
+    user.updateRecentlyViewed(pointRoot.key)
     
-    return {"pointRoot":pointRoot, "point":point}
+    return point, pointRoot
   
   # newSupportingPoint is the key of the PointRoot of the supporting point
   def update(self, newTitle = None, newContent = None, newSupportingPoint=None, user = None):
     if user:
-      newPoint = Point(self.parent_key()) # All versions ancestors of the caseRoot
+      newPoint = Point(parent=self.key.parent()) # All versions ancestors of the caseRoot
 
       if newTitle:
         newPoint.title = newTitle
@@ -266,7 +261,7 @@ class Point(db.Model):
   # ONLY REMOVES ONE SIDE OF THE LINK. USED BY UNLINK
   def removeSupportingPoint(self, supportingPointToRemove, user):
     if user:
-      newPoint = Point(self.parent_key()) # All versions ancestors of the caseRoot
+      newPoint = Point(self.key.parent()) # All versions ancestors of the caseRoot
       newPoint.authorName = user.name
       newPoint.supportingPoints = list(self.supportingPoints)
       newPoint.supportingPoints.remove(supportingPointToRemove)
@@ -284,7 +279,7 @@ class Point(db.Model):
 	
   def getSupportingPoints(self):
     if len(self.supportingPoints) > 0:
-      supportingPointRoots = PointRoot.get(self.supportingPoints)
+      supportingPointRoots = ndb.get_multi(self.supportingPoints)
       supportingPoints = []
       for pointRoot in supportingPointRoots:
         supportingPoints = supportingPoints + [pointRoot.getCurrent()]
@@ -292,8 +287,8 @@ class Point(db.Model):
     else:
       return None
 
-  def unlink(self, supportingPointKey, user):
-    supportingPointRoot = Point.get(supportingPointKey).parent()
-    newVersion = self.removeSupportingPoint(str(supportingPointRoot.key()), user)
-    supportingPointRoot.removeSupportedPoint(self.parent().key())
+  def unlink(self, supportingPointURL, user):
+    supportingPoint, supportingPointRoot = Point.getCurrentByUrl(supportingPointURL)
+    newVersion = self.removeSupportingPoint(supportingPointRoot.key, user)
+    supportingPointRoot.removeSupportedPoint(self.key.parent())
     return newVersion

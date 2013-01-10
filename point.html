@@ -41,16 +41,14 @@
 					-->
 					{% for supportingPoint in supportingPoints %}
 					<div class="boxedElement centered" id="point_{{supportingPoint.url}}">	
-    					<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ point.title|escape }}</a></div>
+    					<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
     					<div class="caseSummaryText">{{ supportingPoint.content|safe }}</div>
-    				<!--	<div class="caseInfo">
-    						<div class="caseVersion">{{point.version}}</div> 
-    						<div class="caseDateEdited">{{point.dateEdited}} </div>
-    					</div>-->
     					<div class="mainPointInfo">
   						<div class="mainPointAuthor">{{ supportingPoint.authorName }}</div> 
   						</div> 
-    					<button id="editSupportingPoint_{{supportingPoint.url}}" onClick="javascript:function(){window.location.href="/point/{{supportingPoint.url}}"; }">WHY</button>
+    					<a href="/point/{{supportingPoint.url}}" class="button">WHY</a>
+    					<a href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' class="button">UNLINK</a>
+
     			</div>
     			
 					<!--<div class="pointArea boxedElement" id="{{point.key}}">
@@ -61,9 +59,10 @@
 						{% if user %}
 							<td><div class="pointEditToggle" name="{{ supportingPoint.key }}">				
 							<img class="pointEditToggle" src="/static/img/Text-Edit-icon.png"  alt="Edit point" onclick="javascript:supportingPointEdit('{{ supportingPoint.key }}')"; width="32" height="32" />
+														<img class="pointUnlink" src="/static/img/Red-X-icon.png"  alt="Remove link to point" onclick="javascript:supportingPointUnlink('{{ supportingPoint.key }}')"; width="32" height="32" />
 							</td>
 							<td><div class="pointUnlink" name="{{ supportingPoint.key }}">				
-							<img class="pointUnlink" src="/static/img/Red-X-icon.png"  alt="Remove link to point" onclick="javascript:supportingPointUnlink('{{ supportingPoint.key }}')"; width="32" height="32" />
+
 							</td>
 						{% endif %}
 						</tr>-->
@@ -162,14 +161,14 @@
 					$( "#dialogForm" ).dialog( "open" );
 				}
 
-        	function supportingPointUnlink(supportingPointKey) {
+        	function supportingPointUnlink(supportingPointURL) {
   					$.ajaxSetup({
   					   url: "/unlinkPoint",
   					   global: false,
   					   type: "POST",
   						 data: {
-  							'mainPointKey': latestPointVersionKey,
-  							'supportingPointKey': supportingPointKey
+  							'mainPointURL': '{{point.url}}',
+  							'supportingPointURL': supportingPointURL
   							},
   							success: function(data){ 
   							  obj = JSON.parse(data);
@@ -187,12 +186,6 @@
 
 			
 				function openEditPointDialog() {
-				  /*
-				  document.getElementById("textEdit_tbl").style.width='100%';
-          document.getElementById("textEdit_ifr").style.width='100%';
-          document.getElementById("textEdit_tbl").style.height='100%';
-          document.getElementById("textEdit_ifr").style.height='100%';
-          */
 					var ed = tinyMCE.get('textEdit');
 					$('textarea.titleEdit').val($('div.mainPointTitle').text());
 					ed.setContent($('.mainPointContent').html() );
@@ -240,7 +233,7 @@
 					   global: false,
 					   type: "POST",
 						 data: {
-							'pointKey': pointKey,
+							'urlToEdit': '{{point.url}}',
 							'content': ed.getContent(),
 							'title': $('textarea.titleEdit').val()
 							},
@@ -249,7 +242,7 @@
 								$('.caseVersion').html(obj.version);
 								$('.caseAuthor').html(obj.author);
 								$('.caseDateEdited').html(obj.dateEdited);
-								
+  								alert('HI');
 								// Update to new edited text
 								var ed = tinyMCE.get('textEdit');
 								$('div.pointSummary#[name|="' + pointKey + '"]').html(ed.getContent());	
@@ -327,7 +320,7 @@
 					   type: "POST",
 						 data: {
 							'vote': myVote == 1 ? 0 : 1,
-							'pointKey': latestPointVersionKey
+							'pointURL': '{{point.url}}'
 							},
               success: function(data){ 
                 obj = JSON.parse(data);
@@ -348,7 +341,7 @@
 					   type: "POST",
 						 data: {
 							'vote': myVote == -1 ? 0 : -1,
-							'pointKey': latestPointVersionKey
+							'pointURL': '{{point.url}}'
 							},
               success: function(data){ 
                 obj = JSON.parse(data);
@@ -448,7 +441,7 @@
 					window.location.href="/pointHistory?pointUrl={{point.url}}";
 				});
 					
-			$( "[id^=editSupportingPoint]" ).button();
+			$( ".button" ).button();
 			$( "#editPoint" )
 				.button()
 				.click(function() {

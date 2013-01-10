@@ -82,7 +82,10 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
   def current_user(self):
     """Returns currently logged in user"""
     user_dict = self.auth.get_user_by_session()
-    return self.auth.store.user_model.get_by_id(user_dict['user_id'])
+    if user_dict and user_dict['user_id'] is not None:
+      return self.auth.store.user_model.get_by_id(user_dict['user_id'])
+    else:
+      return None
 
   @webapp2.cached_property
   def logged_in(self):
@@ -121,7 +124,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
   USER_ATTRS = {
     'facebook' : {
       'id'     : lambda id: ('avatar_url', 
-        'http://graph.facebook.com/{0}/picture?type=large'.format(id)),
+        'http://graph.facebook.com/{0}/picture?type=square'.format(id)),
       'name'   : 'name',
       'link'   : 'link'
     },
@@ -158,8 +161,6 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     
     user = self.auth.store.user_model.get_by_auth_id(auth_id)
     _attrs = self._to_user_model_attrs(data, self.USER_ATTRS[provider])
-    logging.info('User attrs: ' + str(_attrs))
-
     if user:
       logging.info('Found existing user to log in')
       # Existing users might've changed their profile data so we update our
@@ -224,7 +225,6 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     for k, v in attrs_map.iteritems():
       attr = (v, data.get(k)) if isinstance(v, str) else v(data.get(k))
       user_attrs.setdefault(*attr)    
-    # THIS IS WHERE WE SHOULD ADD OUR DEFAULTS TO THE USER
     return user_attrs
         
 class MainPage(WhysaurusRequestHandler, SimpleAuthHandler):
@@ -241,7 +241,7 @@ class NewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     user = self.current_user
     if user:
-      newPoint = Point.create(self.request.get('title'),self.request.get('content'),user)['point']
+      newPoint, newPointRoot = Point.create(self.request.get('title'),self.request.get('content'),user)
       template_values = {
         'point': newPoint,
         'user' : user,
@@ -287,27 +287,26 @@ class ViewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
     	devInt = 1
     else:
     	devInt = 0
-    pointAndRoot = Point.getCurrentByUrl(pointURL)
-    if pointAndRoot:
-      point = pointAndRoot['point']
+    point, pointRoot = Point.getCurrentByUrl(pointURL)
+    if point:
       supportingPoints = point.getSupportingPoints()
       user = self.current_user
-      if not user or not user.userVotes or not str(point.parent().key()) in user.userVotes.keys(): 
+      if not user or not user.userVotes or not point.key.parent() in user.userVotes: 
         voteValue = 0
       else:
-        voteValue = user.userVotes[str(point.parent().key())].value
+        voteValue = user.userVotes[point.key.parent()].value
 
       addedToRecentlyViewed = False      
       if user:
-        addedToRecentlyViewed = user.updateRecentlyViewed(str(point.parent().key()))
+        addedToRecentlyViewed = user.updateRecentlyViewed(point.key.parent())
 
       # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list
       if addedToRecentlyViewed or not user:
-        pointAndRoot['pointRoot'].addViewCount()
+        pointRoot.addViewCount()
 
       template_values = {
       	'point': point,
-      	'pointRoot': pointAndRoot['pointRoot'],
+      	'pointRoot': pointRoot,
       	'numPoints': len(point.supportingPoints),
       	'supportingPoints': supportingPoints,
       	'user': user,
@@ -325,11 +324,7 @@ class ViewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
 class EditPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self): 
     resultJSON = json.dumps({'result':False})
-    if self.request.get('pointKey'):
-      oldPoint = Point.get(db.Key(self.request.get('pointKey')))
-    else:
-      oldPointAndRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
-      oldPoint = oldPointAndRoot['point']
+    oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
 
     newVersion = oldPoint.update(
       newTitle=self.request.get('title'), 
@@ -341,7 +336,7 @@ class EditPoint(WhysaurusRequestHandler, SimpleAuthHandler):
         'version':newVersion.version,
         'author':newVersion.authorName,
         'dateEdited':str(newVersion.dateEdited),
-        'key':str(newVersion.key()),
+        'key':str(newVersion.key),
         })
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
@@ -350,30 +345,27 @@ class UnlinkPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
     if self.request.get('mainPointKey'):
-      mainPoint = Point.get(db.Key(self.request.get('mainPointKey')))
+      mainPoint, pointRoot = Point.getCurrentByUrl(self.request.get('pointURL'))
     if self.request.get('supportingPointKey'):
-      newVersion = mainPoint.unlink(self.request.get('supportingPointKey'), self.current_user)
+      newVersion = mainPoint.unlink(self.request.get('supportingPointURL'), self.current_user)
       if newVersion:
-        resultJSON = json.dumps({'result':True, 'pointKey':str(newVersion.key())})
+        resultJSON = json.dumps({'result':True, 'pointKey':str(newVersion.key)})
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
     
 class LinkPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
-    supportingPointAndRoot = Point.getCurrentByUrl(self.request.get('supportingPointURL'))
-    oldPointAndRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
-    oldPoint = oldPointAndRoot['point']
-    supportingPoint = supportingPointAndRoot['point']
-    supportingPointRoot = supportingPointAndRoot['pointRoot']
-    
+    supportingPoint, supportingPointRoot = Point.getCurrentByUrl(self.request.get('supportingPointURL'))
+    oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))   
     user = self.current_user
+    
     if user:      
       newPoint = oldPoint.update(
-        newSupportingPoint=str(supportingPointRoot.key()),
+        newSupportingPoint=supportingPointRoot.key,
         user=user
         )
-      supportingPointRoot.addSupportedPoint(oldPoint.parent_key())
+      supportingPointRoot.addSupportedPoint(oldPoint.key.parent())
       resultJSON = json.dumps({'result':True})
     else:
       resultJSON = json.dumps({'result':'ACCESS DENIED!'})
@@ -385,9 +377,8 @@ class SelectSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
     user = self.current_user
     # GET RECENTLY VIEWED
     if user:
-      oldPointAndRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
-      oldPoint = oldPointAndRoot['point']
-      recentlyViewedPoints = user.getRecentlyViewed(excludeList = [str(oldPoint.parent_key())])
+      oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
+      recentlyViewedPoints = user.getRecentlyViewed(excludeList = [oldPoint.key.parent()])
     else:
       recentlyViewedPoints = []
 
@@ -403,7 +394,7 @@ class SelectSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   	
 class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self):
-    points = Point.getAllByUrl(self.request.get('pointUrl'), "ORDER BY version DESC")
+    points = Point.getAllByUrl(self.request.get('pointUrl'))
     mainAndSupporting = [] # An array of mainPoint - supportingPoints pairs
 
     if points:
@@ -426,21 +417,25 @@ class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
 class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
-    oldPointAndRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
-    oldPoint = oldPointAndRoot['point']
-    
+    oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
     user = self.current_user
+    
     if user:
-      supportingPointAndRoot = Point.create(self.request.get('title'), self.request.get('content'), user, oldPoint.parent_key())      
+      supportingPoint, supportingPointRoot = Point.create(
+        self.request.get('title'), 
+        self.request.get('content'), 
+        user, 
+        oldPoint.key.parent()
+        )      
       newPoint = oldPoint.update(
-        newSupportingPoint=str(supportingPointAndRoot["pointRoot"].key()),
+        newSupportingPoint=supportingPointRoot.key,
         user=user
         )
 
       resultJSON = json.dumps({
         'result':True,
         'point': newPoint,
-        'supportingPoint': supportingPointAndRoot['point'],
+        'supportingPoint': supportingPoint,
         'user' : user,
         'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
       	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
@@ -453,9 +448,11 @@ class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
 class Vote(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
-    point = Point.get(self.request.get('pointKey'))
+    point, pointRoot = Point.getCurrentByUrl(self.request.get('pointURL'))
+    logging.info('HERE Point is ' + str(point) + ' URL is ' + self.request.get('pointURL'))
     user = self.current_user
     if point and user:
+      logging.info('ADDING VOTE')
       if user.addVote(point, int(self.request.get('vote'))):
         resultJSON = json.dumps({'result':True, 'newVote':self.request.get('vote')})
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

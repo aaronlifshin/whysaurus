@@ -103,7 +103,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
     # Add manually supplied template values
     values.update(template_vars)
 
-    # read the template or 404.html
+    # read the template or 404
     try:
       self.response.write(self.jinja2.render_template(template_name, **values))
     except TemplateNotFound:
@@ -229,7 +229,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         
 class MainPage(WhysaurusRequestHandler, SimpleAuthHandler):
 	def get(self):     
-		path = os.path.join(os.path.dirname(__file__), 'index.html')
+		path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
 	 	self.response.out.write(template.render(path, prepareTemplateValuesForMain(self)))
 
 
@@ -248,7 +248,7 @@ class NewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
         'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
       	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
       }
-      path = os.path.join(os.path.dirname(__file__), 'newpoint.html')
+      path = os.path.join(os.path.dirname(__file__), 'templates/newpoint.html')
       self.response.out.write(template.render(path, template_values))
     else:
       self.response.out.write('Need to be logged in')
@@ -303,7 +303,7 @@ class ViewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
       # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list
       if addedToRecentlyViewed or not user:
         pointRoot.addViewCount()
-
+        
       template_values = {
       	'point': point,
       	'pointRoot': pointRoot,
@@ -315,7 +315,7 @@ class ViewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
       	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
       	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
       }
-      path = os.path.join(os.path.dirname(__file__), 'point.html')
+      path = os.path.join(os.path.dirname(__file__), 'templates/point.html')
       self.response.out.write(template.render(path, template_values))
     else:
       self.response.out.write('Could not find point: ' + pointURL)
@@ -335,7 +335,7 @@ class EditPoint(WhysaurusRequestHandler, SimpleAuthHandler):
       resultJSON = json.dumps({'result':True, 
         'version':newVersion.version,
         'author':newVersion.authorName,
-        'dateEdited':str(newVersion.dateEdited),
+        'dateEdited': str(newVersion.dateEdited),
         'key':str(newVersion.key),
         })
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
@@ -344,12 +344,13 @@ class EditPoint(WhysaurusRequestHandler, SimpleAuthHandler):
 class UnlinkPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
-    if self.request.get('mainPointKey'):
-      mainPoint, pointRoot = Point.getCurrentByUrl(self.request.get('pointURL'))
-    if self.request.get('supportingPointKey'):
-      newVersion = mainPoint.unlink(self.request.get('supportingPointURL'), self.current_user)
-      if newVersion:
-        resultJSON = json.dumps({'result':True, 'pointKey':str(newVersion.key)})
+    if self.request.get('mainPointURL'):
+      mainPoint, pointRoot = Point.getCurrentByUrl(self.request.get('mainPointURL'))
+      if self.request.get('supportingPointURL'):
+        supportingPointURL = self.request.get('supportingPointURL')
+        newVersion = mainPoint.unlink(self.request.get('supportingPointURL'), self.current_user)
+        if newVersion:
+          resultJSON = json.dumps({'result':True, 'pointURL':supportingPointURL})
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
     
@@ -389,7 +390,7 @@ class SelectSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
 			'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
     	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
     }
-    path = os.path.join(os.path.dirname(__file__), 'selectSupportingPoint.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/selectSupportingPoint.html')
     self.response.out.write(template.render(path, templateValues ))
   	
 class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
@@ -410,7 +411,7 @@ class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
         'user' : self.current_user
       }
 
-    path = os.path.join(os.path.dirname(__file__), 'pointHistory.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/pointHistory.html')
     self.response.out.write(template.render(path, template_values ))
 
 
@@ -432,14 +433,21 @@ class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
         user=user
         )
 
-      resultJSON = json.dumps({
-        'result':True,
-        'point': newPoint,
+      templateValues =   {
         'supportingPoint': supportingPoint,
         'user' : user,
-        'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
-      })
+      }
+      path = os.path.join(os.path.dirname(__file__), 'templates/newsupportingpoint.html')
+      renderedHTML = template.render(path, templateValues )
+      
+      jsonOutput = {
+        'result':True,
+        'supportingPointHTML': renderedHTML,
+        'version':newPoint.version,
+        'author':newPoint.authorName,
+        'dateEdited':newPoint.dateEdited.strftime("%Y-%m-%d %H:%M:%S %p"),
+      }
+      resultJSON = json.dumps(jsonOutput)
       self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
       self.response.out.write(resultJSON)  
     else:
@@ -466,7 +474,7 @@ class TestPage(WhysaurusRequestHandler, SimpleAuthHandler):
       'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
     	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
     }
-    path = os.path.join(os.path.dirname(__file__), 'test.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/test.html')
     self.response.out.write(template.render(path, template_values))
 
 # Map URLs to handlers

@@ -261,10 +261,12 @@ class Point(ndb.Model):
   # ONLY REMOVES ONE SIDE OF THE LINK. USED BY UNLINK
   def removeSupportingPoint(self, supportingPointToRemove, user):
     if user:
-      newPoint = Point(self.key.parent()) # All versions ancestors of the caseRoot
+      newPoint = Point(parent=self.key.parent()) # All versions ancestors of the caseRoot
       newPoint.authorName = user.name
       newPoint.supportingPoints = list(self.supportingPoints)
-      newPoint.supportingPoints.remove(supportingPointToRemove)
+      logging.info('SUP PO: ' + str(newPoint.supportingPoints))
+      logging.info('TO REM: ' + str(supportingPointToRemove))
+      newPoint.supportingPoints.remove(supportingPointToRemove.key)
       newPoint.title = self.title
       newPoint.content = self.content
       newPoint.version = self.version + 1
@@ -289,6 +291,6 @@ class Point(ndb.Model):
 
   def unlink(self, supportingPointURL, user):
     supportingPoint, supportingPointRoot = Point.getCurrentByUrl(supportingPointURL)
-    newVersion = self.removeSupportingPoint(supportingPointRoot.key, user)
+    newVersion = self.removeSupportingPoint(supportingPointRoot, user)
     supportingPointRoot.removeSupportedPoint(self.key.parent())
     return newVersion

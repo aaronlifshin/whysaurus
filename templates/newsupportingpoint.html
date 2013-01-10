@@ -1,0 +1,13 @@
+<!DOCTYPE xml>
+		<div class="boxedElement centered" id="point_{{supportingPoint.url}}">	
+				<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
+				<div class="caseSummaryText">{{ supportingPoint.content|safe }}</div>
+				<div class="mainPointInfo">
+				<div class="mainPointAuthor">{{ supportingPoint.authorName }}</div> 
+				</div> 
+				<a href="/point/{{supportingPoint.url}}" class="button">WHY</a>
+    {% if user %}
+				<a href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' class="button">UNLINK</a>
+    {% endif %}
+
+		</div>

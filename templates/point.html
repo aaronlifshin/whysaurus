@@ -21,24 +21,27 @@
 					<div class="mainPointAuthor">{{ point.authorName }}</div> 
 					<div class="mainPointDateEdited">{{point.dateEdited}}</div>	
 					<div class="mainPointViewCount">{{pointRoot.viewCount}}</div>	
-				</div>
-				
+				</div>				
 				<div id="dialogForm" title="Edit Point">	
 				<form id='frmEditFields'><fieldset id='editFields'>
-
 				<textarea class="mceNoEditor titleEdit" name="titleEdit" ></textarea>
-
 				<textarea class="mceEditor textEdit" name="textEdit"></textarea>
 				</fieldset></form>
 				</div>
       </div>
-      <div class="centered"> Supporting Points</div>
-				<!--<table class="pointTable">
-					<thead>
-						<tr><th>Vote Total</th><th>Point Title</th><th>Supporting Point Text</th>{% if user %}<th>Edit</th><th>Unlink</th>{% endif %}</tr>
-					</thead>
-					<tbody>
-					-->
+      {% if user %}
+			  <button id="addSupportingPoint">Create Supporting Point</button>
+			  <form action="/selectSupportingPoint" method="POST" style="display: inline">
+			  <input type="hidden" name="parentPointURL" value="{{point.url}}" />
+			  <button id="linkSupportingPoint" type="submit">Link Supporting Point</button>
+			  </form>
+			  <button id="upVote" background-image="/static/img/up-button.png">{{point.upVotes}}</button>
+			  <button id="downVote">{{point.downVotes}}</button>
+				{% if user.admin %}
+  				<button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button>	  
+				{% endif %}
+			{% endif %}
+      <div class="centered preamble"> Supporting Points</div>
 					{% for supportingPoint in supportingPoints %}
 					<div class="boxedElement centered" id="point_{{supportingPoint.url}}">	
     					<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
@@ -48,41 +51,10 @@
   						</div> 
     					<a href="/point/{{supportingPoint.url}}" class="button">WHY</a>
     					<a href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' class="button">UNLINK</a>
-
     			</div>
-    			
-					<!--<div class="pointArea boxedElement" id="{{point.key}}">
-						<tr name="{{ supportingPoint.key }}">
-						  <td>{{ supportingPoint.voteTotal }}</td>
-						<td><div class="pointTitle" name="{{ supportingPoint.key }}"><a href="/point/{{supportingPoint.url}}">{{supportingPoint.title|escape}}</div></td>
-						<td><div class="pointSummary" name="{{ supportingPoint.key}}">{{supportingPoint.content|safe}}</div></td>
-						{% if user %}
-							<td><div class="pointEditToggle" name="{{ supportingPoint.key }}">				
-							<img class="pointEditToggle" src="/static/img/Text-Edit-icon.png"  alt="Edit point" onclick="javascript:supportingPointEdit('{{ supportingPoint.key }}')"; width="32" height="32" />
-														<img class="pointUnlink" src="/static/img/Red-X-icon.png"  alt="Remove link to point" onclick="javascript:supportingPointUnlink('{{ supportingPoint.key }}')"; width="32" height="32" />
-							</td>
-							<td><div class="pointUnlink" name="{{ supportingPoint.key }}">				
-
-							</td>
-						{% endif %}
-						</tr>-->
 					{% endfor %}
-					<!--
-					</tbody>
-				</table>
-				-->
-				{% if user %}
-				  <button id="addSupportingPoint">Create Supporting Point</button>
-				  <form action="/selectSupportingPoint" method="POST" style="display: inline">
-				  <input type="hidden" name="parentPointURL" value="{{point.url}}" />
-				  <button id="linkSupportingPoint" type="submit">Link Supporting Point</button>
-				  </form>
-				  <button id="upVote" background-image="/static/img/up-button.png">{{point.upVotes}}</button>
-				  <button id="downVote">{{point.downVotes}}</button>
-  				{% if user.admin %}
-    				<button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button>	  
-					{% endif %}
-				{% endif %}
+					
+
 			
 			<div id="disqus_thread"></div>
 			<script type="text/javascript">
@@ -108,7 +80,6 @@
 			<hr>
 			</div>
 			<script>
-				var latestPointVersionKey = '{{point.key}}';
 				var myVote = '{{voteValue}}';
 				
 				function callPointEdit(){
@@ -131,7 +102,6 @@
 								$('.mainPointVersion').html(obj.version);
 								$('.mainPointAuthor').html(obj.author);
 								$('.mainPointDateEdited').html(obj.dateEdited);		
-								latestPointVersionKey = obj.key;	
 								}
 					 });
 					$.ajax();
@@ -173,9 +143,8 @@
   							success: function(data){ 
   							  obj = JSON.parse(data);
                   if (obj.result == true) {
-                    // REMOVE THE ROW WITH THE POINT FROM THE DOM
-    							  $('tr#[name|="' + supportingPointKey + '"]').remove(); 
-    							  latestPointVersionKey = obj.pointKey; 							  
+                    // REMOVE THE DIV WITH THE POINT FROM THE DOM
+    							  $('#point_' + obj.pointURL).remove(); 							  
                   } else {
                     alert(obj.result);
                   }
@@ -265,19 +234,21 @@
 							'pointUrl': "{{ point.url }}"
 							},
               success: function(data){
-                
-                var ed = tinyMCE.get('textEdit');	
-                
-                // Check JSON result
-                if ($('.pointTable tbody > tr').length) {
-
-                  $('.pointTable tbody > tr:last').after($(data));
-                } else {
-                  $('.pointTable tbody').prepend($(data));
+                obj = JSON.parse(data);
+                var ed = tinyMCE.get('textEdit');
+                if (obj.result == true) { 
+                  data = obj.supportingPointHTML;
+                  // Data comes as ready HTML to be inserted 
+                  $(data).insertAfter($('.preamble'));
+      						$( ".button" ).button();
+      						// Update stuff in main point
+      						$('.mainPointVersion').html(obj.version);
+  								$('.mainPointAuthor').html(obj.author);
+  								$('.mainPointDateEdited').html(obj.dateEdited);
+      						// Clear the editors
+            			$('textarea.titleEdit').val('');
+	      					ed.setContent("");
                 }
-          			$('textarea.titleEdit').val('');
-      					ed.setContent("");
-                latestPointVersionKey = $('div.pointKey',data).attr('id')
               }
 						});
 						$.ajax();

@@ -57,6 +57,12 @@ img#logoImage{
 	height:100%;
 	z-index:1;
 }
+img#avatar{
+	vertical-align: middle;
+	height:4em;
+	margin-right:0.5em;
+	margin-bottom:0.5em;
+}
 
 div#WAScaseSummary{
 	display:block;

@@ -21,13 +21,11 @@
 					<div class="mainPointAuthor">{{ point.authorName }}</div> 
 					<div class="mainPointDateEdited">{{point.dateEdited}}</div>	
 					<div class="mainPointViewCount">{{pointRoot.viewCount}}</div>	
+					<div class="mainPointImageURL">{{point.imageURL}}</div>	
+					<div class="mainPointImageAuthor">{{point.imageAuthor}}</div>	
+					<div class="mainPointImageDescription">{{point.imageDescription}}</div>	
 				</div>				
-				<div id="dialogForm" title="Edit Point">	
-				<form id='frmEditFields'><fieldset id='editFields'>
-				<textarea class="mceNoEditor titleEdit" name="titleEdit" ></textarea>
-				<textarea class="mceEditor textEdit" name="textEdit"></textarea>
-				</fieldset></form>
-				</div>
+				{% include 'pointDialog.html' %}
       </div>
       {% if user %}
 			  <button id="addSupportingPoint">Create Supporting Point</button>
@@ -92,7 +90,10 @@
 						 data: {
 							'urlToEdit': "{{point.url}}",
 							'content': ed.getContent(),
-							'title': $('textarea.titleEdit').val()
+							'title': $('textarea.titleEdit').val(),			
+							'imageURL':$('input[name=imageURL]').val(),
+              'imageAuthor':$('input[name=imageAuthor]').val(),
+              'imageDescription': $('input[name=imageDescription]').val()			
 							},
 							success: function(data){ 
 								var ed = tinyMCE.get('textEdit');
@@ -102,33 +103,13 @@
 								$('.mainPointVersion').html(obj.version);
 								$('.mainPointAuthor').html(obj.author);
 								$('.mainPointDateEdited').html(obj.dateEdited);		
+								$('.mainPointImageURL').html(obj.imageURL);	
+								$('.mainPointImageAuthor').html(obj.imageAuthor);	
+								$('.mainPointImageDescription').html(obj.imageDescription);	
 								}
 					 });
 					$.ajax();
 						
-				}
-
-				function supportingPointEdit(pointKey) {
-					var edSummary = tinyMCE.get('textEdit');
-					var titleDOM = $('div.pointTitle#[name|="' + pointKey + '"]');
-					edSummary.setContent(
-					  $('div.pointSummary#[name|="' + pointKey + '"]').html()				
-					 );
-					// $('textarea.titleEdit').val($('div.pointTitle#[name|="' + pointKey + '"]').html());
-					$('textarea.titleEdit').val($("a",titleDOM).html());
-					var dialogButtons = {};
-					dialogButtons["Save Point"] = function() {
-					  var checkContentError = checkPointContent(edSummary.getContent());
-					  if (checkContentError != "") {
-					    alert(checkContentError);
-					  } else {
-					    editPointByKey(pointKey);
-					    $( this ).dialog( "close" );
-					  }
-					};
-					dialogButtons["Cancel"] = function() {$( this ).dialog( "close" );};
-					$( "#dialogForm" ).dialog({title:"Edit Supporting Point", buttons: dialogButtons}	);
-					$( "#dialogForm" ).dialog( "open" );
 				}
 
         	function supportingPointUnlink(supportingPointURL) {
@@ -158,7 +139,9 @@
 					var ed = tinyMCE.get('textEdit');
 					$('textarea.titleEdit').val($('div.mainPointTitle').text());
 					ed.setContent($('.mainPointContent').html() );
-					
+					$('input[name=imageURL]').val($('div.mainPointImageURL').text());
+				  $('input[name=imageAuthor]').val($('div.mainPointImageAuthor').text());
+			    $('input[name=imageDescription]').val($('div.mainPointImageDescription').text());
 					var dialogButtons = {};
 					dialogButtons["Save Point"] = function() {
 					  // search and see if there are multiple image tags been added
@@ -180,6 +163,9 @@
 					var ed = tinyMCE.get('textEdit');
 					$('textarea.titleEdit').val('');
 					ed.setContent("");
+					$('input[name=imageURL]').val('');
+				  $('input[name=imageAuthor]').val('');
+			    $('input[name=imageDescription]').val('');			
 					var dialogButtons = {};
 					dialogButtons["Add Point"] = function() {
 					  var checkContentError = checkPointContent(ed.getContent());
@@ -195,33 +181,6 @@
 					$( "#dialogForm" ).dialog( "open" );
 				}
 									      
-				function editPointByKey(pointKey){
-					var ed = tinyMCE.get('textEdit');
-					$.ajaxSetup({
-					   url: "/editPoint",
-					   global: false,
-					   type: "POST",
-						 data: {
-							'urlToEdit': '{{point.url}}',
-							'content': ed.getContent(),
-							'title': $('textarea.titleEdit').val()
-							},
-							success: function(data){ 
-							  obj = JSON.parse(data);
-								$('.caseVersion').html(obj.version);
-								$('.caseAuthor').html(obj.author);
-								$('.caseDateEdited').html(obj.dateEdited);
-  								alert('HI');
-								// Update to new edited text
-								var ed = tinyMCE.get('textEdit');
-								$('div.pointSummary#[name|="' + pointKey + '"]').html(ed.getContent());	
-								$('div.pointTitle#[name|="' + pointKey + '"]').html($('textarea.titleEdit').val());				
-							 }
-					 });
-					
-					$.ajax();
-				}
-			
 				function addPoint(){
 					var ed = tinyMCE.get('textEdit');
 					$.ajaxSetup({
@@ -361,28 +320,9 @@
 					
 			});
 
-      window.onload = function(){ 
-         element = $("#dialogForm");
-         element.dialog('option', 'height', getWindowHeight() * .9);
-         element.dialog('option', 'width', $(window).width()*.7);
-         element.dialog('option', 'position', 'center');
-         toDialogFormHeight('frmEditFields', 30);
-         toDialogFormHeight('editFields', 30);
-         toDialogFormHeight('textEdit_tbl', 30);
-         toDialogFormHeight('textEdit_ifr', 30);        
-      }
-      
-      window.onresize = function(){ 
-         element = $("#dialogForm");
-         element.dialog('option', 'height', getWindowHeight() * .9);
-         element.dialog('option', 'width', $(window).width()*.7);
-         element.dialog('option', 'position', 'center');
-         toDialogFormHeight('frmEditFields', 30);
-         toDialogFormHeight('editFields', 30);
-         toDialogFormHeight('textEdit_tbl', 30);
-         toDialogFormHeight('textEdit_ifr', 30);
-      }
-    
+      window.onload = function() {positionEditDialog(500); }
+      window.onresize = function() {positionEditDialog(500); }
+            
 			$( "#linkSupportingPoint" )
 				.button()
 							

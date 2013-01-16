@@ -1,23 +1,14 @@
-import fix_path
-import cgi
-import datetime
-import urllib
-import wsgiref.handlers
 import os
-import string
 import json
 import constants
 import logging
+import django
 
 import webapp2
 from webapp2 import Route, WSGIApplication
 from webapp2_extras import auth, sessions, jinja2
 
 from google.appengine.ext.webapp import template
-from google.appengine.ext import db
-from google.appengine.api import users
-from google.appengine.api.urlfetch import fetch
-
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from WhySaurusModels import Point
@@ -26,48 +17,17 @@ from WhySaurusModels import WhysaurusUser
 
 from simpleauth import SimpleAuthHandler
 
-
-# ***************************************************************************************
-#  MAIN PAGE STUFF 
-# ***************************************************************************************		
-def prepareTemplateValuesForMain(pageHandler):
-  pointsQuery = Point.gql("WHERE current = TRUE ORDER BY dateEdited DESC")
-  points = pointsQuery.fetch(100)
-  user = None
-  if pageHandler.logged_in:
-    user = pageHandler.current_user
-    
-  # GET RECENTLY VIEWED
-  if user:
-    recentlyViewedPoints = user.getRecentlyViewed()
-  else:
-    recentlyViewedPoints = []
-
-  # GET EDITORS PICKS
-  editorsPicksPoints = PointRoot.getEditorsPicks()
-  
-  template_values = {
-  	'points': points,
-  	'editorsPicks':editorsPicksPoints,
-  	'recentlyViewed':recentlyViewedPoints,
-    # 'dev': DEV,
-  	'user':user,
-  	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-  	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
-  }
-  return template_values
-		
 class WhysaurusRequestHandler(webapp2.RequestHandler):
   def dispatch(self):
     # Get a session store for this request.
     self.session_store = sessions.get_store(request=self.request)
 
     try:
-     # Dispatch the request.
-     webapp2.RequestHandler.dispatch(self)
+      # Dispatch the request.
+      webapp2.RequestHandler.dispatch(self)
     finally:
-     # Save all sessions.
-     self.session_store.save_sessions(self.response)
+      # Save all sessions.
+      self.session_store.save_sessions(self.response)
          
   @webapp2.cached_property
   def session(self):
@@ -106,7 +66,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
     # read the template or 404
     try:
       self.response.write(self.jinja2.render_template(template_name, **values))
-    except TemplateNotFound:
+    except TemplateNotFound :
       self.abort(404)
 
   def head(self, *args):
@@ -227,10 +187,38 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
       user_attrs.setdefault(*attr)    
     return user_attrs
         
+
+def prepareTemplateValuesForMain(pageHandler):
+  
+  points = PointRoot.getRecentCurrentPoints()
+  user = None
+  
+  if pageHandler.logged_in:
+    user = pageHandler.current_user
+
+  # GET RECENTLY VIEWED
+  if user:
+    recentlyViewedPoints = user.getRecentlyViewed()
+  else:
+    recentlyViewedPoints = []
+
+  # GET EDITORS PICKS
+  editorsPicksPoints = PointRoot.getEditorsPicks()
+
+  template_values = {
+  	'points': points,
+  	'editorsPicks':editorsPicksPoints,
+  	'recentlyViewed':recentlyViewedPoints,
+  	'user':user,
+  	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+  	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
+  }
+  return template_values
+      
 class MainPage(WhysaurusRequestHandler, SimpleAuthHandler):
-	def get(self):     
-		path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
-	 	self.response.out.write(template.render(path, prepareTemplateValuesForMain(self)))
+  def get(self):     
+    path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
+    self.response.out.write(template.render(path, prepareTemplateValuesForMain(self)))
 
 
 # ***************************************************************************************
@@ -241,7 +229,13 @@ class NewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self):
     user = self.current_user
     if user:
-      newPoint, newPointRoot = Point.create(self.request.get('title'),self.request.get('content'),user)
+      newPoint, newPointRoot = Point.create(
+        title=self.request.get('title'),
+        content=self.request.get('content'), 
+        user=user,
+        imageURL=self.request.get('imageURL'),
+        imageAuthor=self.request.get('imageAuthor'),
+        imageDescription=self.request.get('imageDescription'))
       template_values = {
         'point': newPoint,
         'user' : user,
@@ -268,25 +262,19 @@ class DeletePoint(WhysaurusRequestHandler, SimpleAuthHandler):
       pointRoot = pointRootQuery.get()
 
       if pointRoot:
-        if pointRoot.pointsSupportedByMe:
-          resultJSON = json.dumps({'result':False, 'error':'Cannot delete this point as it supports other points'})
-        else:
-          pointQuery = Point.gql("WHERE ANCESTOR IS :1 ", pointRoot)
-          points = pointQuery.fetch(50) # Only 50 for now
-          for point in points:
-          	point.delete()
-          pointRoot.delete()
+        result, error = pointRoot.delete() 
+        if result:    
           resultJSON = json.dumps({'result':True, 'deletedURL':urlToDelete })
+        else:
+          resultJSON = json.dumps({'result':False, 'error':error})
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
 
 class ViewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self, pointURL):
     # check if dev environment for Disqus
-    if constants.DEV:
-    	devInt = 1
-    else:
-    	devInt = 0
+    devInt = 1 if constants.DEV else 0
+
     point, pointRoot = Point.getCurrentByUrl(pointURL)
     if point:
       supportingPoints = point.getSupportingPoints()
@@ -325,18 +313,22 @@ class EditPoint(WhysaurusRequestHandler, SimpleAuthHandler):
   def post(self): 
     resultJSON = json.dumps({'result':False})
     oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
-
     newVersion = oldPoint.update(
       newTitle=self.request.get('title'), 
       newContent=self.request.get('content'),
-      user=self.current_user 
+      user=self.current_user,
+      imageURL=self.request.get('imageURL'),
+      imageAuthor=self.request.get('imageAuthor'),
+      imageDescription=self.request.get('imageDescription') 
       )
     if newVersion:
       resultJSON = json.dumps({'result':True, 
         'version':newVersion.version,
         'author':newVersion.authorName,
         'dateEdited': str(newVersion.dateEdited),
-        'key':str(newVersion.key),
+        'imageURL': newVersion.imageURL,
+        'imageAuthor': newVersion.imageAuthor,
+        'imageDescription': newVersion.imageDescription 
         })
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
@@ -392,24 +384,17 @@ class SelectSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/selectSupportingPoint.html')
     self.response.out.write(template.render(path, templateValues ))
-  	
+
 class PointHistory(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self):
-    points = Point.getAllByUrl(self.request.get('pointUrl'))
-    mainAndSupporting = [] # An array of mainPoint - supportingPoints pairs
-
-    if points:
-      for mainPoint in points:
-        supportingPoints = mainPoint.getSupportingPoints()
-        mainAndSupporting.append({"mainPoint":mainPoint, "supportingPoints":supportingPoints})
-        
-      template_values = {
-        'latestPoint' : points[0],
-        'points': points,
-        'num_points': len(points),
-        'mainAndSupporting': mainAndSupporting,
-        'user' : self.current_user
-      }
+    pointData = Point.getFullHistory(self.request.get('pointUrl'))
+    
+    template_values = {
+      'latestPoint' : pointData[0]["point"] if pointData else None,
+      'numPoints': len(pointData) if pointData else 0,
+      'pointData': pointData,
+      'user' : self.current_user
+    }
 
     path = os.path.join(os.path.dirname(__file__), 'templates/pointHistory.html')
     self.response.out.write(template.render(path, template_values ))
@@ -424,10 +409,12 @@ class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
     if user:
       supportingPoint, supportingPointRoot = Point.create(
         self.request.get('title'), 
-        self.request.get('content'), 
-        user, 
-        oldPoint.key.parent()
-        )      
+        self.request.get('content'),
+        user=user,        
+        pointSupported=oldPoint.key.parent(),
+        imageURL=self.request.get('imageURL'),
+        imageAuthor=self.request.get('imageAuthor'),
+        imageDescription=self.request.get('imageDescription'))      
       newPoint = oldPoint.update(
         newSupportingPoint=supportingPointRoot.key,
         user=user
@@ -471,6 +458,7 @@ class TestPage(WhysaurusRequestHandler, SimpleAuthHandler):
     user = self.current_user
     template_values = {
       'user' : user,
+      'dv': django.VERSION,
       'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
     	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
     }

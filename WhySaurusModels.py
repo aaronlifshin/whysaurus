@@ -1,8 +1,6 @@
 import re
 import logging
-import sys
 
-from google.appengine.ext import db
 from google.appengine.ext import ndb
 import webapp2_extras.appengine.auth.models as auth_models
     
@@ -14,7 +12,10 @@ import webapp2_extras.appengine.auth.models as auth_models
 class UserVote(ndb.Model):
   pointRootKey = ndb.KeyProperty(required=True)
   value = ndb.IntegerProperty(required=True) # 1, 0, -1
-  
+
+# class PointImage(ndb.Model):
+
+    
 class WhysaurusUser(auth_models.User):
   created = ndb.DateTimeProperty(auto_now_add=True)
   updated = ndb.DateTimeProperty(auto_now=True)
@@ -124,12 +125,15 @@ class PointRoot(ndb.Model):
   def addSupportedPoint(self, supportedPointRootKey):
     self.pointsSupportedByMe = self.pointsSupportedByMe + [supportedPointRootKey]
     self.put()
-		
+    
   def addViewCount(self):
     if not self.viewCount:
       self.viewCount = 1
     self.viewCount = self.viewCount + 1
     self.put()
+    
+  def getAllVersions(self):
+    return Point.query(ancestor=self.key).fetch()
     
   @staticmethod
   def getEditorsPicks():
@@ -139,6 +143,26 @@ class PointRoot(ndb.Model):
     for pointRoot in pointRoots:
       editorsPicks = editorsPicks + [pointRoot.getCurrent()]
     return editorsPicks
+    
+  @staticmethod
+  def getRecentCurrentPoints():    
+    pointsQuery = Point.gql("WHERE current = TRUE ORDER BY dateEdited DESC")
+    return pointsQuery.fetch(50)
+
+  def delete(self):
+    if self.pointsSupportedByMe:
+      supportedPointRoot = self.pointsSupportedByMe[0].get()
+      supportedPoint = supportedPointRoot.getCurrent()
+      return False, 'Cannot delete this point as it supports %d other points. \n Title of first supported point: %s' % (len(self.pointsSupportedByMe), supportedPoint.title)
+    else:
+      points = self.getAllVersions()
+      for point in points:
+        #img = PointImage.query(ancestor=point.key).get()
+        #if img:
+        #  img.key.delete()
+          point.key.delete()
+      self.key.delete()
+      return True, ''
 
 class Point(ndb.Model):
   """Models an individual Point with an author, content, date and version."""
@@ -154,6 +178,9 @@ class Point(ndb.Model):
   upVotes = ndb.IntegerProperty()
   downVotes = ndb.IntegerProperty()
   voteTotal = ndb.IntegerProperty()
+  imageURL = ndb.StringProperty(default='');
+  imageDescription = ndb.StringProperty(default='')
+  imageAuthor = ndb.StringProperty(default='');
   
   @classmethod
   def getByKey(cls, pointKey):  
@@ -161,7 +188,6 @@ class Point(ndb.Model):
           
   @staticmethod
   def getCurrentByUrl(url):
-    points = None
     pointRootQuery = PointRoot.gql("WHERE url= :1", url)
     pointRoot = pointRootQuery.get()
     point = None
@@ -172,31 +198,41 @@ class Point(ndb.Model):
     else:
       return (None, None)
 
-  @staticmethod		
-  def getAllByUrl(url):
+  @classmethod		
+  def getFullHistory(cls, url):
     pointRoot = PointRoot.query(PointRoot.url == url).get()
     if pointRoot:
-      pointQuery = Point.query(ancestor=pointRoot.key).order(-Point.version)
-      points = pointQuery.fetch(50) # Only 50 for now
-      return points
+      # Just most recent 50 for now
+      points = Point.query(ancestor=pointRoot.key).order(-Point.version).fetch(50)
+      # Image code left commented for when multiple images are added
+      # images = PointImage.query(ancestor=pointRoot.key).fetch(50)
+      retVal = []
+      for point in points:
+        supportingPoints = point.getSupportingPoints()
+        # pointImages = [image for image in images if image.key.parent() == point.key]
+        # image = None
+        # if pointImages:
+        #   image = pointImages[0]
+        retVal.append({"point":point, "supportingPoints":supportingPoints}) #, "image":image})
+      return retVal
     else:
       return None
- 
+
   @staticmethod     
   def makeUrl(sourceStr):
-  	longURL = sourceStr.replace(" ","_")
-  	newUrl = re.sub('[\W]+','', longURL[0:64])
-  	# Check if it already exists
-  	pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
-  	pointRoot = pointRootQuery.get()
-  	if pointRoot:
-  		pointRoot.numCopies = pointRoot.numCopies + 1
-  		newUrl = newUrl + str(pointRoot.numCopies)
-  		pointRoot.put()
-  	return newUrl
+    longURL = sourceStr.replace(" ","_")
+    newUrl = re.sub('[\W]+','', longURL[0:64])
+    # Check if it already exists
+    pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
+    pointRoot = pointRootQuery.get()
+    if pointRoot:
+      pointRoot.numCopies = pointRoot.numCopies + 1
+      newUrl = newUrl + str(pointRoot.numCopies)
+      pointRoot.put()
+    return newUrl
   
   @staticmethod
-  def create(title, content, user, pointSupported = None):
+  def create(title, content, user, pointSupported = None, imageURL = None, imageAuthor = None, imageDescription = None):
     newUrl = Point.makeUrl(title)
     pointRoot = PointRoot()
     pointRoot.url = newUrl
@@ -206,7 +242,7 @@ class Point(ndb.Model):
     if pointSupported:
       pointRoot.pointsSupportedByMe = [pointSupported]
     pointRoot.put()
-			
+    
     point = Point(parent=pointRoot.key)
     point.title = title
     point.url = pointRoot.url			
@@ -217,15 +253,18 @@ class Point(ndb.Model):
     point.upVotes = 1
     point.downVotes = 0
     point.voteTotal = 1
+    point.imageURL = imageURL
+    point.imageDescription = imageDescription
+    point.imageAuthor = imageAuthor
     point.put()
     
     user.addVote(point, voteValue=1, updatePoint=False)
     user.updateRecentlyViewed(pointRoot.key)
-    
     return point, pointRoot
   
   # newSupportingPoint is the key of the PointRoot of the supporting point
-  def update(self, newTitle = None, newContent = None, newSupportingPoint=None, user = None):
+  def update(self, newTitle = None, newContent = None, newSupportingPoint=None, user = None,
+             imageURL = None, imageAuthor = None, imageDescription = None):
     if user:
       newPoint = Point(parent=self.key.parent()) # All versions ancestors of the caseRoot
 
@@ -251,9 +290,14 @@ class Point(ndb.Model):
       newPoint.downVotes = self.downVotes
       newPoint.voteTotal = self.voteTotal
       newPoint.current = True
+      newPoint.imageURL = self.imageURL if imageURL is None else imageURL
+      newPoint.imageDescription = self.imageDescription if imageDescription is None else imageDescription
+      newPoint.imageAuthor = self.imageAuthor if imageAuthor is None else imageDescription
+
       self.current = False
       newPoint.put()
       self.put()
+      
       return newPoint
     else:
       return None
@@ -278,7 +322,7 @@ class Point(ndb.Model):
       return newPoint
     else:
       return None
-	
+    
   def getSupportingPoints(self):
     if len(self.supportingPoints) > 0:
       supportingPointRoots = ndb.get_multi(self.supportingPoints)
@@ -294,3 +338,4 @@ class Point(ndb.Model):
     newVersion = self.removeSupportingPoint(supportingPointRoot, user)
     supportingPointRoot.removeSupportedPoint(self.key.parent())
     return newVersion
+    

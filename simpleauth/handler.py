@@ -408,7 +408,7 @@ class SimpleAuthHandler(object):
     
     # HACKING this out because I don't want lxml -AaronLifshin
     # person = etree.fromstring(content)
-    # uinfo = {}
+    uinfo = {}
     # for e in person:
     #   uinfo.setdefault(e.tag, e.text)
     uinfo.setdefault('NOT SUPPORTED', 'NOT SUPPORTED')

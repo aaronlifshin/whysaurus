@@ -3,7 +3,7 @@
 	<body>
 	  <div class="boxedElement" id="point_{{point.url}}">	
   		<div class="caseSummaryTitle">{{  point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-  		<div class="caseSummaryText">{{ point.content|safe }}</div>
+  		<div class="caseSummaryText">{{ point.content|safe|slice:":128" }}</div>
   {% if user %}
   	<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">Why</button>
   {% endif %}

@@ -57,12 +57,6 @@ img#logoImage{
 	height:100%;
 	z-index:1;
 }
-img#avatar{
-	vertical-align: middle;
-	height:4em;
-	margin-right:0.5em;
-	margin-bottom:0.5em;
-}
 
 div#WAScaseSummary{
 	display:block;
@@ -90,6 +84,9 @@ div#WAScaseSummary{
 .caseDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointViewCount:before{content:"ViewCount: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointImageURL:before{content:"Image URL: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointImageAuthor:before{content:"Image Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointImageDescription:before{content:"Image Description: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .centered{width:66%;margin-left: auto ; margin-right: auto ;}
 
 .editCaseButton {margin-bottom: 3px;margin-left: 5px;}
@@ -137,9 +134,41 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 .ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
 .ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
 
-/* Tiny MCE editor breakdown */
-.mceNoEditor.titleEdit { width:100%; height:1.2em }
+/* Edit point dialog stuff */
+
 .mceEditor.textEdit { width:100% }
+.titleEdit { 
+  width:100%; 
+  height: 1.2em; 
+  resize:none;}
+.fieldEdit { 
+  display: inline;
+  overflow: hidden; 
+  float:right;
+  height: 16px;
+  padding: 2px;
+  resize:none; 
+  height:100%;
+  width:84%;
+  }
+
+.dlgLabelName{ 
+  float:left;
+  width:100px;
+  display:block;
+  background:#EFEFEF;
+  height: 100%; 
+  padding:0px;
+  margin:0px;
+  }
+.dlgField{
+  border: 1px solid; 
+  border-color:#BDC1C4;
+  background:#EFEFEF;
+  margin-top:5px;
+  width:100%; 
+  overflow:hidden; 
+  }
 #textEdit_tbl {width:100% !important;}
 #textEdit_ifr {width:100% !important;}
 

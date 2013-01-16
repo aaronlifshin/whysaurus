@@ -5,15 +5,7 @@
   <div id="content">	  
 		{% if user %}
 			<button id="CreatePoint">MAKE A POINT</button>
-
-			<div id="dialogForm" title="Create Point">	
-			<form id='frmEditFields'><fieldset id='editFields'>
-			<label for="titleToEdit">Title</label>
-			<textarea class="mceNoEditor titleEdit" name="titleEdit" ></textarea>
-			<label for="textToEdit">Text</label>
-			<textarea class="mceEditor textEdit" name="textEdit" ></textarea>
-			</fieldset></form>
-			</div>	
+      {% include 'pointDialog.html' %}
 		{% endif %}
 
 		
@@ -40,11 +32,6 @@
 		  <div class="boxedElement" id="point_{{point.url}}">	
 					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="caseSummaryText">{{ point.content|safe }}</div>
-				<!--	<div class="caseInfo">
-						<div class="caseVersion">{{point.version}}</div> 
-						<div class="caseAuthor">{{ point.authorName }}</div> 
-						<div class="caseDateEdited">{{point.dateEdited}} </div>
-					</div>-->
 					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
 			</div>
 		{% endfor %}
@@ -55,11 +42,6 @@
 		  <div class="boxedElement" id="point_{{point.url}}">	
 					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="caseSummaryText">{{ point.content|safe }}</div>
-				<!--	<div class="caseInfo">
-						<div class="caseVersion">{{point.version}}</div> 
-						<div class="caseAuthor">{{ point.authorName }}</div> 
-						<div class="caseDateEdited">{{point.dateEdited}} </div>
-					</div>-->
 					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
 			</div>
 		{% endfor %}
@@ -80,6 +62,9 @@
 				 data: {
 					'content': ed.getContent(),
 					'title': $('textarea.titleEdit').val(),			
+					'imageURL':$('input[name=imageURL]').val(),
+          'imageAuthor':$('input[name=imageAuthor]').val(),
+          'imageDescription': $('input[name=imageDescription]').val()			
 					},
           success: function(data){ 
             var ed = tinyMCE.get('textEdit');	
@@ -89,6 +74,9 @@
 						// $( "[id^=deletePoint]" ).button();
       			$('textarea.titleEdit').val('');
   					ed.setContent("");
+  					$('input[name=imageURL]').val('');
+  				  $('input[name=imageAuthor]').val('');
+  			    $('input[name=imageDescription]').val('');
           }
 				});
 				$.ajax();
@@ -123,28 +111,9 @@
 				$( "#dialogForm" ).dialog( "open" );
 			}
 
-      window.onload = function(){ 
-         element = $("#dialogForm");
-         element.dialog('option', 'height', getWindowHeight() * .9);
-         element.dialog('option', 'width', $(window).width()*.7);
-         element.dialog('option', 'position', 'center');
-         toDialogFormHeight('frmEditFields', 100);
-         toDialogFormHeight('editFields', 100);
-         toDialogFormHeight('textEdit_tbl', 100);
-         toDialogFormHeight('textEdit_ifr', 100);        
-      }
-      
-      window.onresize = function(){ 
-         element = $("#dialogForm");
-         element.dialog('option', 'height', getWindowHeight() * .9);
-         element.dialog('option', 'width', $(window).width()*.7);
-         element.dialog('option', 'position', 'center');
-         toDialogFormHeight('frmEditFields', 100);
-         toDialogFormHeight('editFields', 100);
-         toDialogFormHeight('textEdit_tbl', 100);
-         toDialogFormHeight('textEdit_ifr', 100);
-      }
-
+      window.onload = function() {positionEditDialog(500); }
+      window.onresize = function() {positionEditDialog(500); }
+    
 		$(document).ready(function(){
 
 			$("#dialogForm").dialog({

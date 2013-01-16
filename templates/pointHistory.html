@@ -3,12 +3,12 @@
 {% block mainPageContent %}
 
   <div id="content">
-		<br>{{ num_points }} versions exist for <a href="/point/{{ latestPoint.url }}">{{ latestPoint.title|escape }}</a><br>
+		<br>{{ numPoints }} versions exist for <a href="/point/{{ latestPoint.url }}">{{ latestPoint.title|escape }}</a><br>
 
-		{% for fullPoint in mainAndSupporting %}
+		{% for fullPoint in pointData %}
 		  <div class="boxedElement" id="case_"{{case.key}}>	
-					<div class="caseSummaryTitle">{{ fullPoint.mainPoint.title|escape }}</div>			
-					<div class="caseSummaryText">{{ fullPoint.mainPoint.content|safe }}</div>
+					<div class="caseSummaryTitle">{{ fullPoint.point.title|escape }}</div>			
+					<div class="caseSummaryText">{{ fullPoint.point.content|safe }}</div>
 					<table class="pointTable">
 					<thead>
 						<tr><th>Point Title</th><th>Point Text</th><th>Author</th></tr>
@@ -19,10 +19,13 @@
 					{% endfor %}
 					</tbody>
 					</table>
-					<div class="caseInfo">
-						<div class="caseVersion">{{fullPoint.mainPoint.version}}</div> 
-						<div class="caseAuthor">{{ fullPoint.mainPoint.authorName }}</div> 
-						<div class="caseDateEdited">{{fullPoint.mainPoint.dateEdited}} </div>
+					<div class="mainPointInfo">
+						<div class="mainPointVersion">{{fullPoint.point.version}}</div> 
+						<div class="mainPointAuthor">{{ fullPoint.point.authorName }}</div> 
+						<div class="mainPointDateEdited">{{fullPoint.point.dateEdited}} </div>
+						<div class="mainPointImageURL">{{fullPoint.point.imageURL}}</div>	
+  					<div class="mainPointImageAuthor">{{fullPoint.point.imageAuthor}}</div>	
+  					<div class="mainPointImageDescription">{{fullPoint.point.imageDescription}}</div>
 					</div>
 			</div>
 		{% endfor %}

@@ -4,7 +4,8 @@
 <div id="content">
 {% if user %}
 	  USER ID = {{ user.id }} <br>
-	  USER NAME = {{ user.name|escape }}
+	  USER NAME = {{ user.name|escape }} <br>
+	  DJANGO VERSION = {{dv}}
 {% else %}
   NO USER RECEIVED
 {% endif %}

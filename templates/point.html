@@ -16,6 +16,9 @@
 				
 				<div style="float: left">[ {{point.voteTotal}} ]</div><div class="mainPointTitle editable">{{ point.title|escape }}</div>
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
+						{% if point.imageURL and point.imageURL.strip %}
+						<img class="pointDisplay" src="{{ point.imageURL }}" />
+						{% endif %}
 				<div class="mainPointInfo">
 					<div class="mainPointVersion">{{point.version}}</div>
 					<div class="mainPointAuthor">{{ point.authorName }}</div> 
@@ -102,7 +105,14 @@
 								$('.mainPointTitle').html($('textarea.titleEdit').val()); 
 								$('.mainPointVersion').html(obj.version);
 								$('.mainPointAuthor').html(obj.author);
-								$('.mainPointDateEdited').html(obj.dateEdited);		
+								$('.mainPointDateEdited').html(obj.dateEdited);
+								if ($('.pointDisplay')) {
+									$('.pointDisplay').remove();
+								}
+								if (obj.imageURL) {
+									newImageContent = '<img class="pointDisplay" src="' + obj.imageURL + '"\/>';
+									$('.mainPointContent').after(newImageContent);
+								}
 								$('.mainPointImageURL').html(obj.imageURL);	
 								$('.mainPointImageAuthor').html(obj.imageAuthor);	
 								$('.mainPointImageDescription').html(obj.imageDescription);	

@@ -14,7 +14,11 @@
 		{% for point in points %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
 					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-					<div class="caseSummaryText">{{ point.content|safe }}</div>
+					<div class="caseSummaryText">{{ point.content|safe }}
+					    {% if point.imageURL and point.imageURL.strip %}
+						<img class="listDisplay" src={{ point.imageURL }} />
+						{% endif %}
+					</div>
 				<!--	<div class="caseInfo">
 						<div class="caseVersion">{{point.version}}</div> 
 						<div class="caseAuthor">{{ point.authorName }}</div> 
@@ -31,7 +35,14 @@
 		{% for point in recentlyViewed %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
 					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-					<div class="caseSummaryText">{{ point.content|safe }}</div>
+					<div class="caseSummaryText">
+											
+						{{ point.content|safe }}
+
+					</div>
+					{% if point.imageURL and point.imageURL.strip %}
+						<img class="listDisplay" src={{ point.imageURL }} />
+						{% endif %}
 					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
 			</div>
 		{% endfor %}

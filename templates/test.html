@@ -9,5 +9,34 @@
 {% else %}
   NO USER RECEIVED
 {% endif %}
+<div class="caseSummary boxedElement">
+	<div class="caseSummaryEditToggle editable">
+	<button id="testButton">TEST</button>	
+	</div>		
+	<div class="mainPointTitle editable">COO</div>
+	<div class="mainPointContent editable"><p>ling COOPsterzz</p></div>
+	<div class="mainPointInfo">
+		<div class="mainPointVersion">1</div>
+		<div class="mainPointAuthor">Aaron</div> 
+		<div class="mainPointDateEdited">Jan. 16, 2013, 9:17 p.m.</div>	
+		<div class="mainPointViewCount">1</div>	
+		<div class="mainPointImageURL"></div>	
+		<div class="mainPointImageAuthor"></div>	
+		<div class="mainPointImageDescription"></div>	
+	</div>				
 </div>
+<script>
+	function test() {
+		newImageContent = '<img class="pointDisplay" src="http://i.imgur.com/tR9TS.jpg"\/>';
+		testStr='<p>adflgjkadfg</p>';
+		$('.mainPoinContent').after(testStr);
+	}
+
+	$( ".button" ).button();
+	$( "#testButton" )
+	.button()
+	.click(function() {
+		test();
+	});
+</script>
 {% endblock %}

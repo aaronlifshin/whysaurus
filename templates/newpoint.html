@@ -3,10 +3,14 @@
 	<body>
 	  <div class="boxedElement" id="point_{{point.url}}">	
   		<div class="caseSummaryTitle">{{  point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-  		<div class="caseSummaryText">{{ point.content|safe|slice:":128" }}</div>
-  {% if user %}
+  			<div class="caseSummaryText">{{ point.content|safe }}
+  			{% if point.imageURL and point.imageURL.strip %}
+						<img class="listDisplay" src={{ point.imageURL }} />
+						{% endif %}
+  		</div>
+  		
   	<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">Why</button>
-  {% endif %}
+
     </div>
 	</body>
 </html>

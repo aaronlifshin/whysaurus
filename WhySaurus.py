@@ -7,6 +7,7 @@ import django
 import webapp2
 from webapp2 import Route, WSGIApplication
 from webapp2_extras import auth, sessions, jinja2
+from jinja2 import exceptions
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -66,7 +67,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
     # read the template or 404
     try:
       self.response.write(self.jinja2.render_template(template_name, **values))
-    except TemplateNotFound :
+    except exceptions.TemplateNotFound :
       self.abort(404)
 
   def head(self, *args):

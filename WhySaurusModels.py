@@ -292,7 +292,7 @@ class Point(ndb.Model):
       newPoint.current = True
       newPoint.imageURL = self.imageURL if imageURL is None else imageURL
       newPoint.imageDescription = self.imageDescription if imageDescription is None else imageDescription
-      newPoint.imageAuthor = self.imageAuthor if imageAuthor is None else imageDescription
+      newPoint.imageAuthor = self.imageAuthor if imageAuthor is None else imageAuthor
 
       self.current = False
       newPoint.put()

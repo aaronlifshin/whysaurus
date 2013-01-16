@@ -89,7 +89,7 @@
 		</div>
 		<div class="userArea">		
 		{% if user %}
-      <a href="{{ user.link }}"><img src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
+      <a href="{{ user.link }}"><img id="avatar" src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
       <a href="/logout" class="btn">Logout</a>
 		{% else %}
   		Login with

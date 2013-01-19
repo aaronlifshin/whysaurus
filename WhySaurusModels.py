@@ -2,7 +2,10 @@ import re
 import logging
 
 from google.appengine.ext import ndb
+from google.appengine.api import search
+
 import webapp2_extras.appengine.auth.models as auth_models
+
     
 
 # ***************************************************************************************
@@ -163,6 +166,8 @@ class PointRoot(ndb.Model):
           point.key.delete()
       self.key.delete()
       return True, ''
+  
+
 
 class Point(ndb.Model):
   """Models an individual Point with an author, content, date and version."""
@@ -257,6 +262,7 @@ class Point(ndb.Model):
     point.imageDescription = imageDescription
     point.imageAuthor = imageAuthor
     point.put()
+    point.addToSearchIndex()
     
     user.addVote(point, voteValue=1, updatePoint=False)
     user.updateRecentlyViewed(pointRoot.key)
@@ -297,6 +303,7 @@ class Point(ndb.Model):
       self.current = False
       newPoint.put()
       self.put()
+      newPoint.addToSearchIndex()
       
       return newPoint
     else:
@@ -338,4 +345,30 @@ class Point(ndb.Model):
     newVersion = self.removeSupportingPoint(supportingPointRoot, user)
     supportingPointRoot.removeSupportedPoint(self.key.parent())
     return newVersion
+  
+  @classmethod 
+  def search(cls, searchTerms):
+    if searchTerms:
+      index = search.Index('points')
+      searchResultDocs = index.search(searchTerms)
+      results = []
+      for doc in searchResultDocs:
+        newResult = {}
+        for field in doc.fields:
+          newResult[field.name] = field.value
+        results = results + [newResult]
+      return results
+    else:
+      return None
+    
+  def addToSearchIndex(self):
+    index = search.Index(name='points')
+    fields = [
+              search.TextField(name='title',value=self.title),
+              search.AtomField(name='url',value=self.url),
+              search.NumberField(name='voteTotal',value=self.voteTotal )
+              ]
+    d = search.Document(doc_id=self.url, fields=fields)
+    index.add(d)
+
     

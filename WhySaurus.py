@@ -453,7 +453,19 @@ class Vote(WhysaurusRequestHandler, SimpleAuthHandler):
         resultJSON = json.dumps({'result':True, 'newVote':self.request.get('vote')})
     self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
     self.response.out.write(resultJSON)
-    
+ 
+class Search(WhysaurusRequestHandler, SimpleAuthHandler):
+  def get(self):
+    resultJSON = json.dumps({'result':False})
+    searchResults = Point.search(self.request.get('searchTerms'))
+    logging.info('Search results: ' + str(searchResults))
+    template_values = {
+      'searchResults' : searchResults,
+      'searchString': self.request.get('searchTerms')
+    }
+    path = os.path.join(os.path.dirname(__file__), 'templates/searchResults.html')
+    self.response.out.write(template.render(path, template_values))
+
 class TestPage(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self):
     user = self.current_user
@@ -479,6 +491,7 @@ routes = [
   Route('/linkPoint', LinkPoint),	
 	Route('/vote', Vote),
 	Route('/testPage', TestPage),
+  Route('/search', Search),
 	Route('/pointHistory',PointHistory), 
   # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
   Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'), # , handler_method='logout', name='logout'),

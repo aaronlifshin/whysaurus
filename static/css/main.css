@@ -4,6 +4,8 @@ body{
  margin:0;
  padding:40px 0 20px 0;
 }
+
+/* THINGS IN THE HEADER */
 div#header{
 	position:absolute;
 	top:0;
@@ -14,6 +16,40 @@ div#header{
 	color:black;
 	z-index: 5;
 }
+
+.searchArea {margin:0 200px;}
+
+.searchBox {
+	position:relative; 
+    width:90%;
+    margin-top: 20px;  
+}
+
+.logoArea {width:200px; float:left; }
+img#logoImage{
+	vertical-align: middle;
+	height:54px;
+	width:167px;
+	z-index:1;
+}
+
+.userArea {
+	width:200px;
+	float:right;
+	text-align:right;
+	margin-top:5px; 
+	font-style: italic; font-size:0.8em;
+	margin-right:5px; 
+}
+
+img#avatar{
+  vertical-align: middle;
+  height:4em;
+  margin-right:0.5em;
+  margin-bottom:0.5em;
+}
+
+
 div#footer{
 	position:absolute;
 	bottom:0;
@@ -40,19 +76,6 @@ div#content{
 	top:60px;
 }
 
-img#logoImage{
-	vertical-align: middle;
-	height:54px;
-	width:167px;
-	z-index:1;
-}
-
-img#avatar{
-  vertical-align: middle;
-  height:4em;
-  margin-right:0.5em;
-  margin-bottom:0.5em;
-}
 
 img.listDisplay{
     display:block;
@@ -74,6 +97,27 @@ img.pointDisplay{
 	max-height: 200px;
 }
 
+img.smallDisplay {
+  float:left;
+  max-width: 50px;
+  max-height: 50px;
+  padding-right: 10px;
+}
+
+img.testDisplay{
+  float:right;  
+  clear:both;
+  width: 50% ;
+  margin: 30px -100px 10px 10px ;
+}
+
+.testDisplay.before{ 
+  content: '' ;
+  display:block;
+  float: right;
+  height: 200px;
+}
+
 div#WAScaseSummary{
 	display:block;
 	position:relative;
@@ -89,7 +133,30 @@ div#WAScaseSummary{
 
 .caseTitle{font-size:1.2em;font-style:italic;margin-bottom:0.5em;margin-top:0.2em;position:relative;}
 .mainPointTitle{font-size:1.2em;font-style:italic;margin-bottom:0.5em;margin-top:0.2em;position:relative;}
+
+/*
+THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
+.caseSummaryText{
+	overflow:hidden;
+	height:auto;
+	width:auto;
+	margin-bottom:0.5em; 
+	margin-top:0.2em;
+	font-family: georgia, garamond, serif;
+}
+
+.caseSummaryText p{
+	auto;
+	height:auto;
+	width:auto;
+
+}
+*/
+
 .caseSummaryText{margin-bottom:0.5em; margin-top:0.2em;overflow:hidden;height:8em;font-family: georgia, garamond, serif;}
+
+
+
 .mainPointContent{margin-bottom:0.5em; margin-top:0.2em}
 .caseInfo{font-size:0.8em;font-style:italic;position:absolute;bottom:10px;right:10px;list-style: none;font-weight:bold}
 .mainPointInfo{font-size:0.8em;font-style:italic;position:relative;bottom:10px;left:10px;list-style: none;font-weight:bold}
@@ -116,8 +183,7 @@ div#WAScaseSummary{
   word-wrap: break-word;
 }
 
-.userArea {position:relative; width:50%;text-align:right; float:right;margin-right: 20px; margin-top:-55px; font-style: italic; font-size:0.8em; z-index:-1;}
-.logoArea {position:relative;width:50%;float:left;}
+
 .caseSummarySaveToggle {float:left}
 .caseSummaryEditToggle {float:left}
 .footerCopyright {float:left}

@@ -45,8 +45,12 @@
       <div class="centered preamble"> Supporting Points</div>
 					{% for supportingPoint in supportingPoints %}
 					<div class="boxedElement centered" id="point_{{supportingPoint.url}}">	
-    					<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
+    					{% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
+						<img class="smallDisplay" src={{ supportingPoint.imageURL }} />
+						{% endif %}
+						<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
     					<div class="caseSummaryText">{{ supportingPoint.content|safe }}</div>
+
     					<div class="mainPointInfo">
   						<div class="mainPointAuthor">{{ supportingPoint.authorName }}</div> 
   						</div> 

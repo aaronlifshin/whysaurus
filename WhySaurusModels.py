@@ -347,16 +347,30 @@ class Point(ndb.Model):
     return newVersion
   
   @classmethod 
-  def search(cls, searchTerms):
+  def search(cls, searchTerms, excludeURL):
+    
     if searchTerms:
       index = search.Index('points')
-      searchResultDocs = index.search(searchTerms)
       results = []
-      for doc in searchResultDocs:
-        newResult = {}
-        for field in doc.fields:
-          newResult[field.name] = field.value
-        results = results + [newResult]
+      searchResultDocs = index.search(searchTerms)
+      if searchResultDocs:
+        excludeList = []
+        if excludeURL:
+          excludePoint, excludePointRoot = Point.getCurrentByUrl(excludeURL)
+          if excludePoint:
+            excludeList = excludeList + [excludePoint.url]
+            supportingPoints = excludePoint.getSupportingPoints()
+            for supportingPoint in supportingPoints:
+              excludeList = excludeList + [supportingPoint.url]
+        for doc in searchResultDocs:
+          newResult = {}
+          addResult = True        
+          for field in doc.fields:
+            newResult[field.name] = field.value
+            if field.name == 'url' and field.value in excludeList:
+              addResult = False
+          if addResult:
+            results = results + [newResult]
       return results
     else:
       return None

@@ -2,41 +2,161 @@
 
 {% block mainPageContent %}
   <div id="content">
-		FOR NOW YOU CAN LINK ONLY RECENTLY VIEWED POINTS
+
+  	<div class="recentlyViewedColumn">
+		Select a point you've seen before...
 		{% for point in points %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
 					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
-					<button id="selectPoint_{{point.url}}" onClick="javascript:selectPoint('{{point.url}}', '{{parentPoint.url}}');"> MAKE SUPPORTING POINT </button>
+					<button id="selectPoint_{{point.url}}" onClick="javascript:selectPoint('{{point.url}}', '{{parentPoint.url}}');"> USE </button>
 					</div>
 			</div>
 		{% endfor %}
 	</div>
+	<div class="newPointColumn">
+	Or
+	<div><button id="addSupportingPoint">Make a New Point</button></div>	
+	</div>	
+	<div class="searchColumn">
+	Or...
+	<input class="searchBox" type="search" placeholder="Find a supporting point" results="0" />
+		<div class="boxedElement" id="template" style="display: none;" >	
+					<div class="caseSummaryTitle">0 - <a href="/point/default">Default text</a>
+					<button id="templateButton" onClick="javascript:selectPoint('default', 'default');"> USE </button>
+					</div>
+		</div>
+	</div>
+  	{% include 'pointDialog.html' %}
+  </div>
 		
-		<script>
-		function selectPoint(pointUrl, parentPointUrl){
-		  	$.ajaxSetup({
-				   url: "/linkPoint",
-				   global: false,
-				   type: "POST",
-					 data: {
-						'supportingPointURL': pointUrl,
-						'parentPointURL': parentPointUrl
-						},
-						success: function(data){ 
-						  obj = JSON.parse(data);
-						  if (obj.result == true) {
-          			window.location.href="/point/" + "{{parentPoint.url}}"							  
-              } else {
-                alert(obj.result);
-              }
-						}
-				 });
-				$.ajax();
-		}
-			
-		$( "[id^=selectPoint]" ).button();
-		$( "[id^=selectPoint]" ).css("float","right");		
-		</script>
+<script>
+    var parentPointURL = '{{parentPoint.url}}';
+	function selectPoint(pointUrl, parentPointUrl){
+	  	$.ajaxSetup({
+			url: "/linkPoint",
+			global: false,
+			type: "POST",
+		 	data: {
+				'supportingPointURL': pointUrl,
+				'parentPointURL': parentPointUrl
+				},
+			success: function(data){ 
+			  obj = JSON.parse(data);
+			  if (obj.result == true) {
+				window.location.href="/point/" + "{{parentPoint.url}}";							  
+			  } else {
+			    alert(obj.result);
+			  }
+			}
+		});
+		$.ajax();
+	}
 
-    
+	function openAddPointDialog() {		
+		var ed = tinyMCE.get('textEdit');
+		$('textarea.titleEdit').val('');
+		ed.setContent("");
+		$('input[name=imageURL]').val('');
+		$('input[name=imageAuthor]').val('');
+		$('input[name=imageDescription]').val('');			
+		var dialogButtons = {};
+		dialogButtons["Add Point"] = function() {
+			var checkContentError = checkPointContent(ed.getContent());
+			if (checkContentError != "") {
+		    	alert(checkContentError);
+		  	} else {
+		    	addPoint();
+		    	$( this ).dialog( "close" );
+			}
+		};
+		dialogButtons["Cancel"] = function() { $( this ).dialog( "close" );};
+		$( "#dialogForm" ).dialog({title:"Add Point", buttons: dialogButtons});
+		$( "#dialogForm" ).dialog( "open" );
+	}
+									      
+	function addPoint(){
+		var ed = tinyMCE.get('textEdit');
+		$.ajaxSetup({
+			url: "/addSupportingPoint",
+			global: false,
+			type: "POST",
+			data: {
+				'content': ed.getContent(),
+				'title': $('textarea.titleEdit').val(),
+				'pointUrl': "{{ parentPoint.url }}"
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				var ed = tinyMCE.get('textEdit');
+				if (obj.result == true) { 					
+					window.location.href="/point/" + "{{parentPoint.url}}";
+				} else {
+					alert('Sorry. There was an error');
+				}
+ 			}
+		});
+		$.ajax();
+	}
+										
+	$( "[id^=selectPoint]" ).button();
+	$( "[id^=selectPoint]" ).css("float","right");
+	
+	$( "#addSupportingPoint" )
+	.button()
+	.click(function() {
+		openAddPointDialog();
+	});
+
+	$(".searchBox", $(".searchColumn")).keyup(function(event){
+		if(event.keyCode == 13){
+			$.ajaxSetup({
+				url: "/ajaxSearch",
+				global: false,
+				type: "POST",
+				data: {
+					'searchTerms': $(".searchBox").val(),
+					'exclude' : parentPointURL
+				},
+				success: function(data){
+					$("[id^=searchPoint]",$(".searchColumn")).remove();
+					obj = JSON.parse(data);
+					if (obj.result == true) { 
+						appendAfter = $(".searchColumn");
+						for(var i=0; i < obj.searchResults.length; i++){
+							var oneResult = obj.searchResults[i];
+							newDiv = jQuery('<div/>', {
+								class: "boxedElement",
+								id: "searchPoint_" +  oneResult['url']
+								}
+							);
+							
+							newDiv.html(
+								oneResult['voteTotal'] + ' - <a href="/point/'+ oneResult['url'] + '">' + oneResult['title'] + 
+								'</a> <button id="selectSearchPoint_' + oneResult['url'] +
+								'" onClick="javascript:selectPoint(\'' + oneResult['url'] + '\', \'' +
+								parentPointURL + '\');"> USE </button>'			
+							);
+							appendAfter.append(newDiv);
+							newDiv.show();
+							/* set the text, including link
+							// set the button event handler
+							// call the .button
+							// append it last
+							// make it visible			        
+					        oneResult['title']
+					        oneResult['url']
+					        oneResult['voteTotal']*/
+			        	}
+			        	$( "[id^=selectSearchPoint]" ).button();
+						$( "[id^=selectSearchPoint]" ).css("float","right");
+					} else {
+						alert('There were no results for: ' + $(".searchBox").val());
+					}
+	 			}
+			});
+			$.ajax();
+	    }
+	});
+      
+ </script>  
 {% endblock %}

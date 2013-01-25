@@ -31,10 +31,9 @@
 				{% include 'pointDialog.html' %}
       </div>
       {% if user %}
-			  <button id="addSupportingPoint">Create Supporting Point</button>
 			  <form action="/selectSupportingPoint" method="POST" style="display: inline">
 			  <input type="hidden" name="parentPointURL" value="{{point.url}}" />
-			  <button id="linkSupportingPoint" type="submit">Link Supporting Point</button>
+			  <button id="linkSupportingPoint" type="submit">Add Supporting Point</button>
 			  </form>
 			  <button id="upVote" background-image="/static/img/up-button.png">{{point.upVotes}}</button>
 			  <button id="downVote">{{point.downVotes}}</button>
@@ -103,6 +102,7 @@
               'imageDescription': $('input[name=imageDescription]').val()			
 							},
 							success: function(data){ 
+							    alert(data);
 								var ed = tinyMCE.get('textEdit');
 							  obj = JSON.parse(data);
 								$('.mainPointContent').html(ed.getContent()); 
@@ -173,60 +173,6 @@
 					
 				}				
 	       		
-				function openAddPointDialog() {		
-					var ed = tinyMCE.get('textEdit');
-					$('textarea.titleEdit').val('');
-					ed.setContent("");
-					$('input[name=imageURL]').val('');
-				  $('input[name=imageAuthor]').val('');
-			    $('input[name=imageDescription]').val('');			
-					var dialogButtons = {};
-					dialogButtons["Add Point"] = function() {
-					  var checkContentError = checkPointContent(ed.getContent());
-					  if (checkContentError != "") {
-					    alert(checkContentError);
-					  } else {
-					    addPoint();
-					    $( this ).dialog( "close" )
-				    }
-					};
-					dialogButtons["Cancel"] = function() { $( this ).dialog( "close" );};
-					$( "#dialogForm" ).dialog({title:"Add Point", buttons: dialogButtons});
-					$( "#dialogForm" ).dialog( "open" );
-				}
-									      
-				function addPoint(){
-					var ed = tinyMCE.get('textEdit');
-					$.ajaxSetup({
-					   url: "/addSupportingPoint",
-					   global: false,
-					   type: "POST",
-						 data: {
-							'content': ed.getContent(),
-							'title': $('textarea.titleEdit').val(),
-							'pointUrl': "{{ point.url }}"
-							},
-              success: function(data){
-                obj = JSON.parse(data);
-                var ed = tinyMCE.get('textEdit');
-                if (obj.result == true) { 
-                  data = obj.supportingPointHTML;
-                  // Data comes as ready HTML to be inserted 
-                  $(data).insertAfter($('.preamble'));
-      						$( ".button" ).button();
-      						// Update stuff in main point
-      						$('.mainPointVersion').html(obj.version);
-  								$('.mainPointAuthor').html(obj.author);
-  								$('.mainPointDateEdited').html(obj.dateEdited);
-      						// Clear the editors
-            			$('textarea.titleEdit').val('');
-	      					ed.setContent("");
-                }
-              }
-						});
-						$.ajax();
-					}
-				
 				function updateVoteButtonLabels(newVote){
 				  var downvoteLabel = $( "#downVote" ).button("option", "label");
 				  var upvoteLabel = $( "#upVote" ).button("option", "label");
@@ -324,18 +270,7 @@
     				$.ajax();
     		}
 
-			$(document).ready(function(){
-					$("#dialogForm").dialog({
-						autoOpen: false,
-    				height: getWindowHeight() * .9,
-    				width: $(window).width()*.7,
-						modal: true
-				});
-					
-			});
 
-      window.onload = function() {positionEditDialog(500); }
-      window.onresize = function() {positionEditDialog(500); }
             
 			$( "#linkSupportingPoint" )
 				.button()

@@ -17,7 +17,7 @@ div#header{
 	z-index: 5;
 }
 
-.searchArea {margin:0 200px;}
+.searchArea {margin:0 200px;min-width:200px;}
 
 .searchBox {
 	position:relative; 
@@ -134,6 +134,17 @@ div#WAScaseSummary{
 .caseTitle{font-size:1.2em;font-style:italic;margin-bottom:0.5em;margin-top:0.2em;position:relative;}
 .mainPointTitle{font-size:1.2em;font-style:italic;margin-bottom:0.5em;margin-top:0.2em;position:relative;}
 
+
+.searchColumn {margin:0 310px; margin-top:20px;}
+
+.recentlyViewedColumn {width:300px; float:left;margin-top:20px; }
+
+.newPointColumn {
+	width:200px;
+	float:right;
+	margin-top:20px;
+}
+
 /*
 THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 .caseSummaryText{
@@ -153,7 +164,13 @@ THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 }
 */
 
-.caseSummaryText{margin-bottom:0.5em; margin-top:0.2em;overflow:hidden;height:8em;font-family: georgia, garamond, serif;}
+.caseSummaryText{
+	margin-bottom:0.5em; 
+	margin-top:0.2em;
+	overflow:hidden;
+	max-height:8em;
+	font-family: georgia, garamond, serif;
+}
 
 
 

@@ -427,7 +427,7 @@ class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
       }
       path = os.path.join(os.path.dirname(__file__), 'templates/newsupportingpoint.html')
       renderedHTML = template.render(path, templateValues )
-      
+      ## THIS IS NO LONGER CALLED FROM THE POINT PAGE SO IT DOESN'T NEED TO RETURN THE HTML
       jsonOutput = {
         'result':True,
         'supportingPointHTML': renderedHTML,
@@ -456,9 +456,7 @@ class Vote(WhysaurusRequestHandler, SimpleAuthHandler):
  
 class Search(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self):
-    resultJSON = json.dumps({'result':False})
     searchResults = Point.search(self.request.get('searchTerms'))
-    logging.info('Search results: ' + str(searchResults))
     template_values = {
       'searchResults' : searchResults,
       'searchString': self.request.get('searchTerms')
@@ -466,6 +464,19 @@ class Search(WhysaurusRequestHandler, SimpleAuthHandler):
     path = os.path.join(os.path.dirname(__file__), 'templates/searchResults.html')
     self.response.out.write(template.render(path, template_values))
 
+class AjaxSearch(WhysaurusRequestHandler, SimpleAuthHandler):
+  def post(self):
+    resultJSON = json.dumps({'result':False})
+    searchResults = Point.search(self.request.get('searchTerms'), self.request.get('exclude'))
+    if searchResults:
+      resultJSON = json.dumps( {
+        'result': True,
+        'searchResults' : searchResults,
+        'searchString': self.request.get('searchTerms')
+      })
+    self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+    self.response.out.write(resultJSON)   
+    
 class TestPage(WhysaurusRequestHandler, SimpleAuthHandler):
   def get(self):
     user = self.current_user
@@ -492,6 +503,7 @@ routes = [
 	Route('/vote', Vote),
 	Route('/testPage', TestPage),
   Route('/search', Search),
+  Route('/ajaxSearch', AjaxSearch),
 	Route('/pointHistory',PointHistory), 
   # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
   Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'), # , handler_method='logout', name='logout'),

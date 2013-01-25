@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+  <div id="content">
+		Search results for {{searchString}}
+		{% for point in searchResults %} 
+		  <div class="boxedElement" id="point_{{point.url}}">	
+					<div class="caseSummaryTitle">{{ point.voteTotal|floatformat:"0" }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+					<button id="why_{{point.url}}" onClick="goToPoint('{{point.url}}');"> WHY </button>
+					</div>
+			</div>
+		{% endfor %}
+	</div>
+		
+		<script>
+		function selectPoint(pointUrl, parentPointUrl){
+		  	$.ajaxSetup({
+				   url: "/linkPoint",
+				   global: false,
+				   type: "POST",
+					 data: {
+						'supportingPointURL': pointUrl,
+						'parentPointURL': parentPointUrl
+						},
+						success: function(data){ 
+						  obj = JSON.parse(data);
+						  if (obj.result == true) {
+          			window.location.href="/point/" + "{{parentPoint.url}}"							  
+              } else {
+                alert(obj.result);
+              }
+						}
+				 });
+				$.ajax();
+		}
+			
+		function goToPoint(pointUrl) {
+			window.location.href="/point/" + pointUrl
+		}
+		$( "[id^=why]" ).button();
+		$( "[id^=why]" ).css("float","right");		
+		</script>
+
+    
+{% endblock %}

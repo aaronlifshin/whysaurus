@@ -122,33 +122,15 @@
 				$( "#dialogForm" ).dialog( "open" );
 			}
 
-      window.onload = function() {positionEditDialog(500); }
-      window.onresize = function() {positionEditDialog(500); }
-    
-		$(document).ready(function(){
+		$( "#CreatePoint" )
+			.button()
+			.click(function() {
+				openNewPointDialog();
+			});
 
-			$("#dialogForm").dialog({
-				autoOpen: false,
-				height: $(window).height(),
-				width: $(window).width()*.7,
-				modal: true,
-				close: function() {
-				}
-			});			
-			
-
-			$( "#CreatePoint" )
-				.button()
-				.click(function() {
-					openNewPointDialog();
-				});
-
-			$( "[id^=deletePoint]" ).button();
-			$( "[id^=editPoint]" ).button();
-			$(" input:submit" ).button();
-					
-		});
-
-		</script>
+		$( "[id^=deletePoint]" ).button();
+		$( "[id^=editPoint]" ).button();
+		$(" input:submit" ).button();
+	</script>
 	
 {% endblock %}

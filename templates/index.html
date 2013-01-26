@@ -13,17 +13,24 @@
 		ALL POINTS
 		{% for point in points %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="caseSummaryTitle">
+					<span
+						{% if point.voteTotal >= thresholds.green %}
+							class="greenScore"
+						{% else %}	
+							{% if point.voteTotal <= thresholds.red %}
+								class="redScore"
+							{% else %}
+								class="yellowScore"
+							{% endif %}	
+						{% endif %}					
+					>{{ point.voteTotal }}</span>
+					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="caseSummaryText">{{ point.content|safe }}
 					    {% if point.imageURL and point.imageURL.strip %}
 						<img class="listDisplay" src={{ point.imageURL }} />
 						{% endif %}
 					</div>
-				<!--	<div class="caseInfo">
-						<div class="caseVersion">{{point.version}}</div> 
-						<div class="caseAuthor">{{ point.authorName }}</div> 
-						<div class="caseDateEdited">{{point.dateEdited}} </div>
-					</div>-->
 					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
 			</div>
 		{% endfor %}
@@ -34,7 +41,19 @@
 		</div>
 		{% for point in recentlyViewed %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="caseSummaryTitle">
+						<span
+							{% if point.voteTotal >= thresholds.green %}
+								class="greenScore"
+							{% else %}	
+								{% if point.voteTotal <= thresholds.red %}
+									class="redScore"
+								{% else %}
+									class="yellowScore"
+								{% endif %}	
+							{% endif %}					
+						>{{ point.voteTotal }}</span> 
+					- <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="caseSummaryText">
 											
 						{{ point.content|safe }}
@@ -51,7 +70,19 @@
 		EDITORS PICKS
 		{% for point in editorsPicks %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="caseSummaryTitle">
+						<span
+							{% if point.voteTotal >= thresholds.green %}
+								class="greenScore"
+							{% else %}	
+								{% if point.voteTotal <= thresholds.red %}
+									class="redScore"
+								{% else %}
+									class="yellowScore"
+								{% endif %}	
+							{% endif %}					
+						>{{ point.voteTotal }}</span>				
+					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="caseSummaryText">{{ point.content|safe }}</div>
 					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
 			</div>

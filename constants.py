@@ -53,3 +53,8 @@ AUTH_CONFIG = {
 
   # OpenID doesn't need any key/secret
 }
+
+SCORETHRESHOLDS = {
+  'green' : 2,
+  'red' : -2
+}

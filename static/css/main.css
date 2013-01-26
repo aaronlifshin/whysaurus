@@ -145,6 +145,18 @@ div#WAScaseSummary{
 	margin-top:20px;
 }
 
+.greenScore {
+	color:green;
+}
+
+.yellowScore {
+	color:yellow;
+}
+
+.redScore {
+	color:red;
+}
+
 /*
 THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 .caseSummaryText{

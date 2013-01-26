@@ -347,7 +347,7 @@ class Point(ndb.Model):
     return newVersion
   
   @classmethod 
-  def search(cls, searchTerms, excludeURL):
+  def search(cls, searchTerms, excludeURL=None):
     
     if searchTerms:
       index = search.Index('points')
@@ -360,8 +360,9 @@ class Point(ndb.Model):
           if excludePoint:
             excludeList = excludeList + [excludePoint.url]
             supportingPoints = excludePoint.getSupportingPoints()
-            for supportingPoint in supportingPoints:
-              excludeList = excludeList + [supportingPoint.url]
+            if supportingPoints:
+              for supportingPoint in supportingPoints:
+                excludeList = excludeList + [supportingPoint.url]
         for doc in searchResultDocs:
           newResult = {}
           addResult = True        

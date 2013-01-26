@@ -5,7 +5,20 @@
 		Search results for {{searchString}}
 		{% for point in searchResults %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">{{ point.voteTotal|floatformat:"0" }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+					<div class="caseSummaryTitle">
+					<span
+						{% if point.voteTotal >= thresholds.green %}
+							class="greenScore"
+						{% else %}	
+							{% if point.voteTotal <= thresholds.red %}
+								class="redScore"
+							{% else %}
+								class="yellowScore"
+							{% endif %}	
+						{% endif %}					
+						>{{ point.voteTotal|floatformat:"0" }}
+					</span>
+					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
 					<button id="why_{{point.url}}" onClick="goToPoint('{{point.url}}');"> WHY </button>
 					</div>
 			</div>

@@ -115,6 +115,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
       'email'   : 'link'
     }
   }
+  
+  
 
   def _on_signin(self, data, auth_info, provider):
     auth_id = '%s:%s' % (provider, data['id'])
@@ -212,7 +214,8 @@ def prepareTemplateValuesForMain(pageHandler):
   	'recentlyViewed':recentlyViewedPoints,
   	'user':user,
   	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-  	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
+  	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
+    'thresholds' : constants.SCORETHRESHOLDS
   }
   return template_values
       
@@ -302,7 +305,8 @@ class ViewPoint(WhysaurusRequestHandler, SimpleAuthHandler):
       	'devInt': devInt, # For Disqus
       	'voteValue': voteValue,
       	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
+      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
+        'thresholds' : constants.SCORETHRESHOLDS
       }
       path = os.path.join(os.path.dirname(__file__), 'templates/point.html')
       self.response.out.write(template.render(path, template_values))
@@ -381,7 +385,8 @@ class SelectSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
       'parentPoint': oldPoint,
 			'user' : user,
 			'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-    	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
+    	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
+      'thresholds' : constants.SCORETHRESHOLDS
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/selectSupportingPoint.html')
     self.response.out.write(template.render(path, templateValues ))
@@ -434,6 +439,7 @@ class AddSupportingPoint(WhysaurusRequestHandler, SimpleAuthHandler):
         'version':newPoint.version,
         'author':newPoint.authorName,
         'dateEdited':newPoint.dateEdited.strftime("%Y-%m-%d %H:%M:%S %p"),
+        
       }
       resultJSON = json.dumps(jsonOutput)
       self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
@@ -459,7 +465,8 @@ class Search(WhysaurusRequestHandler, SimpleAuthHandler):
     searchResults = Point.search(self.request.get('searchTerms'))
     template_values = {
       'searchResults' : searchResults,
-      'searchString': self.request.get('searchTerms')
+      'searchString': self.request.get('searchTerms'),
+      'thresholds' : constants.SCORETHRESHOLDS
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/searchResults.html')
     self.response.out.write(template.render(path, template_values))

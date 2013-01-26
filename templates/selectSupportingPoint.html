@@ -7,7 +7,19 @@
 		Select a point you've seen before...
 		{% for point in points %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">{{ point.voteTotal }} - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+					<div class="caseSummaryTitle">
+					<span
+						{% if point.voteTotal >= thresholds.green %}
+							class="greenScore"
+						{% else %}	
+							{% if point.voteTotal <= thresholds.red %}
+								class="redScore"
+							{% else %}
+								class="yellowScore"
+							{% endif %}	
+						{% endif %}					
+					>{{ point.voteTotal }}</span>
+					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
 					<button id="selectPoint_{{point.url}}" onClick="javascript:selectPoint('{{point.url}}', '{{parentPoint.url}}');"> USE </button>
 					</div>
 			</div>
@@ -129,9 +141,18 @@
 								id: "searchPoint_" +  oneResult['url']
 								}
 							);
+							if (oneResult['voteTotal'] >= {{ thresholds.green }}) {
+								spanClass = 'greenScore';
+							} else if  (oneResult['voteTotal'] <= {{ thresholds.red }}) {
+								spanClass = 'redScore';
+							} else {
+								spanClass = 'yellowScore';
+							}
+							
 							
 							newDiv.html(
-								oneResult['voteTotal'] + ' - <a href="/point/'+ oneResult['url'] + '">' + oneResult['title'] + 
+								'<span class="' + spanClass + '">' +  
+								oneResult['voteTotal'] + '</span> - <a href="/point/'+ oneResult['url'] + '">' + oneResult['title'] + 
 								'</a> <button id="selectSearchPoint_' + oneResult['url'] +
 								'" onClick="javascript:selectPoint(\'' + oneResult['url'] + '\', \'' +
 								parentPointURL + '\');"> USE </button>'			

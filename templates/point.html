@@ -14,7 +14,19 @@
 					<div class="clear"></div>
 				{% endif %}
 				
-				<div style="float: left">[ {{point.voteTotal}} ]</div><div class="mainPointTitle editable">{{ point.title|escape }}</div>
+				<div style="float: left">[
+				 	<span
+						{% if point.voteTotal >= thresholds.green %}
+							class="greenScore"
+						{% else %}	
+							{% if point.voteTotal <= thresholds.red %}
+								class="redScore"
+							{% else %}
+								class="yellowScore"
+							{% endif %}	
+						{% endif %}					
+					>{{ point.voteTotal }}</span>
+				]</div><div class="mainPointTitle editable">{{ point.title|escape }}</div>
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
 						{% if point.imageURL and point.imageURL.strip %}
 						<img class="pointDisplay" src="{{ point.imageURL }}" />
@@ -47,7 +59,20 @@
     					{% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
 						<img class="smallDisplay" src={{ supportingPoint.imageURL }} />
 						{% endif %}
-						<div class="caseSummaryTitle">{{ supportingPoint.voteTotal }} - <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
+						<div class="caseSummaryTitle">
+							<span
+								{% if supportingPoint.voteTotal >= thresholds.green %}
+									class="greenScore"
+								{% else %}	
+									{% if supportingPoint.voteTotal <= thresholds.red %}
+										class="redScore"
+									{% else %}
+										class="yellowScore"
+									{% endif %}	
+								{% endif %}					
+								>{{ supportingPoint.voteTotal }}
+							</span> 
+						- <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
     					<div class="caseSummaryText">{{ supportingPoint.content|safe }}</div>
 
     					<div class="mainPointInfo">
@@ -102,7 +127,6 @@
               'imageDescription': $('input[name=imageDescription]').val()			
 							},
 							success: function(data){ 
-							    alert(data);
 								var ed = tinyMCE.get('textEdit');
 							  obj = JSON.parse(data);
 								$('.mainPointContent').html(ed.getContent()); 

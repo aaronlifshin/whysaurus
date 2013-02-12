@@ -7,10 +7,8 @@ from google.appengine.api import search
 import webapp2_extras.appengine.auth.models as auth_models
 
     
-
-# ***************************************************************************************
-#  POINT MANIPULATION FUNCTIONS
-# ***************************************************************************************
+class WhysaurusException(Exception):
+  pass
 
 class UserVote(ndb.Model):
   pointRootKey = ndb.KeyProperty(required=True)
@@ -126,8 +124,9 @@ class PointRoot(ndb.Model):
     self.put()
   
   def addSupportedPoint(self, supportedPointRootKey):
-    self.pointsSupportedByMe = self.pointsSupportedByMe + [supportedPointRootKey]
-    self.put()
+    if supportedPointRootKey not in self.pointsSupportedByMe:
+      self.pointsSupportedByMe = self.pointsSupportedByMe + [supportedPointRootKey]
+      self.put()
     
   def addViewCount(self):
     if not self.viewCount:
@@ -152,21 +151,31 @@ class PointRoot(ndb.Model):
     pointsQuery = Point.gql("WHERE current = TRUE ORDER BY dateEdited DESC")
     return pointsQuery.fetch(50)
 
-  def delete(self):
+  def delete(self, user):
+    if not user.admin:
+      return False, 'Not authorized'
+    
     if self.pointsSupportedByMe:
-      supportedPointRoot = self.pointsSupportedByMe[0].get()
-      supportedPoint = supportedPointRoot.getCurrent()
-      return False, 'Cannot delete this point as it supports %d other points. \n Title of first supported point: %s' % (len(self.pointsSupportedByMe), supportedPoint.title)
-    else:
-      points = self.getAllVersions()
-      for point in points:
-        #img = PointImage.query(ancestor=point.key).get()
-        #if img:
-        #  img.key.delete()
-          point.key.delete()
-      self.key.delete()
-      return True, ''
-  
+      for supportedPoint in self.pointsSupportedByMe:
+        pointRoot = supportedPoint.get()
+        if pointRoot:
+          point = pointRoot.getCurrent()
+          point.removeSupportingPoint(self, user)
+    
+    # MY SUPPORTING POINTS NO LONGER SUPPORT ME
+    current = self.getCurrent()
+    supportingPointRoots = ndb.get_multi(current.supportingPoints)
+    for supportingPoint in supportingPointRoots:
+      supportingPoint.removeSupportedPoint(self.key)
+    
+    points = self.getAllVersions()
+    for point in points:
+      #img = PointImage.query(ancestor=point.key).get()
+      #if img:
+      #  img.key.delete()
+        point.key.delete()
+    self.key.delete()
+    return True, ''
 
 
 class Point(ndb.Model):
@@ -268,7 +277,7 @@ class Point(ndb.Model):
     user.updateRecentlyViewed(pointRoot.key)
     return point, pointRoot
   
-  # newSupportingPoint is the key of the PointRoot of the supporting point
+  # newSupportingPoint is the PointRoot of the supporting point
   def update(self, newTitle = None, newContent = None, newSupportingPoint=None, user = None,
              imageURL = None, imageAuthor = None, imageDescription = None):
     if user:
@@ -286,7 +295,10 @@ class Point(ndb.Model):
 
       newPoint.authorName = user.name      
       if newSupportingPoint:
-        newPoint.supportingPoints = self.supportingPoints + [newSupportingPoint]
+        if newSupportingPoint.key in self.supportingPoints:  
+          raise WhysaurusException("That point is already a supporting point of " + newPoint.title)
+        else:
+          newPoint.supportingPoints = self.supportingPoints + [newSupportingPoint.key]
       else:		
         newPoint.supportingPoints = list(self.supportingPoints)
     
@@ -302,9 +314,11 @@ class Point(ndb.Model):
 
       self.current = False
       newPoint.put()
-      self.put()
+      self.put()     
+      if newSupportingPoint:
+        newSupportingPoint.addSupportedPoint(newPoint.key.parent())
       newPoint.addToSearchIndex()
-      
+             
       return newPoint
     else:
       return None
@@ -317,10 +331,16 @@ class Point(ndb.Model):
       newPoint.supportingPoints = list(self.supportingPoints)
       logging.info('SUP PO: ' + str(newPoint.supportingPoints))
       logging.info('TO REM: ' + str(supportingPointToRemove))
-      newPoint.supportingPoints.remove(supportingPointToRemove.key)
+      try:
+        newPoint.supportingPoints.remove(supportingPointToRemove.key)
+      except Exception as e:
+        logging.info('Could not remove supporting point from list: ' + str(e))
       newPoint.title = self.title
       newPoint.content = self.content
       newPoint.version = self.version + 1
+      newPoint.upVotes = self.upVotes
+      newPoint.downVotes = self.downVotes
+      newPoint.voteTotal = self.voteTotal    
       newPoint.url = self.url
       newPoint.current = True
       self.current = False
@@ -335,7 +355,10 @@ class Point(ndb.Model):
       supportingPointRoots = ndb.get_multi(self.supportingPoints)
       supportingPoints = []
       for pointRoot in supportingPointRoots:
-        supportingPoints = supportingPoints + [pointRoot.getCurrent()]
+        if pointRoot:
+          supportingPoints = supportingPoints + [pointRoot.getCurrent()]
+        else:
+          logging.info('WARNING: Supporting point array for ' + self.url +' contains pointer to missing root')
       return supportingPoints
     else:
       return None

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+<div id="content">
+  <div class="boxedElement contactForm">
+     <form action="/contactSend" method="post">
+      
+      <!-- Simple text field -->
+      <label for="name">Name </label> 
+      <input type="text" name="name"/>
+      <br/>
+      
+      <!-- Email -->
+      <label for="email">Email </label> 
+      <input type="email" name="email"/>
+      <br/>
+      <label for="email2">Confirm Email </label> 
+      <input type="email" name="email2"/>
+      <br/>
+      <label for="subject">Subject </label> 
+      <input type="text" name="subject"/>
+      <br/>
+
+      <!-- Textarea -->
+      <label for="message">Message Text </label> 
+      <textarea  name="message" cols="50" rows="10">Type your message here</textarea>
+      <br/>
+         
+      <input type="submit" name="submit" value="Send"/>
+     </form>
+  </div>
+ </div>
+  
+{% endblock %}

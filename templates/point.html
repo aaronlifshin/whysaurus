@@ -41,19 +41,26 @@
 					<div class="mainPointImageDescription">{{point.imageDescription}}</div>	
 				</div>				
 				{% include 'pointDialog.html' %}
-      </div>
-      {% if user %}
-			  <form action="/selectSupportingPoint" method="POST" style="display: inline">
-			  <input type="hidden" name="parentPointURL" value="{{point.url}}" />
-			  <button id="linkSupportingPoint" type="submit">Add Supporting Point</button>
-			  </form>
+			{% if user %}
 			  <button id="upVote" background-image="/static/img/up-button.png">{{point.upVotes}}</button>
 			  <button id="downVote">{{point.downVotes}}</button>
 				{% if user.admin %}
   				<button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button>	  
 				{% endif %}
 			{% endif %}
-      <div class="centered preamble"> Supporting Points</div>
+      </div>
+
+      <div class="boxedElement centered"> Supporting Points
+      		{% if user %}
+      		  <form action="/selectSupportingPoint" method="POST" style="display: inline">
+			  <input type="hidden" name="parentPointURL" value="{{point.url}}" />
+			  <button id="linkSupportingPoint" type="submit">Add</button>			  
+			  </form>
+			  {% if supportingPoints %}
+			  	<button id="unlinkToggle" type="submit">Unlink</button>
+			  {% endif %}
+			 {% endif %}
+	  
 					{% for supportingPoint in supportingPoints %}
 					<div class="boxedElement centered" id="point_{{supportingPoint.url}}">	
     					{% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
@@ -78,11 +85,11 @@
     					<div class="mainPointInfo">
   						<div class="mainPointAuthor">{{ supportingPoint.authorName }}</div> 
   						</div> 
-    					<a href="/point/{{supportingPoint.url}}" class="button">WHY</a>
-    					<a href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' class="button">UNLINK</a>
+    					<a href="/point/{{supportingPoint.url}}" class="button whybutton">WHY</a>
+    					<a href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' class="button unlinkbutton" >UNLINK</a>
     			</div>
 					{% endfor %}
-					
+			</div>		
 
 			
 			<div id="disqus_thread"></div>
@@ -110,6 +117,27 @@
 			</div>
 			<script>
 				var myVote = '{{voteValue}}';
+				var unlinkVisible = false;
+				
+				function toggleUnlink() {
+					if ( unlinkVisible ) {
+						$( ".whybutton" ).removeClass("ui-helper-hidden");
+						$( ".whybutton" ).show();
+						$( ".whybutton" ).button();
+						$( ".unlinkbutton" ).addClass("ui-helper-hidden");						
+						$( ".ui-helper-hidden" ).hide();
+						$("#unlinkToggle").html('<span class="ui-button-text">Unlink</span>');
+						unlinkVisible = false;			
+					} else {
+						$( ".whybutton" ).addClass("ui-helper-hidden");
+						$( ".ui-helper-hidden" ).hide();
+						$( ".unlinkbutton" ).removeClass("ui-helper-hidden");
+						$( ".unlinkbutton" ).show();
+						$( ".unlinkbutton" ).button();
+						$("#unlinkToggle").html('<span class="ui-button-text">Done</span>');
+						unlinkVisible = true;
+					} 		
+				}
 				
 				function callPointEdit(){
 					var ed = tinyMCE.get('textEdit');
@@ -299,10 +327,10 @@
 			$( "#linkSupportingPoint" )
 				.button()
 							
-			$( "#addSupportingPoint" )
+			$( "#unlinkToggle" )
 				.button()
 				.click(function() {
-					openAddPointDialog();
+					toggleUnlink();
 				});
 
 			$( "#upVote" )
@@ -325,7 +353,11 @@
 					window.location.href="/pointHistory?pointUrl={{point.url}}";
 				});
 					
-			$( ".button" ).button();
+			$( ".whybutton" ).button();
+			$( ".unlinkbutton" ).button();
+			$( ".unlinkbutton" ).addClass("ui-helper-hidden");
+			$( ".ui-helper-hidden" ).hide();
+			
 			$( "#editPoint" )
 				.button()
 				.click(function() {

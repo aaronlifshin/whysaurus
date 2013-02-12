@@ -32,11 +32,6 @@
 	<div class="searchColumn">
 	Or...
 	<input class="searchBox" type="search" placeholder="Find a supporting point" results="0" />
-		<div class="boxedElement" id="template" style="display: none;" >	
-					<div class="caseSummaryTitle">0 - <a href="/point/default">Default text</a>
-					<button id="templateButton" onClick="javascript:selectPoint('default', 'default');"> USE </button>
-					</div>
-		</div>
 	</div>
   	{% include 'pointDialog.html' %}
   </div>
@@ -57,7 +52,11 @@
 			  if (obj.result == true) {
 				window.location.href="/point/" + "{{parentPoint.url}}";							  
 			  } else {
-			    alert(obj.result);
+			  	if (obj.error) {
+			    	alert(obj.error);
+			    } else {
+			    	alert("There was an error");
+			    }
 			  }
 			}
 		});
@@ -103,7 +102,11 @@
 				if (obj.result == true) { 					
 					window.location.href="/point/" + "{{parentPoint.url}}";
 				} else {
-					alert('Sorry. There was an error');
+					if (obj.error) {
+			    		alert(obj.error);
+			    	} else {
+			    		alert("There was an error");
+			    	}
 				}
  			}
 		});
@@ -171,7 +174,7 @@
 			        	$( "[id^=selectSearchPoint]" ).button();
 						$( "[id^=selectSearchPoint]" ).css("float","right");
 					} else {
-						alert('There were no results for: ' + $(".searchBox").val());
+						alert('There were no results for: ' + $(".searchBox").val() + ' or that is already a supporting point');
 					}
 	 			}
 			});

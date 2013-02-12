@@ -55,11 +55,20 @@ div#footer{
 	bottom:0;
 	left:0;
 	width:100%;
-	height:20px;
-	background:#EFEFEF;
-	color:black;
+	height:50px;
+	background:#000000;
+	color:white;
 	z-index: 5;
 }
+
+.footerCopyright {float:right; color:#58595B;font-size:0.8em;}
+.footerMenu {margin-left: 40px; }
+.footerMenu a {margin-left: 40px; }
+.tagline { margin-left: 40px;font-style:italic;  }
+.footerMenu a:link {color:white; text-decoration:none;}     /* unvisited link */
+.footerMenu a:visited {color:white; text-decoration:none;}  /* visited link */
+.footerMenu a:hover {color:teal; text-decoration:none;}  /* visited link */
+
 @media screen{
 	body>div#header{
 		position:fixed;
@@ -146,15 +155,15 @@ div#WAScaseSummary{
 }
 
 .greenScore {
-	color:green;
+	color:#0CCF00;
 }
 
 .yellowScore {
-	color:yellow;
+	color:#EBC821;
 }
 
 .redScore {
-	color:red;
+	color:#FF000B;
 }
 
 /*
@@ -215,8 +224,8 @@ THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 
 .caseSummarySaveToggle {float:left}
 .caseSummaryEditToggle {float:left}
-.footerCopyright {float:left}
-.footerMenu {text-align:right; margin-right: 40px}
+
+
 .pointSaveToggle {float:left}
 /*.pointTitle{font-size:1.2em;font-style:italic}
 .pointSummaryAuthor{font-size:0.8em;font-style:italic;position:absolute;bottom:10px;right:10px}*/

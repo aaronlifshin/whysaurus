@@ -166,7 +166,8 @@ class PointRoot(ndb.Model):
     current = self.getCurrent()
     supportingPointRoots = ndb.get_multi(current.supportingPoints)
     for supportingPoint in supportingPointRoots:
-      supportingPoint.removeSupportedPoint(self.key)
+      if supportingPoint:
+        supportingPoint.removeSupportedPoint(self.key)
     
     points = self.getAllVersions()
     for point in points:

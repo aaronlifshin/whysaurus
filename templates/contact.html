@@ -3,7 +3,7 @@
 {% block mainPageContent %}
 <div id="content">
   <div class="boxedElement contactForm">
-     <form action="/contactSend" method="post">
+     <form action="/contactSend" method="post" onsubmit="return validateForm(this);">
       
       <!-- Simple text field -->
       <label for="name">Name </label> 
@@ -16,7 +16,9 @@
       <br/>
       <label for="email2">Confirm Email </label> 
       <input type="email" name="email2"/>
+      <div class="error"><b>ERROR:</b> Emails don't match!</div>
       <br/>
+
       <label for="subject">Subject </label> 
       <input type="text" name="subject"/>
       <br/>
@@ -30,5 +32,28 @@
      </form>
   </div>
  </div>
+  <script>
+  function showError(message) {
+      $( ".error" ).html('<b>ERROR:</b> ' + message)
+      $( ".error" ).addClass('ui-state-error ui-corner-all');
+      $( ".error" ).show();
+  }
+  function validateForm(form) {
+    $( ".error" ).hide();   
+    if (form.email.value == '' ) {
+      showError('Email not supplied.');
+      return false;
+    } else if (form.email.value != form.email2.value) {
+      showError('Emails do not match.');
+      return false;
+    } else {
+      return true;
+    } 
+  }
   
+  $(function(){
+    $( ".error" ).hide();
+  });
+  
+  </script>
 {% endblock %}

@@ -190,40 +190,37 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
       attr = (v, data.get(k)) if isinstance(v, str) else v(data.get(k))
       user_attrs.setdefault(*attr)    
     return user_attrs
-        
-
-def prepareTemplateValuesForMain(pageHandler):
-  
-  points = PointRoot.getRecentCurrentPoints()
-  user = None
-  
-  if pageHandler.logged_in:
-    user = pageHandler.current_user
-
-  # GET RECENTLY VIEWED
-  if user:
-    recentlyViewedPoints = user.getRecentlyViewed()
-  else:
-    recentlyViewedPoints = []
-
-  # GET EDITORS PICKS
-  editorsPicksPoints = PointRoot.getEditorsPicks()
-
-  template_values = {
-  	'points': points,
-  	'editorsPicks':editorsPicksPoints,
-  	'recentlyViewed':recentlyViewedPoints,
-  	'user':user,
-  	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-  	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
-    'thresholds' : constants.SCORETHRESHOLDS
-  }
-  return template_values
-      
+            
 class MainPage(AuthHandler):
-  def get(self):     
+  def get(self): 
+        
+    newPoints = PointRoot.getRecentCurrentPoints()
+    user = None
+    
+    if self.logged_in:
+      user = self.current_user
+  
+    # GET RECENTLY VIEWED
+    if user:
+      recentlyViewedPoints = user.getRecentlyViewed()
+    else:
+      recentlyViewedPoints = []
+  
+    editorsPicksPoints = PointRoot.getEditorsPicks()
+    topPoints = PointRoot.getTopRatedPoints()
+  
+    template_values = {
+      'newPoints': newPoints,
+      'topPoints': topPoints,
+      'editorsPicks':editorsPicksPoints,
+      'recentlyViewed':recentlyViewedPoints,
+      'user':user,
+      'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
+      'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
+      'thresholds' : constants.SCORETHRESHOLDS
+    }
     path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
-    self.response.out.write(template.render(path, prepareTemplateValuesForMain(self)))
+    self.response.out.write(template.render(path, template_values))
 
 
 class NewPoint(AuthHandler):

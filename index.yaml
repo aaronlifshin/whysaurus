@@ -53,6 +53,12 @@ indexes:
     direction: desc
 
 - kind: Point
+  properties:
+  - name: current
+  - name: voteTotal
+    direction: desc
+
+- kind: Point
   ancestor: yes
   properties:
   - name: version

@@ -5,7 +5,7 @@
 		Search results for {{searchString}}
 		{% for point in searchResults %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">
+					<div class="pointSummaryTitle">
 					<span
 						{% if point.voteTotal >= thresholds.green %}
 							class="greenScore"

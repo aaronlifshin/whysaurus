@@ -22,6 +22,8 @@ else:
     FACEBOOK_CHANNEL_URL = 'http://whysaurus-beta.appspot.com/channel.html'
     GOOGLE_APP_ID = '345079353528.apps.googleusercontent.com'
     GOOGLE_APP_SECRET = 'GxIafrxWDdUdxMc8AfDeQcOj'
+TWITTER_APP_ID = '4063892'
+TWITTER_APP_SECRET = 'VrFcSJpKa2vcPFOJUbQWeiL5oRPbq3Iiu3XFw2t1zoo'
 
 # https://www.linkedin.com/secure/developer
 # THIS IS DEPRECATED FOR NOW
@@ -34,8 +36,8 @@ WL_CLIENT_ID = 'client id'
 WL_CLIENT_SECRET = 'client secret'
 
 # https://dev.twitter.com/apps
-TWITTER_CONSUMER_KEY = 'oauth1.0a consumer key'
-TWITTER_CONSUMER_SECRET = 'oauth1.0a consumer secret'
+TWITTER_CONSUMER_KEY = 'xd43iFkn6CJISe5I8lbA'
+TWITTER_CONSUMER_SECRET = 'VrFcSJpKa2vcPFOJUbQWeiL5oRPbq3Iiu3XFw2t1zoo'
 
 # config that summarizes the above
 AUTH_CONFIG = {

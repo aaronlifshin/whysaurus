@@ -7,8 +7,8 @@
 
 		{% for fullPoint in pointData %}
 		  <div class="boxedElement" id="case_"{{case.key}}>	
-					<div class="caseSummaryTitle">{{ fullPoint.point.title|escape }}</div>			
-					<div class="caseSummaryText">{{ fullPoint.point.content|safe }}</div>
+					<div class="pointSummaryTitle">{{ fullPoint.point.title|escape }}</div>			
+					<div class="pointSummaryText">{{ fullPoint.point.content|safe }}</div>
 					<table class="pointTable">
 					<thead>
 						<tr><th>Point Title</th><th>Point Text</th><th>Author</th></tr>

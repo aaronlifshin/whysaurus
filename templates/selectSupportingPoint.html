@@ -7,7 +7,7 @@
 		Select a point you've seen before...
 		{% for point in points %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">
+					<div class="pointSummaryTitle">
 					<span
 						{% if point.voteTotal >= thresholds.green %}
 							class="greenScore"
@@ -33,7 +33,6 @@
 	Or...
 	<input class="searchBox" type="search" placeholder="Find a supporting point" results="0" />
 	</div>
-  	{% include 'pointDialog.html' %}
   </div>
 		
 <script>

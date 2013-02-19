@@ -1,101 +1,38 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	  <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
-		<link type="text/css" href="/static/css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
-	  <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>	
-		<script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
-	  <script type="text/javascript">
-  		tinyMCE.init({
-		        // General options
-		        mode : "specific_textareas",
-		        theme : "advanced",
-		        editor_selector : "mceEditor",
-		        editor_deselector : "mceNoEditor",
-		        paste_text_sticky: true,
-            paste_text_sticky_default: true,
-		        plugins : "autolink,lists,spellchecker,iespell,inlinepopups,noneditable,paste",
-		        // Theme options
-		        theme_advanced_buttons1 : "bold,italic,underline,|,sub,sup,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,code,spellchecker",
-		        theme_advanced_buttons2 : "",
-		        theme_advanced_buttons3 : "",
-						theme_advanced_buttons4 : "",
-						theme_advanced_toolbar_location : "top",
-		        theme_advanced_toolbar_align : "left",
-		        theme_advanced_statusbar_location : "bottom",
-		        theme_advanced_resizing : false,
-		        // Skin options
-		        skin : "o2k7",
-		        skin_variant : "silver", 
-		        // Drop lists for link/image/media/template dialogs
-		        template_external_list_url : "js/template_list.js",
-		        external_link_list_url : "js/link_list.js",
-		        external_image_list_url : "js/image_list.js",
-		        media_external_list_url : "js/media_list.js"
-		});
-		
-		function checkPointContent(content) {
-		  var result = "";
-		  var firstImage = content.indexOf("<img");
-		  if (firstImage == 0) {
-		    result = "";
-		  } else if (firstImage > 4) {
-		    result = "Images must be placed at the beginning of the point."
-	    } else {
-		    var secondImage = content.indexOf("<img", firstImage+1);
-		    if (secondImage > 0) {
-	        result = "Cannot have more than one image in the point."
-		    }
-		  }
-		  return result;
-		}
-		function getWindowHeight() {
-		  var height;
-
-      if (typeof(window.innerHeight) == "number") //non-IE
-          height = window.innerHeight;
-      else if (document.documentElement && document.documentElement.clientHeight) //IE 6+ strict mode
-          height = document.documentElement.clientHeight;
-      else if (document.body && document.body.clientHeight) //IE 4 compatible / IE quirks mode
-          height = document.body.clientHeight;
-          
-      return height;
-		}
-		function toDialogFormHeight(id, minus) {
-        var height;
-        height = $(this).height( $('#dialogForm').closest('.ui-dialog').height());
-        document.getElementById(id).style.height = (height - minus) + "px";           
-    }   
+  <head>
+    <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
+    <link type="text/css" href="/static/css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+    <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>	
+	<script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
+    <script type="text/javascript" src="//use.typekit.net/ncu0grl.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <script type="text/javascript" src="/static/js/base.js"></script>
     
-    function positionEditDialog(diff) {
-      element = $("#dialogForm");
-      element.dialog('option', 'height', getWindowHeight() * .9);
-      element.dialog('option', 'width', $(window).width()*.7);
-      element.dialog('option', 'position', 'center');
-      toDialogFormHeight('frmEditFields', diff);
-      toDialogFormHeight('editFields', diff);
-      toDialogFormHeight('textEdit_tbl', diff);
-      toDialogFormHeight('textEdit_ifr', diff);
-    }
-
-		</script>
 	</head>
 	<body>
   {% block mainPageContent %} {% endblock %}
 	<div id="header"> 
 		<div class="logoArea"><a href="/"><img id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
-		Version Alpha
 		</div>
-		<div class="userArea">		
-		{% if user %}
-      <a href="{{ user.link }}"><img id="avatar" src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
-      <a href="/logout" class="btn">Logout</a>
+
+		<div class="userArea">
+        <a id="CreatePoint" {% if not user %} class="hidden"{% endif %} alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>	
+		{% if user %}  
+          {% include 'pointDialog.html' %}
+          <div class="userControls">
+          <a href="{{ user.link }}"><img id="avatar" src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
+          <a href="/logout" class="btn">Logout</a>         
 		{% else %}
+        <div class="userControls">
   		Login with
-		  <a href="/auth/facebook" class="btn"> Facebook</a><br>
-		  OR <a href="/auth/google" class="btn"> Google</a>
+		  <a href="/auth/facebook" class="btn"> Facebook </a><br>
+		  <a href="/auth/google" class="btn"> Google </a><br>
+          OR <a href="/auth/twitter" class="btn"> Twitter </a>
 		{% endif %}
+        </div>
+        <div class="clear"></div>
 		</div>
 		<div class="searchArea">
 		<input class="searchBox" type="search" placeholder="Search" results="0" />
@@ -113,15 +50,8 @@
 		</span>
 		<span class="tagline ">Collecting the best explanations of why</span>
     	<span class="footerCopyright ">(c) Whysaurus 2012 <br> All Rights Reserved</span>
+        <a id="Suggestions" alt="Suggestions" src="/static/img/icon_suggestions_grey_82px.png" href="/contact"></a>
 		<div class="clear"></div>
 	</div>
-	<script>
-	$(".searchBox", $(".searchArea")).keyup(function(event){
-	    if(event.keyCode == 13){
-	        window.location.href="/search?searchTerms="+$(".searchBox", $(".searchArea")).val();
-	    }
-	});
-	
-	</script>
 	</body>
 </html>

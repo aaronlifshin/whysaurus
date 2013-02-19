@@ -8,12 +8,12 @@
     <h2>Table of Contents</h2>
     
     <ol>
-    <li><a href="#basics">The Basics</a></li>
-    <li><a href="#nutsAndBolts">Nuts and Bolts</a></li>
-    <li><a href="#best">Best Practices</a></li>
+    <li><a id="basicsLink" href="#basics">The Basics</a></li>
+    <li><a id="nutsAndBoltsLink" href="#nutsAndBolts">Nuts and Bolts</a></li>
+    <li><a id="bestLink" href="#best">Best Practices</a></li>
     </ol>
 
-<h2><a name="basics">The Basics</a></h2>
+<h2><a id="basics">The Basics</a></h2>
 
 <h3>What is Whysaurus?</h3>
 <p>Whysaurus is a tool to explain ideas by dividing them into bite-size points. Each point can be rated individually through voting and commenting, and each point can be supported by other points.</p> 
@@ -74,7 +74,7 @@ Dinosaurs are awesome.
 
 
 
-<h2><a name="nutsAndBolts">Nuts and Bolts</a></h2>
+<h2><a id="nutsAndBolts">Nuts and Bolts</a></h2>
 
 <h3>How is a point's score calculated?</h3>
 A point's score = the number of its up-votes - the number of its downvotes.
@@ -99,7 +99,7 @@ You are able to delete a point if it satisfies two conditions:
 1. You created it
 2. No other user besides you has edited it yet
 
-<h2><a name="best">Best Practices</a></h2>
+<h2><a id="best">Best Practices</a></h2>
 
 <h3>What is this section?</h3>
 This goal of this page is to collect guidelines for how Whysaurus can be used most effectively. It is very much a work-in-progress. If you have suggestion for how to improve this page we'd love to hear it! Leave us a note here.
@@ -127,6 +127,36 @@ Please send us a suggestion here.
 
   </div>
 </div>
+<script>
+
+function goToAnchor(targetAnchor) {
+  var offset = $("#" + targetAnchor).offset();
+  var scrollto = offset.top - 52; // fixed_top_bar_height = 52px
+  $('html, body').animate({scrollTop:scrollto}, 0);
+};
+
+$(document).ready(function() {
+
+  $("#basicsLink").click(function() {
+    goToAnchor("basics");
+    return false;
+  });
+  
+  $("#nutsAndBoltsLink").click(function() {
+    goToAnchor("nutsAndBolts");  
+    return false;
+  });
+  
+  $("#bestLink").click(function() {
+    goToAnchor("best");
+    return false;
+  });  
+});
+              
+
+
+</script>
+
 {% endblock %}
 
 

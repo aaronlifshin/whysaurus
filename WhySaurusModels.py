@@ -149,8 +149,13 @@ class PointRoot(ndb.Model):
   @staticmethod
   def getRecentCurrentPoints():    
     pointsQuery = Point.gql("WHERE current = TRUE ORDER BY dateEdited DESC")
-    return pointsQuery.fetch(50)
+    return pointsQuery.fetch(10)
 
+  @staticmethod
+  def getTopRatedPoints():    
+    pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
+    return pointsQuery.fetch(50)
+  
   def delete(self, user):
     if not user.admin:
       return False, 'Not authorized'
@@ -408,6 +413,7 @@ class Point(ndb.Model):
               search.NumberField(name='voteTotal',value=self.voteTotal )
               ]
     d = search.Document(doc_id=self.url, fields=fields)
-    index.add(d)
+    index.put(d)
+    
 
     

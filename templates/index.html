@@ -2,75 +2,12 @@
 
 {% block mainPageContent %}
 
-  <div id="content">	  
-		{% if user %}
-			<button id="CreatePoint">MAKE A POINT</button>
-      {% include 'pointDialog.html' %}
-		{% endif %}
-
-		
-		<div id="leftColumn">
-		ALL POINTS
-		{% for point in points %} 
-		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">
-					<span
-						{% if point.voteTotal >= thresholds.green %}
-							class="greenScore"
-						{% else %}	
-							{% if point.voteTotal <= thresholds.red %}
-								class="redScore"
-							{% else %}
-								class="yellowScore"
-							{% endif %}	
-						{% endif %}					
-					>{{ point.voteTotal }}</span>
-					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-					<div class="caseSummaryText">{{ point.content|safe }}
-					    {% if point.imageURL and point.imageURL.strip %}
-						<img class="listDisplay" src={{ point.imageURL }} />
-						{% endif %}
-					</div>
-					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
-			</div>
-		{% endfor %}
-    </div>
-    <div id="rightColumn">
-		<div class="preamble">
-      RECENTLY VIEWED
-		</div>
-		{% for point in recentlyViewed %} 
-		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">
-						<span
-							{% if point.voteTotal >= thresholds.green %}
-								class="greenScore"
-							{% else %}	
-								{% if point.voteTotal <= thresholds.red %}
-									class="redScore"
-								{% else %}
-									class="yellowScore"
-								{% endif %}	
-							{% endif %}					
-						>{{ point.voteTotal }}</span> 
-					- <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-					<div class="caseSummaryText">
-											
-						{{ point.content|safe }}
-
-					</div>
-					{% if point.imageURL and point.imageURL.strip %}
-						<img class="listDisplay" src={{ point.imageURL }} />
-						{% endif %}
-					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
-			</div>
-		{% endfor %}
-    </div>
-    <div id="middleColumn">
-		EDITORS PICKS
+  <div id="content">	  		
+	<div id="leftColumn">
+		<div class="columnTitle">Editor's Picks</div>
 		{% for point in editorsPicks %} 
-		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="caseSummaryTitle">
+		  <div class="boxedElement dropShadow" id="point_{{point.url}}">	
+					<div class="pointSummaryTitle bigTitle">
 						<span
 							{% if point.voteTotal >= thresholds.green %}
 								class="greenScore"
@@ -82,86 +19,99 @@
 								{% endif %}	
 							{% endif %}					
 						>{{ point.voteTotal }}</span>				
-					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-					<div class="caseSummaryText">{{ point.content|safe }}</div>
-					<button id="editPoint_{{point.url}}" onClick="javascript:editPoint('{{point.url}}');">WHY</button>
+					 <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="pointSummaryText">{{ point.content|safe }}</div>
+					<a class="navWhy" id="editPoint_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a>
 			</div>
 		{% endfor %}
     </div>
+    
+    <div id="middleColumn">
+    	<div class="columnTitle">Highest Rated</div>
+		{% for point in topPoints %} 
+		  <div class="boxedElement dropShadow" id="point_{{point.url}}">	
+					<div class="pointSummaryTitle bigTitle">
+						<span
+							{% if point.voteTotal >= thresholds.green %}
+								class="greenScore"
+							{% else %}	
+								{% if point.voteTotal <= thresholds.red %}
+									class="redScore"
+								{% else %}
+									class="yellowScore"
+								{% endif %}	
+							{% endif %}					
+						>{{ point.voteTotal }}</span> 
+					<a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
+					<div class="pointSummaryText">		
+						{{ point.content|safe }}
+					</div>
+					{% if point.imageURL and point.imageURL.strip %}
+						<img class="listDisplay" src={{ point.imageURL }} />
+						{% endif %}
+                   <a class="navWhy" id="editPoint_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a> 
+			</div>
+		{% endfor %}
+    </div>
+    <div id="rightColumn">
+    	<div class="preamble">
+    	<div class="columnTitle">New</div>
+    	</div>
+		{% for point in newPoints %} 
+		  <div class="boxedElement" id="point_{{point.url}}">	
+				<div class="pointSummaryTitle mediumTitle">
+				<span
+					{% if point.voteTotal >= thresholds.green %}
+						class="greenScore"
+					{% else %}	
+						{% if point.voteTotal <= thresholds.red %}
+							class="redScore"
+						{% else %}
+							class="yellowScore"
+						{% endif %}	
+					{% endif %}					
+				>{{ point.voteTotal }}</span>
+				<a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+				</div>
+				<a class="navWhy" id="editPoint_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a>
+			</div>
+		{% endfor %}
+		
+		<div class="preamble">
+      	<div class="columnTitle">Recently Viewed</div>
+		</div>
+		{% if not user %}
+			Sign in and check out some points
+		{% else %}
+			{% if not recentlyViewed %}
+				Check out some points
+			{% endif %}
+		{% endif %}
+		{% for point in recentlyViewed %} 
+		  <div class="boxedElement" id="point_{{point.url}}">	
+			<div class="pointSummaryTitle mediumTitle">
+				<span
+						{% if point.voteTotal >= thresholds.green %}
+							class="greenScore"
+						{% else %}	
+							{% if point.voteTotal <= thresholds.red %}
+								class="redScore"
+							{% else %}
+								class="yellowScore"
+							{% endif %}	
+						{% endif %}					
+					>{{ point.voteTotal }}</span> 
+				<a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+				</div>
+				<a class="navWhy" id="editPoint_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a>
+			</div>
+		{% endfor %}
+    </div>
+    
     <div id="columnSupporter">
+    
   	</div>
-		<hr>
 	</div>
 	
-	<script>
-	
-		function newPoint() {
-			var ed = tinyMCE.get('textEdit');
-			$.ajaxSetup({
-				   url: "/newPoint",
-			   global: false,
-			   type: "POST",
-				 data: {
-					'content': ed.getContent(),
-					'title': $('textarea.titleEdit').val(),			
-					'imageURL':$('input[name=imageURL]').val(),
-          'imageAuthor':$('input[name=imageAuthor]').val(),
-          'imageDescription': $('input[name=imageDescription]').val()			
-					},
-          success: function(data){ 
-            var ed = tinyMCE.get('textEdit');	
-            // Data comes as ready HTML to be inserted 
-            $(data).insertAfter($('.preamble'));
-      			$( "[id^=editPoint]" ).button();
-						// $( "[id^=deletePoint]" ).button();
-      			$('textarea.titleEdit').val('');
-  					ed.setContent("");
-  					$('input[name=imageURL]').val('');
-  				  $('input[name=imageAuthor]').val('');
-  			    $('input[name=imageDescription]').val('');
-          }
-				});
-				$.ajax();
-		}
-				
-		function editPoint(pointUrl){
-			window.location.href="/point/" + pointUrl
-		}
-		
-		function openNewPointDialog() {	
-        document.getElementById("textEdit_tbl").style.width='100%';
-        document.getElementById("textEdit_ifr").style.width='100%';
-        document.getElementById("textEdit_tbl").style.height='100%';
-        document.getElementById("textEdit_ifr").style.height='100%';
-				var dialogButtons = {};
-				dialogButtons["Create Point"] = function() {
-				  var checkContentError = checkPointContent(tinyMCE.get('textEdit').getContent());
-				  if (checkContentError != "") {
-				    alert(checkContentError);
-				  } else {
-  				  newPoint();
-  				  $( this ).dialog( "close" )
-				  }
-				};
-				dialogButtons["Cancel"] = function() {	
-				  var edSummary = tinyMCE.get('textEdit');
-					edSummary.setContent('');
-					$('textarea.titleEdit').val('');
-				  $( this ).dialog( "close" );
-			  };
-				$( "#dialogForm" ).dialog({title:"New Point", buttons: dialogButtons});
-				$( "#dialogForm" ).dialog( "open" );
-			}
-
-		$( "#CreatePoint" )
-			.button()
-			.click(function() {
-				openNewPointDialog();
-			});
-
-		$( "[id^=deletePoint]" ).button();
-		$( "[id^=editPoint]" ).button();
-		$(" input:submit" ).button();
-	</script>
 	
 {% endblock %}

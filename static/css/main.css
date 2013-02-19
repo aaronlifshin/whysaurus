@@ -11,13 +11,43 @@ div#header{
 	top:0;
 	left:0;
 	width:100%;
-	height:60px;
+	height:52px;
 	background:#EFEFEF;
 	color:black;
 	z-index: 5;
 }
 
-.searchArea {margin:0 200px;min-width:200px;}
+a#CreatePoint {
+	display: block;
+	position:relative;
+ 	width: 118px;
+ 	height: 27px;
+	background:transparent url('/static/img/button_makeAPoint_grey_118.png') center top no-repeat;
+	top:9px;
+}
+
+.hidden {
+	visibility:hidden;
+}
+
+a#CreatePoint:hover {
+   background-image: url('/static/img/button_makeAPoint_black_118.png');
+}
+
+a#Suggestions {
+	position:fixed;
+ 	width: 82px;
+ 	height: 83px;
+	right: 0px;
+	bottom: 50px;
+	background:transparent url('/static/img/icon_suggestions_grey_82px.png') center top no-repeat;
+}
+
+a#Suggestions:hover {
+   background-image: url('/static/img/icon_suggestions_black_82px.png');
+}
+
+.searchArea {margin-left:175px; margin-right:319px; min-width:200px;}
 
 .searchBox {
 	position:relative; 
@@ -25,16 +55,16 @@ div#header{
     margin-top: 20px;  
 }
 
-.logoArea {width:200px; float:left; }
+.logoArea {width:159px; float:left; }
 img#logoImage{
 	vertical-align: middle;
-	height:54px;
-	width:167px;
+	height:52px;
+	width:159px;
 	z-index:1;
 }
 
 .userArea {
-	width:200px;
+	width:350px;
 	float:right;
 	text-align:right;
 	margin-top:5px; 
@@ -42,9 +72,15 @@ img#logoImage{
 	margin-right:5px; 
 }
 
+.userControls {
+	position:relative;
+	top:-29px;
+	margin-left: 150px;
+	
+}
 img#avatar{
   vertical-align: middle;
-  height:4em;
+  height:45px;
   margin-right:0.5em;
   margin-bottom:0.5em;
 }
@@ -62,12 +98,17 @@ div#footer{
 }
 
 .footerCopyright {float:right; color:#58595B;font-size:0.8em;}
-.footerMenu {margin-left: 40px; }
+.footerMenu {
+	margin-left: 40px;
+	font-size:1.6em;
+	font-weight:bold;
+	font-family: "nimbus-sans-condensed",sans-serif;
+}
 .footerMenu a {margin-left: 40px; }
 .tagline { margin-left: 40px;font-style:italic;  }
 .footerMenu a:link {color:white; text-decoration:none;}     /* unvisited link */
 .footerMenu a:visited {color:white; text-decoration:none;}  /* visited link */
-.footerMenu a:hover {color:teal; text-decoration:none;}  /* visited link */
+.footerMenu a:hover {color:#00ADEE; text-decoration:none;}  /* visited link */
 
 @media screen{
 	body>div#header{
@@ -169,7 +210,7 @@ div#WAScaseSummary{
 
 /*
 THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
-.caseSummaryText{
+.pointSummaryText{
 	overflow:hidden;
 	height:auto;
 	width:auto;
@@ -178,7 +219,7 @@ THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 	font-family: georgia, garamond, serif;
 }
 
-.caseSummaryText p{
+.pointSummaryText p{
 	auto;
 	height:auto;
 	width:auto;
@@ -186,12 +227,49 @@ THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 }
 */
 
-.caseSummaryText{
+.pointSummaryText{
 	margin-bottom:0.5em; 
 	margin-top:0.2em;
 	overflow:hidden;
 	max-height:8em;
 	font-family: georgia, garamond, serif;
+	font-size:0.95em;
+	color:#6D6E70;
+	
+}
+
+.bigTitle{
+	font-size:1.6em;
+}
+	
+.mediumTitle{
+	font-size:1.5em;
+}
+
+.columnTitle{
+	font-family: georgia, garamond, serif;
+	font-size:1.3em;
+	font-style:italic;
+	font-weight:bold;
+	color:#6D6E70;
+}
+.pointSummaryTitle {	
+	font-weight:bold;
+	font-family: "nimbus-sans-condensed",sans-serif;
+}
+
+a.navWhy {
+	display: block;
+	position:relative;
+	width:46px;
+	height:34px;	
+	border-style:none;
+	left:240px;
+	background:transparent url('/static/img/arrow_why_45_grey.png') center top no-repeat;
+}
+
+a.navWhy:hover {
+   background-image: url('/static/img/arrow_why_45_black.png');
 }
 
 
@@ -213,22 +291,32 @@ THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 
 .editCaseButton {margin-bottom: 3px;margin-left: 5px;}
 .rightButton {margin-left: 125px; margin-top: -25px}
-.boxedElement { position: relative; margin-bottom: 10px; padding:10px;
+.boxedElement { 
+	position: relative; 
+	margin-bottom: 10px; 
+	padding:10px;
 	background: #fff; 
-	-webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03) inset, 0 0 0 1px rgba(0,0,0,0.15); 
-	-moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03) inset, 0 0 0 1px rgba(0,0,0,0.15); 
-	box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03) inset, 0 0 0 1px rgba(0,0,0,0.15); 
+	border-style:solid;
+	border-width:1px;
+	border-color:#B9BBBD;
 	z-index: 3;
-  word-wrap: break-word;
+  	word-wrap: break-word;
 }
 
+.dropShadow {
+	-webkit-box-shadow: -2px 2px 5px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    -2px 2px 5px rgba(50, 50, 50, 0.75);
+	box-shadow:         -2px 2px 5px rgba(50, 50, 50, 0.75);
+}
 
 .caseSummarySaveToggle {float:left}
 .caseSummaryEditToggle {float:left}
 
 
 .pointSaveToggle {float:left}
-/*.pointTitle{font-size:1.2em;font-style:italic}
+
+
+
 .pointSummaryAuthor{font-size:0.8em;font-style:italic;position:absolute;bottom:10px;right:10px}*/
 .pointTextEdit {width:100%;}
 .pointTitleEdit {width:100%;}
@@ -303,14 +391,14 @@ THREE COLUMN LAYOUT STARTS HERE
 }  
 
 #middleColumn {
-	width: 294px; /* Account for margins + border values */
+	width: 290px; /* Account for margins + border values */
 	float: left;
 	padding: 5px 15px;
 	margin: 0px 5px 5px 5px;
 }
 
 #rightColumn {
-	width: 270px;
+	width: 290px;
 	padding: 5px 15px;
 	float: left;
 }

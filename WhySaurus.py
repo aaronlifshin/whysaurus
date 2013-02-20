@@ -215,8 +215,6 @@ class MainPage(AuthHandler):
       'editorsPicks':editorsPicksPoints,
       'recentlyViewed':recentlyViewedPoints,
       'user':user,
-      'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-      'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
       'thresholds' : constants.SCORETHRESHOLDS
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
@@ -226,24 +224,22 @@ class MainPage(AuthHandler):
 class NewPoint(AuthHandler):
   def post(self):
     user = self.current_user
+    resultJSON = json.dumps({'result':False, 'error':'Not authorized'})
     if user:
       newPoint, newPointRoot = Point.create(
         title=self.request.get('title'),
         content=self.request.get('content'), 
+        summaryText=self.request.get('plainText'),
         user=user,
         imageURL=self.request.get('imageURL'),
         imageAuthor=self.request.get('imageAuthor'),
         imageDescription=self.request.get('imageDescription'))
-      template_values = {
-        'point': newPoint,
-        'user' : user,
-        'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
-      }
-      path = os.path.join(os.path.dirname(__file__), 'templates/newpoint.html')
-      self.response.out.write(template.render(path, template_values))
-    else:
-      self.response.out.write('Need to be logged in')
+      if newPoint:
+        resultJSON = json.dumps({'result':True, 'pointURL':newPoint.url })
+      else:
+        resultJSON = json.dumps({'result':False, 'error':'Failed to create point.' })
+    self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+    self.response.out.write(resultJSON)
 
 
 class DeletePoint(AuthHandler):
@@ -297,8 +293,6 @@ class ViewPoint(AuthHandler):
       	'user': user,
       	'devInt': devInt, # For Disqus
       	'voteValue': voteValue,
-      	'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-      	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
         'thresholds' : constants.SCORETHRESHOLDS
       }
       path = os.path.join(os.path.dirname(__file__), 'templates/point.html')
@@ -314,6 +308,7 @@ class EditPoint(AuthHandler):
     newVersion = oldPoint.update(
       newTitle=self.request.get('title'), 
       newContent=self.request.get('content'),
+      newSummaryText=self.request.get('plainText'),
       user=self.current_user,
       imageURL=self.request.get('imageURL'),
       imageAuthor=self.request.get('imageAuthor'),
@@ -383,8 +378,6 @@ class SelectSupportingPoint(AuthHandler):
       'points': recentlyViewedPoints,
       'parentPoint': oldPoint,
 			'user' : user,
-			'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-    	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID,
       'thresholds' : constants.SCORETHRESHOLDS
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/selectSupportingPoint.html')
@@ -413,8 +406,9 @@ class AddSupportingPoint(AuthHandler):
     
     if user:
       supportingPoint, supportingPointRoot = Point.create(
-        self.request.get('title'), 
-        self.request.get('content'),
+        newTitle=self.request.get('title'), 
+        newContent=self.request.get('content'),
+        newSummaryText=self.request.get('plainText'),
         user=user,        
         pointSupported=oldPoint.key.parent(),
         imageURL=self.request.get('imageURL'),
@@ -485,9 +479,7 @@ class TestPage(AuthHandler):
     user = self.current_user
     template_values = {
       'user' : user,
-      'dv': django.VERSION,
-      'FACEBOOK_CHANNEL_URL':constants.FACEBOOK_CHANNEL_URL,
-    	'FACEBOOK_APP_ID':constants.FACEBOOK_APP_ID
+      'dv': django.VERSION
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/test.html')
     self.response.out.write(template.render(path, template_values))

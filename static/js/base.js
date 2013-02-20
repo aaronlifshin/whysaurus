@@ -1,21 +1,4 @@
 
-	
-	function checkPointContent(content) {
-	  var result = "";
-	  var firstImage = content.indexOf("<img");
-	  if (firstImage == 0) {
-	    result = "";
-	  } else if (firstImage > 4) {
-	    result = "Images must be placed at the beginning of the point."
-    } else {
-	    var secondImage = content.indexOf("<img", firstImage+1);
-	    if (secondImage > 0) {
-        result = "Cannot have more than one image in the point."
-	    }
-	  }
-	  return result;
-	}
-	
 	function getWindowHeight() {
 		  var height;
 
@@ -48,29 +31,27 @@
     }
   	
 		function newPoint() {
-			var ed = tinyMCE.get('textEdit');
+			var ed = tinyMCE.get('textEdit');		
+			var text = tinyMCE.activeEditor.getBody().textContent;
 			$.ajaxSetup({
-				   url: "/newPoint",
+				 url: "/newPoint",
 			   global: false,
 			   type: "POST",
 				 data: {
 					'content': ed.getContent(),
+					'plainText': text.substring(0,250),
 					'title': $('textarea.titleEdit').val(),			
 					'imageURL':$('input[name=imageURL]').val(),
           'imageAuthor':$('input[name=imageAuthor]').val(),
           'imageDescription': $('input[name=imageDescription]').val()			
 					},
           success: function(data){ 
-            var ed = tinyMCE.get('textEdit');	
-            // Data comes as ready HTML to be inserted 
-            $(data).insertAfter($('.preamble'));
-      			$( "[id^=editPoint]" ).button();
-						// $( "[id^=deletePoint]" ).button();
-      			$('textarea.titleEdit').val('');
-  					ed.setContent("");
-  					$('input[name=imageURL]').val('');
-  				  $('input[name=imageAuthor]').val('');
-  			    $('input[name=imageDescription]').val('');
+            obj = JSON.parse(data);
+            if (obj.result == true) {
+              window.location.href="/point/" + obj.pointURL;
+            } else {
+              alert(obj.result);
+            }
           }
 				});
 				$.ajax();
@@ -83,13 +64,8 @@
 	        document.getElementById("textEdit_ifr").style.height='100%';
 			var dialogButtons = {};
 			dialogButtons["Create Point"] = function() {
-			  var checkContentError = checkPointContent(tinyMCE.get('textEdit').getContent());
-			  if (checkContentError != "") {
-			    alert(checkContentError);
-			  } else {
 			  newPoint();
-			  $( this ).dialog( "close" )
-			  }
+			  $( this ).dialog( "close" );
 			};
 			
 			dialogButtons["Cancel"] = function() {	

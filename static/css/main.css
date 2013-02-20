@@ -30,6 +30,10 @@ a#CreatePoint {
 	visibility:hidden;
 }
 
+.noDisplay {
+	display:none;
+}
+
 a#CreatePoint:hover {
    background-image: url('/static/img/button_makeAPoint_black_118.png');
 }
@@ -230,8 +234,6 @@ THIS WORKED IN THE TEST PAGE TO FLOAT IMAGE LEFT OF CONTENT
 .pointSummaryText{
 	margin-bottom:0.5em; 
 	margin-top:0.2em;
-	overflow:hidden;
-	max-height:8em;
 	font-family: georgia, garamond, serif;
 	font-size:0.95em;
 	color:#6D6E70;
@@ -279,8 +281,8 @@ a.navWhy:hover {
 .mainPointInfo{font-size:0.8em;font-style:italic;position:relative;bottom:10px;left:10px;list-style: none;font-weight:bold}
 .caseVersion:before{content:"Version: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointVersion:before{content:"Version: ";font-size:inherit;font-style:inherit;font-weight:normal}
-.caseAuthor:before{content:"Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
-.mainPointAuthor:before{content:"Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.caseAuthor:before{content:"Last Edited By: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointAuthor:before{content:"Last Edited By: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .caseDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointViewCount:before{content:"ViewCount: ";font-size:inherit;font-style:inherit;font-weight:normal}

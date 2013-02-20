@@ -22,7 +22,11 @@
 		{% if user %}  
           {% include 'pointDialog.html' %}
           <div class="userControls">
-          <a href="{{ user.link }}"><img id="avatar" src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
+          {% if user.avatar_url %} 
+            <a href="{{ user.link }}"><img id="avatar" src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
+          {% else %}
+            <a href="{{ user.link }}"><img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>{{ user.name|escape }}</a>
+          {% endif %}
           <a href="/logout" class="btn">Logout</a>         
 		{% else %}
         <div class="userControls">

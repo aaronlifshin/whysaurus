@@ -20,7 +20,7 @@
 							{% endif %}					
 						>{{ point.voteTotal }}</span>				
 					 <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
-					<div class="pointSummaryText">{{ point.content|safe }}</div>
+					<div class="pointSummaryText">{{ point.summaryText }}</div>
 					<a class="navWhy" id="editPoint_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a>
 			</div>
 		{% endfor %}
@@ -44,7 +44,7 @@
 						>{{ point.voteTotal }}</span> 
 					<a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="pointSummaryText">		
-						{{ point.content|safe }}
+						{{ point.summaryText }}
 					</div>
 					{% if point.imageURL and point.imageURL.strip %}
 						<img class="listDisplay" src={{ point.imageURL }} />

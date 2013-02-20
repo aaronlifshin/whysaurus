@@ -189,6 +189,7 @@ class Point(ndb.Model):
   authorName = ndb.StringProperty()
   authorID = ndb.StringProperty()
   content = ndb.TextProperty()
+  summaryText = ndb.TextProperty() # This is Text not String because I do not want it indexed
   title = ndb.StringProperty()
   dateEdited = ndb.DateTimeProperty(auto_now_add=True)
   version = ndb.IntegerProperty()
@@ -252,7 +253,7 @@ class Point(ndb.Model):
     return newUrl
   
   @staticmethod
-  def create(title, content, user, pointSupported = None, imageURL = None, imageAuthor = None, imageDescription = None):
+  def create(title, content, summaryText, user, pointSupported = None, imageURL = None, imageAuthor = None, imageDescription = None):
     newUrl = Point.makeUrl(title)
     pointRoot = PointRoot()
     pointRoot.url = newUrl
@@ -267,6 +268,7 @@ class Point(ndb.Model):
     point.title = title
     point.url = pointRoot.url			
     point.content = content
+    point.summaryText = summaryText if (len(summaryText) != 250) else summaryText + '...'
     point.authorName = user.name
     point.version = 1
     point.current = True
@@ -284,7 +286,7 @@ class Point(ndb.Model):
     return point, pointRoot
   
   # newSupportingPoint is the PointRoot of the supporting point
-  def update(self, newTitle = None, newContent = None, newSupportingPoint=None, user = None,
+  def update(self, newTitle = None, newContent = None, newSummaryText=None, newSupportingPoint=None, user = None,
              imageURL = None, imageAuthor = None, imageDescription = None):
     if user:
       newPoint = Point(parent=self.key.parent()) # All versions ancestors of the caseRoot
@@ -299,6 +301,11 @@ class Point(ndb.Model):
       else:
         newPoint.content = self.content
 
+      if newSummaryText:
+        newPoint.summaryText = newSummaryText if (len(newSummaryText) != 250) else newSummaryText + '...'
+      else:
+        newPoint.summaryText = self.summaryText
+        
       newPoint.authorName = user.name      
       if newSupportingPoint:
         if newSupportingPoint.key in self.supportingPoints:  

@@ -86,12 +86,14 @@
 									      
 	function addPoint(){
 		var ed = tinyMCE.get('textEdit');
+        var text = tinyMCE.activeEditor.getBody().textContent;
 		$.ajaxSetup({
 			url: "/addSupportingPoint",
 			global: false,
 			type: "POST",
 			data: {
 				'content': ed.getContent(),
+                'plainText': text.substring(0,500),
 				'title': $('textarea.titleEdit').val(),
 				'pointUrl': "{{ parentPoint.url }}"
 			},

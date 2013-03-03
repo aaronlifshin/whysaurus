@@ -406,9 +406,9 @@ class AddSupportingPoint(AuthHandler):
     
     if user:
       supportingPoint, supportingPointRoot = Point.create(
-        newTitle=self.request.get('title'), 
-        newContent=self.request.get('content'),
-        newSummaryText=self.request.get('plainText'),
+        title=self.request.get('title'), 
+        content=self.request.get('content'),
+        summaryText=self.request.get('plainText'),
         user=user,        
         pointSupported=oldPoint.key.parent(),
         imageURL=self.request.get('imageURL'),
@@ -454,6 +454,7 @@ class Search(AuthHandler):
   def get(self):
     searchResults = Point.search(self.request.get('searchTerms'))
     template_values = {
+      'user': self.current_user,
       'searchResults' : searchResults,
       'searchString': self.request.get('searchTerms'),
       'thresholds' : constants.SCORETHRESHOLDS
@@ -488,17 +489,17 @@ class TestPage(AuthHandler):
 class About(AuthHandler):
   def get(self):
     path = os.path.join(os.path.dirname(__file__), 'templates/about.html')
-    self.response.out.write(template.render(path, {}))   
+    self.response.out.write(template.render(path, {'user' : self.current_user}))   
         
 class Help(AuthHandler):
   def get(self):
     path = os.path.join(os.path.dirname(__file__), 'templates/help.html')
-    self.response.out.write(template.render(path, {}))     
+    self.response.out.write(template.render(path, {'user' : self.current_user}))     
         
 class Contact(AuthHandler):
   def get(self):
     path = os.path.join(os.path.dirname(__file__), 'templates/contact.html')
-    self.response.out.write(template.render(path, {}))   
+    self.response.out.write(template.render(path, {'user' : self.current_user}))   
 
 class ContactSend(AuthHandler):
   def post(self):

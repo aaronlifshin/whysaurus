@@ -1,62 +1,77 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.css" />
-    <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
-    <link type="text/css" href="/static/css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/static/css/new.css" rel="stylesheet" media="screen">
+    <link href="/static/css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
     <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>	
 	<script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
     <script type="text/javascript" src="//use.typekit.net/ncu0grl.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script type="text/javascript" src="/static/js/base.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
     
   </head>
-	<body>
-  {% block mainPageContent %} {% endblock %}
-	<div id="header"> 
-		<div class="logoArea"><a href="/"><img id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
-		</div>
+  <body>
 
-		<div class="userArea">
-        <a id="CreatePoint" {% if not user %} class="hidden"{% endif %} alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>	
-		{% if user %}  
-          {% include 'pointDialog.html' %}
-          <div class="userControls">
-          {% if user.avatar_url %} 
-            <a href="{{ user.link }}"><img id="avatar" src="{{ user.avatar_url }}"/>{{ user.name|escape }}</a>
-          {% else %}
-            <a href="{{ user.link }}"><img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>{{ user.name|escape }}</a>
-          {% endif %}
-          <a href="/logout" class="btn">Logout</a>         
-		{% else %}
-        <div class="userControls">
-  		Login with
-		  <a href="/auth/facebook" class="btn"> Facebook </a><br>
-		  <a href="/auth/google" class="btn"> Google </a><br>
-          OR <a href="/auth/twitter" class="btn"> Twitter </a>
-		{% endif %}
+      <div id="header" class="navbar navbar-fixed-top grayBack">
+      <div class="container">
+         <div class="row">
+          <div class="span2">
+            <a href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>		
+          </div>
+          <div class="span5">
+            <form id="searchArea" method="GET" action="/search" class="navbar-form pull-left span5">
+              <input id="searchBox" type="search" name="searchTerms" placeholder="Search the Points Database..." results="0" />
+              <!-- <button type="submit" class="btn">Search</button> -->
+            </form>
+          </div>
+          <div class="span2">    
+            <a id="CreatePoint" class="{% if not user %} hide {% endif %}" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>      
+          </div>
+          <div class="span3">
+            <div class="pull-right">
+    		  {% if user %}
+                <a href="/logout" class="btn">Logout</a>
+                {% include 'pointDialog.html' %}
+                <span class="userControls username">
+                  {% if user.avatar_url %} 
+                    <a href="{{ user.link }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
+                  {% else %}
+                    <a href="{{ user.link }}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
+                  {% endif %}
+                </span>         
+    		  {% else %}
+                <div class="dropdown userControls">
+          		  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Login with <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+          		    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
+          		    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
+                      <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
+                  </ul>
+                </div>         
+    		  {% endif %} 
+            </div>
+          </div> 
         </div>
-        <div class="clear"></div>
-		</div>
-		<div class="searchArea">
-		<input class="searchBox" type="search" placeholder="Search" results="0" />
-		</div>
-		
-  	<div class="clear"></div>
+      </div>                 
 	</div>
-
-	<div id="footer"> 
-		<img id="whiteDinoImage" src="/static/img/icon_triceratops_white_47px.png"/>
-		<span class="footerMenu ">
-		<a href="/about">ABOUT</a>
-		<a href="/help">HELP</a>
-		<a href="/contact">CONTACT</a>
-		</span>
-		<span class="tagline ">Collecting the best explanations of why</span>
-    	<span class="footerCopyright ">(c) Whysaurus 2012 <br> All Rights Reserved</span>
-        <a id="Suggestions" alt="Suggestions" src="/static/img/icon_suggestions_grey_82px.png" href="/contact"></a>
-		<div class="clear"></div>
-	</div>
-	</body>
+  <div class="container">{% block mainPageContent %} {% endblock %}</div>
+      <div id="footer" class="navbar navbar-fixed-bottom"> 
+          <div class="container">
+            <div class="row">
+                <div class="span1">
+                  <img id="whiteDinoImage span1" class="pull-left" src="/static/img/icon_triceratops_white_47px.png"/>		
+                </div>
+                  <div class="span1"> <h5 class="footerLink"><a href="/about">ABOUT </a> </h5></div>
+              	  <div class="span1"> <h5 class="footerLink"><a href="/help" >HELP </a> </h5></div>
+              	  <div class="span1"> <h5 class="footerLink"> <a href="/contact" >CONTACT </a> </h5></div>
+                  <div id="tagline" class="span6">Collecting the best explanations of why</div>
+            	<div id="footerCopyright" class="span2 pull-right">(c) Whysaurus 2012 <br> All Rights Reserved</div>
+             </div>
+          </div>
+       </div>
+  </body>
 </html>

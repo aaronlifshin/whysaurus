@@ -1,0 +1,265 @@
+body {
+  padding-top: 52px;
+  padding-bottom: 50px;
+}
+
+a:visited{
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: inherit;
+	color:inherit;
+}
+
+#header{
+	height:52px;	
+	color:black;
+}
+
+.grayBack {
+	background:#EFEFEF;
+}
+
+#searchBox{
+	width:90%;
+}
+
+#footer{
+	height:50px;
+	line-height:50px;
+	background:#000000;
+	color:white;
+}
+
+
+#footer a:hover {
+	color:#00ADEE; 
+	text-decoration:none;
+}
+
+#tagline {
+	font-style: italic;
+	font-size: 1.0625em;	
+}
+
+#footerCopyright{
+	font-size: 0.5625em;
+	color:#58595B;	
+	line-height: 10px;
+}
+
+#CreatePoint {
+	display: block;
+	position:relative;
+ 	width: 118px;
+ 	height: 27px;
+	background:transparent url('/static/img/button_makeAPoint_grey_118.png') center top no-repeat;
+	top:9px;
+}
+
+#CreatePoint:hover {
+   background-image: url('/static/img/button_makeAPoint_black_118.png');
+}
+.topSpace {
+	height:50px;
+}
+.username {
+	font-style: italic;
+	font-size: 0.8750em;
+	color:black;
+}
+
+.username a {
+	color:black;
+}
+
+.boxedElement {
+	border-style:solid;
+	border-width:1px;
+	border-color:#B9BBBD;
+  	word-wrap: break-word;
+}
+
+.boxedElement H5 {
+	padding-left: 5px;
+}
+
+.pointSummaryText {
+	padding-left: 5px;
+}
+
+.columnHeading {
+	font-weight:bold;
+	font-style:italic;
+	font-size:0.9375em;
+	color:#B9BBBD;
+}
+
+.vertSpaced {
+	margin-bottom: 10px;
+}
+
+.dropShadow {
+	-webkit-box-shadow: -1px 1px 8px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow:    -1px 1px 8px rgba(50, 50, 50, 0.5);
+	box-shadow:         -1px 1px 8px rgba(50, 50, 50, 0.5);
+}
+
+.dropShadow:hover {
+	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+
+.greenScore {
+	color:#0CCF00;
+}
+
+.yellowScore {
+	color:#EBC821;
+}
+
+.redScore {
+	color:#FF000B;
+}
+
+.hugeScore{
+	font-weight:bold;
+	font-size:4.6250em;
+	font-family:"nimbus-sans-condensed",sans-serif;
+	line-height:100px;
+}
+
+.voteArea{
+	line-height:36px;
+	width:47px;
+	margin-left:18%;
+	cursor:pointer;
+	background:center top no-repeat;
+}
+
+.whiteScoreText {
+	color:white;
+	font-family:"nimbus-sans-condensed",sans-serif;
+	font-weight:bold;
+	font-size: 1.0625em;
+}
+
+
+.upArrow{
+	background-image:url('/static/img/inverse_up_arrow.png');	
+}
+
+.downArrow{
+	background-image:url('/static/img/inverse_down_arrow.png');	
+}
+
+.inactiveVote {
+	background-color:#B9BBBD; 	
+}
+
+.redVote {
+	background-color:#FF000B; 	
+}
+
+.greenVote {
+	background-color:#0CCF00; 	
+}
+
+#nonzeroSupportingPoints {
+	padding-bottom: 10px;
+}
+a.navWhy {
+	width:46px;
+	height:34px;	
+	border-style:none;
+	background:transparent url('/static/img/arrow_why_45_grey.png') center top no-repeat;
+}
+
+a.navWhy:hover {
+   background-image: url('/static/img/arrow_why_45_black.png');
+}
+
+.unlinkbutton {
+	width:46px;
+	height:34px;	
+	border-style:none;
+	background:transparent url('/static/img/icon_unlink_grey_34px.png') center top no-repeat;	
+}
+
+.unlinkbutton:hover {
+	background-image: url('/static/img/icon_unlink_red_34px.png');
+}
+	
+.mainPointContent{
+	font-size:0.9375em;
+	color:#6D6E70;
+}
+.mainPointInfo{font-size:0.8em;font-style:italic;bottom:10px;left:10px;font-weight:bold}
+.mainPointVersion:before{content:"Version: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointAuthor:before{content:"Last Edited By: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointViewCount:before{content:"ViewCount: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointImageURL:before{content:"Image URL: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointImageAuthor:before{content:"Image Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointImageDescription:before{content:"Image Description: ";font-size:inherit;font-style:inherit;font-weight:normal}
+
+img.pointDisplay{
+    float:right;
+	top: 5px;
+	right: 5px;
+	max-width: 200px;
+	max-height: 200px;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Edit point dialog stuff 
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+fieldset { padding:0; border:0; margin-top:25px;}
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+.ui-button-text {font-size:13px;}
+.ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
+.ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
+ 
+.mceEditor.textEdit { width:100% }
+.titleEdit { 
+  width:100%; 
+  height: 1.2em; 
+  resize:none;}
+.fieldEdit { 
+  display: inline;
+  overflow: hidden; 
+  float:right;
+  height: 16px;
+  padding: 2px;
+  resize:none; 
+  height:100%;
+  width:84%;
+  }
+
+.dlgLabelName{ 
+  float:left;
+  width:100px;
+  display:block;
+  background:#EFEFEF;
+  height: 100%; 
+  padding:0px;
+  margin:0px;
+  }
+.dlgField{
+  border: 1px solid; 
+  border-color:#BDC1C4;
+  background:#EFEFEF;
+  margin-top:5px;
+  width:100%; 
+  overflow:hidden; 
+  }
+#textEdit_tbl {width:100% !important;}
+#textEdit_ifr {width:100% !important;}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END Edit point dialog stuff 
+   +++++++++++++++++++++++++++++++++++++++++++++++ */

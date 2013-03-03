@@ -2,12 +2,13 @@
 
 {% block mainPageContent %}
   <div id="content">
-
-  	<div class="recentlyViewedColumn">
-		Select a point you've seen before...
+  <div class="row topSpace"></div>
+  <div class="row">       
+  	<div class="recentlyViewedColumn span4">
+		<div class="columnHeading">Select a point you've seen before...</div>
 		{% for point in points %} 
 		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="pointSummaryTitle">
+					<div class="pointSummaryTitle"><H3>
 					<span
 						{% if point.voteTotal >= thresholds.green %}
 							class="greenScore"
@@ -21,18 +22,19 @@
 					>{{ point.voteTotal }}</span>
 					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
 					<button id="selectPoint_{{point.url}}" onClick="javascript:selectPoint('{{point.url}}', '{{parentPoint.url}}');"> USE </button>
-					</div>
+					</H3>
+                    </div>
 			</div>
 		{% endfor %}
 	</div>
-	<div class="newPointColumn">
-	Or
-	<div><button id="addSupportingPoint">Make a New Point</button></div>	
+    <div class="searchColumn span4">
+        <div class="columnHeading">Or...</div>
+        <input class="searchBox" type="search" placeholder="Find a supporting point" results="0" />
+    </div>
+	<div class="newPointColumn span4">
+  	   <div class="columnHeading">Or</div>
+  	   <div><button id="addSupportingPoint">Make a New Point</button></div>	
 	</div>	
-	<div class="searchColumn">
-	Or...
-	<input class="searchBox" type="search" placeholder="Find a supporting point" results="0" />
-	</div>
   </div>
 		
 <script>
@@ -71,13 +73,8 @@
 		$('input[name=imageDescription]').val('');			
 		var dialogButtons = {};
 		dialogButtons["Add Point"] = function() {
-			var checkContentError = checkPointContent(ed.getContent());
-			if (checkContentError != "") {
-		    	alert(checkContentError);
-		  	} else {
-		    	addPoint();
-		    	$( this ).dialog( "close" );
-			}
+		    addPoint();
+		    $( this ).dialog( "close" );
 		};
 		dialogButtons["Cancel"] = function() { $( this ).dialog( "close" );};
 		$( "#dialogForm" ).dialog({title:"Add Point", buttons: dialogButtons});

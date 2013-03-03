@@ -2,15 +2,15 @@
 				
 				function toggleUnlink() {
 					if ( unlinkVisible ) {
-						$( ".whybutton" ).removeClass("ui-helper-hidden");
-						$( ".whybutton" ).show();
-						$( ".whybutton" ).button();
+						$( ".navWhy" ).removeClass("ui-helper-hidden");
+						$( ".navWhy" ).show();
+						$( ".navWhy" ).button();
 						$( ".unlinkbutton" ).addClass("ui-helper-hidden");						
 						$( ".ui-helper-hidden" ).hide();
 						$("#unlinkToggle").html('<span class="ui-button-text">Unlink</span>');
 						unlinkVisible = false;			
 					} else {
-						$( ".whybutton" ).addClass("ui-helper-hidden");
+						$( ".navWhy" ).addClass("ui-helper-hidden");
 						$( ".ui-helper-hidden" ).hide();
 						$( ".unlinkbutton" ).removeClass("ui-helper-hidden");
 						$( ".unlinkbutton" ).show();
@@ -102,33 +102,67 @@
 					$( "#dialogForm" ).dialog({title:"Edit Point", buttons: dialogButtons}	);
 					$( "#dialogForm" ).dialog( "open" );				
 				}				
-	       		
+	      
+	      function upVoteToggle(turnOn) {
+	        if (turnOn) {
+  	        $( "#upVote").removeClass("inactiveVote");
+            $( "#upVote").addClass("greenVote");	                
+	        } else {
+	          $( "#upVote").removeClass("greenVote");
+            $( "#upVote").addClass("inactiveVote");
+	        }
+	      }
+	      function downVoteToggle(turnOn) {
+	        if (turnOn) {
+	          $( "#downVote").removeClass("inactiveVote");
+            $( "#downVote").addClass("redVote");
+          } else {
+            $( "#downVote").removeClass("redVote");
+            $( "#downVote").addClass("inactiveVote");
+          }
+        }
+	      
 				function updateVoteButtonLabels(newVote){
-				  var downvoteLabel = $( "#downVote" ).button("option", "label");
-				  var upvoteLabel = $( "#upVote" ).button("option", "label");
-				            
+				  var downvoteLabel = $( "#downVote a" ).text();
+				  var upvoteLabel = $( "#upVote a" ).text();
+				  var bigScore = $( "#bigScore" ).text();
+				        
 				  if (myVote == 0 && newVote == 1) {// UPVOTE
 				    var newVal = parseInt(upvoteLabel) + 1;
-            $( "#upVote" ).button("option", "label", newVal.toString());    
+            $( "#upVote a" ).text(newVal.toString());
+            $( "#bigScore" ).text(parseInt(bigScore) + 1);
+            upVoteToggle(true);
           } else if (myVote == 0 && newVote == -1) { // DOWNVOTE   
             var newVal = parseInt(downvoteLabel) + 1;
-            $( "#downVote" ).button("option", "label", newVal.toString());    
+            $( "#downVote a" ).text(newVal.toString());
+            $( "#bigScore" ).text(parseInt(bigScore) - 1);
+            downVoteToggle(true);          
           } else if (myVote == 1  &&  newVote == 0) { // CANCEL UPVOTE
             var newVal = parseInt(upvoteLabel) - 1;
-            $( "#upVote" ).button("option", "label", newVal.toString());    
+            $( "#upVote a" ).text(newVal.toString()); 
+            $( "#bigScore" ).text(parseInt(bigScore) - 1); 
+            upVoteToggle(false);
           } else if (myVote == -1  &&  newVote == 0) { // CANCEL DOWNVOTE  
             var newVal = parseInt(downvoteLabel) - 1;
-            $( "#downVote" ).button("option", "label", newVal.toString());    
+            $( "#downVote a" ).text(newVal.toString()); 
+            $( "#bigScore" ).text(parseInt(bigScore) + 1);
+            downVoteToggle(false);
           } else if (myVote == -1  &&  newVote == 1) { // DOWN TO UP
             var newVal = parseInt(downvoteLabel) - 1;
-            $( "#downVote" ).button("option", "label", newVal.toString());
+            $( "#downVote a" ).text(newVal.toString()); 
             var newVal = parseInt(upvoteLabel) + 1;
-            $( "#upVote" ).button("option", "label", newVal.toString());            
+            $( "#upVote a" ).text(newVal.toString());
+            $( "#bigScore" ).text(parseInt(bigScore) + 2);
+            downVoteToggle(false);
+            upVoteToggle(true);
           } else if (myVote == 1  &&  newVote == -1) {// UP TO DOWN
             var newVal = parseInt(downvoteLabel) + 1;
-            $( "#downVote" ).button("option", "label", newVal.toString());
+            $( "#downVote a" ).text(newVal.toString()); 
             var newVal = parseInt(upvoteLabel) - 1;
-            $( "#upVote" ).button("option", "label", newVal.toString());
+            $( "#upVote a" ).text(newVal.toString());
+            $( "#bigScore" ).text(parseInt(bigScore) - 2);
+            upVoteToggle(false);
+            downVoteToggle(true);
           }
           myVote = newVote;
 				}
@@ -211,18 +245,16 @@ $(document).ready(function() {
 				});
 
 			$( "#upVote" )
-				.button()
 				.click(function() {
 					upVote();
 				});
-			$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
+			//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
 			$( "#downVote" )
-				.button()
 				.click(function() {
 					downVote();
 				});			
-			$('#downVote').button({ icons: {primary: 'ui-icon-down', secondary: null}});
+			//$('#downVote').button({ icons: {primary: 'ui-icon-down', secondary: null}});
 			
 			$( "#viewHistory" )
 				.button()

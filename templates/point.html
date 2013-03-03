@@ -2,35 +2,33 @@
 
 {% block mainPageContent %}
   <script type="text/javascript" src="/static/js/point.js"></script>
-  <div id="content">
-			<div class="caseSummary boxedElement">
-				{% if user %}
-					<div class="caseSummaryEditToggle editable">
-					<button id="editPoint">EDIT POINT DETAILS</button>	
-					</div>		
-				  <div class="caseHistory editable">
-					<button id="viewHistory">VIEW POINT HISTORY</button>	
-					</div>		  
-					<div class="clear"></div>
-				{% endif %}
-				
-				<div style="float: left">[
-				 	<span
-						{% if point.voteTotal >= thresholds.green %}
-							class="greenScore"
+  <div class="row topSpace"></div>
+  <div class="row">
+    <div class="boxedElement span12">
+      <div class="span1 pagination-centered">
+				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
+							greenScore
 						{% else %}	
 							{% if point.voteTotal <= thresholds.red %}
-								class="redScore"
+								redScore
 							{% else %}
-								class="yellowScore"
+								yellowScore
 							{% endif %}	
-						{% endif %}					
-					>{{ point.voteTotal }}</span>
-				]</div><div class="mainPointTitle editable">{{ point.title|escape }}</div>
+						{% endif %} hugeScore">				
+					{{ point.voteTotal }}</div>
+              {% if user %}
+                <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
+                  <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
+                </div>
+                <div class="columnHeading">vote!</div>
+                <div id="downVote" class= "voteArea downArrow whiteScoreText {% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
+                  <a alt="DownVote" src="/static/img/inverse_down_arrow.png">{{point.downVotes}}</a>
+                </div>
+              {% endif %}
+       </div>
+        <div class="pointSummary span7">
+                <div class="mainPointTitle editable"><h1>{{ point.title|escape }}</h1></div>
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
-						{% if point.imageURL and point.imageURL.strip %}
-						<img class="pointDisplay" src="{{ point.imageURL }}" />
-						{% endif %}
 				<div class="mainPointInfo">
 					<div class="mainPointVersion">{{point.version}}</div>
 					<div class="mainPointAuthor">{{ point.authorName }}</div> 
@@ -40,60 +38,86 @@
 					<div class="mainPointImageAuthor">{{point.imageAuthor}}</div>	
 					<div class="mainPointImageDescription">{{point.imageDescription}}</div>	
 				</div>				
-			{% if user %}
-			  <button id="upVote" background-image="/static/img/up-button.png">{{point.upVotes}}</button>
-			  <button id="downVote">{{point.downVotes}}</button>
-				{% if user.admin %}
-  				<button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button>	  
-				{% endif %}
-			{% endif %}
+        </div>
+        <div class="span3">            
+            {% if point.imageURL and point.imageURL.strip %}
+              <img class="pointDisplay" src="{{ point.imageURL }}" />
+            {% else %}
+              Add an image 
+            {% endif %}
+        </div>
+     </div>
+    </div>
+    <div class="row">
+      <div class="grayBack span12 boxedElement">
+        {% if user %}
+          <span class="caseSummaryEditToggle editable">
+          <button id="editPoint">EDIT POINT DETAILS</button>  
+          </span>    
+          <span class="caseHistory editable">
+          <button id="viewHistory">VIEW POINT HISTORY</button>  
+          </span>      
+          {% if user.admin %}
+                 <span> <button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button></span>    
+          {% endif %}          
+        {% endif %}
       </div>
+    </div>
 
-       
 
+
+
+    <div class="row">
+        <div class="span2 offset5 pagination-centered"><img src="/static/img/arrow_why_toSupportingPoints_grey_97px.png"/></div>
+    </div>
+        
 	         {% if supportingPoints %}
-               <div class="boxedElement centered" id="nonzeroSupportingPoints"> Supporting Points
-                    {% if user %}
-                      <form action="/selectSupportingPoint" method="POST" style="display: inline">
-                      <input type="hidden" name="parentPointURL" value="{{point.url}}" />
-                      <button name="linkSupportingPoint" type="submit" name="BOO">Add</button>       
-                      </form>
-                      {% if supportingPoints %}
-                        <button id="unlinkToggle" type="submit">Unlink</button>
-                      {% endif %}
-                    {% endif %}
-					{% for supportingPoint in supportingPoints %}
-					<div class="boxedElement centered" id="point_{{supportingPoint.url}}">	
-    					{% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
-						<img class="smallDisplay" src={{ supportingPoint.imageURL }} />
-						{% endif %}
-						<div class="pointSummaryTitle">
-							<span
-								{% if supportingPoint.voteTotal >= thresholds.green %}
-									class="greenScore"
-								{% else %}	
-									{% if supportingPoint.voteTotal <= thresholds.red %}
-										class="redScore"
-									{% else %}
-										class="yellowScore"
-									{% endif %}	
-								{% endif %}					
-								>{{ supportingPoint.voteTotal }}
-							</span> 
-						- <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></div>
-    					<div class="pointSummaryText">{{ supportingPoint.content|safe }}</div>
-
-    					<div class="mainPointInfo">
-  						  <div class="mainPointAuthor">{{ supportingPoint.authorName }}</div> 
-  						</div> 
-    					<a href="/point/{{supportingPoint.url}}" class="button whybutton">WHY</a>
-    					<a href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' class="button unlinkbutton" >UNLINK</a>
-    			      </div>
-					{% endfor %}
+               <div class="row columnHeading span2 offset5 pagination-centered">Supporting Points</div>
+               <div class="row boxedElement span6 offset3" id="nonzeroSupportingPoints"> 
+                  <div class="row-fluid">
+                     <div class="span11">
+                        {% if user %}
+                          <form action="/selectSupportingPoint" method="POST" style="display: inline">
+                          <input type="hidden" name="parentPointURL" value="{{point.url}}" />
+                          <button name="linkSupportingPoint" type="submit" name="BOO">Add</button>       
+                          </form>
+                          {% if supportingPoints %}
+                            <button id="unlinkToggle" type="submit">Unlink</button>
+                          {% endif %}
+                        {% endif %}
+                     </div> 
+    					{% for supportingPoint in supportingPoints %}
+        					<div class="row-fluid">
+                              <div class="span10 offset1 boxedElement" id="point_{{supportingPoint.url}}">	
+        						<div class="pointSummaryTitle span10"><H5>
+        							<span
+        								{% if supportingPoint.voteTotal >= thresholds.green %}
+        									class="greenScore"
+        								{% else %}	
+        									{% if supportingPoint.voteTotal <= thresholds.red %}
+        										class="redScore"
+        									{% else %}
+        										class="yellowScore"
+        									{% endif %}	
+        								{% endif %}					
+        								>{{ supportingPoint.voteTotal }}
+        						</span> 
+        						<a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></H5></div>
+                                {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
+                                    <img class="smallDisplay" src={{ supportingPoint.imageURL }} />
+                                {% endif %}
+            					<div>
+                                  <a class="navWhy pull-right" href="/point/{{supportingPoint.url}}" alt="Why {{supportingPoint.title|escape}}" ></a>
+                                  <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
+                                </div>
+                            </div>
+                           </div>
+					{% endfor %}  
+                  </div>
                 </div>
                 {% endif %}
                            
-                <div class="boxedElement centered {%if supportingPoints%}noDisplay{% endif %}" id="zeroSupportingPoints"> Zero Supporting Points<br>
+                <div class="row boxedElement centered {%if supportingPoints%} hide {% endif %}" id="zeroSupportingPoints"> Zero Supporting Points<br>
                    {% if user %}
                       <form action="/selectSupportingPoint" method="POST" style="display: inline">
                       <input type="hidden" name="parentPointURL" value="{{point.url}}" />
@@ -103,25 +127,25 @@
                   <div class="centered">If this point is true, add evidence to support it!</div>
                 </div>		
 
-			<div id="disqus_thread"></div>
-			<script type="text/javascript">
-			    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-			    var disqus_shortname = 'whysaurus-beta'; // required: replace example with your forum shortname
-				var disqus_developer = {{devInt}};
-				var disqus_identifier = '{{point.url}}';
-				var disqus_title = '{{point.title}}';
-					
-			    /* * * DON'T EDIT BELOW THIS LINE * * */
-			    (function() {
-			        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-			        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-			        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-			    })();
-			</script>
-
-			<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-			<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-			
+			<div id="disqus_thread" class="row">
+    			<script type="text/javascript">
+    			    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    			    var disqus_shortname = 'whysaurus-beta'; // required: replace example with your forum shortname
+    				var disqus_developer = {{devInt}};
+    				var disqus_identifier = '{{point.url}}';
+    				var disqus_title = '{{point.title}}';
+    					
+    			    /* * * DON'T EDIT BELOW THIS LINE * * */
+    			    (function() {
+    			        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    			        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    			        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    			    })();
+    			</script>
+    
+    			<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    			<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    			
 			</div>
       <script>
       var myVote = '{{voteValue}}';

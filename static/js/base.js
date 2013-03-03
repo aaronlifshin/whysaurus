@@ -113,9 +113,9 @@ function showCreatePoint() {
     });
     
     
-	$(".searchBox", $(".searchArea")).keyup(function(event){
+	$("#searchBox", $("#searchArea")).keyup(function(event){
     if(event.keyCode == 13){
-        window.location.href="/search?searchTerms="+$(".searchBox", $(".searchArea")).val();
+        window.location.href="/search?searchTerms="+$("#searchBox", $("#searchArea")).val();
     }
 	});
 	
@@ -139,6 +139,7 @@ function showCreatePoint() {
 
   window.onload = function() {positionEditDialog(500); };
   window.onresize = function() {positionEditDialog(500); };
+  
 });
 
 	

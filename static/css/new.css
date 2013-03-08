@@ -20,9 +20,54 @@ a:hover{
 	background:#EFEFEF;
 }
 
+#searchArea{
+	height:52px;
+	width:100%;
+	position:relative; /* For placing the magnifying glass */
+}
+
 #searchBox{
 	width:90%;
+	margin-top:10px;
+	padding-right:40px;
 }
+
+#searchArea .searchIcon {
+	position: absolute;
+	top: 17px;
+	right: 10px;
+	height: 25px;
+	width:25px;
+	background-image: url("/static/img/icon_magnifyingGlass_grey_19px.png");
+	background-repeat: no-repeat;
+}
+
+#searchArea .searchIcon:hover  {
+    background-image: url("/static/img/icon_magnifyingGlass_black_19px.png");
+}
+
+#twitterImage {
+	background-image: url("/static/img/icon_twitter_white_22px.png");
+	width:21px;
+	height:22px;	
+}
+
+#twitterImage:hover  {
+    background-image: url("/static/img/icon_twitter_blue_22px.png");
+}
+
+#facebookImage {
+	background-image: url("/static/img/icon_facebook_white_22px.png");
+	width:21px;
+	height:22px;	
+}
+
+#facebookImage:hover  {
+    background-image: url("/static/img/icon_facebook_blue_22px.png");
+}
+
+
+
 
 #footer{
 	height:50px;
@@ -31,6 +76,23 @@ a:hover{
 	color:white;
 }
 
+#footer .div {
+	height:50px;
+}
+
+.footerLink {
+	padding-right:18px;
+	margin-top: 16px;	
+}
+
+.footerImage {
+	padding-right:18px;	
+}
+
+#mailImage {
+	width:22px;
+	height:22px;
+}
 
 #footer a:hover {
 	color:#00ADEE; 
@@ -46,6 +108,7 @@ a:hover{
 	font-size: 0.5625em;
 	color:#58595B;	
 	line-height: 10px;
+	margin-top: 16px;
 }
 
 #CreatePoint {
@@ -54,23 +117,121 @@ a:hover{
  	width: 118px;
  	height: 27px;
 	background:transparent url('/static/img/button_makeAPoint_grey_118.png') center top no-repeat;
-	top:9px;
+	top:12px;
 }
 
 #CreatePoint:hover {
    background-image: url('/static/img/button_makeAPoint_black_118.png');
 }
 .topSpace {
-	height:50px;
+	height:42px;
 }
-.username {
+.userControls {
 	font-style: italic;
-	font-size: 0.8750em;
+	font-size: 0.9375em;
 	color:black;
 }
 
-.username a {
+.userControls a {
 	color:black;
+}
+
+.userControls #avatar {
+	height:48px;
+	margin-top:2px;
+}
+
+.vertalignmiddle {
+	vertical-align:middle;
+}
+
+.pointCard {
+	border-style:solid;
+	border-width:1px;
+	border-color:#B9BBBD;
+  	word-wrap: break-word;
+  	-webkit-box-shadow: -1px 1px 8px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow:    -1px 1px 8px rgba(50, 50, 50, 0.5);
+	box-shadow:         -1px 1px 8px rgba(50, 50, 50, 0.5);
+	margin-bottom: 10px;
+	cursor:pointer;
+}
+
+.pointCard:hover {
+	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+
+.pointCard:hover .score, .pointSmall:hover .score {
+	color:white;		
+}
+
+.pointCard:hover a.navWhy, .pointSmall:hover a.navWhy {
+   background-image: url('/static/img/arrow_why_45_black.png');
+}
+
+.pointSmall.green:hover {
+	background-color:#0CCF00;
+}
+
+.pointSmall.yellow:hover {
+	background-color:#EBC821;
+}
+
+.pointSmall.red:hover {
+	background-color:#FF000B;
+}
+
+.pointCard H5 {
+	padding: 10px 0;
+	margin: 0 0 0 0;		
+} 
+
+.pointCard .text, .pointCard .title, .pointSmall .title  {
+	padding-left: 5px;
+}
+
+.yellow .score {
+	color:#EBC821;	
+}
+
+.yellow:hover .title {
+	background-color: #EBC821;	
+}
+
+.red .score {
+	color:#FF000B;	
+}
+
+.red:hover .title {
+	background-color: #FF000B;	
+}
+
+.green .score {
+	color:#0CCF00;
+}
+
+.green:hover .title {
+	background-color: #0CCF00;	
+}
+
+.greenScore {
+	color:#0CCF00;
+}
+.redScore {
+	color:#FF000B;	
+}
+.yellowScore {
+	color:#EBC821;	
+}
+
+.pointSmall {
+	border-style:solid;
+	border-width:1px;
+	border-color:#B9BBBD;
+  	word-wrap: break-word;	
+  	cursor:pointer;
 }
 
 .boxedElement {
@@ -94,7 +255,9 @@ a:hover{
 	font-size:0.9375em;
 	color:#B9BBBD;
 }
-
+.marginBottom {
+	margin-bottom:16px;
+}
 .vertSpaced {
 	margin-bottom: 10px;
 }
@@ -109,18 +272,6 @@ a:hover{
 	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
 	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
-}
-
-.greenScore {
-	color:#0CCF00;
-}
-
-.yellowScore {
-	color:#EBC821;
-}
-
-.redScore {
-	color:#FF000B;
 }
 
 .hugeScore{
@@ -172,6 +323,8 @@ a:hover{
 a.navWhy {
 	width:46px;
 	height:34px;	
+	left: 8px;
+	position: relative;
 	border-style:none;
 	background:transparent url('/static/img/arrow_why_45_grey.png') center top no-repeat;
 }
@@ -205,11 +358,20 @@ a.navWhy:hover {
 .mainPointImageDescription:before{content:"Image Description: ";font-size:inherit;font-style:inherit;font-weight:normal}
 
 img.pointDisplay{
-    float:right;
+    float:right; 
 	top: 5px;
 	right: 5px;
 	max-width: 200px;
 	max-height: 200px;
+}
+
+img.listDisplay {
+    float:right;
+}
+
+img.smallDisplay {
+    max-height:40px;
+    max-width:40px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

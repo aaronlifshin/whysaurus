@@ -75,44 +75,41 @@
                <div class="row columnHeading span2 offset5 pagination-centered">Supporting Points</div>
                <div class="row boxedElement span6 offset3" id="nonzeroSupportingPoints"> 
                   <div class="row-fluid">
-                     <div class="span11">
+                     <div class="span10 offset1">
+                        <div class="row-fluid">
                         {% if user %}
-                          <form action="/selectSupportingPoint" method="POST" style="display: inline">
+                          {% if supportingPoints %}
+                            <button class="pull-right" id="unlinkToggle" type="submit">Unlink</button>
+                          {% endif %}
+                          <form class="pull-right"  action="/selectSupportingPoint" method="POST" style="display: inline">
                           <input type="hidden" name="parentPointURL" value="{{point.url}}" />
                           <button name="linkSupportingPoint" type="submit" name="BOO">Add</button>       
                           </form>
-                          {% if supportingPoints %}
-                            <button id="unlinkToggle" type="submit">Unlink</button>
-                          {% endif %}
                         {% endif %}
-                     </div> 
+                        </div>
     					{% for supportingPoint in supportingPoints %}
-        					<div class="row-fluid">
-                              <div class="span10 offset1 boxedElement" id="point_{{supportingPoint.url}}">	
-        						<div class="pointSummaryTitle span10"><H5>
-        							<span
-        								{% if supportingPoint.voteTotal >= thresholds.green %}
-        									class="greenScore"
-        								{% else %}	
-        									{% if supportingPoint.voteTotal <= thresholds.red %}
-        										class="redScore"
-        									{% else %}
-        										class="yellowScore"
-        									{% endif %}	
-        								{% endif %}					
-        								>{{ supportingPoint.voteTotal }}
-        						</span> 
-        						<a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></H5></div>
-                                {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
+                        <div class="{% if supportingPoint.voteTotal >= thresholds.green %}
+                        green
+                      {% else %}    
+                      {% if supportingPoint.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}  
+                      {% endif %} pointSmall row-fluid" id="supportingPoint_{{supportingPoint.url}}"> 
+        <div class="span8 title"><H5>
+        <span class="score">{{ supportingPoint.voteTotal }}</span>
+          <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></H5>
+        </div>
+        <div class="span2">
+                                        {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
                                     <img class="smallDisplay" src={{ supportingPoint.imageURL }} />
                                 {% endif %}
-            					<div>
-                                  <a class="navWhy pull-right" href="/point/{{supportingPoint.url}}" alt="Why {{supportingPoint.title|escape}}" ></a>
-                                  <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
-                                </div>
-                            </div>
-                           </div>
-					{% endfor %}  
+        </div>                       
+        <div class="span2 grayBack">
+                  <a class="navWhy pull-right" id="editPoint_New_{{ supportingPoint.url }}" alt="Why {{ supportingPoint.title|escape }}" href="/point/{{ supportingPoint.url }}" src="/static/img/arrow_why_A_grey.png"></a>
+                  <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
+          </div>
+           </div>
+
+					{% endfor %} 
+                    </div>  
                   </div>
                 </div>
                 {% endif %}

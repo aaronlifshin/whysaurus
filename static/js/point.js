@@ -98,9 +98,17 @@
  					  	callPointEdit();
   					  $( this ).dialog( "close" );
 				  };
-					dialogButtons["Cancel"] = function() {	$( this ).dialog( "close" );};
+					dialogButtons["Cancel"] = function() {	
+					  tinyMCE.get('textEdit').setContent('');
+    				$('textarea.titleEdit').val('');
+					  $('input[name=imageURL]').val('');
+            $('input[name=imageAuthor]').val('');
+            $('input[name=imageDescription]').val('');
+					  $( this ).dialog( "close" );
+					};
 					$( "#dialogForm" ).dialog({title:"Edit Point", buttons: dialogButtons}	);
-					$( "#dialogForm" ).dialog( "open" );				
+					$( "#dialogForm" ).dialog( "open" );
+					
 				}				
 	      
 	      function upVoteToggle(turnOn) {

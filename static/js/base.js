@@ -72,7 +72,10 @@
 			  var edSummary = tinyMCE.get('textEdit');
 				edSummary.setContent('');
 				$('textarea.titleEdit').val('');
-			  $( this ).dialog( "close" );
+				$('input[name=imageURL]').val('');
+        $('input[name=imageAuthor]').val('');
+        $('input[name=imageDescription]').val('');
+        $( this ).dialog( "close" );		  
 		  	};
 		  	
 			$( "#dialogForm" ).dialog({title:"New Point", buttons: dialogButtons});
@@ -113,10 +116,16 @@ function showCreatePoint() {
     });
     
     
-	$("#searchBox", $("#searchArea")).keyup(function(event){
+	$("#searchBox").keyup(function(event){
     if(event.keyCode == 13){
         window.location.href="/search?searchTerms="+$("#searchBox", $("#searchArea")).val();
     }
+	});
+	
+	$(".searchIcon", $("#searchArea")).click(function(event){
+	  if ($("#searchBox").val() != "") {
+	      window.location.href="/search?searchTerms="+$("#searchBox", $("#searchArea")).val();
+	  }
 	});
 	
 	
@@ -136,6 +145,10 @@ function showCreatePoint() {
 		width: $(window).width()*.7,
 		modal: true
 	});			
+	
+	$( ".pointSmall" ).click( function() {
+    window.location.href=$(".navWhy", $(this)).attr('href');
+	});
 
   window.onload = function() {positionEditDialog(500); };
   window.onresize = function() {positionEditDialog(500); };

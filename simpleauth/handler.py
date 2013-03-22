@@ -130,6 +130,7 @@ class SimpleAuthHandler(object):
     May raise one of the exceptions defined at the beginning
     of the module. See README for details on error handling.
     """
+    self.session['original_url'] = self.request.referer         
     cfg = self.PROVIDERS.get(provider, (None,))
     meth = self._auth_method(cfg[0], 'init')
     # We don't respond directly in here. Specific methods are in charge

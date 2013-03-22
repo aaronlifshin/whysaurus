@@ -165,7 +165,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     # self.session.add_flash(auth_info, 'auth_info - from _on_signin(...)')
 
     # Go to the profile page
-    self.redirect('/')
+    target = str(self.session['original_url'])
+    self.redirect(target)
     
   def logout(self):
     self.auth.unset_session()
@@ -364,6 +365,7 @@ class LinkPoint(AuthHandler):
 class SelectSupportingPoint(AuthHandler):
   def post(self):
     user = self.current_user
+    logging.info('Here:' + self.request.get('parentPointURL'))
     # GET RECENTLY VIEWED
     if user:
       oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))

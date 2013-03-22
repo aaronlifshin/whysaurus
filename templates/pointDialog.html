@@ -1,20 +1,42 @@
-<div id="dialogForm" title="Edit Point">	
-	<form id='frmEditFields'>
-	  <fieldset id='editFields'>
-			Main</br>
-		  <textarea class=" titleEdit" name="titleEdit" ></textarea>
-	    <textarea class="mceEditor textEdit" name="textEdit"></textarea><br>
-			Image<br>
-			<div class="dlgField"><label class="dlgLabelName">link</label>
-			  <input type="text" class=" fieldEdit" name="imageURL" ></input>
-		  </div>
-			<div class="dlgField"><label class="dlgLabelName">author</label>
-			  <input type="text" class=" fieldEdit" name="imageAuthor" ></input>
-		  </div>
-			<div class="dlgField"><label class="dlgLabelName">description</label>
-			  <input type="text" class=" fieldEdit" name="imageDescription" ></input>
-		  </div>
-		</fieldset>
-	</form>
-</div>
+<div class="modal hide fade pointDialog" id="{{formName}}" title="{{dlgTitle}}" role="dialog" aria-hidden="true">
+	<div class="modal-header">
+        <h3>{{dlgTitle}}</h3>
+    </div>	
+    <form id='frm_{{formName}}'class="form-horizontal">
+    <div class="modal-body">
+          <label>Text</label>
+          <div class="dlgField">             
+      	     <input id="title_{{formName}}" type="text" class="titleEdit" placeholder="Add the title here..." ></input>
+          </div>
+          <div class="dlgField">
+          <textarea id="editor_{{formName}}" class="mceEditor textEdit" name="editor_{{formName}}" placeholder="Add the description here..."></textarea>
+      	  </div>	
 
+      </div>
+      
+      <div class="modal-footer">
+          <label class="control-group textline">Image </label>           
+          <div class="control-group">              
+              <label class="control-label" for="link_{{formName}}">link</label>
+            <div class="controls">
+                <input id="link_{{formName}}" type="text" class=" fieldEdit" name="imageURL" placeholder="Paste the URL of the image here to make your point pop!"></input>
+              </div>
+            </div>
+          <div class="control-group">
+              <label class="control-label" for="author_{{formName}}">author</label>
+              <div class="controls">
+              <input id="author_{{formName}}" type="text" class=" fieldEdit" name="imageAuthor" placeholder="Give credit to the creator of the image"></input>
+              </div>
+           </div>
+          <div class="control-group">
+              <label class="control-label" for="description_{{formName}}">description</label>
+            <div class="controls">
+                <input id="description_{{formName}}" type="text" class=" fieldEdit" name="imageDescription" placeholder="Add a descriptive caption to appear below the image"></input>
+              </div>
+          </div>
+        <a href="#" id="submit_{{formName}}" class="btn btn-primary">Save changes</a>
+        <a href="#" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
+      </div>
+    </form>
+    
+</div>

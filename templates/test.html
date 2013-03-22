@@ -1,57 +1,12 @@
 {% extends "base.html" %}
 
 {% block mainPageContent %}
-<div id="content">
-{% if user %}
-	  USER ID = {{ user.id }} <br>
-	  USER NAME = {{ user.name|escape }} <br>
-	  DJANGO VERSION = {{dv}}
-{% else %}
-  NO USER RECEIVED
-{% endif %}
-<div class="caseSummary boxedElement">
-	<div class="caseSummaryEditToggle editable">
-	<button id="testButton">TEST</button>	
-	</div>		
-	<div class="mainPointTitle editable">COO</div>
-	<div class="mainPointContent editable"><p>ling COOPsterzz</p></div>
-	<div class="mainPointInfo">
-		<div class="mainPointVersion">1</div>
-		<div class="mainPointAuthor">Aaron</div> 
-		<div class="mainPointDateEdited">Jan. 16, 2013, 9:17 p.m.</div>	
-		<div class="mainPointViewCount">1</div>	
-		<div class="mainPointImageURL"></div>	
-		<div class="mainPointImageAuthor"></div>	
-		<div class="mainPointImageDescription"></div>	
-	</div>				
-</div>
-		  
-		  
-<div class="boxedElement" id="point_The_acidity_of_the_Earths_oceans_has_increased_dramatically_sin">	
-	<div class="pointSummaryTitle">1 - <a href="/point/The_acidity_of_the_Earths_oceans_has_increased_dramatically_sin">The acidity of the Earth&#39;s oceans has increased dramatically since the Industrial Revolution.</a></div>
-	<div class="pointSummaryText">
-	<div class="testDisplay"><img class="testDisplay" src="../static/img/triceratops_icon.png" /></div>
-	<p>Since the beginning of the Industrial Revolution, the acidity of surface ocean waters has increased by about 30 percent. This increase is the result of humans emitting more carbon dioxide into the atmosphere and hence more being absorbed into the oceans. The amount of carbon dioxide absorbed by the upper layer of the oceans is increasing by about 2 billion tons per year.</p>
-		<p>Sources:</p>
-		<p>National Oceanic and Atmospheric Adminstration (US Chamber of Commerce)</p>
-		<p>The Copenhagen Diagnosis, Updating the World on the Latest Climate Science</p>
-			
-	</div>
-	
-</div>
-
+HI HI
 <script>
-	function test() {
-		newImageContent = '<img class="pointDisplay" src="http://i.imgur.com/tR9TS.jpg"\/>';
-		testStr='<p>adflgjkadfg</p>';
-		$('.mainPointContent').after(testStr);
-	}
 
-	$( ".button" ).button();
-	$( "#testButton" )
-	.button()
-	.click(function() {
-		test();
+	$(document).ready(function() {
+		var edSummary = tinyMCE.get('editor_createPointDialog');
+  		edSummary.setContent('');
 	});
 </script>
 {% endblock %}

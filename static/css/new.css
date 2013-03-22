@@ -30,6 +30,12 @@ a:hover{
 	width:90%;
 	margin-top:10px;
 	padding-right:40px;
+	border: 2px solid #000000;
+	-webkit-border-radius: 8px;
+  	-moz-border-radius: 8px;
+  	border-radius: 8px; /* AL CHANGED */
+  	font-size: 16px;
+
 }
 
 #searchArea .searchIcon {
@@ -92,6 +98,10 @@ a:hover{
 #mailImage {
 	width:22px;
 	height:22px;
+}
+
+#footer a {
+	color:white; 
 }
 
 #footer a:hover {
@@ -290,10 +300,13 @@ a:hover{
 }
 
 .whiteScoreText {
-	color:white;
 	font-family:"nimbus-sans-condensed",sans-serif;
 	font-weight:bold;
 	font-size: 1.0625em;
+}
+
+.whiteScoreText  a {
+	color:white;
 }
 
 
@@ -374,9 +387,64 @@ img.smallDisplay {
     max-width:40px;
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Login dialog stuff 
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
+#loginDialog {
+    /* new custom width */
+    width: 300px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+    margin-left: -150px;
+}
+
+[id^=signInWith] {
+	height:2em;
+	vertical-align:middle;
+	margin-bottom:5px;
+	margin-top:5px;
+	padding-left:10px;
+	padding-top:5px;
+	cursor:pointer;
+}
+
+[id^=signInWith] a {
+	line-height: 2em;
+}
+
+[id^=signInWith]:hover {
+	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Edit point dialog stuff 
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.pointDialog {
+	top:2% !important;
+	height:96% !important;
+}
+
+.pointDialog .modal-footer {
+	position:absolute;
+	bottom: 0px;
+	width:100%;
+	padding: 14px 0px 15px;	
+}
+
+.pointDialog label {
+	font-weight:bold;
+	font-style: italic;
+	font-size:0.8125em; /* 13 px */
+}
+
+.pointDialog .textline {
+	text-align:left;	
+	margin-left:15px;
+}
 
 fieldset { padding:0; border:0; margin-top:25px;}
 .ui-dialog .ui-state-error { padding: .3em; }
@@ -385,38 +453,35 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
 .ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
  
-.mceEditor.textEdit { width:100% }
+.mceEditor > table {
+    width:100% !important;
+    height:auto !important;
+}
+
+
 .titleEdit { 
-  width:100%; 
-  height: 1.2em; 
-  resize:none;}
-.fieldEdit { 
-  display: inline;
-  overflow: hidden; 
-  float:right;
-  height: 16px;
+  width:516px; 
   padding: 2px;
-  resize:none; 
-  height:100%;
-  width:84%;
-  }
+}
+ 
+    
+.fieldEdit { 
+  float:left;
+  padding: 2px;
+  width:411px;
+}
 
 .dlgLabelName{ 
   float:left;
   width:100px;
   display:block;
-  background:#EFEFEF;
   height: 100%; 
   padding:0px;
   margin:0px;
   }
 .dlgField{
-  border: 1px solid; 
-  border-color:#BDC1C4;
-  background:#EFEFEF;
   margin-top:5px;
   width:100%; 
-  overflow:hidden; 
   }
 #textEdit_tbl {width:100% !important;}
 #textEdit_ifr {width:100% !important;}

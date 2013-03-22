@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="/static/css/new.css" rel="stylesheet" media="screen">
-    <link href="/static/css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+    <!--<link href="/static/css/whysaurus/jquery-ui-1.10.1.custom.css" rel="stylesheet" />	-->
     <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>	
-	<script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js" ></script>	
+	<!--  <script type="text/javascript" src="/static/js/jquery-ui-1.10.1.custom.min.js"></script>-->
     <script type="text/javascript" src="//use.typekit.net/ncu0grl.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script type="text/javascript" src="/static/js/base.js"></script>
@@ -29,10 +29,10 @@
             </form>
           </div>
           <div class="span4">    
-            <a id="CreatePoint" class="{% if not user %} hide {% endif %} pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>      
+            <a id="CreatePoint" class="pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>      
             <div class="pull-right">
     		  {% if user %}
-                {% include 'pointDialog.html' %}
+                <script> var loggedIn = true; </script>
                 <div class="userControls"><span class="caret vertalignmiddle"></span>
                   {% if user.avatar_url %} 
                     <a class="dropdown-toggle" data-toggle="dropdown" href="{{ user.link }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
@@ -43,7 +43,8 @@
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                    </ul>
                 </div>         
-    		  {% else %}
+    		  {% else %}                
+                <script> var loggedIn = false; </script>
                 <div class="userControls">
                   <span class="caret vertalignmiddle"></span>
           		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Login with <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
@@ -52,13 +53,37 @@
           		    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
                     <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
                   </ul>
-                </div>         
+                </div>
     		  {% endif %} 
             </div>
           </div> 
         </div>
       </div>                 
 	</div>
+  
+    {% if user %}    
+      {% with "createPointDialog" as formName %} 
+      {% with "Create Point" as dlgTitle %} 
+        {% include 'pointDialog.html' %}
+      {% endwith %}
+      {% endwith %}
+    {% else %}                 
+    
+        <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
+        <div class="modal-header">
+          <h3>Sign In</h3>
+        </div>
+        <div class="modal-body">
+          It's Easy!
+          <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook"> Sign-in with Facebook </a></div>
+          <div id="signInWithGoogle_Dlg" class="boxedElement"><a tabindex="2" href="/auth/google"> Sign-in with Google </a></div>
+          <div id="signInWithTwitter_Dlg" class="boxedElement"><a tabindex="3" href="/auth/twitter"> Sign-in with Twitter </a></div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
+        </div>
+      </div>   
+  {% endif %}                 
   <div class="container">{% block mainPageContent %} {% endblock %}</div>
       <div id="footer" class="navbar navbar-fixed-bottom"> 
           <div class="container">
@@ -68,7 +93,7 @@
                 </div>
                   <div class="span3"> <h5 class="footerLink pull-left"><a href="/about">ABOUT </a> </h5>
               	  <h5 class="footerLink pull-left"><a href="/help" >HELP </a> </h5>
-              	  <h5 class="footerLink pull-left"> <a href="/contact" >SUGGESTIONS </a> </h5></div>
+              	  <h5 class="footerLink pull-left"> <a href="/contact" >FEEDBACK </a> </h5></div>
                   <div id="tagline" class="span4">Collecting the best explanations of why</div>
                   <div class="span3">
                     <div class="footerImage pull-left">

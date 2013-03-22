@@ -1,4 +1,27 @@
 
+function post_to_url(path, params, method) {
+    method = method || "post"; // Set method to post by default, if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
 	function getWindowHeight() {
 		  var height;
 
@@ -11,27 +34,15 @@
           
       return height;
 		}
-		function toDialogFormHeight(id, minus) {
-        var height;
-        height = $(this).height( $('#dialogForm').closest('.ui-dialog').height());
-        if (document.getElementById(id)) {
-        	document.getElementById(id).style.height = (height - minus) + "px";
-        }           
-    }   
+
     
-    function positionEditDialog(diff) {
-      element = $("#dialogForm");
-      element.dialog('option', 'height', getWindowHeight() * .9);
-      element.dialog('option', 'width', $(window).width()*.7);
-      element.dialog('option', 'position', 'center');
-      toDialogFormHeight('frmEditFields', diff);
-      toDialogFormHeight('editFields', diff);
-      toDialogFormHeight('textEdit_tbl', diff);
-      toDialogFormHeight('textEdit_ifr', diff);
+    function positionEditDialog() {
+      dialogHeight = $(".pointDialog").height();
+      $("[id$='_ifr']").height(dialogHeight-350);
     }
   	
 		function newPoint() {
-			var ed = tinyMCE.get('textEdit');		
+			var ed = tinyMCE.get('editor_createPointDialog');		
 			var text = tinyMCE.activeEditor.getBody().textContent;
 			$.ajaxSetup({
 				 url: "/newPoint",
@@ -40,10 +51,10 @@
 				 data: {
 					'content': ed.getContent(),
 					'plainText': text.substring(0,250),
-					'title': $('textarea.titleEdit').val(),			
-					'imageURL':$('input[name=imageURL]').val(),
-          'imageAuthor':$('input[name=imageAuthor]').val(),
-          'imageDescription': $('input[name=imageDescription]').val()			
+					'title': $('#title_createPointDialog').val(),			
+					'imageURL':$('#link_createPointDialog').val(),
+          'imageAuthor':$('#author_createPointDialog').val(),
+          'imageDescription': $('#description_createPointDialog').val()			
 					},
           success: function(data){ 
             obj = JSON.parse(data);
@@ -58,29 +69,30 @@
 		}
 				
 		function openNewPointDialog() {	
-	        document.getElementById("textEdit_tbl").style.width='100%';
-	        document.getElementById("textEdit_ifr").style.width='100%';
-	        document.getElementById("textEdit_tbl").style.height='100%';
-	        document.getElementById("textEdit_ifr").style.height='100%';
+	    document.getElementById("textEdit_tbl").style.width='100%';
+	    document.getElementById("textEdit_ifr").style.width='100%';
+	    document.getElementById("textEdit_tbl").style.height='100%';
+	    document.getElementById("textEdit_ifr").style.height='100%';
 			var dialogButtons = {};
-			dialogButtons["Create Point"] = function() {
-			  newPoint();
-			  $( this ).dialog( "close" );
-			};
+			dialogButtons["Create Point"] = 
 			
 			dialogButtons["Cancel"] = function() {	
-			  var edSummary = tinyMCE.get('textEdit');
-				edSummary.setContent('');
-				$('textarea.titleEdit').val('');
-				$('input[name=imageURL]').val('');
-        $('input[name=imageAuthor]').val('');
-        $('input[name=imageDescription]').val('');
+
         $( this ).dialog( "close" );		  
 		  	};
 		  	
 			$( "#dialogForm" ).dialog({title:"New Point", buttons: dialogButtons});
 			$( "#dialogForm" ).dialog( "open" );
 		}
+		
+		function openLoginDialog() {	
+		  var dialogButtons = {};
+		  dialogButtons["Cancel"] = function() {	
+        $( this ).dialog( "close" );		  
+		  };
+		  $( "#loginDialog" ).dialog({title:"Sign In", buttons: dialogButtons});
+		  $( "#loginDialog" ).dialog( "open" );
+    }
 
 function showCreatePoint() {
 	$("#CreatePoint").css('visibility','visible');;
@@ -103,7 +115,7 @@ function showCreatePoint() {
       theme_advanced_buttons4 : "",
       theme_advanced_toolbar_location : "top",
       theme_advanced_toolbar_align : "left",
-      theme_advanced_statusbar_location : "bottom",
+      theme_advanced_statusbar_location : "none",
       theme_advanced_resizing : false,
       // Skin options
       skin : "o2k7",
@@ -129,29 +141,63 @@ function showCreatePoint() {
 	});
 	
 	
-	// Index page stuff
-	$( "#CreatePoint" ).click(function() {
-			openNewPointDialog();
-	});
-
-	$( "[id^=deletePoint]" ).button();
-	$( "[id^=editPoint]" ).button();
-	$(" input:submit" ).button();
-  
     // Dialog form handling
-	$("#dialogForm").dialog({
+	/*$("#dialogForm").dialog({
 		autoOpen: false,
 		height: getWindowHeight() * .9,
 		width: $(window).width()*.7,
 		modal: true
 	});			
 	
+	if (!loggedIn) {
+	  $("#loginDialog").dialog({
+  		autoOpen: false,
+  		height: 250,
+  		width: 270,
+  		modal: true
+  	});
+	}*/
+
 	$( ".pointSmall" ).click( function() {
-    window.location.href=$(".navWhy", $(this)).attr('href');
+	  if ($(".navWhy", $(this)).hasClass("ui-helper-hidden") == false) {  // In the point page the navWhy is sometimes hidden by the unlink button
+	    window.location.href=$(".navWhy", $(this)).attr('href');
+	  }
+	});
+	
+	$('[id^="signInWithFacebook"]').click( function() {
+	   window.location.href="/auth/facebook";
 	});
 
-  window.onload = function() {positionEditDialog(500); };
-  window.onresize = function() {positionEditDialog(500); };
+	$('[id^="signInWithGoogle"]').click( function() {
+	   window.location.href="/auth/google";	  
+	});
+	
+	$('[id^="signInWithTwitter"]').click( function() {
+	   window.location.href="/auth/twitter";	  
+	});
+  window.onload = function() {positionEditDialog(); };
+  window.onresize = function() { positionEditDialog(); };
+  
+  if (!loggedIn) {
+    $( "#CreatePoint" ).attr('href',"#loginDialog");
+    $( "#CreatePoint" ).attr('data-toggle',"modal");
+  } else {
+    $( "#CreatePoint" ).attr('href',"#createPointDialog");
+    $( "#CreatePoint" ).attr('data-toggle',"modal");
+    $("#createPointDialog").on('hidden', function () {
+      var edSummary = tinyMCE.get('editor_createPointDialog');
+  		edSummary.setContent('');
+  		$('#title_createPointDialog').val('');
+  		$('#link_createPointDialog').val('');
+      $('#author_createPointDialog').val('');
+      $('#description_createPointDialog').val('');
+    });
+    $("#submit_createPointDialog").on('click', function(e) {
+      e.preventDefault();
+		  newPoint();
+		  $("#createPointDialog").hide();
+		});
+  }
   
 });
 

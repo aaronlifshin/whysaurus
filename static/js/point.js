@@ -21,7 +21,7 @@
 				}
 				
 				function callPointEdit(){
-					var ed = tinyMCE.get('textEdit');
+					var ed = tinyMCE.get('editor_editPointDialog');
 				  var text = tinyMCE.activeEditor.getBody().textContent;
 					$.ajaxSetup({
 					   url: "/editPoint",
@@ -31,16 +31,16 @@
 							'urlToEdit': pointURL,
 							'content': ed.getContent(),
 							'plainText':text.substring(0,250),
-							'title': $('textarea.titleEdit').val(),			
-							'imageURL':$('input[name=imageURL]').val(),
-              'imageAuthor':$('input[name=imageAuthor]').val(),
-              'imageDescription': $('input[name=imageDescription]').val()			
+							'title': $('#title_editPointDialog').val(),			
+							'imageURL':$('#link_editPointDialog').val(),
+              'imageAuthor':$('#author_editPointDialog').val(),
+              'imageDescription': $('#description_editPointDialog').val()			
 							},
 							success: function(data){ 
-								var ed = tinyMCE.get('textEdit');
+								var ed = tinyMCE.get('editor_editPointDialog');
 							  obj = JSON.parse(data);
 								$('.mainPointContent').html(ed.getContent()); 
-								$('.mainPointTitle').html($('textarea.titleEdit').val()); 
+								$('.mainPointTitle h1').html($('#title_editPointDialog').val()); 
 								$('.mainPointVersion').html(obj.version);
 								$('.mainPointAuthor').html(obj.author);
 								$('.mainPointDateEdited').html(obj.dateEdited);
@@ -54,7 +54,8 @@
 								$('.mainPointImageURL').html(obj.imageURL);	
 								$('.mainPointImageAuthor').html(obj.imageAuthor);	
 								$('.mainPointImageDescription').html(obj.imageDescription);	
-								}
+								$("#editPointDialog").modal('hide');
+							}
 					 });
 					$.ajax();
 						
@@ -72,8 +73,8 @@
   							success: function(data){ 
                               obj = JSON.parse(data);
                               if (obj.result == true) {
-                                $('#point_' + obj.pointURL).remove();
-                                if ($("[id^=point_]").length == 0 ) {
+                                $('#supportingPoint_' + obj.pointURL).remove();
+                                if ($("[id^=supportingPoint_]").length == 0 ) {
                                   $("#zeroSupportingPoints").show();
                                   $("#nonzeroSupportingPoints").hide();
                                   $( "[name=linkSupportingPoint]" ).button();
@@ -85,21 +86,16 @@
                         });
   					$.ajax();
   				}
-			
+			/*
 				function openEditPointDialog() {
-					var ed = tinyMCE.get('textEdit');
-					$('textarea.titleEdit').val($('div.mainPointTitle').text());
-					ed.setContent($('.mainPointContent').html() );
-					$('input[name=imageURL]').val($('div.mainPointImageURL').text());
-				  $('input[name=imageAuthor]').val($('div.mainPointImageAuthor').text());
-			    $('input[name=imageDescription]').val($('div.mainPointImageDescription').text());
+					
 					var dialogButtons = {};
 					dialogButtons["Save Point"] = function() {
- 					  	callPointEdit();
+ 					  	
   					  $( this ).dialog( "close" );
 				  };
 					dialogButtons["Cancel"] = function() {	
-					  tinyMCE.get('textEdit').setContent('');
+					  tinyMCE.get('editor_').setContent('');
     				$('textarea.titleEdit').val('');
 					  $('input[name=imageURL]').val('');
             $('input[name=imageAuthor]').val('');
@@ -110,7 +106,7 @@
 					$( "#dialogForm" ).dialog( "open" );
 					
 				}				
-	      
+	      */
 	      function upVoteToggle(turnOn) {
 	        if (turnOn) {
   	        $( "#upVote").removeClass("inactiveVote");
@@ -242,45 +238,73 @@
     				$.ajax();
     		}
 
+function make_this_show_login_dlg(button) {
+  button.attr('href',"#loginDialog");
+  button.attr('data-toggle',"modal");
+}
+
+function populateEditFields() {
+  var ed = tinyMCE.get('editor_editPointDialog');
+
+	$('#title_editPointDialog').val($('div.mainPointTitle').text());
+  if (ed) {
+	  ed.setContent($('.mainPointContent').html() );
+	}
+	$('#link_editPointDialog').val($('div.mainPointImageURL').text());
+	$('#author_editPointDialog').val($('div.mainPointImageAuthor').text());
+  $('#description_editPointDialog').val($('div.mainPointImageDescription').text());	
+}
 
 $(document).ready(function() {
 			$( "[name=linkSupportingPoint]" ).button();
-							
-			$( "#unlinkToggle" )
-				.button()
-				.click(function() {
-					toggleUnlink();
-				});
+										
+      if (!loggedIn) {
+        $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
+        $( "[name=linkSupportingPoint]" ).attr('data-toggle',"modal");        
+        make_this_show_login_dlg($( "#unlinkToggle" ));
+        make_this_show_login_dlg($( "#editPoint" ));
+        make_this_show_login_dlg($( "#upVote" ));
+        make_this_show_login_dlg($( "#downVote" ));
+        make_this_show_login_dlg($( "#viewHistory" ));
+      } else {
+        $( "[name=linkSupportingPoint]" ).click(function() {
+          var params = [];
+          params["parentPointURL"] = pointURL;
+          post_to_url("/selectSupportingPoint", params);
+        });
+        
+        $( "#unlinkToggle" )
+  				.button()
+  				.click(function() {
+  					toggleUnlink();
+  				});
+  				
+        $( "#editPoint" ).attr('href',"#editPointDialog");
+        $( "#editPoint" ).attr('data-toggle',"modal");
+        $( "#editPoint" ).on('click', function() {
+          populateEditFields();          
+        });
+			  $("#submit_editPointDialog").on('click', function(e) {
+    		  callPointEdit();
+    		});
+			    
+    		$( "#upVote" ).click(function() {upVote();});
+    			//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
-			$( "#upVote" )
-				.click(function() {
-					upVote();
-				});
-			//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
+    		$( "#downVote" ).click(function() {
+    			downVote();
+    		});			
 
-			$( "#downVote" )
-				.click(function() {
-					downVote();
-				});			
-			//$('#downVote').button({ icons: {primary: 'ui-icon-down', secondary: null}});
-			
-			$( "#viewHistory" )
-				.button()
-				.click(function() {
-					window.location.href="/pointHistory?pointUrl="+pointURL;
-				});
+    		$( "#viewHistory" ).click(function() {
+    			window.location.href="/pointHistory?pointUrl="+pointURL;
+    		});
+    				
+      };
 					
 			$( ".whybutton" ).button();
 			$( ".unlinkbutton" ).button();
 			$( ".unlinkbutton" ).addClass("ui-helper-hidden");
-			$( ".ui-helper-hidden" ).hide();
-			
-			$( "#editPoint" )
-				.button()
-				.click(function() {
-					openEditPointDialog();
-				});
-					
+			$( ".ui-helper-hidden" ).hide();					
 			//try{
 				$( "#deletePoint" ).button();
 			//} catch (e) {};

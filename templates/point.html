@@ -2,6 +2,14 @@
 
 {% block mainPageContent %}
   <script type="text/javascript" src="/static/js/point.js"></script>
+
+  {% if user %}
+    {% with "editPointDialog" as formName %}
+    {% with "Edit Point" as dlgTitle  %} 
+        {% include 'pointDialog.html' %}
+    {% endwith %}
+    {% endwith %}
+  {% endif %}
   <div class="row topSpace"></div>
   <div class="row">
     <div class="boxedElement span12">
@@ -16,7 +24,6 @@
 							{% endif %}	
 						{% endif %} hugeScore">				
 					{{ point.voteTotal }}</div>
-              {% if user %}
                 <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
                   <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
                 </div>
@@ -24,7 +31,6 @@
                 <div id="downVote" class= "voteArea downArrow whiteScoreText {% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
                   <a alt="DownVote" src="/static/img/inverse_down_arrow.png">{{point.downVotes}}</a>
                 </div>
-              {% endif %}
        </div>
         <div class="pointSummary span7">
                 <div class="mainPointTitle editable"><h1>{{ point.title|escape }}</h1></div>
@@ -50,7 +56,6 @@
     </div>
     <div class="row">
       <div class="grayBack span12 boxedElement">
-        {% if user %}
           <span class="caseSummaryEditToggle editable">
           <button id="editPoint">EDIT POINT DETAILS</button>  
           </span>    
@@ -58,16 +63,12 @@
           <button id="viewHistory">VIEW POINT HISTORY</button>  
           </span>      
           {% if user.admin %}
-                 <span> <button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button></span>    
+              <span> <button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button></span>    
           {% endif %}          
-        {% endif %}
       </div>
     </div>
 
-
-
-
-    <div class="row">
+   <div class="row">
         <div class="span2 offset5 pagination-centered"><img src="/static/img/arrow_why_toSupportingPoints_grey_97px.png"/></div>
     </div>
         
@@ -77,36 +78,31 @@
                   <div class="row-fluid">
                      <div class="span10 offset1">
                         <div class="row-fluid">
-                        {% if user %}
                           {% if supportingPoints %}
-                            <button class="pull-right" id="unlinkToggle" type="submit">Unlink</button>
+                            <button id="unlinkToggle" class="pull-right" type="submit">Unlink</button>
                           {% endif %}
-                          <form class="pull-right"  action="/selectSupportingPoint" method="POST" style="display: inline">
-                          <input type="hidden" name="parentPointURL" value="{{point.url}}" />
-                          <button name="linkSupportingPoint" type="submit" name="BOO">Add</button>       
-                          </form>
-                        {% endif %}
+                          <button name="linkSupportingPoint" class="pull-right">Add</button>       
                         </div>
     					{% for supportingPoint in supportingPoints %}
                         <div class="{% if supportingPoint.voteTotal >= thresholds.green %}
-                        green
-                      {% else %}    
-                      {% if supportingPoint.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}  
-                      {% endif %} pointSmall row-fluid" id="supportingPoint_{{supportingPoint.url}}"> 
-        <div class="span8 title"><H5>
-        <span class="score">{{ supportingPoint.voteTotal }}</span>
-          <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></H5>
-        </div>
-        <div class="span2">
-                                        {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
+                            green
+                          {% else %}    
+                          {% if supportingPoint.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}  
+                          {% endif %} pointSmall row-fluid" id="supportingPoint_{{supportingPoint.url}}"> 
+                        <div class="span8 title"><H5>
+                        <span class="score">{{ supportingPoint.voteTotal }}</span>
+                          <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></H5>
+                        </div>
+                        <div class="span2">
+                                {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
                                     <img class="smallDisplay" src={{ supportingPoint.imageURL }} />
                                 {% endif %}
-        </div>                       
-        <div class="span2 grayBack">
-                  <a class="navWhy pull-right" id="editPoint_New_{{ supportingPoint.url }}" alt="Why {{ supportingPoint.title|escape }}" href="/point/{{ supportingPoint.url }}" src="/static/img/arrow_why_A_grey.png"></a>
-                  <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
-          </div>
-           </div>
+                        </div>                       
+                        <div class="span2 grayBack">
+                                  <a class="navWhy pull-right" id="editPoint_New_{{ supportingPoint.url }}" alt="Why {{ supportingPoint.title|escape }}" href="/point/{{ supportingPoint.url }}" src="/static/img/arrow_why_A_grey.png"></a>
+                                  <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
+                        </div>
+                        </div>
 
 					{% endfor %} 
                     </div>  
@@ -115,12 +111,7 @@
                 {% endif %}
                            
                 <div class="row boxedElement centered {%if supportingPoints%} hide {% endif %}" id="zeroSupportingPoints"> Zero Supporting Points<br>
-                   {% if user %}
-                      <form action="/selectSupportingPoint" method="POST" style="display: inline">
-                      <input type="hidden" name="parentPointURL" value="{{point.url}}" />
-                      <button name="linkSupportingPoint" type="submit">Add</button> one  
-                      </form>
-                   {% endif %}
+                  <button name="linkSupportingPoint">Add</button> one  
                   <div class="centered">If this point is true, add evidence to support it!</div>
                 </div>		
 

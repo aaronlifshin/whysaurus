@@ -149,10 +149,15 @@ class SimpleAuthHandler(object):
     """
     cfg = self.PROVIDERS.get(provider, (None,))
     meth = self._auth_method(cfg[0], 'callback')
-    # Get user profile data and their access token
-    user_data, auth_info = meth(provider, *cfg[-1:])
-    # The rest should be implemented by the actual app
-    self._on_signin(user_data, auth_info, provider)
+    try:
+      # Get user profile data and their access token
+      user_data, auth_info = meth(provider, *cfg[-1:])
+      # The rest should be implemented by the actual app
+      self._on_signin(user_data, auth_info, provider)
+    except AuthProviderResponseError as e:
+      logging.info('%s returned an error: %s ', e[1], e[0] )
+      target = str(self.session['original_url'])
+      self.redirect(target)
 
   def _auth_method(self, auth_type, step):
     """Constructs proper method name and returns a callable.
@@ -172,6 +177,7 @@ class SimpleAuthHandler(object):
 
   def _oauth2_init(self, provider, auth_url):
     """Initiates OAuth 2.0 web flow"""
+    logging.info('OAUTH INIT')
     key, secret, scope = self._get_consumer_info_for(provider)
     callback_url = self._callback_uri_for(provider)
 
@@ -229,7 +235,8 @@ class SimpleAuthHandler(object):
 
     _parser = getattr(self, self.TOKEN_RESPONSE_PARSERS[provider])
     _fetcher = getattr(self, '_get_%s_user_info' % provider)
-
+    
+    """ The resp.content is the auth token """
     auth_info = _parser(resp.content)
     user_data = _fetcher(auth_info, key=client_id, secret=client_secret)
     return (user_data, auth_info)
@@ -332,25 +339,28 @@ class SimpleAuthHandler(object):
     self.uri_for('auth_callback', provider=provider, _full=True)
     """
     return None
-    
+ 
+  """ redefined in Whysaurus handler  
   def _get_consumer_info_for(self, provider):
-    """Returns a (key, secret, desired_scopes) tuple.
-
+    logging.info("IN HANDLER THE PROVIDER WAS: " + str(provider))
+    Returns a (key, secret, desired_scopes) tuple.
+    
     Defaults to None. You should redefine this method and return real values.
-
+    
     For OAuth 2.0 it should be a 3 elements tuple:
     (client_ID, client_secret, scopes)
-
+    
     OAuth 1.0 doesn't have scope so this should return just a
     (consumer_key, consumer_secret) tuple.
-
+    
     OpenID needs neither scope nor key/secret, so this method is never called
     for OpenID authentication.
-
+    
     See README for more info on scopes and where to get consumer/client
     key/secrets.
-    """
+    
     return (None, None, None)
+  """
     
   #
   # user profile/info
@@ -365,6 +375,7 @@ class SimpleAuthHandler(object):
       'https://www.googleapis.com/oauth2/v1/userinfo?{0}', 
       auth_info['access_token']
     )
+    logging.info('Google response: ' + str(resp))
     return json.loads(resp)
     
   def _get_windows_live_user_info(self, auth_info, key=None, secret=None):
@@ -387,6 +398,7 @@ class SimpleAuthHandler(object):
     """
     resp = self._oauth2_request('https://graph.facebook.com/me?{0}', 
                                 auth_info['access_token'])
+    logging.info('Facebook response: ' + str(resp))
     return json.loads(resp)
     
   def _get_linkedin_user_info(self, auth_info, key=None, secret=None):

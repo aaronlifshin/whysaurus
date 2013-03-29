@@ -26,7 +26,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
 
     try:
       # Dispatch the request.
-      webapp2.RequestHandler.dispatch(self)
+      webapp2.RequestHandler.dispatch(self)      
     finally:
       # Save all sessions.
       self.session_store.save_sessions(self.response)
@@ -88,12 +88,14 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
       'id'     : lambda id: ('avatar_url', 
         'http://graph.facebook.com/{0}/picture?type=square'.format(id)),
       'name'   : 'name',
-      'link'   : 'link'
+      'link'   : 'link',
+      'email'  : 'email'
     },
     'google'   : {
       'picture': 'avatar_url',
       'name'   : 'name',
-      'link'   : 'link'
+      'link'   : 'link',
+      'email'  : 'email'
     },
     'windows_live': {
       'avatar_url': 'avatar_url',
@@ -154,11 +156,12 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         u.add_auth_id(auth_id)
         
       else:
-        logging.info('Creating a brand new user')
+        logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))
         ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
         if ok:
           self.auth.set_session(self.auth.store.user_to_dict(user))
-
+        else:
+          logging.info('Creation failed: ' + str(ok))
     # Remember auth data during redirect, just for this demo. You wouldn't
     # normally do this.
     # self.session.add_flash(data, 'data - from _on_signin(...)')
@@ -209,7 +212,6 @@ class MainPage(AuthHandler):
   
     editorsPicksPoints = PointRoot.getEditorsPicks()
     topPoints = PointRoot.getTopRatedPoints()
-  
     template_values = {
       'newPoints': newPoints,
       'topPoints': topPoints,
@@ -365,7 +367,6 @@ class LinkPoint(AuthHandler):
 class SelectSupportingPoint(AuthHandler):
   def post(self):
     user = self.current_user
-    logging.info('Here:' + self.request.get('parentPointURL'))
     # GET RECENTLY VIEWED
     if user:
       oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
@@ -443,7 +444,6 @@ class Vote(AuthHandler):
   def post(self):
     resultJSON = json.dumps({'result':False})
     point, pointRoot = Point.getCurrentByUrl(self.request.get('pointURL'))
-    logging.info('HERE Point is ' + str(point) + ' URL is ' + self.request.get('pointURL'))
     user = self.current_user
     if point and user:
       logging.info('ADDING VOTE')
@@ -560,7 +560,6 @@ app_config = {
 app = WSGIApplication(routes=routes, config=app_config, debug=True)
 
 def main():
-  logging.info('here')
   run_wsgi_app(app)
 
 if __name__ == '__main__':

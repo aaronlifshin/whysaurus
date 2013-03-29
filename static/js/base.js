@@ -1,3 +1,4 @@
+var CONST_EDITOR_DEFAULT_TEXT = 'Add the description here...';
 
 function post_to_url(path, params, method) {
     method = method || "post"; // Set method to post by default, if not specified.
@@ -98,6 +99,18 @@ function showCreatePoint() {
 	$("#CreatePoint").css('visibility','visible');;
 } 
 
+function clearDefaultContent(ed) {
+  // replace the default content on focus if the same as original placeholder
+  currentContent = ed.getContent();
+  slen = currentContent.length;
+  currentContent = currentContent.substring(3,slen-4);
+  var is_default = (currentContent == CONST_EDITOR_DEFAULT_TEXT);
+  
+  if (is_default == true){
+      ed.setContent('');
+  }
+}
+
   $(document).ready(function() { 
      tinyMCE.init({
       // General options
@@ -124,7 +137,30 @@ function showCreatePoint() {
       template_external_list_url : "js/template_list.js",
       external_link_list_url : "js/link_list.js",
       external_image_list_url : "js/image_list.js",
-      media_external_list_url : "js/media_list.js"
+      media_external_list_url : "js/media_list.js",
+      /*setup: function(ed) {
+        // All this to try deal with placeholder text
+        // Could not get it to work for gaining focus when
+        // tabbing into the editor BLEH
+        var tinymce_placeholder = $('#createPointDialog');
+
+        ed.onInit.add(function(ed) {
+            // get the current content
+            var cont = ed.getContent();
+            // If its empty and we have a placeholder set the value
+            if(cont.length == 0){
+               ed.setContent(CONST_EDITOR_DEFAULT_TEXT);
+            }
+        });
+
+        ed.onMouseDown.add(function(ed,e) {          
+            clearDefaultContent(ed);
+        });
+        
+        ed.onNodeChange.add(function(ed,e) {          
+            clearDefaultContent(ed);
+        });
+      } */
     });
     
     

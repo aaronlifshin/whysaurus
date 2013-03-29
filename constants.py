@@ -17,11 +17,11 @@ if DEV:
     GOOGLE_APP_ID = '730565153520.apps.googleusercontent.com'
     GOOGLE_APP_SECRET = 'hf4EB8dYf0NwfSJ04BVjak51'
 else:
-    FACEBOOK_APP_ID = '437336826315160'
-    FACEBOOK_APP_SECRET = 'd09e82124bccb0336237f2b62a5187c4'
-    FACEBOOK_CHANNEL_URL = 'http://whysaurus-beta.appspot.com/channel.html'
-    GOOGLE_APP_ID = '345079353528.apps.googleusercontent.com'
-    GOOGLE_APP_SECRET = 'GxIafrxWDdUdxMc8AfDeQcOj'
+    FACEBOOK_APP_ID = '144595249045851'
+    FACEBOOK_APP_SECRET = '0e837314cd9c8a181a077ada99866780'
+    FACEBOOK_CHANNEL_URL = 'http://www.whysaurus.com/channel.html'
+    GOOGLE_APP_ID = '341009833131.apps.googleusercontent.com'
+    GOOGLE_APP_SECRET = 'Xp9EaXzljKhNwL549DuVzBdY'
 TWITTER_APP_ID = '4063892'
 TWITTER_APP_SECRET = 'VrFcSJpKa2vcPFOJUbQWeiL5oRPbq3Iiu3XFw2t1zoo'
 
@@ -43,9 +43,9 @@ TWITTER_CONSUMER_SECRET = 'VrFcSJpKa2vcPFOJUbQWeiL5oRPbq3Iiu3XFw2t1zoo'
 AUTH_CONFIG = {
   # OAuth 2.0 providers
   'google'      : (GOOGLE_APP_ID, GOOGLE_APP_SECRET,
-                  'https://www.googleapis.com/auth/userinfo.profile'),
+                  'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'),
   'facebook'    : (FACEBOOK_APP_ID, FACEBOOK_APP_SECRET,
-                  'user_about_me'),
+                  'user_about_me email'),
   'windows_live': (WL_CLIENT_ID, WL_CLIENT_SECRET,
                   'wl.signin'),
 

@@ -1056,7 +1056,7 @@ input,
 button,
 select,
 textarea {
-  font-size: 16px;
+  font-size: 0.75em;
   font-weight: normal;
   line-height: 20px;
 }
@@ -1095,7 +1095,7 @@ input[type="color"],
   height: 20px;
   padding: 4px 6px;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 0.75em;
   line-height: 100%;
   color: #6d6e70;
   vertical-align: middle;
@@ -1239,17 +1239,17 @@ input[type="checkbox"]:focus {
 
 input:-moz-placeholder,
 textarea:-moz-placeholder {
-  color: #f2f2f2;
+  color: #b9bbbd;
 }
 
 input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: #f2f2f2;
+  color: #b9bbbd;
 }
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: #f2f2f2;
+  color: #b9bbbd;
 }
 
 .radio,

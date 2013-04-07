@@ -59,7 +59,7 @@ function newPoint() {
     },
     success: function(data) {
       obj = JSON.parse(data);
-      if (obj.result == true) {
+      if (obj.result === true) {
         window.location.href = "/point/" + obj.pointURL;
       } else {
         alert(obj.result);
@@ -102,7 +102,7 @@ function openLoginDialog() {
 }
 
 function showCreatePoint() {
-  $("#CreatePoint").css('visibility', 'visible');;
+  $("#CreatePoint").css('visibility', 'visible');
 }
 
 function clearDefaultContent(ed) {
@@ -112,12 +112,42 @@ function clearDefaultContent(ed) {
   currentContent = currentContent.substring(3, slen - 4);
   var is_default = (currentContent == CONST_EDITOR_DEFAULT_TEXT);
 
-  if (is_default == true) {
+  if (is_default) {
     ed.setContent('');
   }
 }
 
+var FILEPICKER_SERVICES = ['COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
+  filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
+  $.fn.bindFilepicker = function(){
+    this.click(function(){
+      var self = this;
+      filepicker.pickAndStore(
+        { mimetype:"image/*", services: FILEPICKER_SERVICES, openTo: 'COMPUTER' },
+        { location: "S3" },
+        function(fpfiles){
+          var file = fpfiles[0];
+
+          $(self).next('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_white_47px.png').addClass('spin');
+
+          filepicker.convert(file, {width: 112, height: 112, fit: 'clip'}, {path: 'SummaryBig-' + file.key});
+          filepicker.convert(file, {width: 310, fit: 'clip'}, {path: 'FullPoint-' + file.key});
+          filepicker.convert(file, {width: 54, height: 54, fit: 'clip'}, {path: 'SummaryMedium-' + file.key}, function(medium){
+            $(self).next('.filepicker-placeholder').attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + medium.key).removeClass('spin');
+          });
+
+          $(self).prev('[name=imageURL]').val(file.key);
+        }
+      );
+
+      return false;
+    });
+  };
+
+  $('#frm_createPointDialog .filepicker').bindFilepicker();
+
+
   tinyMCE.init({
     // General options
     mode: "specific_textareas",
@@ -177,7 +207,7 @@ $(document).ready(function() {
   });
 
   $(".searchIcon", $("#searchArea")).click(function(event) {
-    if ($("#searchBox").val() != "") {
+    if ($("#searchBox").val() !== "") {
       window.location.href = "/search?searchTerms=" + $("#searchBox", $("#searchArea")).val();
     }
   });
@@ -201,7 +231,7 @@ $(document).ready(function() {
   }*/
 
   $(".pointSmall").click(function() {
-    if ($(".navWhy", $(this)).hasClass("ui-helper-hidden") == false) { // In the point page the navWhy is sometimes hidden by the unlink button
+    if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // In the point page the navWhy is sometimes hidden by the unlink button
       window.location.href = $(".navWhy", $(this)).attr('href');
     }
   });

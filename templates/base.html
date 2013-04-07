@@ -7,13 +7,14 @@
     <link href="/static/css/new.css" rel="stylesheet" media="screen">
     <!--<link href="/static/css/whysaurus/jquery-ui-1.10.1.custom.css" rel="stylesheet" />	-->
     <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js" ></script>	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js" ></script>
 	<!--  <script type="text/javascript" src="/static/js/jquery-ui-1.10.1.custom.min.js"></script>-->
     <script type="text/javascript" src="//use.typekit.net/ncu0grl.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script type="text/javascript" src="/static/js/base.js"></script>
+    <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-    
+
   </head>
   <body>
 
@@ -21,7 +22,7 @@
       <div class="container">
          <div class="row">
           <div class="span2">
-            <a href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>		
+            <a href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
           </div>
           <div class="span6">
             <form id="searchArea" class="navbar-form pull-left" method="GET" action="/search" >
@@ -29,13 +30,13 @@
               <div class="searchIcon"></div>
             </form>
           </div>
-          <div class="span4">    
-            <a id="CreatePoint" class="pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>      
+          <div class="span4">
+            <a id="CreatePoint" class="pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>
             <div class="pull-right">
     		  {% if user %}
                 <script> var loggedIn = true; </script>
                 <div class="userControls"><span class="caret vertalignmiddle"></span>
-                  {% if user.avatar_url %} 
+                  {% if user.avatar_url %}
                     <a class="dropdown-toggle" data-toggle="dropdown" href="{{ user.link }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
                   {% else %}
                     <a class="dropdown-toggle" data-toggle="dropdown"  href="{{ user.link }}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
@@ -43,8 +44,8 @@
                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                    </ul>
-                </div>         
-    		  {% else %}                
+                </div>
+    		  {% else %}
                 <script> var loggedIn = false; </script>
                 <div class="userControls">
                   <span class="caret vertalignmiddle"></span>
@@ -55,21 +56,21 @@
                     <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
                   </ul>
                 </div>
-    		  {% endif %} 
+    		  {% endif %}
             </div>
-          </div> 
+          </div>
         </div>
-      </div>                 
+      </div>
 	</div>
-  
-    {% if user %}    
-      {% with "createPointDialog" as formName %} 
-      {% with "Create Point" as dlgTitle %} 
+
+    {% if user %}
+      {% with "createPointDialog" as formName %}
+      {% with "Create Point" as dlgTitle %}
         {% include 'pointDialog.html' %}
       {% endwith %}
       {% endwith %}
-    {% else %}                 
-    
+    {% else %}
+
         <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
         <div class="modal-header">
           <h3>Sign In</h3>
@@ -83,14 +84,14 @@
         <div class="modal-footer">
           <a href="#" tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
         </div>
-      </div>   
-  {% endif %}                 
+      </div>
+  {% endif %}
   <div class="container">{% block mainPageContent %} {% endblock %}</div>
-      <div id="footer" class="navbar navbar-fixed-bottom"> 
+      <div id="footer" class="navbar navbar-fixed-bottom">
           <div class="container">
             <div class="row">
                 <div class="span1">
-                  <img id="whiteDinoImage span1" class="pull-left" src="/static/img/icon_triceratops_white_47px.png"/>		
+                  <img id="whiteDinoImage span1" class="pull-left" src="/static/img/icon_triceratops_white_47px.png"/>
                 </div>
                   <div class="span3"> <h5 class="footerLink pull-left"><a href="/about">ABOUT </a> </h5>
               	  <h5 class="footerLink pull-left"><a href="/help" >HELP </a> </h5>
@@ -106,9 +107,9 @@
                     <div class="footerImage pull-left">
                       <a href="mailto:aaron@whysaurus.com" target="_blank"><i class="mailImage icon-envelope icon-white"></i></a>
                     </div>
-                    <div id="footerCopyright" class="pull-right">(c) Whysaurus 2012 <br> All Rights Reserved</div>  
+                    <div id="footerCopyright" class="pull-right">(c) Whysaurus 2012 <br> All Rights Reserved</div>
                   </div>
-            	
+
              </div>
           </div>
        </div>

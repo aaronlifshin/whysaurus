@@ -108,12 +108,12 @@
                     </div>
                   </div>
                 </div>
-                {% endif %}
-
-                <div class="row boxedElement centered {%if supportingPoints%} hide {% endif %}" id="zeroSupportingPoints"> Zero Supporting Points<br>
-                  <button name="linkSupportingPoint">Add</button> one
-                  <div class="centered">If this point is true, add evidence to support it!</div>
-                </div>
+                {% else %}
+                  <div class="row boxedElement centered" id="zeroSupportingPoints"> Zero Supporting Points<br>
+                    <button name="linkSupportingPoint">Add</button> one
+                    <div class="centered">If this point is true, add evidence to support it!</div>
+                  </div>
+				{% endif %}
 
 			<div id="disqus_thread" class="row">
     			<script type="text/javascript">

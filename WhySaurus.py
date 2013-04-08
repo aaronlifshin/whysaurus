@@ -78,7 +78,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
 
 
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
-    """Inherits from gae-simpleaiuth (SimpleAuthHandler)
+    """Inherits from gae-simpleauth (SimpleAuthHandler)
        Authentication handler for OAuth 2.0, 1.0(a) and OpenID."""
 
     # Enable optional OAuth 2.0 CSRF guard
@@ -554,9 +554,9 @@ routes = [
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),
     # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
-    Route('/logout', handler='WhySaurus.AuthHandler: logout', name='logout'),  # , handler_method='logout', name='logout'),
-    Route('/auth/<provider>', handler='WhySaurus.AuthHandler: _simple_auth', name='auth_login'),
-    Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler: _auth_callback', name='auth_callback')
+    Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),  # , handler_method='logout', name='logout'),
+    Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),
+    Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler:_auth_callback', name='auth_callback')
 ]
 
 # webapp2 config

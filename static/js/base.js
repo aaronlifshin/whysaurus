@@ -145,8 +145,7 @@ $(document).ready(function() {
     });
   };
 
-  $('#frm_createPointDialog .filepicker').bindFilepicker();
-
+  $('#frm_createPointDialog .filepicker, #createSupportingPoint .filepicker').bindFilepicker();
 
   tinyMCE.init({
     // General options

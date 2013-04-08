@@ -190,6 +190,20 @@ class PointRoot(ndb.Model):
         return True, ''
 
 
+class ImageUrl(object):
+    """ Descriptor for Point """
+    HTTP_RE = re.compile('^https?:\/\/')
+
+    def __init__(self, format):
+        self.format = format
+
+    def __get__(self, instance, instance_type):
+        if self.HTTP_RE.match(instance.imageURL):
+            return instance.imageURL
+        else:
+            return constants.CDN + '/' + self.format + '-' + instance.imageURL
+
+
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
     authorName = ndb.StringProperty()
@@ -207,9 +221,11 @@ class Point(ndb.Model):
     downVotes = ndb.IntegerProperty()
     voteTotal = ndb.IntegerProperty()
     imageURL = ndb.StringProperty(default='')
+    summaryMediumImage = ImageUrl('SummaryMedium')
+    summaryBigImage = ImageUrl('SummaryBig')
+    fullPointImage = ImageUrl('FullPoint')
     imageDescription = ndb.StringProperty(default='')
     imageAuthor = ndb.StringProperty(default='')
-    HTTP_RE = re.compile('^https?:\/\/')
 
     @classmethod
     def getByKey(cls, pointKey):
@@ -445,13 +461,3 @@ class Point(ndb.Model):
         ]
         d = search.Document(doc_id=self.url, fields=fields)
         index.put(d)
-
-    def urlForImage(self, format=''):
-        """
-        format is one of:
-        SummaryMedium, SummaryBig, FullPoint, or ''
-        """
-        if self.HTTP_RE.match(self.imageURL):
-            return self.imageURL
-        else:
-            return constants.CDN + '/' + format + '-' + self.imageURL

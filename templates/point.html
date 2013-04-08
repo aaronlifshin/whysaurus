@@ -47,7 +47,7 @@
         </div>
         <div class="span3">
             {% if point.imageURL and point.imageURL.strip %}
-              <img class="pointDisplay" src="{{ point.urlForImage('FullPoint') }}" />
+              <img class="pointDisplay" src="{{ point.fullPointImage }}" />
             {% else %}
               Add an image
             {% endif %}
@@ -95,7 +95,7 @@
                         </div>
                         <div class="span2">
                                 {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
-                                    <img class="smallDisplay" src="{{ supportingPoint.urlForImage('SummaryMedium') }}" />
+                                    <img class="smallDisplay" src="{{ supportingPoint.summaryMediumImage }}" />
                                 {% endif %}
                         </div>
                         <div class="span2 grayBack">

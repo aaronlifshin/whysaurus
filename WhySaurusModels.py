@@ -1,5 +1,6 @@
 import re
 import logging
+import constants
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
@@ -208,6 +209,7 @@ class Point(ndb.Model):
     imageURL = ndb.StringProperty(default='')
     imageDescription = ndb.StringProperty(default='')
     imageAuthor = ndb.StringProperty(default='')
+    HTTP_RE = re.compile('^https?:\/\/')
 
     @classmethod
     def getByKey(cls, pointKey):
@@ -443,3 +445,13 @@ class Point(ndb.Model):
         ]
         d = search.Document(doc_id=self.url, fields=fields)
         index.put(d)
+
+    def urlForImage(self, format=''):
+        """
+        format is one of:
+        SummaryMedium, SummaryBig, FullPoint, or ''
+        """
+        if self.HTTP_RE.match(self.imageURL):
+            return self.imageURL
+        else:
+            return constants.CDN + '/' + format + '-' + self.imageURL

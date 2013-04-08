@@ -59,3 +59,5 @@ SCORETHRESHOLDS = {
     'green': 2,
     'red': -2
 }
+
+CDN = '//d3uk4hxxzbq81e.cloudfront.net'

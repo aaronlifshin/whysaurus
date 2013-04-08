@@ -21,7 +21,7 @@
                 </div>
 				{% if point.imageURL and point.imageURL.strip %}
                   <div class="span4">
-						<img class="listDisplay" src="//d3uk4hxxzbq81e.cloudfront.net/SummaryBig-{{ point.imageURL }}" /></H5>
+						<img class="listDisplay" src="{{ point.urlForImage('SummaryBig') }}" /></H5>
                   </div>
                 {% endif %}
             </div>
@@ -51,7 +51,7 @@
                 </div>
 				{% if point.imageURL and point.imageURL.strip %}
                   <div class="span4">
-						<img class="listDisplay" src="//d3uk4hxxzbq81e.cloudfront.net/SummaryBig-{{ point.imageURL }}" /></H5>
+						<img class="listDisplay" src="{{ point.urlForImage('SummaryBig') }}" /></H5>
                   </div>
                 {% endif %}
             </div>

@@ -5,7 +5,7 @@
 
   {% if user %}
     {% with "editPointDialog" as formName %}
-    {% with "Edit Point" as dlgTitle  %} 
+    {% with "Edit Point" as dlgTitle  %}
         {% include 'pointDialog.html' %}
     {% endwith %}
     {% endwith %}
@@ -16,13 +16,13 @@
       <div class="span1 pagination-centered">
 				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
 							greenScore
-						{% else %}	
+						{% else %}
 							{% if point.voteTotal <= thresholds.red %}
 								redScore
 							{% else %}
 								yellowScore
-							{% endif %}	
-						{% endif %} hugeScore">				
+							{% endif %}
+						{% endif %} hugeScore">
 					{{ point.voteTotal }}</div>
                 <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
                   <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
@@ -37,19 +37,19 @@
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
 				<div class="mainPointInfo">
 					<div class="mainPointVersion">{{point.version}}</div>
-					<div class="mainPointAuthor">{{ point.authorName }}</div> 
-					<div class="mainPointDateEdited">{{point.dateEdited}}</div>	
-					<div class="mainPointViewCount">{{pointRoot.viewCount}}</div>	
-					<div class="mainPointImageURL">{{point.imageURL}}</div>	
-					<div class="mainPointImageAuthor">{{point.imageAuthor}}</div>	
-					<div class="mainPointImageDescription">{{point.imageDescription}}</div>	
-				</div>				
+					<div class="mainPointAuthor">{{ point.authorName }}</div>
+					<div class="mainPointDateEdited">{{point.dateEdited}}</div>
+					<div class="mainPointViewCount">{{pointRoot.viewCount}}</div>
+					<!-- <div class="mainPointImageURL">{{point.imageURL}}</div> -->
+					<div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+					<div class="mainPointImageDescription">{{point.imageDescription}}</div>
+				</div>
         </div>
-        <div class="span3">            
+        <div class="span3">
             {% if point.imageURL and point.imageURL.strip %}
-              <img class="pointDisplay" src="{{ point.imageURL }}" />
+              <img class="pointDisplay" src="{{ point.fullPointImage }}" />
             {% else %}
-              Add an image 
+              Add an image
             {% endif %}
         </div>
      </div>
@@ -57,63 +57,63 @@
     <div class="row">
       <div class="grayBack span12 boxedElement">
           <span class="caseSummaryEditToggle editable">
-          <button id="editPoint">EDIT POINT DETAILS</button>  
-          </span>    
+          <button id="editPoint">EDIT POINT DETAILS</button>
+          </span>
           <span class="caseHistory editable">
-          <button id="viewHistory">VIEW POINT HISTORY</button>  
-          </span>      
+          <button id="viewHistory">VIEW POINT HISTORY</button>
+          </span>
           {% if user.admin %}
-              <span> <button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button></span>    
-          {% endif %}          
+              <span> <button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button></span>
+          {% endif %}
       </div>
     </div>
 
    <div class="row">
         <div class="span2 offset5 pagination-centered"><img src="/static/img/arrow_why_toSupportingPoints_grey_97px.png"/></div>
     </div>
-        
+
 	         {% if supportingPoints %}
                <div class="row columnHeading span2 offset5 pagination-centered">Supporting Points</div>
-               <div class="row boxedElement span6 offset3" id="nonzeroSupportingPoints"> 
+               <div class="row boxedElement span6 offset3" id="nonzeroSupportingPoints">
                   <div class="row-fluid">
                      <div class="span10 offset1">
                         <div class="row-fluid">
                           {% if supportingPoints %}
                             <button id="unlinkToggle" class="pull-right" type="submit">Unlink</button>
                           {% endif %}
-                          <button name="linkSupportingPoint" class="pull-right">Add</button>       
+                          <button name="linkSupportingPoint" class="pull-right">Add</button>
                         </div>
     					{% for supportingPoint in supportingPoints %}
                         <div class="{% if supportingPoint.voteTotal >= thresholds.green %}
                             green
-                          {% else %}    
-                          {% if supportingPoint.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}  
-                          {% endif %} pointSmall row-fluid" id="supportingPoint_{{supportingPoint.url}}"> 
+                          {% else %}
+                          {% if supportingPoint.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
+                          {% endif %} pointSmall row-fluid" id="supportingPoint_{{supportingPoint.url}}">
                         <div class="span8 title"><H5>
                         <span class="score">{{ supportingPoint.voteTotal }}</span>
                           <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></H5>
                         </div>
                         <div class="span2">
                                 {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
-                                    <img class="smallDisplay" src={{ supportingPoint.imageURL }} />
+                                    <img class="smallDisplay" src="{{ supportingPoint.summaryMediumImage }}" />
                                 {% endif %}
-                        </div>                       
+                        </div>
                         <div class="span2 grayBack">
                                   <a class="navWhy pull-right" id="editPoint_New_{{ supportingPoint.url }}" alt="Why {{ supportingPoint.title|escape }}" href="/point/{{ supportingPoint.url }}" src="/static/img/arrow_why_A_grey.png"></a>
                                   <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
                         </div>
                         </div>
 
-					{% endfor %} 
-                    </div>  
+					{% endfor %}
+                    </div>
                   </div>
                 </div>
                 {% endif %}
-                           
+
                 <div class="row boxedElement centered {%if supportingPoints%} hide {% endif %}" id="zeroSupportingPoints"> Zero Supporting Points<br>
-                  <button name="linkSupportingPoint">Add</button> one  
+                  <button name="linkSupportingPoint">Add</button> one
                   <div class="centered">If this point is true, add evidence to support it!</div>
-                </div>		
+                </div>
 
 			<div id="disqus_thread" class="row">
     			<script type="text/javascript">
@@ -122,7 +122,7 @@
     				var disqus_developer = {{devInt}};
     				var disqus_identifier = '{{point.url}}';
     				var disqus_title = '{{point.title}}';
-    					
+
     			    /* * * DON'T EDIT BELOW THIS LINE * * */
     			    (function() {
     			        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -130,10 +130,10 @@
     			        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     			    })();
     			</script>
-    
+
     			<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     			<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-    			
+
 			</div>
       <script>
       var myVote = '{{voteValue}}';

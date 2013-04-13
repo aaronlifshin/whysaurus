@@ -12,7 +12,7 @@ a:hover{
 }
 
 #header{
-	height:52px;	
+	height:52px;
 	color:black;
 }
 
@@ -55,7 +55,7 @@ a:hover{
 #twitterImage {
 	background-image: url("/static/img/icon_twitter_white_22px.png");
 	width:21px;
-	height:22px;	
+	height:22px;
 }
 
 #twitterImage:hover  {
@@ -65,7 +65,7 @@ a:hover{
 #facebookImage {
 	background-image: url("/static/img/icon_facebook_white_22px.png");
 	width:21px;
-	height:22px;	
+	height:22px;
 }
 
 #facebookImage:hover  {
@@ -88,11 +88,11 @@ a:hover{
 
 .footerLink {
 	padding-right:18px;
-	margin-top: 16px;	
+	margin-top: 16px;
 }
 
 .footerImage {
-	padding-right:18px;	
+	padding-right:18px;
 }
 
 #mailImage {
@@ -101,22 +101,22 @@ a:hover{
 }
 
 #footer a {
-	color:white; 
+	color:white;
 }
 
 #footer a:hover {
-	color:#00ADEE; 
+	color:#00ADEE;
 	text-decoration:none;
 }
 
 #tagline {
 	font-style: italic;
-	font-size: 1.0625em;	
+	font-size: 1.0625em;
 }
 
 #footerCopyright{
 	font-size: 0.5625em;
-	color:#58595B;	
+	color:#58595B;
 	line-height: 10px;
 	margin-top: 16px;
 }
@@ -174,7 +174,7 @@ a:hover{
 }
 
 .pointCard:hover .score, .pointSmall:hover .score {
-	color:white;		
+	color:white;
 }
 
 .pointCard:hover a.navWhy, .pointSmall:hover a.navWhy {
@@ -195,27 +195,27 @@ a:hover{
 
 .pointCard H5 {
 	padding: 10px 0;
-	margin: 0 0 0 0;		
-} 
+	margin: 0 0 0 0;
+}
 
 .pointCard .text, .pointCard .title, .pointSmall .title  {
 	padding-left: 5px;
 }
 
 .yellow .score {
-	color:#EBC821;	
+	color:#EBC821;
 }
 
 .yellow:hover .title {
-	background-color: #EBC821;	
+	background-color: #EBC821;
 }
 
 .red .score {
-	color:#FF000B;	
+	color:#FF000B;
 }
 
 .red:hover .title {
-	background-color: #FF000B;	
+	background-color: #FF000B;
 }
 
 .green .score {
@@ -223,24 +223,24 @@ a:hover{
 }
 
 .green:hover .title {
-	background-color: #0CCF00;	
+	background-color: #0CCF00;
 }
 
 .greenScore {
 	color:#0CCF00;
 }
 .redScore {
-	color:#FF000B;	
+	color:#FF000B;
 }
 .yellowScore {
-	color:#EBC821;	
+	color:#EBC821;
 }
 
 .pointSmall {
 	border-style:solid;
 	border-width:1px;
 	border-color:#B9BBBD;
-  	word-wrap: break-word;	
+  	word-wrap: break-word;
   	cursor:pointer;
 }
 
@@ -311,23 +311,23 @@ a:hover{
 
 
 .upArrow{
-	background-image:url('/static/img/inverse_up_arrow.png');	
+	background-image:url('/static/img/inverse_up_arrow.png');
 }
 
 .downArrow{
-	background-image:url('/static/img/inverse_down_arrow.png');	
+	background-image:url('/static/img/inverse_down_arrow.png');
 }
 
 .inactiveVote {
-	background-color:#B9BBBD; 	
+	background-color:#B9BBBD;
 }
 
 .redVote {
-	background-color:#FF000B; 	
+	background-color:#FF000B;
 }
 
 .greenVote {
-	background-color:#0CCF00; 	
+	background-color:#0CCF00;
 }
 
 #nonzeroSupportingPoints {
@@ -335,7 +335,7 @@ a:hover{
 }
 a.navWhy {
 	width:46px;
-	height:34px;	
+	height:34px;
 	left: 8px;
 	position: relative;
 	border-style:none;
@@ -348,15 +348,15 @@ a.navWhy:hover {
 
 .unlinkbutton {
 	width:46px;
-	height:34px;	
+	height:34px;
 	border-style:none;
-	background:transparent url('/static/img/icon_unlink_grey_34px.png') center top no-repeat;	
+	background:transparent url('/static/img/icon_unlink_grey_34px.png') center top no-repeat;
 }
 
 .unlinkbutton:hover {
 	background-image: url('/static/img/icon_unlink_red_34px.png');
 }
-	
+
 .mainPointContent{
 	font-size:0.9375em;
 	color:#6D6E70;
@@ -366,12 +366,12 @@ a.navWhy:hover {
 .mainPointAuthor:before{content:"Last Edited By: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointViewCount:before{content:"ViewCount: ";font-size:inherit;font-style:inherit;font-weight:normal}
-.mainPointImageURL:before{content:"Image URL: ";font-size:inherit;font-style:inherit;font-weight:normal}
+/*.mainPointImageURL:before{content:"Image URL: ";font-size:inherit;font-style:inherit;font-weight:normal}*/
 .mainPointImageAuthor:before{content:"Image Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointImageDescription:before{content:"Image Description: ";font-size:inherit;font-style:inherit;font-weight:normal}
 
 img.pointDisplay{
-    float:right; 
+    float:right;
 	top: 5px;
 	right: 5px;
 	max-width: 200px;
@@ -389,9 +389,9 @@ img.smallDisplay {
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   Login dialog stuff 
+   Login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
+
 #loginDialog {
     /* new custom width */
     width: 300px;
@@ -420,7 +420,7 @@ img.smallDisplay {
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   Edit point dialog stuff 
+   Edit point dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .pointDialog {
@@ -432,7 +432,7 @@ img.smallDisplay {
 	position:absolute;
 	bottom: 0px;
 	width:100%;
-	padding: 14px 0px 15px;	
+	padding: 14px 0px 15px;
 }
 
 .pointDialog label {
@@ -442,7 +442,7 @@ img.smallDisplay {
 }
 
 .pointDialog .textline {
-	text-align:left;	
+	text-align:left;
 	margin-left:15px;
 }
 
@@ -452,41 +452,41 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .ui-button-text {font-size:13px;}
 .ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
 .ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
- 
+
 .mceEditor > table {
     width:100% !important;
     height:auto !important;
 }
 
 
-.titleEdit { 
-  width:516px; 
+.titleEdit {
+  width:516px;
   padding: 2px;
 }
- 
-    
-.fieldEdit { 
+
+
+.fieldEdit {
   float:left;
   padding: 2px;
   width:411px;
 }
 
-.dlgLabelName{ 
+.dlgLabelName{
   float:left;
   width:100px;
   display:block;
-  height: 100%; 
+  height: 100%;
   padding:0px;
   margin:0px;
   }
 .dlgField{
   margin-top:5px;
-  width:100%; 
+  width:100%;
   }
 #textEdit_tbl {width:100% !important;}
 #textEdit_ifr {width:100% !important;}
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   END Edit point dialog stuff 
+   END Edit point dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */

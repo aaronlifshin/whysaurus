@@ -3,74 +3,74 @@
 {% block mainPageContent %}
   <script type="text/javascript" src="/static/js/index.js"></script>
   <div class="row topSpace"></div>
-  <div class="row">	  		
+  <div class="row">
 	<div id="leftColumn" class="span4">
 		<div class="columnHeading marginBottom">Editor's Picks</div>
-		{% for point in editorsPicks %} 
+		{% for point in editorsPicks %}
           <div class="{% if point.voteTotal >= thresholds.green %}
 						green
-					  {% else %}	
-						{% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}	
+					  {% else %}
+						{% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
 					  {% endif %} pointCard" id="point_HR_{{point.url}}">
-			 <div class="row-fluid">	
-                 <div class="{% if point.imageURL and point.imageURL.strip %} span8 {%else%} span12 {%endif%}">	
+			 <div class="row-fluid">
+                 <div class="{% if point.imageURL and point.imageURL.strip %} span8 {%else%} span12 {%endif%}">
                     <div class="title"><H5>
-						<span class="score">{{ point.voteTotal }}</span> 
+						<span class="score">{{ point.voteTotal }}</span>
 					<a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="text">{{ point.summaryText }}</div>
                 </div>
 				{% if point.imageURL and point.imageURL.strip %}
                   <div class="span4">
-						<img class="listDisplay" src={{ point.imageURL }} /></H5>
-                  </div>					
+						<img class="listDisplay" src="{{ point.summaryBigImage }}" /></H5>
+                  </div>
                 {% endif %}
-            </div>            
-            <div class="row-fluid">    
+            </div>
+            <div class="row-fluid">
                 <div class="span12">
-                  <a class="navWhy pull-right" id="editPoint_EP_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a> 
-		        </div>	
+                  <a class="navWhy pull-right" id="editPoint_EP_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a>
+		        </div>
             </div>
           </div>
 		{% endfor %}
     </div>
-    
+
     <div id="middleColumn " class="span4">
     	<div class="columnHeading marginBottom">Highest Rated Points</div>
-		{% for point in topPoints %} 
+		{% for point in topPoints %}
 		  <div class="{% if point.voteTotal >= thresholds.green %}
 						green
-					  {% else %}	
-						{% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}	
+					  {% else %}
+						{% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
 					  {% endif %} pointCard" id="point_HR_{{point.url}}">
-			 <div class="row-fluid">	
-                 <div class="{% if point.imageURL and point.imageURL.strip %} span8 {%else%} span12 {%endif%}">	
+			 <div class="row-fluid">
+                 <div class="{% if point.imageURL and point.imageURL.strip %} span8 {%else%} span12 {%endif%}">
                     <div class="title"><H5>
-						<span class="score">{{ point.voteTotal }}</span> 
+						<span class="score">{{ point.voteTotal }}</span>
 					<a href="/point/{{ point.url }}">{{ point.title|escape }}</a></div>
 					<div class="text">{{ point.summaryText }}</div>
                 </div>
 				{% if point.imageURL and point.imageURL.strip %}
                   <div class="span4">
-						<img class="listDisplay" src={{ point.imageURL }} /></H5>
-                  </div>					
+						<img class="listDisplay" src="{{ point.summaryBigImage }}" /></H5>
+                  </div>
                 {% endif %}
-            </div>            
-            <div class="row-fluid">    
+            </div>
+            <div class="row-fluid">
                 <div class="span12">
-                  <a class="navWhy pull-right" id="editPoint_HR_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a> 
-		        </div>	
+                  <a class="navWhy pull-right" id="editPoint_HR_{{point.url}}" alt="Why {{ point.title|escape }}" href="/point/{{point.url}}" src="/static/img/arrow_why_A_grey.png"></a>
+		        </div>
             </div>
           </div>
 		{% endfor %}
     </div>
     <div id="rightColumn" class="span4">
     	<div class="columnHeading preamble">New Points</div>
-		{% for point in newPoints %} 
+		{% for point in newPoints %}
 		      <div class="{% if point.voteTotal >= thresholds.green %}
                         green
-                      {% else %}    
-                      {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}  
-                      {% endif %} pointSmall row-fluid" id="point_New_{{point.url}}">	
+                      {% else %}
+                      {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
+                      {% endif %} pointSmall row-fluid" id="point_New_{{point.url}}">
 				<div class="span10 title"><H5>
 				<span class="score">{{ point.voteTotal }}</span>
 				  <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></H5>
@@ -80,7 +80,7 @@
 			    </div>
            </div>
 		{% endfor %}
-		
+
       	<div class="columnHeading preamble">Recently Viewed Points</div>
 
 		{% if not user %}
@@ -90,12 +90,12 @@
 				Check out some points
 			{% endif %}
 		{% endif %}
-		{% for point in recentlyViewed %} 
+		{% for point in recentlyViewed %}
 		      <div class="{% if point.voteTotal >= thresholds.green %}
                         green
-                      {% else %}    
-                      {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}  
-                      {% endif %} pointSmall row-fluid" id="point_New_{{point.url}}">	
+                      {% else %}
+                      {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
+                      {% endif %} pointSmall row-fluid" id="point_New_{{point.url}}">
 				<div class="span10 title"><H5>
 				<span class="score">{{ point.voteTotal }}</span>
 				  <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></H5>
@@ -107,6 +107,6 @@
 		{% endfor %}
     </div>
 	</div>
-	
-	
+
+
 {% endblock %}

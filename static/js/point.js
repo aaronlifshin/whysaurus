@@ -1,14 +1,14 @@
 				var unlinkVisible = false;
-				
+
 				function toggleUnlink() {
 					if ( unlinkVisible ) {
 						$( ".navWhy" ).removeClass("ui-helper-hidden");
 						$( ".navWhy" ).show();
 						$( ".navWhy" ).button();
-						$( ".unlinkbutton" ).addClass("ui-helper-hidden");						
+						$( ".unlinkbutton" ).addClass("ui-helper-hidden");
 						$( ".ui-helper-hidden" ).hide();
 						$("#unlinkToggle").html('<span class="ui-button-text">Unlink</span>');
-						unlinkVisible = false;			
+						unlinkVisible = false;
 					} else {
 						$( ".navWhy" ).addClass("ui-helper-hidden");
 						$( ".ui-helper-hidden" ).hide();
@@ -17,9 +17,9 @@
 						$( ".unlinkbutton" ).button();
 						$("#unlinkToggle").html('<span class="ui-button-text">Done</span>');
 						unlinkVisible = true;
-					} 		
+					}
 				}
-				
+
 				function callPointEdit(){
 					var ed = tinyMCE.get('editor_editPointDialog');
 				  var text = tinyMCE.activeEditor.getBody().textContent;
@@ -31,16 +31,16 @@
 							'urlToEdit': pointURL,
 							'content': ed.getContent(),
 							'plainText':text.substring(0,250),
-							'title': $('#title_editPointDialog').val(),			
+							'title': $('#title_editPointDialog').val(),
 							'imageURL':$('#link_editPointDialog').val(),
               'imageAuthor':$('#author_editPointDialog').val(),
-              'imageDescription': $('#description_editPointDialog').val()			
+              'imageDescription': $('#description_editPointDialog').val()
 							},
-							success: function(data){ 
+							success: function(data){
 								var ed = tinyMCE.get('editor_editPointDialog');
 							  obj = JSON.parse(data);
-								$('.mainPointContent').html(ed.getContent()); 
-								$('.mainPointTitle h1').html($('#title_editPointDialog').val()); 
+								$('.mainPointContent').html(ed.getContent());
+								$('.mainPointTitle h1').html($('#title_editPointDialog').val());
 								$('.mainPointVersion').html(obj.version);
 								$('.mainPointAuthor').html(obj.author);
 								$('.mainPointDateEdited').html(obj.dateEdited);
@@ -48,17 +48,17 @@
 									$('.pointDisplay').remove();
 								}
 								if (obj.imageURL) {
-									newImageContent = '<img class="pointDisplay" src="' + obj.imageURL + '"\/>';
+									newImageContent = '<img class="pointDisplay" src="//d3uk4hxxzbq81e.cloudfront.net/' + obj.imageURL + '"\/>';
 									$('.mainPointContent').after(newImageContent);
 								}
-								$('.mainPointImageURL').html(obj.imageURL);	
-								$('.mainPointImageAuthor').html(obj.imageAuthor);	
-								$('.mainPointImageDescription').html(obj.imageDescription);	
+								$('.mainPointImageURL').html(obj.imageURL);
+								$('.mainPointImageAuthor').html(obj.imageAuthor);
+								$('.mainPointImageDescription').html(obj.imageDescription);
 								$("#editPointDialog").modal('hide');
 							}
 					 });
 					$.ajax();
-						
+
 				}
 
         	function supportingPointUnlink(supportingPointURL) {
@@ -70,7 +70,7 @@
   							'mainPointURL': pointURL,
   							'supportingPointURL': supportingPointURL
   							},
-  							success: function(data){ 
+  							success: function(data){
                               obj = JSON.parse(data);
                               if (obj.result == true) {
                                 $('#supportingPoint_' + obj.pointURL).remove();
@@ -78,7 +78,7 @@
                                   $("#zeroSupportingPoints").show();
                                   $("#nonzeroSupportingPoints").hide();
                                   $( "[name=linkSupportingPoint]" ).button();
-                                }							  
+                                }
                               } else {
                                 alert(obj.result);
                               }
@@ -88,13 +88,13 @@
   				}
 			/*
 				function openEditPointDialog() {
-					
+
 					var dialogButtons = {};
 					dialogButtons["Save Point"] = function() {
- 					  	
+
   					  $( this ).dialog( "close" );
 				  };
-					dialogButtons["Cancel"] = function() {	
+					dialogButtons["Cancel"] = function() {
 					  tinyMCE.get('editor_').setContent('');
     				$('textarea.titleEdit').val('');
 					  $('input[name=imageURL]').val('');
@@ -104,13 +104,13 @@
 					};
 					$( "#dialogForm" ).dialog({title:"Edit Point", buttons: dialogButtons}	);
 					$( "#dialogForm" ).dialog( "open" );
-					
-				}				
+
+				}
 	      */
 	      function upVoteToggle(turnOn) {
 	        if (turnOn) {
   	        $( "#upVote").removeClass("inactiveVote");
-            $( "#upVote").addClass("greenVote");	                
+            $( "#upVote").addClass("greenVote");
 	        } else {
 	          $( "#upVote").removeClass("greenVote");
             $( "#upVote").addClass("inactiveVote");
@@ -125,35 +125,35 @@
             $( "#downVote").addClass("inactiveVote");
           }
         }
-	      
+
 				function updateVoteButtonLabels(newVote){
 				  var downvoteLabel = $( "#downVote a" ).text();
 				  var upvoteLabel = $( "#upVote a" ).text();
 				  var bigScore = $( "#bigScore" ).text();
-				        
+
 				  if (myVote == 0 && newVote == 1) {// UPVOTE
 				    var newVal = parseInt(upvoteLabel) + 1;
             $( "#upVote a" ).text(newVal.toString());
             $( "#bigScore" ).text(parseInt(bigScore) + 1);
             upVoteToggle(true);
-          } else if (myVote == 0 && newVote == -1) { // DOWNVOTE   
+          } else if (myVote == 0 && newVote == -1) { // DOWNVOTE
             var newVal = parseInt(downvoteLabel) + 1;
             $( "#downVote a" ).text(newVal.toString());
             $( "#bigScore" ).text(parseInt(bigScore) - 1);
-            downVoteToggle(true);          
+            downVoteToggle(true);
           } else if (myVote == 1  &&  newVote == 0) { // CANCEL UPVOTE
             var newVal = parseInt(upvoteLabel) - 1;
-            $( "#upVote a" ).text(newVal.toString()); 
-            $( "#bigScore" ).text(parseInt(bigScore) - 1); 
+            $( "#upVote a" ).text(newVal.toString());
+            $( "#bigScore" ).text(parseInt(bigScore) - 1);
             upVoteToggle(false);
-          } else if (myVote == -1  &&  newVote == 0) { // CANCEL DOWNVOTE  
+          } else if (myVote == -1  &&  newVote == 0) { // CANCEL DOWNVOTE
             var newVal = parseInt(downvoteLabel) - 1;
-            $( "#downVote a" ).text(newVal.toString()); 
+            $( "#downVote a" ).text(newVal.toString());
             $( "#bigScore" ).text(parseInt(bigScore) + 1);
             downVoteToggle(false);
           } else if (myVote == -1  &&  newVote == 1) { // DOWN TO UP
             var newVal = parseInt(downvoteLabel) - 1;
-            $( "#downVote a" ).text(newVal.toString()); 
+            $( "#downVote a" ).text(newVal.toString());
             var newVal = parseInt(upvoteLabel) + 1;
             $( "#upVote a" ).text(newVal.toString());
             $( "#bigScore" ).text(parseInt(bigScore) + 2);
@@ -161,7 +161,7 @@
             upVoteToggle(true);
           } else if (myVote == 1  &&  newVote == -1) {// UP TO DOWN
             var newVal = parseInt(downvoteLabel) + 1;
-            $( "#downVote a" ).text(newVal.toString()); 
+            $( "#downVote a" ).text(newVal.toString());
             var newVal = parseInt(upvoteLabel) - 1;
             $( "#upVote a" ).text(newVal.toString());
             $( "#bigScore" ).text(parseInt(bigScore) - 2);
@@ -170,7 +170,7 @@
           }
           myVote = newVote;
 				}
-								
+
 				function upVote() {
 				  $.ajaxSetup({
 					   url: "/vote",
@@ -180,7 +180,7 @@
 							'vote': myVote == 1 ? 0 : 1,
 							'pointURL': pointURL
 							},
-              success: function(data){ 
+              success: function(data){
                 obj = JSON.parse(data);
                 if (obj.result == true) {
                   updateVoteButtonLabels(obj.newVote);
@@ -191,7 +191,7 @@
 						});
 						$.ajax();
 				}
-				
+
 				function downVote() {
 				  $.ajaxSetup({
 					   url: "/vote",
@@ -201,7 +201,7 @@
 							'vote': myVote == -1 ? 0 : -1,
 							'pointURL': pointURL
 							},
-              success: function(data){ 
+              success: function(data){
                 obj = JSON.parse(data);
                 if (obj.result == true) {
                   updateVoteButtonLabels(obj.newVote);
@@ -212,7 +212,7 @@
 						});
 						$.ajax();
 				}
-				
+
 				function deletePoint(urlToDelete) {
     			$.ajaxSetup({
     			   url: "/deletePoint",
@@ -221,11 +221,11 @@
     				 data: {
     					'urlToDelete': urlToDelete
     					},
-    					success: function(data){ 
+    					success: function(data){
                   obj = JSON.parse(data);
                   if (obj.result == true) {
-      						  alert('Deleted point ' + obj.deletedURL);	
-      						  window.location = "/";	  
+      						  alert('Deleted point ' + obj.deletedURL);
+      						  window.location = "/";
                   } else {
                     alert(obj.error);
                   }
@@ -250,17 +250,21 @@ function populateEditFields() {
   if (ed) {
 	  ed.setContent($('.mainPointContent').html() );
 	}
-	$('#link_editPointDialog').val($('div.mainPointImageURL').text());
 	$('#author_editPointDialog').val($('div.mainPointImageAuthor').text());
-  $('#description_editPointDialog').val($('div.mainPointImageDescription').text());	
+  $('#description_editPointDialog').val($('div.mainPointImageDescription').text());
+  $('#link_editPointDialog').val($('div.mainPointImageURL').text());
+  if($('div.mainPointImageURL').text() !== ''){
+    $('#filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/'+$('div.mainPointImageURL').text());
+  }
+
 }
 
 $(document).ready(function() {
 			$( "[name=linkSupportingPoint]" ).button();
-										
+
       if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
-        $( "[name=linkSupportingPoint]" ).attr('data-toggle',"modal");        
+        $( "[name=linkSupportingPoint]" ).attr('data-toggle',"modal");
         make_this_show_login_dlg($( "#unlinkToggle" ));
         make_this_show_login_dlg($( "#editPoint" ));
         make_this_show_login_dlg($( "#upVote" ));
@@ -272,39 +276,41 @@ $(document).ready(function() {
           params["parentPointURL"] = pointURL;
           post_to_url("/selectSupportingPoint", params);
         });
-        
+
         $( "#unlinkToggle" )
   				.button()
   				.click(function() {
   					toggleUnlink();
   				});
-  				
+
         $( "#editPoint" ).attr('href',"#editPointDialog");
         $( "#editPoint" ).attr('data-toggle',"modal");
         $( "#editPoint" ).on('click', function() {
-          populateEditFields();          
+          populateEditFields();
+          $('#frm_editPointDialog .filepicker').bindFilepicker();
         });
+
 			  $("#submit_editPointDialog").on('click', function(e) {
     		  callPointEdit();
     		});
-			    
+
     		$( "#upVote" ).click(function() {upVote();});
     			//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
     		$( "#downVote" ).click(function() {
     			downVote();
-    		});			
+    		});
 
     		$( "#viewHistory" ).click(function() {
     			window.location.href="/pointHistory?pointUrl="+pointURL;
     		});
-    				
+
       };
-					
+
 			$( ".whybutton" ).button();
 			$( ".unlinkbutton" ).button();
 			$( ".unlinkbutton" ).addClass("ui-helper-hidden");
-			$( ".ui-helper-hidden" ).hide();					
+			$( ".ui-helper-hidden" ).hide();
 			//try{
 				$( "#deletePoint" ).button();
 			//} catch (e) {};

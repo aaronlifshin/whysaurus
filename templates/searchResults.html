@@ -2,28 +2,33 @@
 
 {% block mainPageContent %}
   <div id="content">
-		Search results for {{searchString}}
-		{% for point in searchResults %} 
-		  <div class="boxedElement" id="point_{{point.url}}">	
-					<div class="pointSummaryTitle">
-					<span
-						{% if point.voteTotal >= thresholds.green %}
-							class="greenScore"
-						{% else %}	
-							{% if point.voteTotal <= thresholds.red %}
-								class="redScore"
-							{% else %}
-								class="yellowScore"
-							{% endif %}	
-						{% endif %}					
-						>{{ point.voteTotal|floatformat:"0" }}
-					</span>
-					 - <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
-					<button id="why_{{point.url}}" onClick="goToPoint('{{point.url}}');"> WHY </button>
-					</div>
-			</div>
+     <div class="row">
+        <div class="span6 offset3">
+		<H2>Search results for {{searchString}}</H2>
+		{% for point in searchResults %} 		
+          <div class="{% if point.voteTotal >= thresholds.green %}
+                  green
+                {% else %}
+                {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
+                {% endif %} pointSmall row-fluid" id="point_{{point.url}}">
+              <div class="span8 title"><H5>
+              <span class="score">{{ point.voteTotal|floatformat:"0" }}</span>
+                <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></H5>
+              </div>
+              <div class="span2">
+                      {% if point.summaryMediumImage and point.summaryMediumImage.strip %}
+                          <img class="smallDisplay" src="{{ point.summaryMediumImage }}" />
+                      {% endif %}
+              </div>
+              <div class="span2 grayBack">
+                   <a class="navWhy pull-right" id="editPoint_New_{{ point.url }}" alt="Why {{ point.title|escape }}" href="/point/{{ point.url }}" src="/static/img/arrow_why_A_grey.png"></a>
+              </div>
+          </div>
 		{% endfor %}
+        </div>
 	</div>
+  </div>
+  
 		
 		<script>
 		function selectPoint(pointUrl, parentPointUrl){

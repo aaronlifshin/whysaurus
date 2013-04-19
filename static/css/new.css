@@ -470,6 +470,14 @@ button#editPoint {
 	height: 20px;
 }
 
+button#addImage {
+	background-image: url(/static/img/paper_clip_icon.png);
+	padding-right: 25px;
+	height: 20px;
+	margin-top: 2em;
+	margin-left: 10%;
+}
+
 button#changeImage {
 	float: right;
 	margin-top: 20%;

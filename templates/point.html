@@ -12,8 +12,8 @@
   {% endif %}
   <div class="row topSpace"></div>
   <div class="row">
-    <div class="boxedElement span12">
-      <div class="span1 pagination-centered">
+    <div class="boxedElement span12 dropShadow">
+      <div id="scoreAndVotingSection" class="span1 pagination-centered">
 				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
 							greenScore
 						{% else %}
@@ -27,45 +27,52 @@
                 <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
                   <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
                 </div>
-                <div class="columnHeading">vote!</div>
+                <div id="voteLabel" class="columnHeading">vote!</div>
                 <div id="downVote" class= "voteArea downArrow whiteScoreText {% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
                   <a alt="DownVote" src="/static/img/inverse_down_arrow.png">{{point.downVotes}}</a>
                 </div>
        </div>
-        <div class="pointSummary span7">
-                <div class="mainPointTitle editable"><h1>{{ point.title|escape }}</h1></div>
+        <div id="pointSummary" class="span7">
+                <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
-				<div class="mainPointInfo">
-					<div class="mainPointVersion">{{point.version}}</div>
-					<div class="mainPointAuthor">{{ point.authorName }}</div>
-					<div class="mainPointDateEdited">{{point.dateEdited}}</div>
-					<div class="mainPointViewCount">{{pointRoot.viewCount}}</div>
-					<!-- <div class="mainPointImageURL">{{point.imageURL}}</div> -->
-					<div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
-					<div class="mainPointImageDescription">{{point.imageDescription}}</div>
+				<div class="mainPointLastEdited">
+					Last edited {{point.dateEdited}} by {{ point.authorName }}
 				</div>
+				<button class="mainPointButton" id="editPoint">
+					edit
+				</button>
         </div>
-        <div class="span3">
+        <div id="mainPointImageArea" class="span3">
             {% if point.imageURL and point.imageURL.strip %}
               <img class="pointDisplay" src="{{ point.fullPointImage }}" />
+			  <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+			  <button class="mainPointButton" id="changeImage">change image</button>
             {% else %}
               Add an image
             {% endif %}
         </div>
-     </div>
-    </div>
-    <div class="row">
-      <div class="grayBack span12 boxedElement">
-          <span class="caseSummaryEditToggle editable">
-          <button id="editPoint">EDIT POINT DETAILS</button>
-          </span>
-          <span class="caseHistory editable">
-          <button id="viewHistory">VIEW POINT HISTORY</button>
-          </span>
-          {% if user.admin %}
-              <span> <button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button></span>
-          {% endif %}
-      </div>
+	    <div class="row">
+			<div class="grayBackground span12">
+			  <div class="span1"></div>
+			  <div class="span8">
+			    <button class="mainPointButton tab" id="pointConnections">
+					connections
+				</button>
+			    <button class="mainPointButton tab" id="commentOnPoint">
+					comment
+				</button>
+	            <button class="mainPointButton tab" id="viewPointHistory">
+					history
+				</button>
+	         </div>
+			 <div class="rightMainPointButtons span2">
+	           {% if user.admin %}
+	             <button class="mainPointButton" id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">delete</button>
+	           {% endif %}
+		    </div>
+		  </div>
+		</div>
+	  </div>
     </div>
 
    <div class="row">
@@ -98,7 +105,7 @@
                                     <img class="smallDisplay" src="{{ supportingPoint.summaryMediumImage }}" />
                                 {% endif %}
                         </div>
-                        <div class="span2 grayBack">
+                        <div class="span2 grayBackground">
                                   <a class="navWhy pull-right" id="editPoint_New_{{ supportingPoint.url }}" alt="Why {{ supportingPoint.title|escape }}" href="/point/{{ supportingPoint.url }}" src="/static/img/arrow_why_A_grey.png"></a>
                                   <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
                         </div>

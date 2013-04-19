@@ -269,7 +269,7 @@ $(document).ready(function() {
         make_this_show_login_dlg($( "#editPoint" ));
         make_this_show_login_dlg($( "#upVote" ));
         make_this_show_login_dlg($( "#downVote" ));
-        make_this_show_login_dlg($( "#viewHistory" ));
+        make_this_show_login_dlg($( "#viewPointHistory" ));
       } else {
         $( "[name=linkSupportingPoint]" ).click(function() {
           var params = [];
@@ -301,7 +301,7 @@ $(document).ready(function() {
     			downVote();
     		});
 
-    		$( "#viewHistory" ).click(function() {
+    		$( "#viewPointHistory" ).click(function() {
     			window.location.href="/pointHistory?pointUrl="+pointURL;
     		});
 

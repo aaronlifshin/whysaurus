@@ -16,7 +16,7 @@ a:hover{
 	color:black;
 }
 
-.grayBack {
+.grayBackground {
 	background:#EFEFEF;
 }
 
@@ -271,6 +271,12 @@ a:hover{
 	font-size:0.9375em;
 	color:#B9BBBD;
 }
+
+#voteLabel {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
 .marginBottom {
 	margin-bottom:16px;
 }
@@ -367,6 +373,26 @@ a.navWhy:hover {
 	font-size:0.9375em;
 	color:#6D6E70;
 }
+
+h1.condensed {
+	line-height: 100%;
+}
+
+.mainPointLastEdited {
+	font-size:0.7em;
+	font-style:italic;
+	color: lightGray;
+	float: left;
+}
+
+#pointSummary {
+	border-left: 1px #B9BBBD solid;
+	border-right: 1px #B9BBBD solid;
+	padding-left: 1em;
+	padding-right: 2em;
+	position: relative;
+}
+
 .mainPointInfo{font-size:0.8em;font-style:italic;bottom:10px;left:10px;font-weight:bold}
 .mainPointVersion:before{content:"Version: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointAuthor:before{content:"Last Edited By: ";font-size:inherit;font-style:inherit;font-weight:normal}
@@ -376,12 +402,21 @@ a.navWhy:hover {
 .mainPointImageAuthor:before{content:"Image Author: ";font-size:inherit;font-style:inherit;font-weight:normal}
 .mainPointImageDescription:before{content:"Image Description: ";font-size:inherit;font-style:inherit;font-weight:normal}
 
+#mainPointImageArea {
+	float: right;
+}
+
+.mainPointImageCaption {
+	font-size: 0.8em;
+	font-style: italic;
+	text-align: center;
+	color: lightGray;
+}
+
 img.pointDisplay{
-    float:right;
-	top: 5px;
-	right: 5px;
 	max-width: 200px;
 	max-height: 200px;
+	width: 100%;
 }
 
 img.listDisplay {
@@ -393,6 +428,79 @@ img.smallDisplay {
     max-width:40px;
 }
 
+.mainPointButton {
+	display: inline;
+	color: #B9BBBD;
+	font-style: italic;
+	font-weight: bold;
+	border: 0px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: 95% 0%;
+}
+
+.mainPointButton:hover {
+	text-decoration: none;
+	color: #00ADEE;
+	background-position: 95% 100%;
+}
+
+.tab:hover {
+	text-decoration: none;
+	background-color: #00ADEE;
+	color: white;
+	background-position: 95% 100%;
+}
+
+.tab {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.rightMainPointButtons {
+	float: right;
+}
+
+button#editPoint {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	background-image: url(/static/img/pencil_icon.png);
+	padding-right: 25px;
+	height: 20px;
+}
+
+button#changeImage {
+	float: right;
+	margin-top: 20%;
+	background-image: url(/static/img/paper_clip_icon.png);
+	padding-right: 25px;
+	height: 20px;
+}
+
+button#pointConnections {
+	background-image: url(/static/img/flow_chart_icon.png);
+	padding-right: 29px;
+	height: 27px;
+}
+
+button#commentOnPoint {
+	background-image: url(/static/img/speech_bubble_icon.png);
+	padding-right: 40px;
+	height: 27px;
+}
+
+button#viewPointHistory {
+	background-image: url(/static/img/counter_clockwise_icon.png);
+	padding-right: 35px;
+	height: 27px;
+}
+
+button#deletePoint {
+	background-image: url(/static/img/trash_can_icon.png);
+	padding-right: 25px;
+	height: 20px;
+}
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Login dialog stuff

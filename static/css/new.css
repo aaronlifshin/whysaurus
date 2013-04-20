@@ -305,7 +305,6 @@ a:hover{
 
 .voteArea{
 	line-height:36px;
-	width:47px;
 	margin-left:18%;
 	cursor:pointer;
 	background:center top no-repeat;
@@ -324,10 +323,12 @@ a:hover{
 
 .upArrow{
 	background-image:url('/static/img/inverse_up_arrow.png');
+	width: 47px;
 }
 
 .downArrow{
 	background-image:url('/static/img/inverse_down_arrow.png');
+	width: 47px;
 }
 
 .inactiveVote {

@@ -445,7 +445,7 @@ img.smallDisplay {
 	background-position: 95% 100%;
 }
 
-.tab:hover {
+.tab:hover, .selectedTab {
 	text-decoration: none;
 	background-color: #00ADEE;
 	color: white;

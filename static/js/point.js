@@ -259,6 +259,13 @@ function populateEditFields() {
 
 }
 
+function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
+	$('.tab').removeClass('selectedTab');
+	$(selectedTab).addClass('selectedTab');
+	$('.tabbedArea').hide();
+	$(tabbedAreaToShow).show();
+}
+
 $(document).ready(function() {
 			$( "[name=linkSupportingPoint]" ).button();
 
@@ -301,10 +308,6 @@ $(document).ready(function() {
     			downVote();
     		});
 
-    		$( "#viewPointHistory" ).click(function() {
-    			window.location.href="/pointHistory?pointUrl="+pointURL;
-    		});
-
       };
 
 			$( ".whybutton" ).button();
@@ -314,4 +317,22 @@ $(document).ready(function() {
 			//try{
 				$( "#deletePoint" ).button();
 			//} catch (e) {};
+
+			/* Tabs for supporting points, comments, and history */
+
+			// Beginning state
+			$('.tabbedArea').hide(); $('#supportingPointsArea').show();
+
+			$('#pointConnections').click(function() {
+				toggleTabbedArea(this, "#supportingPointsArea");
+			});
+
+			$('#commentOnPoint').click(function() {
+				toggleTabbedArea(this, "#disqus_thread");
+			});
+
+			$('#viewPointHistory').click(function() {
+				toggleTabbedArea(this, "#historyArea");
+			});
+
 });

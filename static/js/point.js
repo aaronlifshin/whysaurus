@@ -44,13 +44,9 @@
 								$('.mainPointVersion').html(obj.version);
 								$('.mainPointAuthor').html(obj.author);
 								$('.mainPointDateEdited').html(obj.dateEdited);
-								if ($('.pointDisplay')) {
-									$('.pointDisplay').remove();
-								}
-								if (obj.imageURL) {
-									newImageContent = '<img class="pointDisplay" src="//d3uk4hxxzbq81e.cloudfront.net/' + obj.imageURL + '"\/>';
-									$('.mainPointContent').after(newImageContent);
-								}
+                if (obj.imageURL) {
+                  $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + obj.imageURL)
+                }
 								$('.mainPointImageURL').html(obj.imageURL);
 								$('.mainPointImageAuthor').html(obj.imageAuthor);
 								$('.mainPointImageDescription').html(obj.imageDescription);
@@ -254,7 +250,7 @@ function populateEditFields() {
   $('#description_editPointDialog').val($('div.mainPointImageDescription').text());
   $('#link_editPointDialog').val($('div.mainPointImageURL').text());
   if($('div.mainPointImageURL').text() !== ''){
-    $('#filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/'+$('div.mainPointImageURL').text());
+    $('#editPointDialog .filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+$('div.mainPointImageURL').text());
   }
 
 }

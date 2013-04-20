@@ -121,6 +121,8 @@ var FILEPICKER_SERVICES = ['COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
   filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
   $.fn.bindFilepicker = function(){
+    if (this.bindFilepickerBound) return;
+    this.bindFilepickerBound = true;
     this.click(function(){
       var self = this;
       filepicker.pickAndStore(
@@ -129,7 +131,7 @@ $(document).ready(function() {
         function(fpfiles){
           var file = fpfiles[0];
 
-          $(self).next('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_white_47px.png').addClass('spin');
+          $(self).next('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_black_47px.png').addClass('spin');
 
           filepicker.convert(file, {width: 112, height: 112, fit: 'clip'}, {path: 'SummaryBig-' + file.key});
           filepicker.convert(file, {width: 310, fit: 'clip'}, {path: 'FullPoint-' + file.key});
@@ -145,7 +147,8 @@ $(document).ready(function() {
     });
   };
 
-  $('#frm_createPointDialog .filepicker, #createSupportingPoint .filepicker').bindFilepicker();
+  $('#frm_createPointDialog .filepicker').bindFilepicker();
+  $('#createSupportingPoint .filepicker').bindFilepicker();
 
   tinyMCE.init({
     // General options

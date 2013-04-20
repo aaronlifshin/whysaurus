@@ -41,6 +41,8 @@
 				<button class="mainPointButton" id="editPoint">
 					edit
 				</button>
+                <!-- Hacky way to get imageurl into the edit dialog. :/ -->
+                <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
         </div>
         <div id="mainPointImageArea" class="span3">
             {% if point.imageURL and point.imageURL.strip %}

@@ -1,4 +1,4 @@
-    
+
 	function selectPoint(pointUrl, parentPointUrl){
 	  	$.ajaxSetup({
 			url: "/linkPoint",
@@ -8,10 +8,10 @@
 				'supportingPointURL': pointUrl,
 				'parentPointURL': parentPointUrl
 				},
-			success: function(data){ 
+			success: function(data){
 			  obj = JSON.parse(data);
 			  if (obj.result == true) {
-				window.location.href="/point/" + parentPointURL;							  
+				window.location.href="/point/" + parentPointURL;
 			  } else {
 			  	if (obj.error) {
 			    	alert(obj.error);
@@ -23,7 +23,7 @@
 		});
 		$.ajax();
 	}
-								      
+
 	function addPoint(){
 		var ed = tinyMCE.get('editor_createSupportingPoint');
     var text = tinyMCE.activeEditor.getBody().textContent;
@@ -42,7 +42,7 @@
 			},
 			success: function(data){
 				obj = JSON.parse(data);
-				if (obj.result == true) { 					
+				if (obj.result == true) {
 					window.location.href="/point/" + parentPointURL;
 				} else {
 					if (obj.error) {
@@ -50,7 +50,7 @@
 			    	} else {
 			    		alert("There was an error");
 			    	}
-				}				
+				}
  			}
 		});
 		$.ajax();
@@ -59,16 +59,16 @@
 $(document).ready(function() {
   if (!loggedIn) {
     $( "#addSupportingPoint" ).attr('href',"#loginDialog");
-    $( "#addSupportingPoint" ).attr('data-toggle',"modal");        
-  } else {				
+    $( "#addSupportingPoint" ).attr('data-toggle',"modal");
+  } else {
     $( "#addSupportingPoint" ).attr('href',"#createSupportingPoint");
     $( "#addSupportingPoint" ).attr('data-toggle',"modal");
-  
+
     $("#submit_createSupportingPoint").on('click', function(e) {
 		   addPoint();
 		});
   }
-  
+
 	$(".searchBox", $(".searchColumn")).keyup(function(event){
 		if(event.keyCode == 13){
 			$.ajaxSetup({
@@ -82,7 +82,7 @@ $(document).ready(function() {
 				success: function(data){
 					$("[id^=searchPoint]",$(".searchColumn")).remove();
 					obj = JSON.parse(data);
-					if (obj.result == true) { 
+					if (obj.result == true) {
 						appendAfter = $(".searchColumn");
 						for(var i=0; i < obj.searchResults.length; i++){
 							var oneResult = obj.searchResults[i];
@@ -97,13 +97,13 @@ $(document).ready(function() {
 							} else {
 								spanClass = 'yellowScore';
 							}
-												
+
 							newDiv.html(
-								'<span class="' + spanClass + '">' +  
-								oneResult['voteTotal'] + '</span> - <a href="/point/'+ oneResult['url'] + '">' + oneResult['title'] + 
+								'<span class="' + spanClass + '">' +
+								oneResult['voteTotal'] + '</span> - <a href="/point/'+ oneResult['url'] + '">' + oneResult['title'] +
 								'</a> <button id="selectSearchPoint_' + oneResult['url'] +
 								'" onClick="javascript:selectPoint(\'' + oneResult['url'] + '\', \'' +
-								parentPointURL + '\');"> USE </button>'			
+								parentPointURL + '\');"> USE </button>'
 							);
 							appendAfter.append(newDiv);
 							newDiv.show();
@@ -111,7 +111,7 @@ $(document).ready(function() {
 							// set the button event handler
 							// call the .button
 							// append it last
-							// make it visible			        
+							// make it visible
 					        oneResult['title']
 					        oneResult['url']
 					        oneResult['voteTotal']*/

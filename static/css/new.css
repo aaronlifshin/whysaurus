@@ -54,7 +54,7 @@ a:hover{
 
 #twitterImage {
 	background-image: url("/static/img/footer_icon_twitter_16pxHi_v12.png");
-	background-color:   white;	
+	background-color:   white;
 	width:20px;
 	height:16px;
 }
@@ -75,14 +75,14 @@ a:hover{
 }
 
 #mailImage {
-	background-image: url("/static/img/footer_icon_email_16pxHi_v12.png");	
+	background-image: url("/static/img/footer_icon_email_16pxHi_v12.png");
 	background-color: black;
     width:22px;
     height:16px;
 }
 
 #mailImage:hover {
-    background-color:   #00ADEE;	
+    background-color:   #00ADEE;
 }
 
 #footer{
@@ -672,3 +672,25 @@ fieldset { padding:0; border:0; margin-top:25px;}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END Edit point dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+/* FILEPICKA */
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spin {
+  -webkit-animation: rotate 2s linear infinite;
+  -moz-animation: rotate 2s linear infinite;
+  animation: rotate 2s linear infinate;
+}

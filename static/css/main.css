@@ -486,33 +486,3 @@ MEDIA QUERIES
 	width: 32px;
 }
 
-/* Filepicker */
-/*#filepicker {
-  padding: 11px 19px;
-  font-size: 17.5px;
-  line-height: 20px;
-text-align: center;
-vertical-align: middle;
-cursor: pointer;
-display: inline-block;
-color: #fff;
-text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
-background-color: #006dcc;
-border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-}*/
-
-@-webkit-keyframes rotate {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-.spin
-{
-  -webkit-animation-name:             rotate;
-  -webkit-animation-duration:         0.5s;
-  -webkit-animation-iteration-count:  infinite;
-  -webkit-animation-timing-function:  linear;
-}

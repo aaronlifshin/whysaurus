@@ -345,6 +345,25 @@ a:hover{
 #nonzeroSupportingPoints {
 	padding-bottom: 10px;
 }
+
+#zeroSupportingPoints {
+	margin-bottom: 5%;
+	font-style: italic;
+	color: #B9BBBD;
+	width: 20em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#addEvidencePromptText {
+	font-size: 0.8em;
+	margin-top: 1em;
+}
+
+#zeroSupportingPointsText {
+	margin-top: 1em;
+}
+
 a.navWhy {
 	width:46px;
 	height:34px;
@@ -486,13 +505,13 @@ button#changeImage {
 	height: 20px;
 }
 
-button#pointConnections {
+button#viewSupportingPoints {
 	background-image: url(/static/img/flow_chart_icon.png);
 	padding-right: 29px;
 	height: 27px;
 }
 
-button#commentOnPoint {
+button#viewComments {
 	background-image: url(/static/img/speech_bubble_icon.png);
 	padding-right: 40px;
 	height: 27px;
@@ -508,6 +527,27 @@ button#deletePoint {
 	background-image: url(/static/img/trash_can_icon.png);
 	padding-right: 25px;
 	height: 20px;
+}
+
+button#addSupportingPointWhenZero {
+	margin-top: 3em;
+	margin-bottom: 3em;
+	background-image: url(/static/img/plus_icon.png);
+	background-position: center 0%;
+	height: 13px;
+	font-weight: normal;
+	font-size: 10px;
+	padding: 0px;
+}
+
+button#addSupportingPointWhenZero:hover {
+	background-position: center 100%;
+}
+
+button#addSupportingPointWhenZero span.plus_icon_spacer {
+	display: inline-block;
+	width: 23px;
+	height: 13px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

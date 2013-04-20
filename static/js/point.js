@@ -323,11 +323,11 @@ $(document).ready(function() {
 			// Beginning state
 			$('.tabbedArea').hide(); $('#supportingPointsArea').show();
 
-			$('#pointConnections').click(function() {
+			$('#viewSupportingPoints').click(function() {
 				toggleTabbedArea(this, "#supportingPointsArea");
 			});
 
-			$('#commentOnPoint').click(function() {
+			$('#viewComments').click(function() {
 				toggleTabbedArea(this, "#disqus_thread");
 			});
 

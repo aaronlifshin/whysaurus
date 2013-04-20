@@ -53,8 +53,7 @@ a:hover{
 }
 
 #twitterImage {
-	background-image: url("/static/img/footer_icon_twitter_16pxHi_v12.png");
-	background-color:   white;
+	background-color: white;
 	width:20px;
 	height:16px;
 }
@@ -64,7 +63,6 @@ a:hover{
 }
 
 #facebookImage {
-	background-image: url("/static/img/footer_icon_facebook_16pxHi_v12.png");
 	background-color: white;
 	width:20px;
 	height:16px;

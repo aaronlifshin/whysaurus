@@ -429,6 +429,7 @@ h1.condensed {
 
 #mainPointImageArea {
 	float: right;
+	margin-left: 0px;
 }
 
 .mainPointImageCaption {
@@ -439,8 +440,6 @@ h1.condensed {
 }
 
 img.pointDisplay{
-	max-width: 200px;
-	max-height: 200px;
 	width: 100%;
 }
 

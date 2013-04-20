@@ -411,8 +411,6 @@ h1.condensed {
 }
 
 #pointSummary {
-	border-left: 1px #B9BBBD solid;
-	border-right: 1px #B9BBBD solid;
 	padding-left: 1em;
 	padding-right: 2em;
 	position: relative;

@@ -297,6 +297,7 @@ class ViewPoint(AuthHandler):
 				'pointData': pointData,
                 'numPoints': len(pointData) if pointData else 0,
                 'supportingPoints': supportingPoints,
+				'numSupportingPoints': len(supportingPoints) if supportingPoints else 0,
                 'user': user,
                 'devInt': devInt,  # For Disqus
                 'voteValue': voteValue,

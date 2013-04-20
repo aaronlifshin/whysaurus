@@ -344,6 +344,12 @@ a:hover{
 
 #nonzeroSupportingPoints {
 	padding-bottom: 10px;
+	margin-bottom: 5%;
+}
+
+#numberOfSupportingPoints {
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 #zeroSupportingPoints {
@@ -484,13 +490,13 @@ button#editPoint {
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
-	background-image: url(/static/img/pencil_icon.png);
+	background-image: url('/static/img/pencil_icon.png');
 	padding-right: 25px;
 	height: 20px;
 }
 
 button#addImage {
-	background-image: url(/static/img/paper_clip_icon.png);
+	background-image: url('/static/img/paper_clip_icon.png');
 	padding-right: 25px;
 	height: 20px;
 	margin-top: 2em;
@@ -500,31 +506,31 @@ button#addImage {
 button#changeImage {
 	float: right;
 	margin-top: 20%;
-	background-image: url(/static/img/paper_clip_icon.png);
+	background-image: url('/static/img/paper_clip_icon.png');
 	padding-right: 25px;
 	height: 20px;
 }
 
 button#viewSupportingPoints {
-	background-image: url(/static/img/flow_chart_icon.png);
+	background-image: url('/static/img/flow_chart_icon.png');
 	padding-right: 29px;
 	height: 27px;
 }
 
 button#viewComments {
-	background-image: url(/static/img/speech_bubble_icon.png);
+	background-image: url('/static/img/speech_bubble_icon.png');
 	padding-right: 40px;
 	height: 27px;
 }
 
 button#viewPointHistory {
-	background-image: url(/static/img/counter_clockwise_icon.png);
+	background-image: url('/static/img/counter_clockwise_icon.png');
 	padding-right: 35px;
 	height: 27px;
 }
 
 button#deletePoint {
-	background-image: url(/static/img/trash_can_icon.png);
+	background-image: url('/static/img/trash_can_icon.png');
 	padding-right: 25px;
 	height: 20px;
 }
@@ -532,11 +538,10 @@ button#deletePoint {
 button#addSupportingPointWhenZero {
 	margin-top: 3em;
 	margin-bottom: 3em;
-	background-image: url(/static/img/plus_icon.png);
+	background-image: url('/static/img/plus_icon.png');
 	background-position: center 0%;
-	height: 13px;
+	height: 20px;
 	font-weight: normal;
-	font-size: 10px;
 	padding: 0px;
 }
 
@@ -546,8 +551,23 @@ button#addSupportingPointWhenZero:hover {
 
 button#addSupportingPointWhenZero span.plus_icon_spacer {
 	display: inline-block;
-	width: 23px;
-	height: 13px;
+	width: 30px;
+}
+
+button#addSupportingPointWhenNonZero {
+	background-image: url('/static/img/plus_icon.png');
+	padding-right: 30px;
+	height: 20px;
+}
+
+button#unlinkToggle {
+	background-image: url('/static/img/broken_chain_link_icon.png');
+	height: 20px;
+	padding-right: 33px;
+}
+
+#nonzeroSupportingPoints a.navWhy {
+	position: static;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

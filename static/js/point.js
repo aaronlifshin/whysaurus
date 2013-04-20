@@ -242,15 +242,21 @@ function make_this_show_login_dlg(button) {
 function populateEditFields() {
   var ed = tinyMCE.get('editor_editPointDialog');
 
-	$('#title_editPointDialog').val($('div.mainPointTitle').text());
+	$('#title_editPointDialog').val($('#pointSummary div.mainPointTitle').text());
   if (ed) {
-	  ed.setContent($('.mainPointContent').html() );
+	  ed.setContent($('#pointSummary .mainPointContent').html() );
 	}
-	$('#author_editPointDialog').val($('div.mainPointImageAuthor').text());
-  $('#description_editPointDialog').val($('div.mainPointImageDescription').text());
-  $('#link_editPointDialog').val($('div.mainPointImageURL').text());
-  if($('div.mainPointImageURL').text() !== ''){
-    $('#editPointDialog .filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+$('div.mainPointImageURL').text());
+	$('#author_editPointDialog').val($('#pointSummary div.mainPointImageAuthor').text());
+  $('#description_editPointDialog').val($('#pointSummary div.mainPointImageDescription').text());
+  var url = $('#pointSummary div.mainPointImageURL').text();
+
+  $('#link_editPointDialog').val(url);
+  if(url !== '') {
+    if(url.match("https?://")) {
+      $('#editPointDialog .filepicker-placeholder').attr('src', url);
+    } else {
+      $('#editPointDialog .filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+url);
+    }
   }
 
 }

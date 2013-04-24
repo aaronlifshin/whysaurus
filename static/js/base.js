@@ -1,4 +1,5 @@
 var CONST_EDITOR_DEFAULT_TEXT = 'Add the description here...';
+var MAX_TITLE_CHARS = 140;
 
 function post_to_url(path, params, method) {
   method = method || "post"; // Set method to post by default, if not specified.
@@ -43,11 +44,16 @@ function positionEditDialog() {
 }
 
 function newPoint() {
+  if ($('#title_createPointDialog').val().length > MAX_TITLE_CHARS) {
+      alert('Too many characters in the title');
+      return;
+  }  
   var ed = tinyMCE.get('editor_createPointDialog');
   var text = tinyMCE.activeEditor.getBody().textContent;
   $("#submit_createPointDialog").off('click');
   $("#submit_createPointDialog").hide();
   $("#submit_createPointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+
   $.ajaxSetup({
     url: "/newPoint",
     global: false,
@@ -127,6 +133,17 @@ function clearDefaultContent(ed) {
   if (is_default) {
     ed.setContent('');
   }
+}
+
+function setCharNumText(titleField) {
+    var numLeft = MAX_TITLE_CHARS - titleField.value.length;
+    if (numLeft < 0) {
+        $("#" + titleField.id + "_charNum").text(numLeft*-1 + " characters over limit");
+        $("#" + titleField.id + "_charNum").addClass("redScore");
+    } else {
+        $("#" + titleField.id + "_charNum").text(numLeft + " characters left");  
+        $("#" + titleField.id + "_charNum").removeClass("redScore");            
+    }
 }
 
 var FILEPICKER_SERVICES = ['COMPUTER', 'URL', 'FACEBOOK'];
@@ -280,12 +297,19 @@ $(document).ready(function() {
       var edSummary = tinyMCE.get('editor_createPointDialog');
       edSummary.setContent('');
       $('#title_createPointDialog').val('');
+      setCharNumText($('#title_createPointDialog')[0]);
       $('#link_createPointDialog').val('');
       $('#author_createPointDialog').val('');
       $('#description_createPointDialog').val('');
     });
     $("#submit_createPointDialog").on('click', function(e) {newPoint();});
+  
+    $("[id^='title_']").on('keyup', function(e) {setCharNumText(e.target);});
+ 
+  
   }
+  
+  
   
   //Add Hover effect to menus.  Well, it doesn't work very well...
   // But on the off chance we decide to put it back later. . .

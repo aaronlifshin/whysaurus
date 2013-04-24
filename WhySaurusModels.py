@@ -269,7 +269,7 @@ class Point(ndb.Model):
     @staticmethod
     def makeUrl(sourceStr):
         longURL = sourceStr.replace(" ", "_")
-        newUrl = re.sub('[\W]+', '', longURL[0:64])
+        newUrl = re.sub('[\W]+', '', longURL[0:140])
         # Check if it already exists
         pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
         pointRoot = pointRootQuery.get()

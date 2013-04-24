@@ -25,6 +25,10 @@
 	}
 
 	function addPoint(){
+	    if ($('#title_createSupportingPoint').val().length > MAX_TITLE_CHARS) {
+            alert('Too many characters in the title');
+            return;
+        }
 		var ed = tinyMCE.get('editor_createSupportingPoint');
         var text = tinyMCE.activeEditor.getBody().textContent;
         $("#submit_createSupportingPoint").off('click');

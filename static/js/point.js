@@ -21,6 +21,10 @@
 				}
 
 				function callPointEdit(){
+				    if ($('#title_editPointDialog').val().length > MAX_TITLE_CHARS) {
+                        alert('Too many characters in the title');
+                        return;
+                    }
 					var ed = tinyMCE.get('editor_editPointDialog');
 				    var text = tinyMCE.activeEditor.getBody().textContent;
 				    $("#submit_editPointDialog").off('click');
@@ -251,7 +255,8 @@ function make_this_show_login_dlg(button) {
 function populateEditFields() {
   var ed = tinyMCE.get('editor_editPointDialog');
 
-	$('#title_editPointDialog').val($('#pointSummary div.mainPointTitle').text());
+  $('#title_editPointDialog').val($('#pointSummary div.mainPointTitle').text());
+  setCharNumText($('#title_editPointDialog')[0]);
   if (ed) {
 	  ed.setContent($('#pointSummary .mainPointContent').html() );
 	}

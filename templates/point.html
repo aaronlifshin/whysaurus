@@ -12,8 +12,8 @@
   {% endif %}
   <div class="row topSpace"></div>
   <div class="row">
-    <div class="boxedElement span12">
-      <div class="span1 pagination-centered">
+    <div class="boxedElement span12 dropShadow">
+      <div id="scoreAndVotingSection" class="span1 pagination-centered">
 				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
 							greenScore
 						{% else %}
@@ -27,61 +27,71 @@
                 <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
                   <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
                 </div>
-                <div class="columnHeading">vote!</div>
+                <div id="voteLabel" class="columnHeading">vote!</div>
                 <div id="downVote" class= "voteArea downArrow whiteScoreText {% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
                   <a alt="DownVote" src="/static/img/inverse_down_arrow.png">{{point.downVotes}}</a>
                 </div>
        </div>
-        <div class="pointSummary span7">
-                <div class="mainPointTitle editable"><h1>{{ point.title|escape }}</h1></div>
+        <div id="pointSummary" class="span7">
+                <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
-				<div class="mainPointInfo">
-					<div class="mainPointVersion">{{point.version}}</div>
-					<div class="mainPointAuthor">{{ point.authorName }}</div>
-					<div class="mainPointDateEdited">{{point.dateEdited}}</div>
-					<div class="mainPointViewCount">{{pointRoot.viewCount}}</div>
-					<!-- <div class="mainPointImageURL">{{point.imageURL}}</div> -->
-					<div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
-					<div class="mainPointImageDescription">{{point.imageDescription}}</div>
+				<div class="mainPointLastEdited">
+					Last edited {{point.dateEdited}} by {{ point.authorName }}
 				</div>
+				<button class="mainPointButton" id="editPoint">
+					edit
+				</button>
+                <!-- Hacky way to get imageurl into the edit dialog. :/ -->
+                <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
         </div>
-        <div class="span3">
+        <div id="mainPointImageArea" class="span3">
             {% if point.imageURL and point.imageURL.strip %}
               <img class="pointDisplay" src="{{ point.fullPointImage }}" />
+			  <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+			  <button class="mainPointButton" id="changeImage">change image</button>
             {% else %}
-              Add an image
+			  <button class="mainPointButton" id="addImage">add an image</button>
             {% endif %}
         </div>
-     </div>
-    </div>
-    <div class="row">
-      <div class="grayBack span12 boxedElement">
-          <span class="caseSummaryEditToggle editable">
-          <button id="editPoint">EDIT POINT DETAILS</button>
-          </span>
-          <span class="caseHistory editable">
-          <button id="viewHistory">VIEW POINT HISTORY</button>
-          </span>
-          {% if user.admin %}
-              <span> <button id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">DELETE THIS POINT</button></span>
-          {% endif %}
-      </div>
+	    <div class="row">
+			<div class="grayBackground span12">
+			  <div class="span1"></div>
+			  <div class="span8">
+			    <button class="mainPointButton tab selectedTab" id="viewSupportingPoints">
+					connections
+				</button>
+			    <button class="mainPointButton tab" id="viewComments">
+					comments
+				</button>
+	            <button class="mainPointButton tab" id="viewPointHistory">
+					history
+				</button>
+	         </div>
+			 <div class="rightMainPointButtons span2">
+	           {% if user.admin %}
+	             <button class="mainPointButton" id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">delete</button>
+	           {% endif %}
+		    </div>
+		  </div>
+		</div>
+	  </div>
     </div>
 
+   <div id="supportingPointsArea" class="tabbedArea">
    <div class="row">
         <div class="span2 offset5 pagination-centered"><img src="/static/img/arrow_why_toSupportingPoints_grey_97px.png"/></div>
     </div>
 
 	         {% if supportingPoints %}
-               <div class="row columnHeading span2 offset5 pagination-centered">Supporting Points</div>
                <div class="row boxedElement span6 offset3" id="nonzeroSupportingPoints">
+	              <div id="numberOfSupportingPoints" class="row columnHeading pagination-centered">{{ numSupportingPoints }} Supporting Point{% if numSupportingPoints > 1 %}s{% endif %}</div>
                   <div class="row-fluid">
                      <div class="span10 offset1">
                         <div class="row-fluid">
                           {% if supportingPoints %}
-                            <button id="unlinkToggle" class="pull-right" type="submit">Unlink</button>
+                            <button id="unlinkToggle" class="mainPointButton pull-right" type="submit">unlink</button>
                           {% endif %}
-                          <button name="linkSupportingPoint" class="pull-right">Add</button>
+                          <button id="addSupportingPointWhenNonZero" name="linkSupportingPoint" class="mainPointButton pull-right">add</button>
                         </div>
     					{% for supportingPoint in supportingPoints %}
                         <div class="{% if supportingPoint.voteTotal >= thresholds.green %}
@@ -98,7 +108,7 @@
                                     <img class="smallDisplay" src="{{ supportingPoint.summaryMediumImage }}" />
                                 {% endif %}
                         </div>
-                        <div class="span2 grayBack">
+                        <div class="span2 grayBackground">
                                   <a class="navWhy pull-right" id="editPoint_New_{{ supportingPoint.url }}" alt="Why {{ supportingPoint.title|escape }}" href="/point/{{ supportingPoint.url }}" src="/static/img/arrow_why_A_grey.png"></a>
                                   <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
                         </div>
@@ -109,13 +119,20 @@
                   </div>
                 </div>
                 {% endif %}
+				  {%if supportingPoints %}
+				  <div id="zeroSupportingPoints" class="row hide">
+				 {% else %}
+				  <div id="zeroSupportingPoints" class="row">
+				 {% endif %}
+                    <div class="boxedElement pagination-centered">
+					  <div id="zeroSupportingPointsText">Zero Supporting Points</div>
+                      <button name="linkSupportingPoint" class="mainPointButton pagination-centered" id="addSupportingPointWhenZero">add<span class="plus_icon_spacer"></span>one</button>
+                    </div>
+				    <div id="addEvidencePromptText" class="pagination-centered">If this point is true, add evidence to support it!</div>
+				  </div>
+	</div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 
-                <div class="row boxedElement centered {%if supportingPoints%} hide {% endif %}" id="zeroSupportingPoints"> Zero Supporting Points<br>
-                  <button name="linkSupportingPoint">Add</button> one
-                  <div class="centered">If this point is true, add evidence to support it!</div>
-                </div>
-
-			<div id="disqus_thread" class="row">
+			<div id="disqus_thread" class="row tabbedArea">
     			<script type="text/javascript">
     			    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     			    var disqus_shortname = 'whysaurus-beta'; // required: replace example with your forum shortname
@@ -135,6 +152,37 @@
     			<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
 
 			</div>
+
+			<div id="historyArea" class="row tabbedArea">
+				<br>{{ numPoints }} versions exist for <a href="/point/{{ point.url }}">{{ point.title|escape }}</a><br>
+
+				{% for fullPoint in pointData %}
+				  <div class="boxedElement" id="case_"{{case.key}}>
+							<div class="pointSummaryTitle">{{ fullPoint.point.title|escape }}</div>
+							<div class="pointSummaryText">{{ fullPoint.point.content|safe }}</div>
+							<table class="pointTable">
+							<thead>
+								<tr><th>Point Title</th><th>Point Text</th><th>Author</th></tr>
+							</thead>
+							<tbody>
+							{% for point in fullPoint.supportingPoints %}
+								<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
+							{% endfor %}
+							</tbody>
+							</table>
+							<div class="mainPointInfo">
+								<div class="mainPointVersion">{{fullPoint.point.version}}</div>
+								<div class="mainPointAuthor">{{ fullPoint.point.authorName }}</div>
+								<div class="mainPointDateEdited">{{fullPoint.point.dateEdited}} </div>
+								<div class="mainPointImageURL">{{fullPoint.point.imageURL}}</div>
+		  					<div class="mainPointImageAuthor">{{fullPoint.point.imageAuthor}}</div>
+		  					<div class="mainPointImageDescription">{{fullPoint.point.imageDescription}}</div>
+							</div>
+					</div>
+				{% endfor %}
+			</div>
+
+
       <script>
       var myVote = '{{voteValue}}';
       var pointURL = '{{point.url}}';

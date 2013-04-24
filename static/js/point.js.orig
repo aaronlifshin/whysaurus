@@ -246,6 +246,13 @@ function populateEditFields() {
   if (ed) {
 	  ed.setContent($('#pointSummary .mainPointContent').html() );
 	}
+<<<<<<< HEAD
+	$('#author_editPointDialog').val($('div.mainPointImageAuthor').text());
+  $('#description_editPointDialog').val($('div.mainPointImageDescription').text());
+  $('#link_editPointDialog').val($('div.mainPointImageURL').text());
+  if($('img.pointDisplay').length){
+    $('#filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/'+$('div.mainPointImageURL').text());
+=======
 	$('#author_editPointDialog').val($('#pointSummary div.mainPointImageAuthor').text());
   $('#description_editPointDialog').val($('#pointSummary div.mainPointImageDescription').text());
   var url = $('#pointSummary div.mainPointImageURL').text();
@@ -257,6 +264,7 @@ function populateEditFields() {
     } else {
       $('#editPointDialog .filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+url);
     }
+>>>>>>> 839c87612cc49e4e50795d047cfc335c817c4955
   }
 
 }

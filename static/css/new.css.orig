@@ -73,8 +73,13 @@ a:hover{
 }
 
 #mailImage {
+<<<<<<< HEAD
 	background-image: url("/static/img/footer_icon_email_16pxHi_v12.png");	
 	background-color: white;
+=======
+	background-image: url("/static/img/footer_icon_email_16pxHi_v12.png");
+	background-color: black;
+>>>>>>> 839c87612cc49e4e50795d047cfc335c817c4955
     width:22px;
     height:16px;
 }

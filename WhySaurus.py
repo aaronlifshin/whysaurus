@@ -273,6 +273,8 @@ class ViewPoint(AuthHandler):
         devInt = 1 if constants.DEV else 0
 
         point, pointRoot = Point.getCurrentByUrl(pointURL)
+        pointData = Point.getFullHistory(pointURL)
+
         if point:
             supportingPoints = point.getSupportingPoints()
             user = self.current_user
@@ -292,8 +294,10 @@ class ViewPoint(AuthHandler):
             template_values = {
                 'point': point,
                 'pointRoot': pointRoot,
-                'numPoints': len(point.supportingPoints),
+				'pointData': pointData,
+                'numPoints': len(pointData) if pointData else 0,
                 'supportingPoints': supportingPoints,
+				'numSupportingPoints': len(supportingPoints) if supportingPoints else 0,
                 'user': user,
                 'devInt': devInt,  # For Disqus
                 'voteValue': voteValue,

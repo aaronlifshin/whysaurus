@@ -4,3 +4,4 @@
 .settings/
 archive/
 *.sublime*
+.rvmrc

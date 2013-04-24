@@ -26,35 +26,51 @@
 
 	function addPoint(){
 		var ed = tinyMCE.get('editor_createSupportingPoint');
-    var text = tinyMCE.activeEditor.getBody().textContent;
+        var text = tinyMCE.activeEditor.getBody().textContent;
+        $("#submit_createSupportingPoint").off('click');
+        $("#submit_createSupportingPoint").hide();
+        $("#submit_createSupportingPoint").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 		$.ajaxSetup({
 			url: "/addSupportingPoint",
 			global: false,
 			type: "POST",
 			data: {
 				'content': ed.getContent(),
-        'plainText': text.substring(0,500),
+                'plainText': text.substring(0,500),
 				'title': $('#title_createSupportingPoint').val(),
 				'pointUrl': parentPointURL,
 				'imageURL':$('#link_createSupportingPoint').val(),
-        'imageAuthor':$('#author_createSupportingPoint').val(),
-        'imageDescription': $('#description_createSupportingPoint').val()
+                'imageAuthor':$('#author_createSupportingPoint').val(),
+                'imageDescription': $('#description_createSupportingPoint').val()
 			},
 			success: function(data){
 				obj = JSON.parse(data);
 				if (obj.result == true) {
-					window.location.href="/point/" + parentPointURL;
+				    window.location.href="/point/" + parentPointURL;
 				} else {
 					if (obj.error) {
 			    		alert(obj.error);
 			    	} else {
 			    		alert("There was an error");
 			    	}
+                    $("#spinnerImage").remove();
+				    $("#submit_createSupportingPoint").on('click', function(e){addPoint();}); 
+				    $("#submit_createSupportingPoint").show();
 				}
- 			}
+ 			},
+ 			error: function(xhr, textStatus, error){
+                alert('The server returned an error. You may try again.');
+                $("#spinnerImage").remove();
+                $("#submit_createSupportingPoint").on('click', function(e){addPoint();}); 
+                $("#submit_createSupportingPoint").show();                			    
+            } 			
 		});
 		$.ajax();
 	}
+
+function hideSpinner() {
+    $("#spinnerImage").hide();
+}
 
 $(document).ready(function() {
   if (!loggedIn) {
@@ -63,10 +79,7 @@ $(document).ready(function() {
   } else {
     $( "#addSupportingPoint" ).attr('href',"#createSupportingPoint");
     $( "#addSupportingPoint" ).attr('data-toggle',"modal");
-
-    $("#submit_createSupportingPoint").on('click', function(e) {
-		   addPoint();
-		});
+    $("#submit_createSupportingPoint").on('click', function(e){addPoint();});
   }
 
 	$(".searchBox", $(".searchColumn")).keyup(function(event){

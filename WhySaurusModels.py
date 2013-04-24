@@ -453,7 +453,7 @@ class Point(ndb.Model):
             return None
 
     def addToSearchIndex(self):
-        logging.info('ADDING TO SEARCH INDEX: ' + self.summaryMediumImage)
+        logging.info('ADDING TO SEARCH INDEX. URL = %s | MedIMG = %s '% (self.url, self.summaryMediumImage))
         index = search.Index(name='points')
         fields = [
             search.TextField(name='title', value=self.title),

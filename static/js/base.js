@@ -45,6 +45,9 @@ function positionEditDialog() {
 function newPoint() {
   var ed = tinyMCE.get('editor_createPointDialog');
   var text = tinyMCE.activeEditor.getBody().textContent;
+  $("#submit_createPointDialog").off('click');
+  $("#submit_createPointDialog").hide();
+  $("#submit_createPointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
   $.ajaxSetup({
     url: "/newPoint",
     global: false,
@@ -63,7 +66,16 @@ function newPoint() {
         window.location.href = "/point/" + obj.pointURL;
       } else {
         alert(obj.result);
+        $("#spinnerImage").remove();        
+        $("#submit_createPointDialog").on('click', function(e) {newPoint();});
+        $("#submit_createPointDialog").show();	            
       }
+    },
+    error: function(xhr, textStatus, error){
+        alert('The server returned an error. You may try again.');
+        $("#spinnerImage").remove();
+        $("#submit_createPointDialog").on('click', function(e) {newPoint();});
+        $("#submit_createPointDialog").show();                			    
     }
   });
   $.ajax();
@@ -270,11 +282,6 @@ $(document).ready(function() {
       $('#author_createPointDialog').val('');
       $('#description_createPointDialog').val('');
     });
-    $("#submit_createPointDialog").on('click', function(e) {
-      e.preventDefault();
-      newPoint();
-      $("#createPointDialog").hide();
-    });
+    $("#submit_createPointDialog").on('click', function(e) {newPoint();});
   }
-
 });

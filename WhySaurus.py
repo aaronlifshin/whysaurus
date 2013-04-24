@@ -290,7 +290,7 @@ class ViewPoint(AuthHandler):
             # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list
             if addedToRecentlyViewed or not user:
                 pointRoot.addViewCount()
-            logging.info('Getting point for user %s', str(user))
+
             template_values = {
                 'point': point,
                 'pointRoot': pointRoot,

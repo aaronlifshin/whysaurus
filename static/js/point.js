@@ -22,7 +22,10 @@
 
 				function callPointEdit(){
 					var ed = tinyMCE.get('editor_editPointDialog');
-				  var text = tinyMCE.activeEditor.getBody().textContent;
+				    var text = tinyMCE.activeEditor.getBody().textContent;
+				    $("#submit_editPointDialog").off('click');
+                    $("#submit_editPointDialog").hide();
+                    $("#submit_editPointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 					$.ajaxSetup({
 					   url: "/editPoint",
 					   global: false,
@@ -33,25 +36,31 @@
 							'plainText':text.substring(0,250),
 							'title': $('#title_editPointDialog').val(),
 							'imageURL':$('#link_editPointDialog').val(),
-              'imageAuthor':$('#author_editPointDialog').val(),
-              'imageDescription': $('#description_editPointDialog').val()
+                            'imageAuthor':$('#author_editPointDialog').val(),
+                            'imageDescription': $('#description_editPointDialog').val()
 							},
 							success: function(data){
 								var ed = tinyMCE.get('editor_editPointDialog');
-							  obj = JSON.parse(data);
+							    obj = JSON.parse(data);
 								$('.mainPointContent').html(ed.getContent());
 								$('.mainPointTitle h1').html($('#title_editPointDialog').val());
 								$('.mainPointVersion').html(obj.version);
 								$('.mainPointAuthor').html(obj.author);
 								$('.mainPointDateEdited').html(obj.dateEdited);
-                if (obj.imageURL) {
-                  $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + obj.imageURL)
-                }
+                                if (obj.imageURL) {
+                                    $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + obj.imageURL)
+                                }
 								$('.mainPointImageURL').html(obj.imageURL);
 								$('.mainPointImageAuthor').html(obj.imageAuthor);
 								$('.mainPointImageDescription').html(obj.imageDescription);
 								$("#editPointDialog").modal('hide');
-							}
+							},
+                     		error: function(xhr, textStatus, error){
+                                alert('The server returned an error. You may try again.');
+                                $("#spinnerImage").remove();
+                        		$("#submit_editPointDialog").on('click', function(e) { callPointEdit();});
+                                $("#submit_editPointDialog").show();                			    
+                            }
 					 });
 					$.ajax();
 
@@ -269,7 +278,7 @@ function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
 }
 
 $(document).ready(function() {
-			$( "[name=linkSupportingPoint]" ).button();
+	  $( "[name=linkSupportingPoint]" ).button();
 
       if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
@@ -299,9 +308,7 @@ $(document).ready(function() {
           $('#frm_editPointDialog .filepicker').bindFilepicker();
         });
 
-			  $("#submit_editPointDialog").on('click', function(e) {
-    		  callPointEdit();
-    		});
+		$("#submit_editPointDialog").on('click', function(e) { callPointEdit();});
 
     		$( "#upVote" ).click(function() {upVote();});
     			//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});

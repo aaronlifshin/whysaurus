@@ -64,7 +64,7 @@
 		{% endfor %}
     </div>
     <div id="rightColumn" class="span4">
-    	<div class="columnHeading preamble">New Points</div>
+    	<div class="columnHeading preamble">Recently Edited Points</div>
 		{% for point in newPoints %}
 		      <div class="{% if point.voteTotal >= thresholds.green %}
                         green
@@ -81,7 +81,7 @@
            </div>
 		{% endfor %}
 
-      	<div class="columnHeading preamble">Recently Viewed Points</div>
+      	<div class="columnHeading preamble">Recently Viewed by You</div>
 
 		{% if not user %}
 			Sign in and check out some points

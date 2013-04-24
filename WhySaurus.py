@@ -87,7 +87,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     USER_ATTRS = {
         'facebook': {
             'id': lambda id: ('avatar_url',
-                              'http: //graph.facebook.com/{0}/picture?type=square'.format(id)),
+                              'http://graph.facebook.com/{0}/picture?type=square'.format(id)),
             'name': 'name',
             'link': 'link',
             'email': 'email'

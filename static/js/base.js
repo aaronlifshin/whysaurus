@@ -131,6 +131,8 @@ function clearDefaultContent(ed) {
 
 var FILEPICKER_SERVICES = ['COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
+
+    
   filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
   $.fn.bindFilepicker = function(){
     if (this.bindFilepickerBound) return;
@@ -284,4 +286,13 @@ $(document).ready(function() {
     });
     $("#submit_createPointDialog").on('click', function(e) {newPoint();});
   }
+  
+  //Add Hover effect to menus.  Well, it doesn't work very well...
+  // But on the off chance we decide to put it back later. . .
+ /*  jQuery('div.userControls a.dropdown-toggle').hover(function() {
+    $('.dropdown-menu').stop(true, true).delay(200).fadeIn();
+  }, function() {
+    $('.dropdown-menu').stop(true, true).delay(200).fadeOut();
+  });
+  */
 });

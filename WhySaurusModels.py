@@ -363,6 +363,8 @@ class Point(ndb.Model):
             self.put()
             if newSupportingPoint:
                 newSupportingPoint.addSupportedPoint(newPoint.key.parent())
+            
+            # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndex()
 
             return newPoint

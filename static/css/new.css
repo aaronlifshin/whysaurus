@@ -76,7 +76,7 @@ a:hover{
 
 #mailImage {
 	background-image: url("/static/img/footer_icon_email_16pxHi_v12.png");	
-	background-color: black;
+	background-color: white;
     width:22px;
     height:16px;
 }

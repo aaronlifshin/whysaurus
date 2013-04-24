@@ -253,7 +253,7 @@ function populateEditFields() {
 	$('#author_editPointDialog').val($('div.mainPointImageAuthor').text());
   $('#description_editPointDialog').val($('div.mainPointImageDescription').text());
   $('#link_editPointDialog').val($('div.mainPointImageURL').text());
-  if($('div.mainPointImageURL').text() !== ''){
+  if($('img.pointDisplay').length){
     $('#filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/'+$('div.mainPointImageURL').text());
   }
 

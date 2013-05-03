@@ -91,7 +91,7 @@
 			{% endif %}
 		{% endif %}
 		{% for point in recentlyViewed %}
-		      <div class="{% if point.voteTotal >= thresholds.green %}
+		   <div class="{% if point.voteTotal >= thresholds.green %}
                         green
                       {% else %}
                       {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}

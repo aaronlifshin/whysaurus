@@ -78,12 +78,16 @@ function hideSpinner() {
 
 $(document).ready(function() {
   if (!loggedIn) {
-    $( "#addSupportingPoint" ).attr('href',"#loginDialog");
-    $( "#addSupportingPoint" ).attr('data-toggle',"modal");
+    $( "#createSupportingPointLink" ).attr('href',"#loginDialog");
+    $( "#createSupportingPointLink" ).attr('data-toggle',"modal");
   } else {
-    $( "#addSupportingPoint" ).attr('href',"#createSupportingPoint");
-    $( "#addSupportingPoint" ).attr('data-toggle',"modal");
+    $( "#createSupportingPointLink" ).attr('href',"#createSupportingPoint");
+    $( "#createSupportingPointLink" ).attr('data-toggle',"modal");
     $("#submit_createSupportingPoint").on('click', function(e){addPoint();});
+    $("[id^=selectPoint_div_]").on('click', function(e){
+        var theLink = $(this);
+        selectPoint(theLink.data('pointurl'), parentPointURL );
+    });
   }
 
 	$(".searchBox", $(".searchColumn")).keyup(function(event){

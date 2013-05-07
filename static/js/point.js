@@ -284,6 +284,11 @@ function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
 
 $(document).ready(function() {
 	  $( "[name=linkSupportingPoint]" ).button();
+	  $('[id^="supportingPoint_"]').click(function() {
+        if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
+          window.location.href = $(".navWhy", $(this)).attr('href');
+        }
+      });
 
       if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");

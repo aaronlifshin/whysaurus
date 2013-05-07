@@ -3,12 +3,16 @@ body {
   padding-bottom: 50px;
 }
 
-a:visited{
+.title a:visited, .voteArea a:visited {
 	text-decoration: none;
 }
-a:hover{
+.title a:hover {
 	text-decoration: inherit;
 	color:inherit;
+}
+
+.voteArea a:hover {
+    text-decoration: none;
 }
 
 #header{
@@ -176,7 +180,7 @@ a:hover{
 	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
 }
 
-.pointCard:hover .score, .pointSmall:hover .score, .selectSupportingPointSmall:hover .score {
+.pointCard:hover .score, .pointSmall:hover .score {
 	color:white;
 }
 
@@ -184,15 +188,15 @@ a:hover{
    background-image: url('/static/img/arrow_why_45_black.png');
 }
 
-.pointSmall.green:hover, .selectSupportingPointSmall.green:hover {
+.pointSmall.green:hover {
 	background-color:#0CCF00;
 }
 
-.pointSmall.yellow:hover, .selectSupportingPointSmall.yellow:hover {
+.pointSmall.yellow:hover {
 	background-color:#EBC821;
 }
 
-.pointSmall.red:hover, .selectSupportingPointSmall.red:hover {
+.pointSmall.red:hover {
 	background-color:#FF000B;
 }
 
@@ -201,7 +205,7 @@ a:hover{
 	margin: 0 0 0 0;
 }
 
-.pointCard .text, .pointCard .title, .pointSmall .title, .selectSupportingPointSmall .title  {
+.pointCard .text, .pointCard .title, .pointSmall .title  {
 	padding-left: 5px;
 }
 
@@ -229,6 +233,10 @@ a:hover{
 	background-color: #0CCF00;
 }
 
+.title a {
+	color: #000;
+}
+
 .greenScore {
 	color:#0CCF00;
 }
@@ -239,7 +247,7 @@ a:hover{
 	color:#EBC821;
 }
 
-.pointSmall, .selectSupportingPointSmall {
+.pointSmall {
 	border-style:solid;
 	border-width:1px;
 	border-color:#B9BBBD;
@@ -626,7 +634,25 @@ button#unlinkToggle {
     background-image: url("/static/img/arrow_add_black_45px.png");
 }
 
-.selectSupportingPointSmall:hover [id^=selectPoint_arrow] {
+.noRightChannel {
+	right: -3.305785123966942%;
+    position: relative;
+}
+[id^=popoutPoint_] {
+	width:20px;
+    height:20px;
+    display: block;
+    top: 10px;
+    position: relative;
+    border-style:none;
+    background-image: url("/static/img/addPoint_icon_popout_20pxHi_v12.png");
+}
+
+[id^=popoutPoint_]:hover {
+	 background-position: 0 100%;
+}
+
+.pointSmall:hover [id^=selectPoint_arrow] {
 	background-image: url("/static/img/arrow_add_black_45px.png");
 }   
 

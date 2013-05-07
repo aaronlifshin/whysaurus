@@ -55,8 +55,13 @@
 		function goToPoint(pointUrl) {
 			window.location.href="/point/" + pointUrl
 		}
-		$( "[id^=why]" ).button();
-		$( "[id^=why]" ).css("float","right");		
+        $(document).ready(function() {  
+            $('[id^="point_New_"]').click(function() {
+                window.location.href = $(".navWhy", $(this)).attr('href');
+            });
+  		    $( "[id^=why]" ).button();
+  		    $( "[id^=why]" ).css("float","right");	
+        });	
 		</script>
 
     

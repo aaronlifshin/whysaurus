@@ -263,22 +263,20 @@ $(document).ready(function() {
     });
   }*/
 
-  $(".pointSmall").click(function() {
-    if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // In the point page the navWhy is sometimes hidden by the unlink button
+  $('[id^="point_New_"]').click(function() {
       window.location.href = $(".navWhy", $(this)).attr('href');
-    }
   });
 
   $('[id^="signInWithFacebook"]').click(function() {
-    window.location.href = "/auth/facebook";
+      window.location.href = "/auth/facebook";
   });
 
   $('[id^="signInWithGoogle"]').click(function() {
-    window.location.href = "/auth/google";
+      window.location.href = "/auth/google";
   });
 
   $('[id^="signInWithTwitter"]').click(function() {
-    window.location.href = "/auth/twitter";
+      window.location.href = "/auth/twitter";
   });
   window.onload = function() {
     positionEditDialog();

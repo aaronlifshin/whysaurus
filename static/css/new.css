@@ -429,7 +429,7 @@ h1.condensed {
 #pointSummary {
 	padding-left: 1em;
 	padding-right: 2em;
-	position: relative;
+	margin-bottom: 1em;
 }
 
 .mainPointInfo{font-size:0.8em;font-style:italic;bottom:10px;left:10px;font-weight:bold}

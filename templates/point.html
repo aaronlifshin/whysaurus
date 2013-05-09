@@ -12,7 +12,7 @@
   {% endif %}
   <div class="row topSpace"></div>
   <div class="row">
-    <div class="boxedElement span12 dropShadow">
+    <div id="pointArea" class="boxedElement span12 dropShadow">
       <div id="scoreAndVotingSection" class="span1 pagination-centered">
 				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
 							greenScore
@@ -35,15 +35,18 @@
         <div id="pointSummary" class="span7">
                 <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
-				<div class="mainPointLastEdited">
-					Last edited {{point.dateEdited}} by {{ point.authorName }}
-				</div>
-				<button class="mainPointButton" id="editPoint">
-					edit
-				</button>
                 <!-- Hacky way to get imageurl into the edit dialog. :/ -->
                 <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
         </div>
+		<div id="timestampAndEditLink" class="span8">
+			<div class="span1"></div>
+			<div class="mainPointLastEdited">
+				Last edited {{point.dateEdited}} by {{ point.authorName }}
+			</div>
+			<button class="mainPointButton" id="editPoint">
+				edit
+			</button>
+		</div>
         <div id="mainPointImageArea" class="span3">
             {% if point.imageURL and point.imageURL.strip %}
               <img class="pointDisplay" src="{{ point.fullPointImage }}" />

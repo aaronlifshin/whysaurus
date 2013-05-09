@@ -409,6 +409,16 @@ h1.condensed {
 	line-height: 100%;
 }
 
+#pointArea {
+	position: relative;
+}
+
+#timestampAndEditLink {
+	bottom: 30px;
+	position: absolute;
+	padding-left: 1.5em;
+}
+
 .mainPointLastEdited {
 	font-size:0.7em;
 	font-style:italic;

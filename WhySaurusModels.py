@@ -118,6 +118,7 @@ class PointRoot(ndb.Model):
     numCopies = ndb.IntegerProperty()
     pointsSupportedByMe = ndb.KeyProperty(repeated=True)
     editorsPick = ndb.BooleanProperty(default=False)
+    editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
 
     def getCurrent(self):
@@ -145,7 +146,7 @@ class PointRoot(ndb.Model):
     @staticmethod
     def getEditorsPicks():
         editorsPicks = []
-        pointsRootsQuery = PointRoot.gql("WHERE editorsPick = TRUE")
+        pointsRootsQuery = PointRoot.gql("WHERE editorsPick = TRUE ORDER BY editorsPickSort ASC")
         pointRoots = pointsRootsQuery.fetch(100)
         for pointRoot in pointRoots:
             editorsPicks = editorsPicks + [pointRoot.getCurrent()]
@@ -158,9 +159,16 @@ class PointRoot(ndb.Model):
         return pointsQuery.fetch(10)
 
     @staticmethod
-    def getTopRatedPoints():
+    def getTopRatedPoints(filterList = None):
         pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
-        return pointsQuery.fetch(50)
+        topPointsRaw = pointsQuery.fetch(50)
+        topPoints = [] if filterList else topPointsRaw
+        if filterList:
+            for point in topPointsRaw:
+                if not point in filterList:
+                    topPoints = topPoints + [point]
+        return topPoints
+    
 
     def delete(self, user):
         if not user.admin:
@@ -465,3 +473,4 @@ class Point(ndb.Model):
         ]
         d = search.Document(doc_id=self.url, fields=fields)
         index.put(d)
+

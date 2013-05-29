@@ -211,7 +211,7 @@ class MainPage(AuthHandler):
             recentlyViewedPoints = []
 
         editorsPicksPoints = PointRoot.getEditorsPicks()
-        topPoints = PointRoot.getTopRatedPoints()
+        topPoints = PointRoot.getTopRatedPoints(filterList=editorsPicksPoints)
         template_values = {
             'newPoints': newPoints,
             'topPoints': topPoints,

@@ -63,3 +63,8 @@ indexes:
   properties:
   - name: version
     direction: desc
+
+- kind: PointRoot
+  properties:
+  - name: editorsPick
+  - name: editorsPickSort

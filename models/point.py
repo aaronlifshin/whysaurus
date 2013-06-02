@@ -1,11 +1,10 @@
-import re
 import logging
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
 
-from . imageurl import ImageUrl
-from . whysaurusexception import WhysaurusException
+from imageurl import ImageUrl
+from whysaurusexception import WhysaurusException
 
 def makeURL(sourceStr):
     longURL = sourceStr.replace(" ", "_")

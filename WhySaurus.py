@@ -1,3 +1,4 @@
+import fix_path
 import constants
 
 from webapp2 import Route, WSGIApplication

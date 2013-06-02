@@ -22,6 +22,7 @@ class EditPoint(AuthHandler):
                 'version': newVersion.version,
                 'author': newVersion.authorName,
                 'dateEdited': str(newVersion.dateEdited),
+                'pointURL':newVersion.url,
                 'imageURL': newVersion.imageURL,
                 'imageAuthor': newVersion.imageAuthor,
                 'imageDescription': newVersion.imageDescription

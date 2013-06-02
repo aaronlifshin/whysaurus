@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 import webapp2_extras.appengine.auth.models as auth_models
 
-from . uservote import UserVote
+from uservote import UserVote
 
 class WhysaurusUser(auth_models.User):
     created = ndb.DateTimeProperty(auto_now_add=True)

@@ -61,3 +61,5 @@ SCORETHRESHOLDS = {
 }
 
 CDN = '//d3uk4hxxzbq81e.cloudfront.net'
+ROOT = os.path.dirname(__file__)
+

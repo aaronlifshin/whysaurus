@@ -6,16 +6,16 @@ import django
 
 import webapp2
 from webapp2 import Route, WSGIApplication
-from webapp2_extras import auth, sessions, jinja2
+from webapp2_extras import auth, sessions
 from jinja2 import exceptions
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import mail
 
-from WhySaurusModels import Point, WhysaurusException
-from WhySaurusModels import PointRoot
-from WhySaurusModels import WhysaurusUser
+from models.point import Point, PointRoot
+from models.whysaurusexception import WhysaurusException
+from models.whysaurususer import WhysaurusUser
 
 from simpleauth import SimpleAuthHandler
 

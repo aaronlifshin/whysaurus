@@ -49,7 +49,7 @@ class ViewPoint(AuthHandler):
                 'voteValue': voteValue,
                 'thresholds': constants.SCORETHRESHOLDS
             }
-            path = os.path.join(os.path.dirname(__file__), 'templates/point.html')
+            path = os.path.join(constants.ROOT, 'templates/point.html')
             self.response.out.write(template.render(path, template_values))
         else:
             self.response.out.write('Could not find point: ' + pointURL)

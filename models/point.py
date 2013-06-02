@@ -1,3 +1,4 @@
+import re
 import logging
 
 from google.appengine.ext import ndb
@@ -5,6 +6,7 @@ from google.appengine.api import search
 
 from imageurl import ImageUrl
 from whysaurusexception import WhysaurusException
+from redirecturl import RedirectURL
 
 def makeURL(sourceStr):
     longURL = sourceStr.replace(" ", "_")

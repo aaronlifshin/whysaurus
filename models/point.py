@@ -1,262 +1,11 @@
 import re
 import logging
-import constants
-
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
 
-import webapp2_extras.appengine.auth.models as auth_models
-
-def makeURL(sourceStr):
-    longURL = sourceStr.replace(" ", "_")
-    newUrl = re.sub('[\W]+', '', longURL[0:140])
-    # Check if it already exists
-    pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
-    pointRoot = pointRootQuery.get()
-    if pointRoot:
-        # Existing URL notes how many URLs+number exist for that URL
-        pointRoot.numCopies = pointRoot.numCopies + 1
-        newUrl = newUrl + str(pointRoot.numCopies)
-        pointRoot.put()
-    return newUrl
-
-class WhysaurusException(Exception):
-    pass
-
-
-class UserVote(ndb.Model):
-    pointRootKey = ndb.KeyProperty(required=True)
-    value = ndb.IntegerProperty(required=True)  # 1, 0, -1
-
-# class PointImage(ndb.Model):
-
-
-class WhysaurusUser(auth_models.User):
-    created = ndb.DateTimeProperty(auto_now_add=True)
-    updated = ndb.DateTimeProperty(auto_now=True)
-    # name = db.StringProperty(required=True)
-    # profile_url = db.StringProperty(required=True)
-    # access_token = db.StringProperty(required=True)
-    admin = ndb.BooleanProperty(default=False)
-    recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
-
-    @property
-    def userVotes(self):
-        if not hasattr(self, "_userVotes"):
-            votes = UserVote.query(ancestor=self.key)
-            # votes = qry.run()
-            self._userVotes = {}
-            if votes:
-                for vote in votes:
-                    self._userVotes[vote.pointRootKey] = vote
-        return self._userVotes
-
-    def addVote(self, point, voteValue, updatePoint=True):
-        pointRootKey = point.key.parent()
-        previousVoteValue = 0
-        newVote = None
-        if pointRootKey in self.userVotes:  # Vote already exists. Update
-            previousVoteValue = self.userVotes[pointRootKey].value
-            newVote = self.userVotes[pointRootKey]
-            newVote.value = voteValue
-        if not newVote:  # Create a brand new one
-            newVote = UserVote(
-                pointRootKey=pointRootKey,
-                value=voteValue,
-                parent=self.key
-            )
-        newVote.put()
-
-        if updatePoint:
-            if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
-                point.upVotes = point.upVotes + 1
-            if previousVoteValue == 0 and voteValue == -1:  # DOWNVOTE
-                point.downVotes = point.downVotes + 1
-            if previousVoteValue == 1 and voteValue == 0:  # CANCEL UPVOTE
-                point.upVotes = point.upVotes - 1
-            if previousVoteValue == -1 and voteValue == 0:  # CANCEL DOWNVOTE
-                point.downVotes = point.downVotes - 1
-            if previousVoteValue == -1 and voteValue == 1:  # DOWN TO UP
-                point.downVotes = point.downVotes - 1
-                point.upVotes = point.upVotes + 1
-            if previousVoteValue == 1 and voteValue == -1:  # UP TO DOWN
-                point.downVotes = point.downVotes + 1
-                point.upVotes = point.upVotes - 1
-            point.voteTotal = point.upVotes - point.downVotes
-            point.put()
-
-        return newVote
-
-    def updateRecentlyViewed(self, pointRootKey):
-        addedToList = False
-
-        if not self.recentlyViewedRootKeys:
-            self.recentlyViewedRootKeys = [pointRootKey]
-            addedToList = True
-
-        if pointRootKey in self.recentlyViewedRootKeys:
-            self.recentlyViewedRootKeys.remove(pointRootKey)
-            self.recentlyViewedRootKeys.insert(0, pointRootKey)
-        else:
-            self.recentlyViewedRootKeys.insert(0, pointRootKey)
-            addedToList = True
-
-        if len(self.recentlyViewedRootKeys) > 10:
-            self.recentlyViewedRootKeys.pop()
-
-        self.put()
-
-        return addedToList
-
-    def getRecentlyViewed(self, excludeList=None):
-        recentlyViewedPoints = []
-        keysToGet = self.recentlyViewedRootKeys
-        if excludeList:
-            for x in excludeList:
-                try:
-                    keysToGet.remove(x)
-                except ValueError:
-                    pass
-        pointRoots = ndb.get_multi(keysToGet)
-        for pointRoot in pointRoots:
-            if pointRoot:
-                recentlyViewedPoints = recentlyViewedPoints + [
-                    pointRoot.getCurrent()]
-        return recentlyViewedPoints
-
-class RedirectURL(ndb.Model):
-    fromURL = ndb.StringProperty()
-    toURL = ndb.StringProperty()
-    
-    @staticmethod
-    def getByFromURL(url):
-        redirectQuery = RedirectURL.gql("WHERE fromURL= :1", url)
-        redirectURL = redirectQuery.get()
-        if redirectURL:
-            return redirectURL.toURL
-        else:
-            return None
-        
-    @staticmethod
-    def updateRedirects(toURL, updatedToURL):
-        redirectQuery = RedirectURL.gql("WHERE toURL= :1", toURL)
-        redirectURLs = redirectQuery.fetch(50)
-        for redirectURL in redirectURLs:
-            redirectURL.toURL = updatedToURL
-            redirectURL.put()
-        
-class PointRoot(ndb.Model):
-    url = ndb.StringProperty()
-    numCopies = ndb.IntegerProperty()
-    pointsSupportedByMe = ndb.KeyProperty(repeated=True)
-    editorsPick = ndb.BooleanProperty(default=False)
-    editorsPickSort = ndb.IntegerProperty(default=100000)
-    viewCount = ndb.IntegerProperty()
-
-    def getCurrent(self):
-        return Point.query(Point.current == True, ancestor=self.key).get()
-
-    def removeSupportedPoint(self, supportedPointKey):
-        self.pointsSupportedByMe.remove(supportedPointKey)
-        self.put()
-
-    def addSupportedPoint(self, supportedPointRootKey):
-        if supportedPointRootKey not in self.pointsSupportedByMe:
-            self.pointsSupportedByMe = self.pointsSupportedByMe + \
-                [supportedPointRootKey]
-            self.put()
-
-    def addViewCount(self):
-        if not self.viewCount:
-            self.viewCount = 1
-        self.viewCount = self.viewCount + 1
-        self.put()
-
-    def getAllVersions(self):
-        return Point.query(ancestor=self.key).fetch()
-
-    @staticmethod
-    def getEditorsPicks():
-        editorsPicks = []
-        pointsRootsQuery = PointRoot.gql("WHERE editorsPick = TRUE ORDER BY editorsPickSort ASC")
-        pointRoots = pointsRootsQuery.fetch(100)
-        for pointRoot in pointRoots:
-            editorsPicks = editorsPicks + [pointRoot.getCurrent()]
-        return editorsPicks
-
-    @staticmethod
-    def getRecentCurrentPoints():
-        pointsQuery = Point.gql(
-            "WHERE current = TRUE ORDER BY dateEdited DESC")
-        return pointsQuery.fetch(10)
-
-    @staticmethod
-    def getTopRatedPoints(filterList = None):
-        pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
-        topPointsRaw = pointsQuery.fetch(50)
-        topPoints = [] if filterList else topPointsRaw
-        if filterList:
-            for point in topPointsRaw:
-                if not point in filterList:
-                    topPoints = topPoints + [point]
-        return topPoints
-    
-
-    def delete(self, user):
-        if not user.admin:
-            return False, 'Not authorized'
-
-        if self.pointsSupportedByMe:
-            for supportedPoint in self.pointsSupportedByMe:
-                pointRoot = supportedPoint.get()
-                if pointRoot:
-                    point = pointRoot.getCurrent()
-                    point.removeSupportingPoint(self, user)
-
-        # MY SUPPORTING POINTS NO LONGER SUPPORT ME
-        current = self.getCurrent()
-        supportingPointRoots = ndb.get_multi(current.supportingPoints)
-        for supportingPoint in supportingPointRoots:
-            if supportingPoint:
-                supportingPoint.removeSupportedPoint(self.key)
-
-        points = self.getAllVersions()
-        for point in points:
-            # img = PointImage.query(ancestor=point.key).get()
-            # if img:
-            #  img.key.delete()
-            point.key.delete()
-        self.key.delete()
-        return True, ''
-
-    def updateURL(self, newTitle):
-        newURL = makeURL(newTitle)
-        oldURL = self.url
-        self.url = newURL
-        self.put()
-        redirectURL = RedirectURL()
-        redirectURL.fromURL = oldURL
-        redirectURL.toURL = newURL
-        redirectURL.put()
-        # If there is already a redirector object going to this URL, update it
-        RedirectURL.updateRedirects(oldURL, newURL)
-        return newURL
-    
-
-class ImageUrl(object):
-    """ Descriptor for Point """
-    HTTP_RE = re.compile('^https?:\/\/')
-
-    def __init__(self, format):
-        self.format = format
-
-    def __get__(self, instance, instance_type):
-        if self.HTTP_RE.match(instance.imageURL):
-            return instance.imageURL
-        else:
-            return constants.CDN + '/' + self.format + '-' + instance.imageURL
-
+from . imageurl import ImageUrl
+from . whysaurusexception import WhysaurusException
 
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
@@ -362,7 +111,7 @@ class Point(ndb.Model):
             theRoot = self.key.parent().get()
             newPoint = Point(parent=self.key.parent())  # All versions ancestors of the caseRoot
 
-            if not newTitle is None:                
+            if not newTitle is None:
                 newPoint.title = newTitle
             else:
                 newPoint.title = self.title
@@ -407,7 +156,7 @@ class Point(ndb.Model):
             self.put()
             if newSupportingPoint:
                 newSupportingPoint.addSupportedPoint(newPoint.key.parent())
-            
+
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndex()
 
@@ -509,4 +258,101 @@ class Point(ndb.Model):
         ]
         d = search.Document(doc_id=self.url, fields=fields)
         index.put(d)
+
+class PointRoot(ndb.Model):
+    url = ndb.StringProperty()
+    numCopies = ndb.IntegerProperty()
+    pointsSupportedByMe = ndb.KeyProperty(repeated=True)
+    editorsPick = ndb.BooleanProperty(default=False)
+    editorsPickSort = ndb.IntegerProperty(default=100000)
+    viewCount = ndb.IntegerProperty()
+
+    def getCurrent(self):
+        return Point.query(Point.current == True, ancestor=self.key).get()
+
+    def removeSupportedPoint(self, supportedPointKey):
+        self.pointsSupportedByMe.remove(supportedPointKey)
+        self.put()
+
+    def addSupportedPoint(self, supportedPointRootKey):
+        if supportedPointRootKey not in self.pointsSupportedByMe:
+            self.pointsSupportedByMe = self.pointsSupportedByMe + \
+                [supportedPointRootKey]
+            self.put()
+
+    def addViewCount(self):
+        if not self.viewCount:
+            self.viewCount = 1
+        self.viewCount = self.viewCount + 1
+        self.put()
+
+    def getAllVersions(self):
+        return Point.query(ancestor=self.key).fetch()
+
+    @staticmethod
+    def getEditorsPicks():
+        editorsPicks = []
+        pointsRootsQuery = PointRoot.gql("WHERE editorsPick = TRUE ORDER BY editorsPickSort ASC")
+        pointRoots = pointsRootsQuery.fetch(100)
+        for pointRoot in pointRoots:
+            editorsPicks = editorsPicks + [pointRoot.getCurrent()]
+        return editorsPicks
+
+    @staticmethod
+    def getRecentCurrentPoints():
+        pointsQuery = Point.gql(
+            "WHERE current = TRUE ORDER BY dateEdited DESC")
+        return pointsQuery.fetch(10)
+
+    @staticmethod
+    def getTopRatedPoints(filterList = None):
+        pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
+        topPointsRaw = pointsQuery.fetch(50)
+        topPoints = [] if filterList else topPointsRaw
+        if filterList:
+            for point in topPointsRaw:
+                if not point in filterList:
+                    topPoints = topPoints + [point]
+        return topPoints
+
+
+    def delete(self, user):
+        if not user.admin:
+            return False, 'Not authorized'
+
+        if self.pointsSupportedByMe:
+            for supportedPoint in self.pointsSupportedByMe:
+                pointRoot = supportedPoint.get()
+                if pointRoot:
+                    point = pointRoot.getCurrent()
+                    point.removeSupportingPoint(self, user)
+
+        # MY SUPPORTING POINTS NO LONGER SUPPORT ME
+        current = self.getCurrent()
+        supportingPointRoots = ndb.get_multi(current.supportingPoints)
+        for supportingPoint in supportingPointRoots:
+            if supportingPoint:
+                supportingPoint.removeSupportedPoint(self.key)
+
+        points = self.getAllVersions()
+        for point in points:
+            # img = PointImage.query(ancestor=point.key).get()
+            # if img:
+            #  img.key.delete()
+            point.key.delete()
+        self.key.delete()
+        return True, ''
+
+    def updateURL(self, newTitle):
+        newURL = makeURL(newTitle)
+        oldURL = self.url
+        self.url = newURL
+        self.put()
+        redirectURL = RedirectURL()
+        redirectURL.fromURL = oldURL
+        redirectURL.toURL = newURL
+        redirectURL.put()
+        # If there is already a redirector object going to this URL, update it
+        RedirectURL.updateRedirects(oldURL, newURL)
+        return newURL
 

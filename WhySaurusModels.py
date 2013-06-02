@@ -2,11 +2,24 @@ import re
 import logging
 import constants
 
+
 from google.appengine.ext import ndb
 from google.appengine.api import search
 
 import webapp2_extras.appengine.auth.models as auth_models
 
+def makeURL(sourceStr):
+    longURL = sourceStr.replace(" ", "_")
+    newUrl = re.sub('[\W]+', '', longURL[0:140])
+    # Check if it already exists
+    pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
+    pointRoot = pointRootQuery.get()
+    if pointRoot:
+        # Existing URL notes how many URLs+number exist for that URL
+        pointRoot.numCopies = pointRoot.numCopies + 1
+        newUrl = newUrl + str(pointRoot.numCopies)
+        pointRoot.put()
+    return newUrl
 
 class WhysaurusException(Exception):
     pass
@@ -112,7 +125,27 @@ class WhysaurusUser(auth_models.User):
                     pointRoot.getCurrent()]
         return recentlyViewedPoints
 
-
+class RedirectURL(ndb.Model):
+    fromURL = ndb.StringProperty()
+    toURL = ndb.StringProperty()
+    
+    @staticmethod
+    def getByFromURL(url):
+        redirectQuery = RedirectURL.gql("WHERE fromURL= :1", url)
+        redirectURL = redirectQuery.get()
+        if redirectURL:
+            return redirectURL.toURL
+        else:
+            return None
+        
+    @staticmethod
+    def updateRedirects(toURL, updatedToURL):
+        redirectQuery = RedirectURL.gql("WHERE toURL= :1", toURL)
+        redirectURLs = redirectQuery.fetch(50)
+        for redirectURL in redirectURLs:
+            redirectURL.toURL = updatedToURL
+            redirectURL.put()
+        
 class PointRoot(ndb.Model):
     url = ndb.StringProperty()
     numCopies = ndb.IntegerProperty()
@@ -197,6 +230,19 @@ class PointRoot(ndb.Model):
         self.key.delete()
         return True, ''
 
+    def updateURL(self, newTitle):
+        newURL = makeURL(newTitle)
+        oldURL = self.url
+        self.url = newURL
+        self.put()
+        redirectURL = RedirectURL()
+        redirectURL.fromURL = oldURL
+        redirectURL.toURL = newURL
+        redirectURL.put()
+        # If there is already a redirector object going to this URL, update it
+        RedirectURL.updateRedirects(oldURL, newURL)
+        return newURL
+    
 
 class ImageUrl(object):
     """ Descriptor for Point """
@@ -275,21 +321,8 @@ class Point(ndb.Model):
             return None
 
     @staticmethod
-    def makeUrl(sourceStr):
-        longURL = sourceStr.replace(" ", "_")
-        newUrl = re.sub('[\W]+', '', longURL[0:140])
-        # Check if it already exists
-        pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
-        pointRoot = pointRootQuery.get()
-        if pointRoot:
-            pointRoot.numCopies = pointRoot.numCopies + 1
-            newUrl = newUrl + str(pointRoot.numCopies)
-            pointRoot.put()
-        return newUrl
-
-    @staticmethod
     def create(title, content, summaryText, user, pointSupported=None, imageURL=None, imageAuthor=None, imageDescription=None):
-        newUrl = Point.makeUrl(title)
+        newUrl = makeURL(title)
         pointRoot = PointRoot()
         pointRoot.url = newUrl
         pointRoot.numCopies = 0
@@ -326,10 +359,10 @@ class Point(ndb.Model):
         self, newTitle=None, newContent=None, newSummaryText=None, newSupportingPoint=None, user=None,
             imageURL=None, imageAuthor=None, imageDescription=None):
         if user:
-            newPoint = Point(
-                parent=self.key.parent())  # All versions ancestors of the caseRoot
+            theRoot = self.key.parent().get()
+            newPoint = Point(parent=self.key.parent())  # All versions ancestors of the caseRoot
 
-            if not newTitle is None:
+            if not newTitle is None:                
                 newPoint.title = newTitle
             else:
                 newPoint.title = self.title
@@ -357,7 +390,6 @@ class Point(ndb.Model):
                 newPoint.supportingPoints = list(self.supportingPoints)
 
             newPoint.version = self.version + 1
-            newPoint.url = self.url
             newPoint.upVotes = self.upVotes
             newPoint.downVotes = self.downVotes
             newPoint.voteTotal = self.voteTotal
@@ -367,6 +399,10 @@ class Point(ndb.Model):
             newPoint.imageAuthor = self.imageAuthor if imageAuthor is None else imageAuthor
 
             self.current = False
+            if newPoint.title != self.title:
+                newPoint.url = theRoot.updateURL(newPoint.title)
+            else:
+                newPoint.url = self.url
             newPoint.put()
             self.put()
             if newSupportingPoint:

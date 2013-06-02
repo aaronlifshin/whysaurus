@@ -16,6 +16,8 @@ from google.appengine.api import mail
 from WhySaurusModels import Point, WhysaurusException
 from WhySaurusModels import PointRoot
 from WhySaurusModels import WhysaurusUser
+from WhySaurusModels import RedirectURL
+
 
 from simpleauth import SimpleAuthHandler
 
@@ -273,9 +275,17 @@ class ViewPoint(AuthHandler):
         devInt = 1 if constants.DEV else 0
 
         point, pointRoot = Point.getCurrentByUrl(pointURL)
-        pointData = Point.getFullHistory(pointURL)
+        if point is None:
+            # Try to find a redirector
+            newURL = RedirectURL.getByFromURL(pointURL)
+            if newURL:
+                self.redirect(str(newURL), permanent=True)
+            else:
+                self.response.out.write('Could not find point: ' + pointURL)
+                return
 
         if point:
+            pointData = Point.getFullHistory(pointURL)
             supportingPoints = point.getSupportingPoints()
             user = self.current_user
             if not user or not user.userVotes or not point.key.parent() in user.userVotes:
@@ -334,6 +344,7 @@ class EditPoint(AuthHandler):
                 'result': True,
                 'version': newVersion.version,
                 'author': newVersion.authorName,
+                'pointURL': newVersion.url,
                 'dateEdited': str(newVersion.dateEdited),
                 'imageURL': newVersion.imageURL,
                 'imageAuthor': newVersion.imageAuthor,

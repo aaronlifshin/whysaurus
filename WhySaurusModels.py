@@ -329,12 +329,12 @@ class Point(ndb.Model):
             newPoint = Point(
                 parent=self.key.parent())  # All versions ancestors of the caseRoot
 
-            if newTitle:
+            if not newTitle is None:
                 newPoint.title = newTitle
             else:
                 newPoint.title = self.title
 
-            if newContent:
+            if not newContent is None:
                 newPoint.content = newContent
             else:
                 newPoint.content = self.content

@@ -314,6 +314,12 @@ class EditPoint(AuthHandler):
     def post(self):
         resultJSON = json.dumps({'result': False})
         oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
+        if self.request.get('content') is None:
+            logging.info("It's None")
+        else:
+            logging.info("The content was:  %s " % self.request.get('content'))
+
+     
         newVersion = oldPoint.update(
             newTitle=self.request.get('title'),
             newContent=self.request.get('content'),
@@ -536,6 +542,21 @@ class ContactSend(AuthHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/message.html')
         self.response.out.write(template.render(path, template_values))
 
+class SetEditorPickSort(AuthHandler):
+    def get(self):
+        countSaved = 0
+        pointsRootsQuery = PointRoot.gql("WHERE editorsPick = TRUE")
+        pointRoots = pointsRootsQuery.fetch(100)
+        for pointRoot in pointRoots:
+            pointRoot.editorsPickSort = 100000
+            pointRoot.put()
+            countSaved = countSaved + 1
+        template_values = {
+            'message': "Edits made: %d" % countSaved
+        }
+        path = os.path.join(os.path.dirname(__file__), 'templates/message.html')
+        self.response.out.write(template.render(path, template_values))
+                
 
 # Map URLs to handlers
 routes = [
@@ -557,6 +578,7 @@ routes = [
     Route('/search', Search),
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),
+    Route('/job/setEditorPickSort', SetEditorPickSort),
     # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
     Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),  # , handler_method='logout', name='logout'),
     Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),

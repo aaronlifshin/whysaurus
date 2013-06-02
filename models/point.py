@@ -7,6 +7,19 @@ from google.appengine.api import search
 from . imageurl import ImageUrl
 from . whysaurusexception import WhysaurusException
 
+def makeURL(sourceStr):
+    longURL = sourceStr.replace(" ", "_")
+    newUrl = re.sub('[\W]+', '', longURL[0:140])
+    # Check if it already exists
+    pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
+    pointRoot = pointRootQuery.get()
+    if pointRoot:
+        # Existing URL notes how many URLs+number exist for that URL
+        pointRoot.numCopies = pointRoot.numCopies + 1
+        newUrl = newUrl + str(pointRoot.numCopies)
+        pointRoot.put()
+    return newUrl
+
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
     authorName = ndb.StringProperty()

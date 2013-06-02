@@ -57,7 +57,11 @@
 								$('.mainPointImageURL').html(obj.imageURL);
 								$('.mainPointImageAuthor').html(obj.imageAuthor);
 								$('.mainPointImageDescription').html(obj.imageDescription);
+								$("#spinnerImage").remove();
+								$("#submit_editPointDialog").show();
+                                $("#submit_editPointDialog").on('click', function(e) { callPointEdit();});                        		
 								$("#editPointDialog").modal('hide');
+								pointURL = obj.pointURL;
 							},
                      		error: function(xhr, textStatus, error){
                                 alert('The server returned an error. You may try again.');

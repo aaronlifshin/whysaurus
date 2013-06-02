@@ -18,6 +18,10 @@ handlers:
 - url: /static/css
   static_dir: static/css
 
+- url: /job/.*
+  script: WhySaurus.app
+  login: admin
+
 # This is not being used for now
 # - url: /admin
 #  script: admin.app

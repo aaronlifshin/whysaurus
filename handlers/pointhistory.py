@@ -1,5 +1,6 @@
 import os
 import constants
+import json
 
 from google.appengine.ext.webapp import template
 
@@ -18,4 +19,5 @@ class PointHistory(AuthHandler):
         }
 
         path = os.path.join(constants.ROOT, 'templates/pointHistory.html')
-        self.response.out.write(template.render(path, template_values))
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.out.write(json.dumps(template.render(path, template_values)))

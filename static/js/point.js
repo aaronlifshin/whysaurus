@@ -355,7 +355,21 @@ $(document).ready(function() {
 			});
 
 			$('#viewPointHistory').click(function() {
+				$('#historyArea').html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
 				toggleTabbedArea(this, "#historyArea");
+				$.ajax({
+					url: '/pointHistory',
+					type: 'GET',
+					data: { 'pointUrl': pointURL },
+					success: function(data) {
+						$('#historyArea').empty();
+						$('#historyArea').html($.parseJSON(data));
+					},
+					error: function(data) {
+						$('#historyArea').empty();
+						$('.topSpace').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Oops!</strong> There was a problem loading the point history.  Please try again later.</div>'));
+					},
+				});
 			});
 
 });

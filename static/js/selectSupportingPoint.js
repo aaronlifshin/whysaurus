@@ -42,7 +42,7 @@
 				'content': ed.getContent(),
                 'plainText': text.substring(0,500),
 				'title': $('#title_createSupportingPoint').val(),
-				'pointUrl': parentPointURL,
+				'pointUrl': pointURL,
 				'imageURL':$('#link_createSupportingPoint').val(),
                 'imageAuthor':$('#author_createSupportingPoint').val(),
                 'imageDescription': $('#description_createSupportingPoint').val()

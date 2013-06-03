@@ -644,6 +644,9 @@ button#unlinkToggle {
    Select Supporting Point Page
    +++++++++++++++++++++++++++++++++++++++++++++++ */
    
+   
+/*
+ No longer used since select supporting point is going away
 #createSupportingPointLink {
 	display:block;
     width: 231px;
@@ -651,12 +654,13 @@ button#unlinkToggle {
     background:transparent url('/static/img/arrow_makeANewPoint_grey_231px.png') center top no-repeat;
     top:12px;
 }
-   
+
    
 #createSupportingPointLink:hover {
    background-image: url('/static/img/arrow_makeANewPoint_black_231px.png');
 }
-
+   */
+   
 [id^=selectPoint_arrow] {
     width:46px;
     height:34px;

@@ -10,6 +10,14 @@
     {% endwith %}
     {% endwith %}
   {% endif %}
+  {% if user %}
+      {% with "createSupportingPoint" as formName %}
+      {% with "Create Supporting Point" as dlgTitle  %} 
+          {% include 'pointDialog.html' %}
+      {% endwith %}
+      {% endwith %}
+  {% endif %}
+  
   <div class="row topSpace"></div>
   <div class="row">
     <div id="pointArea" class="boxedElement span12 dropShadow">
@@ -99,7 +107,9 @@
                             data-toggle="dropdown"
                             class="mainPointButton pull-right dropdown-toggle">Add supporting point</button>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="addSupportingPointWhenNonZero">
-                              <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" href="#">Make a new point</a></li>
+                              <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" href="#"
+                                id="createSupportingPointLink" alt="Make a New Supporting Point"
+                                >Make a new point</a></li>
                               <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" href="#">Search for an existing point</a></li>
                               {% if recentlyViewedPoints %}
                                 <li class="dropdown-submenu"><a tabindex="-1" href="#">Use a Recently viewed point</a>

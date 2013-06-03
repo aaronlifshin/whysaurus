@@ -583,6 +583,32 @@ button#unlinkToggle {
 	position: static;
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Bootstrap Alerts style refinemenes area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.topSpace .alert {
+	margin-top: 3px;
+}
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   End Bootstrap Alerts style refinemenes area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   History area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+#historyAreaLoadingSpinner {
+	width: 16px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1em;
+}
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   End history area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */

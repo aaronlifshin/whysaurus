@@ -336,10 +336,10 @@ $(document).ready(function() {
         });*/
 
         $( "#unlinkToggle" )
-  				.button()
-  				.click(function() {
-  					toggleUnlink();
-  				});
+        			.button()
+        			.click(function() {
+        				toggleUnlink();
+        			});
 
         $( "#editPoint" ).attr('href',"#editPointDialog");
         $( "#editPoint" ).attr('data-toggle',"modal");
@@ -348,41 +348,55 @@ $(document).ready(function() {
           $('#frm_editPointDialog .filepicker').bindFilepicker();
         });
 
-		$("#submit_editPointDialog").on('click', function(e) { callPointEdit();});
+        $("#submit_editPointDialog").on('click', function(e) { callPointEdit();});
 
-    		$( "#upVote" ).click(function() {upVote();});
-    			//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
+        	$( "#upVote" ).click(function() {upVote();});
+        		//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
-    		$( "#downVote" ).click(function() {
-    			downVote();
-    		});
-    		
-    	$("[id^=selectPoint_menu_]").on('click', function(e){
+        	$( "#downVote" ).click(function() {
+        		downVote();
+        	});
+	
+        $("[id^=selectPoint_menu_]").on('click', function(e){
             var theLink = $(this);
             selectPoint(theLink.data('pointurl'), pointURL );
         });
 
-      };
+        };
 
-	  $( ".whybutton" ).button();
-	  $( ".unlinkbutton" ).button();
-      $( ".unlinkbutton" ).addClass("ui-helper-hidden");
-      $( ".ui-helper-hidden" ).hide();
-      $( "#deletePoint" ).button();
+        $( ".whybutton" ).button();
+        $( ".unlinkbutton" ).button();
+        $( ".unlinkbutton" ).addClass("ui-helper-hidden");
+        $( ".ui-helper-hidden" ).hide();
+        $( "#deletePoint" ).button();
 
-      // Beginning state
-      $('.tabbedArea').hide(); $('#supportingPointsArea').show();
+        // Beginning state
+        $('.tabbedArea').hide(); $('#supportingPointsArea').show();
 
-      $('#viewSupportingPoints').click(function() {
+        $('#viewSupportingPoints').click(function() {
         toggleTabbedArea(this, "#supportingPointsArea");
-      });
-      
-      $('#viewComments').click(function() {
-          toggleTabbedArea(this, "#disqus_thread");
-      });
+        });
 
-      $('#viewPointHistory').click(function() {
-          toggleTabbedArea(this, "#historyArea");
-      });
+        $('#viewComments').click(function() {
+          toggleTabbedArea(this, "#disqus_thread");
+        });
+
+        $('#viewPointHistory').click(function() {
+        	$('#historyArea').html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
+        	toggleTabbedArea(this, "#historyArea");
+        	$.ajax({
+        		url: '/pointHistory',
+        		type: 'GET',
+        		data: { 'pointUrl': pointURL },
+        		success: function(data) {
+        			$('#historyArea').empty();
+        			$('#historyArea').html($.parseJSON(data));
+        		},
+        		error: function(data) {
+        			$('#historyArea').empty();
+        			$('.topSpace').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Oops!</strong> There was a problem loading the point history.  Please try again later.</div>'));
+        		},
+        	});
+        });
 
 });

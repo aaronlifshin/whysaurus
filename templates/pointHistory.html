@@ -1,33 +1,28 @@
-{% extends "base.html" %}
+ <div id="content">
+	<br>{{ numPoints }} versions exist for <a href="/point/{{ latestPoint.url }}">{{ latestPoint.title|escape }}</a><br>
 
-{% block mainPageContent %}
-
-  <div id="content">
-		<br>{{ numPoints }} versions exist for <a href="/point/{{ latestPoint.url }}">{{ latestPoint.title|escape }}</a><br>
-
-		{% for fullPoint in pointData %}
-		  <div class="boxedElement" id="case_"{{case.key}}>	
-					<div class="pointSummaryTitle">{{ fullPoint.point.title|escape }}</div>			
-					<div class="pointSummaryText">{{ fullPoint.point.content|safe }}</div>
-					<table class="pointTable">
-					<thead>
-						<tr><th>Point Title</th><th>Point Text</th><th>Author</th></tr>
-					</thead>
-					<tbody>
-					{% for point in fullPoint.supportingPoints %}
-						<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
-					{% endfor %}
-					</tbody>
-					</table>
-					<div class="mainPointInfo">
-						<div class="mainPointVersion">{{fullPoint.point.version}}</div> 
-						<div class="mainPointAuthor">{{ fullPoint.point.authorName }}</div> 
-						<div class="mainPointDateEdited">{{fullPoint.point.dateEdited}} </div>
-						<div class="mainPointImageURL">{{fullPoint.point.imageURL}}</div>	
-  					<div class="mainPointImageAuthor">{{fullPoint.point.imageAuthor}}</div>	
-  					<div class="mainPointImageDescription">{{fullPoint.point.imageDescription}}</div>
-					</div>
-			</div>
-		{% endfor %}
-	</div>
-{% endblock %}
+	{% for fullPoint in pointData %}
+	  <div class="boxedElement" id="case_"{{case.key}}>
+				<div class="pointSummaryTitle">{{ fullPoint.point.title|escape }}</div>
+				<div class="pointSummaryText">{{ fullPoint.point.content|safe }}</div>
+				<table class="pointTable">
+				<thead>
+					<tr><th>Point Title</th><th>Point Text</th><th>Author</th></tr>
+				</thead>
+				<tbody>
+				{% for point in fullPoint.supportingPoints %}
+					<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
+				{% endfor %}
+				</tbody>
+				</table>
+				<div class="mainPointInfo">
+					<div class="mainPointVersion">{{fullPoint.point.version}}</div>
+					<div class="mainPointAuthor">{{ fullPoint.point.authorName }}</div>
+					<div class="mainPointDateEdited">{{fullPoint.point.dateEdited}} </div>
+					<div class="mainPointImageURL">{{fullPoint.point.imageURL}}</div>
+ 					<div class="mainPointImageAuthor">{{fullPoint.point.imageAuthor}}</div>
+ 					<div class="mainPointImageDescription">{{fullPoint.point.imageDescription}}</div>
+				</div>
+		</div>
+	{% endfor %}
+</div>

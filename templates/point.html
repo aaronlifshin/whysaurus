@@ -94,7 +94,29 @@
                           {% if supportingPoints %}
                             <button id="unlinkToggle" class="mainPointButton pull-right" type="submit">unlink</button>
                           {% endif %}
-                          <button id="addSupportingPointWhenNonZero" name="linkSupportingPoint" class="mainPointButton pull-right">add</button>
+                          <div class="dropdown pull-right">
+                            <button id="addSupportingPointWhenNonZero" name="linkSupportingPoint" 
+                            data-toggle="dropdown"
+                            class="mainPointButton pull-right dropdown-toggle">Add supporting point</button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="addSupportingPointWhenNonZero">
+                              <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" href="#">Make a new point</a></li>
+                              <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" href="#">Search for an existing point</a></li>
+                              {% if recentlyViewedPoints %}
+                                <li class="dropdown-submenu"><a tabindex="-1" href="#">Use a Recently viewed point</a>
+                                  <ul class="dropdown-menu">
+                                    {% for RVpoint in recentlyViewedPoints %}
+                                        <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" 
+                                        id="selectPoint_menu_{{RVpoint.url}}" 
+                                        alt="Use {{ RVpoint.title|escape }}" data-pointurl="{{RVpoint.url}}"
+                                        href="#">{{RVpoint.title|escape}}</a></li>                                        
+                                    {% endfor %}
+                                  </ul>
+                                </li>
+                              {% else %}
+                                <li class="dropdown-submenu disabled"><a tabindex="-1" href="#">Use a Recently viewed point</a>                              
+                              {% endif %}                              
+                            </ul>
+                          </div>
                         </div>
     					{% for supportingPoint in supportingPoints %}
                         <div class="{% if supportingPoint.voteTotal >= thresholds.green %}
@@ -121,19 +143,17 @@
                     </div>
                   </div>
                 </div>
-                {% endif %}
-				  {%if supportingPoints %}
-				  <div id="zeroSupportingPoints" class="row hide">
-				 {% else %}
-				  <div id="zeroSupportingPoints" class="row">
-				 {% endif %}
-                    <div class="boxedElement pagination-centered">
-					  <div id="zeroSupportingPointsText">Zero Supporting Points</div>
-                      <button name="linkSupportingPoint" class="mainPointButton pagination-centered" id="addSupportingPointWhenZero">add<span class="plus_icon_spacer"></span>one</button>
-                    </div>
-				    <div id="addEvidencePromptText" class="pagination-centered">If this point is true, add evidence to support it!</div>
-				  </div>
-	</div> <!-- id="supportingPointsArea" class="tabbedArea"-->
+			    <div id="zeroSupportingPoints" class="row hide">
+			 {% else %}
+				<div id="zeroSupportingPoints" class="row">
+			 {% endif %}
+             <div class="boxedElement pagination-centered">
+			     <div id="zeroSupportingPointsText">Zero Supporting Points</div>
+                   <button name="linkSupportingPoint" class="mainPointButton pagination-centered" id="addSupportingPointWhenZero">add<span class="plus_icon_spacer"></span>one</button>
+                 </div>
+				 <div id="addEvidencePromptText" class="pagination-centered">If this point is true, add evidence to support it!</div>
+			 </div>
+	        </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 
 			<div id="disqus_thread" class="row tabbedArea">
     			<script type="text/javascript">

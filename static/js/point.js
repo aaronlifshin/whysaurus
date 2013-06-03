@@ -286,8 +286,34 @@ function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
 	$(tabbedAreaToShow).show();
 }
 
+function selectPoint(supportingPointURL, currentPointURL){
+  	$.ajaxSetup({
+		url: "/linkPoint",
+		global: false,
+		type: "POST",
+	 	data: {
+			'supportingPointURL': supportingPointURL,
+			'parentPointURL': currentPointURL
+			},
+		success: function(data){
+		  obj = JSON.parse(data);
+		  if (obj.result == true) {
+			window.location.href="/point/" + currentPointURL;
+		  } else {
+		  	if (obj.error) {
+		    	alert(obj.error);
+		    } else {
+		    	alert("There was an error");
+		    }
+		  }
+		}
+	});
+	$.ajax();
+}
+
+
 $(document).ready(function() {
-	  $( "[name=linkSupportingPoint]" ).button();
+	  //$( "[name=linkSupportingPoint]" ).button();
 	  $('[id^="supportingPoint_"]').click(function() {
         if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
           window.location.href = $(".navWhy", $(this)).attr('href');
@@ -303,11 +329,11 @@ $(document).ready(function() {
         make_this_show_login_dlg($( "#downVote" ));
         make_this_show_login_dlg($( "#viewPointHistory" ));
       } else {
-        $( "[name=linkSupportingPoint]" ).click(function() {
+        /*$( "[name=linkSupportingPoint]" ).click(function() {
           var params = [];
           params["parentPointURL"] = pointURL;
           post_to_url("/selectSupportingPoint", params);
-        });
+        });*/
 
         $( "#unlinkToggle" )
   				.button()
@@ -330,32 +356,33 @@ $(document).ready(function() {
     		$( "#downVote" ).click(function() {
     			downVote();
     		});
+    		
+    	$("[id^=selectPoint_menu_]").on('click', function(e){
+            var theLink = $(this);
+            selectPoint(theLink.data('pointurl'), pointURL );
+        });
 
       };
 
-			$( ".whybutton" ).button();
-			$( ".unlinkbutton" ).button();
-			$( ".unlinkbutton" ).addClass("ui-helper-hidden");
-			$( ".ui-helper-hidden" ).hide();
-			//try{
-				$( "#deletePoint" ).button();
-			//} catch (e) {};
+	  $( ".whybutton" ).button();
+	  $( ".unlinkbutton" ).button();
+      $( ".unlinkbutton" ).addClass("ui-helper-hidden");
+      $( ".ui-helper-hidden" ).hide();
+      $( "#deletePoint" ).button();
 
-			/* Tabs for supporting points, comments, and history */
+      // Beginning state
+      $('.tabbedArea').hide(); $('#supportingPointsArea').show();
 
-			// Beginning state
-			$('.tabbedArea').hide(); $('#supportingPointsArea').show();
+      $('#viewSupportingPoints').click(function() {
+        toggleTabbedArea(this, "#supportingPointsArea");
+      });
+      
+      $('#viewComments').click(function() {
+          toggleTabbedArea(this, "#disqus_thread");
+      });
 
-			$('#viewSupportingPoints').click(function() {
-				toggleTabbedArea(this, "#supportingPointsArea");
-			});
-
-			$('#viewComments').click(function() {
-				toggleTabbedArea(this, "#disqus_thread");
-			});
-
-			$('#viewPointHistory').click(function() {
-				toggleTabbedArea(this, "#historyArea");
-			});
+      $('#viewPointHistory').click(function() {
+          toggleTabbedArea(this, "#historyArea");
+      });
 
 });

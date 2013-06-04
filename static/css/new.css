@@ -659,7 +659,7 @@ button#unlinkToggle {
 #createSupportingPointLink:hover {
    background-image: url('/static/img/arrow_makeANewPoint_black_231px.png');
 }
-   */
+*/
    
 [id^=selectPoint_arrow] {
     width:46px;

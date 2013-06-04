@@ -20,7 +20,7 @@ function toggleUnlink() {
 		$( ".unlinkbutton" ).removeClass("ui-helper-hidden");
 		$( ".unlinkbutton" ).show();
 		$( ".unlinkbutton" ).button();
-		$("#unlinkToggle").html('<span class="ui-button-text">Done</span>');
+		$("#unlinkToggle").html('<span class="ui-button-text">Cancel</span>');
 		unlinkVisible = true;
 	}
 }
@@ -97,6 +97,7 @@ function supportingPointUnlink(supportingPointURL) {
               $("#nonzeroSupportingPoints").hide();
               $( "[name=linkSupportingPoint]" ).button();
             }
+            toggleUnlink();			
           } else {
             alert(obj.result);
           }

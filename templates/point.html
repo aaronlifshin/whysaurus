@@ -161,10 +161,35 @@
 				<div id="zeroSupportingPoints" class="row">
 			 {% endif %}
              <div class="boxedElement pagination-centered">
-			     <div id="zeroSupportingPointsText">Zero Supporting Points</div>
-                   <button name="linkSupportingPoint" class="mainPointButton pagination-centered" id="addSupportingPointWhenZero">add<span class="plus_icon_spacer"></span>one</button>
+			     <div id="zeroSupportingPointsText" class="row">Zero Supporting Points</div>
+                 <div class="dropdown row" style="height:50px">
+                    <button name="linkSupportingPoint" class="mainPointButton pagination-centered dropdown-toggle" 
+                    id="addSupportingPointWhenZero" data-toggle="dropdown">add
+                    <span class="plus_icon_spacer"></span>one</button>                    
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="addSupportingPointWhenZero">
+                      <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenZero" href="#"
+                        id="createSupportingPointLink" alt="Make a New Supporting Point"
+                        >Make a new point</a></li>
+                      <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenZero" href="#"
+                      id="searchForSupportingPoint" alt="Search for a Supporting Point"
+                      >Search for an existing point</a></li>
+                      {% if recentlyViewedPoints %}
+                        <li class="dropdown-submenu"><a tabindex="-1" href="#">Use a Recently viewed point</a>
+                          <ul class="dropdown-menu">
+                            {% for RVpoint in recentlyViewedPoints %}
+                                <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenZero" 
+                                id="selectPoint_menu_{{RVpoint.url}}" 
+                                alt="Use {{ RVpoint.title|escape }}" data-pointurl="{{RVpoint.url}}"
+                                href="#">{{RVpoint.title|escape}}</a></li>                                        
+                            {% endfor %}
+                          </ul>
+                        </li>
+                      {% else %}
+                        <li class="dropdown-submenu disabled"><a tabindex="-1" href="#">Use a Recently viewed point</a>                              
+                      {% endif %}                              
+                    </ul>
                  </div>
-				 <div id="addEvidencePromptText" class="pagination-centered">If this point is true, add evidence to support it!</div>
+				 <div id="addEvidencePromptText" class="pagination-centered row">If this point is true, add evidence to support it!</div>
 			 </div>
 	        </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 

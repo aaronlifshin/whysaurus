@@ -346,6 +346,62 @@ function addPoint(){
 	$.ajax();
 }
 
+function displaySearchResults(data){
+	$("[id^=searchPoint]",$(".searchColumn")).remove();
+	obj = JSON.parse(data);
+	if (obj.result == true) {
+		appendAfter = $(".searchColumn");
+		for(var i=0; i < obj.searchResults.length; i++){						    
+			var oneResult = obj.searchResults[i];
+			// we need to create 4 divs
+			// 1. a row-fluid
+			mainRowDiv = $('<div/>', { class:"row-fluid", id:"searchPoint_"+oneResult['url']});							
+			// 2. the popout
+			popOutDiv = $('<div/>', {class:"span1 noRightChannel"});
+			popOutDiv.html("<a id=\"popoutPoint_" + oneResult['url'] +
+			                "\" data-pointurl=\""+ oneResult['url']  +
+			                "\" data-pointtitle=\"" + oneResult['title'] + "\" ></a>");                            
+			// 3. the select supporting point div
+			if (oneResult['voteTotal'] >= thresholdGreen ) {spanClass = 'green'; } 
+			else if  (oneResult['voteTotal'] <= thresholdRed) { spanClass = 'red'; } 
+			else {  spanClass = 'yellow'; }
+			selectDiv = jQuery('<div/>', {
+				class: "pointSmall span11 " + spanClass,
+				id: "selectPoint_div_search_" +  oneResult['url'],
+				alt: "Use " + oneResult['url']								
+				});
+			selectDiv.data('pointurl', oneResult['url']);
+			// 4. and, inside it, the score and title div and the arrow div
+			titleDiv = jQuery('<div/>',{class:"span10 title"} );
+			titleDiv.html("<h5><span class=\"score\">" + oneResult['voteTotal'] + 
+			              "</span> <a href=\"#\" > " + oneResult['title'] + "</a></H5>");
+			buttonDiv= jQuery('<div/>',{class:"span2"} );
+            buttonDiv.html("<a class=\"pull-right\" href=\"#\"id=\"selectPoint_arrow_" + 
+                            oneResult['url'] + "\"alt=\"Use " + oneResult['title'] + "\" ></a>");
+            selectDiv.append(titleDiv);selectDiv.append(buttonDiv);
+            mainRowDiv.append(popOutDiv);mainRowDiv.append(selectDiv);							
+			appendAfter.append(mainRowDiv);mainRowDiv.show();
+    	}
+        setUpSelectPointButtons();
+        setUpPopoutButtons();
+	} else {
+		alert('There were no results for: ' + $(".searchBox").val() + ' or that is already a supporting point');
+	}
+}
+
+function setUpSelectPointButtons() {
+    $("[id^=selectPoint_div_]").on('click', function(e){
+        var theLink = $(this);
+        selectPoint(theLink.data('pointurl'), pointURL );
+    });
+}
+
+function setUpPopoutButtons() {
+    $("[id^=popoutPoint_]").on('click', function(e){
+        var theLink = $(this);
+        window.open( "/point/" + theLink.data('pointurl'),theLink.data('pointtitle') , "height=800,width=1000");
+    }); 
+}
 
 $(document).ready(function() {
     //$( "[name=linkSupportingPoint]" ).button();
@@ -398,10 +454,31 @@ $(document).ready(function() {
         });
         
         $( "#createSupportingPointLink" ).attr('href',"#createSupportingPoint");
-        $( "#createSupportingPointLink" ).attr('data-toggle',"modal");
+        $( "#createSupportingPointLink" ).attr('data-toggle',"modal");   
         $("#submit_createSupportingPoint").on('click', function(e){addPoint();});
         
-    };
+        $( "#searchForSupportingPoint" ).attr('href',"#supportingPointSearch");
+        $( "#searchForSupportingPoint" ).attr('data-toggle',"modal");        
+            
+        $('#searchForSupportingPoint').on('hidden', function () {
+            $("[id^=searchPoint]",$(".searchColumn")).remove();        	
+        })
+        $("#selectSupportingPointSearch").keyup(function(event){
+    		if(event.keyCode == 13){
+    			$.ajaxSetup({
+    				url: "/ajaxSearch",
+    				global: false,
+    				type: "POST",
+    				data: {
+    					'searchTerms': $(".searchBox").val(),
+    					'exclude' : pointURL
+    				},
+    				success: function(data) {displaySearchResults(data);},
+    			});
+    			$.ajax();
+    	    }
+        });
+    }
         
     $( ".whybutton" ).button();
     $( ".unlinkbutton" ).button();

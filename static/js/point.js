@@ -4,37 +4,42 @@ function showAlert(alertHTML) {
     $('.topSpace').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));   
 }
 
+function searchDialogAlert(alertHTML) {
+    $('#linkedPointSearchDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
+}
 
-function toggleUnlink() {
+
+
+function toggleUnlink(linkType) {
 	if ( unlinkVisible ) {
-		$( ".navWhy" ).removeClass("ui-helper-hidden");
-		$( ".navWhy" ).show();
-		$( ".navWhy" ).button();
-		$( ".unlinkbutton" ).addClass("ui-helper-hidden");
-		$( ".ui-helper-hidden" ).hide();
-		$("#unlinkToggle").html('<span class="ui-button-text">Unlink</span>');
+		$("[id^=goTo_" + linkType + "]").removeClass("ui-helper-hidden");
+		$("[id^=goTo_" + linkType + "]").show();
+		$("[id^=goTo_" + linkType + "]").button();
+		$("[id^=unlink_" + linkType + "]").addClass("ui-helper-hidden");
+		$(".ui-helper-hidden").hide();
+		$("#" + linkType + "_unlinkToggle").html('<span class="ui-button-text">Unlink</span>');
 		unlinkVisible = false;
 	} else {
-		$( ".navWhy" ).addClass("ui-helper-hidden");
+		$("[id^=goTo_" + linkType + "]").addClass("ui-helper-hidden");
 		$( ".ui-helper-hidden" ).hide();
-		$( ".unlinkbutton" ).removeClass("ui-helper-hidden");
-		$( ".unlinkbutton" ).show();
-		$( ".unlinkbutton" ).button();
-		$("#unlinkToggle").html('<span class="ui-button-text">Cancel</span>');
+		$( "[id^=unlink_" + linkType + "]").removeClass("ui-helper-hidden");
+		$( "[id^=unlink_" + linkType + "]").show();
+		$( "[id^=unlink_" + linkType + "]").button();
+		$("#" + linkType + "_unlinkToggle").html('<span class="ui-button-text">Cancel</span>');
 		unlinkVisible = true;
 	}
 }
 
 function callPointEdit(){
-    if ($('#title_editPointDialog').val().length > MAX_TITLE_CHARS) {
+    if ($('#title_EditThisPoint').val().length > MAX_TITLE_CHARS) {
         alert('Too many characters in the title');
         return;
     }
-	var ed = tinyMCE.get('editor_editPointDialog');
+	var ed = tinyMCE.get('editor_EditThisPoint');
     var text = tinyMCE.activeEditor.getBody().textContent;
-    $("#submit_editPointDialog").off('click');
-    $("#submit_editPointDialog").hide();
-    $("#submit_editPointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+    $("#submit_EditThisPoint").off('click');
+    $("#submit_EditThisPoint").hide();
+    $("#submit_EditThisPoint").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 	$.ajaxSetup({
 	   url: "/editPoint",
 	   global: false,
@@ -43,16 +48,16 @@ function callPointEdit(){
 			'urlToEdit': pointURL,
 			'content': ed.getContent(),
 			'plainText':text.substring(0,250),
-			'title': $('#title_editPointDialog').val(),
-			'imageURL':$('#link_editPointDialog').val(),
-            'imageAuthor':$('#author_editPointDialog').val(),
-            'imageDescription': $('#description_editPointDialog').val()
+			'title': $('#title_EditThisPoint').val(),
+			'imageURL':$('#link_EditThisPoint').val(),
+            'imageAuthor':$('#author_EditThisPoint').val(),
+            'imageDescription': $('#description_EditThisPoint').val()
 			},
 			success: function(data){
-				var ed = tinyMCE.get('editor_editPointDialog');
+				var ed = tinyMCE.get('editor_EditThisPoint');
 			    obj = JSON.parse(data);
 				$('.mainPointContent').html(ed.getContent());
-				$('.mainPointTitle h1').html($('#title_editPointDialog').val());
+				$('.mainPointTitle h1').html($('#title_EditThisPoint').val());
 				$('.mainPointVersion').html(obj.version);
 				$('.mainPointAuthor').html(obj.author);
 				$('.mainPointDateEdited').html(obj.dateEdited);
@@ -61,43 +66,44 @@ function callPointEdit(){
                 }
 				$('.mainPointImageURL').html(obj.imageURL);
 				$('.mainPointImageAuthor').html(obj.imageAuthor);
-				$('.mainPointImageDescription').html(obj.imageDescription);
+				$('.mainPointImageCaption').html(obj.imageDescription);
 				$("#spinnerImage").remove();
-				$("#submit_editPointDialog").show();
-                $("#submit_editPointDialog").on('click', function(e) { callPointEdit();});                        		
-				$("#editPointDialog").modal('hide');
+				$("#submit_EditThisPoint").show();
+                $("#submit_EditThisPoint").on('click', function(e) { callPointEdit();});                        		
+				$("#Edit_thisPointDialog").modal('hide');
 				pointURL = obj.pointURL;
 			},
      		error: function(xhr, textStatus, error){
                 alert('The server returned an error. You may try again.');
                 $("#spinnerImage").remove();
-        		$("#submit_editPointDialog").on('click', function(e) { callPointEdit();});
-                $("#submit_editPointDialog").show();                			    
+        		$("#submit_EditThisPoint").on('click', function(e) { callPointEdit();});
+                $("#submit_EditThisPoint").show();                			    
             }
 	 });
 	$.ajax();
 
 }
 
-function supportingPointUnlink(supportingPointURL) {
+function pointUnlink(supportingPointURL, linkType) {
 	$.ajaxSetup({
 	   url: "/unlinkPoint",
 	   global: false,
 	   type: "POST",
 		 data: {
 			'mainPointURL': pointURL,
-			'supportingPointURL': supportingPointURL
+			'supportingPointURL': supportingPointURL,
+			'linkType': linkType
 			},
 			success: function(data){
           obj = JSON.parse(data);
           if (obj.result == true) {
-            $('#supportingPoint_' + obj.pointURL).remove();
-            if ($("[id^=supportingPoint_]").length == 0 ) {
-              $("#zeroSupportingPoints").show();
-              $("#nonzeroSupportingPoints").hide();
-              $( "[name=linkSupportingPoint]" ).button();
+            $('#'+linkType+'Point_' + obj.pointURL).remove();
+            if ($("[id^=" + linkType +"Point_]").length == 0 ) {
+              $("#" + linkType + "_zeroPoints").show();
+              $("#" + linkType + "_nonzeroPoints").hide();
+              $("[name=" + linkType + "_linkPoint]").button();
             }
-            toggleUnlink();			
+            toggleUnlink(linkType);			
           } else {
             alert(obj.result);
           }
@@ -244,23 +250,23 @@ function make_this_show_login_dlg(button) {
 }
 
 function populateEditFields() {
-  var ed = tinyMCE.get('editor_editPointDialog');
+  var ed = tinyMCE.get('editor_EditThisPoint');
 
-  $('#title_editPointDialog').val($('#pointSummary div.mainPointTitle').text());
-  setCharNumText($('#title_editPointDialog')[0]);
+  $('#title_EditThisPoint').val($('#pointSummary div.mainPointTitle').text());
+  setCharNumText($('#title_EditThisPoint')[0]);
   if (ed) {
 	  ed.setContent($('#pointSummary .mainPointContent').html() );
 	}
-	$('#author_editPointDialog').val($('#pointSummary div.mainPointImageAuthor').text());
-  $('#description_editPointDialog').val($('#pointSummary div.mainPointImageDescription').text());
+  $('#author_EditThisPoint').val($('#mainPointImageArea .mainPointImageAuthor').text());
+  $('#description_EditThisPoint').val($('#mainPointImageArea .mainPointImageCaption').text());
   var url = $('#pointSummary div.mainPointImageURL').text();
 
-  $('#link_editPointDialog').val(url);
+  $('#link_EditThisPoint').val(url);
   if(url !== '') {
     if(url.match("https?://")) {
-      $('#editPointDialog .filepicker-placeholder').attr('src', url);
+      $('#Edit_thisPointDialog .filepicker-placeholder').attr('src', url);
     } else {
-      $('#editPointDialog .filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+url);
+      $('#Edit_thisPointDialog .filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+url);
     }
   }
 
@@ -273,14 +279,15 @@ function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
 	$(tabbedAreaToShow).show();
 }
 
-function selectPoint(supportingPointURL, currentPointURL){
+function selectPoint(supportingPointURL, currentPointURL, linkType){
   	$.ajaxSetup({
 		url: "/linkPoint",
 		global: false,
 		type: "POST",
 	 	data: {
 			'supportingPointURL': supportingPointURL,
-			'parentPointURL': currentPointURL
+			'parentPointURL': currentPointURL,
+			'linkType': linkType
 			},
 		success: function(data){
 		  obj = JSON.parse(data);
@@ -299,16 +306,17 @@ function selectPoint(supportingPointURL, currentPointURL){
 }
 
 
-function addPoint(){
-    if ($('#title_createSupportingPoint').val().length > MAX_TITLE_CHARS) {
+function addPoint(linkType){
+    var dialogName = "Create" + linkType.capitalize() + "Point"
+    if ($('#title_' + dialogName).val().length > MAX_TITLE_CHARS) {
         alert('Too many characters in the title');
         return;
     }
-	var ed = tinyMCE.get('editor_createSupportingPoint');
+	var ed = tinyMCE.get('editor_' + dialogName);
     var text = tinyMCE.activeEditor.getBody().textContent;
-    $("#submit_createSupportingPoint").off('click');
-    $("#submit_createSupportingPoint").hide();
-    $("#submit_createSupportingPoint").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+    $("#submit_" + dialogName).off('click');
+    $("#submit_" + dialogName).hide();
+    $("#submit_" + dialogName).after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 	$.ajaxSetup({
 		url: "/addSupportingPoint",
 		global: false,
@@ -316,11 +324,12 @@ function addPoint(){
 		data: {
 			'content': ed.getContent(),
             'plainText': text.substring(0,500),
-			'title': $('#title_createSupportingPoint').val(),
+			'title': $('#title_' + dialogName).val(),
+			'linkType':linkType,
 			'pointUrl': pointURL,
-			'imageURL':$('#link_createSupportingPoint').val(),
-            'imageAuthor':$('#author_createSupportingPoint').val(),
-            'imageDescription': $('#description_createSupportingPoint').val()
+			'imageURL':$('#link_' + dialogName).val(),
+            'imageAuthor':$('#author_' + dialogName).val(),
+            'imageDescription': $('#description_' + dialogName).val()
 		},
 		success: function(data){
 			obj = JSON.parse(data);
@@ -333,21 +342,21 @@ function addPoint(){
 		    		showAlert("There was an error");
 		    	}
                 $("#spinnerImage").remove();
-			    $("#submit_createSupportingPoint").on('click', function(e){addPoint();}); 
-			    $("#submit_createSupportingPoint").show();
+			    $("#submit_" + dialogName).on('click', function(e){addPoint($(this).data('linktype'));}); 
+			    $("#submit_" + dialogName).show();
 			}
 		},
 		error: function(xhr, textStatus, error){
             showAlert('The server returned an error. You may try again.');
             $("#spinnerImage").remove();
-            $("#submit_createSupportingPoint").on('click', function(e){addPoint();}); 
-            $("#submit_createSupportingPoint").show();                			    
+            $("#submit_" + dialogName).on('click', function(e){addPoint($(this).data('linktype'));}); 
+            $("#submit_" + dialogName).show();                			    
         } 			
 	});
 	$.ajax();
 }
 
-function displaySearchResults(data){
+function displaySearchResults(data, linkType){
 	$("[id^=searchPoint]",$(".searchColumn")).remove();
 	obj = JSON.parse(data);
 	if (obj.result == true) {
@@ -372,6 +381,7 @@ function displaySearchResults(data){
 				alt: "Use " + oneResult['url']								
 				});
 			selectDiv.data('pointurl', oneResult['url']);
+			selectDiv.data('linkType', linkType);			
 			// 4. and, inside it, the score and title div and the arrow div
 			titleDiv = jQuery('<div/>',{class:"span10 title"} );
 			titleDiv.html("<h5><span class=\"score\">" + oneResult['voteTotal'] + 
@@ -386,14 +396,14 @@ function displaySearchResults(data){
         setUpSelectPointButtons();
         setUpPopoutButtons();
 	} else {
-		alert('There were no results for: ' + $(".searchBox").val() + ' or that is already a supporting point');
+		searchDialogAlert('There were no results for: ' + $(".searchBox").val() + ' or that is already a linked point');
 	}
 }
 
 function setUpSelectPointButtons() {
     $("[id^=selectPoint_div_]").on('click', function(e){
         var theLink = $(this);
-        selectPoint(theLink.data('pointurl'), pointURL );
+        selectPoint(theLink.data('pointurl'), pointURL, theLink.data('linkType'));
     });
 }
 
@@ -411,15 +421,24 @@ $(document).ready(function() {
           window.location.href = $(".navWhy", $(this)).attr('href');
         }
     });
+    
+    $('[id^="counterPoint_"]').click(function() {
+        if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
+          window.location.href = $(".navWhy", $(this)).attr('href');
+        }
+    });
 
     if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
         $( "[name=linkSupportingPoint]" ).attr('data-toggle',"modal");
-        make_this_show_login_dlg($( "#unlinkToggle" ));
+        make_this_show_login_dlg($( "[id$=unlinkToggle]" ));
+        make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));     
+        make_this_show_login_dlg($( "[id$=addPointWhenZero]" ));                   
         make_this_show_login_dlg($( "#editPoint" ));
         make_this_show_login_dlg($( "#upVote" ));
         make_this_show_login_dlg($( "#downVote" ));
         make_this_show_login_dlg($( "#viewPointHistory" ));
+        
     } else {
         /*$( "[name=linkSupportingPoint]" ).click(function() {
           var params = [];
@@ -427,44 +446,64 @@ $(document).ready(function() {
           post_to_url("/selectSupportingPoint", params);
         });*/
 
-        $( "#unlinkToggle" )
-        			.button()
-        			.click(function() {
-        				toggleUnlink();
-        			});
+        $( "#supporting_unlinkToggle" ).button().click(function() {
+        	toggleUnlink("supporting");
+        	});
+        			    
+        $( "#counter_unlinkToggle" ).button().click(function() {
+            toggleUnlink("counter");
+            });
 
-        $( "#editPoint" ).attr('href',"#editPointDialog");
+        $( "#editPoint" ).attr('href',"#Edit_thisPointDialog");
         $( "#editPoint" ).attr('data-toggle',"modal");
         $( "#editPoint" ).on('click', function() {
           populateEditFields();
-          $('#frm_editPointDialog .filepicker').bindFilepicker();
+          $('#frm_EditThisPoint .filepicker').bindFilepicker();
         });
+        
+        $('#createSupportingPoint .filepicker').bindFilepicker();
+        
+        $("#submit_EditThisPoint").on('click', function(e) { callPointEdit();});
 
-        $("#submit_editPointDialog").on('click', function(e) { callPointEdit();});
+        $( "#upVote" ).click(function() {upVote();});
+        //$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
-        	$( "#upVote" ).click(function() {upVote();});
-        		//$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
-
-        	$( "#downVote" ).click(function() {
-        		downVote();
-        	});
+        $( "#downVote" ).click(function() {	downVote();	});
 	
         $("[id^=selectPoint_menu_]").on('click', function(e){
             var theLink = $(this);
-            selectPoint(theLink.data('pointurl'), pointURL );
+            selectPoint(theLink.data('pointurl'), pointURL, theLink.data('linktype') );
         });
         
-        $( "#createSupportingPointLink" ).attr('href',"#createSupportingPoint");
-        $( "#createSupportingPointLink" ).attr('data-toggle',"modal");   
-        $("#submit_createSupportingPoint").on('click', function(e){addPoint();});
-        
-        $( "#searchForSupportingPoint" ).attr('href',"#supportingPointSearch");
-        $( "#searchForSupportingPoint" ).attr('data-toggle',"modal");        
+        $( "#supporting_createPointLink" ).attr('href',"#Create_supportingPointDialog");
+        $( "#supporting_createPointLink" ).attr('data-toggle',"modal");   
+        $("#submit_CreateSupportingPoint").on('click', function(e){
+                addPoint($(this).data('linktype'));
+            });
             
-        $('#searchForSupportingPoint').on('hidden', function () {
+        $( "#counter_createPointLink" ).attr('href',"#Create_counterPointDialog");
+        $( "#counter_createPointLink" ).attr('data-toggle',"modal");   
+        $("#submit_CreateCounterPoint").on('click', function(e){
+                addPoint($(this).data('linktype'));
+            });
+        
+        
+        $( "#supporting_searchForPoint" ).on('click', function(e){
+            $("#selectLinkedPointSearch").data("linkType", "supporting");
+            $("#linkedPointSearchDialog").modal('show');
+        });
+        
+        $( "#counter_searchForPoint" ).on('click', function(e){
+            $("#selectLinkedPointSearch").data("linkType", "counter");
+            $("#linkedPointSearchDialog").modal('show');
+        });
+         
+        $('#linkedPointSearchDialog').on('hidden', function () {
+            $("#selectLinkedPointSearch").data("linkType", "");         
             $("[id^=searchPoint]",$(".searchColumn")).remove();        	
-        })
-        $("#selectSupportingPointSearch").keyup(function(event){
+        });
+        
+        $("#selectLinkedPointSearch").keyup(function(event){
     		if(event.keyCode == 13){
     			$.ajaxSetup({
     				url: "/ajaxSearch",
@@ -472,9 +511,10 @@ $(document).ready(function() {
     				type: "POST",
     				data: {
     					'searchTerms': $(".searchBox").val(),
-    					'exclude' : pointURL
+    					'exclude' : pointURL,
+    					'linkType' : $("#selectLinkedPointSearch").data("linkType")
     				},
-    				success: function(data) {displaySearchResults(data);},
+    				success: function(data) {displaySearchResults(data, $("#selectLinkedPointSearch").data("linkType"));},
     			});
     			$.ajax();
     	    }

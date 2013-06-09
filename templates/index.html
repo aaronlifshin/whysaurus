@@ -41,8 +41,8 @@
 						green
 					  {% else %}
 						{% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
-					  {% endif %} pointCard" data-numsup="{% if point.supportingPoints %}
-                        {{ point.supportingPoints|length }}{% else %}{{0}}{% endif %}" id="point_HR_{{point.url}}">
+					  {% endif %} pointCard" data-numsup="{% if point.supportingPointsRoots %}
+                        {{ point.supportingPointsRoots|length }}{% else %}{{0}}{% endif %}" id="point_HR_{{point.url}}">
 			 <div class="row-fluid">
                  <div class="{% if point.imageURL and point.imageURL.strip %} span8 {%else%} span12 {%endif%}">
                     <div class="title"><H5>

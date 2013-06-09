@@ -1,41 +1,46 @@
-<div class="modal hide fade pointDialog" id="{{formName}}" title="{{dlgTitle}}" role="dialog" aria-hidden="true">
+<div class="modal hide fade pointDialog" data-keyboard="false" id="{{actionType}}_{{linkType}}PointDialog"
+    title="{{actionType}} {{linkType|title}} Point" role="dialog" aria-hidden="true">
   <div class="modal-header">
     <h3>
-      {{dlgTitle}}
+      {{actionType}} {{linkType|title}} Point
     </h3>
   </div>
-  <form id='frm_{{formName}}' class="form-horizontal">
+  <form id='frm_{{actionType}}{{linkType|title}}Point' class="form-horizontal">
     <div class="modal-body">
-      <label><div class="pull-left ">Text</div><div id="title_{{formName}}_charNum" class="pull-right clearfix">140 characters left</div></label>
+      <label><div class="pull-left ">Text</div><div id="title_{{actionType}}{{linkType|title}}Point_charNum" class="pull-right clearfix">140 characters left</div></label>
       <div class="dlgField">
-        <input id="title_{{formName}}" type="text" class="titleEdit" placeholder="Add the title here...">
+        <input id="title_{{actionType}}{{linkType|title}}Point" type="text" class="titleEdit" placeholder="Add the title here...">
       </div>
       <div class="dlgField">
-        <textarea id="editor_{{formName}}" class="mceEditor textEdit" name="editor_{{formName}}" placeholder="Add the description here..."></textarea>
+        <textarea id="editor_{{actionType}}{{linkType|title}}Point" class="mceEditor textEdit" name="editor_{{actionType}}{{linkType|title}}Point" 
+        placeholder="Add the description here..."></textarea>
       </div>
     </div>
     <div class="modal-footer">
       <label class="control-group textline">Image</label>
       <div class="control-group">
-        <label class="control-label" for="link_{{formName}}">link</label>
+        <label class="control-label" for="link_{{actionType}}{{linkType|title}}Point">link</label>
         <div class="controls">
-          <input id="link_{{formName}}" type="hidden" name="imageURL">
+          <input id="link_{{actionType}}{{linkType|title}}Point" type="hidden" name="imageURL">
           <button class="btn btn-large btn-primary filepicker">Choose Image</button>
           <img class="filepicker-placeholder" src="/static/img/placeholder_50x50.gif">
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label" for="author_{{formName}}">author</label>
+        <label class="control-label" for="author_{{actionType}}{{linkType|title}}Point">author</label>
         <div class="controls">
-          <input id="author_{{formName}}" type="text" class=" fieldEdit" name="imageAuthor" placeholder="Give credit to the creator of the image">
+          <input id="author_{{actionType}}{{linkType|title}}Point" type="text" class=" fieldEdit" name="imageAuthor" placeholder="Give credit to the creator of the image">
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label" for="description_{{formName}}">description</label>
+        <label class="control-label" for="description_{{actionType}}{{linkType|title}}Point">description</label>
         <div class="controls">
-          <input id="description_{{formName}}" type="text" class=" fieldEdit" name="imageDescription" placeholder="Add a descriptive caption to appear below the image">
+          <input id="description_{{actionType}}{{linkType|title}}Point" type="text" class=" fieldEdit" 
+          name="imageDescription" placeholder="Add a descriptive caption to appear below the image">
         </div>
-      </div><a href="#" id="submit_{{formName}}" class="btn btn-primary">Save changes</a>            
+      </div><a href="#" id="submit_{{actionType}}{{linkType|title}}Point" 
+                data-linktype="{{linkType}}"
+                class="btn btn-primary">Save changes</a>            
             <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
     </div>
   </form>

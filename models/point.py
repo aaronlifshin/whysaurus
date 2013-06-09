@@ -32,6 +32,11 @@ class Point(ndb.Model):
     dateEdited = ndb.DateTimeProperty(auto_now_add=True)
     version = ndb.IntegerProperty()
     supportingPoints = ndb.KeyProperty(repeated=True)
+    supportingPointsRoots = ndb.KeyProperty(repeated=True)
+    supportingPointsLastChange = ndb.KeyProperty(repeated=True)
+    counterPointsRoots = ndb.KeyProperty(repeated=True)
+    counterPointsLastChange = ndb.KeyProperty(repeated=True)
+
     current = ndb.BooleanProperty()
     url = ndb.StringProperty()
     upVotes = ndb.IntegerProperty()
@@ -72,13 +77,13 @@ class Point(ndb.Model):
             # images = PointImage.query(ancestor=pointRoot.key).fetch(50)
             retVal = []
             for point in points:
-                supportingPoints = point.getSupportingPoints()
+                supportingPointsLastVersion = point.getSupportingPoints()
                 # pointImages = [image for image in images if image.key.parent() == point.key]
                 # image = None
                 # if pointImages:
                 #   image = pointImages[0]
                 retVal.append({
-                              "point": point, "supportingPoints": supportingPoints})  # , "image":image})
+                              "point": point, "supportingPoints": supportingPointsLastVersion})  # , "image":image})
             return retVal
         else:
             return None
@@ -117,23 +122,77 @@ class Point(ndb.Model):
         user.updateRecentlyViewed(pointRoot.key)
         return point, pointRoot
 
+    def getLinkCollections(self,linkName):
+        if linkName == 'supporting':
+            return self.supportingPointsRoots, self.supportingPointsLastChange
+        elif linkName == 'counter':
+            return self.counterPointsRoots, self.counterPointsLastChange
+        else:
+            return None, None
+        
+    def setLinkCollections(self,linkName, rootCollection, versionCollection):
+        if linkName == 'supporting':
+            self.supportingPointsRoots = rootCollection
+            self.supportingPointsLastChange = versionCollection
+        elif linkName == 'counter':
+            self.counterPointsRoots = rootCollection
+            self.counterPointsLastChange = versionCollection
+        else:
+            return
+                  
+    def addLink(self, linkRoot, linkCurrentVersion, linkName):
+        rootList, versionList = self.getLinkCollections(linkName)        
+        logging.info("BEFORE Length of version list was %d. " % len(versionList) if versionList else 0)
+        logging.info("BEFORE Root list was %d." % len(rootList) if rootList else 0)
+        if linkCurrentVersion:
+            if linkRoot is None:
+                raise WhysaurusException(
+                    "Trying to add a new %s point but root was not supplied: %s" % linkName, self.title)
+            elif rootList and linkRoot.key in rootList:
+                raise WhysaurusException(
+                    "That point is already a %s point of %s" % linkName, self.title)
+            elif versionList and linkCurrentVersion.key in versionList:
+                raise WhysaurusException(
+                    "That point is already a %s point of %s" % linkName, self.title)               
+            else:
+                if rootList:
+                    rootList = rootList + [linkRoot.key]
+                else:
+                    rootList = [linkRoot.key]
+                logging.info("Adding to list: %s" % linkCurrentVersion.key)
+                if versionList:
+                    versionList = versionList + [linkCurrentVersion.key]
+                else:
+                    versionList = [linkCurrentVersion.key]
+                logging.info("Length of version list was %d. " % len(versionList))
+                logging.info("Root list was %d." % len(rootList))
+                self.setLinkCollections(linkName, rootList, versionList)
+
+    def removeLink(self, linkRoot, linkName):
+        rootList, versionList = self.getLinkCollections(linkName)
+        if linkRoot:
+            rootList.remove(linkRoot.key)
+            for supPoint in versionList:
+                logging.info('Comparing %s with %s' % (supPoint.parent(), linkRoot.key))
+                if supPoint.parent() == linkRoot.key:
+                    versionList.remove(supPoint)
+                    break
+            self.setLinkCollections(linkName, rootList, versionList)
+        else:
+            raise WhysaurusException(
+                    "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
+            
+    
     # newSupportingPoint is the PointRoot of the supporting point
     def update(
-        self, newTitle=None, newContent=None, newSummaryText=None, newSupportingPoint=None, user=None,
-            imageURL=None, imageAuthor=None, imageDescription=None):
+        self, newTitle=None, newContent=None, newSummaryText=None, pointsToLink=None, 
+            user=None, imageURL=None, imageAuthor=None, imageDescription=None):
         if user:
             theRoot = self.key.parent().get()
-            newPoint = Point(parent=self.key.parent())  # All versions ancestors of the caseRoot
+            newPoint = Point(parent=self.key.parent())  # All versions ancestors of the PointRoot
 
-            if not newTitle is None:
-                newPoint.title = newTitle
-            else:
-                newPoint.title = self.title
-
-            if not newContent is None:
-                newPoint.content = newContent
-            else:
-                newPoint.content = self.content
+            newPoint.title = self.title if newTitle is None else newTitle
+            newPoint.content = self.content if newContent is None else newContent
 
             if newSummaryText:
                 newPoint.summaryText = newSummaryText if (len(
@@ -142,15 +201,19 @@ class Point(ndb.Model):
                 newPoint.summaryText = self.summaryText
 
             newPoint.authorName = user.name
-            if newSupportingPoint:
-                if newSupportingPoint.key in self.supportingPoints:
-                    raise WhysaurusException(
-                        "That point is already a supporting point of " + newPoint.title)
-                else:
-                    newPoint.supportingPoints = self.supportingPoints + \
-                        [newSupportingPoint.key]
-            else:
-                newPoint.supportingPoints = list(self.supportingPoints)
+            newPoint.supportingPointsRoots = list(self.supportingPointsRoots)
+            newPoint.supportingPointsLastChange = list(self.supportingPointsLastChange)                
+            newPoint.counterPointsRoots = list(self.counterPointsRoots) 
+            newPoint.counterPointsLastChange = list(self.counterPointsLastChange)
+            if pointsToLink:
+                for pointToLink in pointsToLink:
+                    logging.info('Point to link Version: %s' % pointToLink['pointCurrentVersion'])
+                    newPoint.addLink(pointToLink['pointRoot'], 
+                                     pointToLink['pointCurrentVersion'],
+                                     pointToLink['linkType']) 
+                    pointToLink['pointRoot'].addLinkedPoint(newPoint.key.parent(), 
+                                                            pointToLink['linkType'])
+
 
             newPoint.version = self.version + 1
             newPoint.upVotes = self.upVotes
@@ -168,9 +231,7 @@ class Point(ndb.Model):
                 newPoint.url = self.url
             newPoint.put()
             self.put()
-            if newSupportingPoint:
-                newSupportingPoint.addSupportedPoint(newPoint.key.parent())
-
+            
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndex()
 
@@ -179,21 +240,24 @@ class Point(ndb.Model):
             return None
 
     # ONLY REMOVES ONE SIDE OF THE LINK. USED BY UNLINK
-    def removeSupportingPoint(self, supportingPointToRemove, user):
+    def removeLinkedPoint(self, unlinkPointRoot, linkType, user):
         if user:
             newPoint = Point(
                 parent=self.key.parent())  # All versions ancestors of the caseRoot
             newPoint.authorName = user.name
-            newPoint.supportingPoints = list(self.supportingPoints)
-            logging.info('SUP PO: ' + str(newPoint.supportingPoints))
-            logging.info('TO REM: ' + str(supportingPointToRemove))
+            newPoint.supportingPointsLastChange = list(self.supportingPointsLastChange)
+            newPoint.supportingPointsRoots = list(self.supportingPointsRoots)           
+            newPoint.counterPointsRoots = list(self.counterPointsRoots) 
+            newPoint.counterPointsLastChange = list(self.counterPointsLastChange)
+            
             try:
-                newPoint.supportingPoints.remove(supportingPointToRemove.key)
+                newPoint.removeLink(unlinkPointRoot, linkType)
             except Exception as e:
                 logging.info(
                     'Could not remove supporting point from list: ' + str(e))
             newPoint.title = self.title
             newPoint.content = self.content
+            newPoint.summaryText = self.summaryText
             newPoint.version = self.version + 1
             newPoint.upVotes = self.upVotes
             newPoint.downVotes = self.downVotes
@@ -208,10 +272,10 @@ class Point(ndb.Model):
             return None
 
     def getSupportingPoints(self):
-        if len(self.supportingPoints) > 0:
-            supportingPointRoots = ndb.get_multi(self.supportingPoints)
+        if len(self.supportingPointsRoots) > 0:
+            supportingPointsRoots = ndb.get_multi(self.supportingPointsRoots)
             supportingPoints = []
-            for pointRoot in supportingPointRoots:
+            for pointRoot in supportingPointsRoots:
                 if pointRoot:
                     supportingPoints = supportingPoints + \
                         [pointRoot.getCurrent()]
@@ -222,15 +286,40 @@ class Point(ndb.Model):
         else:
             return None
 
-    def unlink(self, supportingPointURL, user):
-        supportingPoint, supportingPointRoot = Point.getCurrentByUrl(
-            supportingPointURL)
-        newVersion = self.removeSupportingPoint(supportingPointRoot, user)
-        supportingPointRoot.removeSupportedPoint(self.key.parent())
+    def getCounterPoints(self):
+        if len(self.counterPointsRoots) > 0:
+            counterPointsRoots = ndb.get_multi(self.counterPointsRoots)
+            counterPoints = []
+            for pointRoot in counterPointsRoots:
+                if pointRoot:
+                    counterPoints = counterPoints + \
+                        [pointRoot.getCurrent()]
+                else:
+                    logging.info('WARNING: Counter point array for ' +
+                                 self.url + ' contains pointer to missing root')
+            return counterPoints
+        else:
+            return None
+        
+    def getLinkedPoints(self, linkType):
+        if linkType == 'supporting':
+            return self.getSupportingPoints()
+        elif linkType == 'counter': 
+            return self.getCounterPoints()
+        else:
+            raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
+
+
+
+    def unlink(self, unlinkPointURL, linkType, user):
+        unlinkPoint, unlinkPointRoot = Point.getCurrentByUrl(
+            unlinkPointURL)
+        newVersion = self.removeLinkedPoint(unlinkPointRoot, linkType, user)
+        unlinkPointRoot.removeLinkedPoint(self.key.parent(), linkType)
         return newVersion
 
     @classmethod
-    def search(cls, searchTerms, excludeURL=None):
+    def search(cls, searchTerms, excludeURL=None, linkType = ""):
 
         if searchTerms:
             index = search.Index('points')
@@ -242,12 +331,15 @@ class Point(ndb.Model):
                     excludePoint, excludePointRoot = Point.getCurrentByUrl(
                         excludeURL)
                     if excludePoint:
-                        excludeList = excludeList + [excludePoint.url]
-                        supportingPoints = excludePoint.getSupportingPoints()
-                        if supportingPoints:
-                            for supportingPoint in supportingPoints:
-                                excludeList = excludeList + \
-                                    [supportingPoint.url]
+                        excludeList = excludeList + [excludePoint.url]                        
+                        linkedPoints = excludePoint.getSupportingPoints()
+                        if linkedPoints:
+                            for point in linkedPoints:
+                                excludeList = excludeList + [point.url]
+                        linkedPoints = excludePoint.getCounterPoints()
+                        if linkedPoints:
+                            for point in linkedPoints:
+                                excludeList = excludeList + [point.url]
                 for doc in searchResultDocs:
                     newResult = {}
                     addResult = True
@@ -277,6 +369,7 @@ class PointRoot(ndb.Model):
     url = ndb.StringProperty()
     numCopies = ndb.IntegerProperty()
     pointsSupportedByMe = ndb.KeyProperty(repeated=True)
+    pointsCounteredByMe = ndb.KeyProperty(repeated=True)
     editorsPick = ndb.BooleanProperty(default=False)
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
@@ -284,15 +377,31 @@ class PointRoot(ndb.Model):
     def getCurrent(self):
         return Point.query(Point.current == True, ancestor=self.key).get()
 
-    def removeSupportedPoint(self, supportedPointKey):
-        self.pointsSupportedByMe.remove(supportedPointKey)
-        self.put()
-
-    def addSupportedPoint(self, supportedPointRootKey):
-        if supportedPointRootKey not in self.pointsSupportedByMe:
-            self.pointsSupportedByMe = self.pointsSupportedByMe + \
-                [supportedPointRootKey]
+    def removeLinkedPoint(self, linkPointRootKey, linkType):
+        if linkType == 'supporting':
+            self.pointsSupportedByMe.remove(linkPointRootKey)
             self.put()
+        elif linkType == 'counter': 
+            self.pointsCounteredByMe.remove(linkPointRootKey)
+            self.put()
+        else:
+            raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
+
+
+    def addLinkedPoint(self, linkPointRootKey, linkType):
+        if linkType == 'supporting':
+            if linkPointRootKey not in self.pointsSupportedByMe:
+                self.pointsSupportedByMe = self.pointsSupportedByMe + \
+                [linkPointRootKey]
+                self.put()
+        elif linkType == 'counter': 
+            if linkPointRootKey not in self.pointsCounteredByMe:
+                self.pointsCounteredByMe = self.pointsCounteredByMe + \
+                [linkPointRootKey]
+                self.put()
+        else:
+            raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
+
 
     def addViewCount(self):
         if not self.viewCount:
@@ -343,10 +452,10 @@ class PointRoot(ndb.Model):
 
         # MY SUPPORTING POINTS NO LONGER SUPPORT ME
         current = self.getCurrent()
-        supportingPointRoots = ndb.get_multi(current.supportingPoints)
-        for supportingPoint in supportingPointRoots:
+        supportingPointsRoots = ndb.get_multi(current.supportingPointsRoots)
+        for supportingPoint in supportingPointsRoots:
             if supportingPoint:
-                supportingPoint.removeSupportedPoint(self.key)
+                supportingPoint.removeLinkedPoint(self.key, "supporting")
 
         points = self.getAllVersions()
         for point in points:

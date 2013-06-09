@@ -22,6 +22,8 @@ class ViewPoint(AuthHandler):
 
         if point:
             supportingPoints = point.getSupportingPoints()
+            counterPoints = point.getCounterPoints()
+
             user = self.current_user
             if not user or not user.userVotes or not point.key.parent() in user.userVotes:
                 voteValue = 0
@@ -32,7 +34,7 @@ class ViewPoint(AuthHandler):
             addedToRecentlyViewed = False
             recentlyViewed = None
             if user:
-                recentlyViewed = user.getRecentlyViewed(excludeList=[point.key.parent()] + point.supportingPoints)
+                recentlyViewed = user.getRecentlyViewed(excludeList=[point.key.parent()] + point.supportingPointsRoots)
                 addedToRecentlyViewed = user.updateRecentlyViewed(point.key.parent())
 
             # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list
@@ -46,6 +48,7 @@ class ViewPoint(AuthHandler):
 				'numPoints': len(point.supportingPoints),
 				'supportingPoints': supportingPoints,
                 'numSupportingPoints': len(supportingPoints) if supportingPoints else 0,
+                'counterPoints': counterPoints,
                 'user': user,
                 'devInt': devInt,  # For Disqus
                 'voteValue': voteValue,

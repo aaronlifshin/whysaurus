@@ -24,6 +24,10 @@ function post_to_url(path, params, method) {
   form.submit();
 }
 
+String.prototype.capitalize = function() {
+    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
+
 function getWindowHeight() {
   var height;
 
@@ -44,15 +48,15 @@ function positionEditDialog() {
 }
 
 function newPoint() {
-  if ($('#title_createPointDialog').val().length > MAX_TITLE_CHARS) {
+  if ($('#title_CreateNewPoint').val().length > MAX_TITLE_CHARS) {
       alert('Too many characters in the title');
       return;
   }  
-  var ed = tinyMCE.get('editor_createPointDialog');
+  var ed = tinyMCE.get('editor_CreateNewPoint');
   var text = tinyMCE.activeEditor.getBody().textContent;
-  $("#submit_createPointDialog").off('click');
-  $("#submit_createPointDialog").hide();
-  $("#submit_createPointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+  $("#submit_CreateNewPoint").off('click');
+  $("#submit_CreateNewPoint").hide();
+  $("#submit_CreateNewPoint").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 
   $.ajaxSetup({
     url: "/newPoint",
@@ -61,10 +65,10 @@ function newPoint() {
     data: {
       'content': ed.getContent(),
       'plainText': text.substring(0, 250),
-      'title': $('#title_createPointDialog').val(),
-      'imageURL': $('#link_createPointDialog').val(),
-      'imageAuthor': $('#author_createPointDialog').val(),
-      'imageDescription': $('#description_createPointDialog').val()
+      'title': $('#title_CreateNewPoint').val(),
+      'imageURL': $('#link_CreateNewPoint').val(),
+      'imageAuthor': $('#author_CreateNewPoint').val(),
+      'imageDescription': $('#description_CreateNewPoint').val()
     },
     success: function(data) {
       obj = JSON.parse(data);
@@ -73,15 +77,15 @@ function newPoint() {
       } else {
         alert(obj.result);
         $("#spinnerImage").remove();        
-        $("#submit_createPointDialog").on('click', function(e) {newPoint();});
-        $("#submit_createPointDialog").show();	            
+        $("#submit_CreateNewPoint").on('click', function(e) {newPoint();});
+        $("#submit_CreateNewPoint").show();	            
       }
     },
     error: function(xhr, textStatus, error){
         alert('The server returned an error. You may try again.');
         $("#spinnerImage").remove();
-        $("#submit_createPointDialog").on('click', function(e) {newPoint();});
-        $("#submit_createPointDialog").show();                			    
+        $("#submit_CreateNewPoint").on('click', function(e) {newPoint();});
+        $("#submit_CreateNewPoint").show();                			    
     }
   });
   $.ajax();
@@ -178,8 +182,9 @@ $(document).ready(function() {
     });
   };
 
-  $('#frm_createPointDialog .filepicker').bindFilepicker();
-  $('#createSupportingPoint .filepicker').bindFilepicker();
+  $('#frm_CreateNewPoint .filepicker').bindFilepicker();
+  $('#Create_supportingPointDialog .filepicker').bindFilepicker();
+  $('#Create_counterPointDialog .filepicker').bindFilepicker();
 
   tinyMCE.init({
     // General options
@@ -289,18 +294,18 @@ $(document).ready(function() {
     $("#CreatePoint").attr('href', "#loginDialog");
     $("#CreatePoint").attr('data-toggle', "modal");
   } else {
-    $("#CreatePoint").attr('href', "#createPointDialog");
+    $("#CreatePoint").attr('href', "#Create_newPointDialog");
     $("#CreatePoint").attr('data-toggle', "modal");
-    $("#createPointDialog").on('hidden', function() {
-      var edSummary = tinyMCE.get('editor_createPointDialog');
+    $("#Create_newPointDialog").on('hidden', function() {
+      var edSummary = tinyMCE.get('editor_createNewPoint');
       edSummary.setContent('');
-      $('#title_createPointDialog').val('');
-      setCharNumText($('#title_createPointDialog')[0]);
-      $('#link_createPointDialog').val('');
-      $('#author_createPointDialog').val('');
-      $('#description_createPointDialog').val('');
+      $('#title_CreateNewPointDialog').val('');
+      setCharNumText($('#title_createNewPoint')[0]);
+      $('#link_CreateNewPoint').val('');
+      $('#author_CreateNewPoint').val('');
+      $('#description_CreateNewPoint').val('');
     });
-    $("#submit_createPointDialog").on('click', function(e) {newPoint();});
+    $("#submit_CreateNewPoint").on('click', function(e) {newPoint();});
   
     $("[id^='title_']").on('keyup', function(e) {setCharNumText(e.target);});
  

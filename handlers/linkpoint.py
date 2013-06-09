@@ -12,8 +12,12 @@ class LinkPoint(AuthHandler):
 
         if user:
             try:
+                newLink = [{'pointRoot':supportingPointRoot,
+                            'pointCurrentVersion':supportingPoint,
+                            'linkType':self.request.get('linkType')}
+                            ]
                 oldPoint.update(
-                    newSupportingPoint=supportingPointRoot,
+                    pointsToLink=newLink,
                     user=user
                 )
             except WhysaurusException as e:

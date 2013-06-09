@@ -63,8 +63,8 @@
 	</div>
 
     {% if user %}
-      {% with "createPointDialog" as formName %}
-      {% with "Create Point" as dlgTitle %}
+      {% with "Create" as actionType %}       
+      {% with "new" as linkType %}
         {% include 'pointDialog.html' %}
       {% endwith %}
       {% endwith %}

@@ -4,19 +4,26 @@
   <script type="text/javascript" src="/static/js/point.js"></script>
 
   {% if user %}
-    {% with "editPointDialog" as formName %}
-    {% with "Edit Point" as dlgTitle  %}
+  
+    {% with "Edit" as actionType %}       
+    {% with "this" as linkType %}   
         {% include 'pointDialog.html' %}
     {% endwith %}
     {% endwith %}
-    {% with "createSupportingPoint" as formName %}
-    {% with "Create Supporting Point" as dlgTitle  %} 
-        {% include 'pointDialog.html' %}
-    {% endwith %}
-    {% endwith %}
+    
+    {% with "Create" as actionType %}           
+      {% with "supporting" as linkType %}
+          {% include 'pointDialog.html' %}
+      {% endwith %}
+      {% with "counter" as linkType %} 
+          {% include 'pointDialog.html' %}
+      {% endwith %}
+    {% endwith %}  <!-- Create -->
+    
     {% with point.title as pointTitle %}
         {% include 'selectSupportingPointsSearch.html' %}
     {% endwith %}
+    
   {% endif %}
 
   <div class="row topSpace"></div>
@@ -60,6 +67,7 @@
             {% if point.imageURL and point.imageURL.strip %}
               <img class="pointDisplay" src="{{ point.fullPointImage }}" />
 			  <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+              <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>        
 			  <button class="mainPointButton" id="changeImage">change image</button>
             {% else %}
 			  <button class="mainPointButton" id="addImage">add an image</button>
@@ -89,109 +97,28 @@
 	  </div>
     </div>
 
-   <div id="supportingPointsArea" class="tabbedArea">
-   <div class="row">
-        <div class="span2 offset5 pagination-centered"><img src="/static/img/arrow_why_toSupportingPoints_grey_97px.png"/></div>
-    </div>
 
-	         {% if supportingPoints %}
-               <div class="row boxedElement span6 offset3" id="nonzeroSupportingPoints">
-	              <div id="numberOfSupportingPoints" class="row columnHeading pagination-centered">{{ numSupportingPoints }} Supporting Point{% if numSupportingPoints > 1 %}s{% endif %}</div>
-                  <div class="row-fluid">
-                     <div class="span10 offset1">
-                        <div class="row-fluid">
-                          {% if supportingPoints %}
-                            <button id="unlinkToggle" class="mainPointButton pull-right" type="submit">unlink</button>
-                          {% endif %}
-                          <div class="dropdown pull-right">
-                            <button id="addSupportingPointWhenNonZero" name="linkSupportingPoint" 
-                            data-toggle="dropdown"
-                            class="mainPointButton pull-right dropdown-toggle">Add supporting point</button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="addSupportingPointWhenNonZero">
-                              <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" href="#"
-                                id="createSupportingPointLink" alt="Make a New Supporting Point"
-                                >Make a new point</a></li>
-                              <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" href="#"
-                              id="searchForSupportingPoint" alt="Search for a Supporting Point"
-                              >Search for an existing point</a></li>
-                              {% if recentlyViewedPoints %}
-                                <li class="dropdown-submenu"><a tabindex="-1" href="#">Use a Recently viewed point</a>
-                                  <ul class="dropdown-menu">
-                                    {% for RVpoint in recentlyViewedPoints %}
-                                        <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenNonZero" 
-                                        id="selectPoint_menu_{{RVpoint.url}}" 
-                                        alt="Use {{ RVpoint.title|escape }}" data-pointurl="{{RVpoint.url}}"
-                                        href="#">{{RVpoint.title|escape}}</a></li>                                        
-                                    {% endfor %}
-                                  </ul>
-                                </li>
-                              {% else %}
-                                <li class="dropdown-submenu disabled"><a tabindex="-1" href="#">Use a Recently viewed point</a>                              
-                              {% endif %}                              
-                            </ul>
-                          </div>
-                        </div>
-    					{% for supportingPoint in supportingPoints %}
-                        <div class="{% if supportingPoint.voteTotal >= thresholds.green %}
-                            green
-                          {% else %}
-                          {% if supportingPoint.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
-                          {% endif %} pointSmall row-fluid" id="supportingPoint_{{supportingPoint.url}}">
-                        <div class="span8 title"><H5>
-                        <span class="score">{{ supportingPoint.voteTotal }}</span>
-                          <a href="/point/{{ supportingPoint.url }}">{{ supportingPoint.title|escape }}</a></H5>
-                        </div>
-                        <div class="span2">
-                                {% if supportingPoint.imageURL and supportingPoint.imageURL.strip %}
-                                    <img class="smallDisplay" src="{{ supportingPoint.summaryMediumImage }}" />
-                                {% endif %}
-                        </div>
-                        <div class="span2 grayBackground">
-                                  <a class="navWhy pull-right" id="editPoint_New_{{ supportingPoint.url }}" alt="Why {{ supportingPoint.title|escape }}" href="/point/{{ supportingPoint.url }}" src="/static/img/arrow_why_A_grey.png"></a>
-                                  <a class="unlinkbutton pull-right" href='javascript:;' onclick='javascript:supportingPointUnlink("{{ supportingPoint.url }}")' alt="Unlink {{supportingPoint.title|escape}}" ></a>
-                        </div>
-                        </div>
-
-					{% endfor %}
-                    </div>
-                  </div>
-                </div>
-			    <div id="zeroSupportingPoints" class="row hide">
-			 {% else %}
-				<div id="zeroSupportingPoints" class="row">
-			 {% endif %}
-             <div class="boxedElement pagination-centered">
-			     <div id="zeroSupportingPointsText" class="row">Zero Supporting Points</div>
-                 <div class="dropdown row" style="height:50px">
-                    <button name="linkSupportingPoint" class="mainPointButton pagination-centered dropdown-toggle" 
-                    id="addSupportingPointWhenZero" data-toggle="dropdown">add
-                    <span class="plus_icon_spacer"></span>one</button>                    
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="addSupportingPointWhenZero">
-                      <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenZero" href="#"
-                        id="createSupportingPointLink" alt="Make a New Supporting Point"
-                        >Make a new point</a></li>
-                      <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenZero" href="#"
-                      id="searchForSupportingPoint" alt="Search for a Supporting Point"
-                      >Search for an existing point</a></li>
-                      {% if recentlyViewedPoints %}
-                        <li class="dropdown-submenu"><a tabindex="-1" href="#">Use a Recently viewed point</a>
-                          <ul class="dropdown-menu">
-                            {% for RVpoint in recentlyViewedPoints %}
-                                <li><a tabindex="-1" aria-labelledby="addSupportingPointWhenZero" 
-                                id="selectPoint_menu_{{RVpoint.url}}" 
-                                alt="Use {{ RVpoint.title|escape }}" data-pointurl="{{RVpoint.url}}"
-                                href="#">{{RVpoint.title|escape}}</a></li>                                        
-                            {% endfor %}
-                          </ul>
-                        </li>
-                      {% else %}
-                        <li class="dropdown-submenu disabled"><a tabindex="-1" href="#">Use a Recently viewed point</a>                              
-                      {% endif %}                              
-                    </ul>
-                 </div>
-				 <div id="addEvidencePromptText" class="pagination-centered row">If this point is true, add evidence to support it!</div>
-			 </div>
-	        </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
+    <div id="supportingPointsArea" class="tabbedArea">
+        <div class="row">
+            <div class="span6">
+              {% with recentlyViewedPoints as recentlyViewedPoints  %}     
+                {% with supportingPoints as linkedPoints %}
+                {% with "supporting" as linkType %}
+                    {% include 'linkPointsList.html' %}
+                {% endwith %}
+                {% endwith %}  
+            </div>
+            <div class="span6">           
+                {% with counterPoints as linkedPoints %}
+                {% with "counter" as linkType %}
+                    {% include 'linkPointsList.html' %}
+                {% endwith %}
+                {% endwith %}  
+              {% endwith %}  
+            </div>
+      </div>  
+        
+    </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 
 			<div id="disqus_thread" class="row tabbedArea">
     			<script type="text/javascript">

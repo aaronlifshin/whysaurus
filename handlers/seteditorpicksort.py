@@ -17,5 +17,6 @@ class SetEditorPickSort(AuthHandler):
         template_values = {
             'message': "Edits made: %d" % countSaved
         }
-        path = os.path.join(os.path.dirname(__file__), 'templates/message.html')
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
         self.response.out.write(template.render(path, template_values))
+        

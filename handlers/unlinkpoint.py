@@ -9,7 +9,9 @@ class UnlinkPoint(AuthHandler):
             mainPoint, pointRoot = Point.getCurrentByUrl(self.request.get('mainPointURL'))
             if self.request.get('supportingPointURL'):
                 supportingPointURL = self.request.get('supportingPointURL')
-                newVersion = mainPoint.unlink(self.request.get('supportingPointURL'), self.current_user)
+                newVersion = mainPoint.unlink(self.request.get('supportingPointURL'), 
+                                              self.request.get('linkType'), 
+                                              self.current_user)
                 if newVersion:
                     resultJSON = json.dumps({'result': True, 'pointURL': supportingPointURL})
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

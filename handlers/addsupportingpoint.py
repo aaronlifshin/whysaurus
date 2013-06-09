@@ -10,7 +10,7 @@ class AddSupportingPoint(AuthHandler):
         user = self.current_user
 
         if user:
-            supportingPoint, supportingPointRoot = Point.create(
+            newLinkPoint, newLinkPointRoot = Point.create(
                 title=self.request.get('title'),
                 content=self.request.get('content'),
                 summaryText=self.request.get('plainText'),
@@ -20,8 +20,12 @@ class AddSupportingPoint(AuthHandler):
                 imageAuthor=self.request.get('imageAuthor'),
                 imageDescription=self.request.get('imageDescription'))
             try:
+                newLinks = [{'pointRoot':newLinkPointRoot,
+                            'pointCurrentVersion':newLinkPoint,
+                            'linkType':self.request.get('linkType')},
+                            ]
                 newPoint = oldPoint.update(
-                    newSupportingPoint=supportingPointRoot,
+                    pointsToLink=newLinks,                 
                     user=user
                 )
             except WhysaurusException as e:

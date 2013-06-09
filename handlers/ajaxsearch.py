@@ -6,7 +6,7 @@ from models.point import Point
 class AjaxSearch(AuthHandler):
     def post(self):
         resultJSON = json.dumps({'result': False})
-        searchResults = Point.search(self.request.get('searchTerms'), self.request.get('exclude'))
+        searchResults = Point.search(self.request.get('searchTerms'), self.request.get('exclude'), self.request.get('linkType') )
         if searchResults:
             resultJSON = json.dumps({
                 'result': True,

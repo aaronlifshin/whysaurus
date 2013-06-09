@@ -17,7 +17,6 @@ class PointHistory(AuthHandler):
             'pointData': pointData,
             'user': self.current_user
         }
-
         path = os.path.join(constants.ROOT, 'templates/pointHistory.html')
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
         self.response.out.write(json.dumps(template.render(path, template_values)))

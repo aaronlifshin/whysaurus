@@ -13,7 +13,7 @@ class SelectSupportingPoint(AuthHandler):
         if user:
             oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
             recentlyViewedPoints = user.getRecentlyViewed(
-                excludeList=[oldPoint.key.parent()] + oldPoint.supportingPoints
+                excludeList=[oldPoint.key.parent()] + oldPoint.supportingPointsRoots
             )
         else:
             recentlyViewedPoints = []

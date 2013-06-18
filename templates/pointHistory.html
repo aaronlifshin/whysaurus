@@ -8,14 +8,26 @@
 				<div class="pointSummaryText">{{ fullPoint.point.content|safe }}</div>
 				<table class="pointTable">
 				<thead>
-					<tr><th>Point Title</th><th>Point Text</th><th>Author</th></tr>
+					<tr><th>Supporting Point Title</th><th>Supporting Point Text</th><th>Author</th></tr>
 				</thead>
 				<tbody>
-				{% for point in fullPoint.supportingPointsLastVersions %}
+				{% for point in fullPoint.supportingPoints %}
 					<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
 				{% endfor %}
 				</tbody>
 				</table>
+   
+                <table class="pointTable">
+                <thead>
+                    <tr><th>Counter Point Title</th><th>Counter Point Text</th><th>Author</th></tr>
+                </thead>
+                <tbody>
+                {% for point in fullPoint.counterPoints %}
+                    <tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                
 				<div class="mainPointInfo">
 					<div class="mainPointVersion">{{fullPoint.point.version}}</div>
 					<div class="mainPointAuthor">{{ fullPoint.point.authorName }}</div>

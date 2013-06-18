@@ -73,7 +73,9 @@ function newPoint() {
     success: function(data) {
       obj = JSON.parse(data);
       if (obj.result === true) {
-        window.location.href = "/point/" + obj.pointURL;
+        var params = [];
+        params["rootKey"] = obj.rootKey;
+        post_to_url("/point/" +  obj.pointURL, params);
       } else {
         alert(obj.result);
         $("#spinnerImage").remove();        
@@ -140,7 +142,11 @@ function clearDefaultContent(ed) {
 }
 
 function setCharNumText(titleField) {
-    var numLeft = MAX_TITLE_CHARS - titleField.value.length;
+    var numLeft = MAX_TITLE_CHARS ;
+    if (titleField && titleField.value) {
+        numLeft = MAX_TITLE_CHARS - titleField.value.length;
+    }
+    
     if (numLeft < 0) {
         $("#" + titleField.id + "_charNum").text(numLeft*-1 + " characters over limit");
         $("#" + titleField.id + "_charNum").addClass("redScore");
@@ -297,10 +303,10 @@ $(document).ready(function() {
     $("#CreatePoint").attr('href', "#Create_newPointDialog");
     $("#CreatePoint").attr('data-toggle', "modal");
     $("#Create_newPointDialog").on('hidden', function() {
-      var edSummary = tinyMCE.get('editor_createNewPoint');
+      var edSummary = tinyMCE.get('editor_CreateNewPoint');
       edSummary.setContent('');
-      $('#title_CreateNewPointDialog').val('');
-      setCharNumText($('#title_createNewPoint')[0]);
+      $('#title_CreateNewPoint').val('');
+      setCharNumText($('#title_CreateNewPoint')[0]);
       $('#link_CreateNewPoint').val('');
       $('#author_CreateNewPoint').val('');
       $('#description_CreateNewPoint').val('');

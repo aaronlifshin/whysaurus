@@ -9,6 +9,7 @@ class LinkPoint(AuthHandler):
         supportingPoint, supportingPointRoot = Point.getCurrentByUrl(self.request.get('supportingPointURL'))
         oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
         user = self.current_user
+        linkType = self.request.get('linkType')
 
         if user:
             try:
@@ -23,7 +24,9 @@ class LinkPoint(AuthHandler):
             except WhysaurusException as e:
                 resultJSON = json.dumps({'result': False, 'error': str(e)})
             else:
-                resultJSON = json.dumps({'result': True})
+                resultJSON = json.dumps({'result': True,
+                                         'numLinkPoints': supportingPoint.linkCount(linkType),
+                                         'newLinkPoint':supportingPoint.shortJSON()})
         else:
             resultJSON = json.dumps({'result': 'ACCESS DENIED!'})
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

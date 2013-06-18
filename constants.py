@@ -15,12 +15,15 @@ if DEV:
     FACEBOOK_CHANNEL_URL = '//localhost:8081/channel.html'
     GOOGLE_APP_ID = '730565153520.apps.googleusercontent.com'
     GOOGLE_APP_SECRET = 'hf4EB8dYf0NwfSJ04BVjak51'
+    ADMIN_DATA_URL = 'http://localhost:8006/datastore/edit/'
 else:
     FACEBOOK_APP_ID = '144595249045851'
     FACEBOOK_APP_SECRET = '0e837314cd9c8a181a077ada99866780'
     FACEBOOK_CHANNEL_URL = 'http://www.whysaurus.com/channel.html'
     GOOGLE_APP_ID = '341009833131.apps.googleusercontent.com'
     GOOGLE_APP_SECRET = 'Xp9EaXzljKhNwL549DuVzBdY'
+    ADMIN_DATA_URL = 'https://appengine.google.com/datastore/edit?app_id=s~whysaurus&key='
+
 TWITTER_APP_ID = '4063892'
 TWITTER_APP_SECRET = 'VrFcSJpKa2vcPFOJUbQWeiL5oRPbq3Iiu3XFw2t1zoo'
 

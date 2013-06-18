@@ -19,7 +19,9 @@ __all__ = [
 	'PointHistory',
 	'AuthHandler',
 	'SetEditorPickSort',
-	'UpdateSupportingPointsSchema'
+	'UpdateSupportingPointsSchema',
+	'AaronTask',
+	'DBIntegrityCheck'
 ]
 
 from mainpage import MainPage
@@ -41,4 +43,7 @@ from pointhistory import PointHistory
 from authhandler import AuthHandler
 from seteditorpicksort import SetEditorPickSort
 from updateSupportingPointsSchema import UpdateSupportingPointsSchema
+from aaronTask import AaronTask
+from dbIntegrityCheck import DBIntegrityCheck
+
 

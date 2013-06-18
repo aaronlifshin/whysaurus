@@ -16,7 +16,9 @@ class NewPoint(AuthHandler):
                 imageAuthor=self.request.get('imageAuthor'),
                 imageDescription=self.request.get('imageDescription'))
         if newPoint:
-            resultJSON = json.dumps({'result': True, 'pointURL': newPoint.url})
+            resultJSON = json.dumps({'result': True, 
+                                     'pointURL': newPoint.url,
+                                     'rootKey': newPointRoot.key.urlsafe()})
         else:
             resultJSON = json.dumps({'result': False, 'error': 'Failed to create point.'})
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

@@ -9,7 +9,8 @@ from models.whysaurususer import WhysaurusUser
 from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
     SelectSupportingPoint, LinkPoint, Vote, TestPage, Search, AjaxSearch,\
-    PointHistory, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema
+    PointHistory, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
+    AaronTask, DBIntegrityCheck
     
 
 # Map URLs to handlers
@@ -34,6 +35,8 @@ routes = [
     Route('/pointHistory', PointHistory),
     Route('/job/setEditorPickSort', SetEditorPickSort),
     Route('/job/updateSupportingPointsSchema', UpdateSupportingPointsSchema),
+    Route('/job/AaronTask', AaronTask),
+    Route('/job/DBIntegrityCheck', DBIntegrityCheck),
     # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
     Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),  # , handler_method='logout', name='logout'),
     Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),

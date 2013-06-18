@@ -1,5 +1,3 @@
-var unlinkVisible = false;
-
 function showAlert(alertHTML) {
     $('.topSpace').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));   
 }
@@ -8,9 +6,13 @@ function searchDialogAlert(alertHTML) {
     $('#linkedPointSearchDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
 }
 
+function editDialogAlert(alertHTML, dialogID) {
+    $(dialogID + ' #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
+}
 
 
 function toggleUnlink(linkType) {
+    unlinkVisible = !$("[id^=unlink_" + linkType + "]").hasClass("ui-helper-hidden");
 	if ( unlinkVisible ) {
 		$("[id^=goTo_" + linkType + "]").removeClass("ui-helper-hidden");
 		$("[id^=goTo_" + linkType + "]").show();
@@ -99,9 +101,11 @@ function pointUnlink(supportingPointURL, linkType) {
           if (obj.result == true) {
             $('#'+linkType+'Point_' + obj.pointURL).remove();
             if ($("[id^=" + linkType +"Point_]").length == 0 ) {
-              $("#" + linkType + "_zeroPoints").show();
-              $("#" + linkType + "_nonzeroPoints").hide();
-              $("[name=" + linkType + "_linkPoint]").button();
+                $("#" + linkType + "_zeroPoints").show();
+                $("#" + linkType + "_nonzeroPoints").hide();
+                $("[name=" + linkType + "_linkPoint]").button();
+            } else {
+                setPointListHeader(linkType);            
             }
             toggleUnlink(linkType);			
           } else {
@@ -292,22 +296,85 @@ function selectPoint(supportingPointURL, currentPointURL, linkType){
 		success: function(data){
 		  obj = JSON.parse(data);
 		  if (obj.result == true) {
-			window.location.href="/point/" + currentPointURL;
+              pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
 		  } else {
-		  	if (obj.error) {
-		  	    showAlert('<strong>Oops!</strong> There was an error: ' + obj.error);
-		    } else {
-		        showAlert('<strong>Oops!</strong> There was an error: ');
-		    }
+            if (obj.error) {
+                showAlert('<strong>Oops!</strong> There was an error: ' + obj.error);
+            } else {
+                showAlert('<strong>Oops!</strong> There was an error: ');
+            }
 		  }
-		}
+          $("#linkedPointSearchDialog").modal('hide');		  
+		},
+		error: function(xhr, textStatus, error){
+            showAlert('The server returned an error. You may try again.');
+            $("#linkedPointSearchDialog").modal('hide');		              
+        }
 	});
 	$.ajax();
 }
 
+function setPointListHeader(linkType) {
+    numLinkPoints = $("[id^=" + linkType +"Point_]").length;
+    if (numLinkPoints == 0) {
+        header = "Zero " + linkType.capitalize() + " Points";        
+    } else {
+        header = numLinkPoints + " " +  linkType.capitalize() + (numLinkPoints == 1 ? " Point":" Points");             
+    }
+    $("#"+linkType+"_numberOfPoints").text( header );
+}
+
+function pointListAppend(linkType, point, numLinkPoints) {
+    if ($("[id^=" + linkType +"Point_]").length == 0 ) {
+      $("#" + linkType + "_zeroPoints").hide();
+      $("#" + linkType + "_nonzeroPoints").show();
+    }
+
+	var color = point.voteTotal >= thresholdGreen ? "green" : point.voteTotal <= thresholdRed ? "red" : "yellow";
+    // We need to create 4 divs
+    // The top-level pointSmall row-fluid
+    pointDiv = $('<div/>', { class:color + " pointSmall row-fluid", id:linkType+"Point_"+point.url});							
+	
+    // The vote total and title
+    titleDiv = jQuery('<div/>',{class:"span8 title"} );
+	titleDiv.html("<h5><span class=\"score\">" + point.voteTotal + 
+	              "</span> <a href=\"/point/" + point.url + "\"> " + point.title + "</a></H5>");
+	              
+    // The image div
+    imageDiv = jQuery('<div/>',{class:"span2"} );
+    if (point.imageURL && point.imageURL != "") {
+        imageDiv.html("<img class=\"smallDisplay\" src=\"" + point.summaryMediumImage + "\" />");
+    } else {
+        imageDiv.html("");
+    }                
+    
+    // The controls div
+    controlsDiv = jQuery('<div/>',{class:"span2 grayBackground"} );
+    controlsDiv.html("<a class=\"navWhy pull-right\" id=\"goTo_"+linkType+"_"+point.url +
+      "alt=\"Why" + point.title +  "\" href=\"/point/" + point.url +
+      "\"src=\"/static/img/arrow_why_A_grey.png\"></a><a class=\"unlinkbutton pull-right\" id=\"unlink_" +
+      linkType+"_"+point.url + "\"  href='javascript:;' onclick='javascript:pointUnlink(\""+ 
+      point.url + "\" , \"" + linkType + "\")' alt=\"Unlink " + 
+      linkType + " Point: " + point.title + "\" ></a>"                    
+        );
+    appendAfter = $("#" + linkType + "_pointList");            		
+    pointDiv.append(titleDiv);
+    pointDiv.append(imageDiv);
+    pointDiv.append(controlsDiv);
+    appendAfter.append(pointDiv);
+    setPointListHeader(linkType);
+    linkPointControlsInitialState();
+    makePointAreasClickable();
+    
+}
+
 
 function addPoint(linkType){
+    unlinkVisible = !$("[id^=unlink_" + linkType + "]").hasClass("ui-helper-hidden");
+    if (unlinkVisible) toggleUnlink(linkType);
+    
     var dialogName = "Create" + linkType.capitalize() + "Point"
+    var dialogID = "#Create_" + linkType + "PointDialog"
     if ($('#title_' + dialogName).val().length > MAX_TITLE_CHARS) {
         alert('Too many characters in the title');
         return;
@@ -333,27 +400,37 @@ function addPoint(linkType){
 		},
 		success: function(data){
 			obj = JSON.parse(data);
-			if (obj.result == true) {
-			    window.location.href="/point/" + pointURL;
+			if (obj.result == true) {			    
+                pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);              
+                stopSpinner(dialogName);             			    
+    		    $("#Create_" + linkType + "PointDialog").modal('hide');	
 			} else {
 				if (obj.error) {
-		    		showAlert(obj.error);
+		    		editDialogAlert(obj.error, dialogID);
 		    	} else {
-		    		showAlert("There was an error");
+		    		editDialogAlert("There was an error", dialogID);
 		    	}
-                $("#spinnerImage").remove();
-			    $("#submit_" + dialogName).on('click', function(e){addPoint($(this).data('linktype'));}); 
-			    $("#submit_" + dialogName).show();
-			}
+                stopSpinner(dialogName);
+			}			
 		},
 		error: function(xhr, textStatus, error){
-            showAlert('The server returned an error. You may try again.');
-            $("#spinnerImage").remove();
-            $("#submit_" + dialogName).on('click', function(e){addPoint($(this).data('linktype'));}); 
-            $("#submit_" + dialogName).show();                			    
+            editDialogAlert('The server returned an error. You may try again.', dialogID);
+            stopSpinner(dialogName);             			    
         } 			
 	});
 	$.ajax();
+}
+
+function linkPointControlsInitialState() {
+    $( ".whybutton" ).button();
+    $( ".unlinkbutton" ).button();
+    $( ".unlinkbutton" ).addClass("ui-helper-hidden");
+    $( ".ui-helper-hidden" ).hide();
+}
+function stopSpinner(dialogName) {
+    $("#spinnerImage").remove();
+    $("#submit_" + dialogName).on('click', function(e){addPoint($(this).data('linktype'));}); 
+    $("#submit_" + dialogName).show();
 }
 
 function displaySearchResults(data, linkType){
@@ -414,8 +491,37 @@ function setUpPopoutButtons() {
     }); 
 }
 
-$(document).ready(function() {
-    //$( "[name=linkSupportingPoint]" ).button();
+function setUpMenuAreas() {    
+    $("[name^=selectPoint_menu_]").on('click', function(e){
+        var theLink = $(this);
+        selectPoint(theLink.data('pointurl'), pointURL, theLink.data('linktype') );
+    });
+    
+    $( "[name=supporting_createPointLink]" ).attr('href',"#Create_supportingPointDialog");
+    $( "[name=supporting_createPointLink]" ).attr('data-toggle',"modal");   
+    $( "#submit_CreateSupportingPoint").on('click', function(e){
+            addPoint($(this).data('linktype'));
+        });
+        
+    $( "[name=counter_createPointLink]" ).attr('href',"#Create_counterPointDialog");
+    $( "[name=counter_createPointLink]" ).attr('data-toggle',"modal");   
+    $( "#submit_CreateCounterPoint").on('click', function(e){
+            addPoint($(this).data('linktype'));
+        });
+    
+    
+    $( "[name=supporting_searchForPoint]" ).on('click', function(e){
+        $("#selectLinkedPointSearch").data("linkType", "supporting");
+        $("#linkedPointSearchDialog").modal('show');
+    });
+    
+    $( "[name=counter_searchForPoint]" ).on('click', function(e){
+        $("#selectLinkedPointSearch").data("linkType", "counter");
+        $("#linkedPointSearchDialog").modal('show');
+    });
+}
+
+function makePointAreasClickable() {
     $('[id^="supportingPoint_"]').click(function() {
         if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
           window.location.href = $(".navWhy", $(this)).attr('href');
@@ -427,6 +533,9 @@ $(document).ready(function() {
           window.location.href = $(".navWhy", $(this)).attr('href');
         }
     });
+}
+
+$(document).ready(function() {
 
     if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
@@ -469,34 +578,9 @@ $(document).ready(function() {
         //$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
         $( "#downVote" ).click(function() {	downVote();	});
-	
-        $("[id^=selectPoint_menu_]").on('click', function(e){
-            var theLink = $(this);
-            selectPoint(theLink.data('pointurl'), pointURL, theLink.data('linktype') );
-        });
-        
-        $( "#supporting_createPointLink" ).attr('href',"#Create_supportingPointDialog");
-        $( "#supporting_createPointLink" ).attr('data-toggle',"modal");   
-        $("#submit_CreateSupportingPoint").on('click', function(e){
-                addPoint($(this).data('linktype'));
-            });
-            
-        $( "#counter_createPointLink" ).attr('href',"#Create_counterPointDialog");
-        $( "#counter_createPointLink" ).attr('data-toggle',"modal");   
-        $("#submit_CreateCounterPoint").on('click', function(e){
-                addPoint($(this).data('linktype'));
-            });
-        
-        
-        $( "#supporting_searchForPoint" ).on('click', function(e){
-            $("#selectLinkedPointSearch").data("linkType", "supporting");
-            $("#linkedPointSearchDialog").modal('show');
-        });
-        
-        $( "#counter_searchForPoint" ).on('click', function(e){
-            $("#selectLinkedPointSearch").data("linkType", "counter");
-            $("#linkedPointSearchDialog").modal('show');
-        });
+
+        makePointAreasClickable();
+        setUpMenuAreas();
          
         $('#linkedPointSearchDialog').on('hidden', function () {
             $("#selectLinkedPointSearch").data("linkType", "");         
@@ -519,15 +603,34 @@ $(document).ready(function() {
     			$.ajax();
     	    }
         });
-    }
         
-    $( ".whybutton" ).button();
-    $( ".unlinkbutton" ).button();
-    $( ".unlinkbutton" ).addClass("ui-helper-hidden");
-    $( ".ui-helper-hidden" ).hide();
+        $("#Create_supportingPointDialog").on('hidden', function() {
+          var edSummary = tinyMCE.get('editor_CreateSupportingPoint');
+          edSummary.setContent('');
+          $('#title_CreateSupportingPoint').val('');
+          setCharNumText($('#title_CreateSupportingPoint')[0]);
+          $('#link_CreateSupportingPoint').val('');
+          $('#author_CreateSupportingPoint').val('');
+          $('#description_CreateSupportingPoint').val('');
+        });
+        
+        $("#Create_counterPointDialog").on('hidden', function() {
+          var edSummary = tinyMCE.get('editor_CreateCounterPoint');
+          edSummary.setContent('');
+          $('#title_CreateCounterPoint').val('');
+          setCharNumText($('#title_CreateCounterPoint')[0]);
+          $('#link_CreateCounterPoint').val('');
+          $('#author_CreateCounterPoint').val('');
+          $('#description_CreateCounterPoint').val('');
+        });
+        
+    }        
+    
+    linkPointControlsInitialState();
+    
     $( "#deletePoint" ).button();
 
-    // Beginning state
+    // Beginning state for the TABBED AREAS
     $('.tabbedArea').hide(); $('#supportingPointsArea').show();
 
     $('#viewSupportingPoints').click(function() {

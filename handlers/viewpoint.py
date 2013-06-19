@@ -21,7 +21,9 @@ class ViewPoint(AuthHandler):
         addedToRecentlyViewed = False
         recentlyViewed = None
         if user:
-            recentlyViewed = user.getRecentlyViewed(excludeList=[point.key.parent()] + point.supportingPointsRoots)
+            recentlyViewed = user.getRecentlyViewed(excludeList=[point.key.parent()] + \
+                                                    point.supportingPointsRoots + \
+                                                    point.counterPointsRoots)
             addedToRecentlyViewed = user.updateRecentlyViewed(point.key.parent())
 
         # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list
@@ -42,13 +44,18 @@ class ViewPoint(AuthHandler):
             'thresholds': constants.SCORETHRESHOLDS
         }
         return template_values
-    
+    def outputTemplateValues(self, template_values):
+        path = os.path.join(constants.ROOT, 'templates/point.html')
+        self.response.headers["Pragma"]="no-cache"
+        self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
+        self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"
+        self.response.out.write(template.render(path, template_values)) 
+        
     def post(self, pointURL):
         rootKey = self.request.get('rootKey')
         point, pointRoot = Point.getCurrentByRootKey(rootKey)
-        template_values = self.createTemplateValues(point, pointRoot)
-        path = os.path.join(constants.ROOT, 'templates/point.html')
-        self.response.out.write(template.render(path, template_values))
+        template_values = self.createTemplateValues(point, pointRoot)        
+        self.outputTemplateValues(template_values)
         
     def get(self, pointURL):
         # check if dev environment for Disqus
@@ -65,7 +72,6 @@ class ViewPoint(AuthHandler):
 
         if point:
             template_values = self.createTemplateValues(point, pointRoot)
-            path = os.path.join(constants.ROOT, 'templates/point.html')
-            self.response.out.write(template.render(path, template_values))
+            self.outputTemplateValues(template_values)
         else:
             self.response.out.write('Could not find point: ' + pointURL)

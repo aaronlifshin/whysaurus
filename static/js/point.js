@@ -6,11 +6,6 @@ function searchDialogAlert(alertHTML) {
     $('#linkedPointSearchDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
 }
 
-function editDialogAlert(alertHTML, dialogID) {
-    $(dialogID + ' #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
-}
-
-
 function toggleUnlink(linkType) {
     unlinkVisible = !$("[id^=unlink_" + linkType + "]").hasClass("ui-helper-hidden");
 	if ( unlinkVisible ) {
@@ -32,16 +27,16 @@ function toggleUnlink(linkType) {
 	}
 }
 
-function callPointEdit(){
-    if ($('#title_EditThisPoint').val().length > MAX_TITLE_CHARS) {
+function callPointEdit(){    
+    if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
         alert('Too many characters in the title');
         return;
     }
-	var ed = tinyMCE.get('editor_EditThisPoint');
+	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;
-    $("#submit_EditThisPoint").off('click');
-    $("#submit_EditThisPoint").hide();
-    $("#submit_EditThisPoint").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+    $("#submit_pointDialog").off('click');
+    $("#submit_pointDialog").hide();
+    $("#submit_pointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 	$.ajaxSetup({
 	   url: "/editPoint",
 	   global: false,
@@ -50,16 +45,16 @@ function callPointEdit(){
 			'urlToEdit': pointURL,
 			'content': ed.getContent(),
 			'plainText':text.substring(0,250),
-			'title': $('#title_EditThisPoint').val(),
-			'imageURL':$('#link_EditThisPoint').val(),
-            'imageAuthor':$('#author_EditThisPoint').val(),
-            'imageDescription': $('#description_EditThisPoint').val()
+			'title': $('#title_pointDialog').val(),
+			'imageURL':$('#link_pointDialog').val(),
+            'imageAuthor':$('#author_pointDialog').val(),
+            'imageDescription': $('#description_pointDialog').val()
 			},
 			success: function(data){
-				var ed = tinyMCE.get('editor_EditThisPoint');
+				var ed = tinyMCE.get('editor_pointDialog');
 			    obj = JSON.parse(data);
 				$('.mainPointContent').html(ed.getContent());
-				$('.mainPointTitle h1').html($('#title_EditThisPoint').val());
+				$('.mainPointTitle h1').html($('#title_pointDialog').val());
 				$('.mainPointVersion').html(obj.version);
 				$('.mainPointAuthor').html(obj.author);
 				$('.mainPointDateEdited').html(obj.dateEdited);
@@ -69,17 +64,13 @@ function callPointEdit(){
 				$('.mainPointImageURL').html(obj.imageURL);
 				$('.mainPointImageAuthor').html(obj.imageAuthor);
 				$('.mainPointImageCaption').html(obj.imageDescription);
-				$("#spinnerImage").remove();
-				$("#submit_EditThisPoint").show();
-                $("#submit_EditThisPoint").on('click', function(e) { callPointEdit();});                        		
-				$("#Edit_thisPointDialog").modal('hide');
+            	stopSpinner();                    		
+				$("#pointDialog").modal('hide');
 				pointURL = obj.pointURL;
 			},
      		error: function(xhr, textStatus, error){
                 alert('The server returned an error. You may try again.');
-                $("#spinnerImage").remove();
-        		$("#submit_EditThisPoint").on('click', function(e) { callPointEdit();});
-                $("#submit_EditThisPoint").show();                			    
+            	stopSpinner();
             }
 	 });
 	$.ajax();
@@ -254,18 +245,18 @@ function make_this_show_login_dlg(button) {
 }
 
 function populateEditFields() {
-  var ed = tinyMCE.get('editor_EditThisPoint');
+  var ed = tinyMCE.get('editor_pointDialog');
 
-  $('#title_EditThisPoint').val($('#pointSummary div.mainPointTitle').text());
-  setCharNumText($('#title_EditThisPoint')[0]);
+  $('#title_pointDialog').val($('#pointSummary div.mainPointTitle').text());
+  setCharNumText($('#title_pointDialog')[0]);
   if (ed) {
 	  ed.setContent($('#pointSummary .mainPointContent').html() );
 	}
-  $('#author_EditThisPoint').val($('#mainPointImageArea .mainPointImageAuthor').text());
-  $('#description_EditThisPoint').val($('#mainPointImageArea .mainPointImageCaption').text());
+  $('#author_pointDialog').val($('#mainPointImageArea .mainPointImageAuthor').text());
+  $('#description_pointDialog').val($('#mainPointImageArea .mainPointImageCaption').text());
   var url = $('#pointSummary div.mainPointImageURL').text();
 
-  $('#link_EditThisPoint').val(url);
+  $('#link_pointDialog').val(url);
   if(url !== '') {
     if(url.match("https?://")) {
       $('#Edit_thisPointDialog .filepicker-placeholder').attr('src', url);
@@ -369,21 +360,21 @@ function pointListAppend(linkType, point, numLinkPoints) {
 }
 
 
-function addPoint(linkType){
+function addPoint(linkType){    
     unlinkVisible = !$("[id^=unlink_" + linkType + "]").hasClass("ui-helper-hidden");
     if (unlinkVisible) toggleUnlink(linkType);
     
     var dialogName = "Create" + linkType.capitalize() + "Point"
-    var dialogID = "#Create_" + linkType + "PointDialog"
-    if ($('#title_' + dialogName).val().length > MAX_TITLE_CHARS) {
+    var dialogID = "#pointDialog"
+    if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
         alert('Too many characters in the title');
         return;
     }
-	var ed = tinyMCE.get('editor_' + dialogName);
+	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;
-    $("#submit_" + dialogName).off('click');
-    $("#submit_" + dialogName).hide();
-    $("#submit_" + dialogName).after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+    $('#submit_pointDialog').off('click');
+    $('#submit_pointDialog').hide();
+    $('#submit_pointDialog').after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 	$.ajaxSetup({
 		url: "/addSupportingPoint",
 		global: false,
@@ -391,31 +382,31 @@ function addPoint(linkType){
 		data: {
 			'content': ed.getContent(),
             'plainText': text.substring(0,500),
-			'title': $('#title_' + dialogName).val(),
+			'title': $('#title_pointDialog').val(),
 			'linkType':linkType,
 			'pointUrl': pointURL,
-			'imageURL':$('#link_' + dialogName).val(),
-            'imageAuthor':$('#author_' + dialogName).val(),
-            'imageDescription': $('#description_' + dialogName).val()
+			'imageURL':$('#link_pointDialog').val(),
+            'imageAuthor':$('#author_pointDialog').val(),
+            'imageDescription': $('#description_pointDialog').val()
 		},
 		success: function(data){
 			obj = JSON.parse(data);
 			if (obj.result == true) {			    
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);              
-                stopSpinner(dialogName);             			    
-    		    $("#Create_" + linkType + "PointDialog").modal('hide');	
+                stopSpinner();             			    
+    		    $(dialogID).modal('hide');	
 			} else {
 				if (obj.error) {
-		    		editDialogAlert(obj.error, dialogID);
+		    		editDialogAlert(obj.error);
 		    	} else {
-		    		editDialogAlert("There was an error", dialogID);
+		    		editDialogAlert("There was an error");
 		    	}
-                stopSpinner(dialogName);
+                stopSpinner();
 			}			
 		},
 		error: function(xhr, textStatus, error){
-            editDialogAlert('The server returned an error. You may try again.', dialogID);
-            stopSpinner(dialogName);             			    
+            editDialogAlert('The server returned an error. You may try again.');
+            stopSpinner();             			    
         } 			
 	});
 	$.ajax();
@@ -427,11 +418,7 @@ function linkPointControlsInitialState() {
     $( ".unlinkbutton" ).addClass("ui-helper-hidden");
     $( ".ui-helper-hidden" ).hide();
 }
-function stopSpinner(dialogName) {
-    $("#spinnerImage").remove();
-    $("#submit_" + dialogName).on('click', function(e){addPoint($(this).data('linktype'));}); 
-    $("#submit_" + dialogName).show();
-}
+
 
 function displaySearchResults(data, linkType){
 	$("[id^=searchPoint]",$(".searchColumn")).remove();
@@ -491,34 +478,29 @@ function setUpPopoutButtons() {
     }); 
 }
 
-function setUpMenuAreas() {    
+function setUpMenuAreas() { 
+    // Dropdown add of the recently viewed points  
     $("[name^=selectPoint_menu_]").on('click', function(e){
         var theLink = $(this);
-        selectPoint(theLink.data('pointurl'), pointURL, theLink.data('linktype') );
+        var linkPointURL = theLink.data('pointurl');
+        selectPoint(linkPointURL, pointURL, theLink.data('linktype'));        
+        $("[name^=selectPoint_menu_]").filter("*[data-pointurl=\""+ linkPointURL + "\"]").remove();
+    });        
+       
+    // Edit the current point
+    $( "#editPoint" ).on('click', function() {
+        populateEditFields();
+        $("#submit_pointDialog").data("dialogaction", "edit")
+        $("#pointDialog").modal('show');
     });
     
-    $( "[name=supporting_createPointLink]" ).attr('href',"#Create_supportingPointDialog");
-    $( "[name=supporting_createPointLink]" ).attr('data-toggle',"modal");   
-    $( "#submit_CreateSupportingPoint").on('click', function(e){
-            addPoint($(this).data('linktype'));
-        });
-        
-    $( "[name=counter_createPointLink]" ).attr('href',"#Create_counterPointDialog");
-    $( "[name=counter_createPointLink]" ).attr('data-toggle',"modal");   
-    $( "#submit_CreateCounterPoint").on('click', function(e){
-            addPoint($(this).data('linktype'));
-        });
-    
-    
-    $( "[name=supporting_searchForPoint]" ).on('click', function(e){
-        $("#selectLinkedPointSearch").data("linkType", "supporting");
-        $("#linkedPointSearchDialog").modal('show');
-    });
-    
-    $( "[name=counter_searchForPoint]" ).on('click', function(e){
-        $("#selectLinkedPointSearch").data("linkType", "counter");
-        $("#linkedPointSearchDialog").modal('show');
-    });
+    // Create a new linked point
+    $( "[name=createLinked]" ).on('click', function() {
+        var linkType = $(this).data('linktype');
+        $("#submit_pointDialog").data("dialogaction", "createLinked");
+        $("#submit_pointDialog").data("linktype", linkType);
+        $("#pointDialog").modal('show');        
+    });        
 }
 
 function makePointAreasClickable() {
@@ -563,17 +545,6 @@ $(document).ready(function() {
             toggleUnlink("counter");
             });
 
-        $( "#editPoint" ).attr('href',"#Edit_thisPointDialog");
-        $( "#editPoint" ).attr('data-toggle',"modal");
-        $( "#editPoint" ).on('click', function() {
-          populateEditFields();
-          $('#frm_EditThisPoint .filepicker').bindFilepicker();
-        });
-        
-        $('#createSupportingPoint .filepicker').bindFilepicker();
-        
-        $("#submit_EditThisPoint").on('click', function(e) { callPointEdit();});
-
         $( "#upVote" ).click(function() {upVote();});
         //$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
@@ -602,27 +573,7 @@ $(document).ready(function() {
     			});
     			$.ajax();
     	    }
-        });
-        
-        $("#Create_supportingPointDialog").on('hidden', function() {
-          var edSummary = tinyMCE.get('editor_CreateSupportingPoint');
-          edSummary.setContent('');
-          $('#title_CreateSupportingPoint').val('');
-          setCharNumText($('#title_CreateSupportingPoint')[0]);
-          $('#link_CreateSupportingPoint').val('');
-          $('#author_CreateSupportingPoint').val('');
-          $('#description_CreateSupportingPoint').val('');
-        });
-        
-        $("#Create_counterPointDialog").on('hidden', function() {
-          var edSummary = tinyMCE.get('editor_CreateCounterPoint');
-          edSummary.setContent('');
-          $('#title_CreateCounterPoint').val('');
-          setCharNumText($('#title_CreateCounterPoint')[0]);
-          $('#link_CreateCounterPoint').val('');
-          $('#author_CreateCounterPoint').val('');
-          $('#description_CreateCounterPoint').val('');
-        });
+        });        
         
     }        
     

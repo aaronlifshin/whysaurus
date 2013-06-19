@@ -63,11 +63,7 @@
 	</div>
 
     {% if user %}
-      {% with "Create" as actionType %}       
-      {% with "new" as linkType %}
         {% include 'pointDialog.html' %}
-      {% endwith %}
-      {% endwith %}
     {% else %}
 
         <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">

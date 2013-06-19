@@ -1,46 +1,53 @@
-<div class="modal hide fade pointDialog" data-keyboard="false" id="{{actionType}}_{{linkType}}PointDialog"
-    title="{{actionType}} {{linkType|title}} Point" role="dialog" aria-hidden="true">
+<div class="modal hide fade pointDialog" data-keyboard="false" id="pointDialog"
+    role="dialog" aria-hidden="true">
   <div class="modal-header">
     <h3>
-      {{actionType}} {{linkType|title}} Point
+      Default Dialog Title
     </h3>
   </div>
   <div class="row-fluid" id="alertArea"></div>
-  <form id='frm_{{actionType}}{{linkType|title}}Point' class="form-horizontal">
+  <form id='frm_pointDialog' class="form-horizontal">
     <div class="modal-body">
-      <label><div class="pull-left ">Text</div><div id="title_{{actionType}}{{linkType|title}}Point_charNum" class="pull-right clearfix">140 characters left</div></label>
+      <label>
+        <div class="pull-left ">Text</div>
+        <div id="title_pointDialog_charNum" class="pull-right clearfix">
+            140 characters left
+        </div>
+      </label>
       <div class="dlgField">
-        <input id="title_{{actionType}}{{linkType|title}}Point" type="text" class="titleEdit" placeholder="Add the title here...">
+        <input id="title_pointDialog" type="text" 
+        class="titleEdit" placeholder="Add the title here...">
       </div>
       <div class="dlgField">
-        <textarea id="editor_{{actionType}}{{linkType|title}}Point" class="mceEditor textEdit" name="editor_{{actionType}}{{linkType|title}}Point" 
-        placeholder="Add the description here..."></textarea>
+        <textarea id="editor_pointDialog" 
+            class="mceEditor textEdit"           
+            placeholder="Add the description here...">
+        </textarea>
       </div>
     </div>
     <div class="modal-footer">
       <label class="control-group textline">Image</label>
       <div class="control-group">
-        <label class="control-label" for="link_{{actionType}}{{linkType|title}}Point">link</label>
+        <label class="control-label" for="link_pointDialog">link</label>
         <div class="controls">
-          <input id="link_{{actionType}}{{linkType|title}}Point" type="hidden" name="imageURL">
+          <input id="link_pointDialog" type="hidden" name="imageURL">
           <button class="btn btn-large btn-primary filepicker">Choose Image</button>
           <img class="filepicker-placeholder" src="/static/img/placeholder_50x50.gif">
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label" for="author_{{actionType}}{{linkType|title}}Point">author</label>
+        <label class="control-label" for="author_pointDialog">author</label>
         <div class="controls">
-          <input id="author_{{actionType}}{{linkType|title}}Point" type="text" class=" fieldEdit" name="imageAuthor" placeholder="Give credit to the creator of the image">
+          <input id="author_pointDialog" type="text" class=" fieldEdit" name="imageAuthor" placeholder="Give credit to the creator of the image">
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label" for="description_{{actionType}}{{linkType|title}}Point">description</label>
+        <label class="control-label" for="description_pointDialog">description</label>
         <div class="controls">
-          <input id="description_{{actionType}}{{linkType|title}}Point" type="text" class=" fieldEdit" 
+          <input id="description_pointDialog" type="text" class=" fieldEdit" 
           name="imageDescription" placeholder="Add a descriptive caption to appear below the image">
         </div>
-      </div><a href="#" id="submit_{{actionType}}{{linkType|title}}Point" 
-                data-linktype="{{linkType}}"
+      </div><a href="#" id="submit_pointDialog" 
                 class="btn btn-primary">Save changes</a>            
             <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
     </div>

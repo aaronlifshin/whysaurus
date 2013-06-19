@@ -48,15 +48,15 @@ function positionEditDialog() {
 }
 
 function newPoint() {
-  if ($('#title_CreateNewPoint').val().length > MAX_TITLE_CHARS) {
+  if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
       alert('Too many characters in the title');
       return;
   }  
-  var ed = tinyMCE.get('editor_CreateNewPoint');
+  var ed = tinyMCE.get('editor_pointDialog');
   var text = tinyMCE.activeEditor.getBody().textContent;
-  $("#submit_CreateNewPoint").off('click');
-  $("#submit_CreateNewPoint").hide();
-  $("#submit_CreateNewPoint").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+  $("#submit_pointDialog").off('click');
+  $("#submit_pointDialog").hide();
+  $("#submit_pointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 
   $.ajaxSetup({
     url: "/newPoint",
@@ -65,10 +65,10 @@ function newPoint() {
     data: {
       'content': ed.getContent(),
       'plainText': text.substring(0, 250),
-      'title': $('#title_CreateNewPoint').val(),
-      'imageURL': $('#link_CreateNewPoint').val(),
-      'imageAuthor': $('#author_CreateNewPoint').val(),
-      'imageDescription': $('#description_CreateNewPoint').val()
+      'title': $('#title_pointDialog').val(),
+      'imageURL': $('#link_pointDialog').val(),
+      'imageAuthor': $('#author_pointDialog').val(),
+      'imageDescription': $('#description_pointDialog').val()
     },
     success: function(data) {
       obj = JSON.parse(data);
@@ -77,17 +77,13 @@ function newPoint() {
         params["rootKey"] = obj.rootKey;
         post_to_url("/point/" +  obj.pointURL, params);
       } else {
-        alert(obj.result);
-        $("#spinnerImage").remove();        
-        $("#submit_CreateNewPoint").on('click', function(e) {newPoint();});
-        $("#submit_CreateNewPoint").show();	            
+        editDialogAlert(obj.result);
+    	stopSpinner();	            
       }
     },
     error: function(xhr, textStatus, error){
-        alert('The server returned an error. You may try again.');
-        $("#spinnerImage").remove();
-        $("#submit_CreateNewPoint").on('click', function(e) {newPoint();});
-        $("#submit_CreateNewPoint").show();                			    
+        editDialogAlert('The server returned an error. You may try again.');
+    	stopSpinner();               			    
     }
   });
   $.ajax();
@@ -156,6 +152,28 @@ function setCharNumText(titleField) {
     }
 }
 
+function editDialogAlert(alertHTML) {
+    $('#pointDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
+}
+
+function stopSpinner() {
+    $("#spinnerImage").remove();
+    $('#submit_pointDialog').on('click', function(e){submitPointDialog(this);}); 
+    $('#submit_pointDialog').show();
+}
+
+function submitPointDialog(clickedElement) {
+    var dialogAction = $(clickedElement).data('dialogaction');
+    if (dialogAction == "new") {
+        newPoint();            
+    } else if (dialogAction == "edit") {
+        callPointEdit();
+    } else if (dialogAction == "createLinked") {
+        var linkType = $(clickedElement).data('linktype');
+        addPoint(linkType);            
+    } 
+}
+
 var FILEPICKER_SERVICES = ['COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
 
@@ -188,9 +206,8 @@ $(document).ready(function() {
     });
   };
 
-  $('#frm_CreateNewPoint .filepicker').bindFilepicker();
-  $('#Create_supportingPointDialog .filepicker').bindFilepicker();
-  $('#Create_counterPointDialog .filepicker').bindFilepicker();
+  $('#pointDialog .filepicker').bindFilepicker();        
+
 
   tinyMCE.init({
     // General options
@@ -300,20 +317,27 @@ $(document).ready(function() {
     $("#CreatePoint").attr('href', "#loginDialog");
     $("#CreatePoint").attr('data-toggle', "modal");
   } else {
-    $("#CreatePoint").attr('href', "#Create_newPointDialog");
-    $("#CreatePoint").attr('data-toggle', "modal");
-    $("#Create_newPointDialog").on('hidden', function() {
-      var edSummary = tinyMCE.get('editor_CreateNewPoint');
-      edSummary.setContent('');
-      $('#title_CreateNewPoint').val('');
-      setCharNumText($('#title_CreateNewPoint')[0]);
-      $('#link_CreateNewPoint').val('');
-      $('#author_CreateNewPoint').val('');
-      $('#description_CreateNewPoint').val('');
+            
+    $( "#CreatePoint" ).on('click', function() {
+        $("#submit_pointDialog").data("dialogaction", "new")
+        $("#pointDialog").modal('show');
     });
-    $("#submit_CreateNewPoint").on('click', function(e) {newPoint();});
+    
+    $("#pointDialog").on('hidden', function() {
+      var edSummary = tinyMCE.get('editor_pointDialog');
+      edSummary.setContent('');
+      $('#title_pointDialog').val('');
+      setCharNumText($('#title_pointDialog')[0]);
+      $('#link_pointDialog').val('');
+      $('#author_pointDialog').val('');
+      $('#description_pointDialog').val('');
+    });
+    
+    $("#submit_pointDialog").on('click', function(e) {
+        submitPointDialog(this);
+    });
   
-    $("[id^='title_']").on('keyup', function(e) {setCharNumText(e.target);});
+    $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
  
   
   }

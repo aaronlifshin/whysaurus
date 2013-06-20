@@ -51,7 +51,7 @@ function newPoint() {
   if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
       alert('Too many characters in the title');
       return;
-  }  
+  }
   var ed = tinyMCE.get('editor_pointDialog');
   var text = tinyMCE.activeEditor.getBody().textContent;
   $("#submit_pointDialog").off('click');
@@ -78,12 +78,12 @@ function newPoint() {
         post_to_url("/point/" +  obj.pointURL, params);
       } else {
         editDialogAlert(obj.result);
-    	stopSpinner();	            
+    	stopSpinner();
       }
     },
     error: function(xhr, textStatus, error){
         editDialogAlert('The server returned an error. You may try again.');
-    	stopSpinner();               			    
+    	stopSpinner();
     }
   });
   $.ajax();
@@ -142,42 +142,42 @@ function setCharNumText(titleField) {
     if (titleField && titleField.value) {
         numLeft = MAX_TITLE_CHARS - titleField.value.length;
     }
-    
+
     if (numLeft < 0) {
         $("#" + titleField.id + "_charNum").text(numLeft*-1 + " characters over limit");
         $("#" + titleField.id + "_charNum").addClass("redScore");
     } else {
-        $("#" + titleField.id + "_charNum").text(numLeft + " characters left");  
-        $("#" + titleField.id + "_charNum").removeClass("redScore");            
+        $("#" + titleField.id + "_charNum").text(numLeft + " characters left");
+        $("#" + titleField.id + "_charNum").removeClass("redScore");
     }
 }
 
 function editDialogAlert(alertHTML) {
-    $('#pointDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
+    $('#pointDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }
 
 function stopSpinner() {
     $("#spinnerImage").remove();
-    $('#submit_pointDialog').on('click', function(e){submitPointDialog(this);}); 
+    $('#submit_pointDialog').on('click', function(e){submitPointDialog(this);});
     $('#submit_pointDialog').show();
 }
 
 function submitPointDialog(clickedElement) {
     var dialogAction = $(clickedElement).data('dialogaction');
     if (dialogAction == "new") {
-        newPoint();            
+        newPoint();
     } else if (dialogAction == "edit") {
         callPointEdit();
     } else if (dialogAction == "createLinked") {
         var linkType = $(clickedElement).data('linktype');
-        addPoint(linkType);            
-    } 
+        addPoint(linkType);
+    }
 }
 
 var FILEPICKER_SERVICES = ['COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
 
-    
+
   filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
   $.fn.bindFilepicker = function(){
     if (this.bindFilepickerBound) return;
@@ -206,7 +206,7 @@ $(document).ready(function() {
     });
   };
 
-  $('#pointDialog .filepicker').bindFilepicker();        
+  $('#pointDialog .filepicker').bindFilepicker();
 
 
   tinyMCE.init({
@@ -317,12 +317,13 @@ $(document).ready(function() {
     $("#CreatePoint").attr('href', "#loginDialog");
     $("#CreatePoint").attr('data-toggle', "modal");
   } else {
-            
+
     $( "#CreatePoint" ).on('click', function() {
-        $("#submit_pointDialog").data("dialogaction", "new")
+        $("#submit_pointDialog").data("dialogaction", "new");
+        $('div.modal-header h3').text("New Point");
         $("#pointDialog").modal('show');
     });
-    
+
     $("#pointDialog").on('hidden', function() {
       var edSummary = tinyMCE.get('editor_pointDialog');
       edSummary.setContent('');
@@ -331,19 +332,20 @@ $(document).ready(function() {
       $('#link_pointDialog').val('');
       $('#author_pointDialog').val('');
       $('#description_pointDialog').val('');
+      $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
     });
-    
+
     $("#submit_pointDialog").on('click', function(e) {
         submitPointDialog(this);
     });
-  
+
     $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
- 
-  
+
+
   }
-  
-  
-  
+
+
+
   //Add Hover effect to menus.  Well, it doesn't work very well...
   // But on the off chance we decide to put it back later. . .
  /*  jQuery('div.userControls a.dropdown-toggle').hover(function() {

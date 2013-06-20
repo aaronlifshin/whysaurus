@@ -4,11 +4,11 @@
   <script type="text/javascript" src="/static/js/point.js"></script>
 
   {% if user %}
-   
+
     {% with point.title as pointTitle %}
         {% include 'selectSupportingPointsSearch.html' %}
     {% endwith %}
-    
+
   {% endif %}
 
   <div class="row topSpace"></div>
@@ -51,11 +51,14 @@
         <div id="mainPointImageArea" class="span3">
             {% if point.imageURL and point.imageURL.strip %}
               <img class="pointDisplay" src="{{ point.fullPointImage }}" />
-			  <div class="mainPointImageCaption">{{point.imageDescription}}</div>
-              <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>        
-			  <button class="mainPointButton" id="changeImage">change image</button>
+              <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+              <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+              <button class="mainPointButton" id="changeImage">change image</button>
             {% else %}
-			  <button class="mainPointButton" id="addImage">add an image</button>
+              <img class="pointDisplay" src="/static/img/placeholder.gif" />
+              <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+              <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+              <button class="mainPointButton" id="addImage">add an image</button>
             {% endif %}
         </div>
 	    <div class="row">
@@ -86,23 +89,23 @@
     <div id="supportingPointsArea" class="tabbedArea">
         <div class="row">
             <div class="span6">
-              {% with recentlyViewedPoints as recentlyViewedPoints  %}     
+              {% with recentlyViewedPoints as recentlyViewedPoints  %}
                 {% with supportingPoints as linkedPoints %}
                 {% with "supporting" as linkType %}
                     {% include 'linkPointsList.html' %}
                 {% endwith %}
-                {% endwith %}  
+                {% endwith %}
             </div>
-            <div class="span6">           
+            <div class="span6">
                 {% with counterPoints as linkedPoints %}
                 {% with "counter" as linkType %}
                     {% include 'linkPointsList.html' %}
                 {% endwith %}
-                {% endwith %}  
-              {% endwith %}  
+                {% endwith %}
+              {% endwith %}
             </div>
-      </div>  
-        
+      </div>
+
     </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 
     <div id="disqus_thread" class="row tabbedArea">
@@ -112,7 +115,7 @@
     			var disqus_developer = {{devInt}};
     			var disqus_identifier = '{{point.url}}';
     			var disqus_title = '{{point.title}}';
-    
+
     		    /* * * DON'T EDIT BELOW THIS LINE * * */
     		    (function() {
     		        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -120,15 +123,15 @@
     		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     		    })();
     		</script>
-    
+
     		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     		<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-    
+
     </div>
-    
+
     <div id="historyArea" class="row tabbedArea">
     </div>
-  
+
 
       <script>
       var myVote = '{{voteValue}}';

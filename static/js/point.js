@@ -1,9 +1,9 @@
 function showAlert(alertHTML) {
-    $('.topSpace').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));   
+    $('.topSpace').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }
 
 function searchDialogAlert(alertHTML) {
-    $('#linkedPointSearchDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));       
+    $('#linkedPointSearchDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }
 
 function toggleUnlink(linkType) {
@@ -27,7 +27,7 @@ function toggleUnlink(linkType) {
 	}
 }
 
-function callPointEdit(){    
+function callPointEdit(){
     if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
         alert('Too many characters in the title');
         return;
@@ -64,7 +64,7 @@ function callPointEdit(){
 				$('.mainPointImageURL').html(obj.imageURL);
 				$('.mainPointImageAuthor').html(obj.imageAuthor);
 				$('.mainPointImageCaption').html(obj.imageDescription);
-            	stopSpinner();                    		
+            	stopSpinner();
 				$("#pointDialog").modal('hide');
 				pointURL = obj.pointURL;
 			},
@@ -96,9 +96,9 @@ function pointUnlink(supportingPointURL, linkType) {
                 $("#" + linkType + "_nonzeroPoints").hide();
                 $("[name=" + linkType + "_linkPoint]").button();
             } else {
-                setPointListHeader(linkType);            
+                setPointListHeader(linkType);
             }
-            toggleUnlink(linkType);			
+            toggleUnlink(linkType);
           } else {
             alert(obj.result);
           }
@@ -106,7 +106,7 @@ function pointUnlink(supportingPointURL, linkType) {
     });
 	$.ajax();
 }
-		
+
 function upVoteToggle(turnOn) {
     if (turnOn) {
         $( "#upVote").removeClass("inactiveVote");
@@ -116,7 +116,7 @@ function upVoteToggle(turnOn) {
         $( "#upVote").addClass("inactiveVote");
     }
 }
-	      
+
 function downVoteToggle(turnOn) {
     if (turnOn) {
         $( "#downVote").removeClass("inactiveVote");
@@ -247,11 +247,13 @@ function make_this_show_login_dlg(button) {
 function populateEditFields() {
   var ed = tinyMCE.get('editor_pointDialog');
 
+  $('div.modal-header h3').text("Edit Point");
+
   $('#title_pointDialog').val($('#pointSummary div.mainPointTitle').text());
   setCharNumText($('#title_pointDialog')[0]);
   if (ed) {
-	  ed.setContent($('#pointSummary .mainPointContent').html() );
-	}
+    ed.setContent($('#pointSummary .mainPointContent').html() );
+  }
   $('#author_pointDialog').val($('#mainPointImageArea .mainPointImageAuthor').text());
   $('#description_pointDialog').val($('#mainPointImageArea .mainPointImageCaption').text());
   var url = $('#pointSummary div.mainPointImageURL').text();
@@ -295,11 +297,11 @@ function selectPoint(supportingPointURL, currentPointURL, linkType){
                 showAlert('<strong>Oops!</strong> There was an error: ');
             }
 		  }
-          $("#linkedPointSearchDialog").modal('hide');		  
+          $("#linkedPointSearchDialog").modal('hide');
 		},
 		error: function(xhr, textStatus, error){
             showAlert('The server returned an error. You may try again.');
-            $("#linkedPointSearchDialog").modal('hide');		              
+            $("#linkedPointSearchDialog").modal('hide');
         }
 	});
 	$.ajax();
@@ -308,9 +310,9 @@ function selectPoint(supportingPointURL, currentPointURL, linkType){
 function setPointListHeader(linkType) {
     numLinkPoints = $("[id^=" + linkType +"Point_]").length;
     if (numLinkPoints == 0) {
-        header = "Zero " + linkType.capitalize() + " Points";        
+        header = "Zero " + linkType.capitalize() + " Points";
     } else {
-        header = numLinkPoints + " " +  linkType.capitalize() + (numLinkPoints == 1 ? " Point":" Points");             
+        header = numLinkPoints + " " +  linkType.capitalize() + (numLinkPoints == 1 ? " Point":" Points");
     }
     $("#"+linkType+"_numberOfPoints").text( header );
 }
@@ -324,31 +326,31 @@ function pointListAppend(linkType, point, numLinkPoints) {
 	var color = point.voteTotal >= thresholdGreen ? "green" : point.voteTotal <= thresholdRed ? "red" : "yellow";
     // We need to create 4 divs
     // The top-level pointSmall row-fluid
-    pointDiv = $('<div/>', { class:color + " pointSmall row-fluid", id:linkType+"Point_"+point.url});							
-	
+    pointDiv = $('<div/>', { class:color + " pointSmall row-fluid", id:linkType+"Point_"+point.url});
+
     // The vote total and title
     titleDiv = jQuery('<div/>',{class:"span8 title"} );
-	titleDiv.html("<h5><span class=\"score\">" + point.voteTotal + 
+	titleDiv.html("<h5><span class=\"score\">" + point.voteTotal +
 	              "</span> <a href=\"/point/" + point.url + "\"> " + point.title + "</a></H5>");
-	              
+
     // The image div
     imageDiv = jQuery('<div/>',{class:"span2"} );
     if (point.imageURL && point.imageURL != "") {
         imageDiv.html("<img class=\"smallDisplay\" src=\"" + point.summaryMediumImage + "\" />");
     } else {
         imageDiv.html("");
-    }                
-    
+    }
+
     // The controls div
     controlsDiv = jQuery('<div/>',{class:"span2 grayBackground"} );
     controlsDiv.html("<a class=\"navWhy pull-right\" id=\"goTo_"+linkType+"_"+point.url +
       "alt=\"Why" + point.title +  "\" href=\"/point/" + point.url +
       "\"src=\"/static/img/arrow_why_A_grey.png\"></a><a class=\"unlinkbutton pull-right\" id=\"unlink_" +
-      linkType+"_"+point.url + "\"  href='javascript:;' onclick='javascript:pointUnlink(\""+ 
-      point.url + "\" , \"" + linkType + "\")' alt=\"Unlink " + 
-      linkType + " Point: " + point.title + "\" ></a>"                    
+      linkType+"_"+point.url + "\"  href='javascript:;' onclick='javascript:pointUnlink(\""+
+      point.url + "\" , \"" + linkType + "\")' alt=\"Unlink " +
+      linkType + " Point: " + point.title + "\" ></a>"
         );
-    appendAfter = $("#" + linkType + "_pointList");            		
+    appendAfter = $("#" + linkType + "_pointList");
     pointDiv.append(titleDiv);
     pointDiv.append(imageDiv);
     pointDiv.append(controlsDiv);
@@ -356,15 +358,14 @@ function pointListAppend(linkType, point, numLinkPoints) {
     setPointListHeader(linkType);
     linkPointControlsInitialState();
     makePointAreasClickable();
-    
+
 }
 
 
-function addPoint(linkType){    
+function addPoint(linkType){
     unlinkVisible = !$("[id^=unlink_" + linkType + "]").hasClass("ui-helper-hidden");
     if (unlinkVisible) toggleUnlink(linkType);
-    
-    var dialogName = "Create" + linkType.capitalize() + "Point"
+
     var dialogID = "#pointDialog"
     if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
         alert('Too many characters in the title');
@@ -391,10 +392,10 @@ function addPoint(linkType){
 		},
 		success: function(data){
 			obj = JSON.parse(data);
-			if (obj.result == true) {			    
-                pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);              
-                stopSpinner();             			    
-    		    $(dialogID).modal('hide');	
+			if (obj.result == true) {
+                pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
+                stopSpinner();
+    		    $(dialogID).modal('hide');
 			} else {
 				if (obj.error) {
 		    		editDialogAlert(obj.error);
@@ -402,12 +403,12 @@ function addPoint(linkType){
 		    		editDialogAlert("There was an error");
 		    	}
                 stopSpinner();
-			}			
+			}
 		},
 		error: function(xhr, textStatus, error){
             editDialogAlert('The server returned an error. You may try again.');
-            stopSpinner();             			    
-        } 			
+            stopSpinner();
+        }
 	});
 	$.ajax();
 }
@@ -425,36 +426,36 @@ function displaySearchResults(data, linkType){
 	obj = JSON.parse(data);
 	if (obj.result == true) {
 		appendAfter = $(".searchColumn");
-		for(var i=0; i < obj.searchResults.length; i++){						    
+		for(var i=0; i < obj.searchResults.length; i++){
 			var oneResult = obj.searchResults[i];
 			// we need to create 4 divs
 			// 1. a row-fluid
-			mainRowDiv = $('<div/>', { class:"row-fluid", id:"searchPoint_"+oneResult['url']});							
+			mainRowDiv = $('<div/>', { class:"row-fluid", id:"searchPoint_"+oneResult['url']});
 			// 2. the popout
 			popOutDiv = $('<div/>', {class:"span1 noRightChannel"});
 			popOutDiv.html("<a id=\"popoutPoint_" + oneResult['url'] +
 			                "\" data-pointurl=\""+ oneResult['url']  +
-			                "\" data-pointtitle=\"" + oneResult['title'] + "\" ></a>");                            
+			                "\" data-pointtitle=\"" + oneResult['title'] + "\" ></a>");
 			// 3. the select supporting point div
-			if (oneResult['voteTotal'] >= thresholdGreen ) {spanClass = 'green'; } 
-			else if  (oneResult['voteTotal'] <= thresholdRed) { spanClass = 'red'; } 
+			if (oneResult['voteTotal'] >= thresholdGreen ) {spanClass = 'green'; }
+			else if  (oneResult['voteTotal'] <= thresholdRed) { spanClass = 'red'; }
 			else {  spanClass = 'yellow'; }
 			selectDiv = jQuery('<div/>', {
 				class: "pointSmall span11 " + spanClass,
 				id: "selectPoint_div_search_" +  oneResult['url'],
-				alt: "Use " + oneResult['url']								
+				alt: "Use " + oneResult['url']
 				});
 			selectDiv.data('pointurl', oneResult['url']);
-			selectDiv.data('linkType', linkType);			
+			selectDiv.data('linkType', linkType);
 			// 4. and, inside it, the score and title div and the arrow div
 			titleDiv = jQuery('<div/>',{class:"span10 title"} );
-			titleDiv.html("<h5><span class=\"score\">" + oneResult['voteTotal'] + 
+			titleDiv.html("<h5><span class=\"score\">" + oneResult['voteTotal'] +
 			              "</span> <a href=\"#\" > " + oneResult['title'] + "</a></H5>");
 			buttonDiv= jQuery('<div/>',{class:"span2"} );
-            buttonDiv.html("<a class=\"pull-right\" href=\"#\"id=\"selectPoint_arrow_" + 
+            buttonDiv.html("<a class=\"pull-right\" href=\"#\"id=\"selectPoint_arrow_" +
                             oneResult['url'] + "\"alt=\"Use " + oneResult['title'] + "\" ></a>");
             selectDiv.append(titleDiv);selectDiv.append(buttonDiv);
-            mainRowDiv.append(popOutDiv);mainRowDiv.append(selectDiv);							
+            mainRowDiv.append(popOutDiv);mainRowDiv.append(selectDiv);
 			appendAfter.append(mainRowDiv);mainRowDiv.show();
     	}
         setUpSelectPointButtons();
@@ -475,32 +476,34 @@ function setUpPopoutButtons() {
     $("[id^=popoutPoint_]").on('click', function(e){
         var theLink = $(this);
         window.open( "/point/" + theLink.data('pointurl'),theLink.data('pointtitle') , "height=800,width=1000");
-    }); 
+    });
 }
 
-function setUpMenuAreas() { 
-    // Dropdown add of the recently viewed points  
+function setUpMenuAreas() {
+    // Dropdown add of the recently viewed points
     $("[name^=selectPoint_menu_]").on('click', function(e){
         var theLink = $(this);
         var linkPointURL = theLink.data('pointurl');
-        selectPoint(linkPointURL, pointURL, theLink.data('linktype'));        
+        selectPoint(linkPointURL, pointURL, theLink.data('linktype'));
         $("[name^=selectPoint_menu_]").filter("*[data-pointurl=\""+ linkPointURL + "\"]").remove();
-    });        
-       
+    });
+
     // Edit the current point
     $( "#editPoint" ).on('click', function() {
         populateEditFields();
         $("#submit_pointDialog").data("dialogaction", "edit")
         $("#pointDialog").modal('show');
     });
-    
+
     // Create a new linked point
     $( "[name=createLinked]" ).on('click', function() {
         var linkType = $(this).data('linktype');
         $("#submit_pointDialog").data("dialogaction", "createLinked");
         $("#submit_pointDialog").data("linktype", linkType);
-        $("#pointDialog").modal('show');        
-    });        
+        var dialogName = "Create " + linkType.capitalize() + " Point";
+        $('div.modal-header h3').text(dialogName);
+        $("#pointDialog").modal('show');
+    });
 }
 
 function makePointAreasClickable() {
@@ -509,7 +512,7 @@ function makePointAreasClickable() {
           window.location.href = $(".navWhy", $(this)).attr('href');
         }
     });
-    
+
     $('[id^="counterPoint_"]').click(function() {
         if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
           window.location.href = $(".navWhy", $(this)).attr('href');
@@ -523,13 +526,13 @@ $(document).ready(function() {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
         $( "[name=linkSupportingPoint]" ).attr('data-toggle',"modal");
         make_this_show_login_dlg($( "[id$=unlinkToggle]" ));
-        make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));     
-        make_this_show_login_dlg($( "[id$=addPointWhenZero]" ));                   
+        make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));
+        make_this_show_login_dlg($( "[id$=addPointWhenZero]" ));
         make_this_show_login_dlg($( "#editPoint" ));
         make_this_show_login_dlg($( "#upVote" ));
         make_this_show_login_dlg($( "#downVote" ));
         make_this_show_login_dlg($( "#viewPointHistory" ));
-        
+
     } else {
         /*$( "[name=linkSupportingPoint]" ).click(function() {
           var params = [];
@@ -540,7 +543,7 @@ $(document).ready(function() {
         $( "#supporting_unlinkToggle" ).button().click(function() {
         	toggleUnlink("supporting");
         	});
-        			    
+
         $( "#counter_unlinkToggle" ).button().click(function() {
             toggleUnlink("counter");
             });
@@ -552,12 +555,12 @@ $(document).ready(function() {
 
         makePointAreasClickable();
         setUpMenuAreas();
-         
+
         $('#linkedPointSearchDialog').on('hidden', function () {
-            $("#selectLinkedPointSearch").data("linkType", "");         
-            $("[id^=searchPoint]",$(".searchColumn")).remove();        	
+            $("#selectLinkedPointSearch").data("linkType", "");
+            $("[id^=searchPoint]",$(".searchColumn")).remove();
         });
-        
+
         $("#selectLinkedPointSearch").keyup(function(event){
     		if(event.keyCode == 13){
     			$.ajaxSetup({
@@ -573,12 +576,12 @@ $(document).ready(function() {
     			});
     			$.ajax();
     	    }
-        });        
-        
-    }        
-    
+        });
+
+    }
+
     linkPointControlsInitialState();
-    
+
     $( "#deletePoint" ).button();
 
     // Beginning state for the TABBED AREAS

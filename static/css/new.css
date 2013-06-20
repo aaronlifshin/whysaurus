@@ -645,8 +645,8 @@ button#unlinkToggle {
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Select Supporting Point Page
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
-   
+
+
 /*
  No longer used since select supporting point is going away
 #createSupportingPointLink {
@@ -657,12 +657,12 @@ button#unlinkToggle {
     top:12px;
 }
 
-   
+
 #createSupportingPointLink:hover {
    background-image: url('/static/img/arrow_makeANewPoint_black_231px.png');
 }
 */
-   
+
 [id^=selectPoint_arrow] {
     width:46px;
     height:34px;
@@ -696,7 +696,7 @@ button#unlinkToggle {
 
 .pointSmall:hover [id^=selectPoint_arrow] {
 	background-image: url("/static/img/arrow_add_black_45px.png");
-}   
+}
 
 #selectSupportingPointSearch {
 	width:90%;
@@ -709,7 +709,7 @@ button#unlinkToggle {
 
  /* +++++++++++++++++++++++++++++++++++++++++++++++
    END Select Supporting Point Page stuff
-   +++++++++++++++++++++++++++++++++++++++++++++++ */  
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Edit point dialog stuff
@@ -803,4 +803,9 @@ fieldset { padding:0; border:0; margin-top:25px;}
   -webkit-animation: rotate 2s linear infinite;
   -moz-animation: rotate 2s linear infinite;
   animation: rotate 2s linear infinate;
+}
+
+.filepicker-placeholder {
+  width: 54px;
+  height: 54px;
 }

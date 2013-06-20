@@ -174,7 +174,7 @@ function submitPointDialog(clickedElement) {
     }
 }
 
-var FILEPICKER_SERVICES = ['COMPUTER', 'URL', 'FACEBOOK'];
+var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
 
 
@@ -185,7 +185,7 @@ $(document).ready(function() {
     this.click(function(){
       var self = this;
       filepicker.pickAndStore(
-        { mimetype:"image/*", services: FILEPICKER_SERVICES, openTo: 'COMPUTER' },
+        { mimetype:"image/*", services: FILEPICKER_SERVICES, openTo: 'IMAGE_SEARCH' },
         { location: "S3" },
         function(fpfiles){
           var file = fpfiles[0];

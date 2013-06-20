@@ -257,13 +257,13 @@ function populateEditFields() {
   $('#author_pointDialog').val($('#mainPointImageArea .mainPointImageAuthor').text());
   $('#description_pointDialog').val($('#mainPointImageArea .mainPointImageCaption').text());
   var url = $('#pointSummary div.mainPointImageURL').text();
-
   $('#link_pointDialog').val(url);
+
   if(url !== '') {
     if(url.match("https?://")) {
-      $('#Edit_thisPointDialog .filepicker-placeholder').attr('src', url);
+      $('.filepicker-placeholder').attr('src', url);
     } else {
-      $('#Edit_thisPointDialog .filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+url);
+      $('.filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+url);
     }
   }
 

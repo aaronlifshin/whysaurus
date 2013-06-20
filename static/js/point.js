@@ -504,6 +504,11 @@ function setUpMenuAreas() {
         $('div.modal-header h3').text(dialogName);
         $("#pointDialog").modal('show');
     });
+    
+    $( "[name=supporting_searchForPoint]" ).on('click', function(e){
+        $("#selectLinkedPointSearch").data("linkType", "supporting");
+        $("#linkedPointSearchDialog").modal('show');
+    });
 }
 
 function makePointAreasClickable() {

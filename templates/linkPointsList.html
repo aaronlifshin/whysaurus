@@ -113,6 +113,12 @@
           {% endif %}                              
         </ul>
      </div>
-        <div id="addEvidencePromptText" class="pagination-centered row">If this point is true, add evidence to support it!</div>
+        <div id="addEvidencePromptText" class="pagination-centered row">
+            {% if linkType == "supporting" %}
+                If this point is true, add evidence to support it.
+            {% else %}
+                If this point is false, add points to counter it.          
+            {% endif %}
+        </div>
     </div>
    </div>

@@ -195,7 +195,10 @@ $(document).ready(function() {
           filepicker.convert(file, {width: 112, height: 112, fit: 'clip'}, {path: 'SummaryBig-' + file.key});
           filepicker.convert(file, {width: 310, fit: 'clip'}, {path: 'FullPoint-' + file.key});
           filepicker.convert(file, {width: 54, height: 54, fit: 'clip'}, {path: 'SummaryMedium-' + file.key}, function(medium){
-            $(self).next('.filepicker-placeholder').attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + medium.key).removeClass('spin');
+            $(self)
+              .next('.filepicker-placeholder')
+              .attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key))
+              .removeClass('spin');
           });
 
           $(self).prev('[name=imageURL]').val(file.key);

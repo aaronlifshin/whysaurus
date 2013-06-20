@@ -1,5 +1,6 @@
 import re
 import constants
+import urllib
 
 class ImageUrl(object):
     """ Descriptor for Point """
@@ -12,4 +13,4 @@ class ImageUrl(object):
         if self.HTTP_RE.match(instance.imageURL):
             return instance.imageURL
         else:
-            return constants.CDN + '/' + self.format + '-' + instance.imageURL
+            return constants.CDN + '/' + self.format + '-' + urllib.quote(instance.imageURL)

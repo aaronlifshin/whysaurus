@@ -59,7 +59,7 @@ function callPointEdit(){
 				$('.mainPointAuthor').html(obj.author);
 				$('.mainPointDateEdited').html(obj.dateEdited);
                 if (obj.imageURL) {
-                    $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + obj.imageURL)
+                    $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + encodeURIComponent(obj.imageURL))
                 }
 				$('.mainPointImageURL').html(obj.imageURL);
 				$('.mainPointImageAuthor').html(obj.imageAuthor);
@@ -263,7 +263,7 @@ function populateEditFields() {
     if(url.match("https?://")) {
       $('.filepicker-placeholder').attr('src', url);
     } else {
-      $('.filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+url);
+      $('.filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+encodeURIComponent(url));
     }
   }
 

@@ -7,26 +7,46 @@
 				<div class="pointSummaryTitle">{{ fullPoint.point.title|escape }}</div>
 				<div class="pointSummaryText">{{ fullPoint.point.content|safe }}</div>
 				<table class="pointTable">
-				<thead>
-					<tr><th>Supporting Point Title</th><th>Supporting Point Text</th><th>Author</th></tr>
-				</thead>
-				<tbody>
-				{% for point in fullPoint.supportingPoints %}
-					<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
-				{% endfor %}
-				</tbody>
-				</table>
+                {% if fullPoint.supportingPoints %}
+    				<thead>
+    					<tr><th>Supporting Point Title</th><th>Supporting Point Text</th><th>Author</th></tr>
+    				</thead>
+    				<tbody>
+    				{% for point in fullPoint.supportingPoints %}
+    					<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
+    				{% endfor %}
+    				</tbody>
+    				</table>
+                {% endif %}
+
+                {% if fullPoint.counterPoints %}
    
-                <table class="pointTable">
-                <thead>
-                    <tr><th>Counter Point Title</th><th>Counter Point Text</th><th>Author</th></tr>
-                </thead>
-                <tbody>
-                {% for point in fullPoint.counterPoints %}
-                    <tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
-                {% endfor %}
-                </tbody>
-                </table>
+                  <table class="pointTable">
+                  <thead>
+                      <tr><th>Counter Point Title</th><th>Counter Point Text</th><th>Author</th></tr>
+                  </thead>
+                  <tbody>
+                  {% for point in fullPoint.counterPoints %}
+                      <tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
+                  {% endfor %}
+                  </tbody>
+                  </table>
+                {% endif %}
+                
+  
+                {% if fullPoint.sources %}                  
+                  <table class="pointTable">
+                  <thead>
+                      <tr><th>Source Title</th><th>Source URL</th></tr>
+                  </thead>
+                  <tbody>
+                  {% for source in fullPoint.sources %}
+                      <tr><td>{{source.name}}</td><td><a hred="{{source.url}}">{{source.url}}</a></td></tr>
+                  {% endfor %}
+                  </tbody>
+                  </table>
+                {% endif %}
+                
                 
 				<div class="mainPointInfo">
 					<div class="mainPointVersion">{{fullPoint.point.version}}</div>

@@ -96,6 +96,7 @@ class Point(ndb.Model):
             for point in points:
                 supportingPointsLastVersion = point.getLinkPointsLastChange("supporting")
                 counterPointsLastVersion = point.getLinkPointsLastChange("counter")
+                sources = point.getSources()
 
                 # pointImages = [image for image in images if image.key.parent() == point.key]
                 # image = None
@@ -103,7 +104,8 @@ class Point(ndb.Model):
                 #   image = pointImages[0]
                 retVal.append({"point": point,
                                "supportingPoints": supportingPointsLastVersion,
-                               "counterPoints": counterPointsLastVersion})  # , "image":image})
+                               "counterPoints": counterPointsLastVersion,
+                               "sources":sources })  # , "image":image})
             return retVal
         else:
             return None

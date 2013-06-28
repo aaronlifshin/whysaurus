@@ -419,6 +419,13 @@ h1.condensed {
 	padding-left: 1.5em;
 }
 
+#sharing {
+  width: 138px;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
 .mainPointLastEdited {
 	font-size:0.7em;
 	font-style:italic;

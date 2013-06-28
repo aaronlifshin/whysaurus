@@ -18,7 +18,6 @@ def convertListToKeys(urlsafeList):
     else:
         return None
         
-
 def makeURL(sourceStr):
     longURL = sourceStr.replace(" ", "_")
     newUrl = re.sub('[\W]+', '', longURL[0:140])
@@ -240,7 +239,7 @@ class Point(ndb.Model):
     def transactionalUpdate(self, newPoint, theRoot, sources):
         self.put()
         if sources:
-            sourceKeys = self.sources
+            sourceKeys = newPoint.sources
             for source in sources:
                 source.put()
                 sourceKeys = sourceKeys + [source.key]

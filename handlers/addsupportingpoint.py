@@ -2,6 +2,7 @@ import json
 
 from authhandler import AuthHandler
 from models.point import Point
+from models.source import Source
 from models.whysaurusexception import WhysaurusException
 
 class AddSupportingPoint(AuthHandler):
@@ -10,6 +11,9 @@ class AddSupportingPoint(AuthHandler):
         oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
         user = self.current_user
         linkType = self.request.get('linkType')
+        sourcesURLs=json.loads(self.request.get('sourcesURLs'))
+        sourcesNames=json.loads(self.request.get('sourcesNames'))
+        rawSources = Source.constructFromArrays(sourcesURLs, sourcesNames)
         if user:
             newLinkPoint, newLinkPointRoot = Point.create(
                 title=self.request.get('title'),
@@ -20,7 +24,8 @@ class AddSupportingPoint(AuthHandler):
                 linktype = linkType,
                 imageURL=self.request.get('imageURL'),
                 imageAuthor=self.request.get('imageAuthor'),
-                imageDescription=self.request.get('imageDescription'))
+                imageDescription=self.request.get('imageDescription'),
+                sources=rawSources)
             try:
                 newLinks = [{'pointRoot':newLinkPointRoot,
                             'pointCurrentVersion':newLinkPoint,

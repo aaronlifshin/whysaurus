@@ -38,6 +38,8 @@
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
                 <!-- Hacky way to get imageurl into the edit dialog. :/ -->
                 <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
+                {% include 'sources.html' %}
+                                    
         </div>
 		<div id="timestampAndEditLink" class="span8">
 			<div class="span1"></div>

@@ -7,6 +7,17 @@ from google.appengine.api import search
 from imageurl import ImageUrl
 from whysaurusexception import WhysaurusException
 from redirecturl import RedirectURL
+from source import Source
+
+def convertListToKeys(urlsafeList):
+    if urlsafeList:
+        outList = []
+        for u in urlsafeList:
+            outList = outList + [ndb.Key(urlsafe=u)]
+        return outList 
+    else:
+        return None
+        
 
 def makeURL(sourceStr):
     longURL = sourceStr.replace(" ", "_")
@@ -36,7 +47,7 @@ class Point(ndb.Model):
     supportingPointsLastChange = ndb.KeyProperty(repeated=True)
     counterPointsRoots = ndb.KeyProperty(repeated=True)
     counterPointsLastChange = ndb.KeyProperty(repeated=True)
-
+    sources = ndb.KeyProperty(repeated=True)
     current = ndb.BooleanProperty()
     url = ndb.StringProperty()
     upVotes = ndb.IntegerProperty()
@@ -100,7 +111,8 @@ class Point(ndb.Model):
     @staticmethod
     @ndb.transactional(xg=True)
     def transactionalCreate(pointRoot, title, content, summaryText, user,
-                            imageURL=None, imageAuthor=None, imageDescription=None):
+                            imageURL=None, imageAuthor=None, 
+                            imageDescription=None, sources=None):
         pointRoot.put()
         point = Point(parent=pointRoot.key)
         point.title = title
@@ -117,6 +129,12 @@ class Point(ndb.Model):
         point.imageURL = imageURL
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
+        if sources:
+            sourceKeys = []
+            for source in sources:
+                source.put()
+                sourceKeys = sourceKeys + [source.key]
+            point.sources = sourceKeys
         point.put()
         point.addToSearchIndex()
 
@@ -129,7 +147,7 @@ class Point(ndb.Model):
 
     @staticmethod
     def create(title, content, summaryText, user, backlink=None, linktype="",
-               imageURL=None, imageAuthor=None, imageDescription=None):
+               imageURL=None, imageAuthor=None, imageDescription=None, sources=None):
         newUrl = makeURL(title)
         pointRoot = PointRoot()
         pointRoot.url = newUrl
@@ -141,9 +159,9 @@ class Point(ndb.Model):
                 pointRoot.pointsSupportedByMe = [backlink]
             elif linktype == 'counter':
                 pointRoot.pointsCounterredByMe = [backlink]
-
+                
         return Point.transactionalCreate(pointRoot,title, content, summaryText, user,
-                            imageURL, imageAuthor, imageDescription)
+                            imageURL, imageAuthor, imageDescription, sources)
 
 
     def shortJSON(self):
@@ -217,8 +235,14 @@ class Point(ndb.Model):
                     "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
 
     @ndb.transactional(xg=True)
-    def transactionalUpdate(self, newPoint, theRoot):
+    def transactionalUpdate(self, newPoint, theRoot, sources):
         self.put()
+        if sources:
+            sourceKeys = self.sources
+            for source in sources:
+                source.put()
+                sourceKeys = sourceKeys + [source.key]
+            newPoint.sources = sourceKeys
         newPoint.put()
         logging.info('Setting new current in ROOT for URL \'%s\' to: %s' % (theRoot.url , newPoint.key.urlsafe()))
         theRoot.current = newPoint.key
@@ -227,8 +251,9 @@ class Point(ndb.Model):
 
 
     # newSupportingPoint is the PointRoot of the supporting point
-    def update( self, newTitle=None, newContent=None, newSummaryText=None, pointsToLink=None,
-            user=None, imageURL=None, imageAuthor=None, imageDescription=None):
+    def update( self, newTitle=None, newContent=None, newSummaryText=None, 
+                pointsToLink=None, user=None, imageURL=None, imageAuthor=None,
+                imageDescription=None, sourcesToAdd=None, sourceKeysToRemove=None):
         if user:
             theRoot = self.key.parent().get()
             newPoint = Point(parent=self.key.parent())  # All versions ancestors of the PointRoot
@@ -256,7 +281,14 @@ class Point(ndb.Model):
                                      pointToLink['linkType'])
                     pointToLink['pointRoot'].addLinkedPoint(newPoint.key.parent(),
                                                             pointToLink['linkType'])
-
+                    
+            newPoint.sources = self.sources
+            keysToRemove = convertListToKeys(sourceKeysToRemove)
+            if keysToRemove:
+                for keyToRemove in keysToRemove:
+                    for oldKey in newPoint.sources:
+                        if oldKey == keyToRemove:
+                            newPoint.sources.remove(oldKey)
 
             newPoint.version = self.version + 1
             newPoint.upVotes = self.upVotes
@@ -273,7 +305,8 @@ class Point(ndb.Model):
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot)
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd)
+          
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndex()
 
@@ -328,6 +361,13 @@ class Point(ndb.Model):
                     logging.info('WARNING: Supporting point array for ' +
                                  self.url + ' contains pointer to missing root')
             return supportingPoints
+        else:
+            return None
+    
+    def getSources(self):
+        if len(self.sources) > 0:
+            sources = ndb.get_multi(self.sources)
+            return sources
         else:
             return None
 

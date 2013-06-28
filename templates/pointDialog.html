@@ -9,7 +9,7 @@
   <form id='frm_pointDialog' class="form-horizontal">
     <div class="modal-body">
       <label>
-        <div class="pull-left ">Text</div>
+        <div class="pull-left ">Point Title</div>
         <div id="title_pointDialog_charNum" class="pull-right clearfix">
             140 characters left
         </div>
@@ -18,14 +18,35 @@
         <input id="title_pointDialog" type="text" 
         class="titleEdit" placeholder="Add the title here...">
       </div>
-      <div class="dlgField">
+      <div id="editorDiv" class="dlgField">        
         <textarea id="editor_pointDialog" 
             class="mceEditor textEdit"           
             placeholder="Add the description here...">
         </textarea>
-      </div>
+      </div>      
     </div>
+    
     <div class="modal-footer">
+     <label id="sourcesLabel" class="control-group textline">Sources      </label> 
+     <div class="row-fluid" id="sourcesArea">
+      </div>       
+      <div class="control-group">
+        <button id="sourcesAdd"  class="btn btn-small pull-right">Add Source</button> 
+      </div>      
+      <div class="control-group">
+        <label class="control-label" for="sourceURL_pointDialog">URL</label>        
+        <div class="controls">
+          <input id="sourceURL_pointDialog" type="text" class=" fieldEdit" 
+          name="sourceURL" placeholder="Add the URL of the source">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="sourceTitle_pointDialog">Title</label>
+        <div class="controls">
+          <input id="sourceTitle_pointDialog" type="text" class=" fieldEdit" 
+          name="sourceTitle" placeholder="Add the title of the source">
+        </div>   
+      </div>
       <label class="control-group textline">Image</label>
       <div class="control-group">
         <label class="control-label" for="link_pointDialog">link</label>

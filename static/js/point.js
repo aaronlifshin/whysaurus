@@ -48,7 +48,10 @@ function callPointEdit(){
 			'title': $('#title_pointDialog').val(),
 			'imageURL':$('#link_pointDialog').val(),
             'imageAuthor':$('#author_pointDialog').val(),
-            'imageDescription': $('#description_pointDialog').val()
+            'imageDescription': $('#description_pointDialog').val(),
+            'sourcesURLs': JSON.stringify(getNewSourcesURLs()),
+            'sourcesNames': JSON.stringify(getNewSourcesNames()),
+            'sourcesToRemove': JSON.stringify($('#pointDialog').data('sourcesToRemove'))
 			},
 			success: function(data){
 				var ed = tinyMCE.get('editor_pointDialog');
@@ -64,6 +67,10 @@ function callPointEdit(){
 				$('.mainPointImageURL').html(obj.imageURL);
 				$('.mainPointImageAuthor').html(obj.imageAuthor);
 				$('.mainPointImageCaption').html(obj.imageDescription);
+				$('#mainPointSources').remove();
+				$('[name=mainPointSource]').remove();				
+				$('.mainPointImageURL').after(obj.sourcesHTML);
+				
             	stopSpinner();
 				$("#pointDialog").modal('hide');
 				pointURL = obj.pointURL;
@@ -258,6 +265,11 @@ function populateEditFields() {
   $('#description_pointDialog').val($('#mainPointImageArea .mainPointImageCaption').text());
   var url = $('#pointSummary div.mainPointImageURL').text();
   $('#link_pointDialog').val(url);
+  
+  $('[name=mainPointSource] a').each(function(i, obj) {    
+      var sourcekey = $(obj).data('sourcekey');
+      addSourceHTML($(obj).attr('href'), $(obj).text(), sourcekey);
+  });
 
   if(url !== '') {
     if(url.match("https?://")) {
@@ -376,6 +388,8 @@ function addPoint(linkType){
     $('#submit_pointDialog').off('click');
     $('#submit_pointDialog').hide();
     $('#submit_pointDialog').after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+    
+    
 	$.ajaxSetup({
 		url: "/addSupportingPoint",
 		global: false,
@@ -388,7 +402,9 @@ function addPoint(linkType){
 			'pointUrl': pointURL,
 			'imageURL':$('#link_pointDialog').val(),
             'imageAuthor':$('#author_pointDialog').val(),
-            'imageDescription': $('#description_pointDialog').val()
+            'imageDescription': $('#description_pointDialog').val(),
+            'sourcesURLs': JSON.stringify(getNewSourcesURLs()),
+            'sourcesNames': JSON.stringify(getNewSourcesNames())
 		},
 		success: function(data){
 			obj = JSON.parse(data);

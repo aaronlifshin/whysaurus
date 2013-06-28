@@ -184,7 +184,7 @@ body {
 	color:white;
 }
 
-.pointCard:hover a.navWhy, `:hover a.navWhy {
+.pointCard:hover a.navWhy, .pointSmall:hover a.navWhy {
    background-image: url('/static/img/arrow_why_45_black.png');
 }
 
@@ -725,6 +725,14 @@ button#unlinkToggle {
 	bottom: 0px;
 	width:100%;
 	padding: 14px 0px 15px;
+}
+
+#sourcesArea .removeSource {
+	color:red;
+}
+
+#sourcesArea .sourceLink {
+    text-align:left;
 }
 
 .pointDialog label {

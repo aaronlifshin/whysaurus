@@ -1,6 +1,12 @@
 var CONST_EDITOR_DEFAULT_TEXT = 'Add the description here...';
 var MAX_TITLE_CHARS = 140;
 
+function validateURL(textval) {
+     var urlregex = new RegExp(
+           "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
+     return urlregex.test(textval);
+}
+   
 function post_to_url(path, params, method) {
   method = method || "post"; // Set method to post by default, if not specified.
 
@@ -26,17 +32,17 @@ function post_to_url(path, params, method) {
 
 String.prototype.capitalize = function() {
     return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-};
+}
 
 function getWindowHeight() {
   var height;
 
   if (typeof(window.innerHeight) == "number") //non-IE
-  height = window.innerHeight;
+    height = window.innerHeight;
   else if (document.documentElement && document.documentElement.clientHeight) //IE 6+ strict mode
-  height = document.documentElement.clientHeight;
+    height = document.documentElement.clientHeight;
   else if (document.body && document.body.clientHeight) //IE 4 compatible / IE quirks mode
-  height = document.body.clientHeight;
+    height = document.body.clientHeight;
 
   return height;
 }
@@ -44,20 +50,50 @@ function getWindowHeight() {
 
 function positionEditDialog() {
   dialogHeight = $(".pointDialog").height();
-  $("[id$='_ifr']").height(dialogHeight - 350);
+  $("[id$='_ifr']").height(dialogHeight - 550);
+}
+
+function getNewSourcesURLs() {
+    var links  = $('.sourceLink');
+    var urls = [];    
+    for(var i = 0; i < links.length; i++){
+        var sourcekey = $(links[i]).parent().data('sourcekey');
+        if (!sourcekey) {
+            urls.push($(links[i]).attr('href'));          
+        }
+    }
+    return urls;
+}
+
+function getNewSourcesNames() {
+    var links  = $('.sourceLink');
+    var sources = [];    
+    for(var i = 0; i < links.length; i++){
+        var sourcekey = $(links[i]).parent().data('sourcekey');
+        if (!sourcekey) { 
+            sources.push($(links[i]).text());
+        }
+    } 
+    return sources;
 }
 
 function newPoint() {
   if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
-      alert('Too many characters in the title');
+      editDialogAlert('Too many characters in the title');
       return;
   }
+  if ($('#title_pointDialog').val().length == "") {
+      editDialogAlert('To create a point you must enter something for the title!');      
+      return;
+  }
+  
   var ed = tinyMCE.get('editor_pointDialog');
   var text = tinyMCE.activeEditor.getBody().textContent;
   $("#submit_pointDialog").off('click');
   $("#submit_pointDialog").hide();
   $("#submit_pointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
-
+  var u = getNewSourcesURLs();
+  var n = getNewSourcesNames();
   $.ajaxSetup({
     url: "/newPoint",
     global: false,
@@ -68,7 +104,9 @@ function newPoint() {
       'title': $('#title_pointDialog').val(),
       'imageURL': $('#link_pointDialog').val(),
       'imageAuthor': $('#author_pointDialog').val(),
-      'imageDescription': $('#description_pointDialog').val()
+      'imageDescription': $('#description_pointDialog').val(),
+      'sourcesURLs': JSON.stringify(u),
+      'sourcesNames': JSON.stringify(n)
     },
     success: function(data) {
       obj = JSON.parse(data);
@@ -162,6 +200,8 @@ function stopSpinner() {
     $('#submit_pointDialog').show();
 }
 
+// This fucntion is weird in that it has to call some functions in point.js
+// Oh god I'm sorry
 function submitPointDialog(clickedElement) {
     var dialogAction = $(clickedElement).data('dialogaction');
     if (dialogAction == "new") {
@@ -174,10 +214,53 @@ function submitPointDialog(clickedElement) {
     }
 }
 
+function removeSource(clickedElement) {
+    var sourcekey = $(clickedElement).parent().data('sourcekey');
+    if (sourcekey) {
+        var sourcesToRemove = $('#pointDialog').data('sourcesToRemove');
+        if(typeof sourcesToRemove == 'undefined') {
+            sourcesToRemove = [];
+        }
+        sourcesToRemove.push(sourcekey);
+        $('#pointDialog').data('sourcesToRemove', sourcesToRemove);
+    }
+    
+    $(clickedElement).parent().remove();
+    
+}
+
+function addSource(clickedElement) {
+    var urlVal = $('#sourceURL_pointDialog').val();
+    if (urlVal == "") {
+        editDialogAlert('URL is required');        
+    } else if (!validateURL(urlVal)) {        
+        editDialogAlert('The URL you specified doesn\'t look like a URL.');            
+    } else {        
+        sourceURL = $('#sourceURL_pointDialog').val();
+        sourceTitle = $('#sourceTitle_pointDialog').val() == "" ? 
+            sourceURL :$('#sourceTitle_pointDialog').val();        
+        addSourceHTML(sourceURL, sourceTitle, null);  
+        $('#sourceURL_pointDialog').val("");
+        $('#sourceTitle_pointDialog').val("");
+    }   
+}
+
+function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
+    
+    appendAfter = $('#sourcesArea');
+      
+    newDiv = jQuery('<div/>',{class:"row", name:"source_pointDialog"} );
+    if (sourceKey != "") {
+        newDiv.data('sourcekey', sourceKey);
+    }
+    newDiv.html("<a class=\"span2 removeSource\" href=\"#\">x</a>" + 
+        "<a class=\"span10 sourceLink\" href=\"" +  sourceURL+"\">"+ sourceTitle + "</a>");
+    appendAfter.append(newDiv);        
+    $('.removeSource',newDiv).on('click', function(e) {removeSource(this);});
+}
+
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
-
-
   filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
   $.fn.bindFilepicker = function(){
     if (this.bindFilepickerBound) return;
@@ -271,7 +354,7 @@ $(document).ready(function() {
   });
 
   $(".searchIcon", $("#searchArea")).click(function(event) {
-    if ($("#searchBox").val() !== "") {
+    if ($("#searchBox").val() != "") {
       window.location.href = "/search?searchTerms=" + $("#searchBox", $("#searchArea")).val();
     }
   });
@@ -336,14 +419,25 @@ $(document).ready(function() {
       $('#author_pointDialog').val('');
       $('#description_pointDialog').val('');
       $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
+      $('[name=source_pointDialog]').remove();
+      $('#pointDialog').removeData('sourcesToRemove');     
+      $('#sourceURL_pointDialog').val("");
+      $('#sourceTitle_pointDialog').val("");
+       
     });
 
     $("#submit_pointDialog").on('click', function(e) {
         submitPointDialog(this);
     });
+    
+    $("#sourcesAdd").on('click', function(e) {
+        e.preventDefault();
+        addSource(this);
+    });
 
     $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
 
+    $(".removeSource").on('click', function(e) {removeSource(this);});
 
   }
 

@@ -12,6 +12,7 @@ class ViewPoint(AuthHandler):
         devInt = 1 if constants.DEV else 0
         supportingPoints = point.getSupportingPoints()
         counterPoints = point.getCounterPoints()
+        sources = point.getSources()
 
         user = self.current_user
         if not user or not user.userVotes or not point.key.parent() in user.userVotes:
@@ -38,6 +39,7 @@ class ViewPoint(AuthHandler):
             'supportingPoints': supportingPoints,
             'numSupportingPoints': len(supportingPoints) if supportingPoints else 0,
             'counterPoints': counterPoints,
+            'sources': sources,
             'user': user,
             'devInt': devInt,  # For Disqus
             'voteValue': voteValue,

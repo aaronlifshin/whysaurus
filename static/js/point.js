@@ -438,42 +438,13 @@ function linkPointControlsInitialState() {
 
 
 function displaySearchResults(data, linkType){
-	$("[id^=searchPoint]",$(".searchColumn")).remove();
+	$("[id^=searchPoint_]",$(".searchColumn")).remove();
+	
 	obj = JSON.parse(data);
+	
 	if (obj.result == true) {
 		appendAfter = $(".searchColumn");
-		for(var i=0; i < obj.searchResults.length; i++){
-			var oneResult = obj.searchResults[i];
-			// we need to create 4 divs
-			// 1. a row-fluid
-			mainRowDiv = $('<div/>', { class:"row-fluid", id:"searchPoint_"+oneResult['url']});
-			// 2. the popout
-			popOutDiv = $('<div/>', {class:"span1 noRightChannel"});
-			popOutDiv.html("<a id=\"popoutPoint_" + oneResult['url'] +
-			                "\" data-pointurl=\""+ oneResult['url']  +
-			                "\" data-pointtitle=\"" + oneResult['title'] + "\" ></a>");
-			// 3. the select supporting point div
-			if (oneResult['voteTotal'] >= thresholdGreen ) {spanClass = 'green'; }
-			else if  (oneResult['voteTotal'] <= thresholdRed) { spanClass = 'red'; }
-			else {  spanClass = 'yellow'; }
-			selectDiv = jQuery('<div/>', {
-				class: "pointSmall span11 " + spanClass,
-				id: "selectPoint_div_search_" +  oneResult['url'],
-				alt: "Use " + oneResult['url']
-				});
-			selectDiv.data('pointurl', oneResult['url']);
-			selectDiv.data('linkType', linkType);
-			// 4. and, inside it, the score and title div and the arrow div
-			titleDiv = jQuery('<div/>',{class:"span10 title"} );
-			titleDiv.html("<h5><span class=\"score\">" + oneResult['voteTotal'] +
-			              "</span> <a href=\"#\" > " + oneResult['title'] + "</a></H5>");
-			buttonDiv= jQuery('<div/>',{class:"span2"} );
-            buttonDiv.html("<a class=\"pull-right\" href=\"#\"id=\"selectPoint_arrow_" +
-                            oneResult['url'] + "\"alt=\"Use " + oneResult['title'] + "\" ></a>");
-            selectDiv.append(titleDiv);selectDiv.append(buttonDiv);
-            mainRowDiv.append(popOutDiv);mainRowDiv.append(selectDiv);
-			appendAfter.append(mainRowDiv);mainRowDiv.show();
-    	}
+		appendAfter.append(obj.resultsHTML);
         setUpSelectPointButtons();
         setUpPopoutButtons();
 	} else {
@@ -484,7 +455,7 @@ function displaySearchResults(data, linkType){
 function setUpSelectPointButtons() {
     $("[id^=selectPoint_div_]").on('click', function(e){
         var theLink = $(this);
-        selectPoint(theLink.data('pointurl'), pointURL, theLink.data('linkType'));
+        selectPoint(theLink.data('pointurl'), pointURL, theLink.data('linktype'));
     });
 }
 
@@ -580,6 +551,7 @@ $(document).ready(function() {
         $('#linkedPointSearchDialog').on('hidden', function () {
             $("#selectLinkedPointSearch").data("linkType", "");
             $("[id^=searchPoint]",$(".searchColumn")).remove();
+            $(".searchBox").val('');
         });
 
         $("#selectLinkedPointSearch").keyup(function(event){

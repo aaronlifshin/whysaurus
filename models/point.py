@@ -137,7 +137,7 @@ class Point(ndb.Model):
                 sourceKeys = sourceKeys + [source.key]
             point.sources = sourceKeys
         point.put()
-        point.addToSearchIndex()
+        point.addToSearchIndexNew()
 
         pointRoot.current = point.key
         pointRoot.put()
@@ -309,7 +309,7 @@ class Point(ndb.Model):
             newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd)
           
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
-            newPoint.addToSearchIndex()
+            newPoint.addToSearchIndexNew()
 
             return newPoint
         else:
@@ -420,22 +420,33 @@ class Point(ndb.Model):
             index = search.Index('points')
             results = []
             searchResultDocs = index.search(searchTerms)
+            
             if searchResultDocs:
+                docIds = [resDoc.doc_id for resDoc in searchResultDocs]
                 excludeList = []
                 if excludeURL:
                     excludePoint, excludePointRoot = Point.getCurrentByUrl(
                         excludeURL)
-                    if excludePoint:
-                        excludeList = excludeList + [excludePoint.url]
+                    if excludePointRoot:
+                        excludeList = excludeList + [excludePointRoot.key.urlsafe()]
                         linkedPoints = excludePoint.getSupportingPoints()
                         if linkedPoints:
                             for point in linkedPoints:
-                                excludeList = excludeList + [point.url]
+                                excludeList = excludeList + [point.key.parent().urlsafe()]
                         linkedPoints = excludePoint.getCounterPoints()
                         if linkedPoints:
                             for point in linkedPoints:
-                                excludeList = excludeList + [point.url]
-                for doc in searchResultDocs:
+                                excludeList = excludeList + [point.key.parent().urlsafe()]
+                for key in excludeList:
+                    try:
+                        docIds.remove(key)
+                    except ValueError:
+                        pass 
+                searchKeys = [ndb.Key(urlsafe=rootKey) for rootKey in docIds]
+                resultRoots = ndb.get_multi(searchKeys)
+                logging.info("Search Keys %s" % str(searchKeys))
+                """
+                for docId in docIds:
                     newResult = {}
                     addResult = True
                     for field in doc.fields:
@@ -444,21 +455,25 @@ class Point(ndb.Model):
                             addResult = False
                     if addResult:
                         results = results + [newResult]
-            return results
+                """
+                resultPoints = [root.getCurrent() for root in resultRoots]
+            else:
+                resultPoints = None                
+            return resultPoints
         else:
             return None
-
-    def addToSearchIndex(self):
-        logging.info('ADDING TO SEARCH INDEX. URL = %s | MedIMG = %s '% (self.url, self.summaryMediumImage))
+        
+    def addToSearchIndexNew(self):
         index = search.Index(name='points')
         fields = [
             search.TextField(name='title', value=self.title),
-            search.AtomField(name='url', value=self.url),
-            search.NumberField(name='voteTotal', value=self.voteTotal),
-            search.AtomField(name='summaryMediumImage', value=self.summaryMediumImage if self.imageURL else None)
+            search.TextField(name='content', value=self.content),         
         ]
-        d = search.Document(doc_id=self.url, fields=fields)
+        logging.info('NEW ADD TO SEARCH INDEX. DocId = %s ' % self.key.parent().urlsafe())
+        d = search.Document(doc_id=self.key.parent().urlsafe(), fields=fields)
         index.put(d)
+
+
 
 class PointRoot(ndb.Model):
     url = ndb.StringProperty()
@@ -592,11 +607,15 @@ class PointRoot(ndb.Model):
             #  img.key.delete()
             point.key.delete()
 
-        # TODO: Remove from Search Index
-
+        self.deleteFromSearchIndex()
         self.key.delete()
 
         return True, ''
+
+        
+    def deleteFromSearchIndex(self):
+        doc_index = search.Index(name="points")
+        doc_index.delete(self.key.urlsafe())
 
     def updateURL(self, newTitle):
         newURL = makeURL(newTitle)
@@ -612,3 +631,4 @@ class PointRoot(ndb.Model):
         RedirectURL.updateRedirects(oldURL, newURL)
         return newURL
 
+    

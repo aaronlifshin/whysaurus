@@ -4,7 +4,7 @@
   <div id="content">
      <div class="row">
         <div class="span6 offset3">
-		<H2>Search results for {{searchString}}</H2>
+		<H2>Search results for: "{{searchString}}"</H2>
 		{% for point in searchResults %} 		
           <div class="{% if point.voteTotal >= thresholds.green %}
                   green
@@ -16,7 +16,7 @@
                 <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></H5>
               </div>
               <div class="span2">
-                      {% if point.summaryMediumImage and point.summaryMediumImage.strip %}
+                      {% if point.imageURL and point.imageURL.strip %}
                           <img class="smallDisplay" src="{{ point.summaryMediumImage }}" />
                       {% endif %}
               </div>

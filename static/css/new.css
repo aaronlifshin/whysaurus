@@ -325,6 +325,28 @@ body {
 	color:white;
 }
 
+#blueRibbon a {
+	display:block;
+	background-image: url('/static/img/blueribbon.png');
+    width: 30px;
+    height: 45px;    
+}
+
+#blueRibbon a.awarded {
+    background-position: 0px center;
+}
+
+#blueRibbon a.notAwarded {
+    background-position: -30px center;
+}
+
+#blueRibbon a:hover {
+	   -webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+    box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+    /* background-position:-60px center; */	
+}
+
 
 .upArrow{
 	background-image:url('/static/img/inverse_up_arrow.png');

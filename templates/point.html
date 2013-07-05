@@ -12,9 +12,41 @@
   {% endif %}
 
   <div class="row topSpace"></div>
+    <div class="dropdown pull-left">
+        <button class="dropdown-toggle {% if not supportedPoints %} disabled {% endif %}" id="supportedByMeMenu" data-toggle="dropdown">
+         {% if not supportedPoints %} none {% else %} {{ supportedPoints|length }} {% endif %} supported
+        </button>                
+          <ul class="dropdown-menu" role="menu" aria-labelledby="supportedByMeMenu">
+              {% for supPoint in supportedPoints %}
+                  <li><a tabindex="-1"
+                  alt="View {{ supPoint.title|escape }}" 
+                  href="/point/{{ supPoint.url }}">{{supPoint.title|escape}}</a></li>                                        
+              {% endfor %}
+          </ul>
+     </div>
+     <div class="dropdown pull-left">           
+        <button class="dropdown-toggle {% if not counteredPoints %} disabled {% endif %} " 
+        id="counteredByMeToggle" data-toggle="dropdown">            
+         {% if not counteredPoints %} none {% else %} {{ counteredPoints|length }} {% endif %} countered 
+        </button> 
+        <ul class="dropdown-menu" role="menu" aria-labelledby="counteredByMeMenu">
+              {% for cnPoint in counteredPoints %}
+                  <li><a tabindex="-1"
+                  alt="View {{ cnPoint.title|escape }}" 
+                  href="/point/{{ cnPoint.url }}">{{cnPoint.title|escape}}</a></li>                                        
+              {% endfor %}
+          </ul>
+     </div>  
   <div class="row">
     <div id="pointArea" class="boxedElement span12 dropShadow">
       <div id="scoreAndVotingSection" class="span1 pagination-centered">
+                <div id="blueRibbon" class="voteArea" 
+                    data-ribbonvalue="{{ribbonValue}}">
+                  <a class="pagination-centered 
+                    {% if ribbonValue %} awarded {% else %} notAwarded {% endif %}" 
+                    alt="Award Ribbon" src="/static/img/blueribbon.png"> </a>
+                </div>
+                
 				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
 							greenScore
 						{% else %}
@@ -25,6 +57,7 @@
 							{% endif %}
 						{% endif %} hugeScore">
 					{{ point.voteTotal }}</div>
+          
                 <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
                   <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
                 </div>
@@ -32,8 +65,9 @@
                 <div id="downVote" class= "voteArea downArrow whiteScoreText {% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
                   <a alt="DownVote" src="/static/img/inverse_down_arrow.png">{{point.downVotes}}</a>
                 </div>
+
        </div>
-        <div id="pointSummary" class="span7">
+      <div id="pointSummary" class="span7">
                 <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
 				<div class="mainPointContent editable">{{ point.content|safe }}</div>
                 <!-- Hacky way to get imageurl into the edit dialog. :/ -->
@@ -41,7 +75,7 @@
                 {% include 'sources.html' %}
                                     
         </div>
-		<div id="timestampAndEditLink" class="span8">
+	  <div id="timestampAndEditLink" class="span8">
 			<div class="span1"></div>
 			<div class="mainPointLastEdited">
 				Last edited {{point.dateEdited}} by {{ point.authorName }}
@@ -49,8 +83,8 @@
 			<button class="mainPointButton" id="editPoint">
 				edit
 			</button>
-		</div>
-        <div id="mainPointImageArea" class="span3">
+      </div>
+      <div id="mainPointImageArea" class="span3">
             {% if point.imageURL and point.imageURL.strip %}
               <img class="pointDisplay" src="{{ point.fullPointImage }}" />
               <div class="mainPointImageCaption">{{point.imageDescription}}</div>
@@ -63,20 +97,20 @@
               <button class="mainPointButton" id="addImage">add an image</button>
             {% endif %}
         </div>
-	    <div class="row">
-			<div class="grayBackground span12">
-      <div id="sharing">
-        <div class="addthis_toolbox addthis_default_style ">
-          <a class="addthis_button_preferred_1"></a>
-          <a class="addthis_button_preferred_2"></a>
-          <a class="addthis_button_preferred_3"></a>
-          <a class="addthis_button_preferred_4"></a>
-          <a class="addthis_button_compact"></a>
-          <a class="addthis_counter addthis_bubble_style"></a>
-        </div>
-      </div>
-			  <div class="span1"></div>
-			  <div class="span8">
+	  <div class="row">
+          <div class="grayBackground span12">
+             <div id="sharing">
+                <div class="addthis_toolbox addthis_default_style ">
+                  <a class="addthis_button_preferred_1"></a>
+                  <a class="addthis_button_preferred_2"></a>
+                  <a class="addthis_button_preferred_3"></a>
+                  <a class="addthis_button_preferred_4"></a>
+                  <a class="addthis_button_compact"></a>
+                  <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+             </div>
+			 <div class="span1"></div>
+			 <div class="span8">
 			    <button class="mainPointButton tab selectedTab" id="viewSupportingPoints">
 					connections
 				</button>
@@ -93,12 +127,12 @@
 	           {% endif %}
 		    </div>
 		  </div>
-		</div>
 	  </div>
-    </div>
+	</div>
+  </div>
 
 
-    <div id="supportingPointsArea" class="tabbedArea">
+  <div id="supportingPointsArea" class="tabbedArea">
         <div class="row">
             <div class="span6">
               {% with recentlyViewedPoints as recentlyViewedPoints  %}
@@ -120,7 +154,7 @@
 
     </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 
-    <div id="disqus_thread" class="row tabbedArea">
+  <div id="disqus_thread" class="row tabbedArea">
     		<script type="text/javascript">
     		    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     		    var disqus_shortname = 'whysaurus-beta'; // required: replace example with your forum shortname
@@ -141,7 +175,7 @@
 
     </div>
 
-    <div id="historyArea" class="row tabbedArea">
+  <div id="historyArea" class="row tabbedArea">
     </div>
 
 

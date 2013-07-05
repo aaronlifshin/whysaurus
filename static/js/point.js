@@ -221,6 +221,42 @@ function downVote() {
     $.ajax();
 }
 
+function changeRibbon() {
+    var newRibbonValue = !$("#blueRibbon").data("ribbonvalue");
+    $.ajaxSetup({
+        url: "/setribbon",
+        global: false,
+        type: "POST",
+        data: {
+    		'pointURL': pointURL,
+    		'ribbon':newRibbonValue
+    		},
+        success: function(data){
+            obj = JSON.parse(data);
+            if (obj.result == true) {
+              updateRibbon(newRibbonValue);
+            } else {
+              alert('An error happened and your award may not have counted. Try after a page refresh?');
+            }
+        }
+    });
+    $.ajax();
+}
+
+function updateRibbon(newRibbonValue) {
+    $("#blueRibbon").data("ribbonvalue", newRibbonValue);
+    if (newRibbonValue) {
+        $("#blueRibbon a").removeClass("notAwarded");   
+        $("#blueRibbon a").removeClass("hover");  
+        $("#blueRibbon a").addClass("awarded");                          
+    } else {
+        $("#blueRibbon a").removeClass("hover");                
+        $("#blueRibbon a").removeClass("awarded");
+        $("#blueRibbon a").addClass("notAwarded");
+        
+    }
+}
+
 function deletePoint(urlToDelete) {
     $.ajaxSetup({
         url: "/deletePoint",
@@ -544,6 +580,8 @@ $(document).ready(function() {
         //$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
         $( "#downVote" ).click(function() {	downVote();	});
+        $( "#blueRibbon" ).click(function() {changeRibbon();});
+        
 
         makePointAreasClickable();
         setUpMenuAreas();

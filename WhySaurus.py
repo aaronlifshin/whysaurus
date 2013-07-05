@@ -8,7 +8,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from models.whysaurususer import WhysaurusUser
 from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
-    SelectSupportingPoint, LinkPoint, Vote, TestPage, Search, AjaxSearch,\
+    SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, AjaxSearch,\
     PointHistory, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
     AaronTask, DBIntegrityCheck
     
@@ -29,6 +29,7 @@ routes = [
     Route('/selectSupportingPoint', SelectSupportingPoint),
     Route('/linkPoint', LinkPoint),
     Route('/vote', Vote),
+    Route('/setribbon', SetRibbon),
     Route('/testPage', TestPage),
     Route('/search', Search),
     Route('/ajaxSearch', AjaxSearch),

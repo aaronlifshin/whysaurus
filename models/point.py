@@ -52,6 +52,7 @@ class Point(ndb.Model):
     upVotes = ndb.IntegerProperty()
     downVotes = ndb.IntegerProperty()
     voteTotal = ndb.IntegerProperty()
+    ribbonTotal = ndb.IntegerProperty(default=0)
     imageURL = ndb.StringProperty(default='')
     summaryMediumImage = ImageUrl('SummaryMedium')
     summaryBigImage = ImageUrl('SummaryBig')
@@ -474,7 +475,6 @@ class Point(ndb.Model):
         index.put(d)
 
 
-
 class PointRoot(ndb.Model):
     url = ndb.StringProperty()
     numCopies = ndb.IntegerProperty()
@@ -502,6 +502,14 @@ class PointRoot(ndb.Model):
             return self.pointsCounteredByMe, self.counteredArchiveForDelete
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
+        
+    def getBacklinkPoints(self, linkType):
+        backlinkRootKeys, backlinksArchiveKeys = self.getBacklinkCollections(linkType)
+        backlinkRoots = ndb.get_multi(backlinkRootKeys)
+        currentKeys = [root.current for root in backlinkRoots]
+        currentPoints = ndb.get_multi(currentKeys)
+        return currentPoints
+
 
     def removeLinkedPoint(self, linkPointRootKey, linkType, archive=True):
         if linkType == 'supporting':
@@ -630,5 +638,4 @@ class PointRoot(ndb.Model):
         # If there is already a redirector object going to this URL, update it
         RedirectURL.updateRedirects(oldURL, newURL)
         return newURL
-
-    
+        

@@ -59,6 +59,32 @@ class WhysaurusUser(auth_models.User):
 
         return newVote
 
+    def setRibbon(self, point, ribbonValue, updatePoint=True):
+        pointRootKey = point.key.parent()
+        previousRibbon = False
+        newVote = None
+        if pointRootKey in self.userVotes:  # Vote already exists. Update
+            previousRibbon = self.userVotes[pointRootKey].ribbon
+            newVote = self.userVotes[pointRootKey]
+            newVote.ribbon = ribbonValue
+        if not newVote:  # Create a brand new one
+            newVote = UserVote(
+                pointRootKey=pointRootKey,
+                value=0,
+                ribbon=ribbonValue,
+                parent=self.key
+            )
+        newVote.put() 
+        if updatePoint:
+            if not previousRibbon and ribbonValue:
+                point.ribbonTotal = point.ribbonTotal + 1
+                point.put()
+            elif previousRibbon and not ribbonValue:
+                point.ribbonTotal = point.ribbonTotal - 1
+                point.put()
+        return newVote
+            
+
     def updateRecentlyViewed(self, pointRootKey):
         addedToList = False
 

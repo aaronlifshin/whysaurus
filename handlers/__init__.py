@@ -21,7 +21,8 @@ __all__ = [
 	'SetEditorPickSort',
 	'UpdateSupportingPointsSchema',
 	'AaronTask',
-	'DBIntegrityCheck'
+	'DBIntegrityCheck',
+	'SetRibbon'
 ]
 
 from mainpage import MainPage
@@ -36,6 +37,7 @@ from addsupportingpoint import AddSupportingPoint
 from selectsupportingpoint import SelectSupportingPoint
 from linkpoint import LinkPoint
 from vote import Vote
+from setribbon import SetRibbon
 from testpage import TestPage
 from search import Search
 from ajaxsearch import AjaxSearch

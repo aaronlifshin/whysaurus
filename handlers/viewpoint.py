@@ -17,8 +17,10 @@ class ViewPoint(AuthHandler):
         user = self.current_user
         if not user or not user.userVotes or not point.key.parent() in user.userVotes:
             voteValue = 0
+            ribbonValue = False
         else:
             voteValue = user.userVotes[point.key.parent()].value
+            ribbonValue = user.userVotes[point.key.parent()].ribbon
         addedToRecentlyViewed = False
         recentlyViewed = None
         if user:
@@ -39,10 +41,13 @@ class ViewPoint(AuthHandler):
             'supportingPoints': supportingPoints,
             'numSupportingPoints': len(supportingPoints) if supportingPoints else 0,
             'counterPoints': counterPoints,
+            'supportedPoints':pointRoot.getBacklinkPoints("supporting"),
+            'counteredPoints':pointRoot.getBacklinkPoints("counter"),
             'sources': sources,
             'user': user,
             'devInt': devInt,  # For Disqus
             'voteValue': voteValue,
+            'ribbonValue': ribbonValue,
             'thresholds': constants.SCORETHRESHOLDS
         }
         return template_values

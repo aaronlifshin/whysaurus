@@ -15,38 +15,38 @@
     <div class="dropdown pull-left">
         <button class="dropdown-toggle {% if not supportedPoints %} disabled {% endif %}" id="supportedByMeMenu" data-toggle="dropdown">
          {% if not supportedPoints %} none {% else %} {{ supportedPoints|length }} {% endif %} supported
-        </button>                
+        </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="supportedByMeMenu">
               {% for supPoint in supportedPoints %}
                   <li><a tabindex="-1"
-                  alt="View {{ supPoint.title|escape }}" 
-                  href="/point/{{ supPoint.url }}">{{supPoint.title|escape}}</a></li>                                        
+                  alt="View {{ supPoint.title|escape }}"
+                  href="/point/{{ supPoint.url }}">{{supPoint.title|escape}}</a></li>
               {% endfor %}
           </ul>
      </div>
-     <div class="dropdown pull-left">           
-        <button class="dropdown-toggle {% if not counteredPoints %} disabled {% endif %} " 
-        id="counteredByMeToggle" data-toggle="dropdown">            
-         {% if not counteredPoints %} none {% else %} {{ counteredPoints|length }} {% endif %} countered 
-        </button> 
+     <div class="dropdown pull-left">
+        <button class="dropdown-toggle {% if not counteredPoints %} disabled {% endif %} "
+        id="counteredByMeToggle" data-toggle="dropdown">
+         {% if not counteredPoints %} none {% else %} {{ counteredPoints|length }} {% endif %} countered
+        </button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="counteredByMeMenu">
               {% for cnPoint in counteredPoints %}
                   <li><a tabindex="-1"
-                  alt="View {{ cnPoint.title|escape }}" 
-                  href="/point/{{ cnPoint.url }}">{{cnPoint.title|escape}}</a></li>                                        
+                  alt="View {{ cnPoint.title|escape }}"
+                  href="/point/{{ cnPoint.url }}">{{cnPoint.title|escape}}</a></li>
               {% endfor %}
           </ul>
-     </div>  
+     </div>
   <div class="row">
     <div id="pointArea" class="boxedElement span12 dropShadow">
       <div id="scoreAndVotingSection" class="span1 pagination-centered">
-                <div id="blueRibbon" class="voteArea" 
+                <div id="blueRibbon" class="voteArea"
                     data-ribbonvalue="{{ribbonValue}}">
-                  <a class="pagination-centered 
-                    {% if ribbonValue %} awarded {% else %} notAwarded {% endif %}" 
+                  <a class="pagination-centered
+                    {% if ribbonValue %} awarded {% else %} notAwarded {% endif %}"
                     alt="Award Ribbon" src="/static/img/blueribbon.png"> </a>
                 </div>
-                
+
 				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
 							greenScore
 						{% else %}
@@ -57,7 +57,7 @@
 							{% endif %}
 						{% endif %} hugeScore">
 					{{ point.voteTotal }}</div>
-          
+
                 <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
                   <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
                 </div>
@@ -73,7 +73,7 @@
                 <!-- Hacky way to get imageurl into the edit dialog. :/ -->
                 <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
                 {% include 'sources.html' %}
-                                    
+
         </div>
 	  <div id="timestampAndEditLink" class="span8">
 			<div class="span1"></div>
@@ -100,13 +100,13 @@
 	  <div class="row">
           <div class="grayBackground span12">
              <div id="sharing">
-                <div class="addthis_toolbox addthis_default_style ">
-                  <a class="addthis_button_preferred_1"></a>
-                  <a class="addthis_button_preferred_2"></a>
-                  <a class="addthis_button_preferred_3"></a>
-                  <a class="addthis_button_preferred_4"></a>
+                <div class="addthis_toolbox addthis_default_style" addthis:url="{{point.url}}" addthis:title="{{point.title}}">
+                  <a class="addthis_button_facebook"></a>
+                  <a class="addthis_button_twitter"></a>
+                  <a class="addthis_button_email"></a>
+                  <a class="addthis_button_print"></a>
                   <a class="addthis_button_compact"></a>
-                  <a class="addthis_counter addthis_bubble_style"></a>
+                  <!-- <a class="addthis_counter addthis_bubble_style"></a> -->
                 </div>
              </div>
 			 <div class="span1"></div>

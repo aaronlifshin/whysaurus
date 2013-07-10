@@ -22,7 +22,8 @@ __all__ = [
 	'UpdateSupportingPointsSchema',
 	'AaronTask',
 	'DBIntegrityCheck',
-	'SetRibbon'
+	'SetRibbon',
+	'Profile'
 ]
 
 from mainpage import MainPage
@@ -47,5 +48,5 @@ from seteditorpicksort import SetEditorPickSort
 from updateSupportingPointsSchema import UpdateSupportingPointsSchema
 from aaronTask import AaronTask
 from dbIntegrityCheck import DBIntegrityCheck
-
+from profile import Profile
 

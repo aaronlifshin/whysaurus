@@ -10,8 +10,8 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
     SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, AjaxSearch,\
     PointHistory, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
-    AaronTask, DBIntegrityCheck
-    
+    AaronTask, DBIntegrityCheck, Profile
+
 
 # Map URLs to handlers
 routes = [
@@ -38,7 +38,7 @@ routes = [
     Route('/job/updateSupportingPointsSchema', UpdateSupportingPointsSchema),
     Route('/job/AaronTask', AaronTask),
     Route('/job/DBIntegrityCheck', DBIntegrityCheck),
-    # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
+    Route('/profile', Profile),
     Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),  # , handler_method='logout', name='logout'),
     Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),
     Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler:_auth_callback', name='auth_callback')

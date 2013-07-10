@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+<img src="{{user.avatar_url}}" width="200px" height="200px">
+<dl>
+  <dt>Name</dt>
+  <dd>{{user.name}}</dd>
+
+  <dt>Email</dt>
+  <dd>{{user.email}}</dd>
+
+  <dt>Social Link<dt>
+  <dd><a href="{{user.link}}">{{user.link}}</a></dd>
+</dl>
+<!-- {{user_debug}} -->
+{% endblock %}

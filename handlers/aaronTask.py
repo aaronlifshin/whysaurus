@@ -14,6 +14,28 @@ from google.appengine.api import search
 
 class AaronTask(AuthHandler):
     def get(self):
+        bigMessage = ['STARTING THE WORK']
+        query = PointRoot.query()
+        i = 0
+        for pointRoot in query.iter():
+            i = i + 1
+            for linkRootKey in pointRoot.pointsSupportedByMe:
+                linkRoot = linkRootKey.get()
+                if not linkRoot:
+                    pointRoot.pointsSupportedByMe.remove(linkRootKey)
+                    pointRoot.put()
+                    bigMessage.append("++++++  Removed %s from %s " % (linkRootKey, pointRoot.url))
+                    
+        bigMessage.append('Processed %d point roots' % i)          
+        template_values = { 'message': bigMessage }
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values))               
+
+                    
+        """
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        CLEAR FROM SEARCH INDEX ANYTHING THAT NO LONGER HAS A MATCHING POINT
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                    
         bigMessage = []
         docIndex = search.Index(name="points")
         docIds = [d.doc_id for d in docIndex.get_range(limit=200, ids_only=True)]
@@ -33,9 +55,10 @@ class AaronTask(AuthHandler):
         path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
         self.response.out.write(template.render(path, template_values))               
 
-        
-        """
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         REDO THE SEARCH INDEX SO THAT THE DOCID IS THE URLSAFE OF THE POINTROOT
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
         query = PointRoot.query()
         bigMessage = []
         i = 0

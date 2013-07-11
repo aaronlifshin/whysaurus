@@ -341,7 +341,7 @@ body {
 }
 
 #blueRibbon a:hover {
-	   -webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
     box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
     /* background-position:-60px center; */	

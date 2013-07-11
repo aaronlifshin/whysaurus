@@ -317,13 +317,6 @@ function populateEditFields() {
 
 }
 
-function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
-	$('.tab').removeClass('selectedTab');
-	$(selectedTab).addClass('selectedTab');
-	$('.tabbedArea').hide();
-	$(tabbedAreaToShow).show();
-}
-
 function selectPoint(supportingPointURL, currentPointURL, linkType){
   	$.ajaxSetup({
 		url: "/linkPoint",
@@ -619,11 +612,11 @@ $(document).ready(function() {
     $('.tabbedArea').hide(); $('#supportingPointsArea').show();
 
     $('#viewSupportingPoints').click(function() {
-    toggleTabbedArea(this, "#supportingPointsArea");
+        toggleTabbedArea(this, "#supportingPointsArea");
     });
 
     $('#viewComments').click(function() {
-      toggleTabbedArea(this, "#disqus_thread");
+        toggleTabbedArea(this, "#disqus_thread");
     });
 
     $('#viewPointHistory').click(function() {

@@ -577,7 +577,20 @@ class PointRoot(ndb.Model):
                 if not point in filterList:
                     topPoints = topPoints + [point]
         return topPoints
+    
+    @staticmethod
+    def getTopAwardPoints():       
+        pointsQuery = Point.gql("WHERE current = TRUE ORDER BY ribbonTotal DESC")
+        points =  pointsQuery.fetch(50)
+        logging.info("GTAP Got %d points" % len(points))
+        return points
 
+    @staticmethod
+    def getTopViewedPoints():
+        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC")        
+        roots = rootsQuery.fetch(50)
+        currentKeys = [root.current for root in roots]
+        return ndb.get_multi(currentKeys)
 
     def delete(self, user):
         if not user.admin:

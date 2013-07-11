@@ -259,6 +259,38 @@ function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
     $('.removeSource',newDiv).on('click', function(e) {removeSource(this);});
 }
 
+function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
+	$('.tab').removeClass('selectedTab');
+	$(selectedTab).addClass('selectedTab');
+	$('.tabbedArea').hide();
+	$(tabbedAreaToShow).show();
+}
+
+function makePointsCardsClickable() {
+    $( ".pointCard" ).click( function() {
+        window.location.href=$(".pointTitle a", $(this)).attr('href');
+    });
+}
+
+function loadPointList(listType, areaToLoad, selectedTab) {
+    $(areaToLoad).html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
+    toggleTabbedArea(selectedTab, areaToLoad);
+    $.ajax({
+    	url: '/getPointsList',
+    	type: 'POST',
+    	data: { 'type': listType },
+    	success: function(data) {
+    		$(areaToLoad).empty();
+    		$(areaToLoad).html($.parseJSON(data));
+    		makePointsCardsClickable();
+    	},
+    	error: function(data) {
+    		$(areaToLoad).empty();
+    		showAlert('<strong>Oops!</strong> There was a problem loading the points.  Please try again later.');
+    	},
+    }); 
+}
+
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
   filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
@@ -377,69 +409,88 @@ $(document).ready(function() {
     });
   }*/
 
-  $('[id^="point_New_"]').click(function() {
-      window.location.href = $(".navWhy", $(this)).attr('href');
-  });
-
-  $('[id^="signInWithFacebook"]').click(function() {
-      window.location.href = "/auth/facebook";
-  });
-
-  $('[id^="signInWithGoogle"]').click(function() {
-      window.location.href = "/auth/google";
-  });
-
-  $('[id^="signInWithTwitter"]').click(function() {
-      window.location.href = "/auth/twitter";
-  });
-  window.onload = function() {
-    positionEditDialog();
-  };
-  window.onresize = function() {
-    positionEditDialog();
-  };
-
-  if (!loggedIn) {
-    $("#CreatePoint").attr('href', "#loginDialog");
-    $("#CreatePoint").attr('data-toggle', "modal");
-  } else {
-
-    $( "#CreatePoint" ).on('click', function() {
-        $("#submit_pointDialog").data("dialogaction", "new");
-        $('div.modal-header h3').text("New Point");
-        $("#pointDialog").modal('show');
+    $('[id^="signInWithFacebook"]').click(function() {
+        window.location.href = "/auth/facebook";
     });
 
-    $("#pointDialog").on('hidden', function() {
-      var edSummary = tinyMCE.get('editor_pointDialog');
-      edSummary.setContent('');
-      $('#title_pointDialog').val('');
-      setCharNumText($('#title_pointDialog')[0]);
-      $('#link_pointDialog').val('');
-      $('#author_pointDialog').val('');
-      $('#description_pointDialog').val('');
-      $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
-      $('[name=source_pointDialog]').remove();
-      $('#pointDialog').removeData('sourcesToRemove');     
-      $('#sourceURL_pointDialog').val("");
-      $('#sourceTitle_pointDialog').val("");
-       
+    $('[id^="signInWithGoogle"]').click(function() {
+        window.location.href = "/auth/google";
     });
 
-    $("#submit_pointDialog").on('click', function(e) {
-        submitPointDialog(this);
+    $('[id^="signInWithTwitter"]').click(function() {
+        window.location.href = "/auth/twitter";
     });
     
-    $("#sourcesAdd").on('click', function(e) {
-        e.preventDefault();
-        addSource(this);
+    window.onload = function() {
+        positionEditDialog();
+    };
+    window.onresize = function() {
+        positionEditDialog();
+    };
+
+    // Beginning state for the TABBED AREAS
+    $('.tabbedArea').hide(); $('#editorsPicksArea').show();
+
+    $('#editorsPicks').click(function() {
+        toggleTabbedArea(this, "#editorsPicksArea");
     });
 
-    $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
+    $('#mostAgrees').click(function() {
+        toggleTabbedArea(this, "#mostAgreesArea");
+    });
+    
+    $('#mostViews').click(function() {
+        loadPointList('topViewed', '#mostViewsArea', this);
+    });
+    
+    $('#mostCaps').click(function() {
+        loadPointList('topAwards', '#mostCapsArea', this);
+    });
+    
+    makePointsCardsClickable();	
+    $( ".pointSmall" ).click( function() {
+        window.location.href=$(".smallTitle a", $(this)).attr('href');
+    });    
+       
+    if (!loggedIn) {
+        $("#CreatePoint").attr('href', "#loginDialog");
+        $("#CreatePoint").attr('data-toggle', "modal");
+    } else {
+        $( "#CreatePoint" ).on('click', function() {
+            $("#submit_pointDialog").data("dialogaction", "new");
+            $('div.modal-header h3').text("New Point");
+            $("#pointDialog").modal('show');
+        });
 
-    $(".removeSource").on('click', function(e) {removeSource(this);});
+        $("#pointDialog").on('hidden', function() {
+          var edSummary = tinyMCE.get('editor_pointDialog');
+          edSummary.setContent('');
+          $('#title_pointDialog').val('');
+          setCharNumText($('#title_pointDialog')[0]);
+          $('#link_pointDialog').val('');
+          $('#author_pointDialog').val('');
+          $('#description_pointDialog').val('');
+          $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
+          $('[name=source_pointDialog]').remove();
+          $('#pointDialog').removeData('sourcesToRemove');     
+          $('#sourceURL_pointDialog').val("");
+          $('#sourceTitle_pointDialog').val("");
+   
+        });
 
-  }
+        $("#submit_pointDialog").on('click', function(e) {
+            submitPointDialog(this);
+        });
+
+        $("#sourcesAdd").on('click', function(e) {
+            e.preventDefault();
+            addSource(this);
+        });
+
+        $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
+
+        $(".removeSource").on('click', function(e) {removeSource(this);});
+    }
 
 
 

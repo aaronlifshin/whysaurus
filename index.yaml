@@ -10,46 +10,16 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-- kind: Case
+- kind: Point
   properties:
   - name: current
   - name: dateEdited
-    direction: desc
-
-- kind: Case
-  properties:
-  - name: historical
-  - name: dateEdited
-    direction: desc
-
-- kind: Case
-  properties:
-  - name: url
-  - name: version
-    direction: desc
-
-- kind: Case
-  ancestor: yes
-  properties:
-  - name: dateEdited
-    direction: desc
-
-- kind: Case
-  ancestor: yes
-  properties:
-  - name: version
-    direction: desc
-
-- kind: Greeting
-  ancestor: yes
-  properties:
-  - name: date
     direction: desc
 
 - kind: Point
   properties:
   - name: current
-  - name: dateEdited
+  - name: ribbonTotal
     direction: desc
 
 - kind: Point

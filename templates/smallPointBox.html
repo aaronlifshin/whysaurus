@@ -1,0 +1,11 @@
+ <div class="pointSmall row-fluid">
+      <div class="row-fluid smallTitle">
+        <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+      </div>
+      <div class="row-fluid">
+          <span class="smallStat"><img src="/static/img/agreesIconSmall.png"/>&nbsp{{ point.voteTotal }}</span>
+          <span class="smallStat"><img src="/static/img/awardsIconSmall.png"/>{{ point.ribbonTotal }}</span>
+          <span class="smallStat"><img src="/static/img/sourcesIconSmall.png"/>&nbsp{{ point.sources|length }}</span>
+      </div>
+ </div>
+ 

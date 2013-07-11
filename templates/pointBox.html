@@ -1,0 +1,27 @@
+<div class="pointCard">
+   <div class="row-fluid">
+       <div class="span10">
+          <div class="pointTitle">
+            <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+          </div>
+      </div>             
+      <div class="span2">
+        {% if point.imageURL and point.imageURL.strip %}      
+            <img class="listDisplay" src="{{ point.summaryBigImage }}" />
+        {% endif %}            
+      </div>
+    </div>    
+      <div class="row-fluid">
+        <H6>
+          <span class="stat"><img src="/static/img/agreesIconBig.png"/>&nbsp{{ point.voteTotal }}</span>
+          <span class="stat"><img src="/static/img/awardsIconBig.png"/>{{ point.ribbonTotal }}</span>
+          <span class="stat"><img src="/static/img/sourcesIconBig.png"/>&nbsp{{ point.sources|length }}</span>
+        </H6>
+      </div>
+      <div class="row-fluid no-space">
+        <H6>
+          <span class="linkStat supportCount span6 pull-left">{{ point.supportingPointsRoots|length }} SUPPORTING</span>
+          <span class="linkStat counterCount span6 pull-right">{{ point.counterPointsRoots|length }} COUNTER </span>
+        </H6>
+      </div>                       
+</div>

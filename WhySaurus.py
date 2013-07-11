@@ -9,7 +9,7 @@ from models.whysaurususer import WhysaurusUser
 from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
     SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, AjaxSearch,\
-    PointHistory, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
+    PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
     AaronTask, DBIntegrityCheck
     
 
@@ -34,6 +34,7 @@ routes = [
     Route('/search', Search),
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),
+    Route('/getPointsList', GetPointsList),
     Route('/job/setEditorPickSort', SetEditorPickSort),
     Route('/job/updateSupportingPointsSchema', UpdateSupportingPointsSchema),
     Route('/job/AaronTask', AaronTask),

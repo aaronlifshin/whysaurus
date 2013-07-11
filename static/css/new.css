@@ -1,3 +1,7 @@
+.no-space [class*="span"] {
+    margin: 0 0 0 0 ;
+}
+
 body {
   padding-top: 52px;
   padding-bottom: 50px;
@@ -167,14 +171,11 @@ body {
 	border-width:1px;
 	border-color:#B9BBBD;
   	word-wrap: break-word;
-  	-webkit-box-shadow: -1px 1px 8px rgba(50, 50, 50, 0.5);
-	-moz-box-shadow:    -1px 1px 8px rgba(50, 50, 50, 0.5);
-	box-shadow:         -1px 1px 8px rgba(50, 50, 50, 0.5);
-	margin-bottom: 10px;
 	cursor:pointer;
+	padding:5px;
 }
 
-.pointCard:hover {
+.pointCard:hover, .pointSmall:hover {
 	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
 	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
@@ -188,25 +189,56 @@ body {
    background-image: url('/static/img/arrow_why_45_black.png');
 }
 
-.pointSmall.green:hover {
-	background-color:#0CCF00;
+.pointCard .pointTitle a {
+	color: #000;
+	font-size: 1.0625em;	
 }
 
-.pointSmall.yellow:hover {
-	background-color:#EBC821;
+.pointCard .stat {
+	color: #a9a9a9;
 }
 
-.pointSmall.red:hover {
-	background-color:#FF000B;
+.pointCard .linkStat {
+	font-size: 1em;
+    color: #929497;
+    height:18px;
+    min-height:0px;
 }
 
-.pointCard H5 {
-	padding: 10px 0;
-	margin: 0 0 0 0;
+.pointCard .counterCount {
+	text-align:right;
+	background-color: #ffe6e7;
 }
 
-.pointCard .text, .pointCard .title, .pointSmall .title  {
-	padding-left: 5px;
+.pointCard .supportCount {
+    background-color: #e3fde5;
+}
+
+.pointCard .pointTitle a:hover, .pointSmall .smallTitle a:hover {
+	text-decoration:none;
+}
+
+.pointSmall {
+	background-color: #f8f8f8;
+    border-style:solid;
+    border-width:1px;
+    border-color:#d7d7d7;
+    word-wrap: break-word;
+    cursor:pointer;
+    padding:5px;
+}
+
+.pointSmall .smallTitle a {
+	color: #6D6E70;
+	font-size: 0.75em;
+	line-height: 1.3125em;	
+}
+
+.pointSmall .smallStat {
+	font-family: "nimbus-sans-condensed",sans-serif;
+	font-weight: bold;
+    font-size: 0.75em;
+    color: #a9a9a9;
 }
 
 .yellow .score {
@@ -247,13 +279,6 @@ body {
 	color:#EBC821;
 }
 
-.pointSmall {
-	border-style:solid;
-	border-width:1px;
-	border-color:#B9BBBD;
-  	word-wrap: break-word;
-  	cursor:pointer;
-}
 
 .boxedElement {
 	border-style:solid;
@@ -272,9 +297,38 @@ body {
 
 .columnHeading {
 	font-weight:bold;
-	font-style:italic;
-	font-size:0.9375em;
-	color:#B9BBBD;
+	font-size:1.25em;
+	color:#5b5b5b;
+	font-family:"nimbus-sans-condensed",sans-serif;
+}
+
+.columnHeading button {
+    display: inline;
+    color: #B9BBBD;
+    border: 0px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 95% 0%;
+    font-style:normal;
+    font-size:20px;
+    font-weight:bold;    
+}
+
+.columnHeading .selectedTab {
+    color:#5b5b5b;
+}
+
+.columnHeading .tab {
+    padding-left: 0;
+    padding-right: .5em;
+}
+    
+
+
+.columnHeading button:hover {
+    background-color: #00ADEE;
+    color: white;
+    background-position: 95% 100%;
 }
 
 #voteLabel {

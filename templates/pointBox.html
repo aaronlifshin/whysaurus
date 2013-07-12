@@ -12,16 +12,28 @@
       </div>
     </div>    
       <div class="row-fluid">
-        <H6>
           <span class="stat"><img src="/static/img/agreesIconBig.png"/>&nbsp{{ point.voteTotal }}</span>
           <span class="stat"><img src="/static/img/awardsIconBig.png"/>{{ point.ribbonTotal }}</span>
           <span class="stat"><img src="/static/img/sourcesIconBig.png"/>&nbsp{{ point.sources|length }}</span>
-        </H6>
       </div>
       <div class="row-fluid no-space">
         <H6>
-          <span class="linkStat supportCount span6 pull-left">{{ point.supportingPointsRoots|length }} SUPPORTING</span>
-          <span class="linkStat counterCount span6 pull-right">{{ point.counterPointsRoots|length }} COUNTER </span>
+          <span class="linkStat 
+                    {% if point.onlyCounter %} counterColor 
+                    {% else %} supportColor 
+                    {% endif %}
+                pull-left" 
+                style="width:{% widthratio point.linksRatio 100 100 %}%">
+            {{ point.supportingPointsRoots|length }} SUPPORTING
+          </span>
+          <span class="linkStat                     
+                    {% if point.onlySupport  %} supportColor 
+                    {% else %} counterColor 
+                    {% endif %}
+                    text-right pull-right" 
+                style="width:{% widthratio point.reverseLinksRatio 100 100 %}%">
+            {{ point.counterPointsRoots|length }} COUNTER 
+          </span>
         </H6>
       </div>                       
 </div>

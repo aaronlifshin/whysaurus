@@ -60,6 +60,41 @@ class Point(ndb.Model):
     imageDescription = ndb.StringProperty(default='')
     imageAuthor = ndb.StringProperty(default='')
 
+    @property
+    def linksRatio(self):
+        sup = len(self.supportingPointsRoots)
+        cou = len(self.counterPointsRoots)
+        if sup == 0 and cou == 0:
+            return 50
+        elif cou == 0:
+            return 80
+        elif sup == 0:
+            return 20
+        else:
+            rat1 = sup/float(sup + cou)
+            if rat1 < .2:
+                return 20
+            elif rat1 > .8:
+                return 80
+            else:
+                return rat1*100
+            
+    @property
+    def reverseLinksRatio(self):
+        return 100 - self.linksRatio
+   
+    @property
+    def onlySupport(self):
+        sup = len(self.supportingPointsRoots)
+        cou = len(self.counterPointsRoots)
+        return sup > 0 and cou == 0
+    
+    @property
+    def onlyCounter(self):
+        sup = len(self.supportingPointsRoots)
+        cou = len(self.counterPointsRoots)
+        return sup == 0 and cou > 0
+      
     @classmethod
     def getByKey(cls, pointKey):
         return ndb.Key('Point', pointKey).get()

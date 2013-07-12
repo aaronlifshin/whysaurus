@@ -191,26 +191,34 @@ body {
 
 .pointCard .pointTitle a {
 	color: #000;
-	font-size: 1.0625em;	
+	font-size: 1.0625em;
+	line-height: 1.3125em;	
 }
 
 .pointCard .stat {
 	color: #a9a9a9;
+	font-family: "nimbus-sans-condensed", sans-serif;
+	font-weight: bold;
+	font-size:1.25em;
 }
 
 .pointCard .linkStat {
 	font-size: 1em;
     color: #929497;
     height:18px;
-    min-height:0px;
+    min-height:0px;   
+    display:block;
+    float:left;    
 }
 
-.pointCard .counterCount {
-	text-align:right;
+.text-right {
+    text-align:right;	
+}
+.pointCard .counterColor {
 	background-color: #ffe6e7;
 }
 
-.pointCard .supportCount {
+.pointCard .supportColor {
     background-color: #e3fde5;
 }
 

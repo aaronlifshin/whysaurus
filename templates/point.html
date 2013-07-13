@@ -41,7 +41,7 @@
     <div id="pointArea" class="boxedElement span12 dropShadow">
       <div id="scoreAndVotingSection" class="span1 pagination-centered">
                 <div id="blueRibbon" class="voteArea"
-                    data-ribbonvalue="{{ribbonValue}}">
+                    data-ribbonvalue="{{ribbonValue|lower}}">
                   <a class="pagination-centered
                     {% if ribbonValue %} awarded {% else %} notAwarded {% endif %}"
                     alt="Award Ribbon" src="/static/img/blueribbon.png"> </a>

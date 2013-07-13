@@ -222,7 +222,7 @@ function downVote() {
 }
 
 function changeRibbon() {
-    var newRibbonValue = !$("#blueRibbon").data("ribbonvalue");
+    var newRibbonValue = !$("#blueRibbon").data("ribbonvalue"); // "false" -> true
     $.ajaxSetup({
         url: "/setribbon",
         global: false,

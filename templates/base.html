@@ -23,14 +23,20 @@
           <div class="span2">
             <a href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
           </div>
-          <div class="span6">
+          <div class="span2">
+            <a id="CreatePoint" class="pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>
+          </div>
+          <div class="span4">
             <form id="searchArea" class="navbar-form pull-left" method="GET" action="/search" >
-              <input id="searchBox" type="text" name="searchTerms" placeholder="Search the Points Database..." results="0" />
+              <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
               <div class="searchIcon"></div>
             </form>
           </div>
-          <div class="span4">
-            <a id="CreatePoint" class="pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>
+          <div class="span4 headerLinks">
+            <div class="pull-left headerAboutHelp">
+              <a href="/about">ABOUT </a>
+              <a id="help" href="/help" >HELP </a> 
+            </div>
             <div class="pull-right">
     		  {% if user %}
                 <script> var loggedIn = true; </script>
@@ -46,9 +52,8 @@
                 </div>
     		  {% else %}
                 <script> var loggedIn = false; </script>
-                <div class="userControls">
-                  <span class="caret vertalignmiddle"></span>
-          		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Login with <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
+                <div class="headerAboutHelp"    >
+          		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SIGN IN </a>
                   <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
           		    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
           		    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
@@ -85,13 +90,12 @@
       <div id="footer" class="navbar navbar-fixed-bottom">
           <div class="container">
             <div class="row">
-                <div class="span1">
+                <div class="span3">
                   <img id="whiteDinoImage span1" class="pull-left" src="/static/img/icon_triceratops_white_47px.png"/>
+                  <div id="tagline" class="span2">Find Out Why</div>
                 </div>
-                  <div class="span3"> <h5 class="footerLink pull-left"><a href="/about">ABOUT </a> </h5>
-              	  <h5 class="footerLink pull-left"><a href="/help" >HELP </a> </h5>
+                  <div class="span1 offset1"> 
               	  <h5 class="footerLink pull-left"> <a href="/contact" >FEEDBACK </a> </h5></div>
-                  <div id="tagline" class="span4">Collecting the best explanations of why</div>
                   <div class="span3">
                     <div class="footerImage pull-left">
                       <a href="https://twitter.com/Whysaurus" target="_blank"><img id="twitterImage" src="/static/img/footer_icon_twitter_16pxHi_v12.png" /></a>
@@ -102,8 +106,9 @@
                     <div class="footerImage pull-left">
                       <a href="mailto:aaron@whysaurus.com" target="_blank"><img id="mailImage" src="/static/img/footer_icon_email_16pxHi_v12.png"/></a>
                     </div>
-                    <div id="footerCopyright" class="pull-right">(c) Whysaurus 2013 <br> All Rights Reserved</div>
                   </div>
+                  <div id="footerCopyright" class="pull-right">(c) Whysaurus 2013 <br> All Rights Reserved</div>
+                  
              </div>
           </div>
        </div>

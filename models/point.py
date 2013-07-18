@@ -24,11 +24,19 @@ def makeURL(sourceStr):
     # Check if it already exists
     pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
     pointRoot = pointRootQuery.get()
+    
     if pointRoot:
         # Existing URL notes how many URLs+number exist for that URL
         pointRoot.numCopies = pointRoot.numCopies + 1
         newUrl = newUrl + str(pointRoot.numCopies)
         pointRoot.put()
+    else:
+        redirectQuery = RedirectURL.gql("WHERE fromURL= :1", newUrl)
+        redirectURL = redirectQuery.get()
+        if redirectURL:
+            redirectURL.numCopies = redirectURL.numCopies + 1
+            newUrl = newUrl + str(redirectURL.numCopies)
+            redirectURL.put()        
     return newUrl
 
 class Point(ndb.Model):

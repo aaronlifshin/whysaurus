@@ -3,6 +3,7 @@ from google.appengine.ext import ndb
 class RedirectURL(ndb.Model):
     fromURL = ndb.StringProperty()
     toURL = ndb.StringProperty()
+    numCopies = ndb.IntegerProperty(default=0)
 
     @staticmethod
     def getByFromURL(url):

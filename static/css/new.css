@@ -25,10 +25,11 @@ body {
 }
 
 .grayBackground {
-	background:#EFEFEF;
+	background:#F0F0F0;
 }
 
 #searchArea{
+	left:-20px;
 	height:52px;
 	width:100%;
 	position:relative; /* For placing the magnifying glass */
@@ -38,10 +39,10 @@ body {
 	width:90%;
 	margin-top:10px;
 	padding-right:40px;
-	border: 2px solid #000000;
-	-webkit-border-radius: 8px;
-  	-moz-border-radius: 8px;
-  	border-radius: 8px; /* AL CHANGED */
+	border: 1px solid #000000;
+	-webkit-border-radius: 0px;
+  	-moz-border-radius: 0px;
+  	border-radius: 0px; /* AL CHANGED */
   	font-size: 16px;
 
 }
@@ -49,15 +50,45 @@ body {
 #searchArea .searchIcon {
 	position: absolute;
 	top: 17px;
-	right: 10px;
-	height: 25px;
+	right: -20px;
+	height: 16px;
 	width:25px;
-	background-image: url("/static/img/icon_magnifyingGlass_grey_19px.png");
+	background-image: url("/static/img/icon_magnifyingGlass.png");
 	background-repeat: no-repeat;
 }
 
 #searchArea .searchIcon:hover  {
-    background-image: url("/static/img/icon_magnifyingGlass_black_19px.png");
+    background-image: url("/static/img/icon_magnifyingGlass.png");
+    background-position: 0 -16px;
+}
+
+
+#searchBox::-webkit-input-placeholder {
+	font-size: 0.9375em;
+	font:Georgia, Garamond, serif;
+	color:#6D6E70;
+	font-style: italic;
+}
+
+#searchBox:-moz-placeholder { /* Firefox 18- */
+    font-size: 0.9375em;
+    font:Georgia, Garamond, serif;
+    color:#6D6E70;
+    font-style: italic;   
+}
+
+#searchBox::-moz-placeholder {  /* Firefox 19+ */
+    font-size: 0.9375em;
+    font:Georgia, Garamond, serif;
+    color:#6D6E70;
+    font-style: italic;
+}
+
+#searchBox:-ms-input-placeholder {  
+    font-size: 0.9375em;
+    font:Georgia, Garamond, serif;
+    color:#6D6E70;
+    font-style: italic;  
 }
 
 #twitterImage {
@@ -147,17 +178,35 @@ body {
 .topSpace {
 	height:42px;
 }
-.userControls {
-	font-style: italic;
-	font-size: 0.9375em;
+
+.headerLinks {
+    size:1.25em;
+    font-family: "nimbus-sans-condensed", sans-serif;
+    color:black;
+    font-weight: bold;
+    
+}
+
+.headerAboutHelp {
+    margin-top:16px;
+    display:block;
+}
+
+.headerAboutHelp #help {
+	margin-left:5px;
+}
+
+
+.headerAboutHelp a:hover{
+    color:#00ADEE;
+    text-decoration:none;
+}
+
+.headerLinks a {
 	color:black;
 }
 
-.userControls a {
-	color:black;
-}
-
-.userControls #avatar {
+.headerLinks #avatar {
 	height:48px;
 	margin-top:2px;
 }

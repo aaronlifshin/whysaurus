@@ -1,6 +1,4 @@
-function showAlert(alertHTML) {
-    $('.topSpace').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
-}
+
 
 function searchDialogAlert(alertHTML) {
     $('#linkedPointSearchDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
@@ -521,8 +519,8 @@ function setUpMenuAreas() {
         $("#pointDialog").modal('show');
     });
     
-    $( "[name=supporting_searchForPoint]" ).on('click', function(e){
-        $("#selectLinkedPointSearch").data("linkType", "supporting");
+    $( "[name$=_searchForPoint]" ).on('click', function(e){
+        $("#selectLinkedPointSearch").data("linkType", $(this).data('linktype'));
         $("#linkedPointSearchDialog").modal('show');
     });
 }

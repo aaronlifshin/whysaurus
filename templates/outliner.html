@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+    <script type="text/javascript" src="/static/js/outliner.js"></script>
+
+<div id="content">
+    <div class="row">
+        <button id="saveOutline">Save All</button> 
+        <div>Enter: create; Tab: indent; Shift-Tab: unindent; 
+        Delete: remove point (if title deleted)</div>
+    </div>
+    <div class="row span6">
+        <input class="outlinerInput " class="outlinerInput" data-level="0" data-ref="0"/>        
+    </div>
+    
+</div>
+
+{% endblock %}

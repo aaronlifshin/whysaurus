@@ -1,6 +1,6 @@
 import logging
 import constants
-from simpleauth import SimpleAuthHandler
+from lib.simpleauth import SimpleAuthHandler
 from whysaurusrequesthandler import WhysaurusRequestHandler
 
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):

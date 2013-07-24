@@ -1,6 +1,10 @@
 var CONST_EDITOR_DEFAULT_TEXT = 'Add the description here...';
 var MAX_TITLE_CHARS = 140;
 
+function showAlert(alertHTML) {
+    $('#mainContainer').prepend($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
+}
+
 function validateURL(textval) {
      var urlregex = new RegExp(
            "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
@@ -291,6 +295,29 @@ function loadPointList(listType, areaToLoad, selectedTab) {
     }); 
 }
 
+function getSearchResults(searchTerms) {
+  	$.ajaxSetup({
+		url: "/search",
+		global: false,
+		type: "POST",
+		data: {
+			'searchTerms': searchTerms,		
+		},
+		success: function(data) {
+            obj = JSON.parse(data);
+		    if (obj.result == 0) {
+		        showAlert("No results found for: <strong>" + obj.searchString + "</strong>");
+		    } else {
+		        $("#mainContainer").children().remove();
+		        $("#mainContainer").append(obj.html);
+		        makePointsCardsClickable();	                
+		    }
+		},
+	});
+	$.ajax();
+}
+
+
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
   filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
@@ -378,16 +405,15 @@ $(document).ready(function() {
       } */
   });
 
-
   $("#searchBox").keyup(function(event) {
     if (event.keyCode == 13) {
-      window.location.href = "/search?searchTerms=" + $("#searchBox", $("#searchArea")).val();
+        getSearchResults($("#searchBox").val());
     }
   });
-
+  
   $(".searchIcon", $("#searchArea")).click(function(event) {
     if ($("#searchBox").val() != "") {
-      window.location.href = "/search?searchTerms=" + $("#searchBox", $("#searchArea")).val();
+        getSearchResults($("#searchBox").val());
     }
   });
 

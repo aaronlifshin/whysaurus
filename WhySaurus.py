@@ -1,4 +1,3 @@
-import fix_path
 import constants
 
 from webapp2 import Route, WSGIApplication
@@ -10,7 +9,8 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
     SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, AjaxSearch,\
     PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
-    AaronTask, DBIntegrityCheck
+    AaronTask, RebuildSearchIndex, DBIntegrityCheck, Outliner, AddTree
+    
     
 
 # Map URLs to handlers
@@ -35,9 +35,12 @@ routes = [
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),
     Route('/getPointsList', GetPointsList),
+    Route('/outliner', Outliner),
+    Route('/addTree', AddTree),
     Route('/job/setEditorPickSort', SetEditorPickSort),
     Route('/job/updateSupportingPointsSchema', UpdateSupportingPointsSchema),
     Route('/job/AaronTask', AaronTask),
+    Route('/job/RebuildSearchIndex', RebuildSearchIndex),
     Route('/job/DBIntegrityCheck', DBIntegrityCheck),
     # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
     Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),  # , handler_method='logout', name='logout'),

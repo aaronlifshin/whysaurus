@@ -48,8 +48,8 @@ class Point(ndb.Model):
     )  # This is Text not String because I do not want it indexed
     title = ndb.StringProperty()
     dateEdited = ndb.DateTimeProperty(auto_now_add=True)
-    version = ndb.IntegerProperty()
-    supportingPoints = ndb.KeyProperty(repeated=True)
+    version = ndb.IntegerProperty(default=1)
+    # supportingPoints = ndb.KeyProperty(repeated=True) # DEPRECATED
     supportingPointsRoots = ndb.KeyProperty(repeated=True)
     supportingPointsLastChange = ndb.KeyProperty(repeated=True)
     counterPointsRoots = ndb.KeyProperty(repeated=True)
@@ -57,9 +57,9 @@ class Point(ndb.Model):
     sources = ndb.KeyProperty(repeated=True)
     current = ndb.BooleanProperty()
     url = ndb.StringProperty()
-    upVotes = ndb.IntegerProperty()
-    downVotes = ndb.IntegerProperty()
-    voteTotal = ndb.IntegerProperty()
+    upVotes = ndb.IntegerProperty(default=1)
+    downVotes = ndb.IntegerProperty(default=0)
+    voteTotal = ndb.IntegerProperty(default=1)
     ribbonTotal = ndb.IntegerProperty(default=0)
     imageURL = ndb.StringProperty(default='')
     summaryMediumImage = ImageUrl('SummaryMedium')
@@ -208,6 +208,57 @@ class Point(ndb.Model):
         return Point.transactionalCreate(pointRoot,title, content, summaryText, user,
                             imageURL, imageAuthor, imageDescription, sources)
 
+    @staticmethod
+    def createTree(dataForPointTree, user):
+        for p in dataForPointTree:
+            newUrl = makeURL(p['title'])
+            p['url'] = newUrl
+        return Point.transactionalCreateTree(dataForPointTree, user)
+
+    @staticmethod
+    @ndb.transactional(xg=True)
+    def transactionalCreateTree(dataForPointTree, user):
+        outlineRoot = OutlineRoot()
+        outlineRoot.put()
+        # ITERATE THE FIRST TIME AND CREATE ALL POINT ROOTS WITH BACKLINKS
+        for p in dataForPointTree:
+            pointRoot = PointRoot(parent=outlineRoot.key)
+            pointRoot.url = p['url']
+            pointRoot.numCopies = 0
+            pointRoot.editorsPick = False
+            pointRoot.viewCount = 1
+            if 'parentIndex' in p:
+                parentPointRoot = dataForPointTree[p['parentIndex']]['pointRoot']
+                pointRoot.pointsSupportedByMe = [parentPointRoot.key]
+            pointRoot.put()
+            p['pointRoot'] = pointRoot
+            point = Point(parent=pointRoot.key)
+            point.title = p['title']
+            point.url = pointRoot.url
+            point.current = True
+            point.authorName = user.name
+            point.put()
+            p['point'] = point
+            p['pointRoot'].current = p['point'].key            
+            pointRoot.put()
+
+                      
+        # ITERATE THE SECOND TIME ADD SUPPORTING POINTS
+        for p in dataForPointTree:
+            if 'parentIndex' in p:
+                linkP = dataForPointTree[p['parentIndex']]['point']
+                linkP.supportingPointsRoots = linkP.supportingPointsRoots + [p['pointRoot'].key] \
+                    if linkP.supportingPointsRoots else [p['pointRoot'].key]
+                linkP.supportingPointsLastChange = linkP.supportingPointsLastChange + [p['point'].key] \
+                    if linkP.supportingPointsRoots else [p['point'].key]
+
+        # ITERATE THE THIRD TIME AND WRITE POINTS WITH ALL SUPPORTING POINTS 
+        for p in dataForPointTree:
+            p['point'].put()
+        
+        return dataForPointTree[0]['point'], dataForPointTree[0]['pointRoot']
+
+                        
 
     def shortJSON(self):
         return {"title":self.title,
@@ -694,4 +745,9 @@ class PointRoot(ndb.Model):
         # If there is already a redirector object going to this URL, update it
         RedirectURL.updateRedirects(oldURL, newURL)
         return newURL
+    
+# A dummy class to create an entity group
+class OutlineRoot(ndb.Model):
+    pass
+
         

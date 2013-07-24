@@ -22,8 +22,11 @@ __all__ = [
 	'SetEditorPickSort',
 	'UpdateSupportingPointsSchema',
 	'AaronTask',
+	'RebuildSearchIndex',
 	'DBIntegrityCheck',
-	'SetRibbon'
+	'SetRibbon',
+	'Outliner',
+	'AddTree'
 ]
 
 from mainpage import MainPage
@@ -48,6 +51,14 @@ from authhandler import AuthHandler
 from seteditorpicksort import SetEditorPickSort
 from updateSupportingPointsSchema import UpdateSupportingPointsSchema
 from aaronTask import AaronTask
+from rebuildSearchIndex import RebuildSearchIndex
 from dbIntegrityCheck import DBIntegrityCheck
+from outliner import Outliner
+from addtree import AddTree
+
+
+
+
+
 
 

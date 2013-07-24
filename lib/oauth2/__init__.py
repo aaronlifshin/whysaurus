@@ -29,7 +29,7 @@ import random
 import urlparse
 import hmac
 import binascii
-import httplib2
+from lib import httplib2
 
 try:
     from urlparse import parse_qs

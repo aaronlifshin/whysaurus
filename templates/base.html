@@ -26,11 +26,9 @@
           <div class="span2">
             <a id="CreatePoint" class="pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>
           </div>
-          <div class="span4">
-            <form id="searchArea" class="navbar-form pull-left" method="GET" action="/search" >
+          <div id="searchArea" class="span4">
               <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
               <div class="searchIcon"></div>
-            </form>
           </div>
           <div class="span4 headerLinks">
             <div class="pull-left headerAboutHelp">
@@ -86,7 +84,7 @@
         </div>
       </div>
   {% endif %}
-  <div class="container">{% block mainPageContent %} {% endblock %}</div>
+  <div class="container" id="mainContainer">{% block mainPageContent %} {% endblock %}</div>
       <div id="footer" class="navbar navbar-fixed-bottom">
           <div class="container">
             <div class="row">
@@ -127,5 +125,5 @@
     services_compact: "google_plusone,tumblr,reddit,digg,linkedin"
   };
 </script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51ca59d108efe145"></script>
+<!-- <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51ca59d108efe145"></script> -->
 </html>

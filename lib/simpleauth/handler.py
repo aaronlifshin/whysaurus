@@ -29,7 +29,7 @@ except ImportError:
 # from lxml import etree
 
 # it's a OAuth 1.0 spec even though the lib is called oauth2
-import oauth2 as oauth1
+import lib.oauth2 as oauth1
 
 # users module is needed for OpenID authentication.
 from google.appengine.api import urlfetch, users

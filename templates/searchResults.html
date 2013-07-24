@@ -1,68 +1,8 @@
-{% extends "base.html" %}
-
-{% block mainPageContent %}
-  <div id="content">
      <div class="row">
         <div class="span6 offset3">
 		<H2>Search results for: "{{searchString}}"</H2>
 		{% for point in searchResults %} 		
-          <div class="{% if point.voteTotal >= thresholds.green %}
-                  green
-                {% else %}
-                {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
-                {% endif %} pointSmall row-fluid" id="point_{{point.url}}">
-              <div class="span8 title"><H5>
-              <span class="score">{{ point.voteTotal|floatformat:"0" }}</span>
-                <a href="/point/{{ point.url }}">{{ point.title|escape }}</a></H5>
-              </div>
-              <div class="span2">
-                      {% if point.imageURL and point.imageURL.strip %}
-                          <img class="smallDisplay" src="{{ point.summaryMediumImage }}" />
-                      {% endif %}
-              </div>
-              <div class="span2 grayBack">
-                   <a class="navWhy pull-right" id="editPoint_New_{{ point.url }}" alt="Why {{ point.title|escape }}" href="/point/{{ point.url }}" src="/static/img/arrow_why_A_grey.png"></a>
-              </div>
-          </div>
+            {% include 'pointBox.html' %}            
 		{% endfor %}
         </div>
 	</div>
-  </div>
-  
-		
-		<script>
-		function selectPoint(pointUrl, parentPointUrl){
-		  	$.ajaxSetup({
-				   url: "/linkPoint",
-				   global: false,
-				   type: "POST",
-					 data: {
-						'supportingPointURL': pointUrl,
-						'parentPointURL': parentPointUrl
-						},
-						success: function(data){ 
-						  obj = JSON.parse(data);
-						  if (obj.result == true) {
-          			window.location.href="/point/" + "{{parentPoint.url}}"							  
-              } else {
-                alert(obj.result);
-              }
-						}
-				 });
-				$.ajax();
-		}
-			
-		function goToPoint(pointUrl) {
-			window.location.href="/point/" + pointUrl
-		}
-        $(document).ready(function() {  
-            $('[id^="point_"]').click(function() {
-                window.location.href = $(".navWhy", $(this)).attr('href');
-            });
-  		    $( "[id^=why]" ).button();
-  		    $( "[id^=why]" ).css("float","right");	
-        });	
-		</script>
-
-    
-{% endblock %}

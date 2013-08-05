@@ -299,8 +299,8 @@ function validateInputs() {
     titleFields  = $('.outlinerInput').each(function(i, obj){
         nextField = getNextTitleField(this);
         if (nextField) {
-            if (Math.abs($(this).data('level') - $(nextField).data('level')) >= 2) {
-                showErrorAlert('Cannot save: two-level gap between supporting points between rows ' + (i+1) + ' and ' + (i+2));  
+            if ($(nextField).data('level') - $(this).data('level') >= 2) {
+                showErrorAlert('Cannot save: too large a gap between supporting points between rows ' + (i+1) + ' and ' + (i+2));  
                 gapTooBig = true;                          
                 return false;
             }

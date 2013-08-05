@@ -6,13 +6,13 @@ from models.point import Point
 from models.source import Source
 from models.whysaurusexception import WhysaurusException
 
-def processTreeArrays(titles, levels, dataRefs):
+def processTreeArrays(titles, levels, dataRefs, furtherInfos, sources):
     pointsArray = []
     parentIndex = None
     parentLevel = None
     i = 0
-    for title, level, dataRef in zip(titles, levels, dataRefs):
-        pd = {'title': title, 'level': int(level), 'dataRef': int(dataRef)}
+    for title, level, dataRef, furtherInfo in zip(titles, levels, dataRefs, furtherInfos):
+        pd = {'title': title, 'level': int(level), 'dataRef': int(dataRef), 'furtherInfo': furtherInfo}
         if parentIndex is None: # INITIAL SET
             parentIndex = i
             parentLevel = pd['level']
@@ -20,13 +20,19 @@ def processTreeArrays(titles, levels, dataRefs):
             parentIndex = i-1
             parentLevel = parentLevel + 1
         elif pd['level'] <= parentLevel: # UNINDENT 
-            for j in range(i-1,-1,-1): # THIS GOES BACK TO 0
+            for j in range(i-1,-1,-1): # THIS LOOPS BACK TO 0
                 if pointsArray[j]['level'] < pd['level']:                    
                     parentIndex = j
                     parentLevel = pointsArray[j]['level']                      
                     break;               
         if pd['level'] != 0:
             pd['parentIndex'] = parentIndex
+        pSources = []
+        if sources:
+            for source in sources:
+                if source['ref'] == pd['dataRef']:
+                    pSources = pSources + [source]
+        pd['sources'] = pSources
         pointsArray = pointsArray + [pd]
         i = i + 1
     return pointsArray
@@ -38,11 +44,9 @@ class AddTree(AuthHandler):
         titles = json.loads(self.request.get('titles'))
         levels = json.loads(self.request.get('levels'))
         dataRefs = json.loads(self.request.get('dataRefs'))
-        pointsData = processTreeArrays(titles, levels, dataRefs)
-      
-        # sourcesURLs=json.loads(self.request.get('sourcesURLs'))
-        # sourcesNames=json.loads(self.request.get('sourcesNames'))
-        # rawSources = Source.constructFromArrays(sourcesURLs, sourcesNames)
+        furtherInfos = json.loads(self.request.get('furtherInfos'))
+        sources = json.loads(self.request.get('sources'))
+        pointsData = processTreeArrays(titles, levels, dataRefs, furtherInfos, sources)
         
         if user:
             try:

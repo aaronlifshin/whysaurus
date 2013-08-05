@@ -157,7 +157,7 @@ class Point(ndb.Model):
     @ndb.transactional(xg=True)
     def transactionalCreate(pointRoot, title, content, summaryText, user,
                             imageURL=None, imageAuthor=None, 
-                            imageDescription=None, sources=None):
+                            imageDescription=None, sourceURLs=None, sourceNames=None):
         pointRoot.put()
         point = Point(parent=pointRoot.key)
         point.title = title
@@ -174,6 +174,8 @@ class Point(ndb.Model):
         point.imageURL = imageURL
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
+        point.put() 
+        sources = Source.constructFromArrays(sourceURLs, sourceNames, point.key)
         if sources:
             sourceKeys = []
             for source in sources:
@@ -192,7 +194,8 @@ class Point(ndb.Model):
 
     @staticmethod
     def create(title, content, summaryText, user, backlink=None, linktype="",
-               imageURL=None, imageAuthor=None, imageDescription=None, sources=None):
+               imageURL=None, imageAuthor=None, imageDescription=None, 
+               sourceURLs=None, sourceNames=None):
         newUrl = makeURL(title)
         pointRoot = PointRoot()
         pointRoot.url = newUrl
@@ -206,7 +209,7 @@ class Point(ndb.Model):
                 pointRoot.pointsCounterredByMe = [backlink]
                 
         return Point.transactionalCreate(pointRoot,title, content, summaryText, user,
-                            imageURL, imageAuthor, imageDescription, sources)
+                            imageURL, imageAuthor, imageDescription, sourceURLs, sourceNames )
 
     @staticmethod
     def createTree(dataForPointTree, user):
@@ -235,9 +238,11 @@ class Point(ndb.Model):
             point = Point(parent=pointRoot.key)
             point.title = p['title']
             point.url = pointRoot.url
+            point.content = p['furtherInfo']
             point.current = True
             point.authorName = user.name
             point.put()
+            user.addVote(point, voteValue=1, updatePoint=False)
             p['point'] = point
             p['pointRoot'].current = p['point'].key            
             pointRoot.put()
@@ -252,9 +257,19 @@ class Point(ndb.Model):
                 linkP.supportingPointsLastChange = linkP.supportingPointsLastChange + [p['point'].key] \
                     if linkP.supportingPointsRoots else [p['point'].key]
 
-        # ITERATE THE THIRD TIME AND WRITE POINTS WITH ALL SUPPORTING POINTS 
+        # ITERATE THE THIRD TIME AND WRITE POINTS WITH ALL SUPPORTING POINTS AND SOURCE KEYS 
         for p in dataForPointTree:
+            if p['sources']:
+                sourceKeys = []
+                for s in p['sources']:
+                    source = Source(parent=p['point'].key)
+                    source.url = s['sourceURL']
+                    source.name = s['sourceTitle']
+                    source.put()
+                    sourceKeys = sourceKeys + [source.key]
+                p['point'].sources = sourceKeys
             p['point'].put()
+
         
         return dataForPointTree[0]['point'], dataForPointTree[0]['pointRoot']
 

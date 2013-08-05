@@ -5,10 +5,10 @@ class Source(ndb.Model):
     name = ndb.StringProperty()
 
     @staticmethod
-    def constructFromArrays(urls, titles):
+    def constructFromArrays(urls, titles, parentPointKey):
         sources = []
         for url, title in zip(urls, titles):
-            newSource = Source()
+            newSource = Source(parent=parentPointKey)
             newSource.url = url
             newSource.name = title
             sources = sources + [newSource]

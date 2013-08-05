@@ -5,6 +5,10 @@ function showAlert(alertHTML) {
     $('#mainContainer').prepend($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }
 
+function showErrorAlert(alertHTML) {
+    $('#mainContainer').prepend($('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
+}
+
 function validateURL(textval) {
      var urlregex = new RegExp(
            "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
@@ -49,6 +53,35 @@ function getWindowHeight() {
     height = document.body.clientHeight;
 
   return height;
+}
+
+function getCaretPosition (oField) {
+
+    // Initialize
+    var iCaretPos = 0;
+
+    // IE Support
+    if (document.selection) {
+
+      // Set focus on the element
+      oField.focus ();
+
+      // To get cursor position, get empty selection range
+      var oSel = document.selection.createRange ();
+
+      // Move selection start to 0 position
+      oSel.moveStart ('character', -oField.value.length);
+
+      // The caret position is selection length
+      iCaretPos = oSel.text.length;
+    }
+
+    // Firefox support
+    else if (oField.selectionStart || oField.selectionStart == '0')
+      iCaretPos = oField.selectionStart;
+
+    // Return results
+    return (iCaretPos);
 }
 
 
@@ -229,8 +262,7 @@ function removeSource(clickedElement) {
         $('#pointDialog').data('sourcesToRemove', sourcesToRemove);
     }
     
-    $(clickedElement).parent().remove();
-    
+    $(clickedElement).parent().remove();    
 }
 
 function addSource(clickedElement) {

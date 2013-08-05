@@ -17,7 +17,7 @@ class EditPoint(AuthHandler):
             if self.request.get('sourcesNames') else None
         sourcesToRemove=json.loads(self.request.get('sourcesToRemove')) \
             if self.request.get('sourcesToRemove') else None      
-        sources = Source.constructFromArrays(sourcesURLs, sourcesNames)
+        sources = Source.constructFromArrays(sourcesURLs, sourcesNames, oldPoint.key)
 
         newVersion = oldPoint.update(
             newTitle=self.request.get('title'),
@@ -28,8 +28,7 @@ class EditPoint(AuthHandler):
             imageAuthor=self.request.get('imageAuthor'),
             imageDescription=self.request.get('imageDescription'),
             sourcesToAdd=sources,
-            sourceKeysToRemove= sourcesToRemove
-            
+            sourceKeysToRemove= sourcesToRemove            
         )
         if newVersion:
             sources = newVersion.getSources()           

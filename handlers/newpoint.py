@@ -15,7 +15,6 @@ class NewPoint(AuthHandler):
             else:
                 sourcesURLs=json.loads(self.request.get('sourcesURLs')) if self.request.get('sourcesURLs') else None
                 sourcesNames=json.loads(self.request.get('sourcesNames')) if self.request.get('sourcesNames') else None
-                rawSources = Source.constructFromArrays(sourcesURLs, sourcesNames)
                 newPoint, newPointRoot = Point.create(
                     title=self.request.get('title'),
                     content=self.request.get('content'),
@@ -24,7 +23,8 @@ class NewPoint(AuthHandler):
                     imageURL=self.request.get('imageURL'),
                     imageAuthor=self.request.get('imageAuthor'),
                     imageDescription=self.request.get('imageDescription'),
-                    sources=rawSources)
+                    sourceURLs=sourcesURLs,
+                    sourceNames=sourcesNames)
                 if newPoint:
                     resultJSON = json.dumps({'result': True, 
                                      'pointURL': newPoint.url,

@@ -13,7 +13,6 @@ class AddSupportingPoint(AuthHandler):
         linkType = self.request.get('linkType')
         sourcesURLs=json.loads(self.request.get('sourcesURLs'))
         sourcesNames=json.loads(self.request.get('sourcesNames'))
-        rawSources = Source.constructFromArrays(sourcesURLs, sourcesNames)
         if user:
             newLinkPoint, newLinkPointRoot = Point.create(
                 title=self.request.get('title'),
@@ -25,7 +24,8 @@ class AddSupportingPoint(AuthHandler):
                 imageURL=self.request.get('imageURL'),
                 imageAuthor=self.request.get('imageAuthor'),
                 imageDescription=self.request.get('imageDescription'),
-                sources=rawSources)
+                sourceURLs=sourcesURLs,
+                sourceNames=sourcesNames)
             try:
                 newLinks = [{'pointRoot':newLinkPointRoot,
                             'pointCurrentVersion':newLinkPoint,

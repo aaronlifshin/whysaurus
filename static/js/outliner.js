@@ -151,10 +151,10 @@ function outlinerKeyup(event) {
         if (forFocus) {
             forFocus.focus(); 
         }
-    } else {
-        var ref =  $(this).data('ref');
-        $("#outliner_Title_" + ref).val($(this).val());
-    }
+    } 
+    var ref =  $(this).data('ref');
+    $("#outliner_Title_" + ref).val($(this).val());
+
 }
 
 function outlinerKeydown(event) {

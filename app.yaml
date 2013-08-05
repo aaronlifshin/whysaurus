@@ -6,6 +6,8 @@ threadsafe: true
 
 builtins:
 - remote_api: on
+- appstats: on
+
 
 handlers:
 - url: /favicon\.ico
@@ -45,3 +47,4 @@ libraries:
 # Trying to get ndb
 - name: webapp2
   version: latest
+  

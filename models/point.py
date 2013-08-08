@@ -246,8 +246,8 @@ class Point(ndb.Model):
             p['point'] = point
             p['pointRoot'].current = p['point'].key            
             pointRoot.put()
-
-                      
+            point.addToSearchIndexNew()
+                    
         # ITERATE THE SECOND TIME ADD SUPPORTING POINTS
         for p in dataForPointTree:
             if 'parentIndex' in p:

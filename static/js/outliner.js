@@ -16,7 +16,9 @@ function newInput(level) {
 
 function newDetailArea(reference) {
     newHtml = "<div id=\"outliner_detailArea_" + reference + "\" data-ref=\"" + reference + "\">" +
-        "<div>Add Details To Your Point Here</div>" +      
+        "<div>Add Details To Your Point Here</div>" +   
+        "<div class=\"pull-right\" id=\"pointInput_" + reference +"_charNum\" + data-ref=\""+ reference +
+        "\">140 characters remaining</div>" +                                       
         "<textarea class=\"repeatTitle\" id=\"outliner_Title_" + reference +  
             "\" data-ref=\"" + reference +  "\"></textarea>" +
         "<div>Additional Text</div>" +
@@ -154,7 +156,7 @@ function outlinerKeyup(event) {
     } 
     var ref =  $(this).data('ref');
     $("#outliner_Title_" + ref).val($(this).val());
-
+    setCharNumText(event.target);
 }
 
 function outlinerKeydown(event) {
@@ -280,17 +282,21 @@ function saveMainPoint() {
 }
 
 function validateInputs() {
-    var emptyTitle = false;
+    var titleError = false;
     
     // All titles must exist
     titleFields  = $('.outlinerInput').each(function(i, obj){
         if ($(this).val() == '') {
             showErrorAlert('Cannot save: empty title at row ' + (i+1)); 
-            emptyTitle = true;                                       
+            titleError = true;                                       
+        }        
+        if ($(this).val().length > MAX_TITLE_CHARS) {
+            showErrorAlert('Please do not exceed 140 characters for the title in row '  + (i+1));
+            titleError = true;                                       
         }
     });
     
-    if(emptyTitle) {
+    if(titleError) {
         return false;
     }
     

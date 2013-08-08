@@ -14,6 +14,34 @@ from google.appengine.api import search
 
 class AaronTask(AuthHandler):
     def get(self):
+        """
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        REBUILD SEARCH INDEX 
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+        """   
+        query = PointRoot.query()
+        bigMessage = []
+        i = 0
+        doc_index = search.Index(name="points")
+
+        for pointRoot in query.iter():                     
+            doc = doc_index.get(pointRoot.key.urlsafe())
+            if doc is None:
+                pointRoot.getCurrent().addToSearchIndexNew()
+                bigMessage.append('Added %s' % pointRoot.url)
+            i = i + 1
+
+        bigMessage.append("Insertions made: %d" % i)
+
+        template_values = {
+            'message': bigMessage
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values))
+        """
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        REMOVE SOME BAD LINKS 
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
         bigMessage = ['STARTING THE WORK']
         query = PointRoot.query()
         i = 0
@@ -32,7 +60,6 @@ class AaronTask(AuthHandler):
         self.response.out.write(template.render(path, template_values))               
 
                     
-        """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         CLEAR FROM SEARCH INDEX ANYTHING THAT NO LONGER HAS A MATCHING POINT
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                    

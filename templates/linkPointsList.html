@@ -57,7 +57,7 @@
                     {% endif %} pointSmall row-fluid" id="{{linkType}}Point_{{point.url}}">
                     <div class="span8 title"><H5>
                       <span class="score">{{ point.voteTotal }}</span>
-                      <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
+                      {{ point.title|escape }}
                     </H5> </div>
                     <div class="span2">
                       {% if point.imageURL and point.imageURL.strip %}

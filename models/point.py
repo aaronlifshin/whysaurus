@@ -1,5 +1,6 @@
 import re
 import logging
+import math
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
@@ -85,7 +86,7 @@ class Point(ndb.Model):
             elif rat1 > .8:
                 return 80
             else:
-                return rat1*100
+                return math.floor(rat1*100) # Django widthratio requires integers
             
     @property
     def reverseLinksRatio(self):

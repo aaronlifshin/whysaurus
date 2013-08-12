@@ -155,7 +155,7 @@
   <div id="disqus_thread" class="row tabbedArea">
     		<script type="text/javascript">
     		    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    		    var disqus_shortname = 'whysaurus-beta'; // required: replace example with your forum shortname
+    		    var disqus_shortname = 'whysaurus'; // required: replace example with your forum shortname
     			var disqus_developer = {{devInt}};
     			var disqus_identifier = '{{point.url}}';
     			var disqus_title = '{{point.title}}';
@@ -183,4 +183,17 @@
       var thresholdGreen = {{ thresholds.green }};
       var thresholdRed = {{ thresholds.red }};
       </script>
+      <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'whysaurus'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+    </script>
+    
 {% endblock %}

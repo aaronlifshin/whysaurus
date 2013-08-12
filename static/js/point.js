@@ -370,7 +370,7 @@ function pointListAppend(linkType, point, numLinkPoints) {
     // The vote total and title
     titleDiv = jQuery('<div/>',{class:"span8 title"} );
 	titleDiv.html("<h5><span class=\"score\">" + point.voteTotal +
-	              "</span> <a href=\"/point/" + point.url + "\"> " + point.title + "</a></H5>");
+	              "</span>" + point.title + "</H5>");
 
     // The image div
     imageDiv = jQuery('<div/>',{class:"span2"} );
@@ -396,8 +396,7 @@ function pointListAppend(linkType, point, numLinkPoints) {
     appendAfter.append(pointDiv);
     setPointListHeader(linkType);
     linkPointControlsInitialState();
-    makePointAreasClickable();
-
+    makeLinkedPointsClickable();
 }
 
 
@@ -525,7 +524,7 @@ function setUpMenuAreas() {
     });
 }
 
-function makePointAreasClickable() {
+function makeLinkedPointsClickable() {
     $('[id^="supportingPoint_"]').click(function() {
         if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
           window.location.href = $(".navWhy", $(this)).attr('href');
@@ -574,7 +573,7 @@ $(document).ready(function() {
         $( "#blueRibbon" ).click(function() {changeRibbon();});
         
 
-        makePointAreasClickable();
+        makeLinkedPointsClickable();
         setUpMenuAreas();
 
         $('#linkedPointSearchDialog').on('hidden', function () {
@@ -634,5 +633,21 @@ $(document).ready(function() {
     		},
     	});
     });
-
+    
+    /* SOME ATTEMPT AT GETTING DISQUS COMMENT COUNT
+    $.ajax({
+        type: 'GET',
+        url: "https://disqus.com/api/3.0/threads/set.jsonp",
+        data: { api_key: 'exXXAgIOuFBKzJ45Aj1qtC9h1VQmFiZW66Oi4QnaS2EzCBfdeGrtrgdRjAWtvvrg', forum : 'whysaurus', thread : ['/point/DDD'] },
+        cache: false,
+        dataType: 'jsonp',
+        success: function (result) {
+            var count = result.response[0].posts;
+            var countText = " comments";        
+            if (count == 1)
+                countText = " comment";
+            $('#viewComments').text(count + countText);
+        }
+    });
+    */
 });

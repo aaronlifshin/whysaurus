@@ -504,9 +504,6 @@ $(document).ready(function() {
     });
     
     makePointsCardsClickable();	
-    $( ".pointSmall" ).click( function() {
-        window.location.href=$(".smallTitle a", $(this)).attr('href');
-    });    
        
     if (!loggedIn) {
         $("#CreatePoint").attr('href', "#loginDialog");

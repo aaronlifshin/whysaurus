@@ -43,7 +43,7 @@ def makeURL(sourceStr):
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
     authorName = ndb.StringProperty()
-    authorID = ndb.StringProperty()
+    authorURL = ndb.StringProperty()
     content = ndb.TextProperty()
     summaryText = ndb.TextProperty(
     )  # This is Text not String because I do not want it indexed
@@ -167,6 +167,7 @@ class Point(ndb.Model):
         point.summaryText = summaryText if (len(
             summaryText) != 250) else summaryText + '...'
         point.authorName = user.name
+        point.authorURL = user.url
         point.version = 1
         point.current = True
         point.upVotes = 1
@@ -190,7 +191,8 @@ class Point(ndb.Model):
         pointRoot.put()
 
         user.addVote(point, voteValue=1, updatePoint=False)
-        user.updateRecentlyViewed(pointRoot.key)
+        user.recordCreatedPoint(pointRoot.key)
+        
         return point, pointRoot
 
     @staticmethod
@@ -242,8 +244,10 @@ class Point(ndb.Model):
             point.content = p['furtherInfo']
             point.current = True
             point.authorName = user.name
+            point.authorURL = user.url
             point.put()
             user.addVote(point, voteValue=1, updatePoint=False)
+            user.recordCreatedPoint(pointRoot.key)
             p['point'] = point
             p['pointRoot'].current = p['point'].key            
             pointRoot.put()
@@ -347,7 +351,7 @@ class Point(ndb.Model):
                     "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
 
     @ndb.transactional(xg=True)
-    def transactionalUpdate(self, newPoint, theRoot, sources):
+    def transactionalUpdate(self, newPoint, theRoot, sources, user):
         self.put()
         if sources:
             sourceKeys = newPoint.sources
@@ -359,6 +363,7 @@ class Point(ndb.Model):
         logging.info('Setting new current in ROOT for URL \'%s\' to: %s' % (theRoot.url , newPoint.key.urlsafe()))
         theRoot.current = newPoint.key
         theRoot.put()
+        user.recordEditedPoint(theRoot.key)        
         return newPoint, theRoot
 
 
@@ -379,7 +384,8 @@ class Point(ndb.Model):
             else:
                 newPoint.summaryText = self.summaryText
 
-            newPoint.authorName = user.name
+            newPoint.authorName = user.name            
+            newPoint.authorURL = user.url
             newPoint.supportingPointsRoots = list(self.supportingPointsRoots)
             newPoint.supportingPointsLastChange = list(self.supportingPointsLastChange)
             newPoint.counterPointsRoots = list(self.counterPointsRoots)
@@ -417,7 +423,7 @@ class Point(ndb.Model):
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd)
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user)
           
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndexNew()
@@ -432,6 +438,7 @@ class Point(ndb.Model):
             theRoot = self.key.parent().get()
             newPoint = Point(parent=theRoot.key)  # All versions ancestors of the caseRoot
             newPoint.authorName = user.name
+            newPoint.authorURL = user.url
             newPoint.supportingPointsLastChange = list(self.supportingPointsLastChange)
             newPoint.supportingPointsRoots = list(self.supportingPointsRoots)
             newPoint.counterPointsRoots = list(self.counterPointsRoots)

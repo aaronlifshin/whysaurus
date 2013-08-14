@@ -26,7 +26,8 @@ __all__ = [
 	'DBIntegrityCheck',
 	'SetRibbon',
 	'Outliner',
-	'AddTree'
+	'AddTree',
+	'Profile'
 ]
 
 from mainpage import MainPage
@@ -55,6 +56,8 @@ from rebuildSearchIndex import RebuildSearchIndex
 from dbIntegrityCheck import DBIntegrityCheck
 from outliner import Outliner
 from addtree import AddTree
+from profile import Profile
+
 
 
 

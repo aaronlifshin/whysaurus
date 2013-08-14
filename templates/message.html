@@ -2,10 +2,19 @@
 
 {% block mainPageContent %}
 <div id="content">
-  <div class="boxedElement">
+   <div class="row">Return <a href="/">home</a></div>
+
+  {% if messages %}
+    {% for message in messages %}  
+      <div class="boxedElement">    
+       {{message}}
+      </div>
+    {% endfor %}
+  {% else %}
+  <div class="boxedElement">    
 	 {{message}}
-	 Return <a href="/">home</a>
   </div>
+  {% endif %}
 </div>
 
 

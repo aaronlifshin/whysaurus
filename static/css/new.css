@@ -1028,3 +1028,19 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+    PROFILE PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.profilePic {
+	width:80%; 
+}
+
+#profileDialog input {
+	width:75%;
+}
+
+#profileDialog textarea {
+    width:75%;
+    resize:none;
+}
+

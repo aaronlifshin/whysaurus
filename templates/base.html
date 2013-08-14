@@ -40,11 +40,12 @@
                 <script> var loggedIn = true; </script>
                 <div class="userControls"><span class="caret vertalignmiddle"></span>
                   {% if user.avatar_url %}
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ user.link }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
                   {% else %}
-                    <a class="dropdown-toggle" data-toggle="dropdown"  href="{{ user.link }}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown"  href="/user/{{ user.url}}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
                   {% endif %}
                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                    <li><a tabindex="-1" href="/user/{{user.url}}"> Profile </a></li>                   
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                    </ul>
                 </div>
@@ -110,7 +111,9 @@
           </div>
        </div>
   </body>
-<script>
+  
+  <!-- Analytics -->
+<script> 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -118,6 +121,8 @@
   ga('create', 'UA-42013841-1', 'whysaurus.com');
   ga('send', 'pageview');
 </script>
+
+  <!-- AddThis -->
 <script type="text/javascript">
   var addthis_config = {
     data_track_addressbar: true,

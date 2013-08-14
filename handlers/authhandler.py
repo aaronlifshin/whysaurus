@@ -2,6 +2,8 @@ import logging
 import constants
 from lib.simpleauth import SimpleAuthHandler
 from whysaurusrequesthandler import WhysaurusRequestHandler
+from models.whysaurususer import WhysaurusUser
+
 
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     """Inherits from gae-simpleauth (SimpleAuthHandler)
@@ -10,19 +12,25 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     # Enable optional OAuth 2.0 CSRF guard
     OAUTH2_CSRF_STATE = True
 
+    
+    # HOW USER_ATTRS works - a discourse 
+    # If str: str - the first argument is used to key into the OAuth Provider data
+    # The second argument ends up in the DB model
+    # If str: lambda - the first argument keys into the provider data and is passed to the lambda function
+    # The lambda function returns, in order, model property name and value
     USER_ATTRS = {
         'facebook': {
             'id': lambda id: ('avatar_url',
                               'http://graph.facebook.com/{0}/picture?type=square'.format(id)),
             'name': 'name',
-            'link': 'link',
-            'email': 'email'
+            'link': 'facebookProfileURL',
+            'email': 'email',
         },
         'google': {
             'picture': 'avatar_url',
             'name': 'name',
-            'link': 'link',
-            'email': 'email'
+            'link': 'googleProfileURL',
+            'email': 'email',
         },
         'windows_live': {
             'avatar_url': 'avatar_url',
@@ -32,7 +40,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         'twitter': {
             'profile_image_url': 'avatar_url',
             'screen_name': 'name',
-            'link': 'link'
+            'link': 'twitterProfileURL',
         },
         'linkedin': {  # This is disable for now due to no lxml
             'picture-url': 'avatar_url',
@@ -44,7 +52,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             'nickname': 'name',
             'email': 'link'
         }
-    }
+    }    
 
     def _on_signin(self, data, auth_info, provider):
         auth_id = '%s: %s' % (provider, data['id'])
@@ -53,15 +61,18 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         user = self.auth.store.user_model.get_by_auth_id(auth_id)
         _attrs = self._to_user_model_attrs(data, self.USER_ATTRS[provider])
         if user:
-            logging.info('Found existing user to log in')
+            logging.info('Found existing user to log in: ' + str(_attrs))
             # Existing users might've changed their profile data so we update our
             # local model anyway. This might result in quite inefficient usage
             # of the Datastore, but we do this anyway for demo purposes.
             #
             # In a real app you could compare _attrs with user's properties fetched
-            # from the datastore and update local user in case something's changed.
-            user.populate(**_attrs)
-            user.put()
+            # from the datastore and update local user in case something's changed.  
+            
+            # AL: Users will now manage their profiles within Whysaurus
+            # There is no need to retrieve the ATTRS again          
+            # user.populate(**_attrs)
+            # user.put()
             self.auth.set_session(self.auth.store.user_to_dict(user))
 
         else:
@@ -81,7 +92,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 u.add_auth_id(auth_id)
 
             else:
-                logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))
+                logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))                
+                _attrs['url'] = WhysaurusUser.constructURL(_attrs['name'])
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
                     self.auth.set_session(self.auth.store.user_to_dict(user))

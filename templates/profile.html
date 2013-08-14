@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+  <script type="text/javascript" src="/static/js/profile.js"></script>
+  <div class="row topSpace"></div>
+
+  <div class="row">
+    <div id="userInfoArea" class="span3" >
+        <div class="row-fluid">
+          <div id="display_userName" class="columnHeading span6" style="line-height:25px">
+              {{profileUser.name}}
+          </div>   
+          <div class=span6>
+              {% if viewingOwnPage %}                  
+                <button id='editButton' class="pull-right">EDIT   </button>    
+              {% endif %}                            
+          </div>      
+        </div>        
+        {% if profileUser.avatar_url %}        
+            <img class="profilePic" src='{{profileUser.avatar_url}}'/>
+        {% else %}
+            <img class="profilePic" src='/static/img/placeholder.gif'/>
+        {% endif %}        
+        <div>Created: {{profileUser.createdCount }}</div>
+        <div>Edited: {{profileUser.editedCount }}</div>
+        <div id="display_userWebsite" >
+          {% if profileUser.websiteURL %}
+              <a href="{{profileUser.websiteURL}}">{{profileUser.websiteURL}}</a>
+          {% else %}
+            {% if viewingOwnPage %}           
+                Link to your website
+            {% endif %}            
+          {% endif %}
+        </div>
+        <div id="display_userAreas" >
+          {% if profileUser.areasOfExpertise %}
+              Areas of Expertise: {{profileUser.areasOfExpertise}}
+          {% else %}
+            {% if viewingOwnPage %}                     
+                Share your areas of expertise
+            {% endif %}
+          {% endif %}
+        </div>        
+        <div id="display_userProfession" >
+          {% if profileUser.currentProfession %}
+              Current Profession: {{profileUser.currentProfession}}
+          {% else %}
+            {% if viewingOwnPage %}           
+                Add your profession
+            {% endif %}            
+          {% endif %}
+        </div>
+        <div id="display_userBio" >
+          {% if profileUser.bio %}
+              Bio: {{profileUser.bio}}
+          {% else %}
+            {% if viewingOwnPage %}                     
+                Add a short bio
+            {% endif %}                
+          {% endif %}
+        </div>             
+    </div>
+    {% if viewingOwnPage %}        
+      
+      <div class="modal hide fade" data-keyboard="true" id="profileDialog" role="dialog" aria-hidden="true">
+         <form id='frm_profileDialog' class="form-horizontal" action="./{{user.url}}" method="POST">          
+            <div class="modal-header"><h3>Edit Profile Info</h3></div>    
+            <div class="row-fluid" id="alertArea"></div>    
+            <div class="modal-body">       
+              <div class="control-group">
+                <label class="control-label" for="userName">Name</label>
+                <div class="controls">            
+                    <input id="userName" name="userName"  type="text" value="{{profileUser.name}}"></input>
+                </div>
+              </div>            
+              <div class="control-group">            
+                <label class="control-label" for="userWebsite">Website URL</label>
+                <div class="controls">            
+                    <input id="userWebsite" name="userWebsite" type="text" value="{% if profileUser.websiteURL %}{{profileUser.websiteURL}}{% endif %}"></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="userAreas">Areas of Expertise</label>                            
+                <div class="controls">            
+                    <input id="userAreas" name="userAreas" type="text" value="{% if profileUser.areasOfExpertise %}{{profileUser.areasOfExpertise}}{% endif %}"></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label  class="control-label" for="userProfession">Current Profession</label>                                      
+                <div class="controls">            
+                    <input id="userProfession" name="userProfession" type="text" value="{% if profileUser.currentProfession %}{{profileUser.currentProfession}}{% endif %}"></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label  class="control-label" for="userBio">Short Biography </label>                                                
+                <div class="controls">            
+                    <textarea id="userBio" name="userBio" type="text" rows="3">{% if profileUser.bio %}{{profileUser.bio}}{% endif %}</textarea>   
+                </div>
+              </div>        
+            </div>    
+            <div class="modal-footer">
+                <a href="#" id="submit_profileDialog" class="btn btn-primary">Save changes</a>            
+                <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+            </div> 
+          </form>
+      </div>
+    {% endif %}          
+   
+      <div id="recentlyViewed" class="span3">
+          {% if viewingOwnPage %}        
+            <div class="columnHeading" style="line-height:25px">
+            YOUR RECENTLY VIEWED
+            </div>
+            {% for point in recentlyViewed %}
+                {% include 'smallPointBox.html' %}
+            {% endfor %}
+          {% endif %}          
+       </div>   
+    <div class="span6">
+        <div class="columnHeading">
+                <button class="tab selectedTab" id="createdPoints">
+                    CREATED
+                </button>
+                <button class="tab" id="editedPoints">
+                    EDITED
+                </button>
+        </div>
+        <div id="createdPointsArea" class="tabbedArea">
+          {% for point in createdPoints %}
+             {% include 'pointBox.html' %}            
+          {% endfor %}               
+        </div>
+        
+        <div id="editedPointsArea" class="tabbedArea">
+          {% for point in editedPoints %}
+             {% include 'pointBox.html' %}            
+          {% endfor %}               
+        </div>
+    </div>
+  </div>
+    
+{% endblock %}

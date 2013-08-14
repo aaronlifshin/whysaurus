@@ -76,7 +76,7 @@
 	  <div id="timestampAndEditLink" class="span8">
 			<div class="span1"></div>
 			<div class="mainPointLastEdited">
-				Last edited {{point.dateEdited}} by {{ point.authorName }}
+				Last edited {{point.dateEdited}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>
 			</div>
 			<button class="mainPointButton" id="editPoint">
 				edit

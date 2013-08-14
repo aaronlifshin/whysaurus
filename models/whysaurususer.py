@@ -1,17 +1,37 @@
+import re
+
 from google.appengine.ext import ndb
 import webapp2_extras.appengine.auth.models as auth_models
 
+from whysaurusexception import WhysaurusException
 from uservote import UserVote
 
 class WhysaurusUser(auth_models.User):
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)
-    # name = db.StringProperty(required=True)
-    # profile_url = db.StringProperty(required=True)
-    # access_token = db.StringProperty(required=True)
+    url = ndb.StringProperty(default=None)
+    numCopies = ndb.IntegerProperty(default=0)
     admin = ndb.BooleanProperty(default=False)
     recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
+    createdPointRootKeys = ndb.KeyProperty(repeated=True)
+    editedPointRootKeys = ndb.KeyProperty(repeated=True)
+    websiteURL =  ndb.StringProperty()
+    areasOfExpertise =  ndb.StringProperty()
+    currentProfession =  ndb.StringProperty()
+    bio =  ndb.StringProperty()
+    # linkedInProfileLink = ndb.StringProperty()
+    # facebookProfileLink =  ndb.StringProperty()
+    # googleProfileLink =  ndb.StringProperty()
+    # twitterProfileLink =  ndb.StringProperty()
 
+    @property
+    def createdCount(self):
+        return len(self.createdPointRootKeys)
+ 
+    @property
+    def editedCount(self): 
+        return len(self.editedPointRootKeys)
+         
     @property
     def userVotes(self):
         if not hasattr(self, "_userVotes"):
@@ -85,7 +105,7 @@ class WhysaurusUser(auth_models.User):
         return newVote
             
 
-    def updateRecentlyViewed(self, pointRootKey):
+    def _updateRecentlyViewed(self, pointRootKey):
         addedToList = False
 
         if not self.recentlyViewedRootKeys:
@@ -101,10 +121,36 @@ class WhysaurusUser(auth_models.User):
 
         if len(self.recentlyViewedRootKeys) > 10:
             self.recentlyViewedRootKeys.pop()
-
-        self.put()
-
+        
         return addedToList
+
+    
+    def updateRecentlyViewed(self, pointRootKey):
+        self._updateRecentlyViewed(pointRootKey)
+        self.put()
+        return self.recentlyViewedRootKeys
+    
+    def recordCreatedPoint(self, pointRootKey):
+        self._updateRecentlyViewed(pointRootKey)
+        if not self.createdPointRootKeys:
+            self.createdPointRootKeys = [pointRootKey]
+        else:
+            self.createdPointRootKeys.insert(0, pointRootKey)
+        self.put()
+        
+    def recordEditedPoint(self, pointRootKey, write=True):
+        if not self.editedPointRootKeys:
+            self.editedPointRootKeys = [pointRootKey]
+        else:
+            if not pointRootKey in self.editedPointRootKeys:
+                self.editedPointRootKeys.insert(0, pointRootKey)
+            else:
+                self.editedPointRootKeys.remove(pointRootKey)
+                self.editedPointRootKeys.insert(0, pointRootKey)
+        if write:
+            self.put()
+        return self.editedPointRootKeys
+
 
     def getRecentlyViewed(self, excludeList=None):
         recentlyViewedPoints = []
@@ -121,3 +167,48 @@ class WhysaurusUser(auth_models.User):
                 recentlyViewedPoints = recentlyViewedPoints + [
                     pointRoot.getCurrent()]
         return recentlyViewedPoints
+    
+    def getCreated(self):
+        createdPoints = []
+        pointRoots = ndb.get_multi(self.createdPointRootKeys[0:10])
+        for pointRoot in pointRoots:
+            createdPoints = createdPoints + [pointRoot.getCurrent()]
+        return createdPoints
+
+    def getEdited(self):
+        editedPoints = []
+        pointRoots = ndb.get_multi(self.editedPointRootKeys[0:10])
+        for pointRoot in pointRoots:
+            editedPoints = editedPoints + [pointRoot.getCurrent()]
+        return editedPoints
+    
+    def update(self, newName, newWebsiteURL, newUserAreas, newUserProfession, newUserBio):
+        self.name = newName if newName.strip() != "" else None
+        self.websiteURL =  newWebsiteURL if newWebsiteURL.strip() != "" else None
+        self.areasOfExpertise = newUserAreas if newUserAreas.strip() != "" else None
+        self.currentProfession = newUserProfession if newUserProfession.strip() != "" else None
+        self.bio = newUserBio if newUserBio.strip() != "" else None
+        self.put()
+        
+    @staticmethod
+    def constructURL(name):
+        userURL = name.replace(" ", "_")
+        userURL = re.sub('[\W]+', '', userURL)
+        # Check if it already exists
+        userQuery = WhysaurusUser.gql("WHERE url= :1", userURL)
+        existingUser = userQuery.get()
+    
+        if existingUser:
+            # Existing URL notes how many URLs+number exist for that URL
+            existingUser.numCopies = existingUser.numCopies + 1
+            userURL = userURL + str(existingUser.numCopies)
+            existingUser.put()
+        return userURL
+            
+    @staticmethod
+    def getByUrl(url):
+        qry = WhysaurusUser.gql("WHERE url= :1", url)
+        return qry.get()
+
+
+    

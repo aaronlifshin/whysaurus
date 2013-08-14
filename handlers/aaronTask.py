@@ -1,6 +1,6 @@
 import os
 import logging
-
+import re
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import ndb
@@ -21,6 +21,28 @@ class AaronTask(AuthHandler):
         FILL EDITED AND CREATED ARRAYS ON USERS
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
         """
+        
+        HTTP_RE = re.compile('^https?:\/\/')
+        query = PointRoot.query()
+        bigMessage = []
+        for pointRoot in query.iter():
+            point = pointRoot.getCurrent()            
+            if HTTP_RE.match(point.imageURL):
+                bigMessage.append('+++++++++ Point %s MATCHED: %s' % (point.title, point.imageURL))
+            else:
+                bigMessage.append('Point %s did not match: %s' % (point.title, point.imageURL))
+
+        template_values = {
+            'messages': bigMessage
+        }    
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values))   
+        
+            
+        """
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        FILL EDITED AND CREATED ARRAYS ON USERS
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
         bigMessage = ['STARTING THE WORK']
         users = {}
         query = Point.query()
@@ -50,7 +72,6 @@ class AaronTask(AuthHandler):
         self.response.out.write(template.render(path, template_values))   
         
             
-        """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         GATHER AUTHOR NAMES FROM POINTS 
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 

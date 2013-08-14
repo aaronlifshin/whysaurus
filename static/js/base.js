@@ -114,7 +114,7 @@ function getNewSourcesNames() {
 
 function newPoint() {
   if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
-      editDialogAlert('Too many characters in the title');
+      editDialogAlert('Please do not exceed 140 characters for the title.');
       return;
   }
   if ($('#title_pointDialog').val().length == "") {

@@ -22,6 +22,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         'facebook': {
             'id': lambda id: ('avatar_url',
                               'http://graph.facebook.com/{0}/picture?type=square'.format(id)),
+            'id': lambda id: ('profile_image_url',
+                              'http://graph.facebook.com/{0}/picture?type=large'.format(id)),
             'name': 'name',
             'link': 'facebookProfileURL',
             'email': 'email',

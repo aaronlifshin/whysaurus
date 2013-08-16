@@ -1,12 +1,16 @@
 import webapp2
+import logging
 from webapp2_extras import auth, sessions
 from jinja2 import exceptions
+from google.appengine.api import namespace_manager
 
 class WhysaurusRequestHandler(webapp2.RequestHandler):
     def dispatch(self):
         # Get a session store for this request.
         self.session_store = sessions.get_store(request=self.request)
-
+        user = self.current_user
+        if user and user.privateArea and user.privateArea != "":
+            namespace_manager.set_namespace(user.privateArea)
         try:
             # Dispatch the request.
             webapp2.RequestHandler.dispatch(self)

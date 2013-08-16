@@ -9,7 +9,7 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
     SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, AjaxSearch,\
     PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
-    AaronTask, RebuildSearchIndex, DBIntegrityCheck, Outliner, AddTree, Profile
+    AaronTask, RebuildSearchIndex, DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage
     
     
 
@@ -33,6 +33,7 @@ routes = [
     Route('/setribbon', SetRibbon),
     Route('/testPage', TestPage),
     Route('/search', Search),
+    Route('/admin', AdminPage),
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),
     Route('/getPointsList', GetPointsList),

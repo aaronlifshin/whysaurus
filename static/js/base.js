@@ -9,6 +9,10 @@ function showErrorAlert(alertHTML) {
     $('#mainContainer').prepend($('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }
 
+function showSuccessAlert(alertText) {
+    $('#mainContainer').prepend($('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertText + '</div>'));
+}
+
 function validateURL(textval) {
      return textval.match(/^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/);
 }
@@ -225,8 +229,12 @@ function setCharNumText(titleField) {
     }
 }
 
+function dialogAlert(dialogID, alertHTML) {
+    $(dialogID + ' #alertArea').prepend($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));  
+}
+
 function editDialogAlert(alertHTML) {
-    $('#pointDialog #alertArea').html($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
+    dialogAlert('#pointDialog', alertHTML);
 }
 
 function stopSpinner() {

@@ -27,7 +27,8 @@ __all__ = [
 	'SetRibbon',
 	'Outliner',
 	'AddTree',
-	'Profile'
+	'Profile',
+	'AdminPage'
 ]
 
 from mainpage import MainPage
@@ -57,6 +58,7 @@ from dbIntegrityCheck import DBIntegrityCheck
 from outliner import Outliner
 from addtree import AddTree
 from profile import Profile
+from adminPage import AdminPage
 
 
 

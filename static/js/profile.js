@@ -1,9 +1,9 @@
 function profileDialogAlert(alertHTML) {
-    $('#profileDialog #alertArea').prepend($('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
+    dialogAlert('#profileDialog', alertHTML);
 }
 
 function validateProfileDialog() {
-    valid = true
+    valid = true;
     userName = $("#userName").val();    
     websiteVal = $("#userWebsite").val();
     areasVal = $("#userAreas").val();
@@ -29,7 +29,7 @@ function validateProfileDialog() {
         profileDialogAlert('Please do not exceed maximum length for Username (500 characters)');
         valid = false;
     }
-    if (!validateURL(websiteVal)) {
+    if (websiteVal != '' && !validateURL(websiteVal)) {
         profileDialogAlert('The URL you specified does not look like a valid URL');
         valid = false;
     }
@@ -54,6 +54,10 @@ $(document).ready(function() {
     });
     
     $('#editButton').click(function() {
+        $("#profileDialog").modal('show');        
+    });
+    
+    $('[name=profileEdit]').click(function() {
         $("#profileDialog").modal('show');        
     });
     

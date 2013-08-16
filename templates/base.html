@@ -45,6 +45,9 @@
                     <a class="dropdown-toggle" data-toggle="dropdown"  href="/user/{{ user.url}}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
                   {% endif %}
                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                    {% if user.admin %}
+                        <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
+                    {% endif %}
                     <li><a tabindex="-1" href="/user/{{user.url}}"> Profile </a></li>                   
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                    </ul>

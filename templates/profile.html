@@ -17,7 +17,7 @@
           </div>      
         </div>        
         {% if profileUser.avatar_url %}   
-                <img class="profilePic" src='{{profileUser.avatar_url}}'/>                            
+             <img class="profilePic" src='{{profileUser.avatar_url}}'/>                            
         {% else %}
             <img class="profilePic" src='/static/img/placeholder.gif'/>
         {% endif %}        
@@ -25,10 +25,10 @@
         <div>Edited: {{profileUser.editedCount }}</div>
         <div id="display_userWebsite" >
           {% if profileUser.websiteURL %}
-              <a href="{{profileUser.websiteURL}}">{{profileUser.websiteURL}}</a>
+              <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>
           {% else %}
             {% if viewingOwnPage %}           
-                Link to your website
+                <a href="#" name="profileEdit">Link to your website</a>
             {% endif %}            
           {% endif %}
         </div>
@@ -37,7 +37,7 @@
               Areas of Expertise: {{profileUser.areasOfExpertise}}
           {% else %}
             {% if viewingOwnPage %}                     
-                Share your areas of expertise
+                <a href="#" name="profileEdit">Share your areas of expertise</a>
             {% endif %}
           {% endif %}
         </div>        
@@ -46,7 +46,7 @@
               Current Profession: {{profileUser.currentProfession}}
           {% else %}
             {% if viewingOwnPage %}           
-                Add your profession
+                <a href="#" name="profileEdit">Add your profession</a>
             {% endif %}            
           {% endif %}
         </div>
@@ -55,7 +55,7 @@
               Bio: {{profileUser.bio}}
           {% else %}
             {% if viewingOwnPage %}                     
-                Add a short bio
+                <a href="#" name="profileEdit">Add a short bio</a>
             {% endif %}                
           {% endif %}
         </div>             

@@ -19,6 +19,7 @@ class WhysaurusUser(auth_models.User):
     areasOfExpertise =  ndb.StringProperty()
     currentProfession =  ndb.StringProperty()
     bio =  ndb.StringProperty()
+    privateArea = ndb.StringProperty()
     # linkedInProfileLink = ndb.StringProperty()
     # facebookProfileLink =  ndb.StringProperty()
     # googleProfileLink =  ndb.StringProperty()
@@ -43,6 +44,10 @@ class WhysaurusUser(auth_models.User):
                     self._userVotes[vote.pointRootKey] = vote
         return self._userVotes
 
+    def updatePrivateArea(self, newPA):
+        self.privateArea = newPA
+        self.put()
+        
     def addVote(self, point, voteValue, updatePoint=True):
         pointRootKey = point.key.parent()
         previousVoteValue = 0

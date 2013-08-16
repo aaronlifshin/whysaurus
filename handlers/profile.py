@@ -5,6 +5,8 @@ import logging
 from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
 from models.whysaurususer import WhysaurusUser
+from google.appengine.api import namespace_manager
+
 
 class Profile(AuthHandler):
     
@@ -23,6 +25,9 @@ class Profile(AuthHandler):
         return template_values
 
     def post(self, userURL):
+        userNamespace = namespace_manager.get_namespace()        
+        # USERS ARE STORED IN THE DEFAULT NAMESPACE
+        namespace_manager.set_namespace('')
         user = self.current_user    
         newName=self.request.get('userName')
         newWebsiteURL=self.request.get('userWebsite')
@@ -30,11 +35,19 @@ class Profile(AuthHandler):
         newUserProfession=self.request.get('userProfession')
         newUserBios=self.request.get('userBio')
         user.update(newName, newWebsiteURL, newUserAreas, newUserProfession, newUserBios)
+        namespace_manager.set_namespace(userNamespace)
+
+
         path = os.path.join(constants.ROOT, 'templates/profile.html')            
         self.response.out.write(template.render(path, self.makeTemplateValues(user, user))) 
             
     def get(self, userURL):
+        userNamespace = namespace_manager.get_namespace()
+        
+        # USERS ARE STORED IN THE DEFAULT NAMESPACE
+        namespace_manager.set_namespace('')
         profileUser = WhysaurusUser.getByUrl(userURL)
+        namespace_manager.set_namespace(userNamespace)
         user = self.current_user
 
         

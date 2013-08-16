@@ -18,9 +18,25 @@ class AaronTask(AuthHandler):
     def get(self):
         """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        TEST USERS
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+        """        
+        query = WhysaurusUser.query()
+        bigMessage = []
+        for yUser in query.iter():
+            bigMessage.append('USER: %s' % str(yUser))
+            
+        template_values = {
+            'messages': bigMessage
+        }    
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values))   
+        
+            
+        """
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         FILL EDITED AND CREATED ARRAYS ON USERS
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-        """
         
         HTTP_RE = re.compile('^https?:\/\/')
         query = PointRoot.query()
@@ -39,7 +55,6 @@ class AaronTask(AuthHandler):
         self.response.out.write(template.render(path, template_values))   
         
             
-        """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         FILL EDITED AND CREATED ARRAYS ON USERS
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 

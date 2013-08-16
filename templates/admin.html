@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+  <script type="text/javascript" src="/static/js/admin.js"></script>
+
+  <div class="row topSpace"></div>
+
+  <button id='createPrivateArea'>Create Private Area</button>
+  <button id='saveUsers'>Save Users</button>  
+          
+  <table id="userTable">
+    <tr>
+        <th>User Unique URL</th>
+        <th>User Name</th>
+        <th>Points Created</th>
+        <th>Points Edited</th>        
+        <th>User Private Area</th>        
+    </tr>
+  {% for yUser in users %}
+    <tr id="{{yUser.index}}" name="userRow" data-url="{{yUser.u.url}}">
+        <td>{{yUser.u.url}}</td>
+        <td><a href="/user/{{yUser.u.url}}">{{yUser.u.name}}</a></td>  
+        <td>{{yUser.u.createdCount}}</td>       
+        <td>{{yUser.u.editedCount}}</td>           
+        <td>
+        <div class="dropdown span4">     
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            {% if yUser.u.privateArea %}
+                {{yUser.u.privateArea}}
+            {% else %}Select User Private Area{% endif %}
+            </a>                   
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                {% for area in areas %}
+                    <li><a name="privateArea" data-foruser="{{yUser.index}}" tabindex="-1" href="#">{{area.name}}</a></li>
+                {% endfor %}
+                <li><a name="privateArea" data-foruser="{{yUser.index}}" tabindex="-1" href="#">-- SET TO NONE</a></li>                
+            </ul>
+        </div>
+        </td>        
+    </tr>
+  {% endfor %}
+  </table>
+  
+  <div class="modal hide fade" data-keyboard="true" id="privateAreaDialog" role="dialog" aria-hidden="true">
+     <form id='frm_privateArea' class="form-horizontal" action="/admin" method="POST">          
+        <div class="modal-header"><h3>Create Private Area</h3></div>
+        <div class="row-fluid">The private area name will be displayed to users of that area. <br>
+        It cannot exceed 100 characters.  Alphanumeric characters and . _ - only.</div>                    
+        <div class="row-fluid" id="alertArea"></div>    
+        <div class="modal-body">       
+          <div class="control-group">
+            <label class="control-label" for="privateAreaName">Name of Private Area</label>
+            <div class="controls">            
+                <input id="privateAreaName" name="privateAreaName"  type="text"></input>
+            </div>
+          </div>            
+        </div>
+        <div class="modal-footer">
+            <a href="#" id="submit_createPrivateArea" class="btn btn-primary">Save</a>            
+            <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+        </div> 
+      </form>
+  </div>
+{% endblock %}

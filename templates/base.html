@@ -48,7 +48,10 @@
                     {% if user.admin %}
                         <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                     {% endif %}
-                    <li><a tabindex="-1" href="/user/{{user.url}}"> Profile </a></li>                   
+                    <li><a tabindex="-1" href="/user/{{user.url}}"> Profile </a></li>   
+                    {% if user.emailUser %}
+                        <li><a tabindex="-1" href="/changePassword">Change Password</a></li>
+                    {% endif %}                 
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                    </ul>
                 </div>
@@ -60,6 +63,7 @@
           		    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
           		    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
                     <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
+                    <li><a tabindex="-1" id="loginWithEmail"> Email </a></li>                    
                   </ul>
                 </div>
     		  {% endif %}
@@ -72,16 +76,119 @@
     {% if user %}
         {% include 'pointDialog.html' %}
     {% else %}
-
+      <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
+         <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">          
+            <div class="modal-header"><h3>Login</h3></div>
+            <a href="#" id="showSignupDialog" class="btn">New User? Create a login.</a>                                                    
+                
+            <div class="row-fluid" id="alertArea"></div>    
+            <div class="modal-body">    
+              <div class="control-group">            
+                <label class="control-label" for="login_userEmail">Email Address</label>
+                <div class="controls">            
+                    <input id="login_userEmail" name="login_userEmail" type="text"></input>
+                </div>
+              </div>      
+              <div class="control-group">            
+                <label class="control-label" for="login_userPassword">Password</label>
+                <div class="controls">            
+                    <input id="login_userPassword" name="login_userPassword" type="password"></input>
+                </div>
+              </div>
+            </div>
+            <div>
+            </div>            
+            <div class="modal-footer">
+                <a href="#" id="forgot_emailLoginDialog" class="btn pull-left">Forgot Password</a>                        
+                <a href="#" id="submit_emailLoginDialog" class="btn btn-primary">Login</a>            
+                <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+            </div> 
+          </form>
+      </div>
+              
+      <div class="modal hide fade" data-keyboard="true" id="signupDialog" role="dialog" aria-hidden="true">
+         <form id='frm_signupDialog' class="form-horizontal" action="" method="POST">          
+            <div class="modal-header"><h3>Create New User</h3></div>    
+            <a href="#" id="backToLogin" class="btn">Already a User? Choose your sign in method.</a>                                                    
+            
+            <div class="row-fluid" id="alertArea"></div>    
+            <div class="modal-body">       
+              <div class="control-group">
+                <label class="control-label" for="signup_userName">Username</label>
+                <div class="controls">            
+                    <input id="signup_userName" name="signup_userName"  type="text"
+                    placeholder=""></input>
+                </div>
+              </div>   
+              <div class="control-group">            
+                <label class="control-label" for="signup_userEmail">Email Address</label>
+                <div class="controls">            
+                    <input id="signup_userEmail" name="signup_userEmail" type="text"
+                    placeholder="Use to login and receive Whysaurus notifications."></input>
+                </div>
+              </div>  
+              <div class="control-group">            
+                <label class="control-label" for="signup_password1">Password</label>
+                <div class="controls">            
+                    <input id="signup_password1" name="signup_password1" type="password"
+                    placeholder="At least 8 characters long, with both a letter and a number"></input>
+                </div>
+              </div>
+              <div class="control-group">            
+                <label class="control-label" for="signup_password2">Confirm Pass</label>
+                <div class="controls">            
+                    <input id="signup_password2" name="signup_password2" type="password"
+                    placeholder=""></input>
+                </div>
+              </div>       
+              <div>Optional Profile Fields Below: </div>
+              <div class="control-group">            
+                <label class="control-label" for="signup_userWebsite">Website URL</label>
+                <div class="controls">            
+                    <input id="signup_userWebsite" name="signup_userWebsite" type="text" value=""
+                    placeholder="Link to your website"></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="signup_userAreas">Expertise</label>                            
+                <div class="controls">            
+                    <input id="signup_userAreas" name="signup_userAreas" type="text" value=""
+                    placeholder="Your areas of expertise"></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label  class="control-label" for="signup_userProfession">Profession</label>                                      
+                <div class="controls">            
+                    <input id="signup_userProfession" name="signup_userProfession" type="text" value=""
+                    placeholder="Your current profession"></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label  class="control-label" for="signup_userBio">Short Biography </label>                                                
+                <div class="controls">            
+                    <textarea id="signup_userBio" name="signup_userBio" type="text" rows="3"
+                    placeholder="A short biography"></textarea>   
+                </div>
+              </div>        
+            </div>    
+            <div class="modal-footer">
+                <a href="#" id="submit_signupDialog" class="btn btn-primary">Create User</a>            
+                <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+            </div> 
+          </form>
+      </div>
+      
         <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
         <div class="modal-header">
           <h3>Sign In</h3>
         </div>
         <div class="modal-body">
-          It's Easy!
+          It's Easy
           <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook"> Sign-in with Facebook </a></div>
           <div id="signInWithGoogle_Dlg" class="boxedElement"><a tabindex="2" href="/auth/google"> Sign-in with Google </a></div>
           <div id="signInWithTwitter_Dlg" class="boxedElement"><a tabindex="3" href="/auth/twitter"> Sign-in with Twitter </a></div>
+          <div id="signInWithEmail_Dlg" class="boxedElement"><a tabindex="4" href="#"> Sign-in with Email </a></div>
+          
         </div>
         <div class="modal-footer">
           <a href="#" tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>

@@ -1,8 +1,16 @@
 import logging
 import constants
+import json
+import os
+
 from lib.simpleauth import SimpleAuthHandler
 from whysaurusrequesthandler import WhysaurusRequestHandler
 from models.whysaurususer import WhysaurusUser
+
+from google.appengine.api import mail
+from google.appengine.ext.webapp import template
+from webapp2_extras.auth import InvalidAuthIdError
+from webapp2_extras.auth import InvalidPasswordError
 
 
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
@@ -53,7 +61,186 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             'email': 'link'
         }
     }    
+    
+    def signup(self):
+        email = self.request.get('email')
+        name = self.request.get('userName')
+        password = self.request.get('password')
+        website =self.request.get('website')
+        areas=self.request.get('areas')
+        profession =self.request.get('profession')
+        bio=self.request.get('bio')
+            
+        auth_id = '%s: %s' % ('email', email)
+        url = WhysaurusUser.constructURL(name)
+    
+        unique_properties = ['email', 'url']
+        user_data = self.auth.store.user_model.create_user(auth_id,
+          unique_properties,
+          url=url, email=email, name=name, password_raw=password,
+          websiteURL=website, areasOfExpertise=areas, currentProfession=profession, bio=bio, verified=False)
+        
+        results = {'result': False}
+    
+        if not user_data[0]: #user_data is a tuple
+            results['error'] = 'Unable to create user for email %s because of \
+                duplicate keys %s' % (auth_id, user_data[1])
+        else:    
+            user = user_data[1]
+            user_id = user.get_id()
+        
+            token = self.auth.store.user_model.create_signup_token(user_id)
+        
+            verification_url = self.uri_for('verification', type='v', user_id=user_id,
+              signup_token=token, _full=True)
+        
+            mail.send_mail(sender='aaron@whysaurus.com',
+                to=email,
+                subject='Whysaurus Email Verification',
+                body="Thank you for signing up for Whysaurus. \n\
+                    Please verify your email address by navigating to this link: \
+                    %s\n\nAaron Lifshin \nCTO" % verification_url, 
+                html="Thank you for signing up for Whysaurus. <br>\
+                    Please verify your email address by clicking on \
+                    <a href=\"%s\">this link</a>.<br><br>Aaron Lifshin <br> \
+                    CTO" % verification_url,                
+                reply_to="aaron@whysaurus.com"
+            )
+            logging.info('Created a user. Email: %s. Verification URL was: %s' % (email, verification_url))
+            results = {'result': True}
 
+        resultJSON = json.dumps(results)
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.out.write(resultJSON)
+        
+    def login(self):
+        email = self.request.get('login_userEmail')
+        password = self.request.get('login_userPassword')
+        auth_id = 'email: %s' %  email
+        try:
+            u = self.auth.get_user_by_password(auth_id, password, remember=True,
+              save_session=True)
+            self.redirect("/")
+            return
+        except InvalidAuthIdError as e:
+            message = 'Could not log in user %s because the email was not recognized ' % email
+        except InvalidPasswordError as e:
+            message = 'Could not log in user %s because the password did not match' % email
+
+        logging.info(message)
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, {'message': message } ))
+                  
+    def verify(self, *args, **kwargs):
+        user_id = kwargs['user_id']
+        signup_token = kwargs['signup_token']
+        verification_type = kwargs['type']
+    
+        # it should be something more concise like
+        # self.auth.get_user_by_token(user_id, signup_token
+        # unfortunately the auth interface does not (yet) allow to manipulate
+        # signup tokens concisely
+        user, ts = self.auth.store.user_model.get_by_auth_token(int(user_id), 
+                                                     signup_token,
+                                                     'signup')
+        logging.info('Got user: %s' % str(user))
+        if not user:
+            logging.info('Could not find any user with id "%s" signup token "%s"',
+              user_id, signup_token)
+            self.abort(404)                
+    
+        if verification_type == 'v':
+            # store user data in the session
+            self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
+            
+            # remove signup token, we don't want users to come back with an old link
+            self.auth.store.user_model.delete_signup_token(user.get_id(), signup_token)    
+            if not user.verified:
+                user.verified = True
+                user.put()
+    
+            message = 'User email address has been verified.'
+            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+            self.response.out.write(template.render(path, {'message': message, 'user': user } ))   
+        elif verification_type == 'p':
+            self.auth.unset_session() # The user is not logged in. They can only to reset the password
+            logging.info('Got user2: %s' % str(user))
+            template_values = {
+                      'user': user,
+                      'token': signup_token,
+                      'user_id': user_id
+            
+                      }
+            path = os.path.join(os.path.dirname(__file__), '../templates/resetpassword.html')
+            self.response.out.write(template.render(path, template_values))
+        else:
+            logging.info('Verification type not supported')
+            self.abort(404)
+            
+    def forgotPassword(self):
+        results = {'result': False}
+        email = self.request.get('email')
+        user = WhysaurusUser.get_by_email(email)
+        if not user:
+            logging.info('Could not find any user entry for email %s', email)
+            results['error'] = 'Could not find user entry with email %s', email
+        else:
+            user_id = user.get_id()
+            token = self.auth.store.user_model.create_signup_token(user_id)    
+            verification_url = self.uri_for('verification', type='p', user_id=user_id,
+                                            signup_token=token, _full=True)                        
+            mail.send_mail(sender='aaron@whysaurus.com',
+                to=user.email,
+                subject='Whysaurus password reset',
+                html="A password reset request has been received for your account. <br> \
+                    Please reset your password  \
+                    <a href=\"%s\">here</a>.<br><br>Aaron Lifshin <br> \
+                    CTO" % verification_url,
+                body="A password reset request has been received for your account. \n \
+                    Please reset your password by visiting this URL:  \
+                    %s. \n\nAaron Lifshin \n CTO" % verification_url,
+                reply_to="aaron@whysaurus.com"
+            )
+            results = {'result': True}
+        resultJSON = json.dumps(results)
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.out.write(resultJSON)
+     
+    def passwordChangePage(self):         
+        path = os.path.join(os.path.dirname(__file__), '../templates/resetpassword.html')
+        self.response.out.write(template.render(path, {'user': self.current_user}))
+        
+    def changePassword(self): 
+        password = self.request.get('password1')
+        old_token = self.request.get('t')
+        user_id = self.request.get('user_id')
+        template_values = {}
+        template_values['message'] = ""
+        
+        user = self.current_user 
+        if not password or password != self.request.get('password2'):
+            template_values['message']  = "Passwords do not match"
+        else:
+            # user could be logged in and changing password, or changing it from token
+            if not user:
+                user, ts = self.auth.store.user_model.get_by_auth_token(
+                                            int(user_id), 
+                                            old_token,'signup')
+            else: # Pass logged in user to the page
+                template_values['user'] = user
+            if user:
+                user.set_password(password)
+                user.put()
+                if old_token:
+                    # remove signup token, we don't want users to come back with an old link
+                    self.auth.store.user_model.delete_signup_token(user.get_id(), old_token)
+                template_values['message']  = "Password changed successfully. You may now login with the new password."
+            else:
+                template_values['message']  = "There was an error. Could not change the password."
+        
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values ))                       
+        
     def _on_signin(self, data, auth_info, provider):
         auth_id = '%s: %s' % (provider, data['id'])
         logging.info('Looking for a user with id %s', auth_id)

@@ -44,8 +44,14 @@ routes = [
     Route('/job/AaronTask', AaronTask),
     Route('/job/RebuildSearchIndex', RebuildSearchIndex),
     Route('/job/DBIntegrityCheck', DBIntegrityCheck),
-    # Route('/profile', handler='handlers.ProfileHandler', name='profile'),
-    Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),  # , handler_method='logout', name='logout'),
+    Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),
+    Route('/signup', handler='WhySaurus.AuthHandler:signup', name='signup'),  
+    Route('/login', handler='WhySaurus.AuthHandler:login', name='signup'),  
+    Route('/forgot', 'WhySaurus.AuthHandler:forgotPassword', name='forgot'),   
+    Route('/password', 'WhySaurus.AuthHandler:changePassword', name='forgot'),
+    Route('/changePassword', 'WhySaurus.AuthHandler:passwordChangePage', name='forgot'),
+    Route('/<type:v|p>/<user_id:\d+>-<signup_token:.+>',
+                  handler='WhySaurus.AuthHandler:verify', name='verification'),
     Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),
     Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler:_auth_callback', name='auth_callback')
 ]

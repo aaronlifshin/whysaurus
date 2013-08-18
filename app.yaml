@@ -28,11 +28,6 @@ handlers:
   script: WhySaurus.app
   login: admin
 
-# This is not being used for now
-# - url: /admin
-#  script: admin.app
-#  login: admin
-
 - url: /.*
   script: WhySaurus.app
 

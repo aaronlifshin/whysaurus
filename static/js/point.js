@@ -570,10 +570,8 @@ $(document).ready(function() {
         //$('#upVote').button({ icons: {primary: 'ui-icon-up', secondary: null}});
 
         $( "#downVote" ).click(function() {	downVote();	});
-        $( "#blueRibbon" ).click(function() {changeRibbon();});
-        
+        $( "#blueRibbon" ).click(function() {changeRibbon();});        
 
-        makeLinkedPointsClickable();
         setUpMenuAreas();
 
         $('#linkedPointSearchDialog').on('hidden', function () {
@@ -600,7 +598,8 @@ $(document).ready(function() {
         });
 
     }
-
+    
+    makeLinkedPointsClickable();
     linkPointControlsInitialState();
 
     $( "#deletePoint" ).button();

@@ -13,18 +13,6 @@ function validatePrivateArea() {
     return valid;
 }
 
-function startSpinnerOnButton(buttonID) {
-    $(buttonID).off('click');
-    $(buttonID).hide();
-        $(buttonID).after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
-}
-
-function stopSpinnerOnButton(buttonID, clickHandler) {
-    $("#spinnerImage").remove();
-    $(buttonID).click( clickHandler );        
-    $(buttonID).show();
-}
-
 function PAstartSpinner() {
     $('#submit_createPrivateArea').off('click');
     $('#submit_createPrivateArea').hide();

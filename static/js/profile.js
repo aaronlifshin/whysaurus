@@ -4,15 +4,15 @@ function profileDialogAlert(alertHTML) {
 
 function validateProfileDialog() {
     valid = true;
-    userName = $("#userName").val();    
+    //userName = $("#userName").val();    
     websiteVal = $("#userWebsite").val();
     areasVal = $("#userAreas").val();
     professionVal = $("#userProfession").val();
     bioVal = $("#userBio").val();
-    if (userName.length >= 500) {
+    /*if (userName.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Username (500 characters)');
         valid = false;
-    } 
+    } */
     if (professionVal.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Current Profession (500 characters)');
         valid = false;        

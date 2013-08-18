@@ -11,8 +11,8 @@
               {{profileUser.name}}
           </div>   
           <div class=span6>
-              {% if viewingOwnPage %}                  
-                <button id='editButton' class="pull-right">EDIT   </button>    
+              {% if viewingOwnPage %}                
+                <button id='editButton' class="pull-right">EDIT</button>    
               {% endif %}                            
           </div>      
         </div>        
@@ -67,12 +67,12 @@
             <div class="modal-header"><h3>Edit Profile Info</h3></div>    
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">       
-              <div class="control-group">
+              <!-- <div class="control-group">
                 <label class="control-label" for="userName">Name</label>
                 <div class="controls">            
                     <input id="userName" name="userName"  type="text" value="{{profileUser.name}}"></input>
                 </div>
-              </div>            
+              </div>  -->           
               <div class="control-group">            
                 <label class="control-label" for="userWebsite">Website URL</label>
                 <div class="controls">            

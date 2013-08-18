@@ -859,6 +859,10 @@ button#unlinkToggle {
 	height:96% !important;
 }
 
+#title_pointDialog {
+	width: 97.5%;
+}
+
 .pointDialog .modal-footer {
 	position:absolute;
 	bottom: 0px;
@@ -872,12 +876,6 @@ button#unlinkToggle {
 
 #sourcesArea .sourceLink {
     text-align:left;
-}
-
-.pointDialog label {
-	font-weight:bold;
-	font-style: italic;
-	font-size:0.8125em; /* 13 px */
 }
 
 .pointDialog .textline {
@@ -1035,12 +1033,20 @@ fieldset { padding:0; border:0; margin-top:25px;}
 	width:80%; 
 }
 
-#profileDialog input {
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+    MODAL DILAOGS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.modal input {
 	width:75%;
 }
 
-#profileDialog textarea {
+.modal textarea {
     width:75%;
     resize:none;
 }
 
+.modal label {
+    font-weight:bold;
+    font-style: italic;
+    font-size:0.8125em; /* 13 px */
+}

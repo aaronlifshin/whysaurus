@@ -16,6 +16,26 @@ function showSuccessAlert(alertText) {
 function validateURL(textval) {
      return textval.match(/^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/);
 }
+
+function validateEmail(textval) {
+     return textval.match(/^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
+}
+
+function validatePassword(textval) {
+     return textval.match(/[A-Za-z]/) && textval.match(/[0-9]/);
+}
+   
+function startSpinnerOnButton(buttonID) {
+   $(buttonID).off('click');
+   $(buttonID).hide();
+   $(buttonID).after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+}
+
+function stopSpinnerOnButton(buttonID, clickHandler) {
+   $("#spinnerImage").remove();
+   $(buttonID).click( clickHandler );        
+   $(buttonID).show();
+}
    
 function post_to_url(path, params, method) {
   method = method || "post"; // Set method to post by default, if not specified.
@@ -355,6 +375,166 @@ function getSearchResults(searchTerms) {
 	$.ajax();
 }
 
+function clearSignupDialog() {
+    $("#signup_userName").val("");    
+    $("#signup_userWebsite").val("");
+    $("#signup_userAreas").val("");
+    $("#signup_userProfession").val("");
+    $("#signup_userBio").val("");
+    $("#signup_userEmail").val("");    
+    $("#signup_password1").val("");    
+    $("#signup_password2").val("");   
+    $(".alert").remove();
+}
+
+function validateSignupDialog() {
+    valid = true;
+    userName = $("#signup_userName").val();    
+    websiteVal = $("#signup_userWebsite").val();
+    areasVal = $("#signup_userAreas").val();
+    professionVal = $("#signup_userProfession").val();
+    bioVal = $("#signup_userBio").val();
+    email = $("#signup_userEmail").val();    
+    password1 = $("#signup_password1").val();    
+    password2 = $("#signup_password2").val();    
+    
+    if (password1 != password2) {
+        dialogAlert('#signupDialog','Oops. Your passwords do not match.');
+        valid = false;
+    } else if (password1.length < 8) {
+        dialogAlert('#signupDialog','Please make your password 8 or more characters in length.');
+        valid = false;
+    } else if (!validatePassword(password1)) {
+        dialogAlert('#signupDialog','Please include  at least one letter and at least one number in your passoword.');
+        valid = false;
+    }    
+    if (userName.length >= 500) {
+        dialogAlert('#signupDialog','Please do not exceed maximum length for Username (500 characters)');
+        valid = false;
+    } else if (userName.length <= 3) {
+        dialogAlert('#signupDialog','Please specify a username at least four characters long.');
+        valid = false;
+    }
+    if (professionVal.length >= 500) {
+        dialogAlert('#signupDialog','Please do not exceed maximum length for Current Profession (500 characters)');
+        valid = false;        
+    }  
+    if (websiteVal.length >= 500) {
+        dialogAlert('#signupDialog','Please do not exceed maximum length for Website URL (500 characters)');
+        valid = false;        
+    }  
+    if (areasVal.length >= 500) {
+        dialogAlert('#signupDialog','Please do not exceed maximum length for Areas of Expertise (500 characters).  Wow, you must have a lot of expertise!');
+        valid = false;        
+    } 
+    if (bioVal.length >= 500) {
+        dialogAlert('#signupDialog','Please do not exceed maximum length for Username (500 characters)');
+        valid = false;
+    }
+    if (websiteVal != '' && !validateURL(websiteVal)) {
+        dialogAlert('#signupDialog','The Website URL you specified does not look like a valid URL');
+        valid = false;
+    }
+    
+    if (email == '') {
+        dialogAlert('#signupDialog','Please enter a valid email address.');
+        valid = false;
+    } else if (!validateEmail(email)) {
+        dialogAlert('#signupDialog','The Email URL you specified does not look like a valid email address');
+        valid = false;
+    }
+    
+    return valid;
+}
+
+function createNewUser() {
+    if (validateSignupDialog()) {
+        startSpinnerOnButton('#submit_signupDialog');
+        $.ajaxSetup({
+    		url: "/signup",
+    		global: false,
+    		type: "POST",
+    		data: {
+    		    'userName': $("#signup_userName").val(),
+                'website':  $("#signup_userWebsite").val(),
+                'areas': $("#signup_userAreas").val(),
+                'profession': $("#signup_userProfession").val(),
+                'bio': $("#signup_userBio").val(),
+                'email': $("#signup_userEmail").val(),   
+                'password':$("#signup_password1").val(),
+    		},
+            success: function(data){
+    			obj = JSON.parse(data);
+    			if (obj.result == true) { 
+    			    stopSpinnerOnButton('#submit_signupDialog', createNewUser);
+    			    clearSignupDialog();            
+                    $("#signupDialog").modal('hide');                                           
+                    showSuccessAlert('User created successfully. Please check your email for a validation message.');
+    			} else {
+    				if (obj.error) {
+    		    		dialogAlert('#signupDialog',obj.error);
+    		    	} else {
+    		    		dialogAlert('#signupDialog',"There was an error");
+    		    	}
+                    stopSpinnerOnButton('#submit_signupDialog', createNewUser);            
+    			}
+    		},
+    		error: function(xhr, textStatus, error){
+                dialogAlert('#signupDialog','The server returned an error. You may try again. ' + error);
+                stopSpinnerOnButton('#submit_signupDialog', createNewUser);            
+            }
+    	});
+    	$.ajax();
+        
+    }    
+}
+
+function login() {
+    $('#frm_emailLoginDialog').submit();
+}
+
+function validateForgotPassword() {
+    valid = true;
+    email = $("#login_userEmail").val();
+    if (email == '') {
+        dialogAlert('#emailLoginDialog','Please enter your login email address.');
+        valid = false;
+    } else if (!validateEmail(email)) {
+        dialogAlert('#emailLoginDialog','The Email URL you specified does not look like a valid email address');
+        valid = false;
+    }  
+    return valid;
+}
+
+function forgotPassword() {
+    if (validateForgotPassword() && confirm("Send password reset email to " + $("#login_userEmail").val() + "?")) {
+        startSpinnerOnButton('#forgot_emailLoginDialog');        
+        $.ajaxSetup({
+    		url: "/forgot",
+    		global: false,
+    		type: "POST",
+    		data: {
+    		    'email': $("#login_userEmail").val(),
+    		},
+            success: function(data){
+    			obj = JSON.parse(data);
+    			if (obj.result == true) { 
+    			    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
+                    $("#emailLoginDialog").modal('hide');                                           
+                    showSuccessAlert('We have sent an email with a password reset link to your email address.');
+    			} else {
+                    dialogAlert('#emailLoginDialog', obj.error ? obj.error : "There was an error");
+                    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
+    			}
+    		},
+    		error: function(xhr, textStatus, error){
+                dialogAlert('#emailLoginDialog','The server returned an error. You may try again. ' + error);
+                stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
+            }
+    	});
+    	$.ajax();
+    }
+}
 
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
 $(document).ready(function() {
@@ -519,6 +699,28 @@ $(document).ready(function() {
     if (!loggedIn) {
         $("#CreatePoint").attr('href', "#loginDialog");
         $("#CreatePoint").attr('data-toggle', "modal");
+        $("#loginWithEmail").on('click', function() {
+            $("#emailLoginDialog").modal('show');
+        });
+        $("#showSignupDialog").on('click', function() {
+            $("#emailLoginDialog").modal('hide');
+            $("#signupDialog").modal('show')            
+        });
+        
+        $("#signInWithEmail_Dlg").on('click', function() {
+            $("#loginDialog").modal('hide');
+            $("#emailLoginDialog").modal('show');           
+        });
+        
+        $("#backToLogin").on('click', function() {
+            $("#signupDialog").modal('hide');                       
+            $("#loginDialog").modal('show');
+        });
+        
+        $('#submit_signupDialog').click( createNewUser );
+        $('#submit_emailLoginDialog').click( login );    
+        $('#forgot_emailLoginDialog').click( forgotPassword );        
+                                  
     } else {
         $( "#CreatePoint" ).on('click', function() {
             $("#submit_pointDialog").data("dialogaction", "new");
@@ -554,6 +756,7 @@ $(document).ready(function() {
         $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
 
         $(".removeSource").on('click', function(e) {removeSource(this);});
+    
     }
 
 

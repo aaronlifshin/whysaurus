@@ -28,7 +28,8 @@ __all__ = [
 	'Outliner',
 	'AddTree',
 	'Profile',
-	'AdminPage'
+	'AdminPage',
+	'Comments'
 ]
 
 from mainpage import MainPage
@@ -59,6 +60,8 @@ from outliner import Outliner
 from addtree import AddTree
 from profile import Profile
 from adminPage import AdminPage
+from comments import Comments
+
 
 
 

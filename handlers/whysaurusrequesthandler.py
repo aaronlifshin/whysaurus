@@ -5,19 +5,40 @@ from jinja2 import exceptions
 from google.appengine.api import namespace_manager
 
 class WhysaurusRequestHandler(webapp2.RequestHandler):
+       
     def dispatch(self):
         # Get a session store for this request.
         self.session_store = sessions.get_store(request=self.request)
-        user = self.current_user
-        if user and user.privateArea and user.privateArea != "":
-            namespace_manager.set_namespace(user.privateArea)
+
         try:
+            user = self.current_user
+            if user:
+                sessionArea = self.session.get('currentArea')
+                if sessionArea != '' and sessionArea == user.privateArea:
+                    logging.info('SETTING REQUEST NAMESPACE: |%s| ' % self.session.get('currentArea'))
+                    namespace_manager.set_namespace(self.session.get('currentArea')) 
             # Dispatch the request.
             webapp2.RequestHandler.dispatch(self)
         finally:
             # Save all sessions.
             self.session_store.save_sessions(self.response)
 
+    def setUserArea(self, usePrivate=True):
+        theU = self.current_user        
+        newArea = ''
+
+        if theU:
+            if usePrivate: 
+                self.session['currentArea'] = theU.privateArea
+                namespace_manager.set_namespace(theU.privateArea) 
+                newArea = theU.privateArea         
+            else:
+                self.session['currentArea'] = ''
+                namespace_manager.set_namespace('')     
+            return newArea
+        else:
+            return None
+        
     @webapp2.cached_property
     def session(self):
         """Returns a session using the default cookie key"""
@@ -32,7 +53,11 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
         """Returns currently logged in user"""
         user_dict = self.auth.get_user_by_session()
         if user_dict and user_dict['user_id'] is not None:
-            return self.auth.store.user_model.get_by_id(user_dict['user_id'])
+            previousNamespace = namespace_manager.get_namespace()
+            namespace_manager.set_namespace('') # DEFAULT NAMESPACE
+            user = self.auth.store.user_model.get_by_id(user_dict['user_id'])        
+            namespace_manager.set_namespace(previousNamespace)
+            return user
         else:
             return None
 

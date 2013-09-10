@@ -2,6 +2,7 @@ import os
 import constants
 import logging
 import json
+import string
 
 from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
@@ -68,7 +69,8 @@ class AdminPage(AuthHandler):
         template_values = {
             'user': user,
             'users': users,
-            'areas': areas
+            'areas': areas,
+            'currentArea':self.session.get('currentArea')
         }
 
         if user and user.admin:                
@@ -76,6 +78,49 @@ class AdminPage(AuthHandler):
             self.response.out.write(template.render(path, template_values)) 
         else:
             self.response.out.write('User not authorized. ')
+            
+    def uploadUserPage(self):
+        user = self.current_user
+
+        template_values = {
+            'user': user,
+            'currentArea':self.session.get('currentArea')
+        }
+        if user and user.admin:                
+            path = os.path.join(constants.ROOT, 'templates/uploadUsers.html')
+            self.response.out.write(template.render(path, template_values)) 
+        else:
+            self.response.out.write('User not authorized. ')
+        
+        
+    def uploadUsers(self):
+        loggedInUser = self.current_user
+        if loggedInUser and loggedInUser.admin:                    
+            userNames=self.request.get('userNames')
+            names = string.split(userNames, '\n')
+            bigMessage = ['username,password']
+            for name in names:
+                username = name.strip()      
+                try:
+                    randomPassword = WhysaurusUser.random_password(8)
+                    user = WhysaurusUser.signup(self, email=None, name=username, 
+                                                password=randomPassword, website=None, areas=None, 
+                                                profession=None, bio=None)
+                    user.updatePrivateArea('Good_Judgment_Project')
+                    bigMessage.append('%s,%s' % ( username, randomPassword))
+                except WhysaurusException as e:
+                    bigMessage.append('Could not create user: %s. Error was:%s' % (username, str(e)))
+                
+            template_values = {
+                'user': loggedInUser,
+                'messages': bigMessage
+            }    
+            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+            self.response.out.write(template.render(path, template_values))   
+        else:
+            self.response.out.write('User not authorized. ')
+
+
             
             
             

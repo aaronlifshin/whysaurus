@@ -5,6 +5,10 @@ function showAlert(alertHTML) {
     $('#mainContainer').prepend($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }
 
+function showAlertAfter(alertText, elementSelector) {
+        $(elementSelector).after($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertText + '</div>'));
+}
+
 function showErrorAlert(alertHTML) {
     $('#mainContainer').prepend($('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }
@@ -497,10 +501,7 @@ function validateForgotPassword() {
     valid = true;
     email = $("#login_userEmail").val();
     if (email == '') {
-        dialogAlert('#emailLoginDialog','Please enter your login email address.');
-        valid = false;
-    } else if (!validateEmail(email)) {
-        dialogAlert('#emailLoginDialog','The Email URL you specified does not look like a valid email address');
+        dialogAlert('#emailLoginDialog','Please enter your login email address or username.');
         valid = false;
     }  
     return valid;
@@ -520,8 +521,12 @@ function forgotPassword() {
     			obj = JSON.parse(data);
     			if (obj.result == true) { 
     			    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
-                    $("#emailLoginDialog").modal('hide');                                           
-                    showSuccessAlert('We have sent an email with a password reset link to your email address.');
+                    $("#emailLoginDialog").modal('hide');  
+                    if (obj.message) {
+                        showAlert(obj.message);
+                    } else {
+                        showSuccessAlert('We have sent an email with a password reset link to your email address.');                        
+                    }                
     			} else {
                     dialogAlert('#emailLoginDialog', obj.error ? obj.error : "There was an error");
                     stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
@@ -536,7 +541,60 @@ function forgotPassword() {
     }
 }
 
+function initTinyMCE() {
+    
+    tinyMCE.init({
+      // General options
+      mode: "specific_textareas",
+      theme: "advanced",
+      editor_selector: "mceEditor",
+      editor_deselector: "mceNoEditor",
+      paste_text_sticky: true,
+      paste_text_sticky_default: true,
+      plugins: "autolink,lists,spellchecker,iespell,inlinepopups,noneditable,paste",
+      // Theme options
+      theme_advanced_buttons1: "bold,italic,underline,|,sub,sup,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,spellchecker",
+      theme_advanced_buttons2: "",
+      theme_advanced_buttons3: "",
+      theme_advanced_buttons4: "",
+      theme_advanced_toolbar_location: "top",
+      theme_advanced_toolbar_align: "left",
+      theme_advanced_statusbar_location: "none",
+      theme_advanced_resizing: false,
+      // Skin options
+      skin: "o2k7",
+      skin_variant: "silver",
+      // Drop lists for link/image/media/template dialogs
+      template_external_list_url: "js/template_list.js",
+      external_link_list_url: "js/link_list.js",
+      external_image_list_url: "js/image_list.js",
+      media_external_list_url: "js/media_list.js",
+    });
+}
+
+function switchArea() {
+    $.ajaxSetup({
+		url: "/switchArea",
+		global: false,
+		type: "POST",
+		data:{},
+        success: function(data){
+			obj = JSON.parse(data);
+			if (obj.result == true) { 
+                window.location.href="/";                
+			} else {
+			    showAlert("Something went wrong. Not able to change area.");
+			}
+		},
+		error: function(xhr, textStatus, error){
+		    showAlert("There was an error. Not able to change area. " + textStatus);       
+        }
+	});
+	$.ajax();
+}
+
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
+
 $(document).ready(function() {
   filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
   $.fn.bindFilepicker = function(){
@@ -571,58 +629,6 @@ $(document).ready(function() {
 
   $('#pointDialog .filepicker').bindFilepicker();
 
-
-  tinyMCE.init({
-    // General options
-    mode: "specific_textareas",
-    theme: "advanced",
-    editor_selector: "mceEditor",
-    editor_deselector: "mceNoEditor",
-    paste_text_sticky: true,
-    paste_text_sticky_default: true,
-    plugins: "autolink,lists,spellchecker,iespell,inlinepopups,noneditable,paste",
-    // Theme options
-    theme_advanced_buttons1: "bold,italic,underline,|,sub,sup,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,spellchecker",
-    theme_advanced_buttons2: "",
-    theme_advanced_buttons3: "",
-    theme_advanced_buttons4: "",
-    theme_advanced_toolbar_location: "top",
-    theme_advanced_toolbar_align: "left",
-    theme_advanced_statusbar_location: "none",
-    theme_advanced_resizing: false,
-    // Skin options
-    skin: "o2k7",
-    skin_variant: "silver",
-    // Drop lists for link/image/media/template dialogs
-    template_external_list_url: "js/template_list.js",
-    external_link_list_url: "js/link_list.js",
-    external_image_list_url: "js/image_list.js",
-    media_external_list_url: "js/media_list.js",
-    /*setup: function(ed) {
-        // All this to try deal with placeholder text
-        // Could not get it to work for gaining focus when
-        // tabbing into the editor BLEH
-        var tinymce_placeholder = $('#createPointDialog');
-
-        ed.onInit.add(function(ed) {
-            // get the current content
-            var cont = ed.getContent();
-            // If its empty and we have a placeholder set the value
-            if(cont.length == 0){
-               ed.setContent(CONST_EDITOR_DEFAULT_TEXT);
-            }
-        });
-
-        ed.onMouseDown.add(function(ed,e) {
-            clearDefaultContent(ed);
-        });
-
-        ed.onNodeChange.add(function(ed,e) {
-            clearDefaultContent(ed);
-        });
-      } */
-  });
-
   $("#searchBox").keyup(function(event) {
     if (event.keyCode == 13) {
         getSearchResults($("#searchBox").val());
@@ -635,23 +641,7 @@ $(document).ready(function() {
     }
   });
 
-
-  // Dialog form handling
-  /*$("#dialogForm").dialog({
-    autoOpen: false,
-    height: getWindowHeight() * .9,
-    width: $(window).width()*.7,
-    modal: true
-  });
-
-  if (!loggedIn) {
-    $("#loginDialog").dialog({
-      autoOpen: false,
-      height: 250,
-      width: 270,
-      modal: true
-    });
-  }*/
+  initTinyMCE();
 
     $('[id^="signInWithFacebook"]').click(function() {
         window.location.href = "/auth/facebook";
@@ -756,7 +746,7 @@ $(document).ready(function() {
         $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
 
         $(".removeSource").on('click', function(e) {removeSource(this);});
-    
+        $("#areaSwap").on('click', switchArea)
     }
 
 

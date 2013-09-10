@@ -11,9 +11,9 @@
       </div>
     {% endfor %}
   {% else %}
-  <div class="row boxedElement">    
-	 {{message}}
-  </div>
+    <div class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>{{message}}
+    </div>
   {% endif %}
 </div>
 

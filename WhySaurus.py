@@ -7,9 +7,10 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from models.whysaurususer import WhysaurusUser
 from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
-    SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, AjaxSearch,\
-    PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, UpdateSupportingPointsSchema, \
-    AaronTask, RebuildSearchIndex, DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage
+    SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, \
+    AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
+    UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
+    DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments \
     
     
 
@@ -39,17 +40,21 @@ routes = [
     Route('/getPointsList', GetPointsList),
     Route('/outliner', Outliner),
     Route('/addTree', AddTree),
+    Route('/uploadUsers', handler='WhySaurus.AdminPage:uploadUsers', name='uploadUsers'),
+    Route('/uploadUserPage', handler='WhySaurus.AdminPage:uploadUserPage', name='uploadUserPage'),
     Route('/job/setEditorPickSort', SetEditorPickSort),
     Route('/job/updateSupportingPointsSchema', UpdateSupportingPointsSchema),
     Route('/job/AaronTask', AaronTask),
     Route('/job/RebuildSearchIndex', RebuildSearchIndex),
     Route('/job/DBIntegrityCheck', DBIntegrityCheck),
+    Route('/switchArea', handler='WhySaurus.Profile:setArea', name='switchArea'),
+    Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),
     Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),
     Route('/signup', handler='WhySaurus.AuthHandler:signup', name='signup'),  
-    Route('/login', handler='WhySaurus.AuthHandler:login', name='signup'),  
+    Route('/login', handler='WhySaurus.AuthHandler:login', name='login'),  
     Route('/forgot', 'WhySaurus.AuthHandler:forgotPassword', name='forgot'),   
-    Route('/password', 'WhySaurus.AuthHandler:changePassword', name='forgot'),
-    Route('/changePassword', 'WhySaurus.AuthHandler:passwordChangePage', name='forgot'),
+    Route('/password', 'WhySaurus.AuthHandler:changePassword', name='change'),
+    Route('/changePassword', 'WhySaurus.AuthHandler:passwordChangePage', name='changePage'),
     Route('/<type:v|p>/<user_id:\d+>-<signup_token:.+>',
                   handler='WhySaurus.AuthHandler:verify', name='verification'),
     Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),

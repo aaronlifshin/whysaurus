@@ -7,7 +7,7 @@
     <link href="/static/css/new.css" rel="stylesheet" media="screen">
     <!--<link href="/static/css/whysaurus/jquery-ui-1.10.1.custom.css" rel="stylesheet" />	-->
     <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js" ></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js" ></script>
 	<!--  <script type="text/javascript" src="/static/js/jquery-ui-1.10.1.custom.min.js"></script>-->
     <script type="text/javascript" src="//use.typekit.net/dvk0ttp.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -63,15 +63,34 @@
           		    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
           		    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
                     <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
-                    <li><a tabindex="-1" id="loginWithEmail"> Email </a></li>                    
+                    <li><a tabindex="-1" id="loginWithEmail"> Whysaurus </a></li>                    
                   </ul>
                 </div>
     		  {% endif %}
             </div>
           </div>
         </div>
+        
       </div>
+      {% if user and user.privateArea %}
+        <div class="privateAreaHeader ">
+          <div class="container">
+              <div class="row">
+                  <div class="span12" id="areaLine">
+                    {% if currentArea != '' %}
+                       You are in the {{currentArea}} private area. To enter the Public Area  
+                       <a class="clickable" id="areaSwap">click here</a>.  
+                    {% else %}    
+                       You are in the Public Area. To enter the {{user.privateArea}} private area  
+                       <a class="clickable" id="areaSwap">click here</a>.  
+                    {% endif %}                              
+                  </div>
+              </div>
+          </div>
+        </div>
+      {% endif %}
 	</div>
+
 
     {% if user %}
         {% include 'pointDialog.html' %}
@@ -79,12 +98,12 @@
       <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
          <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">          
             <div class="modal-header"><h3>Login</h3></div>
-            <a href="#" id="showSignupDialog" class="btn">New User? Create a login.</a>                                                    
+            <a href="#" id="showSignupDialog" class="btn">New User? Click here to create a login.</a>                                                    
                 
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">    
               <div class="control-group">            
-                <label class="control-label" for="login_userEmail">Email Address</label>
+                <label class="control-label" for="login_userEmail">Email or Username</label>
                 <div class="controls">            
                     <input id="login_userEmail" name="login_userEmail" type="text"></input>
                 </div>
@@ -109,7 +128,7 @@
       <div class="modal hide fade" data-keyboard="true" id="signupDialog" role="dialog" aria-hidden="true">
          <form id='frm_signupDialog' class="form-horizontal" action="" method="POST">          
             <div class="modal-header"><h3>Create New User</h3></div>    
-            <a href="#" id="backToLogin" class="btn">Already a User? Choose your sign in method.</a>                                                    
+            <a href="#" id="backToLogin" class="btn">Already a User? Click here to sign in.</a>                                                    
             
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">       
@@ -184,10 +203,10 @@
         </div>
         <div class="modal-body">
           It's Easy
-          <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook"> Sign-in with Facebook </a></div>
-          <div id="signInWithGoogle_Dlg" class="boxedElement"><a tabindex="2" href="/auth/google"> Sign-in with Google </a></div>
-          <div id="signInWithTwitter_Dlg" class="boxedElement"><a tabindex="3" href="/auth/twitter"> Sign-in with Twitter </a></div>
-          <div id="signInWithEmail_Dlg" class="boxedElement"><a tabindex="4" href="#"> Sign-in with Email </a></div>
+          <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook"> Sign in with Facebook </a></div>
+          <div id="signInWithGoogle_Dlg" class="boxedElement"><a tabindex="2" href="/auth/google"> Sign in with Google </a></div>
+          <div id="signInWithTwitter_Dlg" class="boxedElement"><a tabindex="3" href="/auth/twitter"> Sign in with Twitter </a></div>
+          <div id="signInWithEmail_Dlg" class="boxedElement"><a tabindex="4" href="#"> Sign in with Whysaurus </a></div>
           
         </div>
         <div class="modal-footer">
@@ -210,7 +229,7 @@
                       <a href="https://twitter.com/Whysaurus" target="_blank"><img id="twitterImage" src="/static/img/footer_icon_twitter_16pxHi_v12.png" /></a>
                     </div>
                     <div class="footerImage pull-left">
-                      <a href="http://www.facebook.com/Whysaurus" target="_blank"><img id="facebookImage" src="/static/img/footer_icon_facebook_16pxHi_v12.png"/></a>
+                      <a href="https://www.facebook.com/Whysaurus" target="_blank"><img id="facebookImage" src="/static/img/footer_icon_facebook_16pxHi_v12.png"/></a>
                     </div>
                     <div class="footerImage pull-left">
                       <a href="mailto:aaron@whysaurus.com" target="_blank"><img id="mailImage" src="/static/img/footer_icon_email_16pxHi_v12.png"/></a>
@@ -235,7 +254,7 @@
   <!-- AddThis -->
 <script type="text/javascript">
   var addthis_config = {
-    data_track_addressbar: true,
+    data_track_addressbar: false,
     services_compact: "google_plusone,tumblr,reddit,digg,linkedin"
   };
 </script>

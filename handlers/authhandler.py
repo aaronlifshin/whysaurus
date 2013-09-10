@@ -6,6 +6,9 @@ import os
 from lib.simpleauth import SimpleAuthHandler
 from whysaurusrequesthandler import WhysaurusRequestHandler
 from models.whysaurususer import WhysaurusUser
+from models.whysaurusexception import WhysaurusException
+from google.appengine.api import namespace_manager
+
 
 from google.appengine.api import mail
 from google.appengine.ext.webapp import template
@@ -29,7 +32,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     USER_ATTRS = {
         'facebook': {
             'id': lambda id: ('avatar_url',
-                              'http://graph.facebook.com/{0}/picture?type=square'.format(id)),
+                              'https://graph.facebook.com/{0}/picture?type=square'.format(id)),
             'name': 'name',
             'link': 'facebookProfileURL',
             'email': 'email',
@@ -70,44 +73,11 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         areas=self.request.get('areas')
         profession =self.request.get('profession')
         bio=self.request.get('bio')
-            
-        auth_id = '%s: %s' % ('email', email)
-        url = WhysaurusUser.constructURL(name)
-    
-        unique_properties = ['email', 'url']
-        user_data = self.auth.store.user_model.create_user(auth_id,
-          unique_properties,
-          url=url, email=email, name=name, password_raw=password,
-          websiteURL=website, areasOfExpertise=areas, currentProfession=profession, bio=bio, verified=False)
-        
-        results = {'result': False}
-    
-        if not user_data[0]: #user_data is a tuple
-            results['error'] = 'Unable to create user for email %s because of \
-                duplicate keys %s' % (auth_id, user_data[1])
-        else:    
-            user = user_data[1]
-            user_id = user.get_id()
-        
-            token = self.auth.store.user_model.create_signup_token(user_id)
-        
-            verification_url = self.uri_for('verification', type='v', user_id=user_id,
-              signup_token=token, _full=True)
-        
-            mail.send_mail(sender='aaron@whysaurus.com',
-                to=email,
-                subject='Whysaurus Email Verification',
-                body="Thank you for signing up for Whysaurus. \n\
-                    Please verify your email address by navigating to this link: \
-                    %s\n\nAaron Lifshin \nCTO" % verification_url, 
-                html="Thank you for signing up for Whysaurus. <br>\
-                    Please verify your email address by clicking on \
-                    <a href=\"%s\">this link</a>.<br><br>Aaron Lifshin <br> \
-                    CTO" % verification_url,                
-                reply_to="aaron@whysaurus.com"
-            )
-            logging.info('Created a user. Email: %s. Verification URL was: %s' % (email, verification_url))
+        try:
+            user = WhysaurusUser.signup(self, email, name, password, website, areas, profession, bio)
             results = {'result': True}
+        except WhysaurusException as e:
+            results = {'result': False, 'error': str(e)}
 
         resultJSON = json.dumps(results)
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
@@ -116,18 +86,27 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     def login(self):
         email = self.request.get('login_userEmail')
         password = self.request.get('login_userPassword')
-        auth_id = 'email: %s' %  email
+        if email.find('@')!=-1:
+            auth_id = 'email: %s' %  email
+        else:
+            auth_id = 'name: %s' % email
         try:
+            namespace_manager.set_namespace('')
             u = self.auth.get_user_by_password(auth_id, password, remember=True,
               save_session=True)
+            user = self.auth.store.user_model.get_by_id(u['user_id'])
+            self.current_user = user
+            if user.privateArea:
+                self.setUserArea(usePrivate=True)
             self.redirect("/")
             return
         except InvalidAuthIdError as e:
-            message = 'Could not log in user %s because the email was not recognized ' % email
+            message = 'Could not log in user %s because the email or username was not recognized ' % email
         except InvalidPasswordError as e:
             message = 'Could not log in user %s because the password did not match' % email
+        except Exception as e:
+            message = "Got unknown exception " + str(e)
 
-        logging.info(message)
         path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
         self.response.out.write(template.render(path, {'message': message } ))
                   
@@ -145,11 +124,12 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                                                      'signup')
         logging.info('Got user: %s' % str(user))
         if not user:
+            message = 'Verification URL not valid.  Verification URLs can only be used once.  Perhaps your email has already been validated.';
             logging.info('Could not find any user with id "%s" signup token "%s"',
               user_id, signup_token)
-            self.abort(404)                
-    
-        if verification_type == 'v':
+            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+            self.response.out.write(template.render(path, {'message': message} ))                  
+        elif verification_type == 'v':
             # store user data in the session
             self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
             
@@ -180,28 +160,39 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     def forgotPassword(self):
         results = {'result': False}
         email = self.request.get('email')
-        user = WhysaurusUser.get_by_email(email)
-        if not user:
-            logging.info('Could not find any user entry for email %s', email)
-            results['error'] = 'Could not find user entry with email %s', email
+        user = None
+        if email.find('@')!=-1:
+            user = WhysaurusUser.get_by_email(email)
+            if not user:
+                logging.info('Could not find any user entry for email %s' % email)
+                results['error'] = 'Could not find user entry with email %s' % email
         else:
-            user_id = user.get_id()
-            token = self.auth.store.user_model.create_signup_token(user_id)    
-            verification_url = self.uri_for('verification', type='p', user_id=user_id,
-                                            signup_token=token, _full=True)                        
-            mail.send_mail(sender='aaron@whysaurus.com',
-                to=user.email,
-                subject='Whysaurus password reset',
-                html="A password reset request has been received for your account. <br> \
-                    Please reset your password  \
-                    <a href=\"%s\">here</a>.<br><br>Aaron Lifshin <br> \
-                    CTO" % verification_url,
-                body="A password reset request has been received for your account. \n \
-                    Please reset your password by visiting this URL:  \
-                    %s. \n\nAaron Lifshin \n CTO" % verification_url,
-                reply_to="aaron@whysaurus.com"
-            )
-            results = {'result': True}
+            user = WhysaurusUser.get_by_name(email)
+            if not user:
+                logging.info('Could not find any user entry for username %s' % email)
+                results['error'] = 'Could not find user entry with username %s' % email
+        if user:
+            if user.email:
+                user_id = user.get_id()
+                token = self.auth.store.user_model.create_signup_token(user_id)    
+                verification_url = self.uri_for('verification', type='p', user_id=user_id,
+                                                signup_token=token, _full=True)                        
+                mail.send_mail(sender='aaron@whysaurus.com',
+                    to=user.email,
+                    subject='Whysaurus password reset',
+                    html="A password reset request has been received for your account. <br> \
+                        Please reset your password  \
+                        <a href=\"%s\">here</a>.<br><br>Aaron Lifshin <br> \
+                        CTO" % verification_url,
+                    body="A password reset request has been received for your account. \n \
+                        Please reset your password by visiting this URL:  \
+                        %s. \n\nAaron Lifshin \n CTO" % verification_url,
+                    reply_to="aaron@whysaurus.com"
+                )
+                results = {'result': True}
+            else:
+                results = {'result': True, 'message': 'There is no email on file for this username. Please email admin@whysaurus.com and request a password reset.'}
+
         resultJSON = json.dumps(results)
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
         self.response.out.write(resultJSON)
@@ -261,7 +252,9 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             # user.populate(**_attrs)
             # user.put()
             self.auth.set_session(self.auth.store.user_to_dict(user))
-
+            self.current_user = user
+            if user.privateArea:
+                self.setUserArea(usePrivate=True)
         else:
             # check whether there's a user currently logged in
             # then, create a new user if nobody's signed in,
@@ -278,12 +271,14 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 # See webapp2_extras.appengine.auth.models.User for details.
                 u.add_auth_id(auth_id)
 
+
             else:
                 logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))                
                 _attrs['url'] = WhysaurusUser.constructURL(_attrs['name'])
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
                     self.auth.set_session(self.auth.store.user_to_dict(user))
+                    self.redirect("/")
                 else:
                     logging.info('Creation failed: ' + str(ok))
         # Remember auth data during redirect, just for this demo. You wouldn't
@@ -296,6 +291,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         self.redirect(target)
 
     def logout(self):
+        self.session['currentArea'] = ''
         self.auth.unset_session()
         self.redirect('/')
 

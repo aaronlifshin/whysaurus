@@ -507,6 +507,19 @@ function setUpMenuAreas() {
         $("#submit_pointDialog").data("dialogaction", "edit")
         $("#pointDialog").modal('show');
     });
+    
+    $( "#addImage" ).on('click', function() {
+        populateEditFields();
+        $("#submit_pointDialog").data("dialogaction", "edit")
+        $("#pointDialog").modal('show');
+    });
+    
+    $( "#changeImage" ).on('click', function() {
+        populateEditFields();
+        $("#submit_pointDialog").data("dialogaction", "edit")
+        $("#pointDialog").modal('show');
+    });
+    
 
     // Create a new linked point
     $( "[name=createLinked]" ).on('click', function() {
@@ -538,6 +551,78 @@ function makeLinkedPointsClickable() {
     });
 }
 
+function setCommentCount() {
+    numComments = $(".cmmnt").length;    
+    $('#viewComments').text(numComments + " comments");
+}
+
+function insertComment(commentObj) {
+    html = "<li class=\"cmmnt span10 level" + commentObj.level + "\">" +
+      "<div class=\"avatar span1\"><a href=\"/user/" + commentObj.userURL+ "\"><img class=\"pull-left\" src=\""+ commentObj.avatar_url + 
+      "\" width=\"55\" height=\"55\"></a></div> <div class=\"cmmnt-content\"><a href=\"/user/"+  commentObj.userURL +
+      "\" class=\"userlink\">" + commentObj.userName + "</a> - <span class=\"pubdate\">"  + commentObj.date + 
+      "</span>" + commentObj.text + " </div> <div class=\"span1 pull-right\">" +
+          "<a name=\"commentReply\" data-parentkey="+ commentObj.myUrlSafe + ">Reply</a></div></li>"
+          
+    if (!commentObj.parentUrlsafe || commentObj.parentUrlsafe == '') {
+        $('#comments').prepend(html);        
+    } else {
+        linkToInsertBelow = $("a[data-parentkey=\"" + commentObj.parentUrlsafe + "\"]");
+        linkToInsertBelow.parent().parent().after(html);
+    }
+    
+    $("[name=commentReply]").unbind("click", showReplyComment);    
+    $("[name=commentReply]").on("click", showReplyComment);
+    setCommentCount();
+}
+
+function showReplyComment(event) {
+    $('#addComment').removeClass('hide');
+    tinyMCE.execCommand('mceRemoveControl', false, 'commentText');
+    $("#addComment").insertAfter($(event.target).parent().parent());
+    initTinyMCE();
+    $("#addComment").data('parentkey', $(event.target).data('parentkey'));
+    $('body, html').animate({ scrollTop: $("#addComment table").offset().top - 100 }, 500);
+    $('#showAddComment').parent().removeClass('hide');    
+}
+
+function saveComment(event) {
+    var ed = tinyMCE.get('commentText');
+    commentText = ed.getContent();    
+    if (commentText.trim() == '') return;
+    
+    startSpinnerOnButton('#saveCommentSubmit');    
+    $.ajaxSetup({
+		url: "/saveComment",
+		global: false,
+		type: "POST",
+		data: {
+		    'commentText': ed.getContent(),
+        	'p':$('#rootUrlSafe').val(),
+        	'parentKey': $('#addComment').data('parentkey')
+		},
+		success: function(data){
+			obj = JSON.parse(data);
+			if (obj.result == true) {
+                insertComment(obj);
+                ed.setContent('');                                              
+                stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+                $('#addComment').addClass('hide');  
+                $('#addComment').data('parentkey', '');
+			} else {
+			    showAlertAfter(obj.error ? obj.error: "There was an error", "#addComment");
+                stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+			}
+		},
+		error: function(xhr, textStatus, error){
+            showAlertAfter('The server returned an error. You may try again.', "#addComment");
+            stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+        }
+	});
+	$.ajax();
+    
+}
+
 $(document).ready(function() {
 
     if (!loggedIn) {
@@ -547,10 +632,13 @@ $(document).ready(function() {
         make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));
         make_this_show_login_dlg($( "[id$=addPointWhenZero]" ));
         make_this_show_login_dlg($( "#editPoint" ));
+        make_this_show_login_dlg($( "#changeImage" ));
+        make_this_show_login_dlg($( "#addImage" ));        
         make_this_show_login_dlg($( "#upVote" ));
         make_this_show_login_dlg($( "#downVote" ));
         make_this_show_login_dlg($( "#viewPointHistory" ));
-
+        make_this_show_login_dlg($( "#showAddComment" ));
+        make_this_show_login_dlg($( "[name=commentReply]" ));        
     } else {
         /*$( "[name=linkSupportingPoint]" ).click(function() {
           var params = [];
@@ -596,7 +684,17 @@ $(document).ready(function() {
     			$.ajax();
     	    }
         });
+        $('#showAddComment').click(function() {
+            tinyMCE.execCommand('mceRemoveControl', false, 'commentText');
+            $("#addComment").insertAfter($(event.target).parent());    
+            initTinyMCE();            
+            $('#addComment').removeClass('hide');
+            $('#showAddComment').parent().addClass('hide');
+            $('#addComment').data('parentkey', '');
+            $('body, html').animate({ scrollTop: $("#addComment table").offset().top - 100 }, 500);        
+        });
 
+        $('[name=commentReply]').click(showReplyComment);
     }
     
     makeLinkedPointsClickable();
@@ -612,8 +710,13 @@ $(document).ready(function() {
     });
 
     $('#viewComments').click(function() {
-        toggleTabbedArea(this, "#disqus_thread");
+        toggleTabbedArea(this, "#commentArea");
     });
+    
+    $('#saveCommentSubmit').click(saveComment);
+
+
+    
 
     $('#viewPointHistory').click(function() {
     	$('#historyArea').html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
@@ -632,21 +735,4 @@ $(document).ready(function() {
     		},
     	});
     });
-    
-    /* SOME ATTEMPT AT GETTING DISQUS COMMENT COUNT
-    $.ajax({
-        type: 'GET',
-        url: "https://disqus.com/api/3.0/threads/set.jsonp",
-        data: { api_key: 'exXXAgIOuFBKzJ45Aj1qtC9h1VQmFiZW66Oi4QnaS2EzCBfdeGrtrgdRjAWtvvrg', forum : 'whysaurus', thread : ['/point/DDD'] },
-        cache: false,
-        dataType: 'jsonp',
-        success: function (result) {
-            var count = result.response[0].posts;
-            var countText = " comments";        
-            if (count == 1)
-                countText = " comment";
-            $('#viewComments').text(count + countText);
-        }
-    });
-    */
 });

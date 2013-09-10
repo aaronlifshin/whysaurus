@@ -1,5 +1,6 @@
 import os
 import constants
+import json
 import logging
 
 from google.appengine.ext.webapp import template
@@ -21,7 +22,8 @@ class Profile(AuthHandler):
             'viewingOwnPage': viewingOwnPage,
             'createdPoints' : profileUser.getCreated(),
             'editedPoints': profileUser.getEdited(),
-            'recentlyViewed': profileUser.getRecentlyViewed()
+            'recentlyViewed': profileUser.getRecentlyViewed(),
+            'currentArea':self.session.get('currentArea')
         }
         return template_values
 
@@ -62,3 +64,17 @@ class Profile(AuthHandler):
             self.response.out.write(template.render(path, self.makeTemplateValues(user, profileUser))) 
         else:
             self.response.out.write('Could not find user: ' + userURL)
+
+    def setArea(self):
+        results = {'result': False}
+        newArea = self.setUserArea(namespace_manager.get_namespace() == '')
+        logging.info('NEW AREA was: %s' % newArea)
+        if newArea is not None:            
+            results = {'result': True, 'newArea': newArea}
+
+        resultJSON = json.dumps(results)
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.out.write(resultJSON)
+        
+
+        

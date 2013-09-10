@@ -15,7 +15,8 @@ from google.appengine.api import search
 class Outliner(AuthHandler):
     def get(self):
         template_values = {
-            'user':self.current_user
+            'user':self.current_user,
+            'currentArea':self.session.get('currentArea')
         }
         path = os.path.join(os.path.dirname(__file__), '../templates/outliner.html')
         self.response.out.write(template.render(path, template_values))    

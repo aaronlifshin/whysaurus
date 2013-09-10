@@ -9,6 +9,7 @@ from imageurl import ImageUrl
 from whysaurusexception import WhysaurusException
 from redirecturl import RedirectURL
 from source import Source
+from timezones import PST
 
 def convertListToKeys(urlsafeList):
     if urlsafeList:
@@ -87,7 +88,11 @@ class Point(ndb.Model):
                 return 80
             else:
                 return math.floor(rat1*100) # Django widthratio requires integers
-            
+ 
+    @property
+    def PSTdateEdited(self):
+        return PST.convert(self.dateEdited)
+    
     @property
     def reverseLinksRatio(self):
         return 100 - self.linksRatio
@@ -110,7 +115,6 @@ class Point(ndb.Model):
 
     @staticmethod
     def getCurrentByUrl(url):
-        logging.info("Getting CURRENT by URL: %s" % url)
         pointRootQuery = PointRoot.gql("WHERE url= :1", url)
         pointRoot = pointRootQuery.get()
         point = None
@@ -603,6 +607,11 @@ class PointRoot(ndb.Model):
     editorsPick = ndb.BooleanProperty(default=False)
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
+    comments = ndb.KeyProperty(repeated=True)
+
+    @classmethod
+    def getByUrlsafe(cls, pointRootUrlSafe):
+        return ndb.Key(urlsafe=pointRootUrlSafe).get()        
 
     def getCurrent(self):
         # if self.current:
@@ -626,7 +635,9 @@ class PointRoot(ndb.Model):
         currentKeys = [root.current for root in backlinkRoots]
         currentPoints = ndb.get_multi(currentKeys)
         return currentPoints
-
+    
+    def getComments(self):
+        return ndb.get_multi(self.comments)
 
     def removeLinkedPoint(self, linkPointRootKey, linkType, archive=True):
         if linkType == 'supporting':
@@ -744,6 +755,9 @@ class PointRoot(ndb.Model):
             # if img:
             #  img.key.delete()
             point.key.delete()
+            
+        for comment in self.comments:
+            comment.delete()
 
         self.deleteFromSearchIndex()
         self.key.delete()
@@ -769,7 +783,23 @@ class PointRoot(ndb.Model):
         RedirectURL.updateRedirects(oldURL, newURL)
         return newURL
     
+    def addComment(self, comment):        
+        if self.comments:
+            if comment.parentComment:
+                i = self.comments.index(comment.parentComment)
+                if i == -1:
+                    raise WhysaurusException("Parent comment key not found in comment list for this point")
+                else:
+                    self.comments.insert(i+1, comment.key)
+            else:
+                self.comments = [comment.key] + self.comments
+        else:
+            self.comments = [comment.key]
+        self.put()
+    
 # A dummy class to create an entity group
+# For large groups this will cause issues with sharding them across datastore nodes
+# Eventually a BG task should be written to copy these out of the OutlineRoot
 class OutlineRoot(ndb.Model):
     pass
 

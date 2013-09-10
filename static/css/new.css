@@ -20,9 +20,17 @@ body {
 }
 
 #header{
-	height:52px;
 	color:black;
 }
+
+.privateAreaHeader {
+	background:#FCF9DF;
+}
+
+#areaSwap {
+    cursor:pointer;
+}
+
 
 .grayBackground {
 	background:#F0F0F0;
@@ -175,7 +183,7 @@ body {
    background-image:  url('/static/img/button_makeAPoint_black_118.png');
 }
 .topSpace {
-	height:42px;
+	height:22px;
 }
 
 .headerLinks {
@@ -541,6 +549,10 @@ h1.condensed {
 	line-height: 100%;
 }
 
+#mainContainer {
+	padding-top: 20px;
+}
+
 #pointArea {
 	position: relative;
 }
@@ -890,11 +902,13 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
 .ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
 
-.mceEditor > table {
-    width:100% !important;
+#editor_pointDialog > table {
     height:auto !important;
 }
 
+.mceEditor > table {
+    width:100% !important;	
+}
 
 .titleEdit {
   width:516px;
@@ -1050,3 +1064,79 @@ fieldset { padding:0; border:0; margin-top:25px;}
     font-style: italic;
     font-size:0.8125em; /* 13 px */
 }
+
+
+/* comments area */
+#addComment {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+#comments { display: block; }
+#comments {
+	margin: 0 0 0 0;
+}
+#comments .cmmnt, ul .cmmnt, ul ul .cmmnt { 
+	display: block; 
+	position: relative; 
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 5px; 
+}
+
+#comments .cmmnt .avatar img { 
+  -webkit-border-radius: 3px; 
+  -moz-border-radius: 3px; 
+  border-radius: 3px; 
+  -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  -webkit-transition: all 0.4s linear;
+  -moz-transition: all 0.4s linear;
+  -ms-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+}
+
+#comments .cmmnt .avatar a:hover img { opacity: 0.77; }
+#comments .cmmnt .cmmnt-content { padding: 0px 3px; padding-bottom: 12px; padding-top: 8px; margin-left:0px; }
+a[name="commentReply"] {cursor: pointer}
+   
+.cmmnt.level1 {
+    margin-left: 5%;
+    width:95%;  
+}
+
+.cmmnt.level2 {
+    margin-left: 10%;
+    width:90%;      
+}
+
+.cmmnt.level3 {
+    margin-left: 15%;
+    width:85%;  
+ }
+
+.cmmnt.level4 {
+    margin-left: 20%;
+    width:80%;  
+}
+
+.cmmnt.level5 {
+    margin-left: 25%;
+    width:75%;  
+}
+
+.cmmnt.level6 {
+    margin-left: 30%;
+    width:70%;  
+}
+
+.cmmnt.level7 {
+    margin-left: 35%;
+    width:65%;  
+}
+
+.cmmnt.level8 {
+    margin-left: 40%;
+    width:60%;  
+}
+

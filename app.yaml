@@ -19,17 +19,23 @@ handlers:
 
 - url: /static/css
   static_dir: static/css
+  
+- url: /static/js
+  static_dir: static/css
 
 - url: /job/.*
   script: WhySaurus.app
   login: admin
+  secure: always
   
 - url: /admin
   script: WhySaurus.app
-  login: admin
+  secure: always
 
 - url: /.*
   script: WhySaurus.app
+  secure: always
+  
 
 libraries:
 - name: django

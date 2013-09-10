@@ -76,7 +76,7 @@
 	  <div id="timestampAndEditLink" class="span8">
 			<div class="span1"></div>
 			<div class="mainPointLastEdited">
-				Last edited {{point.dateEdited}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>
+				Last edited {{point.PSTdateEdited}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>
 			</div>
 			<button class="mainPointButton" id="editPoint">
 				edit
@@ -103,7 +103,7 @@
 					connections
 				</button>
 			    <button class="mainPointButton tab" id="viewComments">
-					comments
+					{{comments|length}} comments
 				</button>
 	            <button class="mainPointButton tab" id="viewPointHistory">
 					history
@@ -152,26 +152,50 @@
 
     </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 
-  <div id="disqus_thread" class="row tabbedArea">
-    		<script type="text/javascript">
-    		    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    		    var disqus_shortname = 'whysaurus'; // required: replace example with your forum shortname
-    			var disqus_developer = {{devInt}};
-    			var disqus_identifier = '{{point.url}}';
-    			var disqus_title = '{{point.title}}';
-
-    		    /* * * DON'T EDIT BELOW THIS LINE * * */
-    		    (function() {
-    		        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    		        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-    		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    		    })();
-    		</script>
-
-    		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    		<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-
+  <div id="commentArea" class="tabbedArea">
+    <div class="row">
+      <div class="span10 offset1">      
+        <div class="row">
+            <button id="showAddComment">New Comment </button>
+        </div>
+      
+        <div class="row">
+          <div id="addComment" class="hide">
+                  <textarea id="commentText" width="100%"
+                   class="mceEditor textEdit" rows="3"                       
+                   placeholder="Type your comment here..."></textarea>
+                  <input id="rootUrlSafe" type="hidden" name="p" value="{{pointRoot.key.urlsafe}}" />            
+                <div class="">
+                  <button id='saveCommentSubmit' class="pull-right">Save Comment</button>
+                </div>
+           </div>
+         </div>
+         <div class="row">
+           <ul id="comments">     
+           {% for comment in comments %}
+              <li class="cmmnt span10 level{{comment.level}}">
+                <div class="avatar span1">
+                    <a href="/user/{{comment.userUrl}}">
+                        <img class="pull-left" src="{{comment.avatar_url}}" width="55" height="55"/>
+                    </a>
+                </div>
+                <div class="cmmnt-content">
+                  <a href="/user/{{comment.userUrl}}" class="userlink">{{comment.userName}}</a> 
+                    - <span class="pubdate">{{comment.PSTdate}}</span>
+                  {{comment.text|safe}}
+                </div>
+                <div class="span1 pull-right">
+                    <a name="commentReply" data-parentkey="{{comment.key.urlsafe}}">Reply</a>
+                </div>
+              </li>
+           {% endfor %}
+           </ul>   
+         </div>
+       </div>
     </div>
+     
+  </div>
+  
 
   <div id="historyArea" class="row tabbedArea">
     </div>
@@ -182,18 +206,6 @@
       var pointURL = '{{point.url}}';
       var thresholdGreen = {{ thresholds.green }};
       var thresholdRed = {{ thresholds.red }};
-      </script>
-      <script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'whysaurus'; // required: replace example with your forum shortname
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-    </script>
+      </script>      
     
 {% endblock %}

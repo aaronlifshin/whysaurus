@@ -65,7 +65,7 @@ class DBIntegrityCheck(AuthHandler):
                             (linkType, constants.ADMIN_DATA_URL, \
                              checkingPointURL, point.title, \
                              len(linkLastChange), \
-                             len(linkRootss)))
+                             len(linkRoots)))
                         foundError = True                
             if not foundError:
                 noErrors = noErrors + 1

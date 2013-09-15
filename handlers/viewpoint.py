@@ -76,9 +76,9 @@ class ViewPoint(AuthHandler):
         else:
             template_values = {
                                'user': self.current_user,
-                               'message': "Could not find point.  \
-                                   Some points are private \
-                                   and you need to be logged in with the right user to view them."
+                               'message': "Could not find point. \
+                               Some points are in private areas and you \
+                               need to be logged into those areas to view them."
             }
             path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
             self.response.out.write(template.render(path, template_values ))      

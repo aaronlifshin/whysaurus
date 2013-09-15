@@ -141,6 +141,37 @@ function changePrivateAreaValue(clickedElem) {
     }
 }   
 
+function resetPassword(clickedElem) {
+    var userURL =  $(clickedElem).data('userurl');
+    var r = confirm("Change the password for user " + userURL + "?");
+    if (r == true) {
+        $.ajaxSetup({
+    		url: "/resetPassword",
+    		global: false,
+    		type: "POST",
+    		data: {
+    		    'userurl': userURL
+    		},
+            success: function(data){
+    			obj = JSON.parse(data);
+    			if (obj.result == true) { 
+                    showSuccessAlert('Changed password for user ' + obj.username + '. New password: ' + obj.password);                             
+    			} else {
+    				if (obj.error) {
+    		    		showAlert(obj.error);
+    		    	} else {
+    		    		showAlert("There was an error");
+    		    	}
+    			}
+    		},
+    		error: function(xhr, textStatus, error){
+                showAlert('The server returned an error. You may try again. ' + error);
+            }
+    	});
+    	$.ajax();
+    }
+}
+
 $(document).ready(function() {
     $('[name=privateArea]').click(function() {
         changePrivateAreaValue(this);       
@@ -148,6 +179,10 @@ $(document).ready(function() {
     
     $('#createPrivateArea').click(function() {
         $("#privateAreaDialog").modal('show');        
+    });
+        
+    $('[name=resetPassword]').click(function() {
+        resetPassword(this);       
     });
     
     $('#submit_createPrivateArea').click( createPrivateArea );

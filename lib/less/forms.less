@@ -44,13 +44,18 @@ select,
 textarea {
   #font > .shorthand(0.75em,normal,20px); // Set size, weight, line-height here
 }
-input,
-button,
+
 select,
 textarea {
   font-family: inherit; // And only set font-family here for those that need it (note the missing label element)
   font-style:italic; 
 }
+
+input,
+button {
+  font-family: inherit;
+}
+
 
 // Identify controls by their labels
 label {
@@ -655,11 +660,10 @@ legend + .control-group {
   .control-label {
     float: left;
     width: @horizontalComponentOffset - 20;
-    padding-top: 5px;
     padding-right: 5px;
-    padding-bottom: 5px;
+    padding-left:5px;
     background-color: @grayLight;
-    text-align: right;
+    color:#979797;
   }
   // Move over all input controls and content
   .controls {

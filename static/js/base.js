@@ -183,7 +183,7 @@ function newPoint() {
       }
     },
     error: function(xhr, textStatus, error){
-        editDialogAlert('The server returned an error. You may try again.');
+        editDialogAlert('The server returned an error: ' + xhr + '. You may try again.');
     	stopSpinner();
     }
   });
@@ -295,6 +295,16 @@ function removeSource(clickedElement) {
     $(clickedElement).parent().remove();    
 }
 
+function updateDialogHeight() {
+    numSources = $("[name='source_pointDialog']").length;
+    if (numSources > 1) {
+        $(".pointDialog").height(590 + (numSources-1)*20);        
+    } else {
+        $(".pointDialog").height(590);
+    }
+    
+}
+
 function addSource(clickedElement) {
     var urlVal = $('#sourceURL_pointDialog').val();
     if (urlVal == "") {
@@ -315,13 +325,15 @@ function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
     
     appendAfter = $('#sourcesArea');
       
-    newDiv = jQuery('<div/>',{class:"row", name:"source_pointDialog"} );
+    newDiv = jQuery('<div/>',{ name:"source_pointDialog"} );
+    newDiv.addClass("row-fluid");
     if (sourceKey != "") {
         newDiv.data('sourcekey', sourceKey);
     }
-    newDiv.html("<a class=\"span2 removeSource\" href=\"#\">x</a>" + 
-        "<a class=\"span10 sourceLink\" href=\"" +  sourceURL+"\">"+ sourceTitle + "</a>");
+    newDiv.html("<a class=\"span2 offset1 removeSource\" href=\"#\">x</a>" + 
+        "<a class=\"span9 sourceLink\" target=\"_blank\" href=\"" +  sourceURL+"\">"+ sourceTitle + "</a>");
     appendAfter.append(newDiv);        
+    updateDialogHeight();
     $('.removeSource',newDiv).on('click', function(e) {removeSource(this);});
 }
 
@@ -508,36 +520,37 @@ function validateForgotPassword() {
 }
 
 function forgotPassword() {
-    if (validateForgotPassword() && confirm("Send password reset email to " + $("#login_userEmail").val() + "?")) {
-        startSpinnerOnButton('#forgot_emailLoginDialog');        
-        $.ajaxSetup({
-    		url: "/forgot",
-    		global: false,
-    		type: "POST",
-    		data: {
-    		    'email': $("#login_userEmail").val(),
-    		},
-            success: function(data){
-    			obj = JSON.parse(data);
-    			if (obj.result == true) { 
-    			    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
-                    $("#emailLoginDialog").modal('hide');  
-                    if (obj.message) {
-                        showAlert(obj.message);
-                    } else {
-                        showSuccessAlert('We have sent an email with a password reset link to your email address.');                        
-                    }                
-    			} else {
-                    dialogAlert('#emailLoginDialog', obj.error ? obj.error : "There was an error");
+    if (validateForgotPassword() &&
+        confirm("Send password reset email to " + $("#login_userEmail").val() + "?")) {           
+            startSpinnerOnButton('#forgot_emailLoginDialog');        
+            $.ajaxSetup({
+        		url: "/forgot",
+        		global: false,
+        		type: "POST",
+        		data: {
+        		    'email': $("#login_userEmail").val(),
+        		},
+                success: function(data){
+        			obj = JSON.parse(data);
+        			if (obj.result == true) { 
+        			    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
+                        $("#emailLoginDialog").modal('hide');  
+                        if (obj.message) {
+                            showAlert(obj.message);
+                        } else {
+                            showSuccessAlert('We have sent an email with a password reset link to your email address.');                        
+                        }                
+        			} else {
+                        dialogAlert('#emailLoginDialog', obj.error ? obj.error : "There was an error");
+                        stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
+        			}
+        		},
+        		error: function(xhr, textStatus, error){
+                    dialogAlert('#emailLoginDialog','The server returned an error. You may try again. ' + error);
                     stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
-    			}
-    		},
-    		error: function(xhr, textStatus, error){
-                dialogAlert('#emailLoginDialog','The server returned an error. You may try again. ' + error);
-                stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
-            }
-    	});
-    	$.ajax();
+                }
+        	});
+            $.ajax();
     }
 }
 
@@ -549,6 +562,7 @@ function initTinyMCE() {
       theme: "advanced",
       editor_selector: "mceEditor",
       editor_deselector: "mceNoEditor",
+      content_css : './static/css/content.css',
       paste_text_sticky: true,
       paste_text_sticky_default: true,
       plugins: "autolink,lists,spellchecker,iespell,inlinepopups,noneditable,paste",
@@ -560,7 +574,9 @@ function initTinyMCE() {
       theme_advanced_toolbar_location: "top",
       theme_advanced_toolbar_align: "left",
       theme_advanced_statusbar_location: "none",
-      theme_advanced_resizing: false,
+      theme_advanced_resizing: true,
+      theme_advanced_resizing_use_cookie : false,
+      height : "60px",
       // Skin options
       skin: "o2k7",
       skin_variant: "silver",
@@ -608,13 +624,12 @@ $(document).ready(function() {
         function(fpfiles){
           var file = fpfiles[0];
 
-          $(self).next('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_black_47px.png').addClass('spin');
+          $('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_black_47px.png').addClass('spin');
 
           filepicker.convert(file, {width: 112, height: 112, fit: 'clip'}, {path: 'SummaryBig-' + file.key});
           filepicker.convert(file, {width: 310, fit: 'clip'}, {path: 'FullPoint-' + file.key});
           filepicker.convert(file, {width: 54, height: 54, fit: 'clip'}, {path: 'SummaryMedium-' + file.key}, function(medium){
-            $(self)
-              .next('.filepicker-placeholder')
+            $('.filepicker-placeholder')
               .attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key))
               .removeClass('spin');
           });
@@ -655,12 +670,12 @@ $(document).ready(function() {
         window.location.href = "/auth/twitter";
     });
     
-    window.onload = function() {
+    /*window.onload = function() {
         positionEditDialog();
     };
     window.onresize = function() {
         positionEditDialog();
-    };
+    };*/
 
     // Beginning state for the TABBED AREAS
     $('.tabbedArea').hide(); $('#editorsPicksArea').show();
@@ -714,7 +729,7 @@ $(document).ready(function() {
     } else {
         $( "#CreatePoint" ).on('click', function() {
             $("#submit_pointDialog").data("dialogaction", "new");
-            $('div.modal-header h3').text("New Point");
+            $('div.modal-header h3', $('#pointDialog')).text("New Point");
             $("#pointDialog").modal('show');
         });
 
@@ -733,6 +748,10 @@ $(document).ready(function() {
           $('#sourceTitle_pointDialog').val("");
    
         });
+        
+        $("#pointDialog").on('shown', function() {
+            $('#title_pointDialog').focus();
+        });
 
         $("#submit_pointDialog").on('click', function(e) {
             submitPointDialog(this);
@@ -746,9 +765,16 @@ $(document).ready(function() {
         $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
 
         $(".removeSource").on('click', function(e) {removeSource(this);});
-        $("#areaSwap").on('click', switchArea)
+        $("#areaSwap").on('click', switchArea);        
     }
-
+    
+    // Unsupported browser alert
+    
+    var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+    var isChrome = !!window.chrome && !isOpera;         
+    if (isChrome == false) {
+        showAlert('You are using Whysaurus in a unsupported browser.  We are in Beta and only Chrome is supported for now.');
+    }
 
 
   //Add Hover effect to menus.  Well, it doesn't work very well...

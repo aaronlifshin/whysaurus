@@ -46,6 +46,13 @@ class WhysaurusUser(auth_models.User):
         """
         self.password = security.generate_password_hash(raw_password, length=12)
 
+    def resetPassword(self):
+        randomPassword = WhysaurusUser.random_password(8)
+        self.set_password(randomPassword)
+        self.put()
+        return randomPassword
+
+
     @classmethod
     def signup(cls, handler, email, name, password, website, areas, profession, bio):
                    
@@ -165,9 +172,6 @@ class WhysaurusUser(auth_models.User):
     def updatePrivateArea(self, newPA):
         self.privateArea = newPA
         self.put()
-        
-    def set_password(self, raw_password):
-        self.password = security.generate_password_hash(raw_password, length=12)
         
     def addVote(self, point, voteValue, updatePoint=True):
         pointRootKey = point.key.parent()

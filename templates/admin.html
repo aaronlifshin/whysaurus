@@ -16,7 +16,8 @@
         <th>User Name</th>
         <th>Points Created</th>
         <th>Points Edited</th>        
-        <th>User Private Area</th>        
+        <th>User Private Area</th> 
+        <th>Password reset</th>                      
     </tr>
   {% for yUser in users %}
     <tr id="{{yUser.index}}" name="userRow" data-url="{{yUser.u.url}}">
@@ -38,7 +39,13 @@
                 <li><a name="privateArea" data-foruser="{{yUser.index}}" tabindex="-1" href="#">-- SET TO NONE</a></li>                
             </ul>
         </div>
-        </td>        
+        </td>  
+        <td>
+            {% if yUser.u.emailUser %}
+                <a href="#" name="resetPassword" data-userurl="{{yUser.u.url}}">Reset password </a>                
+            {% endif %}
+        
+        </td>      
     </tr>
   {% endfor %}
   </table>

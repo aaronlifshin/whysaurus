@@ -231,7 +231,25 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         
         path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
         self.response.out.write(template.render(path, template_values ))                       
+    
+    def emailNewPassword(self): 
+        pass
+    
+    def resetPassword(self): 
+        results = {'result': False}
+        loggedInUser = self.current_user 
+        if loggedInUser and loggedInUser.admin:                             
+            targetUserUrl = self.request.get('userurl')
+            if targetUserUrl:
+                u = WhysaurusUser.getByUrl(targetUserUrl)
+                if u:
+                    newPassword = u.resetPassword()
+                    results = {'result': True, 'username': u.name, 'password': newPassword}
+        resultJSON = json.dumps(results)
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.out.write(resultJSON)
         
+
     def _on_signin(self, data, auth_info, provider):
         auth_id = '%s: %s' % (provider, data['id'])
         logging.info('Looking for a user with id %s', auth_id)

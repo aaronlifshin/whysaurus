@@ -288,7 +288,7 @@ function make_this_show_login_dlg(button) {
 function populateEditFields() {
   var ed = tinyMCE.get('editor_pointDialog');
 
-  $('div.modal-header h3').text("Edit Point");
+  $('div.modal-header h3', $('#pointDialog')).text("Edit Point");
 
   $('#title_pointDialog').val($('#pointSummary div.mainPointTitle').text());
   setCharNumText($('#title_pointDialog')[0]);
@@ -448,7 +448,7 @@ function addPoint(linkType){
 			}
 		},
 		error: function(xhr, textStatus, error){
-            editDialogAlert('The server returned an error. You may try again.');
+            editDialogAlert('The server returned an error: ' + str(error) + ' You may try again.');
             stopSpinner();
         }
 	});
@@ -519,7 +519,6 @@ function setUpMenuAreas() {
         $("#submit_pointDialog").data("dialogaction", "edit")
         $("#pointDialog").modal('show');
     });
-    
 
     // Create a new linked point
     $( "[name=createLinked]" ).on('click', function() {
@@ -527,7 +526,7 @@ function setUpMenuAreas() {
         $("#submit_pointDialog").data("dialogaction", "createLinked");
         $("#submit_pointDialog").data("linktype", linkType);
         var dialogName = "Create " + linkType.capitalize() + " Point";
-        $('div.modal-header h3').text(dialogName);
+        $('div.modal-header h3', $('#pointDialog')).text(dialogName);
         $("#pointDialog").modal('show');
     });
     

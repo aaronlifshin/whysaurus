@@ -760,7 +760,8 @@ h6 small {
 h1,
 h2,
 h3 {
-  line-height: 200%;
+  font-size: 1.3125em;
+  line-height: 125%;
 }
 
 h1 {
@@ -769,10 +770,6 @@ h1 {
 
 h2 {
   font-size: 27px;
-}
-
-h3 {
-  font-size: 23px;
 }
 
 h4 {
@@ -1061,12 +1058,15 @@ textarea {
   line-height: 20px;
 }
 
-input,
-button,
 select,
 textarea {
   font-family: inherit;
   font-style: italic;
+}
+
+input,
+button {
+  font-family: inherit;
 }
 
 label {
@@ -1964,10 +1964,9 @@ legend + .control-group {
 .form-horizontal .control-label {
   float: left;
   width: 100px;
-  padding-top: 5px;
   padding-right: 5px;
-  padding-bottom: 5px;
-  text-align: right;
+  padding-left: 5px;
+  color: #979797;
   background-color: #f2f2f2;
 }
 
@@ -3196,20 +3195,26 @@ button.close {
   padding: 4px 15px;
   margin-bottom: 0;
   font-size: 0.75em;
-  font-style: italic;
+  font-style: regular;
   font-weight: bold;
-  line-height: 100%;
-  color: #a4a6a9;
+  line-height: 26px;
+  color: #ffffff;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
+  background-color: #005E80;
+  border: none;
+  -webkit-border-radius: 0;
+     -moz-border-radius: 0;
+          border-radius: 0;
   *zoom: 1;
 }
 
 .btn:hover,
 .btn:focus {
-  color: #0CCF00;
+  color: #ffffff;
   text-decoration: none;
+  background-color: #00ADEE;
   -webkit-transition: background-position 0.1s linear;
      -moz-transition: background-position 0.1s linear;
        -o-transition: background-position 0.1s linear;
@@ -3254,9 +3259,6 @@ button.close {
 .btn-small {
   padding: 2px 10px;
   font-size: 13.6px;
-  -webkit-border-radius: 3px;
-     -moz-border-radius: 3px;
-          border-radius: 3px;
 }
 
 .btn-small [class^="icon-"],
@@ -3471,9 +3473,13 @@ input[type="button"].btn-block {
   background-color: #8a8c90 \9;
 }
 
+.btn-cancel {
+  background-color: #bdbdbd;
+}
+
 .btn-cancel:hover,
 .btn-cancel:focus {
-  color: #FF000B;
+  background-color: #00ADEE;
 }
 
 button.btn,
@@ -5146,11 +5152,11 @@ input[type="submit"].btn.btn-mini {
 }
 
 .modal.fade.in {
-  top: 10%;
+  top: 2%;
 }
 
 .modal-header {
-  padding: 9px 15px;
+  padding: 20px 15px;
 }
 
 .modal-header .close {
@@ -5159,12 +5165,14 @@ input[type="submit"].btn.btn-mini {
 
 .modal-header h3 {
   margin: 0;
-  line-height: 30px;
+  line-height: 125%;
+  size: 1.3125em;
 }
 
 .modal-body {
   position: relative;
-  padding: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
   overflow-y: auto;
 }
 
@@ -5175,7 +5183,6 @@ input[type="submit"].btn.btn-mini {
 .modal-footer {
   padding: 14px 15px 15px;
   margin-bottom: 0;
-  text-align: right;
   background-color: #fff;
   -webkit-border-radius: 0 0 6px 6px;
      -moz-border-radius: 0 0 6px 6px;

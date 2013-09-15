@@ -4,6 +4,8 @@ import math
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
+from google.appengine.api import namespace_manager
+
 
 from imageurl import ImageUrl
 from whysaurusexception import WhysaurusException
@@ -526,7 +528,13 @@ class Point(ndb.Model):
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
 
-
+    def getLinkedPointsRootCollection(self, linkType):
+        if linkType == 'supporting':
+            return self.supportingPointsRoots
+        elif linkType == 'counter':
+            return self.counterPointsRoots
+        else:
+            raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
 
     def unlink(self, unlinkPointURL, linkType, user):
         unlinkPoint, unlinkPointRoot = Point.getCurrentByUrl(
@@ -632,7 +640,12 @@ class PointRoot(ndb.Model):
     def getBacklinkPoints(self, linkType):
         backlinkRootKeys, backlinksArchiveKeys = self.getBacklinkCollections(linkType)
         backlinkRoots = ndb.get_multi(backlinkRootKeys)
-        currentKeys = [root.current for root in backlinkRoots]
+        currentKeys = []
+        for root in backlinkRoots:
+            if root:
+                currentKeys = currentKeys + [root.current]
+            else:
+                logging.error("Bad link detected in Root: %s. " % self.url)                    
         currentPoints = ndb.get_multi(currentKeys)
         return currentPoints
     

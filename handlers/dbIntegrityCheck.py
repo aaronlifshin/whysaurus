@@ -8,67 +8,88 @@ from google.appengine.ext import ndb
 from authhandler import AuthHandler
 from models.point import PointRoot
 from models.point import Point
+from models.privateArea import PrivateArea
 
+from google.appengine.api import namespace_manager
+  
 class DBIntegrityCheck(AuthHandler):
-    def get(self):
-        i = 0
+    def checkNamespace(self, areaName):      
         bigMessage = []
-        # WHAT DO WE WANT TO CHECK?
-        # Make sure every link is the same back and forth
+        noErrors = 0
+        pointCount = 0
+        bigMessage.append("ooooooooooooooooooooooooooooooooooooooooooooooooooo")
+        bigMessage.append("          NAMESPACE: " + areaName)
+        bigMessage.append("ooooooooooooooooooooooooooooooooooooooooooooooooooo")
+        
+        namespace_manager.set_namespace(areaName) 
         
         # Take every point version
         query = Point.query()
-        i = 0
         for point in query.iter():
-            link_val = point.key.urlsafe()
-            bigMessage.append("--------  Checking Point %s: <a href=\"%s%s\">%s</a> "\
-            % (point.title, constants.ADMIN_DATA_URL, link_val, point.key))
-            if point.supportingPointsLastChange:
-                for pointKey in point.supportingPointsLastChange:
-                    if not pointKey.parent() in point.supportingPointsRoots:
-                        bigMessage.append( \
-                        "+++++ Missing corresponding root for supporting point %s " % point.key)
-                    linkRoot = pointKey.parent().get()
-                    if point.current:
-                        if not point.key.parent() in linkRoot.pointsSupportedByMe:
-                            linkVal = linkRoot.key.urlsafe()
-                            bigMessage.append(
-                            "+++++ Missing BACKLINK to supporting point Root %s in <a href=\"%s%s\">%s</a>" \
-                             % (point.key.parent(), constants.ADMIN_DATA_URL, linkVal, linkRoot.pointsSupportedByMe))
-
-                if len(point.supportingPointsLastChange) != len(point.supportingPointsRoots):
-                    bigMessage.append(
-                    "+++++ Length mismatch in supporting arrays. Version: %d. Roots: %d " % \
-                    (len(point.supportingPointsLastChange), len(point.supportingPointsRoots)))
-
-            if point.counterPointsLastChange:
-                for pointKey in point.counterPointsLastChange:
-                    if not pointKey.parent() in point.counterPointsRoots:
+            foundError = False
+            checkingPointURL = point.key.urlsafe()
+            # bigMessage.append("--------  Checking Point %s: <a href=\"%s%s\">%s</a> "\
+            # % (point.title, constants.ADMIN_DATA_URL, checkingPointURL, point.key))
+            for linkType in ["supporting", "counter"]:
+                linkRoots, linkLastChange = point.getLinkCollections(linkType)
+                
+                if linkLastChange:
+                    for pointKey in linkLastChange:
+                        # Check based on the version array
+                        # 1. Every linked point in the version array 
+                        #    has to have a root in the root array
+                        if not pointKey.parent() in linkRoots: 
+                            bigMessage.append( \
+                            "Point %s. Version %d: Missing corresponding root \
+                            for %s point %s " % (point.url, point.version, linkType, str(pointKey)))
+                            foundError = True
+                        if point.current:
+                            # 2. Every linked point in the link array of a current point 
+                            #    should have backlinks in the root of the linked point
+                            linkRoot = pointKey.parent().get()
+                            backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
+                            if not point.key.parent() in backlinks:
+                                linkedPointURL = linkRoot.key.urlsafe()
+                                bigMessage.append(
+                                "Point %s. Version %d: Has %s link to \
+                                 <a href=\"%s%s\">%s</a> with no BACKLINK" \
+                                 % (point.url, point.version, linkType, \
+                                    constants.ADMIN_DATA_URL, linkedPointURL, linkRoot.url))
+                                foundError = True
+                
+                    if len(linkLastChange) != len(linkRoots):
                         bigMessage.append(
-                        "+++++ Missing corresponding root for counter point %s " \
-                        % point.key)
-                    linkRoot = pointKey.parent().get()
-                    if point.current:
-                        if not point.key.parent() in linkRoot.pointsCounteredByMe:
-                            bigMessage.append(
-                            "++++++ Missing BACKLINK for counter point %s in key %s" \
-                             % (point.key, linkRoot.key))
-                if len(point.counterPointsLastChange) != len(point.counterPointsRoots):
-                    bigMessage.append(\
-                    "++++++ Length mismatch in counter arrays. Version: %d. Roots: %d" % \
-                    (len(point.counterPointsLastChange), len(point.counterPointsRoots)))
-  
+                        "Point: <a href=\"%s%s\">%s</a>. \
+                            Length mismatch in %s arrays. \
+                            Version List has: %d. Root Array has: %d " % \
+                            (linkType, constants.ADMIN_DATA_URL, \
+                             checkingPointURL, point.title, \
+                             len(linkLastChange), \
+                             len(linkRootss)))
+                        foundError = True                
+            if not foundError:
+                noErrors = noErrors + 1
+            pointCount = pointCount + 1
+            
+        bigMessage.append( "%d points checked. No errors detected in %d points" % (pointCount, noErrors))
+        
+        noErrors = 0
+        rootCount = 0
         query = PointRoot.query()
         for pointRoot in query.iter():
+            foundError = False
             linkVal = pointRoot.key.urlsafe()
-            bigMessage.append("--------  Checking Root %s: <a href=\"%s%s\">%s</a> "\
-            % (pointRoot.url, constants.ADMIN_DATA_URL, linkVal, pointRoot.key))
+            # bigMessage.append("--------  Checking Root %s: <a href=\"%s%s\">%s</a> "\
+            # % (pointRoot.url, constants.ADMIN_DATA_URL, linkVal, pointRoot.key))
             curPoint = pointRoot.getCurrent()
             if not curPoint.current:
-                bigMessage.append("+++++ Current point is not marked current!")
+                bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
+                Current point is not marked current" % \
+                (constants.ADMIN_DATA_URL, linkVal, pointRoot.url))
+                foundError = True
+
             pointQuery = Point.query(ancestor=pointRoot.key)
             points = pointQuery.fetch()
-            bigMessage.append("-------  Checking %d point versions"% len(points))
             curCount = 0
             curURLs = ""
             for point in points:
@@ -76,33 +97,57 @@ class DBIntegrityCheck(AuthHandler):
                     curCount = curCount + 1
                     curURLs = curURLs + point.key.urlsafe()+ ","
             if curCount != 1:
-                bigMessage.append("++++++  Found %d points marked current. URL keys: %s"% (curCount, curURLs))
-            for linkRootKey in pointRoot.pointsSupportedByMe:
-                linkRoot = linkRootKey.get()
-                if not linkRoot:
-                    bigMessage.append("++++++  Not able to get root by link root key %s"% linkRootKey)
-                    continue
-                currentLinkPoint = linkRoot.getCurrent()
-                if not pointRoot.key in currentLinkPoint.supportingPointsRoots:
-                    versionKeyURL = currentLinkPoint.key.urlsafe()
-                    logging.info("VU %s" % versionKeyURL)
-                    bigMessage.append("++++++  Have supporting backlink from '" + pointRoot.url + "' to '" + \
-                                      "<a href=\"" + constants.ADMIN_DATA_URL + versionKeyURL+ "\">'" + \
-                                       currentLinkPoint.url + "'</a> but no link root." )
+                bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
+                Found %d points marked current. URL keys: %s" % \
+                (constants.ADMIN_DATA_URL, linkVal, pointRoot.url, \
+                 curCount, curURLs))
+                foundError = True
                 
-            for linkRootKey in pointRoot.pointsCounteredByMe:
-                linkRoot = linkRootKey.get()
-                currentLinkPoint = linkRoot.getCurrent()
-                if not pointRoot.key in currentLinkPoint.counterPointsRoots:
-                    versionKeyURL = currentLinkPoint.key.urlsafe()
-                    logging.info("VU %s" % versionKeyURL)
-                    bigMessage.append("++++++  Have COUNTER backlink from '" + pointRoot.url + "' to '" + \
-                                      "<a href=\"" + constants.ADMIN_DATA_URL + versionKeyURL+ "\">'" + \
-                                       currentLinkPoint.url + "'</a> but no link root." )
+            for linkType in ["supporting", "counter"]:
+                linkPoints, archivedLinkPoints = \
+                    pointRoot.getBacklinkCollections(linkType)
+                for linkRootKey in linkPoints:
+                    linkRoot = linkRootKey.get()
+                    if not linkRoot:
+                        bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
+                        Not able to get root by link root key %s" % \
+                        (constants.ADMIN_DATA_URL, linkVal, pointRoot.url, \
+                         linkRootKey))
+                        foundError = True
+                        continue
+                    currentLinkPoint = linkRoot.getCurrent()
+                    linkedPoints = currentLinkPoint.getLinkedPointsRootCollection(linkType)
+                    if not pointRoot.key in linkedPoints:
+                        versionKeyURL = currentLinkPoint.key.urlsafe()
+                        bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
+                             Have %s backlink to ' \
+                            <a href=\"%s%s\">%s</a> but no link root." % \
+                            (constants.ADMIN_DATA_URL, linkVal, pointRoot.url,\
+                             linkType, constants.ADMIN_DATA_URL, versionKeyURL, \
+                             currentLinkPoint.title))
+                        foundError = True
+                           
+            if not foundError:
+                noErrors = noErrors + 1
+            rootCount = rootCount + 1
+            
+        bigMessage.append( "%d roots checked. No errors detected in %d roots" % (rootCount, noErrors))        
+        return bigMessage
+    
 
-        
+    def get(self):
+        bigMessage = []
+        # WHAT DO WE WANT TO CHECK?
+        # Make sure every link is the same back and forth
+        namespaces = PrivateArea.query()
+        for pa in namespaces.iter():
+            bigMessage = bigMessage + self.checkNamespace(pa.name)
+        bigMessage = bigMessage + self.checkNamespace('')
+
+            
         template_values = {
-            'messages': bigMessage
+            'messages': bigMessage,
+            'user': self.current_user
         }
         path = os.path.join(os.path.dirname(__file__), '../templates/dbcheck.html')
         self.response.out.write(template.render(path, template_values))

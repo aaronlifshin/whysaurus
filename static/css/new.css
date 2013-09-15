@@ -793,6 +793,43 @@ button#unlinkToggle {
 	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Whysaurus User login dialog stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
+#showSignupDialog {
+	margin-top: 15px;
+}
+
+#forgot_emailLoginDialog {
+	margin-left: 15px;	
+}
+
+#cancel_emailLoginDialog {
+	margin-right: 5px;
+}
+
+#showSignupDialog {
+    margin-left: 15px;  	
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Create new User login dialog stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
+#backToLogin    {
+    margin-left: 15px;     
+    margin-bottom: 15px; 
+}
+
+#cancel_signupDialog {
+    margin-right: 5px;
+	margin-left:15px;
+}
+
+
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Select Supporting Point Page
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -867,14 +904,49 @@ button#unlinkToggle {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .pointDialog {
-	top:2% !important;
-	height:96% !important;
+	height:590px;
+    position: absolute;
 }
 
 #title_pointDialog {
 	width: 97.5%;
 }
 
+#author_pointDialog {
+	width:70%;
+}
+#description_pointDialog {
+    width:70%;
+}
+
+#cancel_pointDialog {
+	margin-left: 22px;
+	width:44px;
+}
+
+#buttonBar {
+	margin-top: 20px;
+}
+
+#submit_pointDialog {
+   margin-left: 10px; 
+}
+
+#sourceURL_pointDialog {
+    width:60%;
+}
+
+#sourcesAdd {
+	margin-left: 2px;
+}
+
+[name="source_pointDialog"] {
+	min-height: 20px;
+}
+
+[name="source_pointDialog"] [class*="span"] {
+    min-height: 20px;
+}
 .pointDialog .modal-footer {
 	position:absolute;
 	bottom: 0px;
@@ -902,13 +974,22 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
 .ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
 
-#editor_pointDialog > table {
-    height:auto !important;
+#editorDiv {
+	margin-left:0;
+}
+#editor_pointDialog {
+    height:60px !important;
+    width:97.5% !important;  
+    
 }
 
 .mceEditor > table {
     width:100% !important;	
+    height:60px !important;
 }
+
+#textEdit_tbl {width:100% !important;height:60px !important;}
+#textEdit_ifr {width:100% !important;height:60px !important;}
 
 .titleEdit {
   width:516px;
@@ -934,9 +1015,6 @@ fieldset { padding:0; border:0; margin-top:25px;}
   margin-top:5px;
   width:100%;
   }
-#textEdit_tbl {width:100% !important;}
-#textEdit_ifr {width:100% !important;}
-
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END Edit point dialog stuff
@@ -965,8 +1043,9 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 .filepicker-placeholder {
-  width: 54px;
-  height: 54px;
+  width: 64px;
+  height: 64px;
+  margin-left: 7px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -1054,15 +1133,56 @@ fieldset { padding:0; border:0; margin-top:25px;}
 	width:75%;
 }
 
+.modal input::-webkit-input-placeholder, .modal textarea::-webkit-input-placeholder {
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;    
+    color:#6D6E70;
+}
+
+.modal input:-moz-placeholder, .modal textarea:-moz-placeholder { /* Firefox 18- */
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;        
+    color:#6D6E70;
+}
+
+.modal input::-moz-placeholder, .modal textarea::-moz-placeholder {  /* Firefox 19+ */
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;        
+    color:#6D6E70;
+}
+
+.modal input:-ms-input-placeholder, .modal textarea:-ms-input-placeholder  {  
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;        
+    color:#6D6E70;
+}
+
 .modal textarea {
     width:75%;
     resize:none;
 }
 
 .modal label {
+    font-family:"ff-meta-web-pro-condensed", sans-serif;	
     font-weight:bold;
-    font-style: italic;
-    font-size:0.8125em; /* 13 px */
+    font-size:0.9375em; /* 15 px */
+    line-height: 200%;
+    color:#bdbdbd;
+}
+
+.modal h3, .modal button {
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+}
+
+.charCount {
+	font-family: "ff-meta-web-pro", sans-serif;
+	font-size: 0.675em; 
+	text-transform: uppercase;
+	font-weight:400;	
 }
 
 

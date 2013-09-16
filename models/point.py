@@ -449,6 +449,7 @@ class Point(ndb.Model):
             newPoint.supportingPointsRoots = list(self.supportingPointsRoots)
             newPoint.counterPointsRoots = list(self.counterPointsRoots)
             newPoint.counterPointsLastChange = list(self.counterPointsLastChange)
+            newPoint.sources = list(self.sources)
 
             try:
                 newPoint.removeLink(unlinkPointRoot, linkType)
@@ -461,7 +462,11 @@ class Point(ndb.Model):
             newPoint.version = self.version + 1
             newPoint.upVotes = self.upVotes
             newPoint.downVotes = self.downVotes
-            newPoint.voteTotal = self.voteTotal
+            newPoint.voteTotal = self.voteTotal  
+            newPoint.ribbonTotal = self.ribbonTotal
+            newPoint.imageURL = self.imageURL
+            newPoint.imageDescription = self.imageDescription
+            newPoint.imageAuthor = self.imageAuthor
             newPoint.url = self.url
             self.current = False
             newPoint.current = True
@@ -771,6 +776,8 @@ class PointRoot(ndb.Model):
             
         for comment in self.comments:
             comment.delete()
+
+        # TODO: Find the user that created and edited this, and delete REFS
 
         self.deleteFromSearchIndex()
         self.key.delete()

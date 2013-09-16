@@ -300,10 +300,15 @@ class WhysaurusUser(auth_models.User):
     
     def getCreated(self):
         createdPoints = []
+        # logging.info("Create point root keys: %d" % len(self.createdPointRootKeys))
         rootKeys = self.filterKeylistByCurrentNamespace(self.createdPointRootKeys)
+        # logging.info("Filtered root keys by %s: %d" %  \
+        #    (namespace_manager.get_namespace(), len(rootKeys)))
+        # logging.info("Root key list " + str(rootKeys))
         pointRoots = ndb.get_multi(rootKeys[0:10])
         for pointRoot in pointRoots:
-            createdPoints = createdPoints + [pointRoot.getCurrent()]
+            if pointRoot:
+                createdPoints = createdPoints + [pointRoot.getCurrent()]
         return createdPoints
 
     def getEdited(self):
@@ -311,7 +316,8 @@ class WhysaurusUser(auth_models.User):
         rootKeys = self.filterKeylistByCurrentNamespace(self.editedPointRootKeys)
         pointRoots = ndb.get_multi(rootKeys[0:10])
         for pointRoot in pointRoots:
-            editedPoints = editedPoints + [pointRoot.getCurrent()]
+            if pointRoot:
+                editedPoints = editedPoints + [pointRoot.getCurrent()]
         return editedPoints
     
     def update(self, newWebsiteURL, newUserAreas, newUserProfession, newUserBio):

@@ -19,6 +19,23 @@ from google.appengine.api.taskqueue import Task
 
 
 class DBIntegrityCheck(AuthHandler):
+    
+    def addMissingBacklinks(self, pointURL):
+        point, pointRoot = Point.getCurrentByUrl(pointURL)
+        if point:
+            rootsAdded = point.addMissingBacklinks()
+            message = 'Added %d missing roots to links of %s' % (rootsAdded, point.title)
+        else:
+            message = 'Could not find point'
+        template_values = {
+            'message': message,            
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values))      
+
+                                
     def cleanDeadBacklinks(self, pointURL):        
         point, pointRoot = Point.getCurrentByUrl(pointURL)
         if pointRoot:
@@ -37,7 +54,6 @@ class DBIntegrityCheck(AuthHandler):
     def reconcileVersionArrays(self, pointURL):
         point, pointRoot = Point.getCurrentByUrl(pointURL)
         if pointRoot:
-            logging.info('calling RVA')
             pointsRemoved = pointRoot.reconcileVersionArrays()
             message = 'Removed %d points from version root arrays in %s' % (pointsRemoved, point.title)
         else:

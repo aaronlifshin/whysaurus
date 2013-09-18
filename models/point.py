@@ -607,6 +607,26 @@ class Point(ndb.Model):
         logging.info('NEW ADD TO SEARCH INDEX. DocId = %s ' % self.key.parent().urlsafe())
         d = search.Document(doc_id=self.key.parent().urlsafe(), fields=fields)
         index.put(d)
+        
+    # This is used to fix database problems
+    def addMissingBacklinks(self):
+        if self.current == False:
+            raise WhysaurusException('Add missing backlinks can only be invoked on current point')
+        
+        addedRoots = 0
+        for linkType in ["supporting", "counter"]:
+            linkRoots, linkLastChange = self.getLinkCollections(linkType)            
+            if linkLastChange:
+                for pointKey in linkLastChange:
+                    # 2. Every linked point in the link array of a current point 
+                    #    should have backlinks in the root of the linked point
+                    linkRoot = pointKey.parent().get()
+                    backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
+                    if not self.key.parent() in backlinks:
+                        backlinks.add(self.key.parent())
+                        linkRoot.addLinkedPoint(self.key.parent(), linkType)
+                        addedRoots = addedRoots + 1
+        return addedRoots
 
 
 class PointRoot(ndb.Model):
@@ -654,16 +674,13 @@ class PointRoot(ndb.Model):
         currentPoints = ndb.get_multi(currentKeys)
         return currentPoints
     
-    
     # This is used to fix database problems
     def reconcileVersionArrays(self):
         removedRoots = 0
     
         pointVersionArray = self.getAllVersions()   
-        logging.info('Got %d versions' % len(pointVersionArray))  
         for point in pointVersionArray:
             writePoint = False
-            logging.info('Checking version %d ' % point.version)
             for linkType in ["supporting", "counter"]:
                 rootColl, lastChangeColl = point.getLinkCollections(linkType)
                 rootsToRemove = []
@@ -671,7 +688,6 @@ class PointRoot(ndb.Model):
                 for rootKey in rootColl:
                     if rootKey not in lastChangeRoots:
                         rootsToRemove = rootsToRemove + [rootKey]
-                        logging.info('Setting key to remove: %s' % str(rootKey))
                 for rootKeyToRemove in rootsToRemove:
                     rootColl.remove(rootKeyToRemove)
                     point.setLinkCollections(linkType, rootColl, lastChangeColl)
@@ -764,7 +780,7 @@ class PointRoot(ndb.Model):
     def getRecentCurrentPoints():
         pointsQuery = Point.gql(
             "WHERE current = TRUE ORDER BY dateEdited DESC")
-        return pointsQuery.fetch(10)
+        return pointsQuery.fetch(50)
 
     @staticmethod
     def getTopRatedPoints(filterList = None):

@@ -141,21 +141,25 @@ function updateVoteButtonLabels(newVote){
         var newVal = parseInt(upvoteLabel) + 1;
         $( "#upVote a" ).text(newVal.toString());
         $( "#bigScore" ).text(parseInt(bigScore) + 1);
+        $("#voteLabel").text("You agree");
         upVoteToggle(true);
     } else if (myVote == 0 && newVote == -1) { // DOWNVOTE
         var newVal = parseInt(downvoteLabel) + 1;
         $( "#downVote a" ).text(newVal.toString());
         $( "#bigScore" ).text(parseInt(bigScore) - 1);
+        $("#voteLabel").text("You disagree");        
         downVoteToggle(true);
     } else if (myVote == 1  &&  newVote == 0) { // CANCEL UPVOTE
         var newVal = parseInt(upvoteLabel) - 1;
         $( "#upVote a" ).text(newVal.toString());
         $( "#bigScore" ).text(parseInt(bigScore) - 1);
+        $("#voteLabel").text("You abstain");                
         upVoteToggle(false);
     } else if (myVote == -1  &&  newVote == 0) { // CANCEL DOWNVOTE
         var newVal = parseInt(downvoteLabel) - 1;
         $( "#downVote a" ).text(newVal.toString());
         $( "#bigScore" ).text(parseInt(bigScore) + 1);
+        $("#voteLabel").text("You abstain");                
         downVoteToggle(false);
     } else if (myVote == -1  &&  newVote == 1) { // DOWN TO UP
         var newVal = parseInt(downvoteLabel) - 1;
@@ -163,6 +167,7 @@ function updateVoteButtonLabels(newVote){
         var newVal = parseInt(upvoteLabel) + 1;
         $( "#upVote a" ).text(newVal.toString());
         $( "#bigScore" ).text(parseInt(bigScore) + 2);
+        $("#voteLabel").text("You agree");        
         downVoteToggle(false);
         upVoteToggle(true);
     } else if (myVote == 1  &&  newVote == -1) {// UP TO DOWN
@@ -171,6 +176,7 @@ function updateVoteButtonLabels(newVote){
         var newVal = parseInt(upvoteLabel) - 1;
         $( "#upVote a" ).text(newVal.toString());
         $( "#bigScore" ).text(parseInt(bigScore) - 2);
+        $("#voteLabel").text("You disagree");                
         upVoteToggle(false);
         downVoteToggle(true);
     }
@@ -232,7 +238,7 @@ function changeRibbon() {
         success: function(data){
             obj = JSON.parse(data);
             if (obj.result == true) {
-              updateRibbon(newRibbonValue);
+              updateRibbon(newRibbonValue, obj.ribbonTotal);
             } else {
               alert('An error happened and your award may not have counted. Try after a page refresh?');
             }
@@ -241,18 +247,18 @@ function changeRibbon() {
     $.ajax();
 }
 
-function updateRibbon(newRibbonValue) {
+function updateRibbon(newRibbonValue, ribbonTotal) {
     $("#blueRibbon").data("ribbonvalue", newRibbonValue);
     if (newRibbonValue) {
         $("#blueRibbon a").removeClass("notAwarded");   
         $("#blueRibbon a").removeClass("hover");  
-        $("#blueRibbon a").addClass("awarded");                          
+        $("#blueRibbon a").addClass("awarded");                     
     } else {
         $("#blueRibbon a").removeClass("hover");                
         $("#blueRibbon a").removeClass("awarded");
-        $("#blueRibbon a").addClass("notAwarded");
-        
+        $("#blueRibbon a").addClass("notAwarded");        
     }
+    $("#ribbonTotal").text(ribbonTotal);
 }
 
 function deletePoint(urlToDelete) {

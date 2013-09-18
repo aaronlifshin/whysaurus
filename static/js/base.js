@@ -562,7 +562,7 @@ function initTinyMCE() {
       theme: "advanced",
       editor_selector: "mceEditor",
       editor_deselector: "mceNoEditor",
-      content_css : '../css/content.css',
+      content_css : '/static/css/content.css',
       paste_text_sticky: true,
       paste_text_sticky_default: true,
       plugins: "autolink,lists,spellchecker,iespell,inlinepopups,noneditable,paste",
@@ -678,14 +678,14 @@ $(document).ready(function() {
     };*/
 
     // Beginning state for the TABBED AREAS
-    $('.tabbedArea').hide(); $('#editorsPicksArea').show();
+    $('.tabbedArea').hide(); $('#recentActivityArea').show();
 
-    $('#editorsPicks').click(function() {
-        toggleTabbedArea(this, "#editorsPicksArea");
+    $('#recentActivity').click(function() {
+        toggleTabbedArea(this, "#recentActivityArea");        
     });
 
-    $('#mostAgrees').click(function() {
-        toggleTabbedArea(this, "#mostAgreesArea");
+    $('#editorsPicks').click(function() {
+        loadPointList('editorsPics', '#editorsPicksArea', this);        
     });
     
     $('#mostViews').click(function() {
@@ -695,6 +695,12 @@ $(document).ready(function() {
     $('#mostCaps').click(function() {
         loadPointList('topAwards', '#mostCapsArea', this);
     });
+    
+    $('#mostAgrees').click(function() {
+        loadPointList('topRated', '#mostAgreesArea', this);
+    });
+    
+    
     
     makePointsCardsClickable();	
     $( "#recentlyViewed .pointSmall" ).click( function() {

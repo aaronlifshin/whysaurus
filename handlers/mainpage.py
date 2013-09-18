@@ -21,12 +21,8 @@ class MainPage(AuthHandler):
         else:
             recentlyViewedPoints = []
 
-        editorsPicksPoints = PointRoot.getEditorsPicks()
-        topPoints = PointRoot.getTopRatedPoints()
         template_values = {
-            'newPoints': newPoints,
-            'topPoints': topPoints,
-            'editorsPicks': editorsPicksPoints,
+            'recentlyActive': newPoints,
             'recentlyViewed': recentlyViewedPoints,
             'user': user,
             'thresholds': constants.SCORETHRESHOLDS,

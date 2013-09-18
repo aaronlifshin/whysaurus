@@ -15,6 +15,10 @@ class GetPointsList(AuthHandler):
             points = PointRoot.getTopAwardPoints()
         elif listType == 'topViewed':
             points = PointRoot.getTopViewedPoints()
+        elif listType == 'topRated':
+            points = PointRoot.getTopRatedPoints()
+        elif listType == 'editorsPics':
+            points = PointRoot.getEditorsPicks()
 
         template_values = {
             'points':points

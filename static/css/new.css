@@ -428,7 +428,6 @@ body {
 
 .voteArea{
 	line-height:36px;
-	margin-left:18%;
 	cursor:pointer;
 	background:center top no-repeat;
 }
@@ -439,8 +438,21 @@ body {
 	font-size: 1.0625em;
 }
 
-.whiteScoreText  a {
-	color:white;
+#ribbonTotal {
+    font-family:"ff-meta-web-pro", sans-serif;
+	font-size: 1.5em;
+	height:45px;
+	line-height:45px;
+	padding-right:20px;
+}
+
+
+#wellWritten {
+    font-family:"ff-meta-web-pro", sans-serif;	
+}
+
+#blueRibbon {
+	padding-left:15px;
 }
 
 #blueRibbon a {
@@ -465,7 +477,7 @@ body {
     /* background-position:-60px center; */
 }
 
-
+/*
 .upArrow{
 	background-image:url('/static/img/inverse_up_arrow.png');
 	width: 47px;
@@ -475,17 +487,18 @@ body {
 	background-image:url('/static/img/inverse_down_arrow.png');
 	width: 47px;
 }
+*/
 
-.inactiveVote {
-	background-color:#B9BBBD;
+.inactiveVote, .inactiveVote a {
+	color:#B9BBBD;
 }
 
-.redVote {
-	background-color:#FF000B;
+.redVote, .redVote a {
+	color:#FF000B;
 }
 
-.greenVote {
-	background-color:#0CCF00;
+.greenVote, .greenVote a {
+	color:#0CCF00;
 }
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
@@ -904,7 +917,7 @@ button#unlinkToggle {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .pointDialog {
-	height:590px;
+	height:610px;
     position: absolute;
 }
 

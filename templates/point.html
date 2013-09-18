@@ -38,12 +38,15 @@
   <div class="row">
     <div id="pointArea" class="boxedElement span12 dropShadow">
       <div id="scoreAndVotingSection" class="span1 pagination-centered">
-                <div id="blueRibbon" class="voteArea"
-                    data-ribbonvalue="{{ribbonValue|lower}}">
-                  <a class="pagination-centered
-                    {% if ribbonValue %} awarded {% else %} notAwarded {% endif %}"
-                    alt="Award Ribbon" src="/static/img/blueribbon.png"> </a>
-                </div>
+        <div class="row-fluid" id="wellWritten">Well written?</div>
+        <div class="row-fluid">       
+          <div id="blueRibbon" class="span6"
+              data-ribbonvalue="{{ribbonValue|lower}}">
+            <a class="{% if ribbonValue %} awarded {% else %} notAwarded {% endif %}"
+              alt="Award Ribbon" src="/static/img/blueribbon.png"> </a>   
+          </div>                                                      
+          <div id="ribbonTotal" class="span6">{{point.ribbonTotal}}</div>
+        </div>
 
 				<div id="bigScore" class="{% if point.voteTotal >= thresholds.green %}
 							greenScore
@@ -57,12 +60,24 @@
 					{{ point.voteTotal }}</div>
 
                 <div id="upVote" class= "voteArea upArrow whiteScoreText {% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" >
-                  <a alt="UpVote" src="/static/img/inverse_up_arrow.png">{{point.upVotes}}</a>
+                  <a alt="UpVote" >{{point.upVotes}}</a> AGREE
                 </div>
-                <div id="voteLabel" class="columnHeading">vote!</div>
                 <div id="downVote" class= "voteArea downArrow whiteScoreText {% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
-                  <a alt="DownVote" src="/static/img/inverse_down_arrow.png">{{point.downVotes}}</a>
+                  <a alt="DownVote">{{point.downVotes}}</a> DISAGREE
                 </div>
+                
+                <div id="voteLabel" class="columnHeading">
+                    {% if voteValue == -1 %} 
+                        You Disagree 
+                    {% else %} 
+                        {% if voteValue == 1 %}
+                           You Agree
+                        {% else %}
+                           You Abstain
+                        {% endif %}
+                    {% endif %}                    
+                </div>
+                
 
        </div>
       <div id="pointSummary" class="span7">
@@ -131,6 +146,8 @@
                           id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">Delete</a></li>
                           <li><a href='/job/cleanDeadBacklinks/{{point.url}}'>Root Backlink Clean</a></li>
                           <li><a href='/job/reconcileVersionArrays/{{point.url}}'>Version Array Fix</a></li>
+                          <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>
+                          
                     </ul>
 	             </div>
                {% endif %}

@@ -24,7 +24,7 @@ class Comments(AuthHandler):
                                'result': True, 
                                'userName': user.name,
                                'userURL': user.url,
-                               'avatar_url': user.avatar_url,
+                               'avatar_url': user.avatar_url if hasattr(user, 'avatar_url') else '/static/img/icon_triceratops_black_47px.png',
                                'text': text,
                                'date': pst_date.strftime('%b. %d, %Y, %I:%M %p'),
                                'parentUrlsafe': parentCommentUrlsafe,

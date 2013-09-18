@@ -78,7 +78,8 @@ class ViewPoint(AuthHandler):
                                'user': self.current_user,
                                'message': "Could not find point. \
                                Some points are in private areas and you \
-                               need to be logged into those areas to view them."
+                               need to be logged into those areas to view them.",
+                               'currentArea':self.session.get('currentArea')
             }
             path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
             self.response.out.write(template.render(path, template_values ))      

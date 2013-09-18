@@ -521,7 +521,7 @@ function validateForgotPassword() {
 
 function forgotPassword() {
     if (validateForgotPassword() &&
-        confirm("Send password reset email to " + $("#login_userEmail").val() + "?")) {           
+        confirm("Send a password reset email to " + $("#login_userEmail").val() + "?  (Users with no email on file write to admin@whysaurus.com for a password reset.)")) {           
             startSpinnerOnButton('#forgot_emailLoginDialog');        
             $.ajaxSetup({
         		url: "/forgot",
@@ -562,7 +562,7 @@ function initTinyMCE() {
       theme: "advanced",
       editor_selector: "mceEditor",
       editor_deselector: "mceNoEditor",
-      content_css : './static/css/content.css',
+      content_css : '../css/content.css',
       paste_text_sticky: true,
       paste_text_sticky_default: true,
       plugins: "autolink,lists,spellchecker,iespell,inlinepopups,noneditable,paste",

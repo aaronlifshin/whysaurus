@@ -1,19 +1,77 @@
 import os
 import logging
 import constants
+import datetime
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import ndb
+from google.appengine.api import mail
+
 
 from authhandler import AuthHandler
 from models.point import PointRoot
 from models.point import Point
 from models.privateArea import PrivateArea
-
+from models.timezones import PST
 from google.appengine.api import namespace_manager
   
+from google.appengine.api.taskqueue import Task
+
+
 class DBIntegrityCheck(AuthHandler):
-    def checkNamespace(self, areaName):      
+    def cleanDeadBacklinks(self, pointURL):        
+        point, pointRoot = Point.getCurrentByUrl(pointURL)
+        if pointRoot:
+            rootsRemoved = pointRoot.removeDeadBacklinks()
+            message = 'Removed %d dead roots from %s' % (rootsRemoved, point.title)
+        else:
+            message = 'Could not find point'
+        template_values = {
+            'message': message,            
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values))                                                 
+
+    def reconcileVersionArrays(self, pointURL):
+        point, pointRoot = Point.getCurrentByUrl(pointURL)
+        if pointRoot:
+            logging.info('calling RVA')
+            pointsRemoved = pointRoot.reconcileVersionArrays()
+            message = 'Removed %d points from version root arrays in %s' % (pointsRemoved, point.title)
+        else:
+            message = 'Could not find point'
+        template_values = {
+            'message': message,            
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values)) 
+        
+    def queueNightlyTask(self):
+        now = PST.convert(datetime.datetime.now())
+        tomorrow = now + datetime.timedelta(days = 1)
+        half_past_midnight = datetime.time(hour=7, minute=30) # PST 
+        taskTime = datetime.datetime.combine(tomorrow, half_past_midnight)
+        
+        t = Task(url='/job/DBIntegrityCheck', method="GET", eta=taskTime)
+        t.add(queue_name="dbchecker")
+        
+    def addDBTask(self):
+        self.queueNightlyTask()
+        template_values = {
+            'message': 'Added task to QUEUE',
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values))
+      
+        
+        
+    def checkNamespace(self, areaName): 
         bigMessage = []
         noErrors = 0
         pointCount = 0
@@ -52,19 +110,18 @@ class DBIntegrityCheck(AuthHandler):
                                 linkedPointURL = linkRoot.key.urlsafe()
                                 bigMessage.append(
                                 "Point %s. Version %d: Has %s link to \
-                                 <a href=\"%s%s\">%s</a> with no BACKLINK" \
+                                 <a href=\"/point/%s\">%s</a> with no BACKLINK" \
                                  % (point.url, point.version, linkType, \
-                                    constants.ADMIN_DATA_URL, linkedPointURL, linkRoot.url))
+                                     linkRoot.url, linkRoot.url))
                                 foundError = True
                 
                     if len(linkLastChange) != len(linkRoots):
                         bigMessage.append(
-                        "Point: <a href=\"%s%s\">%s</a>. \
+                        "Point: <a href=\"/point/%s\">%s</a>. Version %d: \
                             Length mismatch in %s arrays. \
                             Version List has: %d. Root Array has: %d " % \
-                            (linkType, constants.ADMIN_DATA_URL, \
-                             checkingPointURL, point.title, \
-                             len(linkLastChange), \
+                            (point.url, point.title, point.version,
+                             linkType, len(linkLastChange), \
                              len(linkRoots)))
                         foundError = True                
             if not foundError:
@@ -83,9 +140,9 @@ class DBIntegrityCheck(AuthHandler):
             # % (pointRoot.url, constants.ADMIN_DATA_URL, linkVal, pointRoot.key))
             curPoint = pointRoot.getCurrent()
             if not curPoint.current:
-                bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
+                bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
                 Current point is not marked current" % \
-                (constants.ADMIN_DATA_URL, linkVal, pointRoot.url))
+                (pointRoot.url, curPoint.title))
                 foundError = True
 
             pointQuery = Point.query(ancestor=pointRoot.key)
@@ -97,9 +154,9 @@ class DBIntegrityCheck(AuthHandler):
                     curCount = curCount + 1
                     curURLs = curURLs + point.key.urlsafe()+ ","
             if curCount != 1:
-                bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
+                bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
                 Found %d points marked current. URL keys: %s" % \
-                (constants.ADMIN_DATA_URL, linkVal, pointRoot.url, \
+                (pointRoot.url, pointRoot.url, \
                  curCount, curURLs))
                 foundError = True
                 
@@ -109,21 +166,21 @@ class DBIntegrityCheck(AuthHandler):
                 for linkRootKey in linkPoints:
                     linkRoot = linkRootKey.get()
                     if not linkRoot:
-                        bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
-                        Not able to get root by link root key %s" % \
-                        (constants.ADMIN_DATA_URL, linkVal, pointRoot.url, \
-                         linkRootKey))
+                        bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
+                        Not able to get %s root by link root key %s" % \
+                        ( pointRoot.url, pointRoot.url, \
+                         linkType, linkRootKey))
                         foundError = True
                         continue
                     currentLinkPoint = linkRoot.getCurrent()
                     linkedPoints = currentLinkPoint.getLinkedPointsRootCollection(linkType)
                     if not pointRoot.key in linkedPoints:
                         versionKeyURL = currentLinkPoint.key.urlsafe()
-                        bigMessage.append("Root <a href=\"%s%s\">%s</a>: \
+                        bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
                              Have %s backlink to ' \
                             <a href=\"%s%s\">%s</a> but no link root." % \
-                            (constants.ADMIN_DATA_URL, linkVal, pointRoot.url,\
-                             linkType, constants.ADMIN_DATA_URL, versionKeyURL, \
+                            ( pointRoot.url, pointRoot.url,\
+                             linkType, currentLinkPoint.url, \
                              currentLinkPoint.title))
                         foundError = True
                            
@@ -136,18 +193,41 @@ class DBIntegrityCheck(AuthHandler):
     
 
     def get(self):
+        mode = self.request.get('mode')     
+
         bigMessage = []
-        # WHAT DO WE WANT TO CHECK?
-        # Make sure every link is the same back and forth
+        
+        namespace_manager.set_namespace('') 
         namespaces = PrivateArea.query()
         for pa in namespaces.iter():
+            logging.info("Looking at private area: " + pa.name)
             bigMessage = bigMessage + self.checkNamespace(pa.name)
         bigMessage = bigMessage + self.checkNamespace('')
-
-            
+         
         template_values = {
             'messages': bigMessage,
-            'user': self.current_user
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
         }
-        path = os.path.join(os.path.dirname(__file__), '../templates/dbcheck.html')
-        self.response.out.write(template.render(path, template_values))
+                
+
+        if mode and mode == 'screen':
+            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+            self.response.out.write(template.render(path, template_values))
+        else:
+            path = os.path.join(os.path.dirname(__file__), '../templates/dbcheck.html')
+            mail.send_mail(sender='aaron@whysaurus.com',
+                to='aaronlifshin@gmail.com',
+                subject='Database Integrity Check Results %s' % str(PST.convert(datetime.datetime.now())),
+                html=template.render(path, template_values),
+                body=str(bigMessage),
+                reply_to="aaron@whysaurus.com"
+                )
+            self.queueNightlyTask()
+            template_values = {
+                'message': "Sent email successfully. Queued nightly task.",
+                'user': self.current_user,
+                'currentArea':self.session.get('currentArea')
+            }
+            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+            self.response.out.write(template.render(path, template_values))

@@ -89,7 +89,7 @@ class WhysaurusUser(auth_models.User):
                 verification_url = handler.uri_for('verification', type='v', user_id=user_id,
                                                    signup_token=token, _full=True)
         
-                mail.send_mail(sender='aaron@whysaurus.com',
+                mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
                     to=email,
                     subject='Whysaurus Email Verification',
                     body="Thank you for signing up for Whysaurus. \n\

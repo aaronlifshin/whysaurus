@@ -86,6 +86,9 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     def login(self):
         email = self.request.get('login_userEmail')
         password = self.request.get('login_userPassword')
+        if not email:
+            self.redirect("/")
+
         if email.find('@')!=-1:
             auth_id = 'email: %s' %  email
         else:
@@ -96,7 +99,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
               save_session=True)
             user = self.auth.store.user_model.get_by_id(u['user_id'])
             self.current_user = user
-            if user.privateArea:
+            if self.current_user.privateArea and self.current_user.privateArea is not None:
                 self.setUserArea(usePrivate=True)
             self.redirect("/")
             return
@@ -172,12 +175,12 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 logging.info('Could not find any user entry for username %s' % email)
                 results['error'] = 'Could not find user entry with username %s' % email
         if user:
-            if user.email:
+            if hasattr(user, 'email') and user.email is not None and user.email != '':
                 user_id = user.get_id()
                 token = self.auth.store.user_model.create_signup_token(user_id)    
                 verification_url = self.uri_for('verification', type='p', user_id=user_id,
                                                 signup_token=token, _full=True)                        
-                mail.send_mail(sender='aaron@whysaurus.com',
+                mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
                     to=user.email,
                     subject='Whysaurus password reset',
                     html="A password reset request has been received for your account. <br> \
@@ -191,15 +194,22 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 )
                 results = {'result': True}
             else:
-                results = {'result': True, 'message': 'There is no email on file for this username. Please email admin@whysaurus.com and request a password reset.'}
+                results = {'result': True, 
+                           'message': 'There is no email on file for this \
+                               username. Please email admin@whysaurus.com \
+                               and request a password reset.'}
 
         resultJSON = json.dumps(results)
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
         self.response.out.write(resultJSON)
      
-    def passwordChangePage(self):         
+    def passwordChangePage(self):    
+             
         path = os.path.join(os.path.dirname(__file__), '../templates/resetpassword.html')
-        self.response.out.write(template.render(path, {'user': self.current_user}))
+        self.response.out.write(template.render(path, {
+            'user': self.current_user, 
+            'currentArea':self.session.get('currentArea')
+}))
         
     def changePassword(self): 
         password = self.request.get('password1')
@@ -207,7 +217,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         user_id = self.request.get('user_id')
         template_values = {}
         template_values['message'] = ""
-        
+        template_values['currentArea'] = self.session.get('currentArea')
+
         user = self.current_user 
         if not password or password != self.request.get('password2'):
             template_values['message']  = "Passwords do not match"
@@ -271,7 +282,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             # user.put()
             self.auth.set_session(self.auth.store.user_to_dict(user))
             self.current_user = user
-            if user.privateArea:
+            if user.privateArea and user.privateArea is not None:
                 self.setUserArea(usePrivate=True)
         else:
             # check whether there's a user currently logged in
@@ -303,9 +314,10 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         # normally do this.
         # self.session.add_flash(data, 'data - from _on_signin(...)')
         # self.session.add_flash(auth_info, 'auth_info - from _on_signin(...)')
-
-        # Go to the profile page
         target = str(self.session['original_url'])
+        if target.find("/login") != -1: # LOGIN page cannot handle it
+            target = "/"
+        logging.info('_ON_SIGNIN: Redirecting to %s' % target)
         self.redirect(target)
 
     def logout(self):

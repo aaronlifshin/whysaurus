@@ -15,7 +15,9 @@ class PointHistory(AuthHandler):
             'latestPoint': pointData[0]["point"] if pointData else None,
             'numPoints': len(pointData) if pointData else 0,
             'pointData': pointData,
-            'user': self.current_user
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
+
         }
         path = os.path.join(constants.ROOT, 'templates/pointHistory.html')
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

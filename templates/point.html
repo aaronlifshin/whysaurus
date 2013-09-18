@@ -121,8 +121,19 @@
              </div>
 			 <div class="rightMainPointButtons span2">
 	           {% if user.admin %}
-	             <button class="mainPointButton" id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">delete</button>
-	           {% endif %}
+                <div class="dropdown">             
+                     <button class="dropdown-toggle mainPointButton" id="pointAdminMenu" data-toggle="dropdown">
+                        Admin
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="pointAdminMenu">
+                          <li><a tabindex="-1"
+                          alt="Delete Point"
+                          id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">Delete</a></li>
+                          <li><a href='/job/cleanDeadBacklinks/{{point.url}}'>Root Backlink Clean</a></li>
+                          <li><a href='/job/reconcileVersionArrays/{{point.url}}'>Version Array Fix</a></li>
+                    </ul>
+	             </div>
+               {% endif %}
 		    </div>
 		  </div>
 	  </div>

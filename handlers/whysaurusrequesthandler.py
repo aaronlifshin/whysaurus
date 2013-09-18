@@ -14,6 +14,9 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
             user = self.current_user
             if user:
                 sessionArea = self.session.get('currentArea')
+                if sessionArea is None: # Sometimes the session seems to expire
+                    if user.privateArea and user.privateArea is not None:
+                        sessionArea = self.setUserArea(usePrivate=True)
                 if sessionArea != '' and sessionArea == user.privateArea:
                     logging.info('SETTING REQUEST NAMESPACE: |%s| ' % self.session.get('currentArea'))
                     namespace_manager.set_namespace(self.session.get('currentArea')) 

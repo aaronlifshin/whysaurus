@@ -654,6 +654,59 @@ class PointRoot(ndb.Model):
         currentPoints = ndb.get_multi(currentKeys)
         return currentPoints
     
+    
+    # This is used to fix database problems
+    def reconcileVersionArrays(self):
+        removedRoots = 0
+    
+        pointVersionArray = self.getAllVersions()   
+        logging.info('Got %d versions' % len(pointVersionArray))  
+        for point in pointVersionArray:
+            writePoint = False
+            logging.info('Checking version %d ' % point.version)
+            for linkType in ["supporting", "counter"]:
+                rootColl, lastChangeColl = point.getLinkCollections(linkType)
+                rootsToRemove = []
+                lastChangeRoots = [p.parent() for p in lastChangeColl]
+                for rootKey in rootColl:
+                    if rootKey not in lastChangeRoots:
+                        rootsToRemove = rootsToRemove + [rootKey]
+                        logging.info('Setting key to remove: %s' % str(rootKey))
+                for rootKeyToRemove in rootsToRemove:
+                    rootColl.remove(rootKeyToRemove)
+                    point.setLinkCollections(linkType, rootColl, lastChangeColl)
+                    removedRoots = removedRoots + 1
+                    writePoint = True
+            if writePoint:
+                point.put()
+        return removedRoots
+                            
+    # This is used to fix database problems
+    def removeDeadBacklinks(self):
+        removedRoots = 0
+        for linkType in ["supporting", "counter"]:
+            linkPoints, archivedLinkPoints = \
+                self.getBacklinkCollections(linkType)
+            for linkRootKey in linkPoints:
+                linkRoot = linkRootKey.get()
+                logging.info('Got linkRoot for %s ' % str(linkRootKey))
+                if not linkRoot:
+                    self.removeBacklinkRaw(linkType, linkRootKey)
+                    removedRoots = removedRoots + 1
+                    continue
+        if removedRoots > 0:
+            self.put()
+        return removedRoots
+            
+    # This is used to fix database problems
+    def removeBacklinkRaw(self, linkType, linkPointRootKey):
+        if linkType == 'supporting':
+            self.pointsSupportedByMe.remove(linkPointRootKey)
+        elif linkType == 'counter':
+            self.pointsCounteredByMe.remove(linkPointRootKey)
+        else:
+            raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)  
+    
     def getComments(self):
         return ndb.get_multi(self.comments)
 

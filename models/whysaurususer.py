@@ -13,6 +13,8 @@ from google.appengine.api import mail
 
 from whysaurusexception import WhysaurusException
 from uservote import UserVote
+from timezones import PST
+
 
 class WhysaurusUser(auth_models.User):
     created = ndb.DateTimeProperty(auto_now_add=True)
@@ -34,6 +36,11 @@ class WhysaurusUser(auth_models.User):
     # googleProfileLink =  ndb.StringProperty()
     # twitterProfileLink =  ndb.StringProperty()
 
+
+    @property
+    def PSTupdated(self):
+        return PST.convert(self.updated)
+    
     def filterKeylistByCurrentNamespace(self, keylist):        
         currentNamespace = namespace_manager.get_namespace()        
         return filter(lambda key: key.namespace() == currentNamespace, keylist)            

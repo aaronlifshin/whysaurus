@@ -14,8 +14,10 @@
     <tr>
         <th>User Unique URL</th>
         <th>User Name</th>
-        <th>Points Created</th>
-        <th>Points Edited</th>        
+        <th>Created</th>
+        <th>Edited</th>  
+        <th>Viewed </th>        
+        <th>Timestamp </th>                      
         <th>User Private Area</th> 
         <th>Password reset</th>                      
     </tr>
@@ -24,7 +26,9 @@
         <td>{{yUser.u.url}}</td>
         <td><a href="/user/{{yUser.u.url}}">{{yUser.u.name}}</a></td>  
         <td>{{yUser.u.createdCount}}</td>       
-        <td>{{yUser.u.editedCount}}</td>           
+        <td>{{yUser.u.editedCount}}</td>  
+        <td>{{yUser.u.recentlyViewedRootKeys|length}}</td>           
+        <td>{{yUser.u.PSTupdated}}</td>                     
         <td>
         <div class="dropdown span4">     
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">

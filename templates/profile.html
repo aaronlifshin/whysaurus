@@ -60,8 +60,7 @@
           {% endif %}
         </div>             
     </div>
-    {% if viewingOwnPage %}        
-      
+    {% if viewingOwnPage %}              
       <div class="modal hide fade" data-keyboard="true" id="profileDialog" role="dialog" aria-hidden="true">
          <form id='frm_profileDialog' class="form-horizontal" action="./{{user.url}}" method="POST">          
             <div class="modal-header"><h3>Edit Profile Info</h3></div>    
@@ -106,25 +105,43 @@
       </div>
     {% endif %}          
    
-      <div id="recentlyViewed" class="span3">
-          {% if viewingOwnPage %}        
-            <div class="columnHeading" style="line-height:25px">
+    <div id="recentlyViewed" class="span3">
+          {% if viewingOwnPage %}  
+            <script>var viewingOwnPage = true;</script>      
+            <div class="columnHeading">
+            <button id="recentlyViewed" class="tab">
             YOUR RECENTLY VIEWED
+            </button>
             </div>
             {% for point in recentlyViewed %}
                 {% include 'smallPointBox.html' %}
             {% endfor %}
+          {% else %}
+            <script>var viewingOwnPage = false;</script>      
           {% endif %}          
-       </div>   
+    </div>   
     <div class="span6">
         <div class="columnHeading">
-                <button class="tab selectedTab" id="createdPoints">
+                {% if viewingOwnPage %}                    
+                    <button class="selectedTab tab" id="notificationView" >
+                        NOTIFICATIONS
+                    </button>
+                {% endif %}                          
+                <button class="tab {% if not viewingOwnPage %}selectedTab{% endif %} " id="createdPoints">
                     CREATED
                 </button>
                 <button class="tab" id="editedPoints">
                     EDITED
                 </button>
         </div>
+        {% if viewingOwnPage %}                            
+            <div id="notificationsArea" class="tabbedArea">
+                {% for notification in notifications %}
+                    {% include 'notificationMenu.html' %}            
+                {% endfor %}
+            </div>  
+        {% endif %}                          
+                 
         <div id="createdPointsArea" class="tabbedArea">
           {% for point in createdPoints %}
              {% include 'pointBox.html' %}            
@@ -139,4 +156,5 @@
     </div>
   </div>
     
+  
 {% endblock %}

@@ -3,13 +3,16 @@ import time
 import logging
 import random
 import string
+import datetime
 
 from google.appengine.ext import ndb
 import webapp2_extras.appengine.auth.models as auth_models
 from webapp2_extras import security
 from google.appengine.api import namespace_manager
 from google.appengine.api import mail
+from google.appengine.api import channel
 
+from models.notification import Notification
 
 from whysaurusexception import WhysaurusException
 from uservote import UserVote
@@ -31,16 +34,31 @@ class WhysaurusUser(auth_models.User):
     bio =  ndb.StringProperty()
     privateArea = ndb.StringProperty()
     password = ndb.StringProperty()
+    token = ndb.StringProperty()  
+    tokenExpires = ndb.DateTimeProperty()  
+    lastLogin = ndb.DateTimeProperty()
+    _notifications = None
+    
     # linkedInProfileLink = ndb.StringProperty()
     # facebookProfileLink =  ndb.StringProperty()
     # googleProfileLink =  ndb.StringProperty()
     # twitterProfileLink =  ndb.StringProperty()
 
-
     @property
     def PSTupdated(self):
         return PST.convert(self.updated)
     
+    @property
+    def notifications(self):
+        return self._notifications
+    
+    def getActiveNotifications(self):
+        self._notifications = Notification.getActiveNotificationsForUser(self.key)
+        return self._notifications
+
+    def clearNotifications(self, latest, earliest=None):
+        Notification.clearNotifications(self.key, latest, earliest)
+
     def filterKeylistByCurrentNamespace(self, keylist):        
         currentNamespace = namespace_manager.get_namespace()        
         return filter(lambda key: key.namespace() == currentNamespace, keylist)            
@@ -58,8 +76,28 @@ class WhysaurusUser(auth_models.User):
         self.set_password(randomPassword)
         self.put()
         return randomPassword
-
-
+    
+    def login(self):
+        # Update last login time
+        self.lastLogin = datetime.datetime.now()
+        now = datetime.datetime.now()
+        # Create And Store Token    
+        if not self.token or self.tokenExpires < now: 
+            self.createChannel()                 
+        self.put()
+        return
+    
+    def createChannel(self, saveUser=False):
+        now = datetime.datetime.now()
+        self.token = channel.create_channel(self.url, duration_minutes=1440)
+        self.tokenExpires = now + datetime.timedelta(days=1)
+        logging.info('Creating new token for user %s: %s' % (self.url, self.token))        
+        if saveUser:
+            self.put()
+        return self            
+        
+            
+    
     @classmethod
     def signup(cls, handler, email, name, password, website, areas, profession, bio):
                    
@@ -195,6 +233,8 @@ class WhysaurusUser(auth_models.User):
                 parent=self.key
             )
         newVote.put()
+        if voteValue == 1:
+            point.addNotificationTask(pointRootKey, self.key, "agreed with")
 
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
@@ -239,6 +279,9 @@ class WhysaurusUser(auth_models.User):
             elif previousRibbon and not ribbonValue:
                 point.ribbonTotal = point.ribbonTotal - 1
                 point.put()
+        if ribbonValue:
+            point.addNotificationTask(pointRootKey, self.key, "awarded a ribbon to")
+
         return newVote
             
 

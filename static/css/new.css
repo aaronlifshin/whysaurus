@@ -49,7 +49,7 @@ body {
 	border: 1px solid #000000;
 	-webkit-border-radius: 0px;
   	-moz-border-radius: 0px;
-  	border-radius: 0px; /* AL CHANGED */
+  	border-radius: 2px; 
   	font-size: 16px;
 
 }
@@ -218,8 +218,96 @@ body {
 	margin-top:2px;
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   NOTIFICATION DROPDOWN STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#notifications {
+    position: relative;	
+}
+
+#notificationIcon {
+	margin-right:10px;
+	margin-top: 8px;
+}
+
+#notificationCount {
+	position: absolute;
+	top: 15%;
+	text-align: center;
+	background-color: #00ADEE;
+	color: white;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 1px;
+	left: 60%;
+	font-family: "ff-meta-web-pro-condensed", sans-serif;
+	font-size: 0.75em;
+	font-weight: 700;
+	border-radius:2px;
+}
+
+#notificationMenuHeader, #notificationMenuFooter, .notificationMenuItem {
+	padding:4px 4px 4px 4px;
+}
+
+.notification-menu {
+	/* border:none;	*/
+	border-radius:0px;
+	padding:0px;
+	margin-right: 10px;
+}
+
+.notification-menu li {
+    border-bottom: 1px solid #B9BBBD;
+}
+
+
 .vertalignmiddle {
 	vertical-align:middle;
+}
+
+.Heading_GreyMid_Caps {
+	font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;    
+    text-transform: uppercase;
+    font-size:0.875em;
+    color:#a9a9a9;
+}
+
+.Submenu_text_main {
+	font-family:"ff-meta-web-pro", sans-serif;
+	font-weight:400;
+    font-size:0.813em;
+    color:#000000;
+}
+
+.Submenu_SmallText{
+	font-family:"ff-meta-web-pro", sans-serif;
+	font-weight:400;
+	font-size:0.75em;
+	color:#bdbdbd;
+	line-height:120%;
+}
+
+.notificationMenuItem, #notificationMenuHeader, #notificationMenuFooter {
+	cursor:pointer;
+}
+
+.notificationText {
+	padding-left: 3px;
+}
+.notificationMenuItem:hover, #notificationMenuHeader:hover, #notificationMenuFooter:hover {
+	background-color:#E0FFFE;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   NOTIFICATION AREA IN PROFILE PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+#notificationsArea li {
+	list-style:none;
+    border-bottom: 1px solid #B9BBBD;	
 }
 
 .pointCard {

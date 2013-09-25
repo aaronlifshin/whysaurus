@@ -10,7 +10,8 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, \
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
-    DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments \
+    DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
+    NotificationHandler
     
     
 
@@ -40,6 +41,14 @@ routes = [
     Route('/getPointsList', GetPointsList),
     Route('/outliner', Outliner),
     Route('/addTree', AddTree),
+    Route('/addNotifications', 
+          handler='WhySaurus.NotificationHandler:AddNotification', name='addNotifications'),
+    Route('/newNotificationChannel', 
+          handler='WhySaurus.NotificationHandler:NewNotificationChannel', 
+          name='newNotificationChannel'),
+    Route('/clearNotifications', 
+          handler='WhySaurus.NotificationHandler:ClearNotifications', 
+          name='clearNotifications'),
     Route('/uploadUsers', handler='WhySaurus.AdminPage:uploadUsers', name='uploadUsers'),
     Route('/uploadUserPage', handler='WhySaurus.AdminPage:uploadUserPage', name='uploadUserPage'),
     Route('/job/setEditorPickSort', SetEditorPickSort),

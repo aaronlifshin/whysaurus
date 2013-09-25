@@ -4,3 +4,6 @@ queue:
 - name: dbchecker
   rate: 1/m
   
+- name: notifications
+  rate: 1/s
+  

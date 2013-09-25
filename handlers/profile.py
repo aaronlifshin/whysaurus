@@ -5,6 +5,7 @@ import logging
 
 from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
+from models.notification import Notification
 from models.whysaurususer import WhysaurusUser
 from google.appengine.api import namespace_manager
 
@@ -19,12 +20,16 @@ class Profile(AuthHandler):
         template_values = {
             'user': self.current_user,
             'profileUser': profileUser,
-            'viewingOwnPage': viewingOwnPage,
+            'viewingOwnPage': viewingOwnPage,            
             'createdPoints' : profileUser.getCreated(),
             'editedPoints': profileUser.getEdited(),
-            'recentlyViewed': profileUser.getRecentlyViewed(),
             'currentArea':self.session.get('currentArea')
         }
+        if viewingOwnPage:
+            template_values['recentlyViewed'] = profileUser.getRecentlyViewed()
+            template_values['notifications'] = Notification.getAllNotificationsForUser(profileUser.key)
+
+
         return template_values
 
     def post(self, userURL):

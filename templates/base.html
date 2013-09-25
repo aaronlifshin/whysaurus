@@ -14,6 +14,7 @@
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script> var appname = window.navigator.appName; </script>
   </head>
   <body>
@@ -38,23 +39,71 @@
             </div>
             <div class="pull-right">
     		  {% if user %}
-                <script> var loggedIn = true; </script>
-                <div class="userControls"><span class="caret vertalignmiddle"></span>
-                  {% if user.avatar_url %}
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
-                  {% else %}
-                    <a class="dropdown-toggle" data-toggle="dropdown"  href="/user/{{ user.url}}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
-                  {% endif %}
-                   <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
-                    {% if user.admin %}
-                        <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
+                <script> 
+                    var loggedIn = true; 
+                    {% if user.admin %}                                       
+                        var channelToken = '{{user.token}}'; 
                     {% endif %}
-                    <li><a tabindex="-1" href="/user/{{user.url}}"> Profile </a></li>   
-                    {% if user.emailUser %}
-                        <li><a tabindex="-1" href="/changePassword">Change Password</a></li>
-                    {% endif %}                 
-                    <li><a tabindex="-1" href="/logout"> Logout </a></li>
-                   </ul>
+                    
+                    var userURL = '/user/{{user.url}}';
+                </script>
+                <div class="userControls">
+                  <div class="pull-right">
+                    <span class="caret vertalignmiddle"></span>
+                    {% if user.avatar_url %}
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
+                    {% else %}
+                      <a class="dropdown-toggle" data-toggle="dropdown"  href="/user/{{ user.url}}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
+                    {% endif %}
+                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                      {% if user.admin %}
+                          <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
+                      {% endif %}
+                      <li><a tabindex="-1" href="/user/{{user.url}}"> Profile </a></li>   
+                      {% if user.emailUser %}
+                          <li><a tabindex="-1" href="/changePassword">Change Password</a></li>
+                      {% endif %}                 
+                      <li><a tabindex="-1" href="/logout"> Logout </a></li>
+                     </ul>
+                   </div>
+                   
+                    {% if user.admin %}                   
+                     <a class="dropdown-toggle" data-toggle="dropdown">
+                      <div id="notifications" class="pull-right">                    
+                        <img id="notificationIcon" src="/static/img/notificationIcon.png"/>                    
+                        <div id="notificationCount" {% if not user.notifications %}class="hide"{%endif%}>
+                            {% if user.notifications|length == 11 %}
+                                10
+                            {% else %}                            
+                                {{ user.notifications|length }} 
+                            {% endif %}                                                        
+                        </div>
+                      </div>          
+                      </a>                           
+                      <ul class="span4 dropdown-menu notification-menu offset8" role="menu" aria-labelledby="dropdownMenu">
+                         <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
+                        {% if user.notifications %}                                               
+                            data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                            {% if user.notifications|length == 11 %}                            
+                                data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                            {% endif %}                                                                                                                    
+                        {% endif %}                            
+                            >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
+                            
+                        {% if user.notifications %}                      
+                         {% for notification in user.notifications %} 
+                            {% if forloop.counter == 11 %}
+                               <li id="notificationMenuFooter" class="Heading_GreyMid_Caps" 
+                                    >More notifications... click here to view all</li>                            
+                            {% else %}
+                                {% include 'notificationMenu.html' %} 
+                            {% endif %}                                                       
+                         {% endfor %} 
+                       {% endif %}
+                                     
+                      </ul>   
+                   {% endif %}
+                                                         
                 </div>
     		  {% else %}
                 <script> var loggedIn = false; </script>

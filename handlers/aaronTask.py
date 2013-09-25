@@ -8,6 +8,7 @@ from google.appengine.ext import ndb
 from authhandler import AuthHandler
 from models.point import PointRoot
 from models.point import Point
+from models.follow import Follow
 from models.whysaurususer import WhysaurusUser
 
 from google.appengine.api import search
@@ -18,9 +19,30 @@ class AaronTask(AuthHandler):
     def get(self):
         """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        ADD FOLLOWS FOR ADMIN USERS
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+        """
+        query = Point.query()
+        i = 0
+        for point in query.iter():
+            usr = WhysaurusUser.getByUrl(point.authorURL)
+            pointRootKey = point.key.parent()
+            if usr.admin:
+                f = None 
+                if point.version == 1:
+                    f = Follow.createFollow(usr.key, pointRootKey, "created")
+                else:
+                    f = Follow.createFollow(usr.key, pointRootKey, "edited")
+                if f:
+                    i = i + 1
+                                
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, {'message': 'Added %d follows' % i})) 
+        
+        """
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         TEST USERS
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-        """        
         query = WhysaurusUser.query()
         bigMessage = []
         for yUser in query.iter():
@@ -33,7 +55,6 @@ class AaronTask(AuthHandler):
         self.response.out.write(template.render(path, template_values))   
         
             
-        """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         FILL EDITED AND CREATED ARRAYS ON USERS
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 

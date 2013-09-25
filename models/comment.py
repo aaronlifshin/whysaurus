@@ -1,9 +1,11 @@
 import logging
 
 from google.appengine.ext import ndb
-from models.point import PointRoot
+from models.point import PointRoot, Point
 from whysaurusexception import WhysaurusException 
 from models.timezones import PST
+from models.follow import Follow
+
 
 class Comment(ndb.Model):
     date = ndb.DateTimeProperty(auto_now_add=True)
@@ -43,7 +45,10 @@ class Comment(ndb.Model):
             comment = Comment(text=text, userName = user.name, userUrl=user.url, 
                               avatar_url = user.avatar_url if hasattr(user, 'avatar_url') else '/static/img/icon_triceratops_black_47px.png', parentComment = parentCommentKey, 
                               level = parentComment.level + 1 if parentComment else 0)            
-            return comment.transactionalCreate(pointRoot, comment)
+            newComment = comment.transactionalCreate(pointRoot, comment)
+            Follow.createFollow(user.key, pointRoot.key, "commented on")
+            Point.addNotificationTask(pointRoot.key, user.key, "commented on")
+            return newComment        
         else:
             return None
         

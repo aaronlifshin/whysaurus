@@ -29,7 +29,8 @@ __all__ = [
 	'AddTree',
 	'Profile',
 	'AdminPage',
-	'Comments'
+	'Comments',
+	'AddNotifications'
 ]
 
 from mainpage import MainPage
@@ -61,6 +62,9 @@ from addtree import AddTree
 from profile import Profile
 from adminPage import AdminPage
 from comments import Comments
+from notificationHandler import NotificationHandler
+
+
 
 
 

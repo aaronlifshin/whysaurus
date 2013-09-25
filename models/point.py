@@ -4,7 +4,7 @@ import math
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
-from google.appengine.api import namespace_manager
+from google.appengine.api.taskqueue import Task
 
 
 from imageurl import ImageUrl
@@ -12,6 +12,7 @@ from whysaurusexception import WhysaurusException
 from redirecturl import RedirectURL
 from source import Source
 from timezones import PST
+from follow import Follow
 
 def convertListToKeys(urlsafeList):
     if urlsafeList:
@@ -115,6 +116,14 @@ class Point(ndb.Model):
     def getByKey(cls, pointKey):
         return ndb.Key('Point', pointKey).get()
 
+    @classmethod
+    def addNotificationTask(cls, pointRootKey, userKey, notifyReason):
+        t = Task(url='/addNotifications', 
+                 params={'rootKey':pointRootKey.urlsafe(),
+                         'userKey':userKey.urlsafe(),
+                         'notifyReason': notifyReason})
+        t.add(queue_name="notifications")
+        
     @staticmethod
     def getCurrentByUrl(url):
         pointRootQuery = PointRoot.gql("WHERE url= :1", url)
@@ -217,8 +226,12 @@ class Point(ndb.Model):
             elif linktype == 'counter':
                 pointRoot.pointsCounterredByMe = [backlink]
                 
-        return Point.transactionalCreate(pointRoot,title, content, summaryText, user,
-                            imageURL, imageAuthor, imageDescription, sourceURLs, sourceNames )
+        createdPoint, createdPointRoot = Point.transactionalCreate(
+                            pointRoot,title, content, summaryText, user,
+                            imageURL, imageAuthor, imageDescription, 
+                            sourceURLs, sourceNames )
+        Follow.createFollow(user.key, createdPointRoot.key, "created")
+        return createdPoint, createdPointRoot
 
     @staticmethod
     def createTree(dataForPointTree, user):
@@ -430,7 +443,10 @@ class Point(ndb.Model):
             self.current = False
 
             newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user)
-          
+                    
+            Follow.createFollow(user.key, theRoot.key, "edited")
+            Point.addNotificationTask(theRoot.key, user.key, "edited")
+
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndexNew()
 
@@ -474,7 +490,10 @@ class Point(ndb.Model):
             newPoint.put()
             theRoot.current = newPoint.key
             theRoot.put()
-
+            
+            Follow.createFollow(user.key, theRoot.key, "edited")
+            Point.addNotificationTask(theRoot.key, user.key, "unlinked a %s point from" % linkType)
+            
             return newPoint
         else:
             return None

@@ -1,5 +1,6 @@
 import os
 import constants
+import logging
 
 from google.appengine.ext.webapp import template
 
@@ -20,7 +21,6 @@ class MainPage(AuthHandler):
             recentlyViewedPoints = user.getRecentlyViewed()
         else:
             recentlyViewedPoints = []
-
         template_values = {
             'recentlyActive': newPoints,
             'recentlyViewed': recentlyViewedPoints,

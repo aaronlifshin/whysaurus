@@ -1,0 +1,21 @@
+<li>
+    <div class="notificationMenuItem row-fluid Submenu_text_main" data-refpoint="/point/{{notification.referencePoint.url}}">
+        <div class="span1">
+            <img class="notificationAvatar" src="{{notification.sourceUserFull.avatar_url}}"/>
+        </div>
+        <div class="span11 notificationText">
+          <div>
+          {% if notification.notificationReason == "agreed with" or notification.notificationReason == "awarded a ribbon to" %}
+            Someone {{notification.notificationReason}} 
+            <em>{{notification.referencePoint.title}}</em>, a point you {{notification.followReason}}.
+          {% else %}
+            {{notification.sourceUserFull.name}} {{notification.notificationReason}} 
+            <em>{{notification.referencePoint.title}}</em>, a point you {{notification.followReason}}.
+          {% endif %}
+          </div>
+          <div class="Submenu_SmallText">
+          {{notification.timeText}}
+          </div>
+        </div>                                   
+    </div>
+</li>

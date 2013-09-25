@@ -45,6 +45,7 @@ class ViewPoint(AuthHandler):
             'user': user,
             'voteValue': voteValue,
             'ribbonValue': ribbonValue,
+            'notifications': user.notifications if user else None,
             'thresholds': constants.SCORETHRESHOLDS,
             'currentArea':self.session.get('currentArea')
         }

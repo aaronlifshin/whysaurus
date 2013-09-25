@@ -43,7 +43,15 @@ function saveProfileInfo() {
 $(document).ready(function() {
 
     // Beginning state for the TABBED AREAS
-    $('.tabbedArea').hide(); $('#createdPointsArea').show();
+    $('.tabbedArea').hide(); 
+    if (viewingOwnPage) {
+        $('#notificationsArea').show();    
+        $('#notificationView').click(function() {
+           toggleTabbedArea(this, "#notificationsArea");
+        });             
+    } else {
+        $('#createdPointsArea').show();                
+    }
 
     $('#createdPoints').click(function() {
         toggleTabbedArea(this, "#createdPointsArea");

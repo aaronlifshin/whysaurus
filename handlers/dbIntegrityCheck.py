@@ -183,7 +183,7 @@ class DBIntegrityCheck(AuthHandler):
                     linkRoot = linkRootKey.get()
                     if not linkRoot:
                         bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
-                        Not able to get %s root by link root key %s" % \
+                        Not able to get %s backlink root by link root key %s" % \
                         ( pointRoot.url, pointRoot.url, \
                          linkType, linkRootKey))
                         foundError = True

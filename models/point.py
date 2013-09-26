@@ -863,7 +863,7 @@ class PointRoot(ndb.Model):
             point.key.delete()
             
         for comment in self.comments:
-            comment.delete()
+            comment.key.delete()
 
         # TODO: Find the user that created and edited this, and delete REFS
 

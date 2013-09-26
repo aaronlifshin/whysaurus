@@ -139,11 +139,6 @@ body {
 	height:50px;
 }
 
-.footerLink {
-	padding-right:18px;
-	margin-top: 16px;
-}
-
 .footerImage {
 	padding-right:18px;
 }
@@ -151,6 +146,12 @@ body {
 
 #footer a {
 	color:white;
+}
+
+#feedbackLink {
+    display: inline-block;
+    line-height: 50px;
+    padding-top: 4px;
 }
 
 #footer a:hover {
@@ -161,6 +162,12 @@ body {
 #tagline {
 	font-style: italic;
 	font-size: 1.0625em;
+}
+
+.Heading_White_Caps {
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;
+    font-size:1em;
 }
 
 #footerCopyright{
@@ -225,6 +232,7 @@ body {
 
 #notifications {
     position: relative;	
+    cursor:pointer;
 }
 
 #notificationIcon {
@@ -347,12 +355,16 @@ body {
 }
 
 .pointCard .linkStat {
-	font-size: 1em;
-    color: #929497;
+	font-size: 1.125em;
+    color: #a9a9a9;
     height:18px;
     min-height:0px;   
     display:block;
     float:left;    
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;
+    text-transform:Uppercase;
+    padding-top:3px;    
 }
 
 .text-right {
@@ -565,6 +577,25 @@ body {
     /* background-position:-60px center; */
 }
 
+.upTreeMenus {
+	font-family: "ff-meta-web-pro-condensed";
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: .9em;
+    color: #707070;
+    background:none;
+    background-color:#FFFFFF;
+    border: 1px solid;
+    border-radius: 2px;
+}
+
+.upTreeMenus:hover {
+    background-color:#E0FFFE;	
+}
+
+.dropdown-menu > li > a {
+	color:#000000;
+}
 /*
 .upArrow{
 	background-image:url('/static/img/inverse_up_arrow.png');
@@ -642,8 +673,10 @@ a.navWhy:hover {
 }
 
 .mainPointContent{
-	font-size:0.9375em;
 	color:#6D6E70;
+	font-family: "ff-meta-web-pro", sans-serif;
+    font-size: 0.875em;
+    line-height: 120%;	
 }
 
 h1.condensed {
@@ -674,7 +707,7 @@ h1.condensed {
 .mainPointLastEdited {
 	font-size:0.7em;
 	font-style:italic;
-	color: lightGray;
+	color: #8c8c8c;
 	float: left;
 }
 
@@ -857,6 +890,26 @@ button#unlinkToggle {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 1em;
+}
+
+.historyLastEdited {	
+    font-size:1.125em;
+    font-style:italic;
+    color: #8c8c8c;
+    float: left;
+    padding-top:10px;
+}
+    
+.blueBack {
+	background-color: #cfe2f3;
+}
+
+.pinkBack {
+	background-color: #fff2cc;	
+}
+
+.blueBack .pointCard, .pinkBack .pointCard {
+    background-color: #FFFFFF;  	
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    End history area

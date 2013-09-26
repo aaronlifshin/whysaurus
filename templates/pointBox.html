@@ -17,7 +17,6 @@
           <span class="stat"><img src="/static/img/sourcesIconBig.png"/>&nbsp{{ point.sources|length }}</span>
       </div>
       <div class="row-fluid no-space">
-        <H6>
           <span class="linkStat 
                     {% if point.onlyCounter %} counterColor 
                     {% else %} supportColor 
@@ -34,6 +33,5 @@
                 style="width:{% widthratio point.reverseLinksRatio 100 100 %}%">
             {{ point.counterPointsRoots|length }} COUNTER 
           </span>
-        </H6>
       </div>                       
 </div>

@@ -11,8 +11,13 @@
 
   <div class="row topSpace"></div>
     <div class="dropdown pull-left">
-        <button class="dropdown-toggle {% if not supportedPoints %} disabled {% endif %}" id="supportedByMeMenu" data-toggle="dropdown">
-         {% if not supportedPoints %} none {% else %} {{ supportedPoints|length }} {% endif %} supported
+        <button class="dropdown-toggle upTreeMenus {% if not supportedPoints %} disabled {% endif %}" id="supportedByMeMenu" data-toggle="dropdown">
+         {% if supportedPoints %}
+            Supporting {{ supportedPoints|length }} point{% if supportedPoints|length != 1 %}s{% endif %}    
+            <span class="caret"></span>              
+         {% else %} 
+            Supporting 0 points 
+         {% endif %}
         </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="supportedByMeMenu">
               {% for supPoint in supportedPoints %}
@@ -23,9 +28,14 @@
           </ul>
      </div>
      <div class="dropdown pull-left">
-        <button class="dropdown-toggle {% if not counteredPoints %} disabled {% endif %} "
+        <button class="dropdown-toggle upTreeMenus {% if not counteredPoints %} disabled {% endif %} "
         id="counteredByMeToggle" data-toggle="dropdown">
-         {% if not counteredPoints %} none {% else %} {{ counteredPoints|length }} {% endif %} countered
+         {% if counteredPoints %}
+            Countering {{ counteredPoints|length }} point{% if counteredPoints|length != 1 %}s{% endif %}
+            <span class="caret"></span>            
+         {% else %} 
+            Countering 0 points
+         {% endif %} 
         </button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="counteredByMeMenu">
               {% for cnPoint in counteredPoints %}

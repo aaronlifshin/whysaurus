@@ -623,7 +623,11 @@ function processNotification(messageObj) {
      $('#notificationCount').show();
           
      // Insert the raised date secs value
-     $('#notificationMenuHeader').data('latest', dataObj.timestamp)         
+     $('#notificationMenuHeader').data('latest', dataObj.timestamp)    
+         
+     $('.notificationMenuItem').click( function() {
+         window.location.href=$(this).data('refpoint');        
+     }); 
      
 }
 

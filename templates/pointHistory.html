@@ -1,61 +1,65 @@
 <div class="row">
 	<br>{{ numPoints }} versions exist for <a href="/point/{{ latestPoint.url }}">{{ latestPoint.title|escape }}</a><br>
 </div>
-<div class="row">
-	{% for fullPoint in pointData %}
-	  <div class="boxedElement">
-				<div class="pointSummaryTitle">{{ fullPoint.point.title|escape }}</div>
-				<div class="pointSummaryText">{{ fullPoint.point.content|safe }}</div>
-				<table class="pointTable">
-                {% if fullPoint.supportingPoints %}
-    				<thead>
-    					<tr><th>Supporting Point Title</th><th>Supporting Point Text</th><th>Author</th></tr>
-    				</thead>
-    				<tbody>
-    				{% for point in fullPoint.supportingPoints %}
-    					<tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
-    				{% endfor %}
-    				</tbody>
-    				</table>
-                {% endif %}
+    {% for fullPoint in pointData %}
+        {% with fullPoint.point as point %}
+            <div class="row {% cycle 'blueBack' 'pinkBack' %}">
+                <div class="span8">
+                    <div class="span1"></div>
+                    <div class="historyLastEdited">
+                        Version {{point.version}}. Created {{point.PSTdateEdited}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row {% cycle 'blueBack' 'pinkBack' %}">    	        
+		        <div class="span7">
+		                <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
+		                <div class="mainPointContent editable">{{ point.content|safe }}</div>
+		                <!-- Hacky way to get imageurl into the edit dialog. :/ -->
+		                <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
+		                {% include 'sources.html' %}		
+		        </div>
 
-                {% if fullPoint.counterPoints %}
-   
-                  <table class="pointTable">
-                  <thead>
-                      <tr><th>Counter Point Title</th><th>Counter Point Text</th><th>Author</th></tr>
-                  </thead>
-                  <tbody>
+                <div class="span3">
+		            {% if point.imageURL and point.imageURL.strip %}
+		              <img class="pointDisplay" src="{{ point.fullPointImage }}" />
+		              <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+		              <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+		            {% else %}
+		              <img class="pointDisplay" src="/static/img/placeholder.gif" />
+		              <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+		              <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+		            {% endif %}
+                </div>
+            </div>
+        {% endwith %}	    
+        {% if fullPoint.sources %}
+          <div class="row {% cycle 'blueBack' 'pinkBack' %}">
+             <div class="span11 offset1">Sources:</div>           
+             {% for source in fullPoint.sources %}
+                <div class="span11 offset1">      
+                  <a data-sourceKey={{source.key.urlsafe}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
+                </div>    
+             {% endfor %}
+          </div>
+         {% endif %}
+        <div class="row {% cycle 'blueBack' 'pinkBack' %}">
+            <div class="span6">
+                {% if fullPoint.supportingPoints %}
+                  Supporting Points
+                  {% for point in fullPoint.supportingPoints %}
+                      {% include 'pointBox.html' %}            
+                  {% endfor %} 
+                {% endif %}                      
+            </div>
+            <div class="span6">
+                {% if fullPoint.counterPoints %}            
+                  Counter Points
                   {% for point in fullPoint.counterPoints %}
-                      <tr><td>{{point.title|escape}}</td><td>{{point.content|safe}}</td><td>{{point.authorName}}</td></tr>
-                  {% endfor %}
-                  </tbody>
-                  </table>
-                {% endif %}
-                
-  
-                {% if fullPoint.sources %}                  
-                  <table class="pointTable">
-                  <thead>
-                      <tr><th>Source Title</th><th>Source URL</th></tr>
-                  </thead>
-                  <tbody>
-                  {% for source in fullPoint.sources %}
-                      <tr><td>{{source.name}}</td><td><a hred="{{source.url}}">{{source.url}}</a></td></tr>
-                  {% endfor %}
-                  </tbody>
-                  </table>
-                {% endif %}
-                
-                
-				<div class="mainPointInfo">
-					<div class="mainPointVersion">{{fullPoint.point.version}}</div>
-					<div class="mainPointAuthor"><a href="/user/{{ fullPoint.point.authorURL }}">{{ fullPoint.point.authorName }}</a></div>
-					<div class="mainPointDateEdited">{{fullPoint.point.PSTdateEdited}} </div>
-					<div class="mainPointImageURL">{{fullPoint.point.imageURL}}</div>
- 					<div class="mainPointImageAuthor">{{fullPoint.point.imageAuthor}}</div>
- 					<div class="mainPointImageDescription">{{fullPoint.point.imageDescription}}</div>
-				</div>
-		</div>
+                      {% include 'pointBox.html' %}            
+                  {% endfor %} 
+                {% endif %}                                        
+            </div>
+        </div>		
 	{% endfor %}
-</div>

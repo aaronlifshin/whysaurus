@@ -9,36 +9,101 @@ from authhandler import AuthHandler
 from models.point import PointRoot
 from models.point import Point
 from models.follow import Follow
+from models.comment import Comment
+
 from models.whysaurususer import WhysaurusUser
 
 from google.appengine.api import search
+from google.appengine.api.taskqueue import Task
+from google.appengine.api import namespace_manager
 
 
 
 class AaronTask(AuthHandler):
-    def get(self):
+    def QueueTask(self):
+        taskurl = self.request.get('task')
+        if taskurl:
+            fullurl = '/' + taskurl
+            t = Task(url=fullurl)
+            t.add(queue_name="notifications")
+            self.response.out.write('K I wrote %s to the notifications queue' % fullurl)     
+        else:
+            self.response.out.write('Need a task URL parameter')     
+
+     
+    def DeleteDuplicateFollows(self):
+        q = Follow.query()
+        i = 0 
+        for f in q.iter():
+            i = i+1
+            q2 = Follow.query(ndb.AND(Follow.user == f.user, Follow.pointRoot == f.pointRoot))     
+            existingFollows = q2.fetch(4)
+            if len(existingFollows) > 1:
+                for ef in existingFollows[1:]:
+                    logging.info('Deleting follow for R:%s U:%s T:%s' % (str(ef.pointRoot), str(ef.user), ef.reason))
+                    ef.key.delete()
+        logging.info('Checked %d follows' % i)
+
+    def MakeFollows(self):
         """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         ADD FOLLOWS FOR ADMIN USERS
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
         """
-        query = Point.query()
+        nextURL = None
+        firstURL = self.request.get('nexturl')
+        query = PointRoot.query().order(PointRoot.url)
+        if firstURL:
+            query = query.filter(PointRoot.url >= firstURL)
+        pointRoots = query.fetch(11)
+        if len(pointRoots) == 11:
+            nextURL = pointRoots[-1].url
+            pointRootsToReview = pointRoots[:10]
+        else:
+            pointRootsToReview = pointRoots
+        
         i = 0
-        for point in query.iter():
-            usr = WhysaurusUser.getByUrl(point.authorURL)
-            pointRootKey = point.key.parent()
-            if usr.admin:
-                f = None 
+        for pointRoot in pointRootsToReview:
+            pointRootKey = pointRoot.key
+            followers = {}     
+                          
+            versions = pointRoot.getAllVersions()
+            for point in versions:
                 if point.version == 1:
-                    f = Follow.createFollow(usr.key, pointRootKey, "created")
+                    followers[point.authorURL] = 'created'         
+                elif not point.authorURL in followers:
+                    followers[point.authorURL] = 'edited'  
+            
+            for comment in pointRoot.getComments():
+                if not comment.userUrl in followers:
+                    followers[comment.userUrl] = 'commented'  
+                
+            logging.info('ROOT: %s FOLLOWERS: %s' % (pointRoot.url, str(followers)))       
+            for url in followers.iterkeys():
+                followType = followers[url]
+                previousNamespace = namespace_manager.get_namespace()
+                if previousNamespace and previousNamespace != '':                
+                    namespace_manager.set_namespace('') # DEFAULT NAMESPACE
+                    usr = WhysaurusUser.getByUrl(url)
+                    namespace_manager.set_namespace(previousNamespace)
                 else:
-                    f = Follow.createFollow(usr.key, pointRootKey, "edited")
+                    usr = WhysaurusUser.getByUrl(url)
+                logging.info('Trying to follow for U:%s, R:%s, T:%s' % (url, pointRoot.url, followType))
+                f = None
+                f = Follow.createFollow(usr.key, pointRootKey, followType)
                 if f:
                     i = i + 1
-                                
-        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-        self.response.out.write(template.render(path, {'message': 'Added %d follows' % i})) 
+                    logging.info('ADDED follow for U:%s, R:%s, T:%s' % (url, pointRoot.url, followType))
+
+                       
+        logging.info('Added %d follows' % i)
+        if nextURL:
+            t = Task(url="/MakeFollows", params={'nexturl':nextURL})
+            t.add(queue_name="notifications")
+            logging.info('Requeing MakeFollows task to start at url %s ' % nextURL)
         
+    def get(self):
+
         """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         TEST USERS

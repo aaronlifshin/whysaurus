@@ -5,10 +5,8 @@
     <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="/static/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
     <link href="/static/css/new.css" rel="stylesheet" media="screen">
-    <!--<link href="/static/css/whysaurus/jquery-ui-1.10.1.custom.css" rel="stylesheet" />	-->
     <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js" ></script>
-	<!--  <script type="text/javascript" src="/static/js/jquery-ui-1.10.1.custom.min.js"></script>-->
     <script type="text/javascript" src="//use.typekit.net/dvk0ttp.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script type="text/javascript" src="/static/js/base.js"></script>
@@ -41,10 +39,7 @@
     		  {% if user %}
                 <script> 
                     var loggedIn = true; 
-                    {% if user.admin %}                                       
-                        var channelToken = '{{user.token}}'; 
-                    {% endif %}
-                    
+                    var channelToken = '{{user.token}}';                     
                     var userURL = '/user/{{user.url}}';
                 </script>
                 <div class="userControls">
@@ -67,7 +62,6 @@
                      </ul>
                    </div>
                    
-                    {% if user.admin %}                   
                      <a class="dropdown-toggle" data-toggle="dropdown">
                       <div id="notifications" class="pull-right">                    
                         <img id="notificationIcon" src="/static/img/notificationIcon.png"/>                    
@@ -101,9 +95,7 @@
                          {% endfor %} 
                        {% endif %}
                                      
-                      </ul>   
-                   {% endif %}
-                                                         
+                      </ul>                                                            
                 </div>
     		  {% else %}
                 <script> var loggedIn = false; </script>
@@ -276,8 +268,7 @@
                   <img id="whiteDinoImage span1" class="pull-left" src="/static/img/icon_triceratops_white_47px.png"/>
                   <div id="tagline" class="span3">Convince the World</div>
                 </div>
-                  <div class="span1"> 
-              	  <h5 class="footerLink pull-left"> <a href="/contact">FEEDBACK </a> </h5></div>
+                  <div class="span1 pull-left Heading_White_Caps"> <a id="feedbackLink" href="/contact">FEEDBACK </a></div>
                   <div class="span3">
                     <div class="footerImage pull-left">
                       <a href="https://twitter.com/Whysaurus" target="_blank"><img id="twitterImage" src="/static/img/footer_icon_twitter_16pxHi_v12.png" /></a>

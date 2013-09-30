@@ -327,13 +327,13 @@ body {
 	padding:5px;
 }
 
-.pointCard:hover, .pointSmall:hover {
+.pointCard:hover, .pointSmall:hover, .pointListPoint:hover {
 	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
 	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
 }
 
-.pointCard:hover .score, .pointSmall:hover .score {
+.pointCard:hover .score, .pointSmall:hover .score, .pointListPoint:hover .score {
 	color:white;
 }
 
@@ -390,6 +390,13 @@ body {
     word-wrap: break-word;
     cursor:pointer;
     padding:5px;
+}
+
+.pointListPoint {
+    background-color: #f8f8f8;
+    border-bottom:1px solid #d7d7d7;
+    word-wrap: break-word;
+    cursor:pointer;
 }
 
 .pointSmall .smallTitle a {
@@ -621,7 +628,6 @@ body {
 }
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
-	padding-bottom: 10px;
 	margin-bottom: 5%;
 }
 
@@ -689,19 +695,16 @@ h1.condensed {
 
 #pointArea {
 	position: relative;
+	margin-left:0px;
 }
 
 #timestampAndEditLink {
 	bottom: 30px;
 	position: absolute;
-	padding-left: 1.5em;
 }
 
 #sharing {
-  width: 104px;
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
+  padding-top: 7px;
 }
 
 .mainPointLastEdited {
@@ -709,11 +712,10 @@ h1.condensed {
 	font-style:italic;
 	color: #8c8c8c;
 	float: left;
+	padding-top:10px;
 }
 
 #pointSummary {
-	padding-left: 1em;
-	padding-right: 2em;
 	margin-bottom: 1em;
 }
 
@@ -754,12 +756,13 @@ img.smallDisplay {
 .mainPointButton {
 	display: inline;
 	color: #B9BBBD;
-	font-style: italic;
-	font-weight: bold;
 	border: 0px;
 	background-color: transparent;
 	background-repeat: no-repeat;
 	background-position: 95% 0%;
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;
+    font-size:0.875em;
 }
 
 .mainPointButton:hover {
@@ -787,7 +790,6 @@ img.smallDisplay {
 button#editPoint {
 	position: absolute;
 	bottom: 0px;
-	right: 0px;
 	background-image: url('/static/img/pencil_icon.png');
 	padding-right: 25px;
 	height: 20px;
@@ -797,13 +799,11 @@ button#addImage {
 	background-image: url('/static/img/paper_clip_icon.png');
 	padding-right: 25px;
 	height: 20px;
-	margin-top: 2em;
 	margin-left: 10%;
 }
 
 button#changeImage {
 	float: right;
-	margin-top: 20%;
 	background-image: url('/static/img/paper_clip_icon.png');
 	padding-right: 25px;
 	height: 20px;
@@ -812,12 +812,6 @@ button#changeImage {
 button#viewSupportingPoints {
 	background-image: url('/static/img/flow_chart_icon.png');
 	padding-right: 29px;
-	height: 27px;
-}
-
-button#viewComments {
-	background-image: url('/static/img/speech_bubble_icon.png');
-	padding-right: 40px;
 	height: 27px;
 }
 
@@ -1036,7 +1030,7 @@ button#unlinkToggle {
 	 background-position: 0 100%;
 }
 
-.pointSmall:hover [id^=selectPoint_arrow] {
+.pointSmall:hover [id^=selectPoint_arrow], .pointListPoint:hover [id^=selectPoint_arrow]{
 	background-image: url("/static/img/arrow_add_black_45px.png");
 }
 
@@ -1340,20 +1334,34 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 
-/* comments area */
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   COMMENTS AREA OF POINT PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+#commentCount {
+    background-image: url('/static/img/speech_bubble_icon.png');
+    padding-top:5px;
+    padding-left:35px;
+    background-repeat: no-repeat;
+}
+
 #addComment {
 	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-bottom: 30px;
 }
 #comments { display: block; }
 #comments {
 	margin: 0 0 0 0;
 }
-#comments .cmmnt, ul .cmmnt, ul ul .cmmnt { 
-	display: block; 
-	position: relative; 
-	border-bottom: 1px solid #ddd;
-	margin-bottom: 5px; 
+#comments .cmmnt { 
+    list-style:none;    
+	background-color: #f8f8f8;
+    border-bottom:1px solid #d7d7d7;    
+    word-wrap: break-word;
+    position: relative;
+}
+
+#comments .cmmnt .userlink, #comments .cmmnt .pubdate {
+	font-size:0.75em; 
 }
 
 #comments .cmmnt .avatar img { 
@@ -1371,8 +1379,20 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 #comments .cmmnt .avatar a:hover img { opacity: 0.77; }
-#comments .cmmnt .cmmnt-content { padding: 0px 3px; padding-bottom: 12px; padding-top: 8px; margin-left:0px; }
-a[name="commentReply"] {cursor: pointer}
+#comments .cmmnt .cmmnt-content { 
+	padding: 0px 3px; 
+	padding-top: 8px; 
+	margin-left:0px; 
+    font-size: 0.875em;
+}
+	
+a[name="commentReply"] {
+	cursor: pointer; 
+	float:right;
+	bottom: 2px;
+	right: 5px;
+    position: absolute;
+}
    
 .cmmnt.level1 {
     margin-left: 5%;

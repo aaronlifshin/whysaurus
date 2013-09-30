@@ -896,7 +896,7 @@ $(document).ready(function() {
     var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
     var isChrome = !!window.chrome && !isOpera;         
     if (isChrome == false) {
-        showAlert('You are using Whysaurus in a unsupported browser.  We are in Beta and only Chrome is supported for now.');
+        showAlert('You are using Whysaurus in a unsupported browser.  Only Chrome is currently fully supported.');
     }
 
 

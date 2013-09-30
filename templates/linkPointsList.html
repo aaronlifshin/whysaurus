@@ -12,7 +12,7 @@
           {% endif %}
         </div>
         <div class="row-fluid">
-           <div class="span10 offset1" id="{{linkType}}_pointList">
+           <div class="span12" id="{{linkType}}_pointList">
               <div id="{{linkType}}_menuArea"  class="row-fluid">
                  <button id="{{linkType}}_unlinkToggle" class="mainPointButton pull-right" type="submit">Unlink</button>
                 <div class="dropdown pull-right">
@@ -54,7 +54,7 @@
                       green
                     {% else %}
                     {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
-                    {% endif %} pointSmall row-fluid" id="{{linkType}}Point_{{point.url}}">
+                    {% endif %} pointListPoint row-fluid" id="{{linkType}}Point_{{point.url}}">
                     <div class="span8 title"><H5>
                       <span class="score">{{ point.voteTotal }}</span>
                       {{ point.title|escape }}

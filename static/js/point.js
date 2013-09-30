@@ -56,9 +56,8 @@ function callPointEdit(){
 			    obj = JSON.parse(data);
 				$('.mainPointContent').html(ed.getContent());
 				$('.mainPointTitle h1').html($('#title_pointDialog').val());
-				$('.mainPointVersion').html(obj.version);
-				$('.mainPointAuthor').html(obj.author);
-				$('.mainPointDateEdited').html(obj.dateEdited);
+				$('.mainPointLastEdited').html('Last edited ' + obj.dateEdited + 
+				    ' by <a href=\'/user/' + obj.authorURL +'\'>'+ obj.author + '</a>');
                 if (obj.imageURL) {
                     $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + encodeURIComponent(obj.imageURL))
                 }
@@ -558,15 +557,14 @@ function makeLinkedPointsClickable() {
 
 function setCommentCount() {
     numComments = $(".cmmnt").length;    
-    $('#viewComments').text(numComments + " comments");
+    $('#commentCount').text(numComments + " comment" + (numComments == 1? "":"s"));
 }
 
 function insertComment(commentObj) {
-    html = "<li class=\"cmmnt span10 level" + commentObj.level + "\">" +
-      "<div class=\"avatar span1\"><a href=\"/user/" + commentObj.userURL+ "\"><img class=\"pull-left\" src=\""+ commentObj.avatar_url + 
-      "\" width=\"55\" height=\"55\"></a></div> <div class=\"cmmnt-content\"><a href=\"/user/"+  commentObj.userURL +
+    html = "<div class=\"row-fluid cmmnt level" + commentObj.level + "\">" +
+      "<div class=\"cmmnt-content span11\">" + commentObj.text + "<a href=\"/user/"+  commentObj.userURL +
       "\" class=\"userlink\">" + commentObj.userName + "</a> - <span class=\"pubdate\">"  + commentObj.date + 
-      "</span>" + commentObj.text + " </div> <div class=\"span1 pull-right\">" +
+      "</span> </div> <div class=\"span1\">" +
           "<a name=\"commentReply\" data-parentkey="+ commentObj.myUrlSafe + ">Reply</a></div></li>"
           
     if (!commentObj.parentUrlsafe || commentObj.parentUrlsafe == '') {
@@ -712,10 +710,6 @@ $(document).ready(function() {
 
     $('#viewSupportingPoints').click(function() {
         toggleTabbedArea(this, "#supportingPointsArea");
-    });
-
-    $('#viewComments').click(function() {
-        toggleTabbedArea(this, "#commentArea");
     });
     
     $('#saveCommentSubmit').click(saveComment);

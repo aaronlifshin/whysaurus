@@ -1,4 +1,7 @@
 import json
+import os
+import constants
+from google.appengine.ext.webapp import template
 
 from authhandler import AuthHandler
 from models.point import Point
@@ -41,13 +44,15 @@ class AddSupportingPoint(AuthHandler):
                     'err': str(e)
                 }
             else:
+                path = os.path.join(constants.ROOT, 'templates/pointBox.html')
+                newLinkPointHTML = json.dumps(template.render(path, {'point': newLinkPoint}))
                 jsonOutput = {
                     'result': True,
                     'version': newPoint.version,
                     'author': newPoint.authorName,
                     'dateEdited': newPoint.dateEdited.strftime("%Y-%m-%d %H: %M: %S %p"),
                     'numLinkPoints': newPoint.linkCount(linkType),
-                    'newLinkPoint':newLinkPoint.shortJSON()
+                    'newLinkPoint':newLinkPointHTML
                 }
             resultJSON = json.dumps(jsonOutput)
             self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

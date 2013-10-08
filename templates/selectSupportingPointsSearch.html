@@ -1,22 +1,26 @@
-<div class="modal hide fade pointDialog" data-keyboard="false" id="linkedPointSearchDialog" 
+<div class="modal hide fade" data-keyboard="false" id="linkedPointSearchDialog" 
     title="Search for supporting points for {{pointTitle}}" role="dialog" aria-hidden="true">
     <div class="modal-header">
         <h3>
-            Search for supporting points for {{pointTitle}}
+            Search for supporting points for 
         </h3>
+        <h4>
+        {{pointTitle}}
+        </h4>
     </div>   
     <div class="row-fluid" id="alertArea"></div>    
-    <div class="row-fluid">    
-        <div class="searchColumn span11">
-          <div class="row-fluid" id="searchBoxDiv">
-              <div class="span11 offset1">
-                  <input id="selectLinkedPointSearch" class="searchBox" type="search" 
+    <div class="row-fluid">  
+        <div class="span10 offset1">
+            <input id="selectLinkedPointSearch" class="searchBox" type="search" 
                     placeholder="Search for an existing point..." results="0" />
-              </div>
-          </div>
-        </div>        
-        <div class="control-group span11">        
-            <a href="#" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>
         </div>
-    </div>
+         <div class="control-group span4 offset8">   
+            <a id="submitLinkedPointSearch" href="#" class="btn btn-primary">Search</a>                                 
+            <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+        </div>    
+    </div>       
+    <div class="row-fluid">    
+        <div class="span10 offset1" id="searchResultsArea">
+        </div>
+    </div>        
 </div>

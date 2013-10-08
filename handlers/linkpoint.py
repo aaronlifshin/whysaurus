@@ -1,4 +1,9 @@
 import json
+import os
+import constants
+from google.appengine.ext.webapp import template
+
+
 from authhandler import AuthHandler
 from models.point import Point
 from models.whysaurusexception import WhysaurusException
@@ -24,9 +29,11 @@ class LinkPoint(AuthHandler):
             except WhysaurusException as e:
                 resultJSON = json.dumps({'result': False, 'error': str(e)})
             else:
+                path = os.path.join(constants.ROOT, 'templates/pointBox.html')
+                newLinkPointHTML = json.dumps(template.render(path, {'point': supportingPoint}))
                 resultJSON = json.dumps({'result': True,
                                          'numLinkPoints': supportingPoint.linkCount(linkType),
-                                         'newLinkPoint':supportingPoint.shortJSON()})
+                                         'newLinkPoint':newLinkPointHTML})
         else:
             resultJSON = json.dumps({'result': 'ACCESS DENIED!'})
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

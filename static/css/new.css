@@ -318,6 +318,10 @@ body {
     border-bottom: 1px solid #B9BBBD;	
 }
 
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END NOTIFICATION AREA IN PROFILE PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
 .pointCard {
 	border-style:solid;
 	border-width:1px;
@@ -325,6 +329,10 @@ body {
   	word-wrap: break-word;
 	cursor:pointer;
 	padding:5px;
+}
+
+[id$=_pointList] .pointCard {
+	position: relative;
 }
 
 .pointCard:hover, .pointSmall:hover, .pointListPoint:hover {
@@ -355,27 +363,42 @@ body {
 }
 
 .pointCard .linkStat {
-	font-size: 1.125em;
-    color: #a9a9a9;
+
     height:18px;
     min-height:0px;   
     display:block;
     float:left;    
-    font-family:"ff-meta-web-pro-condensed", sans-serif;
-    font-weight:700;
-    text-transform:Uppercase;
-    padding-top:3px;    
+
 }
 
-.text-right {
-    text-align:right;	
-}
 .pointCard .counterColor {
 	background-color: #ffe6e7;
 }
 
 .pointCard .supportColor {
     background-color: #e3fde5;
+}
+
+.pointCard .gauge {
+	position:relative;
+}
+
+.pointCard .gaugeText {
+	top:3px;    	
+	position: absolute;
+    font-size: 1.125em;
+    color: #a9a9a9;
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;
+    text-transform:Uppercase;
+}
+
+.pointCard .gaugeCounter {
+	right: 3px;
+}
+
+.pointCard .gaugeSupporting {
+    left: 3px;
 }
 
 .pointCard .pointTitle a:hover, .pointSmall .smallTitle a:hover {
@@ -668,14 +691,24 @@ a.navWhy:hover {
 }
 
 .unlinkbutton {
-	width:46px;
-	height:34px;
+	position:absolute;
+	top: 0;
+	opacity:0.75;
+	z-index:5000;
 	border-style:none;
-	background:transparent url('/static/img/icon_unlink_grey_34px.png') center top no-repeat;
+	right: 0;
+	width: 150px;
+	height: 50%;
+	background: #FF003F;
 }
 
-.unlinkbutton:hover {
-	background-image: url('/static/img/icon_unlink_red_34px.png');
+.unlinkbutton a {
+    padding-top:10px;
+    padding-left: 10px;
+    color:#FFFFFF;	
+    height: 100%;
+    width: 100%;
+    position: absolute;
 }
 
 .mainPointContent{
@@ -1016,19 +1049,7 @@ button#unlinkToggle {
 	right: -3.305785123966942%;
     position: relative;
 }
-[id^=popoutPoint_] {
-	width:20px;
-    height:20px;
-    display: block;
-    top: 10px;
-    position: relative;
-    border-style:none;
-    background-image: url("/static/img/addPoint_icon_popout_20pxHi_v12.png");
-}
 
-[id^=popoutPoint_]:hover {
-	 background-position: 0 100%;
-}
 
 .pointSmall:hover [id^=selectPoint_arrow], .pointListPoint:hover [id^=selectPoint_arrow]{
 	background-image: url("/static/img/arrow_add_black_45px.png");
@@ -1048,6 +1069,59 @@ button#unlinkToggle {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
+   Search for linked point dialog
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#linkedPointSearchDialog {
+    position:absolute;
+}
+
+#searchResultsArea .pointCard {
+    position: relative;
+}
+
+.searchLinkSelectButton {   
+	position:absolute;
+    top: 0;
+    opacity:0.75;
+    z-index:5000;
+    right: 0;
+    width: 150px;
+    height: 30%;
+}
+
+.searchLinkSelectButton a {
+    padding-top:10px;
+    padding-left: 10px;
+    color:#FFFFFF;  
+    font-size:1.2em;
+    text-transform:uppercase;
+    font-weight:bold;
+    height: 100%;
+    width: 100%;
+}
+
+.popoutPoint {
+    width:20px;
+    height:20px;
+    display: block;
+    top: 45%;
+    left: -20px;
+    position: absolute;
+    border-style:none;
+    background-image: url("/static/img/addPoint_icon_popout_20pxHi_v12.png");
+}
+
+.popoutPoint:hover {
+     background-position: 0 100%;
+}
+
+#searchResultsArea .pointCard:hover {
+    background-color:#E0FFFE;	
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
    Edit point dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
@@ -1055,6 +1129,7 @@ button#unlinkToggle {
 	height:610px;
     position: absolute;
 }
+
 
 #title_pointDialog {
 	width: 97.5%;

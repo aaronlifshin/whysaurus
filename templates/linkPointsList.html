@@ -50,29 +50,7 @@
               </div>
               {% if linkedPoints %}            
                 {% for point in linkedPoints %}
-                  <div class="{% if point.voteTotal >= thresholds.green %}
-                      green
-                    {% else %}
-                    {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
-                    {% endif %} pointListPoint row-fluid" id="{{linkType}}Point_{{point.url}}">
-                    <div class="span8 title"><H5>
-                      <span class="score">{{ point.voteTotal }}</span>
-                      {{ point.title|escape }}
-                    </H5> </div>
-                    <div class="span2">
-                      {% if point.imageURL and point.imageURL.strip %}
-                         <img class="smallDisplay" src="{{ point.summaryMediumImage }}" />
-                      {% endif %}
-                    </div>
-                    <div class="span2 grayBackground">
-                              <a class="navWhy pull-right" id="goTo_{{linkType}}_{{ point.url }}" 
-                                alt="Why {{ point.title|escape }}" href="/point/{{ point.url }}" 
-                                src="/static/img/arrow_why_A_grey.png"></a>
-                              <a class="unlinkbutton pull-right" id="unlink_{{linkType}}_{{point.url}}"  href='javascript:;' 
-                                onclick='javascript:pointUnlink("{{ point.url }}", "{{linkType}}")' 
-                                alt="Unlink {{linkType|title}} Point: {{point.title|escape}}" ></a>
-                    </div>
-                  </div>
+                    {% include 'pointBox.html' %}            
                 {% endfor %}
               {% endif %}          
           </div>

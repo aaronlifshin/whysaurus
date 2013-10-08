@@ -85,12 +85,7 @@ class Point(ndb.Model):
             return 20
         else:
             rat1 = sup/float(sup + cou)
-            if rat1 < .2:
-                return 20
-            elif rat1 > .8:
-                return 80
-            else:
-                return math.floor(rat1*100) # Django widthratio requires integers
+            return math.floor(rat1*100) # Django widthratio requires integers
  
     @property
     def PSTdateEdited(self):

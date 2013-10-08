@@ -29,7 +29,7 @@ routes = [
     Route('/point/<pointURL>', ViewPoint),
     Route('/user/<userURL>', Profile),
     Route('/addSupportingPoint', AddSupportingPoint),
-    Route('/selectSupportingPoint', SelectSupportingPoint),
+    #  Route('/selectSupportingPoint', SelectSupportingPoint),
     Route('/linkPoint', LinkPoint),
     Route('/vote', Vote),
     Route('/setribbon', SetRibbon),

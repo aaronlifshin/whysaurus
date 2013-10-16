@@ -8,8 +8,15 @@
         {% include 'selectSupportingPointsSearch.html' %}
     {% endwith %}
   {% endif %}
-
-  <div class="row">
+  
+  <div class="row topSpace">
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0)" />
+  </svg>
+  </div>
+    <div class="row topSpace"></div>
+  
+  <div class="row {% if user and user.privateArea %}privateAreaContentOffset{% endif %}">
     <div class="span8">
       <div class="row-fluid">
         <div class="dropdown pull-left">
@@ -114,7 +121,8 @@
           </div>
           <div id="timestampAndEditLink" class="row-fluid">
               <div class="mainPointLastEdited span8 offset2">
-                  Last edited {{point.PSTdateEdited}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>
+                  Most Recent Contributor: <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a> on {{point.PSTdateEdited}} 
+                  <a id="viewPointHistory">View History</a>
               </div>
               <div class="span2">
                 <button class="mainPointButton" id="editPoint">
@@ -129,10 +137,10 @@
   				</button>
   			    <!-- <button class="mainPointButton tab" id="viewComments">
   					{{comments|length}} comments
-  				</button> -->
-  	            <button class="mainPointButton tab" id="viewPointHistory">
-  					History
   				</button>
+  	            <button class="mainPointButton tab" >
+  					History
+  				</button> -->
   	        </div>
             <div class="rightMainPointButtons span2">
               {% if user.admin %}

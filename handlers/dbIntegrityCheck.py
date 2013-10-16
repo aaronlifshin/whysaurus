@@ -155,7 +155,11 @@ class DBIntegrityCheck(AuthHandler):
             # bigMessage.append("--------  Checking Root %s: <a href=\"%s%s\">%s</a> "\
             # % (pointRoot.url, constants.ADMIN_DATA_URL, linkVal, pointRoot.key))
             curPoint = pointRoot.getCurrent()
-            if not curPoint.current:
+            if not curPoint:
+                bigMessage.append("Not able to get current from <a href=\"/point/%s\">%s</a>. " % \
+                (pointRoot.url, pointRoot.url))
+                foundError = True
+            elif not curPoint.current:
                 bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
                 Current point is not marked current" % \
                 (pointRoot.url, curPoint.title))

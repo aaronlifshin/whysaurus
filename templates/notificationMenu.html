@@ -1,5 +1,5 @@
 <li>
-    <div class="notificationMenuItem row-fluid Submenu_text_main" data-refpoint="/point/{{notification.referencePoint.url}}">
+    <div class="notificationMenuItem row-fluid Submenu_text_main {%if notification.cleared %}notificationCleared{% endif %}" data-refpoint="/point/{{notification.referencePoint.url}}">
         <div class="span1">
             {% if notification.notificationReason == "agreed with" or notification.notificationReason == "awarded a ribbon to" %}
                 <img class="notificationAvatar" src="/static/img/icon_triceratops_black_47px.png"/>            

@@ -14,6 +14,23 @@
     <script src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script> var appname = window.navigator.appName; </script>
+    
+      {% if point %}
+          <title>{{point.title}}</title>   
+      {% else %}
+          {% if profileUser %}
+             <title>{{profileUser.name}} on Whysaurus, the center for collaborative reasoning.</title>
+          {% else %}
+            <title>Whysaurus - A better way to explain ideas</title>
+            <meta name="description" content="Whysaurus offers collaborative tools to explain ideas by 
+            dividing them into bite-size points. 
+            It is a tool for crowdsourcing structured debate arguments. 
+            When users come up with a good explanation, others can reuse it to support or counter any Whysaurus point.  
+            Users create and refine points together, to arrive at the best explanation over time.  
+            We hope that Whysaurus will become a reference repository of explanations and convincing arguments for positions.">            
+          {% endif %}              
+      {% endif %}
+     
   </head>
   <body>
 
@@ -23,34 +40,33 @@
           <div class="span2">
             <a href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
           </div>
-          <div class="span2">
-            <a id="CreatePoint" class="pull-left" alt="Make a Point" src="/static/img/button_makeAPoint_grey_118.png"></a>
+          <div class="span3 headerLinks Heading_Black_Caps">
+            <a href="/">HOME </a>          
+            <a id="CreatePoint" href='#' alt="Make a Point">MAKE A POINT</a>
+            <span class="aboutMenu">
+              <a class="userControls dropdown-toggle" data-toggle="dropdown">ABOUT </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                      <li><a id="help" href="/WhatIsWhysaurus" >What is Whysaurus </a></li>                  
+                      <li><a href="/team">Team</a></li>
+                      <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
+                      <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
+                      <li class="divider"></li>                      
+                      <li><a href="/contact">Send us Feedback</a></li>                      
+                  </ul>                       
+              <span class="caret vertalignmiddle"></span> 
+            </span]>  
           </div>
-          <div id="searchArea" class="span4">
+          <div id="searchArea" class="span3">
               <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
               <div class="searchIcon"></div>
           </div>
-          <div class="span4 headerLinks">
-            <div class="pull-left headerAboutHelp">
-              <a href="/about">ABOUT </a>
-              <a id="help" href="/help" >HELP </a> 
-            </div>
-            <div class="pull-right">
-    		  {% if user %}
-                <script> 
-                    var loggedIn = true; 
-                    var channelToken = '{{user.token}}';                     
-                    var userURL = '/user/{{user.url}}';
-                </script>
-                <div class="userControls">
-                  <div class="pull-right">
-                    <span class="caret vertalignmiddle"></span>
-                    {% if user.avatar_url %}
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> {{ user.name|escape }} <img id="avatar" src="{{ user.avatar_url }}"/> </a>
-                    {% else %}
-                      <a class="dropdown-toggle" data-toggle="dropdown"  href="/user/{{ user.url}}"> {{ user.name|escape }} <img id="avatar" src="/static/img/icon_triceratops_black_47px.png"/>  </a>
-                    {% endif %}
-                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+    		  {% if user %}              
+                  <div class="userMenuArea Heading_Black_Caps pull-right">
+                    <span class="caret vertalignmiddle"></span>                    
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> {{ user.name|escape }} 
+                        <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_47px.png{% endif %}"/> 
+                      </a>
+                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                       {% if user.admin %}
                           <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                       {% endif %}
@@ -60,21 +76,16 @@
                       {% endif %}                 
                       <li><a tabindex="-1" href="/logout"> Logout </a></li>
                      </ul>
-                   </div>
+                   </div>   
                    
-                     <a class="dropdown-toggle" data-toggle="dropdown">
-                      <div id="notifications" class="pull-right">                    
-                        <img id="notificationIcon" src="/static/img/notificationIcon.png"/>                    
-                        <div id="notificationCount" {% if not user.notifications %}class="hide"{%endif%}>
-                            {% if user.notifications|length == 11 %}
-                                10
-                            {% else %}                            
-                                {{ user.notifications|length }} 
-                            {% endif %}                                                        
+                   <div id="notifications" class="pull-right">                    
+                        <a class="dropdown-toggle" data-toggle="dropdown">                      
+                            <img id="notificationIcon" src="/static/img/notificationIcon.png"/>  
+                        </a>                                                                         
+                        <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                         
+                            {{ user.newNotificationCount }} 
                         </div>
-                      </div>          
-                      </a>                           
-                      <ul class="span4 dropdown-menu notification-menu offset8" role="menu" aria-labelledby="dropdownMenu">
+                      <ul class="span4 dropdown-menu notification-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
                          <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
                         {% if user.notifications %}                                               
                             data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
@@ -85,34 +96,32 @@
                             >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
                             
                         {% if user.notifications %}                      
-                         {% for notification in user.notifications %} 
-                            {% if forloop.counter == 11 %}
-                               <li id="notificationMenuFooter" class="Heading_GreyMid_Caps" 
-                                    >More notifications... click here to view all</li>                            
-                            {% else %}
+                         {% for notification in user.notifications %}
                                 {% include 'notificationMenu.html' %} 
-                            {% endif %}                                                       
                          {% endfor %} 
                        {% endif %}
-                                     
-                      </ul>                                                            
-                </div>
+                       
+                       {% if user.moreNotificationsExist  %}
+	                        <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
+	                            More notifications... Click here to view all
+	                        </li>  
+                        {% endif %}                                     
+                      </ul> 
+                    </div>          
+                                                                                                                                          
     		  {% else %}
-                <script> var loggedIn = false; </script>
-                <div class="headerAboutHelp"    >
-          		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SIGN IN </a>
+                <div class="span4 userMenuArea Heading_Black_Caps">
+                  <script> var loggedIn = false; </script>
+                  <a class="dropdown-toggle pull-right" data-toggle="dropdown" href="#">SIGN IN </a>
                   <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
-          		    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
-          		    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
+                    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
+                    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
                     <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
                     <li><a tabindex="-1" id="loginWithEmail"> Whysaurus </a></li>                    
                   </ul>
                 </div>
     		  {% endif %}
-            </div>
-          </div>
-        </div>
-        
+        </div>        
       </div>
       {% if user and user.privateArea %}
         <div class="privateAreaHeader ">
@@ -135,6 +144,11 @@
 
 
     {% if user %}
+        <script> 
+            var loggedIn = true; 
+            var channelToken = '{{user.token}}';                     
+            var userURL = '/user/{{user.url}}';
+        </script>
         {% include 'pointDialog.html' %}
     {% else %}
       <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
@@ -260,30 +274,7 @@
         </div>
       </div>
   {% endif %}
-  <div class="container" id="mainContainer">{% block mainPageContent %} {% endblock %}</div>
-      <div id="footer" class="navbar navbar-fixed-bottom">
-          <div class="container">
-            <div class="row">
-                <div class="span4">
-                  <img id="whiteDinoImage span1" class="pull-left" src="/static/img/icon_triceratops_white_47px.png"/>
-                  <div id="tagline" class="span3">Convince the World</div>
-                </div>
-                  <div class="span1 pull-left Heading_White_Caps"> <a id="feedbackLink" href="/contact">FEEDBACK </a></div>
-                  <div class="span3">
-                    <div class="footerImage pull-left">
-                      <a href="https://twitter.com/Whysaurus" target="_blank"><img id="twitterImage" src="/static/img/footer_icon_twitter_16pxHi_v12.png" /></a>
-                    </div>
-                    <div class="footerImage pull-left">
-                      <a href="https://www.facebook.com/Whysaurus" target="_blank"><img id="facebookImage" src="/static/img/footer_icon_facebook_16pxHi_v12.png"/></a>
-                    </div>
-                    <div class="footerImage pull-left">
-                      <a href="mailto:aaron@whysaurus.com" target="_blank"><img id="mailImage" src="/static/img/footer_icon_email_16pxHi_v12.png"/></a>
-                    </div>
-                  </div>
-                  <div id="footerCopyright" class="pull-right">(c) Whysaurus 2013 <br> All Rights Reserved</div>                  
-             </div>
-          </div>
-       </div>
+  <div class="container" id="mainContainer">{% block mainPageContent %} {% endblock %}</div>      
   </body>
   
   <!-- Analytics -->

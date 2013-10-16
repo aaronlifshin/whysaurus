@@ -233,7 +233,11 @@ class Point(ndb.Model):
         for p in dataForPointTree:
             newUrl = makeURL(p['title'])
             p['url'] = newUrl
-        return Point.transactionalCreateTree(dataForPointTree, user)
+        newPoint, newPointRoot = Point.transactionalCreateTree(dataForPointTree, user)
+        if newPointRoot:
+            for p in dataForPointTree:
+                Follow.createFollow(user.key, p['pointRoot'].key, "created")
+        return newPoint, newPointRoot 
 
     @staticmethod
     @ndb.transactional(xg=True)
@@ -288,7 +292,6 @@ class Point(ndb.Model):
                     sourceKeys = sourceKeys + [source.key]
                 p['point'].sources = sourceKeys
             p['point'].put()
-
         
         return dataForPointTree[0]['point'], dataForPointTree[0]['pointRoot']
 

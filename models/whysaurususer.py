@@ -52,8 +52,18 @@ class WhysaurusUser(auth_models.User):
     def notifications(self):
         return self._notifications
     
+    @property
+    def newNotificationCount(self):
+        return self._newNotificationCount
+ 
+    @property
+    def moreNotificationsExist(self):
+        return self._moreNotificationsExist
+       
     def getActiveNotifications(self):
-        self._notifications = Notification.getActiveNotificationsForUser(self.key)
+        self._notifications, self._newNotificationCount, \
+            self._moreNotificationsExist = \
+                Notification.getActiveNotificationsForUser(self.key)
         return self._notifications
 
     def clearNotifications(self, latest, earliest=None):
@@ -355,7 +365,7 @@ class WhysaurusUser(auth_models.User):
         # logging.info("Filtered root keys by %s: %d" %  \
         #    (namespace_manager.get_namespace(), len(rootKeys)))
         # logging.info("Root key list " + str(rootKeys))
-        pointRoots = ndb.get_multi(rootKeys[0:10])
+        pointRoots = ndb.get_multi(rootKeys[0:50])
         for pointRoot in pointRoots:
             if pointRoot:
                 createdPoints = createdPoints + [pointRoot.getCurrent()]
@@ -364,7 +374,7 @@ class WhysaurusUser(auth_models.User):
     def getEdited(self):
         editedPoints = []
         rootKeys = self.filterKeylistByCurrentNamespace(self.editedPointRootKeys)
-        pointRoots = ndb.get_multi(rootKeys[0:10])
+        pointRoots = ndb.get_multi(rootKeys[0:50])
         for pointRoot in pointRoots:
             if pointRoot:
                 editedPoints = editedPoints + [pointRoot.getCurrent()]

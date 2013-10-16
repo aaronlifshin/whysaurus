@@ -4,7 +4,7 @@
   <script type="text/javascript" src="/static/js/profile.js"></script>
   <div class="row topSpace"></div>
 
-  <div class="row">
+  <div class="row {% if user and user.privateArea %}privateAreaContentOffset{% endif %}">
     <div id="userInfoArea" class="span3" >
         <div class="row-fluid">
           <div id="display_userName" class="columnHeading span6" style="line-height:25px">

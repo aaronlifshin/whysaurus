@@ -19,7 +19,9 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
 routes = [
     Route('/', MainPage),
     Route('/about', About),
+    Route('/team', About),
     Route('/help', Help),
+    Route('/WhatIsWhysaurus', Help),
     Route('/contact', Contact),
     Route('/contactSend', ContactSend),
     Route('/newPoint', NewPoint),

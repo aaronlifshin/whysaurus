@@ -2,19 +2,22 @@
 
 {% block mainPageContent %}
 
+<div class="row topSpace"></div>
 <div id="content">
-    <h1>HELP</h1>
-    <h2>Table of Contents</h2>
-    
     <ol>
-    <li><a id="basicsLink" href="#basics">The Basics</a></li>
+    <li><a id="basicsLink" href="#basics">What is Whysaurus?</a></li>
     <li><a id="nutsAndBoltsLink" href="#nutsAndBolts">Nuts and Bolts</a></li>
     <li><a id="bestLink" href="#best">Best Practices</a></li>
     </ol>
 
-<h2><a id="basics">The Basics</a></h2>
 
-<h3>What is Whysaurus?</h3>
+<h3>Mission</h3>
+<h1 class="mission">Whysaurus seeks to connect people who are passionate about reason, 
+    to create tools for illustrating the relationships between ideas, 
+    to share the world's best explanations and to help us all to organize our thoughts.</h1>
+    
+<h2><a id="basics">What is Whysaurus?</a></h2>
+
 <strong>It's made of points</strong>
 <p>Whysaurus offers tools to explain ideas by dividing them into bite-size points. 
 Each point can be rated individually, discussed in its own comment thread and 
@@ -33,7 +36,8 @@ the history, so that it is never lost and can be recovered.</p>
 
 <strong>A repository of explanations</strong>
 <p>Over time, we hope that Whysaurus will become a reference repository of explanations and 
-convincing arguments for positions.  Together, we can create the go-to place for people 
+convincing arguments for positions.  Together, we can create the go-to place for people who 
+are looking for the best explanation of an idea.
 </p>
 
 <h3>What can I use Whysaurus for?</h3>
@@ -44,12 +48,11 @@ vote on what works and what doesn't, and reuse already completed work by linking
 <strong>Make Decisions</strong>
 <p>Whysaurus can be used to decide a difficult question by building one explanation 
 for the pros and another for the cons.  When you present your recommendations to a 
-decisionmaker, they can navigate the tree and see the reasoning behind your explanation.</p>
+decision-maker, they can navigate the tree and see the reasoning behind your explanation.</p>
 
 <strong>Explain complex concepts</strong>
 <p>Whether you are looking to consider great philosophical questions or the latest political conundrum, a 
-Whysaurus point can help simplify, clarify and get to the heart of the matter.  
-Start explaining a complex issue today with Whysaurus.</p>
+Whysaurus point can help simplify, clarify and get to the heart of the matter. </p>
 
 <strong>Publish your opinion</strong>
 <p>The internet is moving away from the essay or article format.  
@@ -79,14 +82,14 @@ be refined and added to by others.</p>
 supporting points that are necessary and sufficient to convince 
 the reader that the main point is true.</li>
 <li>A strong point is supported by linked sources.</li>
-<li>A strong point is a standalone statement</li>
+<li>A strong point is a standalone statement, phrased to be understood in any context</li>
 </ul>
 
 <h3>What makes a point weak?</h3>
 A point can be weak for a variety of reasons. It might be:
 <ul>
-<li>Vague or consisting of a statement that does not stand on its own</li>
-<li>Based on insufficient or irrelevant supporting points</li>
+<li>Vague or unclear without further explanation </li>
+<li>Based on insufficient or irrelevant supporting points </li>
 <li>Not supported by sources</li>
 </ul>
 
@@ -173,7 +176,7 @@ Please send us a suggestion <a href="contact" target="_blank">here</a>.
 
 function goToAnchor(targetAnchor) {
   var offset = $("#" + targetAnchor).offset();
-  var scrollto = offset.top - 52; // fixed_top_bar_height = 52px
+  var scrollto = offset.top - 60; // fixed_top_bar_height = 52px
   $('html, body').animate({scrollTop:scrollto}, 0);
 };
 

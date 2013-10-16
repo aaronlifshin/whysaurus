@@ -3,8 +3,8 @@
 }
 
 body {
-  padding-top: 52px;
-  padding-bottom: 50px;
+	padding-top: 60px;
+	padding-bottom: 50px;
 }
 
 .title a:visited, .voteArea a:visited {
@@ -19,18 +19,32 @@ body {
     text-decoration: none;
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   HEADER BAR STUFF AND PRIVATE AREA BAR (MOSTLY)
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+      
 #header{
-	color:black;
+    height:60px;	
+}
+
+#logoImage {
+    margin-top: 4px;	
 }
 
 .privateAreaHeader {
 	background:#FCF9DF;
+	height: 24px;
+	line-height: 24px;
+}
+
+.privateAreaContentOffset {
+	margin-top: 16px;
 }
 
 #areaSwap {
     cursor:pointer;
 }
-
 
 .grayBackground {
 	background:#F0F0F0;
@@ -38,8 +52,9 @@ body {
 
 #searchArea{
 	left:-20px;
-	height:52px;
-	position:relative; /* For placing the magnifying glass */
+	height: 60px;
+	line-height:60px;
+	position:relative;
 }
 
 #searchBox{
@@ -56,7 +71,7 @@ body {
 
 #searchArea .searchIcon {
 	position: absolute;
-	top: 17px;
+	top: 22px;
 	right: -16px;
 	height: 16px;
 	width:25px;
@@ -98,71 +113,6 @@ body {
     font-style: italic;  
 }
 
-#twitterImage {
-	background-color: white;
-	width:20px;
-	height:16px;
-}
-
-#twitterImage:hover  {
-    background-color:   #00ADEE;
-}
-
-#facebookImage {
-	background-color: white;
-	width:20px;
-	height:16px;
-}
-
-#facebookImage:hover  {
-    background-color: #00ADEE;
-}
-
-#mailImage {
-	background-color: white;
-    width:22px;
-    height:16px;
-}
-
-#mailImage:hover {
-    background-color:   #00ADEE;
-}
-
-#footer{
-	height:50px;
-	line-height:50px;
-	background:#000000;
-	color:white;
-}
-
-#footer .div {
-	height:50px;
-}
-
-.footerImage {
-	padding-right:18px;
-}
-
-
-#footer a {
-	color:white;
-}
-
-#feedbackLink {
-    display: inline-block;
-    line-height: 50px;
-    padding-top: 4px;
-}
-
-#footer a:hover {
-	color:#00ADEE;
-	text-decoration:none;
-}
-
-#tagline {
-	font-style: italic;
-	font-size: 1.0625em;
-}
 
 .Heading_White_Caps {
     font-family:"ff-meta-web-pro-condensed", sans-serif;
@@ -177,55 +127,66 @@ body {
 	margin-top: 16px;
 }
 
-#CreatePoint {
-	display: block;
-	position:relative;
- 	width: 118px;
- 	height: 27px;
-	background:transparent url('/static/img/button_makeAPoint_grey_118.png') center top no-repeat;
-	top:12px;
-}
-
-#CreatePoint:hover {
-   background-image:  url('/static/img/button_makeAPoint_black_118.png');
-}
 .topSpace {
 	height:22px;
 }
 
-.headerLinks {
-    size:1.25em;
-    font-family: "nimbus-sans-condensed", sans-serif;
+.Heading_Black_Caps {
+	size:0.875em;
+    font-family: "ff-meta-web-pro-condensed", sans-serif;
     color:black;
     font-weight: bold;
-    
 }
 
-.headerAboutHelp {
-    margin-top:16px;
-    display:block;
+.headerLinks {	                                
+    height:60px;
+    line-height:60px;	
+	display:block;
 }
 
-.headerAboutHelp #help {
-	margin-left:5px;
-}
-
-
-.headerAboutHelp a:hover{
+.headerLinks a:hover, .userMenuArea a:hover {
     color:#00ADEE;
     text-decoration:none;
 }
 
 .headerLinks a {
+    padding-right:8%;	
+}
+
+
+.Heading_Black_Caps a {
 	color:black;
+	cursor:pointer;
 }
 
-.headerLinks #avatar {
-	height:48px;
-	margin-top:2px;
+.aboutMenu {
+	position:relative;	
+	width:60px;
 }
 
+.aboutMenu a {
+    padding-right:0;	
+}
 
+.userMenuArea #avatar {
+	margin-left:5px;
+	height:50px;
+	width:50px;
+}
+
+.userMenuArea a, #notifications a.dropdown-toggle  {
+	height:60px;
+	line-height:60px;
+}
+
+.userMenuArea .dropdown-menu li a {
+	height:auto;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END HEADER BAR STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    NOTIFICATION DROPDOWN STUFF
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -236,8 +197,7 @@ body {
 }
 
 #notificationIcon {
-	margin-right:10px;
-	margin-top: 8px;
+	margin-right:10px;	
 }
 
 #notificationCount {
@@ -256,9 +216,6 @@ body {
 	border-radius:2px;
 }
 
-#notificationMenuHeader, #notificationMenuFooter, .notificationMenuItem {
-	padding:4px 4px 4px 4px;
-}
 
 .notification-menu {
 	/* border:none;	*/
@@ -266,11 +223,6 @@ body {
 	padding:0px;
 	margin-right: 10px;
 }
-
-.notification-menu li {
-    border-bottom: 1px solid #B9BBBD;
-}
-
 
 .vertalignmiddle {
 	vertical-align:middle;
@@ -300,16 +252,109 @@ body {
 }
 
 .notificationMenuItem, #notificationMenuHeader, #notificationMenuFooter {
-	cursor:pointer;
+	cursor:pointer;	
+    padding:4px 4px 4px 4px;
+	border-bottom: 1px solid #d7d7d7;
+	width:auto;
 }
 
 .notificationText {
 	padding-left: 3px;
 }
+
+.notificationAvatar {
+	float:right;
+}
+
 .notificationMenuItem:hover, #notificationMenuHeader:hover, #notificationMenuFooter:hover {
 	background-color:#E0FFFE;
 }
 
+.notificationCleared {
+	background-color:#F0F0F0;
+}
+
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END NOTIFICATION DROPDOWN STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   FOOTER STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
+#twitterImage {
+    background-color: white;
+    width:20px;
+    height:16px;
+}
+
+#twitterImage:hover  {
+    background-color:   #00ADEE;
+}
+
+#facebookImage {
+    background-color: white;
+    width:20px;
+    height:16px;
+}
+
+#facebookImage:hover  {
+    background-color: #00ADEE;
+}
+
+#mailImage {
+    background-color: white;
+    width:22px;
+    height:16px;
+}
+
+#mailImage:hover {
+    background-color:   #00ADEE;
+}
+
+#footer{
+    height:50px;
+    line-height:50px;
+    background:#000000;
+    color:white;
+}
+
+#footer .div {
+    height:50px;
+}
+
+.footerImage {
+    padding-right:18px;
+}
+
+
+#footer a {
+    color:white;
+}
+
+#feedbackLink {
+    display: inline-block;
+    line-height: 50px;
+    padding-top: 4px;
+}
+
+#footer a:hover {
+    color:#00ADEE;
+    text-decoration:none;
+}
+
+#tagline {
+    font-style: italic;
+    font-size: 1.0625em;
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END FOOTER 
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    NOTIFICATION AREA IN PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -406,7 +451,7 @@ body {
 }
 
 .pointSmall {
-	background-color: #f8f8f8;
+	/* background-color: #f8f8f8; */
     border-style:solid;
     border-width:1px;
     border-color:#d7d7d7;
@@ -722,6 +767,14 @@ h1.condensed {
 	line-height: 100%;
 }
 
+h1.mission {
+	font-family: "ff-meta-web-pro", sans-serif;
+    font-size: 1.1em;
+    line-height: 100%;
+    color: #6d6e70;
+    font-weight: normal;
+}
+
 #mainContainer {
 	padding-top: 20px;
 }
@@ -734,6 +787,10 @@ h1.condensed {
 #timestampAndEditLink {
 	bottom: 30px;
 	position: absolute;
+}
+
+#viewPointHistory {
+	cursor: pointer;
 }
 
 #sharing {

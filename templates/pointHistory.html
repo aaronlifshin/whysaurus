@@ -4,7 +4,7 @@
     {% for fullPoint in pointData %}
         {% with fullPoint.point as point %}
             <div class="row-fluid {% cycle 'blueBack' 'pinkBack' %}">
-                <div class="span8">
+                <div class="span12">
                     <div class="span1"></div>
                     <div class="historyLastEdited">
                         Version {{point.version}}. Created {{point.PSTdateEdited}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>

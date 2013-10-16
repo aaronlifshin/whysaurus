@@ -922,7 +922,8 @@ class FeaturedPoint(ndb.Model):
     
     @staticmethod
     def getFeatured():
-        return FeaturedPoint.query().fetch(1)[0]
+        fpList = FeaturedPoint.query().fetch(1)
+        return fpList[0] if fpList else None
     
     @staticmethod
     def setFeatured(featuredKey):

@@ -5,12 +5,13 @@ import logging
 from google.appengine.ext.webapp import template
 
 from authhandler import AuthHandler
-from models.point import PointRoot
+from models.point import PointRoot, FeaturedPoint
 
 class MainPage(AuthHandler):
     def get(self):
 
         newPoints = PointRoot.getRecentCurrentPoints()
+        featuredPoint = FeaturedPoint.getFeaturedPoint()
         user = None
 
         if self.logged_in:
@@ -24,6 +25,7 @@ class MainPage(AuthHandler):
         template_values = {
             'recentlyActive': newPoints,
             'recentlyViewed': recentlyViewedPoints,
+            'featuredPoint': featuredPoint,
             'user': user,
             'thresholds': constants.SCORETHRESHOLDS,
             'currentArea':self.session.get('currentArea')

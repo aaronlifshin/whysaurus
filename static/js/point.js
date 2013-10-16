@@ -556,6 +556,17 @@ function setUpMenuAreas() {
         $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');        
         $("#linkedPointSearchDialog").modal('show');
     });
+    
+  
+    // These elements are admin only, but jquery degrades gracefully, so not checking for their presence
+    $('#changeEditorsPickTrigger').on('click', function() {
+        $("#changeEditorsPick").modal('show');
+    }); 
+    
+    $('#submitChangeEditorsPick').on('click', changeEditorsPick);     
+    
+    $('#makeFeaturedPick').on('click', makeFeaturedPick);   
+    
 }
 
 function makeLinkedPointsClickable() {
@@ -664,6 +675,64 @@ function searchDialogSearch() {
 	$.ajax();
 }
 
+function changeEditorsPick() {
+    pick = $('#editorsPick').get(0).checked;
+    pickSort = $("#editorsPickSort").val();
+    if (pick && !isNormalInteger(pickSort)) {
+        showAlertAfter('Editors Pick must have a positive whole number for Editors Pick Sort', '#changeEditorsPick [name="alertArea"]');
+    } else {
+        startSpinnerOnButton('#submitChangeEditorsPick');        
+        $.ajaxSetup({
+    		url: "/changeEditorsPick",
+    		global: false,
+    		type: "POST",
+    		data: {
+    			'urlToEdit': pointURL,
+    			'editorsPick': pick,
+    			'editorsPickSort': pickSort
+    		},
+    		success: function(data) {
+		    	obj = JSON.parse(data);
+    			if (obj.result == true) {
+    		        // set the values in the main point page
+        		    if (pick) {
+        		        $('#changeEditorsPickTrigger').text('Editors Pick: True - ' + pickSort);  		        		        
+        		    } else {
+        		        $('#changeEditorsPickTrigger').text('Editors Pick: False');         		        
+        		    }
+        		    stopSpinnerOnButton('#submitChangeEditorsPick', changeEditorsPick);
+        		    $('#changeEditorsPick').modal('hide');
+        		    showSuccessAlert('Editors Picks updated.')    		    
+        		} else {
+        		    showAlertAfter('Server error: ' + obj.error + '. You may try again.', '#changeEditorsPick [name="alertArea"]');                    
+        		    stopSpinnerOnButton('#submitChangeEditorsPick', changeEditorsPick);          		    
+        		}        		          
+    		},    		
+    	});
+    	$.ajax();
+    }
+}
+
+function makeFeaturedPick() {
+     $.ajaxSetup({
+    		url: "/makeFeatured",
+    		global: false,
+    		type: "POST",
+    		data: {
+    			'urlToEdit': pointURL
+    		},
+    		success: function(data) {
+		    	obj = JSON.parse(data);
+    			if (obj.result == true) {
+    		        showSuccessAlert('This is now the featured point.')
+        		} else {
+        		    showErrorAlert('Server error: ' + obj.error + '. You may try again.', '#changeEditorsPick [name="alertArea"]');                    
+        		}        		          
+    		},    		
+    	});
+    	$.ajax();
+}
+
 $(document).ready(function() {
 
     if (!loggedIn) {
@@ -723,6 +792,7 @@ $(document).ready(function() {
 
         $('[name=commentReply]').click(showReplyComment);
         $('#saveCommentSubmit').click(saveComment);    
+        
         
     }
     

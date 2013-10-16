@@ -6,13 +6,14 @@
   {% if user %}
     {% with point.title as pointTitle %}
         {% include 'selectSupportingPointsSearch.html' %}
+        {% if user and user.admin %}
+            {% include 'changeEditorsPick.html' %}
+        {% endif %}
     {% endwith %}
   {% endif %}
-  
+   
   <div class="row topSpace">
-  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-    <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0)" />
-  </svg>
+
   </div>
     <div class="row topSpace"></div>
   
@@ -154,7 +155,12 @@
                     id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">Delete</a></li>
                     <li><a href='/job/cleanDeadBacklinks/{{point.url}}'>Root Backlink Clean</a></li>
                     <li><a href='/job/reconcileVersionArrays/{{point.url}}'>Version Array Fix</a></li>
-                    <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>                      
+                    <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>
+                    <li><a id='changeEditorsPickTrigger'>
+                        Editors Pick: {{pointRoot.editorsPick}}{%if pointRoot.editorsPick %} - {{pointRoot.editorsPickSort}} {% endif %}
+                        </a>
+                    </li>       
+                    <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                          
                   </ul>
                 </div>
               {% endif %}

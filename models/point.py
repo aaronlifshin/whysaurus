@@ -902,11 +902,46 @@ class PointRoot(ndb.Model):
         else:
             self.comments = [comment.key]
         self.put()
+        
+    def updateEditorsPick(self, editorsPick, editorsPickSort):
+        self.editorsPick = editorsPick
+        self.editorsPickSort = editorsPickSort
+        self.put()
+        return True
     
 # A dummy class to create an entity group
 # For large groups this will cause issues with sharding them across datastore nodes
 # Eventually a BG task should be written to copy these out of the OutlineRoot
 class OutlineRoot(ndb.Model):
     pass
+
+
+# A reference to a single global featured point, which can be changed
+class FeaturedPoint(ndb.Model):
+    featuredPoint = ndb.KeyProperty() # A Point Root key
+    
+    @staticmethod
+    def getFeatured():
+        return FeaturedPoint.query().fetch(1)[0]
+    
+    @staticmethod
+    def setFeatured(featuredKey):
+        currentFP = FeaturedPoint.getFeatured()
+        if currentFP:
+            currentFP.featuredPoint = featuredKey
+            currentFP.put()
+        else:
+            newFP = FeaturedPoint(featuredPoint = featuredKey)
+            newFP.put()
+        return True
+  
+    @staticmethod
+    def getFeaturedPoint():
+        fp = FeaturedPoint.getFeatured()
+        point = None  
+        if fp:
+            pointRoot = fp.featuredPoint.get()
+            point = pointRoot.getCurrent() if pointRoot else None
+        return point
 
         

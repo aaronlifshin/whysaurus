@@ -29,6 +29,11 @@ function validatePassword(textval) {
      return textval.match(/[A-Za-z]/) && textval.match(/[0-9]/);
 }
    
+function isNormalInteger(str) {
+   var n = ~~Number(str);
+   return String(n) === str && n >= 0;
+}
+   
 function startSpinnerOnButton(buttonID) {
    $(buttonID).off('click');
    $(buttonID).hide();

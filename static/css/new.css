@@ -539,6 +539,12 @@ body {
 	font-size:1.25em;
 	color:#5b5b5b;
 	font-family:"nimbus-sans-condensed",sans-serif;
+	line-height: 20px;
+	
+}
+
+.mainPageColumn {
+    margin-top:15px;	
 }
 
 .columnHeading button {

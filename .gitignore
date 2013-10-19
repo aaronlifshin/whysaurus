@@ -6,3 +6,4 @@ archive/
 *.sublime*
 .rvmrc
 constants.py
+bin/bulkloader*

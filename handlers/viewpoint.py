@@ -1,6 +1,7 @@
 import os
 import constants
 import logging
+import json
 
 from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
@@ -8,7 +9,7 @@ from models.point import Point
 from models.redirecturl import RedirectURL
 
 class ViewPoint(AuthHandler):
-    def createTemplateValues(self, point, pointRoot):
+    def createTemplateValues(self, point, pointRoot, full=True):
         supportingPoints = point.getSupportingPoints()
         counterPoints = point.getCounterPoints()
         sources = point.getSources()
@@ -32,24 +33,31 @@ class ViewPoint(AuthHandler):
         if addedToRecentlyViewed or not user:
             pointRoot.addViewCount()
 
-        template_values = {
+        templateValues = {
             'point': point,
             'pointRoot': pointRoot,
-            'recentlyViewedPoints': recentlyViewed,
+             # 'recentlyViewedPoints': recentlyViewed,
             'supportingPoints': supportingPoints,
             'counterPoints': counterPoints,
             'supportedPoints':pointRoot.getBacklinkPoints("supporting"),
             'counteredPoints':pointRoot.getBacklinkPoints("counter"),
-            'comments':pointRoot.getComments(),
             'sources': sources,
             'user': user,
             'voteValue': voteValue,
             'ribbonValue': ribbonValue,
-            'notifications': user.notifications if user else None,
             'thresholds': constants.SCORETHRESHOLDS,
             'currentArea':self.session.get('currentArea')
         }
-        return template_values
+        
+        if full:
+            additionalValues = {
+                'notifications': user.notifications if user else None,
+                'comments': pointRoot.getComments()
+            }
+            templateValues = dict(templateValues.items() + additionalValues.items())
+            
+        return templateValues
+    
     def outputTemplateValues(self, template_values):
         path = os.path.join(constants.ROOT, 'templates/point.html')
         self.response.headers["Pragma"]="no-cache"
@@ -62,7 +70,56 @@ class ViewPoint(AuthHandler):
         point, pointRoot = Point.getCurrentByRootKey(rootKey)
         template_values = self.createTemplateValues(point, pointRoot)        
         self.outputTemplateValues(template_values)
-        
+     
+            
+    def getPointComments(self):       
+        resultJSON = json.dumps({'result': False})
+
+        newURL = None
+        url = self.request.get('url')
+        point, pointRoot = Point.getCurrentByUrl(url)
+        if point is None:
+            # Try to find a redirector
+            newURL = RedirectURL.getByFromURL(url)
+            if newURL:
+                point, pointRoot = Point.getCurrentByUrl(url)   
+        if pointRoot:
+            tv = {
+                'pointRoot': pointRoot,
+                'comments':pointRoot.getComments()
+            }
+            html = template.render('templates/pointComments.html', tv)
+            resultJSON = json.dumps({
+                'result': True,
+                'html': html
+            }) 
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.out.write(resultJSON) 
+                  
+    def getPointContent(self):  
+        resultJSON = json.dumps({'result': False})
+
+        newURL = None
+        url = self.request.get('url')
+        point, pointRoot = Point.getCurrentByUrl(url)
+        if point is None:
+            # Try to find a redirector
+            newURL = RedirectURL.getByFromURL(url)
+            if newURL:
+                point, pointRoot = Point.getCurrentByUrl(url)
+        if point:
+            vals = self.createTemplateValues(point, pointRoot, full=False)
+            html = template.render('templates/pointContent.html', vals)
+            resultJSON = json.dumps({
+                'result': True,
+                'title' : point.title,
+                'url': point.url,
+                'myVote': vals['voteValue'],
+                'html': html
+            })  
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.out.write(resultJSON)
+                                
     def get(self, pointURL):
         point, pointRoot = Point.getCurrentByUrl(pointURL)
         if point is None:

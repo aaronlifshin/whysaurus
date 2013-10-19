@@ -1,3 +1,27 @@
+""" Main database entities 
+
+A summary of how the main database entities work is below:
+
+POINTS AND POINT ROOTS:
+Point class represents a single version of a point, to be displayed on the point page
+PointRoot class represents an ancestor of all the versions of a single point
+Other points can reference the pointRoot key as a stable reference for the point
+The current version of the point is kept in two places, the .current of the point class 
+A key reference to the current point in the PointRoot
+The URL is a unique way to get a pointRoot (but if it changes, a redirect is created)
+
+LINKS:
+When a point links to another, the link is recorded in three(!) ways
+ 1. In the linking point, a link to the root is recorded in the [linkType]PointsRoots array
+ 2. In the linking point, a link to the version current at that time is recorded in the [linkType]PointsLastChange array
+ 3. In the linked point, a backlink to the root is recorded
+
+When a link is removed, the backlink is placed into an archive, so that when points are deleted, 
+we know where roots were
+
+The backlinks are in the pointRoot and reflect the current version
+
+"""
 import re
 import logging
 import math
@@ -23,6 +47,14 @@ def convertListToKeys(urlsafeList):
     else:
         return None
         
+"""
+Every point must have a unique URL
+If it already exists, add a number, and store how many times this URL existed, 
+  so number can be added next time
+Also check redirects
+(Redirects are created when a URL of a point changes)
+
+"""
 def makeURL(sourceStr):
     longURL = sourceStr.replace(" ", "_")
     newUrl = re.sub('[\W]+', '', longURL[0:140])
@@ -94,23 +126,15 @@ class Point(ndb.Model):
     @property
     def reverseLinksRatio(self):
         return 100 - self.linksRatio
-   
-    @property
-    def onlySupport(self):
-        sup = len(self.supportingPointsRoots)
-        cou = len(self.counterPointsRoots)
-        return sup > 0 and cou == 0
-    
-    @property
-    def onlyCounter(self):
-        sup = len(self.supportingPointsRoots)
-        cou = len(self.counterPointsRoots)
-        return sup == 0 and cou > 0
-      
+          
     @classmethod
     def getByKey(cls, pointKey):
         return ndb.Key('Point', pointKey).get()
 
+    """
+    This adds a task to a queue to notify users of a change in the point
+    The /addNotification task will notify all the users that are following the point
+    """
     @classmethod
     def addNotificationTask(cls, pointRootKey, userKey, notifyReason):
         t = Task(url='/addNotifications', 
@@ -368,8 +392,17 @@ class Point(ndb.Model):
                     "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
 
     @ndb.transactional(xg=True)
-    def transactionalUpdate(self, newPoint, theRoot, sources, user):
-        self.put()
+    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):        
+        self.put() # Save the old version
+        if pointsToLink:
+            for pointToLink in pointsToLink:
+                # addLink only adds to arrays
+                newPoint.addLink(pointToLink['pointRoot'],
+                                 pointToLink['pointCurrentVersion'],
+                                 pointToLink['linkType'])
+                # addLinkedPoint will add the backlink to the pointRoot and put
+                pointToLink['pointRoot'].addLinkedPoint(newPoint.key.parent(),
+                                                        pointToLink['linkType'])
         if sources:
             sourceKeys = newPoint.sources
             for source in sources:
@@ -377,10 +410,9 @@ class Point(ndb.Model):
                 sourceKeys = sourceKeys + [source.key]
             newPoint.sources = sourceKeys
         newPoint.put()
-        logging.info('Setting new current in ROOT for URL \'%s\' to: %s' % (theRoot.url , newPoint.key.urlsafe()))
         theRoot.current = newPoint.key
         theRoot.put()
-        user.recordEditedPoint(theRoot.key)        
+        user.recordEditedPoint(theRoot.key) # Add to the user's edited list    
         return newPoint, theRoot
 
 
@@ -407,15 +439,7 @@ class Point(ndb.Model):
             newPoint.supportingPointsLastChange = list(self.supportingPointsLastChange)
             newPoint.counterPointsRoots = list(self.counterPointsRoots)
             newPoint.counterPointsLastChange = list(self.counterPointsLastChange)
-            if pointsToLink:
-                for pointToLink in pointsToLink:
-                    logging.info('Point to link as %s. Version: %s' % \
-                                 (pointToLink['linkType'], pointToLink['pointCurrentVersion']))
-                    newPoint.addLink(pointToLink['pointRoot'],
-                                     pointToLink['pointCurrentVersion'],
-                                     pointToLink['linkType'])
-                    pointToLink['pointRoot'].addLinkedPoint(newPoint.key.parent(),
-                                                            pointToLink['linkType'])
+
                     
             newPoint.sources = self.sources
             keysToRemove = convertListToKeys(sourceKeysToRemove)
@@ -440,7 +464,7 @@ class Point(ndb.Model):
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user)
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)
                     
             Follow.createFollow(user.key, theRoot.key, "edited")
             Point.addNotificationTask(theRoot.key, user.key, "edited")
@@ -621,7 +645,6 @@ class Point(ndb.Model):
             search.TextField(name='title', value=self.title),
             search.TextField(name='content', value=self.content),         
         ]
-        logging.info('NEW ADD TO SEARCH INDEX. DocId = %s ' % self.key.parent().urlsafe())
         d = search.Document(doc_id=self.key.parent().urlsafe(), fields=fields)
         index.put(d)
         
@@ -640,7 +663,6 @@ class Point(ndb.Model):
                     linkRoot = pointKey.parent().get()
                     backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
                     if not self.key.parent() in backlinks:
-                        backlinks.add(self.key.parent())
                         linkRoot.addLinkedPoint(self.key.parent(), linkType)
                         addedRoots = addedRoots + 1
         return addedRoots
@@ -745,13 +767,23 @@ class PointRoot(ndb.Model):
 
     def removeLinkedPoint(self, linkPointRootKey, linkType, archive=True):
         if linkType == 'supporting':
-            self.pointsSupportedByMe.remove(linkPointRootKey)
+            try:
+                self.pointsSupportedByMe.remove(linkPointRootKey)
+            except ValueError:
+                logging.error('Could not remove %s backlink in point %s' % \
+                              (linkType, self.url))
+                
             if archive and linkPointRootKey not in self.supportedArchiveForDelete:
                 self.supportedArchiveForDelete = self.supportedArchiveForDelete + \
                 [linkPointRootKey]
             self.put()
+            
         elif linkType == 'counter':
-            self.pointsCounteredByMe.remove(linkPointRootKey)
+            try:
+                self.pointsCounteredByMe.remove(linkPointRootKey)
+            except ValueError:
+                logging.error('Could not remove %s backlink in point %s' % \
+                              (linkType, self.url))
             if archive and linkPointRootKey not in self.supportedArchiveForDelete:
                 self.counteredArchiveForDelete = self.counteredArchiveForDelete + \
                 [linkPointRootKey]

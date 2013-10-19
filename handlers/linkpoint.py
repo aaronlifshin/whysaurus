@@ -27,7 +27,7 @@ class LinkPoint(AuthHandler):
                     user=user
                 )
             except WhysaurusException as e:
-                resultJSON = json.dumps({'result': False, 'error': str(e)})
+                resultJSON = json.dumps({'result': False, 'error': e.message})
             else:
                 path = os.path.join(constants.ROOT, 'templates/pointBox.html')
                 newLinkPointHTML = json.dumps(template.render(path, {'point': supportingPoint}))

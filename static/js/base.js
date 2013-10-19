@@ -349,10 +349,151 @@ function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
 	$(tabbedAreaToShow).show();
 }
 
+function navigateHistory(event) {
+    var state = event.state;
+    
+    // We usually only handle state that we have added
+    if (state != null && state.whysaurus) {
+        // We can dynamically load our page, but only into the two-column layout 
+        if ($('#leftColumn').length) {
+            newLoc = document.location.pathname;
+            if (newLoc.indexOf('/point/') == 0) {
+                loadPoint(newLoc.substring(7), false)
+            } else if (newLoc == '/'){
+                loadHomePage(false);
+            }
+        } else {
+            window.location.href = document.location.href;            
+        }
+    // The below code handles navigating from the first page that has dynamically 
+    // added Whysaurus history.
+    // Such pages will also have the contentpath elements set on their main container
+    } else if (($('#mainContainer').data('contentpath') != undefined) && 
+               ($('#mainContainer').data('contentpath') != document.location.pathname)) {
+        // For some reason Chrome will not, by itself, go back
+        // To the state before we started adding state
+        window.location.href = document.location.href;
+    }
+    
+}
+
+function loadPoint(url, newState) {    
+    loadPointContent(url, newState);
+    loadPointComments(url);  
+}
+
+function loadHomePage(shouldPushState) {
+    loadMainPageLeftColumn(shouldPushState);    
+    loadMainPageRightColumn();    
+}
+
 function makePointsCardsClickable() {
-    $( ".pointCard" ).click( function() {
-        window.location.href=$(".pointTitle a", $(this)).attr('href');
+    $( ".pointCard" ).click( function(ev) {
+        if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
+            return;
+        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+            return;
+        } else {
+            loadPoint($(this).data('pointurl'), true);
+            ev.preventDefault();
+        }
     });
+}
+
+function makeHomeNavsClickable() {
+    $('#logoNav, #homeNav').click( function(ev) {
+        if (ev.metaKey || ev.ctrlKey) {  // Modified clicks pass through to anchor
+            return;
+        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+            return;
+        } else {
+            loadHomePage(true);
+            ev.preventDefault();
+        }
+    });
+}
+
+// On a successful load onSuccess is called with the shouldPushState as a parameter
+function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, shouldPushState ) {
+    $.ajax({
+        url: ajaxURL,
+      	type: 'POST',
+      	data: postData,
+      	success: function(data) {
+      	    obj = $.parseJSON(data);
+      	    if (obj.result) {
+      	       	$(columnSelector).empty();
+          		$(columnSelector).html(obj.html);
+          		if (onSuccess != null) {
+          		    onSuccess(shouldPushState);              		
+          		}
+      	    } else {
+                $(columnSelector).empty();
+                showAlert('<strong>Oops. JSON error.!</strong> ' + errorMessage);
+      	    }
+      	},
+      	error: function(data) {
+      		$('#leftColumn').empty();
+      		showAlert('<strong>Oops! AJAX error.</strong> '  + errorMessage);
+      	},
+      });
+}
+
+function loadMainPageLeftColumn(shouldPushState) {
+    loadColumn('#leftColumn', '/getMainPageLeft', {}, 
+        'There was a problem loading the main page content.', 
+        function(shouldPushState) {
+            $('#mainContainer').data('contentpath', '/');
+            activateMainPageLeftColumn();
+            if (shouldPushState) {
+      		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');          		          		              		
+      		}
+      		document.title = 'Whysaurus - A better way to explain ideas';      		
+        },
+        shouldPushState );
+}
+
+function loadMainPageRightColumn() {
+    loadColumn('#rightColumn', '/getMainPageRight', {}, 
+        'There was a problem loading the recently viewed points.', activateMainPageRightColumn, false);
+}
+
+function loadPointComments(pointurl) {
+    loadColumn('#rightColumn', '/getPointComments', { 'url': pointurl }, 
+        'There was a problem loading the comments.', null, false)
+}
+
+function loadPointContent(pointurl, shouldPushState) {
+    $.ajax({
+      	url: '/getPointContent',
+      	type: 'POST',
+      	data: { 'url': pointurl },
+      	success: function(data) {
+      	    obj = $.parseJSON(data);
+      	    if (obj.result) {
+      	       	$('#leftColumn').empty();
+      	       	$('#leftColumn').html(obj.html);   
+      	       	$('#mainContainer').data('contentpath', '/point/' + obj.url);
+          		if (typeof(activatePointArea) != 'function') {
+          		    $.getScript('/static/js/point.js', function() {activatePointArea});              		
+          		} else {
+          		    activatePointArea();
+          		}
+          		if (shouldPushState) {
+          		    history.pushState({whysaurus: true, }, obj.title, '/point/' + obj.url);          		          		              		
+          		}
+          		document.title = obj.title;
+          		
+      	    } else {
+                $('#leftColumn').empty();
+                showAlert('<strong>Oops!</strong> There was a problem loading the point. Refreshing the page may help.');
+      	    }
+      	},
+      	error: function(data) {
+      		$('#leftColumn').empty();
+      		showAlert('<strong>Oops!</strong> There was a problem loading the point. Refreshing the page may help.');
+      	},
+      });      
 }
 
 function loadPointList(listType, areaToLoad, selectedTab) {
@@ -731,53 +872,57 @@ function makeNotificationMenuClickable() {
 var channelErrors = 0; 
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
 
-$(document).ready(function() {
-  filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
-  $.fn.bindFilepicker = function(){
-    if (this.bindFilepickerBound) return;
-    this.bindFilepickerBound = true;
-    this.click(function(){
-      var self = this;
-      filepicker.pickAndStore(
-        { mimetype:"image/*", services: FILEPICKER_SERVICES, openTo: 'IMAGE_SEARCH' },
-        { location: "S3" },
-        function(fpfiles){
-          var file = fpfiles[0];
+function activateHeaderAndDialogs() {
+    filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
+    $.fn.bindFilepicker = function(){
+        if (this.bindFilepickerBound) return;
+        this.bindFilepickerBound = true;
+        this.click(function(){
+            var self = this;
+            filepicker.pickAndStore(
+                { mimetype:"image/*", services: FILEPICKER_SERVICES, openTo: 'IMAGE_SEARCH' },
+                { location: "S3" },
+                function(fpfiles){
+                    var file = fpfiles[0];
+                    
+                    $('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_black_47px.png').addClass('spin');
+                    filepicker.convert(file, 
+                        {width: 112, height: 112, fit: 'clip'}, 
+                        {path: 'SummaryBig-' + file.key});
+                    filepicker.convert(file, {width: 310, fit: 'clip'}, {path: 'FullPoint-' + file.key});
+                    filepicker.convert(file, 
+                        {width: 54, height: 54, fit: 'clip'}, 
+                        {path: 'SummaryMedium-' + file.key}, 
+                        function(medium){
+                            $('.filepicker-placeholder')
+                                .attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key))
+                                .removeClass('spin');
+                    });
 
-          $('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_black_47px.png').addClass('spin');
+                    $(self).prev('[name=imageURL]').val(file.key);
+                }
+            );
+            return false;
+        });
+    };
 
-          filepicker.convert(file, {width: 112, height: 112, fit: 'clip'}, {path: 'SummaryBig-' + file.key});
-          filepicker.convert(file, {width: 310, fit: 'clip'}, {path: 'FullPoint-' + file.key});
-          filepicker.convert(file, {width: 54, height: 54, fit: 'clip'}, {path: 'SummaryMedium-' + file.key}, function(medium){
-            $('.filepicker-placeholder')
-              .attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key))
-              .removeClass('spin');
-          });
+    $('#pointDialog .filepicker').bindFilepicker();
 
-          $(self).prev('[name=imageURL]').val(file.key);
+    $("#searchBox").keyup(function(event) {
+        if (event.keyCode == 13) {
+            getSearchResults($("#searchBox").val());
         }
-      );
-
-      return false;
     });
-  };
 
-  $('#pointDialog .filepicker').bindFilepicker();
+    $(".searchIcon", $("#searchArea")).click(function(event) {
+        if ($("#searchBox").val() != "") {
+            getSearchResults($("#searchBox").val());
+        }
+    });
 
-  $("#searchBox").keyup(function(event) {
-    if (event.keyCode == 13) {
-        getSearchResults($("#searchBox").val());
-    }
-  });
-  
-  $(".searchIcon", $("#searchArea")).click(function(event) {
-    if ($("#searchBox").val() != "") {
-        getSearchResults($("#searchBox").val());
-    }
-  });
-
-  initTinyMCE();
-
+    initTinyMCE();
+    makeHomeNavsClickable();
+		
     $('[id^="signInWithFacebook"]').click(function() {
         window.location.href = "/auth/facebook";
     });
@@ -790,43 +935,8 @@ $(document).ready(function() {
         window.location.href = "/auth/twitter";
     });
     
-    /*window.onload = function() {
-        positionEditDialog();
-    };
-    window.onresize = function() {
-        positionEditDialog();
-    };*/
+    window.onpopstate = navigateHistory;  		
 
-    // Beginning state for the TABBED AREAS
-    $('.tabbedArea').hide(); $('#recentActivityArea').show();
-
-    $('#recentActivity').click(function() {
-        toggleTabbedArea(this, "#recentActivityArea");        
-    });
-
-    $('#editorsPicks').click(function() {
-        loadPointList('editorsPics', '#editorsPicksArea', this);        
-    });
-    
-    $('#mostViews').click(function() {
-        loadPointList('topViewed', '#mostViewsArea', this);
-    });
-    
-    $('#mostCaps').click(function() {
-        loadPointList('topAwards', '#mostCapsArea', this);
-    });
-    
-    $('#mostAgrees').click(function() {
-        loadPointList('topRated', '#mostAgreesArea', this);
-    });
-    
-    
-    
-    makePointsCardsClickable();	
-    $( "#recentlyViewed .pointSmall" ).click( function() {
-        window.location.href=$(".smallTitle a", $(this)).attr('href');
-    });
-       
     if (!loggedIn) {
         $("#CreatePoint").attr('href', "#loginDialog");
         $("#CreatePoint").attr('data-toggle', "modal");
@@ -837,21 +947,21 @@ $(document).ready(function() {
             $("#emailLoginDialog").modal('hide');
             $("#signupDialog").modal('show')            
         });
-        
+
         $("#signInWithEmail_Dlg").on('click', function() {
             $("#loginDialog").modal('hide');
             $("#emailLoginDialog").modal('show');           
         });
-        
+
         $("#backToLogin").on('click', function() {
             $("#signupDialog").modal('hide');                       
             $("#loginDialog").modal('show');
         });
-        
+
         $('#submit_signupDialog').click( createNewUser );
         $('#submit_emailLoginDialog').click( login );    
         $('#forgot_emailLoginDialog').click( forgotPassword );        
-                                  
+
     } else {
         $( "#CreatePoint" ).on('click', function() {
             $("#submit_pointDialog").data("dialogaction", "new");
@@ -872,9 +982,9 @@ $(document).ready(function() {
           $('#pointDialog').removeData('sourcesToRemove');     
           $('#sourceURL_pointDialog').val("");
           $('#sourceTitle_pointDialog').val("");
-   
+
         });
-        
+
         $("#pointDialog").on('shown', function() {
             $('#title_pointDialog').focus();
         });
@@ -896,21 +1006,56 @@ $(document).ready(function() {
         notificationChannelOpen();
     }
     
-    // Unsupported browser alert
     
+    // Unsupported browser alert    
     var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
     var isChrome = !!window.chrome && !isOpera;         
     if (isChrome == false) {
         showAlert('You are using Whysaurus in a unsupported browser.  Only Chrome is currently fully supported.');
     }
+        
+}
 
+function activateMainPageLeftColumn() {    
+	makePointsCardsClickable(); 
 
-  //Add Hover effect to menus.  Well, it doesn't work very well...
-  // But on the off chance we decide to put it back later. . .
- /*  jQuery('div.userControls a.dropdown-toggle').hover(function() {
-    $('.dropdown-menu').stop(true, true).delay(200).fadeIn();
-  }, function() {
-    $('.dropdown-menu').stop(true, true).delay(200).fadeOut();
-  });
-  */
+    // Beginning state for the TABBED AREAS
+    $('.tabbedArea').hide(); $('#recentActivityArea').show();
+
+    $('#recentActivity').click(function() {
+        toggleTabbedArea(this, "#recentActivityArea");        
+    });
+
+    $('#editorsPicks').click(function() {
+        loadPointList('editorsPics', '#editorsPicksArea', this);        
+    });
+    
+    $('#mostViews').click(function() {
+        loadPointList('topViewed', '#mostViewsArea', this);
+    });    
+    
+    $('#mostAgrees').click(function() {
+        loadPointList('topRated', '#mostAgreesArea', this);
+    });
+}
+
+function activateMainPageRightColumn() {    
+    $( "#recentlyViewed .pointSmall" ).click( function(ev) {
+        if (ev.metaKey || ev.ctrlKey) { // Pass modified clicks to the browser to handle
+            return;                
+        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+            return;
+        } else {
+            // Dynamically load the point content
+            loadPoint($(this).data('pointurl'), true);
+            ev.preventDefault();
+        }
+    });
+}
+
+$(document).ready(function() {
+    activateHeaderAndDialogs();
+    activateMainPageRightColumn();
+    activateMainPageLeftColumn();
+ 
 });

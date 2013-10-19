@@ -36,9 +36,15 @@ function toggleUnlink(elem, linkType) {
 
 function callPointEdit(){
     if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
-        alert('Too many characters in the title');
+        editDialogAlert('Please do not exceed 140 characters for the title.');
         return;
     }
+    
+    if ($('#title_pointDialog').val().length == "") {
+        editDialogAlert('To create a point you must enter something for the title!');      
+        return;
+    }
+    
 	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;
     $("#submit_pointDialog").off('click');
@@ -49,7 +55,7 @@ function callPointEdit(){
 	   global: false,
 	   type: "POST",
 		 data: {
-			'urlToEdit': pointURL,
+			'urlToEdit': $('#pointArea').data('pointurl'),
 			'content': ed.getContent(),
 			'plainText':text.substring(0,250),
 			'title': $('#title_pointDialog').val(),
@@ -79,7 +85,7 @@ function callPointEdit(){
 				
             	stopSpinner();
 				$("#pointDialog").modal('hide');
-				pointURL = obj.pointURL;
+				$('#pointArea').data('pointurl', obj.pointURL);
 			},
      		error: function(xhr, textStatus, error){
                 alert('The server returned an error. You may try again.');
@@ -102,7 +108,7 @@ function pointUnlink(elem, linkType) {
 	   global: false,
 	   type: "POST",
 		 data: {
-			'mainPointURL': pointURL,
+			'mainPointURL': $('#pointArea').data('pointurl'),
 			'supportingPointURL': supportingPointURL,
 			'linkType': linkType
 			},
@@ -150,7 +156,8 @@ function updateVoteButtonLabels(newVote){
     var downvoteLabel = $( "#downVote a" ).text();
     var upvoteLabel = $( "#upVote a" ).text();
     var bigScore = $( "#bigScore" ).text();
-
+    myVote = $('#bigScore').data('myvote');
+    
     if (myVote == 0 && newVote == 1) {// UPVOTE
         var newVal = parseInt(upvoteLabel) + 1;
         $( "#upVote a" ).text(newVal.toString());
@@ -194,7 +201,7 @@ function updateVoteButtonLabels(newVote){
         upVoteToggle(false);
         downVoteToggle(true);
     }
-    myVote = newVote;
+    $('#bigScore').data('myvote', newVote);
 }
 
 function upVote() {
@@ -203,8 +210,8 @@ function upVote() {
        global: false,
        type: "POST",
        data: {
-    		'vote': myVote == 1 ? 0 : 1,
-    		'pointURL': pointURL
+    		'vote': $('#bigScore').data('myvote') == 1 ? 0 : 1,
+    		'pointURL': $('#pointArea').data('pointurl')
     		},
        success: function(data){
             obj = JSON.parse(data);
@@ -224,8 +231,8 @@ function downVote() {
         global: false,
         type: "POST",
         data: {
-    		'vote': myVote == -1 ? 0 : -1,
-    		'pointURL': pointURL
+    		'vote': $('#bigScore').data('myvote') == -1 ? 0 : -1,
+    		'pointURL': $('#pointArea').data('pointurl')
     		},
         success: function(data){
             obj = JSON.parse(data);
@@ -246,7 +253,7 @@ function changeRibbon() {
         global: false,
         type: "POST",
         data: {
-    		'pointURL': pointURL,
+    		'pointURL': $('#pointArea').data('pointurl'),
     		'ribbon':newRibbonValue
     		},
         success: function(data){
@@ -335,7 +342,6 @@ function populateEditFields() {
 }
 
 function selectPoint(supportingPointURL, currentPointURL, linkType){
-
   	$.ajaxSetup({
 		url: "/linkPoint",
 		global: false,
@@ -397,11 +403,16 @@ function addPoint(linkType){
     unlinkVisible = !$("[id^=unlink_" + linkType + "]").hasClass("ui-helper-hidden");
     if (unlinkVisible) toggleUnlink(linkType);
 
-    var dialogID = "#pointDialog"
     if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
-        alert('Too many characters in the title');
+        editDialogAlert('Please do not exceed 140 characters for the title.');
         return;
     }
+    
+    if ($('#title_pointDialog').val().length == "") {
+        editDialogAlert('To create a point you must enter something for the title!');      
+        return;
+    }
+    
 	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;
     $('#submit_pointDialog').off('click');
@@ -418,7 +429,7 @@ function addPoint(linkType){
             'plainText': text.substring(0,500),
 			'title': $('#title_pointDialog').val(),
 			'linkType':linkType,
-			'pointUrl': pointURL,
+			'pointUrl': $('#pointArea').data('pointurl'),
 			'imageURL':$('#link_pointDialog').val(),
             'imageAuthor':$('#author_pointDialog').val(),
             'imageDescription': $('#description_pointDialog').val(),
@@ -430,7 +441,7 @@ function addPoint(linkType){
 			if (obj.result == true) {
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
                 stopSpinner();
-    		    $(dialogID).modal('hide');
+    		    $("#pointDialog").modal('hide');
 			} else {
 				if (obj.error) {
 		    		editDialogAlert(obj.error);
@@ -476,14 +487,15 @@ function selectSearchLinkPoint(elem, linktype) {
     pointCards = $('.pointCard', $('#searchResultsArea'));    
     pointCards.unbind('click');
     startSpinnerOnButton('#pointSelectText');    
-    selectPoint($(elem).data('pointurl'), pointURL, linktype);  
+    selectPoint($(elem).data('pointurl'), $('#pointArea').data('pointurl'), linktype);  
 }
 
 function setUpSelectPointButtons() {
     pointCards = $('.pointCard', $('#searchResultsArea'))
     linktype = $("#selectLinkedPointSearch").data("linkType");
-    pointCards.click( function() {
-            selectSearchLinkPoint(this, linktype);
+    pointCards.click( function(event) {
+        event.preventDefault();        
+        selectSearchLinkPoint(this, linktype);
     });
     /*   
     pointCards.hover(
@@ -516,7 +528,7 @@ function setUpMenuAreas() {
     $("[name^=selectPoint_menu_]").on('click', function(e){
         var theLink = $(this);
         var linkPointURL = theLink.data('pointurl');
-        selectPoint(linkPointURL, pointURL, theLink.data('linktype'));
+        selectPoint(linkPointURL, $('#pointArea').data('pointurl'), theLink.data('linktype'));
         $("[name^=selectPoint_menu_]").filter("*[data-pointurl=\""+ linkPointURL + "\"]").remove();
     });
 
@@ -553,13 +565,18 @@ function setUpMenuAreas() {
     $( "[name$=_searchForPoint]" ).on('click', function(e){
         linktype = $(this).data('linktype');
         $("#selectLinkedPointSearch").data("linkType", linktype);
-        $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');        
+        $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');  
+        $("#linkedPointSearchDialog .modal-header h4").text($('#pointSummary div.mainPointTitle').text());        
+              
         $("#linkedPointSearchDialog").modal('show');
+        $('body, html').animate({ scrollTop: 0}, 500);        
     });
     
   
     // These elements are admin only, but jquery degrades gracefully, so not checking for their presence
     $('#changeEditorsPickTrigger').on('click', function() {
+        title = $('#pointSummary div.mainPointTitle').text();
+        $("#changeEditorsPick .modal-header h4").text(title);
         $("#changeEditorsPick").modal('show');
     }); 
     
@@ -567,20 +584,6 @@ function setUpMenuAreas() {
     
     $('#makeFeaturedPick').on('click', makeFeaturedPick);   
     
-}
-
-function makeLinkedPointsClickable() {
-    $('[id^="supportingPoint_"]').click(function() {
-        if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
-          window.location.href = $(".navWhy", $(this)).attr('href');
-        }
-    });
-
-    $('[id^="counterPoint_"]').click(function() {
-        if (!$(".navWhy", $(this)).hasClass("ui-helper-hidden")) { // The navWhy is sometimes hidden by the unlink button
-          window.location.href = $(".navWhy", $(this)).attr('href');
-        }
-    });
 }
 
 function setCommentCount() {
@@ -664,7 +667,7 @@ function searchDialogSearch() {
 		type: "POST",
 		data: {
 			'searchTerms': $(".searchBox").val(),
-			'exclude' : pointURL,
+			'exclude' : $('#pointArea').data('pointurl'),
 			'linkType' : $("#selectLinkedPointSearch").data("linkType")
 		},
 		success: function(data) {
@@ -687,7 +690,7 @@ function changeEditorsPick() {
     		global: false,
     		type: "POST",
     		data: {
-    			'urlToEdit': pointURL,
+    			'urlToEdit': $('#pointArea').data('pointurl'),
     			'editorsPick': pick,
     			'editorsPickSort': pickSort
     		},
@@ -713,28 +716,7 @@ function changeEditorsPick() {
     }
 }
 
-function makeFeaturedPick() {
-     $.ajaxSetup({
-    		url: "/makeFeatured",
-    		global: false,
-    		type: "POST",
-    		data: {
-    			'urlToEdit': pointURL
-    		},
-    		success: function(data) {
-		    	obj = JSON.parse(data);
-    			if (obj.result == true) {
-    		        showSuccessAlert('This is now the featured point.')
-        		} else {
-        		    showErrorAlert('Server error: ' + obj.error + '. You may try again.', '#changeEditorsPick [name="alertArea"]');                    
-        		}        		          
-    		},    		
-    	});
-    	$.ajax();
-}
-
-$(document).ready(function() {
-
+function activatePointArea() {    
     if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
         $( "[name=linkSupportingPoint]" ).attr('data-toggle',"modal");
@@ -792,15 +774,21 @@ $(document).ready(function() {
 
         $('[name=commentReply]').click(showReplyComment);
         $('#saveCommentSubmit').click(saveComment);    
-        
-        
-    }
-    
+        $( "#deletePoint" ).button();
+                
+    }    
     makePointsCardsClickable();	    
-    // makeLinkedPointsClickable();
-    // linkPointControlsInitialState();
 
-    $( "#deletePoint" ).button();
+    // Menus going up the tree
+    $('[name="pointNavMenu"]').click(function(ev) {
+        if (ev.metaKey || ev.ctrlKey) {
+            return;
+        } else {
+            // Trim off the "/point/" before dynamic load
+            loadPoint($(this).attr('href').substring(7), true);
+            ev.preventDefault();
+        }
+    });
 
     // Beginning state for the TABBED AREAS
     $('.tabbedArea').hide(); $('#supportingPointsArea').show();
@@ -815,7 +803,7 @@ $(document).ready(function() {
     	$.ajax({
     		url: '/pointHistory',
     		type: 'GET',
-    		data: { 'pointUrl': pointURL },
+    		data: { 'pointUrl': $('#pointArea').data('pointurl') },
     		success: function(data) {
     			$('#historyArea').empty();
     			$('#historyArea').html($.parseJSON(data));
@@ -827,4 +815,30 @@ $(document).ready(function() {
     		},
     	});
     });
+}
+
+function makeFeaturedPick() {
+     $.ajaxSetup({
+    		url: "/makeFeatured",
+    		global: false,
+    		type: "POST",
+    		data: {
+    			'urlToEdit': $('#pointArea').data('pointurl')
+    		},
+    		success: function(data) {
+		    	obj = JSON.parse(data);
+    			if (obj.result == true) {
+    		        showSuccessAlert('This is now the featured point.')
+        		} else {
+        		    showErrorAlert('Server error: ' + obj.error + '. You may try again.', '#changeEditorsPick [name="alertArea"]');                    
+        		}        		          
+    		},    		
+    	});
+    	$.ajax();
+}
+
+$(document).ready(function() {
+    activatePointArea();
 });
+
+//@ sourceURL=/static/js/point.js

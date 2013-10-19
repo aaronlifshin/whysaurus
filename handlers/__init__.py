@@ -10,7 +10,6 @@ __all__ = [
 	'UnlinkPoint',
 	'ViewPoint',
 	'AddSupportingPoint',
-	'SelectSupportingPoint',
 	'LinkPoint',
 	'Vote',
 	'TestPage',
@@ -42,7 +41,6 @@ from editpoint import EditPoint
 from unlinkpoint import UnlinkPoint
 from viewpoint import ViewPoint
 from addsupportingpoint import AddSupportingPoint
-from selectsupportingpoint import SelectSupportingPoint
 from linkpoint import LinkPoint
 from vote import Vote
 from setribbon import SetRibbon

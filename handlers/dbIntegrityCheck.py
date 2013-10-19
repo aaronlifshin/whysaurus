@@ -85,8 +85,115 @@ class DBIntegrityCheck(AuthHandler):
         path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
         self.response.out.write(template.render(path, template_values))
       
-        
-        
+    def checkPoint(self, point):
+        try:
+            retVal = False
+            messages = []
+            # checkingPointURL = point.key.urlsafe()
+            # bigMessage.append("--------  Checking Point %s: <a href=\"%s%s\">%s</a> "\
+            # % (point.title, constants.ADMIN_DATA_URL, checkingPointURL, point.key))
+            for linkType in ["supporting", "counter"]:
+                linkRoots, linkLastChange = point.getLinkCollections(linkType)
+                
+                if linkLastChange:
+                    for pointKey in linkLastChange:
+                        # Check based on the version array
+                        # 1. Every linked point in the version array 
+                        #    has to have a root in the root array
+                        if not pointKey.parent() in linkRoots: 
+                            messages.append( \
+                            "Point %s. Version %d: Missing corresponding root \
+                            for %s point %s " % (point.url, point.version, linkType, str(pointKey)))
+                            retVal = True
+                        if point.current:
+                            # 2. Every linked point in the link array of a current point 
+                            #    should have backlinks in the root of the linked point
+                            linkRoot = pointKey.parent().get()
+                            backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
+                            if not point.key.parent() in backlinks:
+                                linkedPointURL = linkRoot.key.urlsafe()
+                                messages.append(
+                                "Point %s. Version %d: Has %s link to \
+                                 <a href=\"/point/%s\">%s</a> with no BACKLINK" \
+                                 % (point.url, point.version, linkType, \
+                                     linkRoot.url, linkRoot.url))
+                                retVal = True
+                
+                    if len(linkLastChange) != len(linkRoots):
+                        messages.append(
+                        "Point: <a href=\"/point/%s\">%s</a>. Version %d: \
+                            Length mismatch in %s arrays. \
+                            Version List has: %d. Root Array has: %d " % \
+                            (point.url, point.title, point.version,
+                             linkType, len(linkLastChange), \
+                             len(linkRoots)))
+                        retVal = True    
+            return retVal, messages
+        except Exception as e:
+            errMsg = 'Exception %s when checking %s' % (point.url, str(e))
+            return True, messages + [errMsg]
+    
+    def checkRoot(self, pointRoot): 
+        try:
+            foundError = False
+            messages = []
+            # linkVal = pointRoot.key.urlsafe()
+            # bigMessage.append("--------  Checking Root %s: <a href=\"%s%s\">%s</a> "\
+            # % (pointRoot.url, constants.ADMIN_DATA_URL, linkVal, pointRoot.key))
+            curPoint = pointRoot.getCurrent()
+            if not curPoint:
+                messages.append("Not able to get current from <a href=\"/point/%s\">%s</a>. " % \
+                (pointRoot.url, pointRoot.url))
+                foundError = True
+            elif not curPoint.current:
+                messages.append("Root <a href=\"/point/%s\">%s</a>: \
+                Current point is not marked current" % \
+                (pointRoot.url, curPoint.title))
+                foundError = True
+    
+            pointQuery = Point.query(ancestor=pointRoot.key)
+            points = pointQuery.fetch()
+            curCount = 0
+            curURLs = ""
+            for point in points:
+                if point.current:
+                    curCount = curCount + 1
+                    curURLs = curURLs + point.key.urlsafe()+ ","
+            if curCount != 1:
+                messages.append("Root <a href=\"/point/%s\">%s</a>: \
+                Found %d points marked current. URL keys: %s" % \
+                (pointRoot.url, pointRoot.url, \
+                 curCount, curURLs))
+                foundError = True
+                
+            for linkType in ["supporting", "counter"]:
+                linkPoints, archivedLinkPoints = \
+                    pointRoot.getBacklinkCollections(linkType)
+                for linkRootKey in linkPoints:
+                    linkRoot = linkRootKey.get()
+                    if not linkRoot:
+                        messages.append("Root <a href=\"/point/%s\">%s</a>: \
+                        Not able to get %s backlink root by link root key %s" % \
+                        ( pointRoot.url, pointRoot.url, \
+                         linkType, linkRootKey))
+                        foundError = True
+                        continue
+                    currentLinkPoint = linkRoot.getCurrent()
+                    linkedPoints = currentLinkPoint.getLinkedPointsRootCollection(linkType)
+                    if not pointRoot.key in linkedPoints:
+                        versionKeyURL = currentLinkPoint.key.urlsafe()
+                        messages.append("Root <a href=\"/point/%s\">%s</a>: \
+                             Have %s backlink to ' \
+                            <a href=\"%s%s\">%s</a> but no link root." % \
+                            ( pointRoot.url, pointRoot.url,\
+                             linkType, currentLinkPoint.url, \
+                             currentLinkPoint.title))
+                        foundError = True  
+            return foundError, messages
+        except Exception as e:
+            errMsg = 'Exception %s when checking %s' % (pointRoot.url, str(e))
+            return True, messages + [errMsg]
+    
     def checkNamespace(self, areaName): 
         bigMessage = []
         noErrors = 0
@@ -100,46 +207,8 @@ class DBIntegrityCheck(AuthHandler):
         # Take every point version
         query = Point.query()
         for point in query.iter():
-            foundError = False
-            checkingPointURL = point.key.urlsafe()
-            # bigMessage.append("--------  Checking Point %s: <a href=\"%s%s\">%s</a> "\
-            # % (point.title, constants.ADMIN_DATA_URL, checkingPointURL, point.key))
-            for linkType in ["supporting", "counter"]:
-                linkRoots, linkLastChange = point.getLinkCollections(linkType)
-                
-                if linkLastChange:
-                    for pointKey in linkLastChange:
-                        # Check based on the version array
-                        # 1. Every linked point in the version array 
-                        #    has to have a root in the root array
-                        if not pointKey.parent() in linkRoots: 
-                            bigMessage.append( \
-                            "Point %s. Version %d: Missing corresponding root \
-                            for %s point %s " % (point.url, point.version, linkType, str(pointKey)))
-                            foundError = True
-                        if point.current:
-                            # 2. Every linked point in the link array of a current point 
-                            #    should have backlinks in the root of the linked point
-                            linkRoot = pointKey.parent().get()
-                            backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
-                            if not point.key.parent() in backlinks:
-                                linkedPointURL = linkRoot.key.urlsafe()
-                                bigMessage.append(
-                                "Point %s. Version %d: Has %s link to \
-                                 <a href=\"/point/%s\">%s</a> with no BACKLINK" \
-                                 % (point.url, point.version, linkType, \
-                                     linkRoot.url, linkRoot.url))
-                                foundError = True
-                
-                    if len(linkLastChange) != len(linkRoots):
-                        bigMessage.append(
-                        "Point: <a href=\"/point/%s\">%s</a>. Version %d: \
-                            Length mismatch in %s arrays. \
-                            Version List has: %d. Root Array has: %d " % \
-                            (point.url, point.title, point.version,
-                             linkType, len(linkLastChange), \
-                             len(linkRoots)))
-                        foundError = True                
+            foundError, newMessages = self.checkPoint(point)   
+            bigMessage = bigMessage + newMessages      
             if not foundError:
                 noErrors = noErrors + 1
             pointCount = pointCount + 1
@@ -150,60 +219,9 @@ class DBIntegrityCheck(AuthHandler):
         rootCount = 0
         query = PointRoot.query()
         for pointRoot in query.iter():
-            foundError = False
-            linkVal = pointRoot.key.urlsafe()
-            # bigMessage.append("--------  Checking Root %s: <a href=\"%s%s\">%s</a> "\
-            # % (pointRoot.url, constants.ADMIN_DATA_URL, linkVal, pointRoot.key))
-            curPoint = pointRoot.getCurrent()
-            if not curPoint:
-                bigMessage.append("Not able to get current from <a href=\"/point/%s\">%s</a>. " % \
-                (pointRoot.url, pointRoot.url))
-                foundError = True
-            elif not curPoint.current:
-                bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
-                Current point is not marked current" % \
-                (pointRoot.url, curPoint.title))
-                foundError = True
-
-            pointQuery = Point.query(ancestor=pointRoot.key)
-            points = pointQuery.fetch()
-            curCount = 0
-            curURLs = ""
-            for point in points:
-                if point.current:
-                    curCount = curCount + 1
-                    curURLs = curURLs + point.key.urlsafe()+ ","
-            if curCount != 1:
-                bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
-                Found %d points marked current. URL keys: %s" % \
-                (pointRoot.url, pointRoot.url, \
-                 curCount, curURLs))
-                foundError = True
-                
-            for linkType in ["supporting", "counter"]:
-                linkPoints, archivedLinkPoints = \
-                    pointRoot.getBacklinkCollections(linkType)
-                for linkRootKey in linkPoints:
-                    linkRoot = linkRootKey.get()
-                    if not linkRoot:
-                        bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
-                        Not able to get %s backlink root by link root key %s" % \
-                        ( pointRoot.url, pointRoot.url, \
-                         linkType, linkRootKey))
-                        foundError = True
-                        continue
-                    currentLinkPoint = linkRoot.getCurrent()
-                    linkedPoints = currentLinkPoint.getLinkedPointsRootCollection(linkType)
-                    if not pointRoot.key in linkedPoints:
-                        versionKeyURL = currentLinkPoint.key.urlsafe()
-                        bigMessage.append("Root <a href=\"/point/%s\">%s</a>: \
-                             Have %s backlink to ' \
-                            <a href=\"%s%s\">%s</a> but no link root." % \
-                            ( pointRoot.url, pointRoot.url,\
-                             linkType, currentLinkPoint.url, \
-                             currentLinkPoint.title))
-                        foundError = True
-                           
+            foundError, newMessages = self.checkRoot(pointRoot)
+            bigMessage = bigMessage + newMessages
+                      
             if not foundError:
                 noErrors = noErrors + 1
             rootCount = rootCount + 1
@@ -211,6 +229,34 @@ class DBIntegrityCheck(AuthHandler):
         bigMessage.append( "%d roots checked. No errors detected in %d roots" % (rootCount, noErrors))        
         return bigMessage
     
+    def checkDBPoint(self, pointURL):
+        point, pointRoot = Point.getCurrentByUrl(pointURL)
+        
+        if point:
+            isError1, messages1 = self.checkPoint(point)
+            
+        if pointRoot:
+            isError2, messages2 = self.checkRoot(pointRoot)
+        
+        if not isError1 and not isError2:
+            message = 'No errors were found.'
+        else:
+            message = []
+            if messages1:
+                message = message + messages1
+            if messages2:
+                message = message + messages2
+            if message == []:
+                message = ['Errors generated, but no messages generated.']
+            
+        template_values = {
+            'message': message,            
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
+        self.response.out.write(template.render(path, template_values)) 
+        
 
     def get(self):
         mode = self.request.get('mode')     

@@ -186,7 +186,7 @@ body {
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END HEADER BAR STUFF
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
+      
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    NOTIFICATION DROPDOWN STUFF
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -274,85 +274,32 @@ body {
 	background-color:#F0F0F0;
 }
 
-
-
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END NOTIFICATION DROPDOWN STUFF
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   FOOTER STUFF
-   +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
-#twitterImage {
-    background-color: white;
-    width:20px;
-    height:16px;
+   TWO COLUMN LAYOUT STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ 
+
+#leftColumn {	
+    margin-left:0px;
+}   
+
+#leftColumn #leftColumnPoint, 
+#leftColumn #supportingPointsArea, 
+#leftColumn #historyArea  {
+	margin-left:16px;
 }
 
-#twitterImage:hover  {
-    background-color:   #00ADEE;
+#rightColumnContent {
+    margin-left:16px;
+	
 }
-
-#facebookImage {
-    background-color: white;
-    width:20px;
-    height:16px;
-}
-
-#facebookImage:hover  {
-    background-color: #00ADEE;
-}
-
-#mailImage {
-    background-color: white;
-    width:22px;
-    height:16px;
-}
-
-#mailImage:hover {
-    background-color:   #00ADEE;
-}
-
-#footer{
-    height:50px;
-    line-height:50px;
-    background:#000000;
-    color:white;
-}
-
-#footer .div {
-    height:50px;
-}
-
-.footerImage {
-    padding-right:18px;
-}
-
-
-#footer a {
-    color:white;
-}
-
-#feedbackLink {
-    display: inline-block;
-    line-height: 50px;
-    padding-top: 4px;
-}
-
-#footer a:hover {
-    color:#00ADEE;
-    text-decoration:none;
-}
-
-#tagline {
-    font-style: italic;
-    font-size: 1.0625em;
-}
-
+*/
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   END FOOTER 
+   END TWO COLUMN LAYOUT STUFF
    +++++++++++++++++++++++++++++++++++++++++++++++ */
    
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -394,26 +341,25 @@ body {
    background-image: url('/static/img/arrow_why_45_black.png');
 }
 
-.pointCard .pointTitle a {
+.pointCard .pointTitle {
 	color: #000;
 	font-size: 1.0625em;
 	line-height: 1.3125em;	
+	margin-bottom: 7px;	
 }
 
 .pointCard .stat {
 	color: #a9a9a9;
 	font-family: "nimbus-sans-condensed", sans-serif;
 	font-weight: bold;
-	font-size:1.25em;
+	font-size:1.25em;	
 }
 
 .pointCard .linkStat {
-
     height:18px;
     min-height:0px;   
     display:block;
     float:left;    
-
 }
 
 .pointCard .counterColor {
@@ -467,10 +413,11 @@ body {
     cursor:pointer;
 }
 
-.pointSmall .smallTitle a {
+.pointSmall .smallTitle {
 	color: #6D6E70;
 	font-size: 0.75em;
 	line-height: 1.3125em;	
+	margin-bottom: 4px;	
 }
 
 .pointSmall .smallStat {
@@ -541,10 +488,6 @@ body {
 	font-family:"nimbus-sans-condensed",sans-serif;
 	line-height: 20px;
 	
-}
-
-.mainPageColumn {
-    margin-top:15px;	
 }
 
 .columnHeading button {

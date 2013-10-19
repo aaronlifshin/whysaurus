@@ -7,7 +7,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from models.whysaurususer import WhysaurusUser
 from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
-    SelectSupportingPoint, LinkPoint, Vote, SetRibbon, TestPage, Search, \
+    LinkPoint, Vote, SetRibbon, TestPage, Search, \
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
@@ -18,6 +18,12 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
 # Map URLs to handlers
 routes = [
     Route('/', MainPage),
+    Route('/getMainPageLeft', 
+          handler='WhySaurus.MainPage:getMainPageLeft', 
+          name='getMainPageLeft'),
+    Route('/getMainPageRight', 
+          handler='WhySaurus.MainPage:getMainPageRight', 
+          name='getMainPageRight'),
     Route('/about', About),
     Route('/team', About),
     Route('/help', Help),
@@ -31,9 +37,14 @@ routes = [
     Route('/makeFeatured', handler='WhySaurus.EditPoint:makeFeatured', name='makeFeatured'),
     Route('/unlinkPoint', UnlinkPoint),
     Route('/point/<pointURL>', ViewPoint),
+    Route('/getPointContent', 
+          handler='WhySaurus.ViewPoint:getPointContent', 
+          name='getPointContent'),
+    Route('/getPointComments', 
+          handler='WhySaurus.ViewPoint:getPointComments', 
+          name='getPointComments'),
     Route('/user/<userURL>', Profile),
     Route('/addSupportingPoint', AddSupportingPoint),
-    #  Route('/selectSupportingPoint', SelectSupportingPoint), # Deprecated
     Route('/linkPoint', LinkPoint),
     Route('/vote', Vote),
     Route('/setribbon', SetRibbon),
@@ -74,6 +85,9 @@ routes = [
     Route('/job/addMissingBacklinks/<pointURL>', 
           'WhySaurus.DBIntegrityCheck:addMissingBacklinks', 
           name='addMissingBacklinks'),
+    Route('/job/DBcheckPoint/<pointURL>', 
+          'WhySaurus.DBIntegrityCheck:checkDBPoint', 
+          name='checkDBPoint'),
     Route('/switchArea', handler='WhySaurus.Profile:setArea', name='switchArea'),
     Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),
     Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),

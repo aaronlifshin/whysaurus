@@ -28,7 +28,7 @@
               <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>
           {% else %}
             {% if viewingOwnPage %}           
-                <a href="#" name="profileEdit">Link to your website</a>
+                <a  name="profileEdit">Link to your website</a>
             {% endif %}            
           {% endif %}
         </div>
@@ -37,7 +37,7 @@
               Areas of Expertise: {{profileUser.areasOfExpertise}}
           {% else %}
             {% if viewingOwnPage %}                     
-                <a href="#" name="profileEdit">Share your areas of expertise</a>
+                <a  name="profileEdit">Share your areas of expertise</a>
             {% endif %}
           {% endif %}
         </div>        
@@ -46,7 +46,7 @@
               Current Profession: {{profileUser.currentProfession}}
           {% else %}
             {% if viewingOwnPage %}           
-                <a href="#" name="profileEdit">Add your profession</a>
+                <a  name="profileEdit">Add your profession</a>
             {% endif %}            
           {% endif %}
         </div>
@@ -55,7 +55,7 @@
               Bio: {{profileUser.bio}}
           {% else %}
             {% if viewingOwnPage %}                     
-                <a href="#" name="profileEdit">Add a short bio</a>
+                <a  name="profileEdit">Add a short bio</a>
             {% endif %}                
           {% endif %}
         </div>             
@@ -98,8 +98,8 @@
               </div>        
             </div>    
             <div class="modal-footer">
-                <a href="#" id="submit_profileDialog" class="btn btn-primary">Save changes</a>            
-                <a href="#" class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+                <a  id="submit_profileDialog" class="btn btn-primary">Save changes</a>            
+                <a  class="btn btn-cancel" data-dismiss="modal">Cancel</a>
             </div> 
           </form>
       </div>

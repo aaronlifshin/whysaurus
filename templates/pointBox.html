@@ -1,42 +1,44 @@
-<div class="pointCard" data-pointurl='{{point.url}}'>
-   <div class="row-fluid">
-       <div class="span10">
-          <div class="pointTitle">
-            <a href="/point/{{ point.url }}">{{ point.title|escape }}</a>
-          </div>
-      </div>             
-      <div class="span2">
-        {% if point.imageURL and point.imageURL.strip %}      
-            <img class="listDisplay" src="{{ point.summaryBigImage }}" />
-        {% endif %}            
-      </div>
-    </div>    
-      <div class="row-fluid">
-          <span class="stat"><img src="/static/img/agreesIconBig.png"/>&nbsp{{ point.voteTotal }}</span>
-          <span class="stat"><img src="/static/img/awardsIconBig.png"/>{{ point.ribbonTotal }}</span>
-          <span class="stat"><img src="/static/img/sourcesIconBig.png"/>&nbsp{{ point.sources|length }}</span>
-      </div>
-      <div class="row-fluid no-space gauge">
-          <span class="linkStat 
-                    {% if point.onlyCounter %} counterColor 
-                    {% else %} supportColor 
-                    {% endif %}
-                pull-left" 
-                style="width:{% widthratio point.linksRatio 100 100 %}%">
-            
-          </span>
-          <span class="linkStat                     
-                    {% if point.onlySupport  %} supportColor 
-                    {% else %} counterColor 
-                    {% endif %} pull-right" 
-                style="width:{% widthratio point.reverseLinksRatio 100 100 %}%">
-             
-          </span>
-          <div class="gaugeText gaugeSupporting">
-            {{ point.supportingPointsRoots|length }} SUPPORTING
-          </div>
-          <div class="gaugeText gaugeCounter">
-          {{ point.counterPointsRoots|length }} COUNTER
-          </div>
-      </div>                       
-</div>
+<a href="/point/{{ point.url }}" style="text-decoration:none">
+	<div class="pointCard" data-pointurl='{{point.url}}'>
+	   <div class="row-fluid">
+	       <div class="span10">
+	          <div class="pointTitle">
+	            {{ point.title|escape }}
+	          </div>
+	      </div>             
+	      <div class="span2">
+	        {% if point.imageURL and point.imageURL.strip %}      
+	            <img class="listDisplay" src="{{ point.summaryBigImage }}" />
+	        {% endif %}            
+	      </div>
+	    </div>    
+	      <div class="row-fluid">
+	          <span class="stat"><img src="/static/img/agreesIconBig.png"/>&nbsp{{ point.voteTotal }}</span>
+	          <span class="stat"><img src="/static/img/awardsIconBig.png"/>{{ point.ribbonTotal }}</span>
+	          <span class="stat"><img src="/static/img/sourcesIconBig.png"/>&nbsp{{ point.sources|length }}</span>
+	      </div>
+	      <div class="row-fluid no-space gauge">
+	          <span class="linkStat 
+	                    {% if point.onlyCounter %} counterColor 
+	                    {% else %} supportColor 
+	                    {% endif %}
+	                pull-left" 
+	                style="width:{% widthratio point.linksRatio 100 100 %}%">
+	            
+	          </span>
+	          <span class="linkStat                     
+	                    {% if point.onlySupport  %} supportColor 
+	                    {% else %} counterColor 
+	                    {% endif %} pull-right" 
+	                style="width:{% widthratio point.reverseLinksRatio 100 100 %}%">
+	             
+	          </span>
+	          <div class="gaugeText gaugeSupporting">
+	            {{ point.supportingPointsRoots|length }} SUPPORTING
+	          </div>
+	          <div class="gaugeText gaugeCounter">
+	          {{ point.counterPointsRoots|length }} COUNTER
+	          </div>
+	      </div>                       
+	</div>
+</a>

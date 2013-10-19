@@ -8,11 +8,13 @@
     <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js" ></script>
     <script type="text/javascript" src="//use.typekit.net/dvk0ttp.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    <script type="text/javascript" src="/static/js/base.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>   
     <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+    
+    <script type="text/javascript" src="/static/js/base.js"></script>
+    
     <script> var appname = window.navigator.appName; </script>
     
       {% if point %}
@@ -38,10 +40,10 @@
       <div class="container">
          <div class="row">
           <div class="span2">
-            <a href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
+            <a id="logoNav" href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
           </div>
           <div class="span3 headerLinks Heading_Black_Caps">
-            <a href="/">HOME </a>          
+            <a id="homeNav" href="/">HOME </a>          
             <a id="CreatePoint" href='#' alt="Make a Point">MAKE A POINT</a>
             <span class="aboutMenu">
               <a class="userControls dropdown-toggle" data-toggle="dropdown">ABOUT </a>
@@ -112,7 +114,7 @@
     		  {% else %}
                 <div class="span4 userMenuArea Heading_Black_Caps">
                   <script> var loggedIn = false; </script>
-                  <a class="dropdown-toggle pull-right" data-toggle="dropdown" href="#">SIGN IN </a>
+                  <a class="dropdown-toggle pull-right" data-toggle="dropdown">SIGN IN </a>
                   <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
                     <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
                     <li><a tabindex="-1" href="/auth/google"> Google </a></li>
@@ -142,7 +144,6 @@
       {% endif %}
 	</div>
 
-
     {% if user %}
         <script> 
             var loggedIn = true; 
@@ -150,6 +151,10 @@
             var userURL = '/user/{{user.url}}';
         </script>
         {% include 'pointDialog.html' %}
+        {% include 'selectSupportingPointsSearch.html' %}
+        {% if user.admin %}
+          {% include 'changeEditorsPick.html' %}
+        {% endif %}
     {% else %}
       <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
          <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">          
@@ -174,12 +179,12 @@
             </div>            
             <div class="modal-footer">
                 <div class="row-fluid">
-                  <a href="#" id="forgot_emailLoginDialog" class="btn pull-left">Forgot Password</a>  
-                  <a href="#" id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>                                        
-                  <a href="#" id="submit_emailLoginDialog" class="btn btn-primary pull-right">Login</a>            
+                  <a  id="forgot_emailLoginDialog" class="btn pull-left">Forgot Password</a>  
+                  <a  id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>                                        
+                  <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right">Login</a>            
                 </div>
                 <div class="row-fluid">                
-                    <a href="#" id="showSignupDialog" class="btn btn-cancel">New User? Click here to create a login.</a>                                                    
+                    <a  id="showSignupDialog" class="btn btn-cancel">New User? Click here to create a login.</a>                                                    
                 </div>
             </div> 
           </form>
@@ -188,7 +193,7 @@
       <div class="modal hide fade" data-keyboard="true" id="signupDialog" role="dialog" aria-hidden="true">
          <form id='frm_signupDialog' class="form-horizontal" action="" method="POST">          
             <div class="modal-header"><h3>Create New User</h3></div>    
-            <a href="#" id="backToLogin" class="btn">Already a User? Click here to sign in.</a>                                                    
+            <a  id="backToLogin" class="btn">Already a User? Click here to sign in.</a>                                                    
             
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">       
@@ -251,8 +256,8 @@
               </div>        
             </div>    
             <div class="modal-footer">
-                <a href="#" id="cancel_signupDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>            
-                <a href="#" id="submit_signupDialog" class="btn btn-primary pull-right">Create User</a>            
+                <a  id="cancel_signupDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>            
+                <a  id="submit_signupDialog" class="btn btn-primary pull-right">Create User</a>            
             </div> 
           </form>
       </div>
@@ -266,15 +271,19 @@
           <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook"> Sign in with Facebook </a></div>
           <div id="signInWithGoogle_Dlg" class="boxedElement"><a tabindex="2" href="/auth/google"> Sign in with Google </a></div>
           <div id="signInWithTwitter_Dlg" class="boxedElement"><a tabindex="3" href="/auth/twitter"> Sign in with Twitter </a></div>
-          <div id="signInWithEmail_Dlg" class="boxedElement"><a tabindex="4" href="#"> Sign in with Whysaurus </a></div>
+          <div id="signInWithEmail_Dlg" class="boxedElement"><a tabindex="4" > Sign in with Whysaurus </a></div>
           
         </div>
         <div class="modal-footer">
-          <a href="#" tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
+          <a  tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
         </div>
       </div>
   {% endif %}
-  <div class="container" id="mainContainer">{% block mainPageContent %} {% endblock %}</div>      
+  <div class="container" id="mainContainer">
+
+    {% block mainPageContent %} 
+    {% endblock %}
+  </div>      
   </body>
   
   <!-- Analytics -->

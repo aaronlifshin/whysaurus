@@ -18,7 +18,6 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
                     if user.privateArea and user.privateArea is not None:
                         sessionArea = self.setUserArea(usePrivate=True)
                 if sessionArea != '' and sessionArea == user.privateArea:
-                    logging.info('SETTING REQUEST NAMESPACE: |%s| ' % self.session.get('currentArea'))
                     namespace_manager.set_namespace(self.session.get('currentArea')) 
                 user.getActiveNotifications()
             # Dispatch the request.

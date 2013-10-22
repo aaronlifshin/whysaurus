@@ -279,30 +279,6 @@ body {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   TWO COLUMN LAYOUT STUFF
-   +++++++++++++++++++++++++++++++++++++++++++++++ 
-
-#leftColumn {	
-    margin-left:0px;
-}   
-
-#leftColumn #leftColumnPoint, 
-#leftColumn #supportingPointsArea, 
-#leftColumn #historyArea  {
-	margin-left:16px;
-}
-
-#rightColumnContent {
-    margin-left:16px;
-	
-}
-*/
-
-/* +++++++++++++++++++++++++++++++++++++++++++++++
-   END TWO COLUMN LAYOUT STUFF
-   +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
-/* +++++++++++++++++++++++++++++++++++++++++++++++
    NOTIFICATION AREA IN PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #notificationsArea li {
@@ -481,6 +457,9 @@ body {
 	padding-left: 5px;
 }
 
+.mainPageColumn {
+	margin-top: 15px;
+}
 .columnHeading {
 	font-weight:bold;
 	font-size:1.25em;

@@ -16,6 +16,8 @@ class Profile(AuthHandler):
         viewingOwnPage = False
         if user and profileUser.url == user.url:
             viewingOwnPage = True
+        if user:
+            user.getActiveNotifications()
                     
         template_values = {
             'user': self.current_user,

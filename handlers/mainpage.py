@@ -58,6 +58,7 @@ class MainPage(AuthHandler):
         # GET RECENTLY VIEWED
         if user:
             recentlyViewedPoints = user.getRecentlyViewed()
+            user.getActiveNotifications()
         else:
             recentlyViewedPoints = []
         template_values = {

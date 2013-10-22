@@ -467,61 +467,6 @@ function linkPointControlsInitialState() {
 }
 
 
-function displaySearchResults(data, linkType){
-	$("#searchResultsArea").children().remove();
-		
-	obj = JSON.parse(data);
-	
-	if (obj.result == true) {
-		appendAfter = $("#searchResultsArea");
-		appendAfter.append("<div class='row-fluid' id='pointSelectText'>Select a point to link</div>" );		
-		appendAfter.append(obj.resultsHTML);
-        setUpSelectPointButtons();
-        setUpPopoutButtons();
-	} else {
-		searchDialogAlert('There were no results for: ' + $(".searchBox").val() + ' or that is already a linked point');
-	}
-}
-
-function selectSearchLinkPoint(elem, linktype) {
-    pointCards = $('.pointCard', $('#searchResultsArea'));    
-    pointCards.unbind('click');
-    startSpinnerOnButton('#pointSelectText');    
-    selectPoint($(elem).data('pointurl'), $('#pointArea').data('pointurl'), linktype);  
-}
-
-function setUpSelectPointButtons() {
-    pointCards = $('.pointCard', $('#searchResultsArea'))
-    linktype = $("#selectLinkedPointSearch").data("linkType");
-    pointCards.click( function(event) {
-        event.preventDefault();        
-        selectSearchLinkPoint(this, linktype);
-    });
-    /*   
-    pointCards.hover(
-        function() {
-            $(this).append(    
-                "<div class='btn btn-primary searchLinkSelectButton'><a href='javascript:;' onclick='javascript:selectSearchLinkPoint(this, \""+ 
-                linktype +"\")' alt='Select this Point'>Link This Point</a></div>" );
-        },
-        function() {
-            $(this).find('.searchLinkSelectButton').remove();
-        }
-    ); 
-    */   
-}
-
-function popoutPoint(elem) {
-    window.open($(elem).parent().data('pointurl'), "_blank"); //"height=800,width=1000");
-}
-
-function setUpPopoutButtons() {    
-    linktype = $("#selectLinkedPointSearch").data("linkType");
-        	    
-    pointCards.append(    
-        "<a class='popoutPoint' href='javascript:;' onclick='javascript:popoutPoint(this)' alt='Select this Point'></a>" );
-        
-}
 
 function setUpMenuAreas() {
     // Dropdown add of the recently viewed points
@@ -657,27 +602,6 @@ function saveComment(event) {
     
 }
 
-
-function searchDialogSearch() {
-    startSpinnerOnButton('#submitLinkedPointSearch');
-   
-	$.ajaxSetup({
-		url: "/ajaxSearch",
-		global: false,
-		type: "POST",
-		data: {
-			'searchTerms': $(".searchBox").val(),
-			'exclude' : $('#pointArea').data('pointurl'),
-			'linkType' : $("#selectLinkedPointSearch").data("linkType")
-		},
-		success: function(data) {
-		    displaySearchResults(data, $("#selectLinkedPointSearch").data("linkType"));
-		    stopSpinnerOnButton('#submitLinkedPointSearch', searchDialogSearch);            
-		},
-	});
-	$.ajax();
-}
-
 function changeEditorsPick() {
     pick = $('#editorsPick').get(0).checked;
     pickSort = $("#editorsPickSort").val();
@@ -747,20 +671,6 @@ function activatePointArea() {
         $( "#blueRibbon" ).click(function() {changeRibbon();});        
 
         setUpMenuAreas();
-
-        $('#linkedPointSearchDialog').on('hidden', function () {
-            $("#selectLinkedPointSearch").data("linkType", "");
-            $("#searchResultsArea").children().remove();
-            $("#selectLinkedPointSearch").val('');
-        });
-
-        $("#selectLinkedPointSearch").keyup(function(event){
-        	if(event.keyCode == 13){
-        	    searchDialogSearch();
-        	}
-        });
-        
-        $('#submitLinkedPointSearch').click(searchDialogSearch);
         
         $('#showAddComment').click(function() {
             tinyMCE.execCommand('mceRemoveControl', false, 'commentText');

@@ -415,6 +415,10 @@ function makeHomeNavsClickable() {
 
 // On a successful load onSuccess is called with the shouldPushState as a parameter
 function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, shouldPushState ) {
+    $(columnSelector).empty();
+   	if (columnSelector == '#leftColumn') {
+   	    $(columnSelector).html('<div class="row-fluid "><img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
+   	}
     $.ajax({
         url: ajaxURL,
       	type: 'POST',
@@ -464,6 +468,9 @@ function loadPointComments(pointurl) {
 }
 
 function loadPointContent(pointurl, shouldPushState) {
+    $('#leftColumn').empty();
+    $('#leftColumn').html('<div class="row-fluid "><img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
+    
     $.ajax({
       	url: '/getPointContent',
       	type: 'POST',
@@ -536,6 +543,72 @@ function getSearchResults(searchTerms) {
 	});
 	$.ajax();
 }
+
+
+function displaySearchResults(data, linkType){
+	$("#searchResultsArea").children().remove();
+		
+	obj = JSON.parse(data);
+	
+	if (obj.result == true) {
+		appendAfter = $("#searchResultsArea");
+		appendAfter.append("<div class='row-fluid' id='pointSelectText'>Select a point to link</div>" );		
+		appendAfter.append(obj.resultsHTML);
+        setUpSelectPointButtons();
+        setUpPopoutButtons();
+	} else {
+		searchDialogAlert('There were no results for: ' + $(".searchBox").val() + ' or that is already a linked point');
+	}
+}
+
+function searchDialogSearch() {
+    startSpinnerOnButton('#submitLinkedPointSearch');
+   
+	$.ajaxSetup({
+		url: "/ajaxSearch",
+		global: false,
+		type: "POST",
+		data: {
+			'searchTerms': $(".searchBox").val(),
+			'exclude' : $('#pointArea').data('pointurl'),
+			'linkType' : $("#selectLinkedPointSearch").data("linkType")
+		},
+		success: function(data) {
+		    displaySearchResults(data, $("#selectLinkedPointSearch").data("linkType"));
+		    stopSpinnerOnButton('#submitLinkedPointSearch', searchDialogSearch);            
+		},
+	});
+	$.ajax();
+}
+
+
+function selectSearchLinkPoint(elem, linktype) {
+    pointCards = $('.pointCard', $('#searchResultsArea'));    
+    pointCards.unbind('click');
+    startSpinnerOnButton('#pointSelectText');    
+    selectPoint($(elem).data('pointurl'), $('#pointArea').data('pointurl'), linktype);  
+}
+
+function setUpSelectPointButtons() {
+    pointCards = $('.pointCard', $('#searchResultsArea'))
+    linktype = $("#selectLinkedPointSearch").data("linkType");
+    pointCards.click( function(event) {
+        event.preventDefault();        
+        selectSearchLinkPoint(this, linktype);
+    }); 
+}
+
+function popoutPoint(elem) {
+    window.open($(elem).parent().data('pointurl'), "_blank"); //"height=800,width=1000");
+}
+
+function setUpPopoutButtons() {    
+    linktype = $("#selectLinkedPointSearch").data("linkType");        	    
+    pointCards.append(    
+        "<a class='popoutPoint' href='javascript:;' onclick='javascript:popoutPoint(this)' alt='Select this Point'></a>" );
+        
+}
+
 
 function clearSignupDialog() {
     $("#signup_userName").val("");    
@@ -755,8 +828,7 @@ function switchArea() {
 	$.ajax();
 }
 
-function processNotification(messageObj) {
-     
+function processNotification(messageObj) {     
      var dataObj = JSON.parse(messageObj.data);
      
      // Insert new notification
@@ -771,10 +843,8 @@ function processNotification(messageObj) {
      // Insert the raised date secs value
      $('#notificationMenuHeader').data('latest', dataObj.timestamp)    
          
-     $('.notificationMenuItem').click( function() {
-         window.location.href=$(this).data('refpoint');        
-     }); 
-     
+     activateNotificationMenuItems();
+          
 }
 
 function reconnectChannel(errorObj) {
@@ -852,10 +922,19 @@ function markNotificationsRead() {
     }
 }
 
-function makeNotificationMenuClickable() {
-    $('.notificationMenuItem').click( function() {
-        window.location.href=$(this).data('refpoint');        
+
+function activateNotificationMenuItems() {
+    $('.notificationMenuItem').off(".ys").on("click.ys", function() {
+        if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+            window.location.href=$(this).data('refpoint');        
+        } else {
+            loadPoint($(this).data('pointurl'));
+        }
     });
+}
+
+function makeNotificationMenuClickable() {
+    activateNotificationMenuItems();
     
     $('#notificationMenuHeader').click(function () {
         window.location.href=userURL;                
@@ -1000,6 +1079,21 @@ function activateHeaderAndDialogs() {
 
         $("#title_pointDialog").on('keyup', function(e) {setCharNumText(e.target);});
 
+
+        $('#linkedPointSearchDialog').on('hidden', function () {
+            $("#selectLinkedPointSearch").data("linkType", "");
+            $("#searchResultsArea").children().remove();
+            $("#selectLinkedPointSearch").val('');
+        });
+
+        $("#selectLinkedPointSearch").keyup(function(event){
+        	if(event.keyCode == 13){
+        	    searchDialogSearch();
+        	}
+        });
+        
+        $('#submitLinkedPointSearch').click(searchDialogSearch);
+        
         $(".removeSource").on('click', function(e) {removeSource(this);});
         $("#areaSwap").on('click', switchArea);   
         makeNotificationMenuClickable();     

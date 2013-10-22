@@ -19,7 +19,6 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
                         sessionArea = self.setUserArea(usePrivate=True)
                 if sessionArea != '' and sessionArea == user.privateArea:
                     namespace_manager.set_namespace(self.session.get('currentArea')) 
-                user.getActiveNotifications()
             # Dispatch the request.
             webapp2.RequestHandler.dispatch(self)
         finally:

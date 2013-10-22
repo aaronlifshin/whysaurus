@@ -21,14 +21,17 @@ class ViewPoint(AuthHandler):
         else:
             voteValue = user.userVotes[point.key.parent()].value
             ribbonValue = user.userVotes[point.key.parent()].ribbon
+        
         addedToRecentlyViewed = False
-        recentlyViewed = None
         if user:
             recentlyViewed = user.getRecentlyViewed(excludeList=[point.key.parent()] + \
                                                     point.supportingPointsRoots + \
                                                     point.counterPointsRoots)
-            addedToRecentlyViewed = user.updateRecentlyViewed(point.key.parent())
 
+            addedToRecentlyViewed = user.updateRecentlyViewed(point.key.parent())
+        else:
+            recentlyViewed = None
+            
         # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list
         if addedToRecentlyViewed or not user:
             pointRoot.addViewCount()
@@ -36,7 +39,7 @@ class ViewPoint(AuthHandler):
         templateValues = {
             'point': point,
             'pointRoot': pointRoot,
-             # 'recentlyViewedPoints': recentlyViewed,
+            'recentlyViewedPoints': recentlyViewed,
             'supportingPoints': supportingPoints,
             'counterPoints': counterPoints,
             'supportedPoints':pointRoot.getBacklinkPoints("supporting"),
@@ -50,6 +53,8 @@ class ViewPoint(AuthHandler):
         }
         
         if full:
+            if user:
+                user.getActiveNotifications()
             additionalValues = {
                 'notifications': user.notifications if user else None,
                 'comments': pointRoot.getComments()

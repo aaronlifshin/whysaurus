@@ -243,7 +243,7 @@ class Point(ndb.Model):
             if linktype == 'supporting':
                 pointRoot.pointsSupportedByMe = [backlink]
             elif linktype == 'counter':
-                pointRoot.pointsCounterredByMe = [backlink]
+                pointRoot.pointsCounteredByMe = [backlink]
                 
         createdPoint, createdPointRoot = Point.transactionalCreate(
                             pointRoot,title, content, summaryText, user,

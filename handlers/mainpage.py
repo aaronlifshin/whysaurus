@@ -17,11 +17,13 @@ class MainPage(AuthHandler):
         vals = {
             'recentlyActive': newPoints,
             'featuredPoint': featuredPoint,
+            'user': self.current_user
         }
         html = template.render('templates/mainPageLeftColumn.html', vals)
+
         resultJSON = json.dumps({
             'result': True,
-            'html': html
+            'html': html,
         }) 
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
         self.response.out.write(resultJSON) 
@@ -39,9 +41,11 @@ class MainPage(AuthHandler):
             'user': user
         }
         html = template.render('templates/mainPageRightColumn.html', vals)
+        
+
         resultJSON = json.dumps({
             'result': True,
-            'html': html
+            'html': html,
         }) 
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
         self.response.out.write(resultJSON) 

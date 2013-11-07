@@ -22,18 +22,26 @@ class LinkPoint(AuthHandler):
                             'pointCurrentVersion':supportingPoint,
                             'linkType':self.request.get('linkType')}
                             ]
-                oldPoint.update(
+                newVersion = oldPoint.update(
                     pointsToLink=newLink,
                     user=user
                 )
             except WhysaurusException as e:
                 resultJSON = json.dumps({'result': False, 'error': e.message})
             else:
-                path = os.path.join(constants.ROOT, 'templates/pointBox.html')
-                newLinkPointHTML = json.dumps(template.render(path, {'point': supportingPoint}))
-                resultJSON = json.dumps({'result': True,
-                                         'numLinkPoints': supportingPoint.linkCount(linkType),
-                                         'newLinkPoint':newLinkPointHTML})
+                if newVersion:
+                    path = os.path.join(constants.ROOT, 'templates/pointBox.html')
+                    newLinkPointHTML = json.dumps(template.render(path, {'point': supportingPoint}))
+                    resultJSON = json.dumps({
+                        'result': True,
+                        'numLinkPoints': supportingPoint.linkCount(linkType),
+                        'newLinkPoint':newLinkPointHTML,
+                        'authorURL': self.current_user.url,
+                        'author': newVersion.authorName, 
+                        'dateEdited': newVersion.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),                                                      
+                    })
+                else:
+                    json.dumps({'result': False, 'error': 'There was a problem updating the point.'})
         else:
             resultJSON = json.dumps({'result': 'ACCESS DENIED!'})
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

@@ -8,8 +8,8 @@ from models.timezones import PST
 from models.notification import Notification
 from models.follow import Follow
 
-# This is called by the task queue
 class NotificationHandler(AuthHandler):
+    # This is called by the task queue
     def AddNotification(self):
         rootKeyUrlsafe = self.request.get('rootKey')
         notifyReason = self.request.get('notifyReason')

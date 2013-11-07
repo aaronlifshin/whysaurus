@@ -1,5 +1,6 @@
 <div class="row-fluid">
-	<br>{{ numPoints }} versions exist for <a href="/point/{{ latestPoint.url }}">{{ latestPoint.title|escape }}</a><br>
+    <a id="viewSupportingPoints">  < Back to Supporting and Counter points </a><br>	
+		{{ numPoints }} versions exist for {{ latestPoint.title|escape }}
 </div>
     {% for fullPoint in pointData %}
         {% with fullPoint.point as point %}

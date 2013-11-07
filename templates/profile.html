@@ -2,7 +2,6 @@
 
 {% block mainPageContent %}
   <script type="text/javascript" src="/static/js/profile.js"></script>
-  <div class="row topSpace"></div>
 
   <div class="row {% if user and user.privateArea %}privateAreaContentOffset{% endif %}">
     <div id="userInfoArea" class="span3" >
@@ -120,7 +119,7 @@
             <script>var viewingOwnPage = false;</script>      
           {% endif %}          
     </div>   
-    <div class="span6">
+    <div id="profileTabbedArea" class="span6">
         <div class="columnHeading">
                 {% if viewingOwnPage %}                    
                     <button class="selectedTab tab" id="notificationView" >

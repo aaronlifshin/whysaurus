@@ -29,7 +29,8 @@ __all__ = [
 	'Profile',
 	'AdminPage',
 	'Comments',
-	'AddNotifications'
+	'AddNotifications',
+	'Chat'
 ]
 
 from mainpage import MainPage
@@ -61,7 +62,7 @@ from profile import Profile
 from adminPage import AdminPage
 from comments import Comments
 from notificationHandler import NotificationHandler
-
+from chat import Chat
 
 
 

@@ -47,18 +47,18 @@ $(document).ready(function() {
     if (viewingOwnPage) {
         $('#notificationsArea').show();    
         $('#notificationView').click(function() {
-           toggleTabbedArea(this, "#notificationsArea");
+           toggleTabbedArea("#profileTabbedArea", this, "#notificationsArea");
         });             
     } else {
         $('#createdPointsArea').show();                
     }
 
     $('#createdPoints').click(function() {
-        toggleTabbedArea(this, "#createdPointsArea");
+        toggleTabbedArea("#profileTabbedArea", this, "#createdPointsArea");
     });
 
     $('#editedPoints').click(function() {
-        toggleTabbedArea(this, "#editedPointsArea");
+        toggleTabbedArea("#profileTabbedArea", this, "#editedPointsArea");
     });
     
     $('#editButton').click(function() {

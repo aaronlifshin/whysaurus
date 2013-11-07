@@ -342,11 +342,11 @@ function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
     $('.removeSource',newDiv).on('click', function(e) {removeSource(this);});
 }
 
-function toggleTabbedArea(selectedTab, tabbedAreaToShow) {
-	$('.tab').removeClass('selectedTab');
+function toggleTabbedArea(tabbedAreaSelector, selectedTab, tabbedAreaToShow) {
+	$(tabbedAreaSelector + ' .tab').removeClass('selectedTab');
 	$(selectedTab).addClass('selectedTab');
-	$('.tabbedArea').hide();
-	$(tabbedAreaToShow).show();
+	$(tabbedAreaSelector + ' .tabbedArea').hide();
+	$(tabbedAreaSelector + ' ' + tabbedAreaToShow).show();
 }
 
 function navigateHistory(event) {
@@ -377,14 +377,14 @@ function navigateHistory(event) {
     
 }
 
-function loadPoint(url, newState) {    
-    loadPointContent(url, newState);
-    loadPointComments(url);  
+function loadPoint(url, addToHistory) {    
+	loadPointContent(url, newState);
+	loadPointComments(url);  
 }
 
 function loadHomePage(shouldPushState) {
-    loadMainPageLeftColumn(shouldPushState);    
-    loadMainPageRightColumn();    
+	loadMainPageLeftColumn(shouldPushState);    
+	loadMainPageRightColumn();
 }
 
 function makePointsCardsClickable() {
@@ -417,7 +417,8 @@ function makeHomeNavsClickable() {
 function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, shouldPushState ) {
     $(columnSelector).empty();
    	if (columnSelector == '#leftColumn') {
-   	    $(columnSelector).html('<div class="row-fluid "><img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
+   	    $(columnSelector).html('<div class="row-fluid ">\
+   	        <img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
    	}
     $.ajax({
         url: ajaxURL,
@@ -430,7 +431,7 @@ function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, 
           		$(columnSelector).html(obj.html);
           		if (onSuccess != null) {
           		    onSuccess(shouldPushState);              		
-          		}
+          		}          		
       	    } else {
                 $(columnSelector).empty();
                 showAlert('<strong>Oops. JSON error.!</strong> ' + errorMessage);
@@ -447,8 +448,7 @@ function loadMainPageLeftColumn(shouldPushState) {
     loadColumn('#leftColumn', '/getMainPageLeft', {}, 
         'There was a problem loading the main page content.', 
         function(shouldPushState) {
-            $('#mainContainer').data('contentpath', '/');
-            activateMainPageLeftColumn();
+            $('#mainContainer').data('contentpath', '/');                        
             if (shouldPushState) {
       		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');          		          		              		
       		}
@@ -469,8 +469,8 @@ function loadPointComments(pointurl) {
 
 function loadPointContent(pointurl, shouldPushState) {
     $('#leftColumn').empty();
-    $('#leftColumn').html('<div class="row-fluid "><img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
-    
+    $('#leftColumn').html('<div class="row-fluid "> \
+        <img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
     $.ajax({
       	url: '/getPointContent',
       	type: 'POST',
@@ -488,7 +488,7 @@ function loadPointContent(pointurl, shouldPushState) {
           		}
           		if (shouldPushState) {
           		    history.pushState({whysaurus: true, }, obj.title, '/point/' + obj.url);          		          		              		
-          		}
+          		}          	
           		document.title = obj.title;
           		
       	    } else {
@@ -505,7 +505,7 @@ function loadPointContent(pointurl, shouldPushState) {
 
 function loadPointList(listType, areaToLoad, selectedTab) {
     $(areaToLoad).html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
-    toggleTabbedArea(selectedTab, areaToLoad);
+    toggleTabbedArea('#leftColumn', selectedTab, areaToLoad);
     $.ajax({
     	url: '/getPointsList',
     	type: 'POST',
@@ -520,6 +520,14 @@ function loadPointList(listType, areaToLoad, selectedTab) {
     		showAlert('<strong>Oops!</strong> There was a problem loading the points.  Please try again later.');
     	},
     }); 
+}
+
+
+function setCommentCount(numComments) {
+    if (numComments == null) {
+        numComments = $(".cmmnt").length;            
+    }
+    $('#commentCount').text(numComments + " COMMENT" + (numComments == 1? "":"S"));
 }
 
 function getSearchResults(searchTerms) {
@@ -828,9 +836,42 @@ function switchArea() {
 	$.ajax();
 }
 
-function processNotification(messageObj) {     
-     var dataObj = JSON.parse(messageObj.data);
-     
+function loginChat() {
+    $.ajax({
+        url: '/enterChatRoom',
+       	type: 'POST',
+       	success: function() {
+       		$('#chatContent').after('<div>You are now logged into the chatroom.</div>');
+       	},
+       	error: function(data) {
+       		$('#chatContent').after('<div>Could not log into the chatroom.  Try to refresh the page and come again.</div>');
+       	},
+       });  
+}
+
+function sendChatMessage(message) {
+    $.ajax({
+            url: '/send',
+          	type: 'POST',
+          	data: {'message': message},
+          	success: function() {
+          	},
+          	error: function(data) {
+          		$('#chatContent').after('<div>Could not send: ' + message + '.</div>');
+          	},
+    });
+}
+   
+function processMessage(messageObj) {
+    var dataObj = JSON.parse(messageObj.data);
+    if (dataObj.type == 'notification') {
+        processNotification(dataObj);
+    } else if (dataObj.type == 'chat') {
+        processChat(dataObj);
+    }
+}
+
+function processNotification(dataObj) {          
      // Insert new notification
      $('#notificationMenuHeader').after(dataObj.notificationHTML);
      
@@ -845,6 +886,13 @@ function processNotification(messageObj) {
          
      activateNotificationMenuItems();
           
+}
+
+function processChat(dataObj) {
+    // If the chat is shown, add this to the chat
+    if ($('#chatContent').is(':visible')) {
+        $('#chatContent').after('<div>' + dataObj.userName + ':' + dataObj.message + '</div>');   		
+    }
 }
 
 function reconnectChannel(errorObj) {
@@ -886,7 +934,7 @@ function notificationChannelOpen() {
         lastNotiSecs = $("#notificationMenuHeader").data('latest');
         channel = new goog.appengine.Channel(channelToken);
         socket = channel.open();
-        socket.onmessage = processNotification;
+        socket.onmessage = processMessage;
         socket.onclose = reconnectChannel;
     }
   
@@ -1114,10 +1162,11 @@ function activateMainPageLeftColumn() {
 	makePointsCardsClickable(); 
 
     // Beginning state for the TABBED AREAS
-    $('.tabbedArea').hide(); $('#recentActivityArea').show();
+    $('#leftColumn .tabbedArea').hide(); 
+    $('#recentActivityArea').show();
 
     $('#recentActivity').click(function() {
-        toggleTabbedArea(this, "#recentActivityArea");        
+        toggleTabbedArea("#leftColumn", this, "#recentActivityArea");        
     });
 
     $('#editorsPicks').click(function() {
@@ -1145,6 +1194,7 @@ function activateMainPageRightColumn() {
             ev.preventDefault();
         }
     });
+    
 }
 
 $(document).ready(function() {

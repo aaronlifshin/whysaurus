@@ -49,7 +49,7 @@ class ViewPoint(AuthHandler):
             'voteValue': voteValue,
             'ribbonValue': ribbonValue,
             'thresholds': constants.SCORETHRESHOLDS,
-            'currentArea':self.session.get('currentArea')
+            'currentArea':self.session.get('currentArea'),
         }
         
         if full:
@@ -91,7 +91,7 @@ class ViewPoint(AuthHandler):
         if pointRoot:
             tv = {
                 'pointRoot': pointRoot,
-                'comments':pointRoot.getComments()
+                'comments':pointRoot.getComments(),
             }
             html = template.render('templates/pointComments.html', tv)
             resultJSON = json.dumps({
@@ -115,12 +115,13 @@ class ViewPoint(AuthHandler):
         if point:
             vals = self.createTemplateValues(point, pointRoot, full=False)
             html = template.render('templates/pointContent.html', vals)
+
             resultJSON = json.dumps({
                 'result': True,
                 'title' : point.title,
                 'url': point.url,
                 'myVote': vals['voteValue'],
-                'html': html
+                'html': html,
             })  
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
         self.response.out.write(resultJSON)

@@ -204,9 +204,9 @@ class Point(ndb.Model):
         point.authorURL = user.url
         point.version = 1
         point.current = True
-        point.upVotes = 1
+        point.upVotes = 0
         point.downVotes = 0
-        point.voteTotal = 1
+        point.voteTotal = 0
         point.imageURL = imageURL
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
@@ -224,7 +224,8 @@ class Point(ndb.Model):
         pointRoot.current = point.key
         pointRoot.put()
 
-        user.addVote(point, voteValue=1, updatePoint=False)
+        # No automatic agreement
+        # user.addVote(point, voteValue=1, updatePoint=False)
         user.recordCreatedPoint(pointRoot.key)
         
         return point, pointRoot
@@ -680,11 +681,18 @@ class PointRoot(ndb.Model):
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
     comments = ndb.KeyProperty(repeated=True)
+    
+    
 
     @classmethod
     def getByUrlsafe(cls, pointRootUrlSafe):
         return ndb.Key(urlsafe=pointRootUrlSafe).get()        
 
+
+    @property
+    def numComments(self):
+        return len(comments) if comments else 0
+        
     def getCurrent(self):
         # if self.current:
         #     logging.info("RETURNING CURRENT point: %s" % self.current.urlsafe())

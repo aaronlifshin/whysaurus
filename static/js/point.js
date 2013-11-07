@@ -34,6 +34,28 @@ function toggleUnlink(elem, linkType) {
 	}
 }
 
+function insertImage(imageURL, author, description) {
+	if ($('#mainPointImageArea').length) {
+	    $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + encodeURIComponent(imageURL))
+		$('.mainPointImageURL').html(imageURL);
+		$('.mainPointImageAuthor').html(author);
+		$('.mainPointImageCaption').html(description);
+	} else { // no image yet, insert the main point image area
+		$('#pointSummary').after('<div id="mainPointImageArea" class="span3"> \
+	            <img class="pointDisplay" src="' + '//d3uk4hxxzbq81e.cloudfront.net/FullPoint-' + encodeURIComponent(imageURL) +
+				'" /><div class="mainPointImageCaption">' + description + '</div> \
+	            <div class="mainPointImageAuthor">' + author + '</div> \
+		    </div>');
+		$('.mainPointImageURL').html(imageURL);					
+	}
+}
+
+function updateVersionHeader(authorURL, author, dateEdited) {
+	$('.mainPointLastEdited').html('Most Recent Contributor: ' + 
+	    '<a href=\'/user/' + authorURL +'\'>'+ author + '</a> on ' + dateEdited + 
+	    '. <a id="viewPointHistory">View History</a>');
+}
+
 function callPointEdit(){
     if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
         editDialogAlert('Please do not exceed 140 characters for the title.');
@@ -70,19 +92,18 @@ function callPointEdit(){
 				var ed = tinyMCE.get('editor_pointDialog');
 			    obj = JSON.parse(data);
 				$('.mainPointContent').html(ed.getContent());
-				$('.mainPointTitle h1').html($('#title_pointDialog').val());
-				$('.mainPointLastEdited').html('Last edited ' + obj.dateEdited + 
-				    ' by <a href=\'/user/' + obj.authorURL +'\'>'+ obj.author + '</a>');
+				$('.mainPointTitle h1').html($('#title_pointDialog').val());				
+				updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
+				    
                 if (obj.imageURL) {
-                    $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + encodeURIComponent(obj.imageURL))
-                }
-				$('.mainPointImageURL').html(obj.imageURL);
-				$('.mainPointImageAuthor').html(obj.imageAuthor);
-				$('.mainPointImageCaption').html(obj.imageDescription);
+					insertImage(obj.imageURL, obj.imageAuthor, obj.imageDescription);
+				}
+
 				$('#mainPointSources').remove();
 				$('[name=mainPointSource]').remove();				
 				$('.mainPointImageURL').after(obj.sourcesHTML);
-				
+				$('#viewPointHistory').click(viewPointHistory);
+				                
             	stopSpinner();
 				$("#pointDialog").modal('hide');
 				$('#pointArea').data('pointurl', obj.pointURL);
@@ -113,21 +134,22 @@ function pointUnlink(elem, linkType) {
 			'linkType': linkType
 			},
 			success: function(data){
-              obj = JSON.parse(data);
-              if (obj.result == true) {
-                pointCard.remove();
-                if ($('.pointCard', $('#' + linkType + '_pointList')).length == 0 ) {
-                    $("#" + linkType + "_zeroPoints").show();
-                    $("#" + linkType + "_nonzeroPoints").hide();
-                    $("[name=" + linkType + "_linkPoint]").button();
-                } else {
-                    setPointListHeader(linkType);
-                }
-              } else {
-                showErrorAlert('There was an error during unlinking'); // UNlink doesn't return error messages at this time
-              }
-              toggleUnlink($('#' + linkType + '_unlinkToggle'), linkType);              
-          }
+				obj = JSON.parse(data);
+				if (obj.result == true) {
+					pointCard.remove();
+					if ($('.pointCard', $('#' + linkType + '_pointList')).length == 0 ) {
+						$("#" + linkType + "_zeroPoints").show();
+						$("#" + linkType + "_nonzeroPoints").hide();
+						$("[name=" + linkType + "_linkPoint]").button();
+					} else {
+						setPointListHeader(linkType);
+					}
+					updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
+				} else {
+					showErrorAlert('There was an error during unlinking: ' + obj.error); 
+				}
+				toggleUnlink($('#' + linkType + '_unlinkToggle'), linkType);              
+			}
       });
 	$.ajax();
 }
@@ -153,55 +175,49 @@ function downVoteToggle(turnOn) {
 }
 
 function updateVoteButtonLabels(newVote){
-    var downvoteLabel = $( "#downVote a" ).text();
-    var upvoteLabel = $( "#upVote a" ).text();
-    var bigScore = $( "#bigScore" ).text();
-    myVote = $('#bigScore').data('myvote');
+    var downvoteLabel = $( "#downVoteStat" ).text();
+    var upvoteLabel = $( "#upVoteStat" ).text();
+    var voteTotal = $( "#voteTotal" ).text();
+    myVote = $('#voteTotal').data('myvote');
     
     if (myVote == 0 && newVote == 1) {// UPVOTE
         var newVal = parseInt(upvoteLabel) + 1;
-        $( "#upVote a" ).text(newVal.toString());
-        $( "#bigScore" ).text(parseInt(bigScore) + 1);
-        $("#voteLabel").text("You agree");
+        $( "#upVoteStat" ).text(newVal.toString());
+        $( "#voteTotal" ).text(parseInt(voteTotal) + 1);
         upVoteToggle(true);
     } else if (myVote == 0 && newVote == -1) { // DOWNVOTE
         var newVal = parseInt(downvoteLabel) + 1;
-        $( "#downVote a" ).text(newVal.toString());
-        $( "#bigScore" ).text(parseInt(bigScore) - 1);
-        $("#voteLabel").text("You disagree");        
+        $( "#downVoteStat" ).text(newVal.toString());
+        $( "#voteTotal" ).text(parseInt(voteTotal) - 1);
         downVoteToggle(true);
     } else if (myVote == 1  &&  newVote == 0) { // CANCEL UPVOTE
         var newVal = parseInt(upvoteLabel) - 1;
-        $( "#upVote a" ).text(newVal.toString());
-        $( "#bigScore" ).text(parseInt(bigScore) - 1);
-        $("#voteLabel").text("You abstain");                
+        $( "#upVoteStat" ).text(newVal.toString());
+        $( "#voteTotal" ).text(parseInt(voteTotal) - 1);
         upVoteToggle(false);
     } else if (myVote == -1  &&  newVote == 0) { // CANCEL DOWNVOTE
         var newVal = parseInt(downvoteLabel) - 1;
-        $( "#downVote a" ).text(newVal.toString());
-        $( "#bigScore" ).text(parseInt(bigScore) + 1);
-        $("#voteLabel").text("You abstain");                
+        $( "#downVoteStat" ).text(newVal.toString());
+        $( "#voteTotal" ).text(parseInt(voteTotal) + 1);
         downVoteToggle(false);
     } else if (myVote == -1  &&  newVote == 1) { // DOWN TO UP
         var newVal = parseInt(downvoteLabel) - 1;
-        $( "#downVote a" ).text(newVal.toString());
+        $( "#downVoteStat" ).text(newVal.toString());
         var newVal = parseInt(upvoteLabel) + 1;
-        $( "#upVote a" ).text(newVal.toString());
-        $( "#bigScore" ).text(parseInt(bigScore) + 2);
-        $("#voteLabel").text("You agree");        
+        $( "#upVoteStat" ).text(newVal.toString());
+        $( "#voteTotal" ).text(parseInt(voteTotal) + 2);
         downVoteToggle(false);
         upVoteToggle(true);
     } else if (myVote == 1  &&  newVote == -1) {// UP TO DOWN
         var newVal = parseInt(downvoteLabel) + 1;
-        $( "#downVote a" ).text(newVal.toString());
+        $( "#downVoteStat" ).text(newVal.toString());
         var newVal = parseInt(upvoteLabel) - 1;
-        $( "#upVote a" ).text(newVal.toString());
-        $( "#bigScore" ).text(parseInt(bigScore) - 2);
-        $("#voteLabel").text("You disagree");                
+        $( "#upVoteStat" ).text(newVal.toString());
+        $( "#voteTotal" ).text(parseInt(voteTotal) - 2);
         upVoteToggle(false);
         downVoteToggle(true);
     }
-    $('#bigScore').data('myvote', newVote);
+    $('#voteTotal').data('myvote', newVote);
 }
 
 function upVote() {
@@ -210,7 +226,7 @@ function upVote() {
        global: false,
        type: "POST",
        data: {
-    		'vote': $('#bigScore').data('myvote') == 1 ? 0 : 1,
+    		'vote': $('#voteTotal').data('myvote') == 1 ? 0 : 1,
     		'pointURL': $('#pointArea').data('pointurl')
     		},
        success: function(data){
@@ -231,7 +247,7 @@ function downVote() {
         global: false,
         type: "POST",
         data: {
-    		'vote': $('#bigScore').data('myvote') == -1 ? 0 : -1,
+    		'vote': $('#voteTotal').data('myvote') == -1 ? 0 : -1,
     		'pointURL': $('#pointArea').data('pointurl')
     		},
         success: function(data){
@@ -271,13 +287,13 @@ function changeRibbon() {
 function updateRibbon(newRibbonValue, ribbonTotal) {
     $("#blueRibbon").data("ribbonvalue", newRibbonValue);
     if (newRibbonValue) {
-        $("#blueRibbon a").removeClass("notAwarded");   
-        $("#blueRibbon a").removeClass("hover");  
-        $("#blueRibbon a").addClass("awarded");                     
+        $("#blueRibbon").removeClass("notAwarded");   
+        $("#blueRibbon").removeClass("hover");  
+        $("#blueRibbon").addClass("awarded");                     
     } else {
-        $("#blueRibbon a").removeClass("hover");                
-        $("#blueRibbon a").removeClass("awarded");
-        $("#blueRibbon a").addClass("notAwarded");        
+        $("#blueRibbon").removeClass("hover");                
+        $("#blueRibbon").removeClass("awarded");
+        $("#blueRibbon").addClass("notAwarded");        
     }
     $("#ribbonTotal").text(ribbonTotal);
 }
@@ -355,6 +371,7 @@ function selectPoint(supportingPointURL, currentPointURL, linkType){
 		  obj = JSON.parse(data);
 		  if (obj.result == true) {
               pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
+			  updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  
 		  } else {
             if (obj.error) {
                 showAlert('<strong>Oops!</strong> There was an error: ' + obj.error);
@@ -440,6 +457,7 @@ function addPoint(linkType){
 			obj = JSON.parse(data);
 			if (obj.result == true) {
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
+  			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  				
                 stopSpinner();
     		    $("#pointDialog").modal('hide');
 			} else {
@@ -531,10 +549,6 @@ function setUpMenuAreas() {
     
 }
 
-function setCommentCount() {
-    numComments = $(".cmmnt").length;    
-    $('#commentCount').text(numComments + " comment" + (numComments == 1? "":"s"));
-}
 
 function insertComment(commentObj) {
     html = "<div class=\"row-fluid cmmnt level" + commentObj.level + "\">" +
@@ -552,7 +566,7 @@ function insertComment(commentObj) {
     
     $("[name=commentReply]").unbind("click", showReplyComment);    
     $("[name=commentReply]").on("click", showReplyComment);
-    setCommentCount();
+    setCommentCount(null);
 }
 
 function showReplyComment(event) {
@@ -640,6 +654,27 @@ function changeEditorsPick() {
     }
 }
 
+function viewPointHistory() {
+    $('#historyArea').html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
+	toggleTabbedArea('#leftColumn', this, "#historyArea");
+	$.ajax({
+		url: '/pointHistory',
+		type: 'GET',
+		data: { 'pointUrl': $('#pointArea').data('pointurl') },
+		success: function(data) {
+			$('#historyArea').empty();
+			$('#historyArea').html($.parseJSON(data));
+			makePointsCardsClickable();	
+		    $('#viewSupportingPoints').off('.ys').on('click.ys', function() {
+		        toggleTabbedArea('#leftColumn', this, "#supportingPointsArea");
+		    });    
+		},
+		error: function(data) {
+			$('#historyArea').empty();
+			showAlert('<strong>Oops!</strong> There was a problem loading the point history.  Please try again later.');
+		},
+	});
+}
 function activatePointArea() {    
     if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
@@ -685,7 +720,7 @@ function activatePointArea() {
         $('[name=commentReply]').click(showReplyComment);
         $('#saveCommentSubmit').click(saveComment);    
         $( "#deletePoint" ).button();
-                
+	    $('#viewPointHistory').click(viewPointHistory);		
     }    
     makePointsCardsClickable();	    
 
@@ -700,31 +735,9 @@ function activatePointArea() {
         }
     });
 
-    // Beginning state for the TABBED AREAS
-    $('.tabbedArea').hide(); $('#supportingPointsArea').show();
+    // Hide the history area and show the supporting points area
+    $('#leftColumn .tabbedArea').hide(); $('#supportingPointsArea').show();
 
-    $('#viewSupportingPoints').click(function() {
-        toggleTabbedArea(this, "#supportingPointsArea");
-    });
-    
-    $('#viewPointHistory').click(function() {
-    	$('#historyArea').html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
-    	toggleTabbedArea(this, "#historyArea");
-    	$.ajax({
-    		url: '/pointHistory',
-    		type: 'GET',
-    		data: { 'pointUrl': $('#pointArea').data('pointurl') },
-    		success: function(data) {
-    			$('#historyArea').empty();
-    			$('#historyArea').html($.parseJSON(data));
-    			makePointsCardsClickable();	                    
-    		},
-    		error: function(data) {
-    			$('#historyArea').empty();
-    			showAlert('<strong>Oops!</strong> There was a problem loading the point history.  Please try again later.');
-    		},
-    	});
-    });
 }
 
 function makeFeaturedPick() {

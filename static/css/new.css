@@ -3,8 +3,7 @@
 }
 
 body {
-	padding-top: 60px;
-	padding-bottom: 50px;
+	padding-top: 122px;
 }
 
 .title a:visited, .voteArea a:visited {
@@ -321,7 +320,7 @@ body {
 	color: #000;
 	font-size: 1.0625em;
 	line-height: 1.3125em;	
-	margin-bottom: 7px;	
+	margin-bottom: 12px;	
 }
 
 .pointCard .stat {
@@ -348,6 +347,7 @@ body {
 
 .pointCard .gauge {
 	position:relative;
+	margin-top: 3px;	
 }
 
 .pointCard .gaugeText {
@@ -393,7 +393,7 @@ body {
 	color: #6D6E70;
 	font-size: 0.75em;
 	line-height: 1.3125em;	
-	margin-bottom: 4px;	
+	margin-bottom: 8px;	
 }
 
 .pointSmall .smallStat {
@@ -457,9 +457,6 @@ body {
 	padding-left: 5px;
 }
 
-.mainPageColumn {
-	margin-top: 15px;
-}
 .columnHeading {
 	font-weight:bold;
 	font-size:1.25em;
@@ -467,6 +464,10 @@ body {
 	font-family:"nimbus-sans-condensed",sans-serif;
 	line-height: 20px;
 	
+}
+
+.bottomBorder {
+	border-bottom: 1px solid #d7d7d7;
 }
 
 .columnHeading button {
@@ -488,9 +489,7 @@ body {
 .columnHeading .tab {
     padding-left: 0;
     padding-right: .5em;
-}
-    
-
+}    
 
 .columnHeading button:hover {
     background-color: #00ADEE;
@@ -529,48 +528,35 @@ body {
 	line-height:100px;
 }
 
-.voteArea{
-	line-height:36px;
-	cursor:pointer;
-	background:center top no-repeat;
-}
-
-.whiteScoreText {
-	font-family:"nimbus-sans-condensed",sans-serif;
-	font-weight:bold;
-	font-size: 1.0625em;
-}
-
-#ribbonTotal {
+.pointAreaActions {
     font-family:"ff-meta-web-pro", sans-serif;
-	font-size: 1.5em;
-	height:45px;
-	line-height:45px;
-	padding-right:20px;
+	font-size: 0.875em;
+	font-color: #005E80;
 }
 
-
-#wellWritten {
-    font-family:"ff-meta-web-pro", sans-serif;	
+#scoreAndVotingSection a {
+	cursor:pointer;
 }
 
 #blueRibbon {
 	padding-left:15px;
 }
 
-#blueRibbon a {
-	display:block;
-	background-image: url('/static/img/blueribbon.png');
-    width: 30px;
-    height: 45px;
+#ribbonTotal {
+    width: 10px;
+    height: 15px;
+	padding-left:15px;
+	background-repeat: no-repeat;
+	background-position: 25% 50%;	
+	background-size: 11px 16px;
 }
 
-#blueRibbon a.awarded {
-    background-position: 0px center;
+.notAwarded #ribbonTotal {
+	background-image:url("/static/img/awardsIconSmall.png");	
 }
 
-#blueRibbon a.notAwarded {
-    background-position: -30px center;
+.awarded #ribbonTotal {
+	background-image:url("/static/img/blueribbon.png");	
 }
 
 #blueRibbon a:hover {
@@ -599,28 +585,21 @@ body {
 .dropdown-menu > li > a {
 	color:#000000;
 }
-/*
-.upArrow{
-	background-image:url('/static/img/inverse_up_arrow.png');
-	width: 47px;
-}
-
-.downArrow{
-	background-image:url('/static/img/inverse_down_arrow.png');
-	width: 47px;
-}
-*/
 
 .inactiveVote, .inactiveVote a {
-	color:#B9BBBD;
+	color:#00adee;
 }
 
-.redVote, .redVote a {
+.redVote, .redVote:hover, .redVote:focus {
 	color:#FF000B;
 }
 
-.greenVote, .greenVote a {
+.greenVote, .greenVote:hover, .greenVote:focus {
 	color:#0CCF00;
+}
+
+.linkBlue {
+	border-top: 4px solid #00adee;
 }
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
@@ -703,32 +682,25 @@ h1.mission {
     font-weight: normal;
 }
 
-#mainContainer {
-	padding-top: 20px;
-}
-
 #pointArea {
 	position: relative;
 	margin-left:0px;
+	padding-left:10px;
+	padding-right: 10px;
+	padding-top: 10px;
 }
 
 #timestampAndEditLink {
-	bottom: 30px;
-	position: absolute;
+	margin-bottom: 10px;
 }
 
 #viewPointHistory {
 	cursor: pointer;
 }
 
-#sharing {
-  padding-top: 7px;
-}
-
 .mainPointLastEdited {
-	font-size:0.7em;
-	font-style:italic;
-	color: #8c8c8c;
+	font-size:0.75em;
+	color: #6D6E70;
 	float: left;
 	padding-top:10px;
 }
@@ -805,44 +777,27 @@ img.smallDisplay {
 	float: right;
 }
 
-button#editPoint {
-	position: absolute;
-	bottom: 0px;
-	background-image: url('/static/img/pencil_icon.png');
-	padding-right: 25px;
-	height: 20px;
+.mainPointTitle {
+	margin-top:0px;
 }
 
-button#addImage {
-	background-image: url('/static/img/paper_clip_icon.png');
-	padding-right: 25px;
-	height: 20px;
-	margin-left: 10%;
+#stats li {
+	padding-left: 5px;
 }
 
-button#changeImage {
+a#editPoint {
 	float: right;
-	background-image: url('/static/img/paper_clip_icon.png');
+	background-image: url('/static/img/pencil_icon.png');
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: 95% 0%;
 	padding-right: 25px;
-	height: 20px;
-}
+	height: 20px;	
+}	
 
-button#viewSupportingPoints {
-	background-image: url('/static/img/flow_chart_icon.png');
-	padding-right: 29px;
-	height: 27px;
-}
-
-button#viewPointHistory {
-	background-image: url('/static/img/counter_clockwise_icon.png');
-	padding-right: 35px;
-	height: 27px;
-}
-
-button#deletePoint {
-	background-image: url('/static/img/trash_can_icon.png');
-	padding-right: 25px;
-	height: 20px;
+a#editPoint:hover {
+	color: #00ADEE;
+	background-position: 95% 100%;
 }
 
 button#supporting_addPointWhenZero, button#counter_addPointWhenZero {
@@ -902,6 +857,14 @@ button#unlinkToggle {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 1em;
+}
+
+#historyArea {
+	margin-top:15px;
+}
+
+#viewSupportingPoints {
+	cursor:pointer;
 }
 
 .historyLastEdited {	
@@ -1397,11 +1360,13 @@ fieldset { padding:0; border:0; margin-top:25px;}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    COMMENTS AREA OF POINT PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+
 #commentCount {
     background-image: url('/static/img/speech_bubble_icon.png');
-    padding-top:5px;
-    padding-left:35px;
     background-repeat: no-repeat;
+    background-size: 28px Auto; 
+	padding-top:5px;
+	padding-left:35px;
 }
 
 #addComment {
@@ -1494,3 +1459,19 @@ a[name="commentReply"] {
     width:60%;  
 }
 
+
+#chatTextbox {
+	margin-top: 5px;
+    width:  97%;   
+    resize: none;  	
+}
+
+.chatRoom {
+    position     : fixed;
+    top          : 60px;
+    right        : 0px;
+    background   : #EEE;
+    padding      : 20px;
+    border       : solid #000;
+    border-width : 0 0 2px 2px;
+}	

@@ -59,6 +59,7 @@ class Notification(ndb.Model):
         path = os.path.join(constants.ROOT, 'templates/notificationMenu.html')
         notificationHTML = template.render(path, { 'notification': self})
         message = {
+                    'type': 'notification',
                     'notificationHTML': notificationHTML,
                     'timestamp': self.raisedDateSecs
                    }

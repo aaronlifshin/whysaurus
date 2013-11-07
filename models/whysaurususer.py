@@ -13,6 +13,7 @@ from google.appengine.api import mail
 from google.appengine.api import channel
 
 from models.notification import Notification
+from models.chatUser import ChatUser
 
 from whysaurusexception import WhysaurusException
 from uservote import UserVote
@@ -65,6 +66,13 @@ class WhysaurusUser(auth_models.User):
             self._moreNotificationsExist = \
                 Notification.getActiveNotificationsForUser(self.key)
         return self._notifications
+
+    # A small subset of user stuff to store the relevant information for chat
+    def makeChatUser(self):
+        return ChatUser(parent = self.key,
+                        token = self.token,
+                        tokenExpires=self.tokenExpires,
+                        )
 
     def clearNotifications(self, latest, earliest=None):
         Notification.clearNotifications(self.key, latest, earliest)

@@ -3,7 +3,7 @@
         <img src="/static/img/{% if linkType == 'supporting'%}content_arrow_why.png{% else %}{% if linkType == 'counter' %}content_arrow_whynot.png{% endif %}{% endif %}"/></div>
    </div>
   
-     <div class="row-fluid boxedElement {% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
+     <div class="row-fluid {% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
         <div id="{{linkType}}_numberOfPoints" class="row columnHeading pagination-centered">
           {% if linkedPoints %}
             {{ linkedPoints|length }} {{linkType|title}} Point{% if linkedPoints|length > 1 %}s{% endif %}

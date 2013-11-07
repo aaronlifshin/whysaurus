@@ -50,9 +50,10 @@ class AddSupportingPoint(AuthHandler):
                     'result': True,
                     'version': newPoint.version,
                     'author': newPoint.authorName,
-                    'dateEdited': newPoint.dateEdited.strftime("%Y-%m-%d %H: %M: %S %p"),
+                    'dateEdited': newPoint.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),
                     'numLinkPoints': newPoint.linkCount(linkType),
-                    'newLinkPoint':newLinkPointHTML
+                    'newLinkPoint':newLinkPointHTML,
+                    'authorURL': self.current_user.url,
                 }
             resultJSON = json.dumps(jsonOutput)
             self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

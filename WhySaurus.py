@@ -11,7 +11,7 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
-    NotificationHandler
+    NotificationHandler, Chat
     
     
 
@@ -88,6 +88,13 @@ routes = [
     Route('/job/DBcheckPoint/<pointURL>', 
           'WhySaurus.DBIntegrityCheck:checkDBPoint', 
           name='checkDBPoint'),
+    Route('/enterChatRoom', handler='WhySaurus.Chat:enterChatRoom', 
+          name='enterChatRoom'),
+    Route('/leaveChatRoom', handler='WhySaurus.Chat:leaveChatRoom', 
+          name='leaveChatRoom'),
+    Route('/send', handler='WhySaurus.Chat:send', name='send'),
+    Route('/broadcastChatroom', handler='WhySaurus.Chat:broadcastChatroom', 
+          name='broadcastChatroom'),    
     Route('/switchArea', handler='WhySaurus.Profile:setArea', name='switchArea'),
     Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),
     Route('/logout', handler='WhySaurus.AuthHandler:logout', name='logout'),

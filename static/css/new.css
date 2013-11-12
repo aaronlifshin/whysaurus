@@ -296,6 +296,8 @@ body {
   	word-wrap: break-word;
 	cursor:pointer;
 	padding:5px;
+	margin-bottom: -1px;
+	
 }
 
 [id$=_pointList] .pointCard {
@@ -380,6 +382,7 @@ body {
     word-wrap: break-word;
     cursor:pointer;
     padding:5px;
+	margin-bottom:-1px;
 }
 
 .pointListPoint {
@@ -457,6 +460,11 @@ body {
 	padding-left: 5px;
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   MAIN PAGE COLUMNS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
 .columnHeading {
 	font-weight:bold;
 	font-size:1.25em;
@@ -468,6 +476,10 @@ body {
 
 .bottomBorder {
 	border-bottom: 1px solid #d7d7d7;
+}
+
+#mainPageMainArea {
+	margin-top:24px;
 }
 
 .columnHeading button {
@@ -538,6 +550,12 @@ body {
 	cursor:pointer;
 }
 
+@media (max-width: 1200px) {
+	#scoreAndVotingSection .caret {
+		border:none;
+	}
+}
+
 #blueRibbon {
 	padding-left:15px;
 }
@@ -549,6 +567,7 @@ body {
 	background-repeat: no-repeat;
 	background-position: 25% 50%;	
 	background-size: 11px 16px;
+	color:#6d6e70;
 }
 
 .notAwarded #ribbonTotal {
@@ -566,7 +585,7 @@ body {
     /* background-position:-60px center; */
 }
 
-.upTreeMenus {
+.borderButton {
 	font-family: "ff-meta-web-pro-condensed";
     font-weight: 700;
     text-transform: uppercase;
@@ -574,11 +593,11 @@ body {
     color: #707070;
     background:none;
     background-color:#FFFFFF;
-    border: 1px solid;
+    border: 1px solid #B9BBBD;
     border-radius: 2px;
 }
 
-.upTreeMenus:hover {
+.borderButton:hover {
     background-color:#E0FFFE;	
 }
 
@@ -592,14 +611,29 @@ body {
 
 .redVote, .redVote:hover, .redVote:focus {
 	color:#FF000B;
+	font-weight:bold;	
 }
 
 .greenVote, .greenVote:hover, .greenVote:focus {
 	color:#0CCF00;
+	font-weight:bold;
 }
 
 .linkBlue {
 	border-top: 4px solid #00adee;
+}
+
+#supporting_menuArea, #counter_menuArea  {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B9BBBD;
+	cursor: pointer;
+	margin-bottom: -1px;
+	padding-top:10px;
+}
+
+#supporting_pointActions, #counter_pointActions {
+	display:inline-block;
 }
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
@@ -607,7 +641,6 @@ body {
 }
 
 #supporting_numberOfPoints, #counter_numberOfPoints {
-	margin-top: 1em;
 	margin-bottom: 1em;
 }
 
@@ -651,6 +684,7 @@ a.navWhy:hover {
 	right: 0;
 	width: 150px;
 	height: 50%;
+	min-height:30px;
 	background: #FF003F;
 }
 
@@ -667,8 +701,12 @@ a.navWhy:hover {
 	color:#6D6E70;
 	font-family: "ff-meta-web-pro", sans-serif;
     font-size: 0.875em;
-    line-height: 120%;	
 }
+
+.mainPointContent p {
+    line-height: 130%;	
+}
+
 
 h1.condensed {
 	line-height: 100%;
@@ -691,7 +729,7 @@ h1.mission {
 }
 
 #timestampAndEditLink {
-	margin-bottom: 10px;
+	margin-bottom: 12px;
 }
 
 #viewPointHistory {
@@ -777,8 +815,9 @@ img.smallDisplay {
 	float: right;
 }
 
-.mainPointTitle {
+.mainPointTitle h1 {
 	margin-top:0px;
+	line-height:120%;
 }
 
 #stats li {
@@ -791,7 +830,7 @@ a#editPoint {
 	background-color: transparent;
 	background-repeat: no-repeat;
 	background-position: 95% 0%;
-	padding-right: 25px;
+	padding-right: 19px;
 	height: 20px;	
 }	
 
@@ -821,23 +860,27 @@ button#counter_addPointWhenZero span.plus_icon_spacer {
 }
 
 button#supporting_addPointWhenNonZero,
-button#counter_addPointWhenNonZero {
-	background-image: url('/static/img/plus_icon.png');
-	padding-right: 30px;
-	height: 20px;
+button#counter_addPointWhenNonZero {	
+	margin-left:20px;
 }
 
-button#unlinkToggle {
-	background-image: url('/static/img/broken_chain_link_icon.png');
-	height: 20px;
-	padding-right: 33px;
+#supporting_unlinkToggle, #counter_unlinkToggle {
+	margin-left: 5%;
+	height:34px;
 }
+
+#supporting_pointActions, #counter_pointActions {
+	margin-bottom:10px;
+}
+
 
 #nonzeroSupportingPoints a.navWhy {
 	position: static;
 }
 
-
+.redBorder {
+	border-color: #FF003F;
+}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Bootstrap Alerts style refinemenes area
    +++++++++++++++++++++++++++++++++++++++++++++++ */

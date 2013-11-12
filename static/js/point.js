@@ -9,10 +9,12 @@ function toggleUnlink(elem, linkType) {
     unlinkVisible = $(elem).text() == 'Cancel';    
 	if ( unlinkVisible ) {
 	    // Hiding the unlink controls
-	    $(elem).text('Unlink');
+	    $(elem).text('Unlink a Point');
 	    $(".unlinkbutton", $('#' + linkType + '_pointList')).remove();
         $( ".pointCard" ).unbind('mouseenter');
         $( ".pointCard" ).unbind('mouseleave');    
+        $( ".pointCard" ).removeClass('redBorder');    
+		
         makePointsCardsClickable();
             	    
 	} else {	    
@@ -29,6 +31,7 @@ function toggleUnlink(elem, linkType) {
                 $(this).find('.unlinkbutton').remove();
             }
         );
+		pointCards.addClass('redBorder');
 	    pointCards.unbind('click');
 	    $(elem).text('Cancel');
 	}
@@ -656,7 +659,8 @@ function changeEditorsPick() {
 
 function viewPointHistory() {
     $('#historyArea').html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
-	toggleTabbedArea('#leftColumn', this, "#historyArea");
+	$('#leftColumn .tabbedArea').hide();
+	$('#leftColumn #historyArea').show();
 	$.ajax({
 		url: '/pointHistory',
 		type: 'GET',
@@ -666,7 +670,8 @@ function viewPointHistory() {
 			$('#historyArea').html($.parseJSON(data));
 			makePointsCardsClickable();	
 		    $('#viewSupportingPoints').off('.ys').on('click.ys', function() {
-		        toggleTabbedArea('#leftColumn', this, "#supportingPointsArea");
+				$('#leftColumn #supportingPointsArea').show();
+				$('#leftColumn #historyArea').hide();			
 		    });    
 		},
 		error: function(data) {

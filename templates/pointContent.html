@@ -1,6 +1,6 @@
 <div id="leftColumnPoint" class="row-fluid">
 	<div class="dropdown pull-left">
-	    <button class="dropdown-toggle upTreeMenus {% if not supportedPoints %} disabled {% endif %}" 
+	    <button class="dropdown-toggle borderButton {% if not supportedPoints %} disabled {% endif %}" 
 	    id="supportedByMeMenu" data-toggle="dropdown">
 	     {% if supportedPoints %}
 	        Supporting {{ supportedPoints|length }} point{% if supportedPoints|length != 1 %}s{% endif %}    
@@ -18,7 +18,7 @@
 	      </ul>
 	</div>
 	<div class="dropdown pull-left">
-		<button class="dropdown-toggle upTreeMenus {% if not counteredPoints %} disabled {% endif %} "
+		<button class="dropdown-toggle borderButton {% if not counteredPoints %} disabled {% endif %} "
 		id="counteredByMeToggle" data-toggle="dropdown">
 		{% if counteredPoints %}
 		  Countering {{ counteredPoints|length }} point{% if counteredPoints|length != 1 %}s{% endif %}
@@ -35,6 +35,28 @@
 		    {% endfor %}
 		</ul>
 	</div>
+	{% if user.admin %}		   
+	     <div class="dropdown pull-right">             
+	       <button class="dropdown-toggle borderButton" id="pointAdminMenu" data-toggle="dropdown">
+	         Admin <span class="caret	"></span> 
+	       </button>
+	       <ul class="dropdown-menu" role="menu" aria-labelledby="pointAdminMenu">
+	         <li><a tabindex="-1"
+	         alt="Delete Point"
+	         id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">Delete</a></li>
+	         <li><a href='/job/cleanDeadBacklinks/{{point.url}}'>Root Backlink Clean</a></li>
+	         <li><a href='/job/reconcileVersionArrays/{{point.url}}'>Version Array Fix</a></li>
+	         <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>
+	         <li><a href='/job/DBcheckPoint/{{point.url}}'>DB Check This Point</a></li>                    
+	         <li><a id='changeEditorsPickTrigger'>
+	             Editors Pick: 
+				 	{{pointRoot.editorsPick}}{%if pointRoot.editorsPick %} - {{pointRoot.editorsPickSort}} {% endif %}
+	             </a>
+	         </li>       
+	         <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                          
+	       </ul>
+	     </div>				
+	{% endif %}  
     
 <div id="pointArea" class="boxedElement span12x" data-pointurl="{{point.url}}">
 	<div class="row-fluid">            
@@ -64,12 +86,14 @@
 	</div>
 	  
 	<div id="scoreAndVotingSection" class="row-fluid pointAreaActions">
-		<div class="span6">		    			   
+		<div class="span4">		    			   
 			<a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > AGREE</a>
 			or
 			<a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
-			DISAGREE</a> <img src="/static/img/agreesIconBig.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
-
+			DISAGREE</a> <img src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
+		</div>
+			
+		<div class="span4">		    			   
 			<a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %} awarded {% else %} notAwarded {% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>
 		</div>
@@ -106,28 +130,7 @@
 	        <a id="editPoint">Edit </a>
 		</div>		
 	
-		{% if user.admin %}		   
-		     <div class="span2 dropdown pull-right">             
-		       <a class="dropdown-toggle" id="pointAdminMenu" data-toggle="dropdown">
-		         Admin
-		       </a><span class="caret linkBlue"></span> 
-		       <ul class="dropdown-menu" role="menu" aria-labelledby="pointAdminMenu">
-		         <li><a tabindex="-1"
-		         alt="Delete Point"
-		         id="deletePoint" onClick="javascript:deletePoint('{{point.url}}');">Delete</a></li>
-		         <li><a href='/job/cleanDeadBacklinks/{{point.url}}'>Root Backlink Clean</a></li>
-		         <li><a href='/job/reconcileVersionArrays/{{point.url}}'>Version Array Fix</a></li>
-		         <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>
-		         <li><a href='/job/DBcheckPoint/{{point.url}}'>DB Check This Point</a></li>                    
-		         <li><a id='changeEditorsPickTrigger'>
-		             Editors Pick: 
-					 	{{pointRoot.editorsPick}}{%if pointRoot.editorsPick %} - {{pointRoot.editorsPickSort}} {% endif %}
-		             </a>
-		         </li>       
-		         <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                          
-		       </ul>
-		     </div>				
-		{% endif %}  
+		
 	  		
 
 	</div>  		                

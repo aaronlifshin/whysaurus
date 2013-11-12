@@ -378,7 +378,7 @@ function navigateHistory(event) {
 }
 
 function loadPoint(url, addToHistory) {    
-	loadPointContent(url, newState);
+	loadPointContent(url, addToHistory);
 	loadPointComments(url);  
 }
 
@@ -976,7 +976,7 @@ function activateNotificationMenuItems() {
         if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             window.location.href=$(this).data('refpoint');        
         } else {
-            loadPoint($(this).data('pointurl'));
+            loadPoint($(this).data('pointurl'), true);
         }
     });
 }

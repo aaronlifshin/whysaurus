@@ -1,4 +1,4 @@
-<div id="leftColumnPoint" class="row-fluid">
+<div id="leftColumnPoint" >
 	<div class="dropdown pull-left">
 	    <button class="dropdown-toggle borderButton {% if not supportedPoints %} disabled {% endif %}" 
 	    id="supportedByMeMenu" data-toggle="dropdown">
@@ -58,43 +58,39 @@
 	     </div>				
 	{% endif %}  
     
-<div id="pointArea" class="boxedElement span12x" data-pointurl="{{point.url}}">
-	<div class="row-fluid">            
-		<div id="pointSummary" class="span7">
-		          <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
-				  <div class="mainPointContent editable">{{ point.content|safe }}</div>
-		          <!-- Hacky way to get imageurl into the edit dialog. :/ -->
-		          <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
-		          {% include 'sources.html' %}
+<div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}">
+	<div id="pointSummary" class = "span5">
+	          <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
+			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
+	          <!-- Hacky way to get imageurl into the edit dialog. :/ -->
+	          <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
+	          {% include 'sources.html' %}
 
-		</div>    
-		{% if point.imageURL and point.imageURL.strip %}	
-		<!-- update insertImage in point.js if editing this HTML -->		  
-		    <div id="mainPointImageArea" class="span3">
-	            <img class="pointDisplay" src="{{ point.fullPointImage }}" />
-	            <div class="mainPointImageCaption">{{point.imageDescription}}</div>
-	            <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
-		    </div>
-		{% endif %}			
-	</div> <!-- MAIN CONTENT AND IMAGE -->
+	</div>    
+	{% if point.imageURL and point.imageURL.strip %}	
+	<!-- update insertImage in point.js if editing this HTML -->		  
+	    <div id="mainPointImageArea" class="span3" >
+            <img class="pointDisplay" src="{{ point.fullPointImage }}" />
+            <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+            <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+	    </div>
+	{% endif %}			
   
-	<div id="timestampAndEditLink" class="row-fluid">			  
+	<div id="timestampAndEditLink" class="span8">			  
 		<div class="mainPointLastEdited">
 		  Most Recent Contributor: <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a> on {{point.PSTdateEdited}} 
 		  <a id="viewPointHistory">View History</a>
 		</div>
 	</div>
 	  
-	<div id="scoreAndVotingSection" class="row-fluid pointAreaActions">
-		<div class="span4">		    			   
+	<div id="scoreAndVotingSection" class="pointAreaActions span8">
+		<div class="span5">		    			   
 			<a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > AGREE</a>
 			or
 			<a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
 			DISAGREE</a> <img src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
-		</div>
-			
-		<div class="span4">		    			   
-			<a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %} awarded {% else %} notAwarded {% endif %}">Is this well written?
+	    			   
+			<a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>
 		</div>
 	
@@ -127,7 +123,7 @@
 		</div>	
 	  
 		<div class="span1 pull-right">
-	        <a id="editPoint">Edit </a>
+	        <a id="editPoint" >Edit </a>
 		</div>		
 	
 		
@@ -138,8 +134,8 @@
 </div> <!-- id="leftColumnPoint" class="tabbedArea"-->
 
 <div id="supportingPointsArea" class="tabbedArea">
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="span4">
           {% with recentlyViewedPoints as recentlyViewedPoints  %}
             {% with supportingPoints as linkedPoints %}
             {% with "supporting" as linkType %}
@@ -147,7 +143,7 @@
             {% endwith %}
             {% endwith %}
         </div>
-        <div class="span6">
+        <div class="span4">
             {% with counterPoints as linkedPoints %}
             {% with "counter" as linkType %}
                 {% include 'linkPointsList.html' %}
@@ -160,5 +156,5 @@
 </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 
 
-<div id="historyArea" class="row-fluid tabbedArea"> </div>
+<div id="historyArea" class="tabbedArea"> </div>
 

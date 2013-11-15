@@ -10,7 +10,7 @@ function toggleUnlink(elem, linkType) {
 	if ( unlinkVisible ) {
 	    // Hiding the unlink controls
 	    $(elem).text('Unlink a Point');
-	    $(".unlinkbutton", $('#' + linkType + '_pointList')).remove();
+	    $(".unlinkbutton", $('#' + linkType + '_nonzeroPoints')).remove();
         $( ".pointCard" ).unbind('mouseenter');
         $( ".pointCard" ).unbind('mouseleave');    
         $( ".pointCard" ).removeClass('redBorder');    
@@ -19,7 +19,7 @@ function toggleUnlink(elem, linkType) {
             	    
 	} else {	    
 	    // Find all the point cards underneath my link type
-	    pointCards = $('.pointCard', $('#' + linkType + '_pointList'))	    
+	    pointCards = $('.pointCard', $('#' + linkType + '_nonzeroPoints'))	    
 	    // Put the element on them each
 	    pointCards.hover(
             function() {
@@ -139,8 +139,9 @@ function pointUnlink(elem, linkType) {
 			success: function(data){
 				obj = JSON.parse(data);
 				if (obj.result == true) {
-					pointCard.remove();
-					if ($('.pointCard', $('#' + linkType + '_pointList')).length == 0 ) {
+					// remove the a link containing the point card
+					pointCard.parent().remove();
+					if ($('.pointCard', $('#' + linkType + '_nonzeroPoints')).length == 0 ) {
 						$("#" + linkType + "_zeroPoints").show();
 						$("#" + linkType + "_nonzeroPoints").hide();
 						$("[name=" + linkType + "_linkPoint]").button();
@@ -393,7 +394,7 @@ function selectPoint(supportingPointURL, currentPointURL, linkType){
 }
 
 function setPointListHeader(linkType) {
-    numLinkPoints = $("#" + linkType + "_pointList").children().length - 1;
+	numLinkPoints = $("#" + linkType + "_nonzeroPoints").children().length - 1;
     if (numLinkPoints == 0) {
         header = "Zero " + linkType.capitalize() + " Points";
     } else {
@@ -403,15 +404,16 @@ function setPointListHeader(linkType) {
 }
 
 function pointListAppend(linkType, pointHTML, numLinkPoints) {
+
+    parent = $("#" + linkType + "_nonzeroPoints");
+    parent.append($.parseJSON(pointHTML));
+    setPointListHeader(linkType);	
+    makePointsCardsClickable();	 
     if ($("[id^=" + linkType +"Point_]").length == 0 ) {
       $("#" + linkType + "_zeroPoints").hide();
       $("#" + linkType + "_nonzeroPoints").show();
     }
-
-    parent = $("#" + linkType + "_pointList");
-    parent.append($.parseJSON(pointHTML));
-    setPointListHeader(linkType);
-    makePointsCardsClickable();	    
+	   
     var newElem = parent.find('>:last-child');
     var position = newElem.offset();
     $("html, body").animate({ scrollTop: position.top - newElem.height()}, "slow");
@@ -723,7 +725,7 @@ function activatePointArea() {
         });
 
         $('[name=commentReply]').click(showReplyComment);
-        $('#saveCommentSubmit').click(saveComment);    
+        $('#saveCommentSubmit').off('.ys').on('click.ys', saveComment);    
         $( "#deletePoint" ).button();
 	    $('#viewPointHistory').click(viewPointHistory);		
     }    

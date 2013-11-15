@@ -50,6 +50,10 @@ class WhysaurusUser(auth_models.User):
         return PST.convert(self.updated)
     
     @property
+    def PSTlastlogin(self):
+        return PST.convert(self.lastLogin)
+        
+    @property
     def notifications(self):
         return self._notifications
     

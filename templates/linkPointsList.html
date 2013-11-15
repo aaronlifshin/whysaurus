@@ -4,105 +4,107 @@
 	</div>
 </div>
   
-<div class="row-fluid {% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
-	<div class="span12" id="{{linkType}}_pointList">			
-		<div id="{{linkType}}_menuArea"  class="grayBox">
-			<div id="{{linkType}}_numberOfPoints" class="SummaryBig_Title pagination-centered">
-				{% if linkedPoints %}
-					{{ linkedPoints|length }} {{linkType|title}} Point{% if linkedPoints|length > 1 %}s{% endif %}
-				{% else %}
-					0 {{linkType|title}} Points
-				{% endif %}
-			</div>
-			<div id="{{linkType}}_pointActions" class="pagination-centered row-fluid">
-				<div class="dropdown pull-left">
-					<button id="{{linkType}}_addPointWhenNonZero" name="{{linkType}}_addPointWhenNonZero"
-						data-toggle="dropdown"
-						class="btn dropdown-toggle">
-						Add a {{linkType|title}} point
-					</button>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenNonZero">
-						<li>
-							<a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenNonZero"
-								name="createLinked" data-linktype="{{linkType}}"
-								alt="Make a New {{linkType}} Point"
-								>Make a new point
-							</a>
-					  	</li>
-						<li>
-							<a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenNonZero" 
-								name="{{linkType}}_searchForPoint" alt="Search for a {{linkType|title}} Point"
-								data-linktype="{{linkType}}"                    
-								>Search for an existing point
-							</a>
-						</li>
-						{% if recentlyViewedPoints %}
-							<li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed point</a>
-								<ul class="dropdown-menu">
-								  {% for RVpoint in recentlyViewedPoints %}
-								      <li><a tabindex="-1" aria-labelledby="add{{linkType}}PointWhenNonZero" 
-								      name="selectPoint_menu_{{RVpoint.url}}" 
-								      alt="Use {{ RVpoint.title|escape }}" 
-								      data-pointurl="{{RVpoint.url}}"
-								      data-linktype="{{linkType}}"
-								      >{{RVpoint.title|escape}}</a></li>                                        
-								  {% endfor %}
-								</ul>
-							</li>
-						{% else %}
-						  <li class="dropdown-submenu disabled"><a tabindex="-1" >
-							  Use a Recently viewed point
-						  </a>                             
-						{% endif %}                              
-					</ul>				
-				</div>
-				<button id="{{linkType}}_unlinkToggle" class="Heading_GreyMid borderButton pull-left" type="submit">Unlink a Point</button>
-				
-			</div>
+<div class="{% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
+	<div id="{{linkType}}_menuArea"  class="pointColumnMenuArea">
+		<div id="{{linkType}}_numberOfPoints" class="SummaryBig_Title pagination-centered">
+			{% if linkedPoints %}
+				{{ linkedPoints|length }} {{linkType|title}} Point{% if linkedPoints|length > 1 %}s{% endif %}
+			{% else %}
+				0 {{linkType|title}} Points
+			{% endif %}
 		</div>
-		{% if linkedPoints %}            
-			{% for point in linkedPoints %}
-			    {% include 'pointBox.html' %}            
-			{% endfor %}
-		{% endif %}          
+		<div id="{{linkType}}_pointActions" class="row-fluid">
+			<div class="dropdown span6">
+				<button id="{{linkType}}_addPointWhenNonZero" name="{{linkType}}_addPointWhenNonZero"
+					data-toggle="dropdown"
+					class="btn dropdown-toggle">
+					Add a {{linkType|title}} point
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenNonZero">
+					<li>
+						<a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenNonZero"
+							name="createLinked" data-linktype="{{linkType}}"
+							alt="Make a New {{linkType}} Point"
+							>Make a new point
+						</a>
+				  	</li>
+					<li>
+						<a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenNonZero" 
+							name="{{linkType}}_searchForPoint" alt="Search for a {{linkType|title}} Point"
+							data-linktype="{{linkType}}"                    
+							>Search for an existing point
+						</a>
+					</li>
+					{% if recentlyViewedPoints %}
+						<li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed point</a>
+							<ul class="dropdown-menu">
+							  {% for RVpoint in recentlyViewedPoints %}
+							      <li><a tabindex="-1" aria-labelledby="add{{linkType}}PointWhenNonZero" 
+							      name="selectPoint_menu_{{RVpoint.url}}" 
+							      alt="Use {{ RVpoint.title|escape }}" 
+							      data-pointurl="{{RVpoint.url}}"
+							      data-linktype="{{linkType}}"
+							      >{{RVpoint.title|escape}}</a></li>                                        
+							  {% endfor %}
+							</ul>
+						</li>
+					{% else %}
+					  <li class="dropdown-submenu disabled"><a tabindex="-1" >
+						  Use a Recently viewed point
+					  </a>                             
+					{% endif %}                              
+				</ul>				
+			</div>
+			<button id="{{linkType}}_unlinkToggle" class="Heading_GreyMid borderButton span5" type="submit">Unlink a Point</button>	
+		</div>
 	</div>
+	{% if linkedPoints %}            
+		{% for point in linkedPoints %}
+		    {% include 'pointBox.html' %}            
+		{% endfor %}
+	{% endif %}          
 </div>	
 <!-- zero point areas are below here.  These are always present, and shown if the last point is unlinked -->
-<div id="{{linkType}}_zeroPoints" class="{% if linkedPoints %}row hide{%else%}row{% endif %}">
-<div class="boxedElement pagination-centered">
- <div id="{{linkType}}_zeroPointsText" class="row">Zero {{linkType|title}} Points</div>
- <div class="dropdown row" style="height:50px">
-    <button name="{{linkType}}_linkPoint" class="mainPointButton pagination-centered dropdown-toggle" 
-    id="{{linkType}}_addPointWhenZero" data-toggle="dropdown">
-        add<span class="plus_icon_spacer"></span> one
-    </button>                    
-    <ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenZero">
-      <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
-        name="createLinked" data-linktype="{{linkType}}" alt="Make a New {{linkType|title}} Point"
-        >Make a new point</a></li>
-      <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
-        name="{{linkType}}_searchForPoint" alt="Search for a {{linkType|title}} Point"
-        data-linktype="{{linkType}}"                         
-        >Search for an existing point</a>
-      </li>
-      {% if recentlyViewedPoints %}
-        <li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed point</a>
-          <ul class="dropdown-menu">
-            {% for RVpoint in recentlyViewedPoints %}
-                <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
-                name="selectPoint_menu_{{RVpoint.url}}" 
-                alt="Use {{ RVpoint.title|escape }}" 
-                data-pointurl="{{RVpoint.url}}"
-                data-linktype="{{linkType}}"
-                >{{RVpoint.title|escape}}</a></li>                                        
-            {% endfor %}
-          </ul>
-        </li>
-      {% else %}
-        <li class="dropdown-submenu disabled"><a tabindex="-1" >Use a Recently viewed point</a>                              
-      {% endif %}                              
-    </ul>
- </div>
+<div id="{{linkType}}_zeroPoints" class="{% if linkedPoints %}hide{%else%}{% endif %}">
+<div class="pointColumnMenuArea">
+	<div id="{{linkType}}_numberOfPoints" class="SummaryBig_Title pagination-centered">
+		Zero {{linkType|title}} Points
+	</div>
+	<div id="{{linkType}}_pointActionsWhenZero" class="row-fluid">
+		<div class="dropdown">
+		    <button name="{{linkType}}_linkPoint" class="btn dropdown-toggle span6 offset3" 
+		    id="{{linkType}}_addPointWhenZero" data-toggle="dropdown">
+				Add a {{linkType|title}} point
+		    </button>                    
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenZero">
+		      <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
+		        name="createLinked" data-linktype="{{linkType}}" alt="Make a New {{linkType|title}} Point"
+		        >Make a new point</a></li>
+		      <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
+		        name="{{linkType}}_searchForPoint" alt="Search for a {{linkType|title}} Point"
+		        data-linktype="{{linkType}}"                         
+		        >Search for an existing point</a>
+		      </li>
+		      {% if recentlyViewedPoints %}
+		        <li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed point</a>
+		          <ul class="dropdown-menu">
+		            {% for RVpoint in recentlyViewedPoints %}
+		                <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
+		                name="selectPoint_menu_{{RVpoint.url}}" 
+		                alt="Use {{ RVpoint.title|escape }}" 
+		                data-pointurl="{{RVpoint.url}}"
+		                data-linktype="{{linkType}}"
+		                >{{RVpoint.title|escape}}</a></li>                                        
+		            {% endfor %}
+		          </ul>
+		        </li>
+		      {% else %}
+		        <li class="dropdown-submenu disabled"><a tabindex="-1" >Use a Recently viewed point</a>                             
+		      {% endif %}                              
+		    </ul>			
+		</div>
+	</div>
+	<!-- 
     <div id="addEvidencePromptText" class="pagination-centered row">
         {% if linkType == "supporting" %}
             If this point is true, add evidence to support it.
@@ -110,5 +112,6 @@
             If this point is false, add points to counter it.          
         {% endif %}
     </div>
+	-->
 </div>
 </div>

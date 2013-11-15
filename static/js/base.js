@@ -42,7 +42,7 @@ function startSpinnerOnButton(buttonID) {
 
 function stopSpinnerOnButton(buttonID, clickHandler) {
    $("#spinnerImage").remove();
-   $(buttonID).click( clickHandler );        
+   $(buttonID).off(".ys").on("click.ys", clickHandler );        
    $(buttonID).show();
 }
    

@@ -2,6 +2,8 @@
     margin: 0 0 0 0 ;
 }
 
+.center { float: none; margin-left: auto; margin-right: auto; }
+
 body {
 	padding-top: 122px;
 }
@@ -300,7 +302,7 @@ body {
 	
 }
 
-[id$=_pointList] .pointCard {
+[id$=_nonzeroPoints] .pointCard {
 	position: relative;
 }
 
@@ -544,10 +546,19 @@ body {
     font-family:"ff-meta-web-pro", sans-serif;
 	font-size: 0.875em;
 	font-color: #005E80;
+	margin-bottom:10px;
+}
+
+#scoreAndVotingSection {
+	margin-top: 16px;
 }
 
 #scoreAndVotingSection a {
 	cursor:pointer;
+}
+
+#scoreAndVotingSection div {
+	margin-left:0px;
 }
 
 @media (max-width: 1200px) {
@@ -588,13 +599,14 @@ body {
 .borderButton {
 	font-family: "ff-meta-web-pro-condensed";
     font-weight: 700;
-    text-transform: uppercase;
     font-size: .9em;
     color: #707070;
     background:none;
     background-color:#FFFFFF;
     border: 1px solid #B9BBBD;
     border-radius: 2px;
+	padding: 9px 15px 4px;
+	
 }
 
 .borderButton:hover {
@@ -623,17 +635,12 @@ body {
 	border-top: 4px solid #00adee;
 }
 
-#supporting_menuArea, #counter_menuArea  {
+.pointColumnMenuArea {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #B9BBBD;
-	cursor: pointer;
 	margin-bottom: -1px;
 	padding-top:10px;
-}
-
-#supporting_pointActions, #counter_pointActions {
-	display:inline-block;
 }
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
@@ -642,15 +649,6 @@ body {
 
 #supporting_numberOfPoints, #counter_numberOfPoints {
 	margin-bottom: 1em;
-}
-
-#supporting_zeroPoints, #counter_zeroPoints {
-	margin-bottom: 5%;
-	font-style: italic;
-	color: #B9BBBD;
-	width: 20em;
-	margin-left: auto;
-	margin-right: auto;
 }
 
 #supporting_zeroPointsText, #counter_zeroPointsText {
@@ -701,6 +699,7 @@ a.navWhy:hover {
 	color:#6D6E70;
 	font-family: "ff-meta-web-pro", sans-serif;
     font-size: 0.875em;
+	margin-right: 10px;	
 }
 
 .mainPointContent p {
@@ -723,10 +722,10 @@ h1.mission {
 #pointArea {
 	position: relative;
 	margin-left:0px;
-	padding-left:10px;
-	padding-right: 10px;
 	padding-top: 10px;
 }
+
+#pointArea div []
 
 #timestampAndEditLink {
 	margin-bottom: 12px;
@@ -769,7 +768,7 @@ h1.mission {
 }
 
 img.pointDisplay{
-	width: 100%;
+	width: 95%;
 }
 
 img.listDisplay {
@@ -815,8 +814,10 @@ img.smallDisplay {
 	float: right;
 }
 
+
 .mainPointTitle h1 {
 	margin-top:0px;
+	margin-right: 10px;
 	line-height:120%;
 }
 
@@ -832,31 +833,13 @@ a#editPoint {
 	background-position: 95% 0%;
 	padding-right: 19px;
 	height: 20px;	
+	margin-right: 25px;
+	
 }	
 
 a#editPoint:hover {
 	color: #00ADEE;
 	background-position: 95% 100%;
-}
-
-button#supporting_addPointWhenZero, button#counter_addPointWhenZero {
-	margin-top: 3em;
-	margin-bottom: 3em;
-	background-image: url('/static/img/plus_icon.png');
-	background-position: center 0%;
-	height: 20px;
-	font-weight: normal;
-	padding: 0px;
-}
-
-button#supporting_addPointWhenZero, button#counter_addPointWhenZero {
-	background-position: center 100%;
-}
-
-button#supporting_addPointWhenZero span.plus_icon_spacer,
-button#counter_addPointWhenZero span.plus_icon_spacer {
-	display: inline-block;
-	width: 30px;
 }
 
 button#supporting_addPointWhenNonZero,
@@ -869,7 +852,9 @@ button#counter_addPointWhenNonZero {
 	height:34px;
 }
 
-#supporting_pointActions, #counter_pointActions {
+#supporting_pointActions, #counter_pointActions, 
+#supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
+ {
 	margin-bottom:10px;
 }
 
@@ -969,6 +954,10 @@ button#counter_addPointWhenNonZero {
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Whysaurus User login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+#signupDialog {   
+	height: 500px;
+	position: absolute;
+}
    
 #showSignupDialog {
 	margin-top: 15px;

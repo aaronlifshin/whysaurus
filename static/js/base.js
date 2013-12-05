@@ -452,6 +452,7 @@ function loadMainPageLeftColumn(shouldPushState) {
             if (shouldPushState) {
       		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');          		          		              		
       		}
+			activateMainPageLeftColumn();
       		document.title = 'Whysaurus - A better way to explain ideas';      		
         },
         shouldPushState );

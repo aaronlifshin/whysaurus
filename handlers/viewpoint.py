@@ -10,8 +10,8 @@ from models.redirecturl import RedirectURL
 
 class ViewPoint(AuthHandler):
     def createTemplateValues(self, point, pointRoot, full=True):
-        supportingPoints = point.getSupportingPoints()
-        counterPoints = point.getCounterPoints()
+        supportingPoints = point.getLinkedPoints("supporting")
+        counterPoints = point.getLinkedPoints("counter")
         sources = point.getSources()
 
         user = self.current_user
@@ -24,9 +24,11 @@ class ViewPoint(AuthHandler):
         
         addedToRecentlyViewed = False
         if user:
-            recentlyViewed = user.getRecentlyViewed(excludeList=[point.key.parent()] + \
-                                                    point.supportingPointsRoots + \
-                                                    point.counterPointsRoots)
+            recentlyViewed = user.getRecentlyViewed(
+                excludeList=[point.key.parent()] + \
+                point.getLinkedPointsRootKeys("supporting") + \
+                point.getLinkedPointsRootKeys("counter")
+            )
 
             addedToRecentlyViewed = user.updateRecentlyViewed(point.key.parent())
         else:

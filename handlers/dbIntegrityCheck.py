@@ -85,6 +85,32 @@ class DBIntegrityCheck(AuthHandler):
         path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
         self.response.out.write(template.render(path, template_values))
       
+    def checkPointNew(self, point):
+        try:
+            retVal = False
+            messages = []
+            for linkType in ["supporting", "counter"]:
+                links = point.getStructuredLinkCollection(linkType)   
+                if links and point.current:
+                    for link in links:
+                        # Check the roots of points we link to for backlinks
+                        linkRoot = link.version.parent().get()
+                        backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
+                        if not point.key.parent() in backlinks:
+                            linkedPointURL = linkRoot.key.urlsafe()
+                            messages.append(
+                            "Point %s. Version %d: Has %s link to \
+                             <a href=\"/point/%s\">%s</a> with no BACKLINK" \
+                             % (point.url, point.version, linkType, \
+                                 linkRoot.url, linkRoot.url))
+                            retVal = True
+            return retVal, messages
+        except Exception as e:
+            errMsg = 'Exception %s when checking %s' % (point.url, str(e))
+            return True, messages + [errMsg]                                            
+        
+    # OLD DB STRUCTURE
+    """ 
     def checkPoint(self, point):
         try:
             retVal = False
@@ -94,6 +120,7 @@ class DBIntegrityCheck(AuthHandler):
             # % (point.title, constants.ADMIN_DATA_URL, checkingPointURL, point.key))
             for linkType in ["supporting", "counter"]:
                 linkRoots, linkLastChange = point.getLinkCollections(linkType)
+                links = point.getStructuredLinkCollection(linkType)   
                 
                 if linkLastChange:
                     for pointKey in linkLastChange:
@@ -132,6 +159,7 @@ class DBIntegrityCheck(AuthHandler):
         except Exception as e:
             errMsg = 'Exception %s when checking %s' % (point.url, str(e))
             return True, messages + [errMsg]
+    """
     
     def checkRoot(self, pointRoot): 
         try:
@@ -179,7 +207,7 @@ class DBIntegrityCheck(AuthHandler):
                         foundError = True
                         continue
                     currentLinkPoint = linkRoot.getCurrent()
-                    linkedPoints = currentLinkPoint.getLinkedPointsRootCollection(linkType)
+                    linkedPoints = currentLinkPoint.getLinkedPointsRootKeys(linkType)
                     if not pointRoot.key in linkedPoints:
                         versionKeyURL = currentLinkPoint.key.urlsafe()
                         messages.append("Root <a href=\"/point/%s\">%s</a>: \
@@ -233,7 +261,7 @@ class DBIntegrityCheck(AuthHandler):
         point, pointRoot = Point.getCurrentByUrl(pointURL)
         
         if point:
-            isError1, messages1 = self.checkPoint(point)
+            isError1, messages1 = self.checkPointNew(point)
             
         if pointRoot:
             isError2, messages2 = self.checkRoot(pointRoot)
@@ -257,6 +285,46 @@ class DBIntegrityCheck(AuthHandler):
         path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
         self.response.out.write(template.render(path, template_values)) 
         
+    
+    # This method is a static method so that it cat be used inside of pointRootsMap
+    #   (see AaronTask.py)
+    @staticmethod
+    def checkDBPointRoot(pointRoot):
+        logging.info('Checking %s ' % pointRoot.url)
+        point, pr = Point.getCurrentByUrl(pointRoot.url)
+        isError1 = False
+        isError2 = False
+        messages1 = []
+        messages2 = []
+        
+        dbc = DBIntegrityCheck()
+        if point:
+            isError1, messages1 = dbc.checkPoint(point)
+            
+        if pointRoot:
+            isError2, messages2 = dbc.checkRoot(pointRoot)
+        
+        if not isError1 and not isError2:
+            message = 'No errors were found in %s.' % pointRoot.url
+            logging.info(message)                      
+            
+        else:
+            message = []
+            if messages1:
+                message = message + messages1
+            if messages2:
+                message = message + messages2
+            if message == []:
+                message = ['Errors generated, but no messages generated.']
+            if isError1:
+                logging.info(messages1)
+            if isError2:
+                logging.info(messages2)  
+            for m in message:
+                logging.info(message)                      
+        
+        return message
+
 
     def get(self):
         mode = self.request.get('mode')     

@@ -23,7 +23,7 @@
 			  	<span class="stat"><img src="/static/img/sourcesIconBig.png"/>&nbsp{{ point.sources|length }}</span>
 			  {% endif %}            				
 	      </div>
-		  {% if point.supportingPointsRoots|length > 0 or point.counterPointsRoots|length > 0 %}
+		  {% if point.numSupporting > 0 or point.numCounter > 0 %}
 		      <div class="row-fluid no-space gauge">
 		          <span class="linkStat 
 		                    {% if point.onlyCounter %} counterColor 
@@ -41,10 +41,10 @@
 	             
 		          </span>
 		          <div class="gaugeText gaugeSupporting">
-		            {{ point.supportingPointsRoots|length }} SUPPORTING
+					  {{ point.numSupporting }} SUPPORTING
 		          </div>
 		          <div class="gaugeText gaugeCounter">
-		          {{ point.counterPointsRoots|length }} COUNTER
+					  {{ point.numCounter }} COUNTER
 		          </div>			  
 		      </div>  
 		  {% endif %}             

@@ -8,6 +8,8 @@ from google.appengine.ext import ndb
 from authhandler import AuthHandler
 from models.point import PointRoot
 from models.point import Point
+from models.point import Link
+
 from models.follow import Follow
 from models.comment import Comment
 
@@ -17,8 +19,10 @@ from google.appengine.api import search
 from google.appengine.api.taskqueue import Task
 from google.appengine.api import namespace_manager
 
+from handlers.dbIntegrityCheck import DBIntegrityCheck
 
 
+# One-off tasks for changing DB stuff for new versions
 class AaronTask(AuthHandler):
     def QueueTask(self):
         taskurl = self.request.get('task')
@@ -26,7 +30,7 @@ class AaronTask(AuthHandler):
             fullurl = '/' + taskurl
             t = Task(url=fullurl)
             t.add(queue_name="notifications")
-            self.response.out.write('K I wrote %s to the notifications queue' % fullurl)     
+            self.response.out.write('OK I wrote %s to the notifications queue' % fullurl)     
         else:
             self.response.out.write('Need a task URL parameter')     
 
@@ -44,6 +48,78 @@ class AaronTask(AuthHandler):
                     ef.key.delete()
         logging.info('Checked %d follows' % i)
 
+    def pointRootLinkChange(self, pointRoot):
+        pointRootKey = pointRoot.key                      
+        points = pointRoot.getAllVersions()
+        logging.info('- - - - Processing root for %s' % pointRoot.url)
+        
+        for point in points:
+            for linkType in ('supporting', 'counter'):  
+                structuredLinkCollection  = []   
+                logging.info('Getting root collections for version %d, link Type: %s' % (point.version, linkType))
+                rootColl, versionColl = point.getLinkCollections(linkType)
+                for rootLink, vLink in zip(rootColl, versionColl):
+                    newLink = Link()
+                    newLink.version = vLink
+                    newLink.root = rootLink
+                    newLink.voteCount = 0
+                    structuredLinkCollection = structuredLinkCollection + [newLink]
+                    point.setStructuredLinkCollection(linkType, structuredLinkCollection)
+            point.put()                                           
+      
+    """
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    GENERIC FUNCTION FOR DOING SOMETHING TO EVERY POINT ROOT
+       Will do 10 roots, then call a URL which is expected to 
+       call the function again
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+    """  
+    def pointRootsMap(self, f, taskURL, firstURL = None):
+        nextURL = None
+        query = PointRoot.query().order(PointRoot.url)
+        if firstURL:
+            query = query.filter(PointRoot.url >= firstURL)
+            
+        pointRoots = query.fetch(11)
+        if len(pointRoots) == 11:
+            nextURL = pointRoots[-1].url
+            pointRootsToReview = pointRoots[:10]
+        else:
+            pointRootsToReview = pointRoots   
+        
+        for pointRoot in pointRootsToReview:
+            f(pointRoot)
+            
+        if nextURL:
+            t = Task(url=taskURL, params={'nexturl':nextURL})
+            t.add(queue_name="notifications")
+            logging.info('Requeing task to start at url %s ' % nextURL)            
+
+    """
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    COPY LINK INFORMATION INTO STRUCTURED PROPERTIES
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+    """
+    def MakeLinks(self):
+        firstURL = self.request.get('nexturl')        
+        self.pointRootsMap(
+            f=self.pointRootLinkChange, 
+            taskURL='/job/MakeLinks',
+            firstURL=firstURL if firstURL else None)
+         
+        
+    """
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    CHECK EACH POINT IN THE MAIN NAMESPACE
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+    """ 
+    def DBCheck(self):
+        firstURL = self.request.get('nexturl')        
+        self.pointRootsMap(
+            f=DBIntegrityCheck.checkDBPointRoot, 
+            taskURL='/job/DBCheck',
+            firstURL=firstURL if firstURL else None)
+                   
     def MakeFollows(self):
         """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

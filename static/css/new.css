@@ -91,6 +91,7 @@ body {
 	font:Georgia, Garamond, serif;
 	color:#6D6E70;
 	font-style: italic;
+	padding-top: 0.18em;
 }
 
 #searchBox:-moz-placeholder { /* Firefox 18- */

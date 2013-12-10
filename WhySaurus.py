@@ -47,6 +47,7 @@ routes = [
     Route('/addSupportingPoint', AddSupportingPoint),
     Route('/linkPoint', LinkPoint),
     Route('/vote', Vote),
+    Route('/relVote', handler='WhySaurus.Vote:relevanceVote', name='relevanceVote'),    
     Route('/setribbon', SetRibbon),
     Route('/testPage', TestPage),
     Route('/search', Search),

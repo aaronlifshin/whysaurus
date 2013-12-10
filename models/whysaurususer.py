@@ -17,6 +17,7 @@ from models.chatUser import ChatUser
 
 from whysaurusexception import WhysaurusException
 from uservote import UserVote
+from uservote import RelevanceVote
 from timezones import PST
 
 
@@ -223,38 +224,41 @@ class WhysaurusUser(auth_models.User):
  
     @property
     def editedCount(self): 
-        return len(self.editedPointRootKeys)
-         
-    @property
-    def userVotes(self):
-        if not hasattr(self, "_userVotes"):
-            votes = UserVote.query(ancestor=self.key)
-            # votes = qry.run()
-            self._userVotes = {}
-            if votes:
-                for vote in votes:
-                    self._userVotes[vote.pointRootKey] = vote
-        return self._userVotes
+        return len(self.editedPointRootKeys)         
+
+    def getVoteValues(self, pointRootKey):
+        vote = UserVote.query(            
+            UserVote.pointRootKey==pointRootKey, ancestor=self.key).get()
+        if vote:
+            return vote.value, vote.ribbon
+        else:
+            return 0, False                    
 
     def updatePrivateArea(self, newPA):
         self.privateArea = newPA
         self.put()
+       
+       
+    def _getOrCreateVote(self, pointRootKey):
+        vote = UserVote.query(             
+            UserVote.pointRootKey==pointRootKey, ancestor=self.key).get()            
+        if not vote:  # No vote yet, create a new one
+            vote = UserVote(
+                pointRootKey=pointRootKey,
+                value=0,
+                ribbon=False,
+                parent=self.key
+            )        
+        return vote
         
     def addVote(self, point, voteValue, updatePoint=True):
         pointRootKey = point.key.parent()
-        previousVoteValue = 0
-        newVote = None
-        if pointRootKey in self.userVotes:  # Vote already exists. Update
-            previousVoteValue = self.userVotes[pointRootKey].value
-            newVote = self.userVotes[pointRootKey]
-            newVote.value = voteValue
-        if not newVote:  # Create a brand new one
-            newVote = UserVote(
-                pointRootKey=pointRootKey,
-                value=voteValue,
-                parent=self.key
-            )
-        newVote.put()
+        vote = self._getOrCreateVote(pointRootKey)
+        previousVoteValue = vote.value
+        vote.value = voteValue
+        vote.put()
+        
+        # We only send notifications for agrees at the moment
         if voteValue == 1:
             point.addNotificationTask(pointRootKey, self.key, "agreed with")
 
@@ -276,24 +280,14 @@ class WhysaurusUser(auth_models.User):
             point.voteTotal = point.upVotes - point.downVotes
             point.put()
 
-        return newVote
+        return vote
 
     def setRibbon(self, point, ribbonValue, updatePoint=True):
         pointRootKey = point.key.parent()
-        previousRibbon = False
-        newVote = None
-        if pointRootKey in self.userVotes:  # Vote already exists. Update
-            previousRibbon = self.userVotes[pointRootKey].ribbon
-            newVote = self.userVotes[pointRootKey]
-            newVote.ribbon = ribbonValue
-        if not newVote:  # Create a brand new one
-            newVote = UserVote(
-                pointRootKey=pointRootKey,
-                value=0,
-                ribbon=ribbonValue,
-                parent=self.key
-            )
-        newVote.put() 
+        vote = self._getOrCreateVote(pointRootKey)
+        previousRibbon = vote.ribbon
+        vote.ribbon = ribbonValue            
+        vote.put() 
         if updatePoint:
             if not previousRibbon and ribbonValue:
                 point.ribbonTotal = point.ribbonTotal + 1
@@ -301,10 +295,57 @@ class WhysaurusUser(auth_models.User):
             elif previousRibbon and not ribbonValue:
                 point.ribbonTotal = point.ribbonTotal - 1
                 point.put()
+                
+        # Only send a notification if a ribbnon is awarded
         if ribbonValue:
             point.addNotificationTask(pointRootKey, self.key, "awarded a ribbon to")
 
-        return newVote
+        return vote
+            
+    def addRelevanceVote(self, parentRootURLsafe, childRootURLsafe, linkType, vote):
+        parentRootKey = ndb.Key(urlsafe=parentRootURLsafe)
+        childRootKey = ndb.Key(urlsafe=childRootURLsafe)
+        pointRoot = parentRootKey.get();
+        curPoint = pointRoot.current.get();
+        
+        
+        oldRelVote = RelevanceVote.query(
+            RelevanceVote.parentPointRootKey == parentRootKey,
+            RelevanceVote.childPointRootKey == childRootKey,
+            RelevanceVote.linkType == linkType,
+            ancestor=self.key).get()
+            
+        newRelVote = RelevanceVote(
+            parent=self.key(),
+            parentPointRootKey = parentRootKey,
+            childPointRootKey = childRootKey,
+            value = vote,
+            linkType=linkType)
+            
+        self.transactionalAddRelevanceVote(curPoint, relVote)
+        
+    def getRelevanceVotes(self, parentPoint):
+        parentRootKey = parentPoint.key.parent();
+        maxNumVotes = parentPoint.numSupporting + parentPoint.numCounter;
+        
+        # MULTIPLY numVotes * 2 because the current set of points may be smaller
+        # than 
+        rVotes = RelevanceVote.query(
+            RelevanceVote.parentPointRootKey == parentRootKey, 
+            ancestor = self.key).fetch(maxNumVotes*2)
+        return rVotes
+
+    @ndb.transactional(xg=True)
+    def transactionalAddRelevanceVote(self, parentPoint, oldRelVote, newRelVote):
+        parentPoint.addRelevanceVote(oldRelVote, newRelVote)
+        if oldRelVote:
+            # Update the user's vote for this link
+            oldRelVote.value = newRelVote.value
+            oldRelVote.put()
+        else:
+            newRelVote.put()
+        
+
             
 
     def _updateRecentlyViewed(self, pointRootKey):

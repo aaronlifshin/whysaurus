@@ -10,18 +10,18 @@ from models.redirecturl import RedirectURL
 
 class ViewPoint(AuthHandler):
     def createTemplateValues(self, point, pointRoot, full=True):
-        supportingPoints = point.getLinkedPoints("supporting")
-        counterPoints = point.getLinkedPoints("counter")
+        user = self.current_user        
+        supportingPoints = point.getLinkedPoints("supporting", user)
+        counterPoints = point.getLinkedPoints("counter", user)
         sources = point.getSources()
 
-        user = self.current_user
-        if not user or not user.userVotes or not point.key.parent() in user.userVotes:
-            voteValue = 0
-            ribbonValue = False
-        else:
-            voteValue = user.userVotes[point.key.parent()].value
-            ribbonValue = user.userVotes[point.key.parent()].ribbon
+        voteValue = 0
+        ribbonValue = False
+        if user:
+            voteValue, ribbonValue = user.getVoteValues(point.key.parent())
         
+        # We need to get the recently viewed points here
+        # Because the user can add them as counter/supporting points
         addedToRecentlyViewed = False
         if user:
             recentlyViewed = user.getRecentlyViewed(

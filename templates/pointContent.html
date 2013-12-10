@@ -58,7 +58,7 @@
 	     </div>				
 	{% endif %}  
     
-<div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}">
+<div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}" data-rootus="{{point.rootURLsafe}}">
 	<div id="pointSummary" class = "span5">
 	          <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
 			  <div class="mainPointContent editable">{{ point.content|safe }}</div>

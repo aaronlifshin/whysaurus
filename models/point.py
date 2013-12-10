@@ -37,6 +37,7 @@ from redirecturl import RedirectURL
 from source import Source
 from timezones import PST
 from follow import Follow
+from uservote import RelevanceVote
 
 def convertListToKeys(urlsafeList):
     if urlsafeList:
@@ -114,6 +115,7 @@ class Point(ndb.Model):
     fullPointImage = ImageUrl('FullPoint')
     imageDescription = ndb.StringProperty(default='', indexed=False)
     imageAuthor = ndb.StringProperty(default='', indexed=False)
+    _relevanceVote = RelevanceVote
 
     @property
     def numSupporting(self):
@@ -144,6 +146,10 @@ class Point(ndb.Model):
     @property
     def reverseLinksRatio(self):
         return 100 - self.linksRatio
+        
+    @property
+    def rootURLsafe(self):
+        return self.key.parent().urlsafe();
           
     @classmethod
     def getByKey(cls, pointKey):
@@ -447,18 +453,28 @@ class Point(ndb.Model):
 
     # DATASTORE GET OF THE CURRENT VERSION OF THE LINKED POINT BY LINK NAME
     #   GOES THROUGH THE ROOT TO GET THE CURRENT POINT AT TIME OF CALL
-    def getLinkedPoints(self, linkType):
+    #   IF A USER IS SUPPLIED, WILL ALSO ATTACH THE RELEVANCE VOTES OF THAT USER
+    #   INTO THE STRUCTURES OF THE POINTS
+    def getLinkedPoints(self, linkType, user):
         linkColl = self.getStructuredLinkCollection(linkType)
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl]
             roots = ndb.get_multi(rootKeys)
             linkedPoints = []
+            
+            if roots and user:
+                relevanceVotes = user.getRelevanceVotes(self)
+            
+                
             for pointRoot in roots:
                 if pointRoot:
                     linkedPoints = linkedPoints + [pointRoot.getCurrent()]
-                else:
+                else: # THIS SHOULD NEVER HAPPEN, BUT IT DID ONCE OR TWICE
                     logging.info('WARNING: Supporting point array for ' +
                                  self.url + ' contains pointer to missing root')
+
+                
+                
             return linkedPoints
         else:
             return None        
@@ -683,14 +699,16 @@ class Point(ndb.Model):
                         excludeURL)
                     if excludePointRoot:
                         excludeList = excludeList + [excludePointRoot.key.urlsafe()]
-                        linkedPoints = excludePoint.getLinkedPoints("supporting")
-                        if linkedPoints:
-                            for point in linkedPoints:
-                                excludeList = excludeList + [point.key.parent().urlsafe()]
-                        linkedPoints = excludePoint.getLinkedPoints("counter")
-                        if linkedPoints:
-                            for point in linkedPoints:
-                                excludeList = excludeList + [point.key.parent().urlsafe()]
+                        linkedPointRootKeys = excludePoint.getLinkedPointsRootKeys("supporting")
+                        if linkedPointRootKeys:
+                            for rootKey in linkedPointRootKeys:
+                                excludeList = excludeList + [rootKey.urlsafe()]
+                        
+                        linkedPointRootKeys = excludePoint.getLinkedPointsRootKeys("counter")
+                        if linkedPointRootKeys:
+                            for rootKey in linkedPointRootKeys:
+                                excludeList = excludeList + [rootKey.urlsafe()]
+                                
                 for key in excludeList:
                     try:
                         docIds.remove(key)
@@ -725,6 +743,31 @@ class Point(ndb.Model):
         ]
         d = search.Document(doc_id=self.key.parent().urlsafe(), fields=fields)
         index.put(d)
+        
+    # If old rel vote exists, replace its value, otherwise add a new value
+    # into the value total
+    def addRelevanceVote(self, oldRelVote, newRelVote):
+        retVal = False, 0
+        if newRelVote: # should always be passed in
+            links = self.getStructuredLinkCollection(newRelVote.linkType)
+            ourLink = None
+            for link in links:
+                if link.root == newRelVote.childRootKey:
+                    ourLink = link
+                    break
+            if ourLink:
+                if oldRelVote:
+                    newSum = ourLink.rating * ourLink.voteCount - oldRelVote.value + newRelVote.value
+                    ourLink.rating = newSum/ourLink.voteCount                    
+                else:
+                    newSum = ourLink.rating * ourLink.voteCount + newRelVote.value
+                    ourLink.voteCount = ourLink.voteCount + 1
+                    ourLink.rating = newSum/ourLink.voteCount                    
+                # and now we would sort the points by vote rating
+                
+                self.put()
+                retVal = True, ourLink.rating
+        return retVal        
         
     # This is used to fix database problems
     def addMissingBacklinks(self):

@@ -50,22 +50,36 @@
 
 @baseFontSize:          16px;
 @baseFontFamily:        @sansFontFamily;
-@baseLineHeight:        100%;
 @altFontFamily:         @serifFontFamily;
+@baseLineHeight:        100%;
+
 
 @headingsFontFamily:    "ff-meta-web-pro", sans-serif; // empty to use BS default, @baseFontFamily
 @headingsFontWeight:    bold;    // instead of browser default, bold
 @headingsColor:         @black; // empty to use BS default, @textColor
 
 
+
+
+
 // Component sizing
 // -------------------------
+
+// old:
 // Based on 14px font-size and 20px line-height
+//@fontSizeLarge:         @baseFontSize * 1.25; // ~18px
+//@fontSizeSmall:         @baseFontSize * 0.85; // ~12px
+//@fontSizeMini:          @baseFontSize * 0.75; // ~11px
 
-@fontSizeLarge:         @baseFontSize * 1.25; // ~18px
-@fontSizeSmall:         @baseFontSize * 0.85; // ~12px
-@fontSizeMini:          @baseFontSize * 0.75; // ~11px
+@fontSizeLarge:         @baseFontSize * 1.188; // ~19px
+@fontSizeMedium:        @baseFontSize * 0.875; // ~14px
+@fontSizeSmall:         @baseFontSize * 0.750; // ~12px
+@fontSizeMini:          @baseFontSize * 0.675; // ~10px
 
+@lineHeightDefault:     120%;
+@lineHeightSmall:       110%;
+
+// Based on 14px font-size and 20px line-height
 @paddingLarge:          11px 19px; // 44px
 @paddingSmall:          2px 10px;  // 26px
 @paddingMini:           0 6px;   // 22px

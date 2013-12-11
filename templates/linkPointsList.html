@@ -6,7 +6,7 @@
   
 <div class="{% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
 	<div id="{{linkType}}_menuArea"  class="pointColumnMenuArea">
-		<div id="{{linkType}}_numberOfPoints" class="SummaryBig_Title pagination-centered">
+		<div id="{{linkType}}_numberOfPoints" class="pointListTitle pagination-centered">
 			{% if linkedPoints %}
 				{{ linkedPoints|length }} {{linkType|title}} Point{% if linkedPoints|length > 1 %}s{% endif %}
 			{% else %}
@@ -67,7 +67,7 @@
 <!-- zero point areas are below here.  These are always present, and shown if the last point is unlinked -->
 <div id="{{linkType}}_zeroPoints" class="{% if linkedPoints %}hide{%else%}{% endif %}">
 <div class="pointColumnMenuArea">
-	<div id="{{linkType}}_numberOfPoints" class="SummaryBig_Title pagination-centered">
+	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pagination-centered">
 		Zero {{linkType|title}} Points
 	</div>
 	<div id="{{linkType}}_pointActionsWhenZero" class="row-fluid">

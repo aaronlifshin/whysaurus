@@ -332,15 +332,15 @@ body {
 .pointCard .pointTitle {
 	color: black;
 	font-size: @fontSizeMedium;
-	line-height: @lineHeightDefault;	
+	line-height: @lineHeightBig;	
 	margin-bottom: 12px;	
 }
 
 .pointCard .stat {
-	color: #a9a9a9;
-	font-family: "nimbus-sans-condensed", sans-serif;
-	font-weight: bold;
-	font-size:1.25em;	
+	color: @grayTextMedium;
+    /*font-weight: bold;*/
+	font-family: @sansFontFamily;
+	font-size: @fontSizeSmall;	
 }
 
 .pointCard .linkStat {
@@ -411,7 +411,7 @@ body {
 }
 
 .pointSmall .smallStat {
-	font-family: "nimbus-sans-condensed",sans-serif;
+	font-family: @sansFontFamily;
 	font-weight: bold;
     font-size: 0.75em;
     color: #a9a9a9;
@@ -478,11 +478,11 @@ body {
 
 .columnHeading {
 	font-weight:bold;
-	font-size:1.25em;
-	color:#5b5b5b;
-	font-family:"nimbus-sans-condensed",sans-serif;
-	line-height: 20px;
-	
+	font-size: 1em; 
+	color:@grayTextDark;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    margin-bottom: 2px;	
 }
 
 .bottomBorder {
@@ -495,15 +495,17 @@ body {
 
 .columnHeading button {
     display: inline;
-    color: #B9BBBD;
+	color:@grayTextExtraLight;
     border: 0px;
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: 95% 0%;
     font-style:normal;
-    font-size:20px;
-    font-weight:bold;    
+	font-weight:bold;
+	font-size: 1em;   
+    margin-bottom: 2px;
 }
+
 
 .columnHeading .selectedTab {
     color:#5b5b5b;
@@ -549,7 +551,7 @@ body {
 .hugeScore{
 	font-weight:bold;
 	font-size:4.6250em;
-	font-family:"nimbus-sans-condensed",sans-serif;
+	font-family:@sansFontFamily;
 	line-height:100px;
 }
 */
@@ -562,7 +564,7 @@ body {
 }
 
 #scoreAndVotingSection {
-	margin-top: 10px;
+	margin-top: 12px;
 }
 
 #scoreAndVotingSection a {
@@ -577,6 +579,21 @@ body {
 	#scoreAndVotingSection .caret {
 		border:none;
 	}
+}
+
+.iconSourcesSmall {
+    padding-right: -10px;
+}
+
+
+.iconAgreesSmall {
+    padding-top: 2px;
+}
+
+.iconAgreesSmallMainPoint {
+    padding-top: 2px;
+    padding-left: 4px;
+    padding-right: 2px;
 }
 
 #blueRibbon {
@@ -643,6 +660,16 @@ body {
 	font-weight:bold;
 }
 
+.selectedVote, .selectedVote:hover, .selected:focus {
+    color: black;
+	//color:#0CCF00;
+	font-weight:bold;
+}
+
+
+
+
+
 .linkBlue {
 	border-top: 4px solid #00adee;
 }
@@ -654,6 +681,12 @@ body {
 	margin-bottom: -1px;
 	padding-top:10px;
 }
+
+.pointListTitle {
+    font-size: @fontSizeMedium;
+    color: black;
+}
+
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
 	margin-bottom: 5%;
@@ -710,7 +743,7 @@ a.navWhy:hover {
 .mainPointContent{
 	color:#6D6E70;
 	font-family: "ff-meta-web-pro", sans-serif;
-    font-size: 0.875em;
+    font-size: @fontSizeSmall;
     /*width: 362px;*/
 	margin-right: 32px;	
 }

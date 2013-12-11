@@ -14,13 +14,13 @@
 	    </div>    
 	      <div class="row-fluid">
 			  {% if point.voteTotal != 0 %}
-				  <span class="stat"><img src="/static/img/agreesIconBig.png"/>&nbsp{{ point.voteTotal }}</span>
+				  <span class="stat"><img class="iconAgreesSmall" src="/static/img/agreesIconSmall.png"/>&nbsp{{ point.voteTotal }}&nbsp&nbsp</span>
 			  {% endif %}            
-			  {% if point.ribbonTotal != 0 %}			
-	          	<span class="stat"><img src="/static/img/awardsIconBig.png"/>{{ point.ribbonTotal }}</span>
-  			  {% endif %}            
+			  <!--{% if point.ribbonTotal != 0 %}			
+	          	<span class="stat"><img src="/static/img/awardsIconSmall.png"/>{{ point.ribbonTotal }}</span>
+  			  {% endif %} -->            
 			  {% if point.sources|length != 0 %}							
-			  	<span class="stat"><img src="/static/img/sourcesIconBig.png"/>&nbsp{{ point.sources|length }}</span>
+			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall.png"/>&nbsp{{ point.sources|length }}</span>
 			  {% endif %}            				
 	      </div>
 		  {% if point.numSupporting > 0 or point.numCounter > 0 %}

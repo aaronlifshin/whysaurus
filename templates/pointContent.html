@@ -60,7 +60,7 @@
     
 <div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}" data-rootus="{{point.rootURLsafe}}">
 	<div id="pointSummary" class = "span5">
-	          <div class="mainPointTitle editable"><h1 class="condensed">{{ point.title|escape }}</h1></div>
+	          <div class="mainPointTitle editable"><h1 class="mainPointTitleText">{{ point.title|escape }}</h1></div>
 			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
 	          <!-- Hacky way to get imageurl into the edit dialog. :/ -->
 	          <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
@@ -91,8 +91,8 @@
 			<a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
 			DISAGREE</a> <img src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
 	    			   
-			<a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
-			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>
+			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
+			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->
 		</div>
 	
 		<div class="span1 dropdown">	

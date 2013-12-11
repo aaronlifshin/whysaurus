@@ -330,9 +330,9 @@ body {
 }
 
 .pointCard .pointTitle {
-	color: #000;
-	font-size: 1.0625em;
-	line-height: 1.3125em;	
+	color: black;
+	font-size: @fontSizeMedium;
+	line-height: @lineHeightDefault;	
 	margin-bottom: 12px;	
 }
 
@@ -544,22 +544,25 @@ body {
 	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
 }
 
+// DEPRECATED?
+/*
 .hugeScore{
 	font-weight:bold;
 	font-size:4.6250em;
 	font-family:"nimbus-sans-condensed",sans-serif;
 	line-height:100px;
 }
+*/
 
 .pointAreaActions {
-    font-family:"ff-meta-web-pro", sans-serif;
-	font-size: 0.875em;
-	font-color: #005E80;
+    font-family: @sansFontFamily;
+	font-size:@fontSizeMedium;
+	font-color: @blue;
 	margin-bottom:10px;
 }
 
 #scoreAndVotingSection {
-	margin-top: 16px;
+	margin-top: 10px;
 }
 
 #scoreAndVotingSection a {
@@ -708,7 +711,8 @@ a.navWhy:hover {
 	color:#6D6E70;
 	font-family: "ff-meta-web-pro", sans-serif;
     font-size: 0.875em;
-	margin-right: 10px;	
+    /*width: 362px;*/
+	margin-right: 32px;	
 }
 
 .mainPointContent p {
@@ -720,21 +724,33 @@ a.navWhy:hover {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .mainPointSourcesHeading{
-    font-size: @fontSizeMedium;
+    font-size: @fontSizeSmall;
 }
 
 .mainPointSourceEntry{
-    font-size: @fontSizeMedium;
+    font-size: @fontSizeSmall;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END: SOURCE ENTRIES IN MAINPOINTS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
    
-
+// DEPRECATED?
+/*
 h1.condensed {
 	line-height: 100%;
 }
+*/
+
+h1.mainPointTitleText {
+    font-size: @fontSizeLarge;
+    color: black;
+    margin-top:0px;
+	margin-right: 32px;	
+	line-height:@lineHeightBig;
+}
+
+
 
 h1.mission {
 	font-family: "ff-meta-web-pro", sans-serif;
@@ -763,6 +779,7 @@ h1.mission {
 	color: #6D6E70;
 	float: left;
     /*text-transform: Uppercase;*/
+    margin-top: -5px;
 	/*padding-top:10px;*/
 }
 
@@ -789,11 +806,26 @@ h1.mission {
 	margin-left: 0px;
 }
 
-.mainPointImageCaption, .mainPointImageAuthor{
-	font-size: 0.8em;
+.mainPointImageCaption{
+	font-size: @fontSizeSmall;
 	font-style: italic;
 	text-align: left;
-	color: lightGray;
+	color: @grayTextLight;
+    line-height: @lineHeightDefault;
+    margin: 0px;
+    margin-right: 11px;
+    border: 0px;
+    padding: 0px; 
+    padding-top: 4px;
+}
+
+.mainPointImageAuthor{
+	font-size: @fontSizeSmall;
+	text-align: left;
+	color: @grayTextLight;
+    text-transform: Uppercase;
+    line-height: @lineHeightDefault;
+    padding-top: 4px;
 }
 
 img.pointDisplay{
@@ -843,12 +875,14 @@ img.smallDisplay {
 	float: right;
 }
 
-
+//DEPRECATED?
+/*
 .mainPointTitle h1 {
 	margin-top:0px;
 	margin-right: 10px;
 	line-height:120%;
 }
+*/
 
 #stats li {
 	padding-left: 5px;

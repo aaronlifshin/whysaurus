@@ -340,7 +340,7 @@ body {
 	color: @grayTextMedium;
     /*font-weight: bold;*/
 	font-family: @sansFontFamily;
-	font-size: @fontSizeSmall;	
+	font-size: @fontSizeSmaller;	
 }
 
 .pointCard .linkStat {
@@ -356,19 +356,26 @@ body {
 
 .pointCard .supportColor {
     background-color: #e3fde5;
+    //border-color: black;
+    //border-width: 2px;
+    //border-style: solid;
+    /* put the border on the inside of the box, in order to not mess up the gauge sizing math */
+   -moz-box-sizing:    border-box;
+   -webkit-box-sizing: border-box;
+    box-sizing:        border-box;
 }
 
 .pointCard .gauge {
 	position:relative;
-	margin-top: 3px;	
+	margin-top: 6px;	
 }
 
 .pointCard .gaugeText {
 	top:3px;    	
 	position: absolute;
-    font-size: 1.125em;
-    color: #a9a9a9;
-    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-size: @fontSizeMedium;
+    color: @grayTextMedium;
+    font-family: @sansCondFontFamily;
     font-weight:700;
     text-transform:Uppercase;
 }
@@ -482,7 +489,7 @@ body {
 	color:@grayTextDark;
 	font-family:@sansCondFontFamily;
 	line-height: @lineHeightDefault;
-    margin-bottom: 2px;	
+    margin-bottom: 4px;	
 }
 
 .bottomBorder {
@@ -490,7 +497,7 @@ body {
 }
 
 #mainPageMainArea {
-	margin-top:24px;
+	margin-top:36px;
 }
 
 .columnHeading button {
@@ -503,7 +510,7 @@ body {
     font-style:normal;
 	font-weight:bold;
 	font-size: 1em;   
-    margin-bottom: 2px;
+    //margin-bottom: 2px;
 }
 
 
@@ -558,7 +565,7 @@ body {
 
 .pointAreaActions {
     font-family: @sansFontFamily;
-	font-size:@fontSizeMedium;
+	font-size:@fontSizeSmall;
 	font-color: @blue;
 	margin-bottom:10px;
 }
@@ -741,8 +748,8 @@ a.navWhy:hover {
 }
 
 .mainPointContent{
-	color:#6D6E70;
-	font-family: "ff-meta-web-pro", sans-serif;
+	color:@grayTextMedium;
+	font-family: @sansFontFamily;
     font-size: @fontSizeSmall;
     /*width: 362px;*/
 	margin-right: 32px;	
@@ -757,11 +764,11 @@ a.navWhy:hover {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .mainPointSourcesHeading{
-    font-size: @fontSizeSmall;
+    font-size: @fontSizeSmaller;
 }
 
 .mainPointSourceEntry{
-    font-size: @fontSizeSmall;
+    font-size: @fontSizeSmaller;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -808,8 +815,9 @@ h1.mission {
 }
 
 .mainPointLastEdited {
-	font-size:0.75em;
-	color: #6D6E70;
+	font-size: @fontSizeSmaller;
+	color: @grayTextMedium;
+    line-height: @lineHeightDefault; 
 	float: left;
     /*text-transform: Uppercase;*/
     margin-top: -5px;
@@ -840,7 +848,7 @@ h1.mission {
 }
 
 .mainPointImageCaption{
-	font-size: @fontSizeSmall;
+	font-size: @fontSizeSmaller;
 	font-style: italic;
 	text-align: left;
 	color: @grayTextLight;
@@ -853,7 +861,7 @@ h1.mission {
 }
 
 .mainPointImageAuthor{
-	font-size: @fontSizeSmall;
+	font-size: @fontSizeSmaller;
 	text-align: left;
 	color: @grayTextLight;
     text-transform: Uppercase;
@@ -1536,7 +1544,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 	padding-right: 6px; 
 	margin-left:0px; 
     margin-bottom:4px;
-    font-size: @fontSizeSmall;
+    font-size: @fontSizeSmaller;
     line-height: @lineHeightDefault;
 }
 	
@@ -1546,7 +1554,7 @@ a[name="commentReply"] {
 	bottom: 2px;
 	right: 5px;
     position: absolute;
-   	font-size: @fontSizeSmall; 
+   	font-size: @fontSizeSmaller; 
 }
    
 .cmmnt.level1 {

@@ -402,11 +402,14 @@ body {
 	/* background-color: #f8f8f8; */
     border-style:solid;
     border-width:1px;
-    border-color:#d7d7d7;
+    border-color: @grayBoxOutlines;
     word-wrap: break-word;
     cursor:pointer;
     padding:5px;
-	margin-bottom:-1px;
+	margin-bottom: @spaceBtPointCards;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
 
 .pointListPoint {
@@ -424,10 +427,10 @@ body {
 }
 
 .pointSmall .smallStat {
+	color: @grayTextMedium;
+    /*font-weight: bold;*/
 	font-family: @sansFontFamily;
-	font-weight: bold;
-    font-size: 0.75em;
-    color: #a9a9a9;
+	font-size: @fontSizeSmaller;	
 }
 
 .yellow .score {

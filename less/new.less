@@ -303,12 +303,14 @@ body {
 .pointCard {
 	border-style:solid;
 	border-width:1px;
-	border-color:#B9BBBD;
+	border-color:@grayBoxOutlines;
   	word-wrap: break-word;
 	cursor:pointer;
 	padding:5px;
-	margin-bottom: -1px;
-	
+	margin-bottom: @spaceBtPointCards;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
 
 [id$=_nonzeroPoints] .pointCard {
@@ -316,9 +318,10 @@ body {
 }
 
 .pointCard:hover, .pointSmall:hover, .pointListPoint:hover {
-	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
-	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+    background-color:   @pointCardBackground;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityRO);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityRO);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityRO);
 }
 
 .pointCard:hover .score, .pointSmall:hover .score, .pointListPoint:hover .score {
@@ -333,7 +336,8 @@ body {
 	color: black;
 	font-size: @fontSizeMedium;
 	line-height: @lineHeightBig;	
-	margin-bottom: 12px;	
+	margin-bottom: 16px;	
+    padding-left: 1px;
 }
 
 .pointCard .stat {
@@ -367,7 +371,7 @@ body {
 
 .pointCard .gauge {
 	position:relative;
-	margin-top: 6px;	
+	margin-top: 8px;	
 }
 
 .pointCard .gaugeText {
@@ -468,8 +472,11 @@ body {
 .boxedElement {
 	border-style:solid;
 	border-width:1px;
-	border-color:#B9BBBD;
+    border-color: @grayBoxOutlines;
   	word-wrap: break-word;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
 
 .boxedElement H5 {
@@ -686,8 +693,8 @@ body {
 .pointColumnMenuArea {
 	border-style: solid;
 	border-width: 1px;
-	border-color: #B9BBBD;
-	margin-bottom: -1px;
+	border-color: @grayBoxOutlines;
+	margin-bottom: @spaceBtPointCards;
 	padding-top:10px;
 }
 
@@ -1203,7 +1210,7 @@ button#counter_addPointWhenNonZero {
 }
 
 #searchResultsArea .pointCard:hover {
-    background-color:#E0FFFE;	
+    background-color: @pointCardBgSearchResults;	
 }
 
 

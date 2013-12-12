@@ -25,7 +25,7 @@
 @grayTextLighter:       #A9A9A9; // 151, 151, 151 // bolded stats
 @grayTextExtraLight:    #bdbdbd; // 189, 189, 189 // small text in sub-menus
 
-
+@grayBoxOutlines:       #D7D7D7; // 215, 215, 215
 
 
 // Accent colors
@@ -45,12 +45,15 @@
 @bodyBackground:        @white;
 @textColor:             @gray;
 
-
 // Links
 // -------------------------
 @linkColor:             @blue;
 @linkColorHover:        lighten(@linkColor, 15%);
 
+@pointCardBackground:   #E0FFFE;
+@pointCardBgSearchResults: lighten(@blue, 25%);
+
+//@pointCardBackground:   lighten(@linkColor, 35%);
 
 // Typography
 // -------------------------
@@ -64,12 +67,22 @@
 @altFontFamily:         @serifFontFamily;
 @baseLineHeight:        100%;
 
-
 @headingsFontFamily:    "ff-meta-web-pro", sans-serif; // empty to use BS default, @baseFontFamily
 @headingsFontWeight:    bold;    // instead of browser default, bold
 @headingsColor:         @black; // empty to use BS default, @textColor
 
 
+// Drop Shadows
+// -------------------------
+@dsHorDistDefault:      -2px;
+@dsVerDistDefault:      2px;
+@dsBlurDefault:         10px;
+@dsOpacityDefault:      0.08;
+@dsOpacityRO:           0.15;
+
+// Spacing
+// -------------------------
+@spaceBtPointCards:     6px;
 
 
 

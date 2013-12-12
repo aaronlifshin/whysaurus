@@ -64,7 +64,7 @@ body {
 
 #searchBox{
 	width:90%;
-	margin-top:10px;
+	margin-top:2px;
 	padding-right:40px;
 	border: 1px solid #000000;
 	-webkit-border-radius: 0px;
@@ -76,8 +76,8 @@ body {
 
 #searchArea .searchIcon {
 	position: absolute;
-	top: 22px;
-	right: -16px;
+	top: 20px;
+	right: -22px;
 	height: 16px;
 	width:25px;
 	background-image: url("/static/img/icon_magnifyingGlass.png");
@@ -148,10 +148,19 @@ body {
     font-weight: bold;
 }
 
+.headerUserName {	                                
+    font-family: @sansCondFontFamily;
+    color: black;
+    font-size: @fontSizeMediumCond;
+    font-weight: bold;
+}
+
 .headerLinks {	                                
     height:60px;
     line-height:60px;	
 	display:block;
+    font-size: @fontSizeMediumCond;
+    font-weight: bold;
 }
 
 .headerLinks a:hover, .userMenuArea a:hover {
@@ -160,8 +169,13 @@ body {
 }
 
 .headerLinks a {
-    padding-right:8%;	
+    padding-right:6%;	
 }
+
+.headerUserName a {	                                
+    color: black;
+}
+
 
 
 .Heading_Black_Caps a {
@@ -207,7 +221,7 @@ body {
 }
 
 #notificationIcon {
-	margin-right:10px;	
+	margin-right:20px;	
 }
 
 #notificationCount {
@@ -236,6 +250,7 @@ body {
 
 .vertalignmiddle {
 	vertical-align:middle;
+    padding-bottom: 1px;
 }
 
 .Heading_GreyMid_Caps {
@@ -336,7 +351,7 @@ body {
 	color: black;
 	font-size: @fontSizeMedium;
 	line-height: @lineHeightBig;	
-	margin-bottom: 16px;	
+	margin-bottom: 22px;	
     padding-left: 1px;
 }
 
@@ -360,8 +375,8 @@ body {
 
 .pointCard .supportColor {
     border-color: @grayTextExtraLight;
-    background-color: white;
-    border-width: 2px;
+    background-color: @grayLightBG;
+    border-width: 1px;
     border-style: solid;
     /* put the border on the inside of the box, in order to not mess up the gauge sizing math */
    -moz-box-sizing:    border-box;
@@ -497,11 +512,11 @@ body {
 
 .columnHeading {
 	font-weight:bold;
-	font-size: 1em; 
+	font-size: @fontSizeMediumCond; 
 	color:@grayTextDark;
 	font-family:@sansCondFontFamily;
 	line-height: @lineHeightDefault;
-    margin-bottom: 4px;	
+    margin-bottom: 2px;	
 }
 
 .bottomBorder {
@@ -527,7 +542,7 @@ body {
 
 
 .columnHeading .selectedTab {
-    color:#5b5b5b;
+    color: @grayTextDark;
 }
 
 .columnHeading .tab {
@@ -536,7 +551,7 @@ body {
 }    
 
 .columnHeading button:hover {
-    background-color: #00ADEE;
+    color: #00ADEE;
     color: white;
     background-position: 95% 100%;
 }

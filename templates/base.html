@@ -63,7 +63,7 @@
               <div class="searchIcon"></div>
           </div>
     		  {% if user %}              
-                  <div class="userMenuArea Heading_Black_Caps pull-right">
+                  <div class="userMenuArea headerUserName pull-right">
                     <span class="caret vertalignmiddle"></span>                    
                       <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> {{ user.name|escape }} 
                         <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_47px.png{% endif %}"/> 

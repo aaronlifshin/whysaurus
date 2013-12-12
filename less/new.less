@@ -344,21 +344,21 @@ body {
 }
 
 .pointCard .linkStat {
-    height:18px;
+    height:23px;
     min-height:0px;   
     display:block;
     float:left;    
 }
 
 .pointCard .counterColor {
-	background-color: #ffe6e7;
+	background-color:  @grayTextExtraLight;
 }
 
 .pointCard .supportColor {
-    background-color: #e3fde5;
-    //border-color: black;
-    //border-width: 2px;
-    //border-style: solid;
+    border-color: @grayTextExtraLight;
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
     /* put the border on the inside of the box, in order to not mess up the gauge sizing math */
    -moz-box-sizing:    border-box;
    -webkit-box-sizing: border-box;
@@ -373,12 +373,14 @@ body {
 .pointCard .gaugeText {
 	top:3px;    	
 	position: absolute;
-    font-size: @fontSizeMedium;
+    font-size: @fontSizeSmall;
+    letter-spacing: @letterSpacingCond;
     color: @grayTextMedium;
     font-family: @sansCondFontFamily;
     font-weight:700;
     text-transform:Uppercase;
-}
+    padding: 2px;
+ }
 
 .pointCard .gaugeCounter {
 	right: 3px;

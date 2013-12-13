@@ -34,11 +34,11 @@ body {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
       
 #header{
-    height:60px;	
+    height:48px;	
 }
 
 #logoImage {
-    margin-top: 4px;	
+    margin-top: 2px;	
 }
 
 .privateAreaHeader {
@@ -61,6 +61,7 @@ body {
 
 #searchArea{
 	left:-20px;
+    top: -3px;
 	height: 60px;
 	line-height:60px;
 	position:relative;
@@ -68,7 +69,7 @@ body {
 
 #searchBox{
 	width:90%;
-	margin-top:2px;
+	margin-top:0px;
 	padding-right:40px;
 	border: 1px solid #000000;
 	-webkit-border-radius: 0px;
@@ -157,10 +158,12 @@ body {
     color: black;
     font-size: @fontSizeMediumCond;
     font-weight: bold;
+    margin-top: -5px;
 }
 
 .headerLinks {	                                
     height:60px;
+    margin-top:-5px;
     line-height:60px;	
 	display:block;
     font-size: @fontSizeMediumCond;
@@ -198,8 +201,9 @@ body {
 
 .userMenuArea #avatar {
 	margin-left:5px;
-	height:50px;
-	width:50px;
+    margin-top: -2px;
+	height:40px;
+	width:40px;
 }
 
 .userMenuArea a, #notifications a.dropdown-toggle  {
@@ -221,23 +225,25 @@ body {
 
 #notifications {
     position: relative;	
+    top:-8px;
     cursor:pointer;
 }
 
 #notificationIcon {
-	margin-right:20px;	
+	margin-right:28px;	
 }
 
 #notificationCount {
 	position: absolute;
-	top: 15%;
+	top: 20%;
 	text-align: center;
 	background-color: #00ADEE;
 	color: white;
 	padding-left: 3px;
 	padding-right: 3px;
 	padding-top: 1px;
-	left: 60%;
+    padding-bottom: 0px;
+	left: 48%;
 	font-family: "ff-meta-web-pro-condensed", sans-serif;
 	font-size: 0.75em;
 	font-weight: 700;

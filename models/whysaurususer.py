@@ -338,21 +338,24 @@ class WhysaurusUser(auth_models.User):
         return rVotes
 
     
+    # Returns: true/false, new vote value, new number of votes on this line 
     @ndb.transactional(xg=True)
     def transactionalAddRelevanceVote(self, parentPoint, oldRelVote, newRelVote):
         # This will write to the point version's link array
         try: 
-            parentPoint.addRelevanceVote(oldRelVote, newRelVote)
-            if oldRelVote:
-                # Update the user's vote for this link
-                oldRelVote.value = newRelVote.value
-                oldRelVote.put()
-            else:
-                newRelVote.put()
-            return True
+            result, newRelevance, voteCount = parentPoint.addRelevanceVote(
+                oldRelVote, newRelVote)
+            if result:                
+                if oldRelVote:
+                    # Update the user's vote for this link
+                    oldRelVote.value = newRelVote.value
+                    oldRelVote.put()
+                else:
+                    newRelVote.put()
+                return True, newRelevance, voteCount
         except Exception as e:
             logging.exception('Could not write to NDB during transactionalAddRelevanceVote')
-            return False
+            return False, None, None
         
 
             

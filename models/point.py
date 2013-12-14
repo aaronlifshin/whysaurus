@@ -166,7 +166,7 @@ class Point(ndb.Model):
     @property
     def relevancePercent(self):
         if self._linkInfo is None or self._linkInfo.voteCount == 0:
-            return 'Unknown' 
+            return 'Please Set' 
         else:
             return str(self._linkInfo.rating) + '%'
     
@@ -515,18 +515,19 @@ class Point(ndb.Model):
         if user: # add this user's relevance votes to the points
             # get all relevance votes with this as the parent point
             relevanceVotes = user.getRelevanceVotes(self)
-            relevanceVoteDict = dict((rVote.childPointRootKey, rVote) 
-                for rVote in relevanceVotes)
-            logging.info('RVD: ' + str(relevanceVoteDict))
+            if relevanceVotes:
+                relevanceVoteDict = dict((rVote.childPointRootKey, rVote) 
+                    for rVote in relevanceVotes)
+                logging.info('RVD: ' + str(relevanceVoteDict))
         
-            if supportingPoints:
-                for p in supportingPoints:     
-                    if p.key.parent() in relevanceVoteDict:
-                        p._relevanceVote = relevanceVoteDict[p.key.parent()]                    
-            if counterPoints:                
-                for p in counterPoints:
-                    if p.key.parent() in relevanceVoteDict:
-                        p._relevanceVote = relevanceVoteDict[p.key.parent()]
+                if supportingPoints:
+                    for p in supportingPoints:     
+                        if p.key.parent() in relevanceVoteDict:
+                            p._relevanceVote =relevanceVoteDict[p.key.parent()]                    
+                if counterPoints:                
+                    for p in counterPoints:
+                        if p.key.parent() in relevanceVoteDict:
+                            p._relevanceVote =relevanceVoteDict[p.key.parent()]
     
         return supportingPoints, counterPoints
     
@@ -798,7 +799,7 @@ class Point(ndb.Model):
     # If old rel vote exists, replace its value, otherwise add a new value
     # into the value total
     def addRelevanceVote(self, oldRelVote, newRelVote):
-        retVal = False, 0
+        retVal = False, None, None
         if newRelVote: # should always be passed in
             links = self.getStructuredLinkCollection(newRelVote.linkType)
             ourLink = None
@@ -811,7 +812,7 @@ class Point(ndb.Model):
                 # TODO: sort the points by vote rating
                 
                 self.put()
-                retVal = True, ourLink.rating
+                retVal = True, ourLink.rating, ourLink.voteCount
         return retVal        
         
     # This is used to fix database problems
@@ -848,6 +849,7 @@ class PointRoot(ndb.Model):
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
     comments = ndb.KeyProperty(repeated=True, indexed=False)
+    supportedCount = ndb.ComputedProperty(lambda e: len(e.pointsSupportedByMe))
     
     
     @classmethod

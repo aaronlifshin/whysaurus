@@ -22,10 +22,16 @@ class Vote(AuthHandler):
         linkType = self.request.get('linkType')
         vote = self.request.get('vote')        
         user = self.current_user
-        logging.info('ABOUT TO CHECK ALL THE DATA 1:%s 2:%s 3:%s 4:%s ' % (parentRootURLsafe,childRootURLsafe,linkType, vote))
         if parentRootURLsafe and childRootURLsafe and linkType and user:
-            if user.addRelevanceVote(parentRootURLsafe, childRootURLsafe, linkType, int(vote)):
-                resultJSON = json.dumps({'result': True, 'newVote': self.request.get('vote')})
+            result, newRelevance, newVoteCount = user.addRelevanceVote(
+                parentRootURLsafe, childRootURLsafe, linkType, int(vote))
+            if result:
+                resultJSON = json.dumps({
+                    'result': True, 
+                    'newVote': vote,
+                    'newRelevance': str(newRelevance) + ' %',
+                    'newVoteCount': newVoteCount
+                })
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
         self.response.out.write(resultJSON)       
 

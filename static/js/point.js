@@ -609,8 +609,11 @@ function sendRelevanceVote(event) {
 		success: function(data){
 			obj = JSON.parse(data);
 			if (obj.result == true) {
-                showAlertAfter('Vote counted', 
-                    $(that).closest('[name=areaRelevanceRadio]'))
+                
+                $(that).closest('[name="areaRelevanceRadio"]').prev().text(
+                    'Relevance ' + obj.newRelevance);                
+                $(that).parent().nextAll('[name=relevanceTextLine]').text(
+                    obj.newVoteCount + " Users Voting.   Curent Average: " + obj.newRelevance);
             } else {
 			    showAlertAfter('Not able to save vote. Try to refresh the page.', 
                     $(that).closest('[name=areaRelevanceRadio]'));

@@ -60,33 +60,9 @@
 	</div>
 	{% if linkedPoints %}            
 		{% for point in linkedPoints %}
-            <a name="showRelevance" class="showRelevance">Relevance: {{point.relevancePercent}} </a>
-            <div name="areaRelevanceRadio" class="relevanceVote hide" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
-                <div class="relevanceValGroup">
-                    <input type="radio" name="relevanceRadio" value=0
-                    {% if point.myVoteValue == 0 %}checked {% endif %} />                    
-                    <label >0%</label>                    
-                </div>
-                <div class="relevanceValGroup">
-                    <input type="radio" name="relevanceRadio" value=33
-                    {% if point.myVoteValue == 33 %}checked {% endif %} />
-                    <label >33%</label>                    
-                </div>
-                <div class="relevanceValGroup">
-                    <input type="radio" name="relevanceRadio" value=66
-                    {% if point.myVoteValue == 66 %}checked {% endif %} />
-                    <label >66%</label>                    
-                </div>
-                <div class="relevanceValGroup">
-                    <input type="radio" name="relevanceRadio" value=100 
-                        {% if point.myVoteValue == 100 %}checked {% endif %} />
-                    <label >100%</label>                    
-                </div>
-                <div name="relevanceTextLine">
-                    {{point.relevanceVoteCount}} Users Voting.  Curent Average: {{point.relevancePercent}}
-                </div>
-            </div>
-            {% include 'pointBox.html' %}            
+            {% with linkType as linkType %}
+                {% include 'linkPoint.html' %} 
+            {% endwith %}
 		{% endfor %}
 	{% endif %}          
 </div>	

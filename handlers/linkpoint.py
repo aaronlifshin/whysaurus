@@ -30,8 +30,12 @@ class LinkPoint(AuthHandler):
                 resultJSON = json.dumps({'result': False, 'error': e.message})
             else:
                 if newVersion:
-                    path = os.path.join(constants.ROOT, 'templates/pointBox.html')
-                    newLinkPointHTML = json.dumps(template.render(path, {'point': supportingPoint}))
+                    path = os.path.join(constants.ROOT, 'templates/linkPoint.html')
+                    newLinkPointHTML = json.dumps(template.render(
+                        path, {
+                            'point': supportingPoint, 
+                            'linkType': linkType
+                        }))
                     resultJSON = json.dumps({
                         'result': True,
                         'numLinkPoints': supportingPoint.linkCount(linkType),

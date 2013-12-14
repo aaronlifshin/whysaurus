@@ -44,8 +44,12 @@ class AddSupportingPoint(AuthHandler):
                     'err': str(e)
                 }
             else:
-                path = os.path.join(constants.ROOT, 'templates/pointBox.html')
-                newLinkPointHTML = json.dumps(template.render(path, {'point': newLinkPoint}))
+                path = os.path.join(constants.ROOT, 'templates/linkPoint.html')
+                newLinkPointHTML = json.dumps(template.render(
+                    path, {
+                        'point': newLinkPoint,
+                        'linkType': linkType
+                }))
                 jsonOutput = {
                     'result': True,
                     'version': newPoint.version,

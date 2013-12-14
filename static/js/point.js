@@ -409,11 +409,14 @@ function pointListAppend(linkType, pointHTML, numLinkPoints) {
     parent.append($.parseJSON(pointHTML));
     setPointListHeader(linkType);	
     makePointsCardsClickable();	 
+    $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
+    $('[name^=relevanceRadio]').off('.ys').on('click.ys', sendRelevanceVote);        
+    
     if ($("[id^=" + linkType +"Point_]").length == 0 ) {
       $("#" + linkType + "_zeroPoints").hide();
       $("#" + linkType + "_nonzeroPoints").show();
     }
-	   
+	
     var newElem = parent.find('>:last-child');
     var position = newElem.offset();
     $("html, body").animate({ scrollTop: position.top - newElem.height()}, "slow");

@@ -22,6 +22,7 @@ class Vote(AuthHandler):
         linkType = self.request.get('linkType')
         vote = self.request.get('vote')        
         user = self.current_user
+        # logging.info('ABOUT TO CHECK ALL THE DATA 1:%s 2:%s 3:%s 4:%s ' % (parentRootURLsafe,childRootURLsafe,linkType, vote))
         if parentRootURLsafe and childRootURLsafe and linkType and user:
             result, newRelevance, newVoteCount = user.addRelevanceVote(
                 parentRootURLsafe, childRootURLsafe, linkType, int(vote))

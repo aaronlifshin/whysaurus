@@ -328,11 +328,13 @@ class WhysaurusUser(auth_models.User):
         parentRootKey = parentPoint.key.parent();
         maxNumVotes = parentPoint.numSupporting + parentPoint.numCounter;
         
-        # MULTIPLY numVotes * 2 because the current set of points may be smaller
-        # than the set for a given version
-        rVotes = RelevanceVote.query(
-            RelevanceVote.parentPointRootKey == parentRootKey, 
-            ancestor = self.key).fetch(maxNumVotes*2)
+        rVotes = None
+        if maxNumVotes > 0:
+            # MULTIPLY numVotes * 2 because the current set of points may be smaller
+            # than the set for a given version
+            rVotes = RelevanceVote.query(
+                RelevanceVote.parentPointRootKey == parentRootKey, 
+                ancestor = self.key).fetch(maxNumVotes*2)
         return rVotes
 
     

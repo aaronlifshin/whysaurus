@@ -9,7 +9,7 @@ from authhandler import AuthHandler
 from models.point import PointRoot
 from models.point import Point
 from models.point import Link
-
+from models.privateArea import PrivateArea
 from models.follow import Follow
 from models.comment import Comment
 
@@ -18,8 +18,11 @@ from models.whysaurususer import WhysaurusUser
 from google.appengine.api import search
 from google.appengine.api.taskqueue import Task
 from google.appengine.api import namespace_manager
-
+    
 from handlers.dbIntegrityCheck import DBIntegrityCheck
+
+from google.appengine.api import namespace_manager
+
 
 
 # One-off tasks for changing DB stuff for new versions
@@ -53,7 +56,13 @@ class AaronTask(AuthHandler):
         points = pointRoot.getAllVersions()
         logging.info('- - - - Processing root for %s' % pointRoot.url)
         
-        for point in points:
+
+        
+        for point in points:            
+            if (point.supportingLinks != []) or (point.counterLinks != []):
+                logging.info('- - --- - - - - - Skipping version %d' % point.version)                
+                continue # make sure we don't write twice
+            
             for linkType in ('supporting', 'counter'):  
                 structuredLinkCollection  = []   
                 logging.info('Getting root collections for version %d, link Type: %s' % (point.version, linkType))
@@ -75,8 +84,9 @@ class AaronTask(AuthHandler):
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
     """  
     def pointRootsMap(self, f, taskURL, firstURL = None):
-        nextURL = None
+        nextURL = None        
         query = PointRoot.query().order(PointRoot.url)
+                        
         if firstURL:
             query = query.filter(PointRoot.url >= firstURL)
             
@@ -101,12 +111,21 @@ class AaronTask(AuthHandler):
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
     """
     def MakeLinks(self):
-        firstURL = self.request.get('nexturl')        
+        firstURL = self.request.get('nexturl') 
+               
         self.pointRootsMap(
             f=self.pointRootLinkChange, 
             taskURL='/job/MakeLinks',
             firstURL=firstURL if firstURL else None)
+            
          
+    def MakeLinksAllAreas(self):
+        q = PrivateArea.query()
+        for pa in q.iter():
+            logging.info("Kicking off the make links for private area: " + pa.name)
+            namespace_manager.set_namespace(pa.name)         
+            self.MakeLinks()
+        # THE MAIN ONE WOULD GO HERE
         
     """
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

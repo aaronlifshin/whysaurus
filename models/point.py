@@ -82,6 +82,17 @@ class Link(ndb.Model):
     root = ndb.KeyProperty(indexed=False)
     rating = ndb.IntegerProperty(indexed=False)
     voteCount = ndb.IntegerProperty(indexed=False)
+    
+    def updateRelevanceData(self, oldRelVote, newRelVote):
+        startingRating = self.rating if self.rating else 0
+        if oldRelVote:
+            newSum = startingRating * self.voteCount - oldRelVote.value + newRelVote.value
+            self.rating = newSum/self.voteCount                    
+        else:
+            newSum = startingRating * self.voteCount + newRelVote.value
+            self.voteCount = self.voteCount + 1
+            self.rating = newSum/self.voteCount
+        
 
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
@@ -115,7 +126,8 @@ class Point(ndb.Model):
     fullPointImage = ImageUrl('FullPoint')
     imageDescription = ndb.StringProperty(default='', indexed=False)
     imageAuthor = ndb.StringProperty(default='', indexed=False)
-    _relevanceVote = RelevanceVote
+    _relevanceVote = None
+    _linkInfo = None
 
     @property
     def numSupporting(self):
@@ -150,7 +162,25 @@ class Point(ndb.Model):
     @property
     def rootURLsafe(self):
         return self.key.parent().urlsafe();
-          
+        
+    @property
+    def relevancePercent(self):
+        if self._linkInfo is None or self._linkInfo.voteCount == 0:
+            return 'Unknown' 
+        else:
+            return str(self._linkInfo.rating) + '%'
+    
+    @property
+    def relevanceVoteCount(self):
+        return 0 if self._linkInfo is None else self._linkInfo.voteCount
+        
+    @property
+    def myVoteValue(self):
+        if self._relevanceVote is None:
+            return None
+        else:
+            return self._relevanceVote.value
+        
     @classmethod
     def getByKey(cls, pointKey):
         return ndb.Key('Point', pointKey).get()
@@ -329,7 +359,7 @@ class Point(ndb.Model):
                     root = p['pointRoot'].key,
                     voteCount = 0
                 )
-                linkP.supportingLinks = linkP.supportingLinks + newLink if \
+                linkP.supportingLinks = linkP.supportingLinks + [newLink] if \
                     linkP.supportingPointsRoots else [newLink]
                     
                 # OLD STORAGE SYSTEM
@@ -460,12 +490,8 @@ class Point(ndb.Model):
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl]
             roots = ndb.get_multi(rootKeys)
-            linkedPoints = []
-            
-            if roots and user:
-                relevanceVotes = user.getRelevanceVotes(self)
-            
-                
+            linkedPoints = []            
+                            
             for pointRoot in roots:
                 if pointRoot:
                     linkedPoints = linkedPoints + [pointRoot.getCurrent()]
@@ -473,11 +499,36 @@ class Point(ndb.Model):
                     logging.info('WARNING: Supporting point array for ' +
                                  self.url + ' contains pointer to missing root')
 
-                
-                
+            # logging.info('ZPL' + str(zip(points, linkColl)))            
+            for point, link in zip(linkedPoints, linkColl):
+                point._linkInfo = link
+                            
             return linkedPoints
         else:
             return None        
+    
+    # gets both supporting and counter points, with their relevance
+    def getAllLinkedPoints(self, user):
+        supportingPoints = self.getLinkedPoints("supporting", user)
+        counterPoints = self.getLinkedPoints("counter", user)
+        
+        if user: # add this user's relevance votes to the points
+            # get all relevance votes with this as the parent point
+            relevanceVotes = user.getRelevanceVotes(self)
+            relevanceVoteDict = dict((rVote.childPointRootKey, rVote) 
+                for rVote in relevanceVotes)
+            logging.info('RVD: ' + str(relevanceVoteDict))
+        
+            if supportingPoints:
+                for p in supportingPoints:     
+                    if p.key.parent() in relevanceVoteDict:
+                        p._relevanceVote = relevanceVoteDict[p.key.parent()]                    
+            if counterPoints:                
+                for p in counterPoints:
+                    if p.key.parent() in relevanceVoteDict:
+                        p._relevanceVote = relevanceVoteDict[p.key.parent()]
+    
+        return supportingPoints, counterPoints
     
     # DATASTORE GET OF THE LAST CHANGE LINK POINTS BY LINK TYPE
     # THIS WILL GET THE VERSION OF THE LINKED POINTS AT THE TIME 
@@ -752,18 +803,12 @@ class Point(ndb.Model):
             links = self.getStructuredLinkCollection(newRelVote.linkType)
             ourLink = None
             for link in links:
-                if link.root == newRelVote.childRootKey:
+                if link.root == newRelVote.childPointRootKey:
                     ourLink = link
                     break
             if ourLink:
-                if oldRelVote:
-                    newSum = ourLink.rating * ourLink.voteCount - oldRelVote.value + newRelVote.value
-                    ourLink.rating = newSum/ourLink.voteCount                    
-                else:
-                    newSum = ourLink.rating * ourLink.voteCount + newRelVote.value
-                    ourLink.voteCount = ourLink.voteCount + 1
-                    ourLink.rating = newSum/ourLink.voteCount                    
-                # and now we would sort the points by vote rating
+                ourLink.updateRelevanceData(oldRelVote, newRelVote)                
+                # TODO: sort the points by vote rating
                 
                 self.put()
                 retVal = True, ourLink.rating

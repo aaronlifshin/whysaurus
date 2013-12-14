@@ -584,6 +584,47 @@ function showReplyComment(event) {
     $('#showAddComment').parent().removeClass('hide');    
 }
 
+function showRelevance(event) {
+    relArea = $(this).next();
+    if (relArea.hasClass('hide')) {
+        relArea.removeClass('hide');
+    } else {
+        relArea.addClass('hide');
+    }
+}
+
+function sendRelevanceVote(event) {
+    relBase = $(this).closest('[name=areaRelevanceRadio]');
+    var that = this;
+    $.ajaxSetup({
+		url: "/relVote",
+		global: false,
+		type: "POST",
+		data: {
+            'parentRootURLsafe': $('#pointArea').data('rootus'),
+            'childRootURLsafe': relBase.data('childurlsafe'),
+            'linkType': relBase.data('linktype'),
+            'vote': $(this).val(),
+		},
+		success: function(data){
+			obj = JSON.parse(data);
+			if (obj.result == true) {
+                showAlertAfter('Vote counted', 
+                    $(that).closest('[name=areaRelevanceRadio]'))
+            } else {
+			    showAlertAfter('Not able to save vote. Try to refresh the page.', 
+                    $(that).closest('[name=areaRelevanceRadio]'));
+                
+            }
+		},
+		error: function(xhr, textStatus, error){
+            showAlertAfter('The server returned an error. You may try again.', "#addComment");
+            stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+        }
+	});
+	$.ajax();
+}
+
 function saveComment(event) {
     var ed = tinyMCE.get('commentText');
     commentText = ed.getContent();    
@@ -696,7 +737,10 @@ function activatePointArea() {
         make_this_show_login_dlg($( "#downVote" ));
         make_this_show_login_dlg($( "#viewPointHistory" ));
         make_this_show_login_dlg($( "#showAddComment" ));
-        make_this_show_login_dlg($( "[name=commentReply]" ));        
+        make_this_show_login_dlg($( "[name=commentReply]" ));    
+        make_this_show_login_dlg($( "[name=showRelevance]" ));     
+        make_this_show_login_dlg($( "[name^=relevanceRadio]" ));                   
+            
     } else {
 
         $( "#supporting_unlinkToggle" ).button().click(function() {
@@ -725,6 +769,9 @@ function activatePointArea() {
         });
 
         $('[name=commentReply]').click(showReplyComment);
+        $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
+        $('[name^=relevanceRadio]').off('.ys').on('click.ys', sendRelevanceVote);        
+        
         $('#saveCommentSubmit').off('.ys').on('click.ys', saveComment);    
         $( "#deletePoint" ).button();
 	    $('#viewPointHistory').click(viewPointHistory);		

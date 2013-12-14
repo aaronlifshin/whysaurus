@@ -10,9 +10,8 @@ from models.redirecturl import RedirectURL
 
 class ViewPoint(AuthHandler):
     def createTemplateValues(self, point, pointRoot, full=True):
-        user = self.current_user        
-        supportingPoints = point.getLinkedPoints("supporting", user)
-        counterPoints = point.getLinkedPoints("counter", user)
+        user = self.current_user    
+        supportingPoints, counterPoints = point.getAllLinkedPoints(user)
         sources = point.getSources()
 
         voteValue = 0

@@ -316,34 +316,41 @@ class WhysaurusUser(auth_models.User):
             ancestor=self.key).get()
             
         newRelVote = RelevanceVote(
-            parent=self.key(),
+            parent=self.key,
             parentPointRootKey = parentRootKey,
             childPointRootKey = childRootKey,
             value = vote,
             linkType=linkType)
-            
-        self.transactionalAddRelevanceVote(curPoint, relVote)
+        return self.transactionalAddRelevanceVote(
+            curPoint, oldRelVote, newRelVote)
         
     def getRelevanceVotes(self, parentPoint):
         parentRootKey = parentPoint.key.parent();
         maxNumVotes = parentPoint.numSupporting + parentPoint.numCounter;
         
         # MULTIPLY numVotes * 2 because the current set of points may be smaller
-        # than 
+        # than the set for a given version
         rVotes = RelevanceVote.query(
             RelevanceVote.parentPointRootKey == parentRootKey, 
             ancestor = self.key).fetch(maxNumVotes*2)
         return rVotes
 
+    
     @ndb.transactional(xg=True)
     def transactionalAddRelevanceVote(self, parentPoint, oldRelVote, newRelVote):
-        parentPoint.addRelevanceVote(oldRelVote, newRelVote)
-        if oldRelVote:
-            # Update the user's vote for this link
-            oldRelVote.value = newRelVote.value
-            oldRelVote.put()
-        else:
-            newRelVote.put()
+        # This will write to the point version's link array
+        try: 
+            parentPoint.addRelevanceVote(oldRelVote, newRelVote)
+            if oldRelVote:
+                # Update the user's vote for this link
+                oldRelVote.value = newRelVote.value
+                oldRelVote.put()
+            else:
+                newRelVote.put()
+            return True
+        except Exception as e:
+            logging.exception('Could not write to NDB during transactionalAddRelevanceVote')
+            return False
         
 
             

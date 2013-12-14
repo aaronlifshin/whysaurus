@@ -7,7 +7,7 @@ class UserVote(ndb.Model):
 
 class RelevanceVote(ndb.Model):    
     parentPointRootKey = ndb.KeyProperty(required=True)
-    childPointRootKey = ndb.KeyProperty(required=True, indexed=False) 
-    linkType = ndb.StringProperty(indexed=False)       
+    childPointRootKey = ndb.KeyProperty(required=True) 
+    linkType = ndb.StringProperty()       
     value = ndb.IntegerProperty(required=True, indexed=False)  # 1, 0, -1
     

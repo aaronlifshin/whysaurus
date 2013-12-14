@@ -6,7 +6,7 @@
   <div class="row {% if user and user.privateArea %}privateAreaContentOffset{% endif %}">
     <div id="userInfoArea" class="span3" >
         <div class="row-fluid">
-          <div id="display_userName" class="columnHeading span6" style="line-height:25px">
+          <div id="display_userName" class="columnHeading columnHeadingBig span6" style="line-height:25px">
               {{profileUser.name}}
           </div>   
           <div class=span6>
@@ -19,9 +19,11 @@
              <img class="profilePic" src='{{profileUser.avatar_url}}'/>                            
         {% else %}
             <img class="profilePic" src='/static/img/placeholder.gif'/>
-        {% endif %}        
-        <div>Created: {{profileUser.createdCount }}</div>
-        <div>Edited: {{profileUser.editedCount }}</div>
+        {% endif %} 
+        <div class="profileStatsArea">        
+            <div>Created: {{profileUser.createdCount }}</div>
+            <div>Edited: {{profileUser.editedCount }}</div>
+        </div>
         <div id="display_userWebsite" >
           {% if profileUser.websiteURL %}
               <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>

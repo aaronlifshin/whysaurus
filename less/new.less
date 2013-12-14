@@ -24,6 +24,10 @@ body {
     text-decoration: none;
 }
 
+.fullPageText {
+    max-width: 640px;
+}
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    HEADER BAR STUFF AND PRIVATE AREA BAR (MOSTLY)
@@ -519,6 +523,13 @@ body {
     margin-bottom: 2px;	
 }
 
+.columnHeadingBig {
+	font-size: @fontSizeLargeCond; 
+    color: black;
+}
+
+
+
 .bottomBorder {
 	border-bottom: 1px solid #d7d7d7;
 }
@@ -818,12 +829,12 @@ body {
    
 // DEPRECATED?
 /*
-h1.condensed {
+h4.condensed {
 	line-height: 100%;
 }
 */
 
-h1.mainPointTitleText {
+h4.mainPointTitleText {
     font-size: @fontSizeLarge;
     color: black;
     margin-top:0px;
@@ -833,7 +844,7 @@ h1.mainPointTitleText {
 
 
 
-h1.mission {
+h4.mission {
 	font-family: "ff-meta-web-pro", sans-serif;
     font-size: 1.1em;
     line-height: 100%;
@@ -959,7 +970,7 @@ img.smallDisplay {
 
 //DEPRECATED?
 /*
-.mainPointTitle h1 {
+.mainPointTitle h4 {
 	margin-top:0px;
 	margin-right: 10px;
 	line-height:120%;
@@ -1467,6 +1478,11 @@ fieldset { padding:0; border:0; margin-top:25px;}
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .profilePic {
 	width:80%; 
+    margin-bottom:8px;
+}
+
+.profileStatsArea {
+    margin-bottom:8px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

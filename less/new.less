@@ -1277,13 +1277,6 @@ button#counter_addPointWhenNonZero {
 	width: 97.5%;
 }
 
-#author_pointDialog {
-	width:70%;
-}
-#description_pointDialog {
-    width:70%;
-}
-
 #cancel_pointDialog {
 	margin-left: 22px;
 	width:44px;
@@ -1295,10 +1288,6 @@ button#counter_addPointWhenNonZero {
 
 #submit_pointDialog {
    margin-left: 10px; 
-}
-
-#sourceURL_pointDialog {
-    width:60%;
 }
 
 #sourcesAdd {
@@ -1344,8 +1333,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 #editor_pointDialog {
     height:60px !important;
-    width:97.5% !important;  
-    
+    width:97.5% !important;      
 }
 
 .mceEditor > table {
@@ -1380,6 +1368,33 @@ fieldset { padding:0; border:0; margin-top:25px;}
   margin-top:5px;
   width:100%;
   }
+  
+
+  .accordion-group-heading .panel-heading {
+      background-color:#efefef;
+  }
+
+  .accordion-group-heading .panel-heading:hover {
+      background-color:#e0fffe;
+      text-decoration: none !important;
+      color:#bdbdbd;
+  }
+
+  .panel-heading, .control-group {
+      padding-left:10px;
+  }
+  
+  .modal h3, .modal button {
+      font-family:"ff-meta-web-pro-condensed", sans-serif;
+  }
+
+  .charCount {
+  	font-family: "ff-meta-web-pro", sans-serif;
+  	font-size: 0.675em; 
+  	text-transform: uppercase;
+  	font-weight:400;	
+  }
+  
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END Edit point dialog stuff
@@ -1494,9 +1509,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
     MODAL DILAOGS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-.modal input {
-	width:75%;
-}
+
 
 .modal input::-webkit-input-placeholder, .modal textarea::-webkit-input-placeholder {
     font-family:"ff-meta-web-pro", sans-serif;
@@ -1531,23 +1544,12 @@ fieldset { padding:0; border:0; margin-top:25px;}
     resize:none;
 }
 
-.modal label {
+.modal label, .accordion-group-heading {
     font-family:"ff-meta-web-pro-condensed", sans-serif;	
     font-weight:bold;
     font-size:0.9375em; /* 15 px */
     line-height: 200%;
     color:#bdbdbd;
-}
-
-.modal h3, .modal button {
-    font-family:"ff-meta-web-pro-condensed", sans-serif;
-}
-
-.charCount {
-	font-family: "ff-meta-web-pro", sans-serif;
-	font-size: 0.675em; 
-	text-transform: uppercase;
-	font-weight:400;	
 }
 
 

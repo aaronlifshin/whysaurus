@@ -18,7 +18,7 @@ function showSuccessAlert(alertText) {
 }
 
 function validateURL(textval) {
-     return textval.match(/^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/);
+     return textval.match(/^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>%"\{\}\\|\\\^\[\]`]+)?$/);
 }
 
 function validateEmail(textval) {
@@ -996,6 +996,21 @@ function makeNotificationMenuClickable() {
     $('#notifications').click(markNotificationsRead);
 }
 
+function showPointDialog(dialogAction, dialogTitle) {    
+    $("#submit_pointDialog").data("dialogaction", dialogAction)
+    $('div.modal-header h3', $('#pointDialog')).text(dialogTitle);    
+  
+    $("#pointDialog").modal('show');
+    if (!$('#collapsibleTitleArea').hasClass('in')) {
+        $('#collapsibleTitleArea').addClass('in'); 
+        $('#collapsibleTitleArea').css('height', 'auto'); 
+        $('#collapsibleImageArea').removeClass('in');
+        $('#collapsibleImageArea').css('height', '0px');         
+        $('#collapsibleSourcesArea').removeClass('in'); 
+        $('#collapsibleSourcesArea').css('height', '0px');                
+    }
+        
+}
 
 var channelErrors = 0; 
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
@@ -1092,29 +1107,30 @@ function activateHeaderAndDialogs() {
 
     } else {
         $( "#CreatePoint" ).on('click', function() {
-            $("#submit_pointDialog").data("dialogaction", "new");
-            $('div.modal-header h3', $('#pointDialog')).text("New Point");
-            $("#pointDialog").modal('show');
+            showPointDialog("new", "New Point");
         });
 
         $("#pointDialog").on('hidden', function() {
-          var edSummary = tinyMCE.get('editor_pointDialog');
-          edSummary.setContent('');
-          $('#title_pointDialog').val('');
-          setCharNumText($('#title_pointDialog')[0]);
-          $('#link_pointDialog').val('');
-          $('#author_pointDialog').val('');
-          $('#description_pointDialog').val('');
-          $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
-          $('[name=source_pointDialog]').remove();
-          $('#pointDialog').removeData('sourcesToRemove');     
-          $('#sourceURL_pointDialog').val("");
-          $('#sourceTitle_pointDialog').val("");
-
+            // We have to check it it's really hidden, because this event is also triggered on accordion hides
+            if ($("#pointDialog").css('display') == 'none') {
+                var edSummary = tinyMCE.get('editor_pointDialog');
+                edSummary.setContent('');
+                $('#title_pointDialog').val('');
+                setCharNumText($('#title_pointDialog')[0]);
+                $('#link_pointDialog').val('');
+                $('#author_pointDialog').val('');
+                $('#description_pointDialog').val('');
+                $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
+                $('[name=source_pointDialog]').remove();
+                $('#pointDialog').removeData('sourcesToRemove');     
+                $('#sourceURL_pointDialog').val("");
+                $('#sourceTitle_pointDialog').val("");
+            }
         });
 
         $("#pointDialog").on('shown', function() {
-            $('#title_pointDialog').focus();
+            // This is also triggered on accordion slides
+            $('#title_pointDialog').focus();           
         });
 
         $("#submit_pointDialog").on('click', function(e) {

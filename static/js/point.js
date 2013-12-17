@@ -506,30 +506,26 @@ function setUpMenuAreas() {
     // Edit the current point
     $( "#editPoint" ).on('click', function() {
         populateEditFields();
-        $("#submit_pointDialog").data("dialogaction", "edit")
-        $("#pointDialog").modal('show');
+        showPointDialog("edit", "Edit Point");        
     });
     
     $( "#addImage" ).on('click', function() {
         populateEditFields();
-        $("#submit_pointDialog").data("dialogaction", "edit")
-        $("#pointDialog").modal('show');
+        showPointDialog("edit", "Edit Point");
     });
     
     $( "#changeImage" ).on('click', function() {
         populateEditFields();
-        $("#submit_pointDialog").data("dialogaction", "edit")
-        $("#pointDialog").modal('show');
+        showPointDialog("edit", "Edit Point");
+        
     });
 
     // Create a new linked point
     $( "[name=createLinked]" ).on('click', function() {
         var linkType = $(this).data('linktype');
-        $("#submit_pointDialog").data("dialogaction", "createLinked");
         $("#submit_pointDialog").data("linktype", linkType);
         var dialogName = "Create " + linkType.capitalize() + " Point";
-        $('div.modal-header h3', $('#pointDialog')).text(dialogName);
-        $("#pointDialog").modal('show');
+        showPointDialog("createLinked", dialogName);        
     });
     
     // Show the search dialog

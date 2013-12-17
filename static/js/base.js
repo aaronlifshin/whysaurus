@@ -1009,6 +1009,7 @@ function activateHeaderAndDialogs() {
                     var file = fpfiles[0];
                     
                     $('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_black_47px.png').addClass('spin');
+                    startSpinnerOnButton('#submit_pointDialog');
                     filepicker.convert(file, 
                         {width: 112, height: 112, fit: 'clip'}, 
                         {path: 'SummaryBig-' + file.key});
@@ -1020,6 +1021,7 @@ function activateHeaderAndDialogs() {
                             $('.filepicker-placeholder')
                                 .attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key))
                                 .removeClass('spin');
+                            stopSpinner();
                     });
 
                     $(self).prev('[name=imageURL]').val(file.key);

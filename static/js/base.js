@@ -116,10 +116,10 @@ function getCaretPosition (oField) {
 }
 
 
-function positionEditDialog() {
+/*function positionEditDialog() {
   dialogHeight = $(".pointDialog").height();
   $("[id$='_ifr']").height(dialogHeight - 550);
-}
+}*/
 
 function getNewSourcesURLs() {
     var links  = $('.sourceLink');
@@ -193,26 +193,6 @@ function newPoint() {
     }
   });
   $.ajax();
-}
-
-function openNewPointDialog() {
-  document.getElementById("textEdit_tbl").style.width = '100%';
-  document.getElementById("textEdit_ifr").style.width = '100%';
-  document.getElementById("textEdit_tbl").style.height = '100%';
-  document.getElementById("textEdit_ifr").style.height = '100%';
-  var dialogButtons = {};
-  dialogButtons["Create Point"] =
-
-  dialogButtons["Cancel"] = function() {
-
-    $(this).dialog("close");
-  };
-
-  $("#dialogForm").dialog({
-    title: "New Point",
-    buttons: dialogButtons
-  });
-  $("#dialogForm").dialog("open");
 }
 
 function openLoginDialog() {
@@ -303,9 +283,9 @@ function removeSource(clickedElement) {
 function updateDialogHeight() {
     numSources = $("[name='source_pointDialog']").length;
     if (numSources > 1) {
-        $(".pointDialog").height(590 + (numSources-1)*20);        
+        $(".pointDialog").height(475 + (numSources-1)*20);        
     } else {
-        $(".pointDialog").height(590);
+        $(".pointDialog").height(475);
     }
     
 }

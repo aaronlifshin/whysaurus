@@ -347,10 +347,18 @@ function populateEditFields() {
     var url = $('#pointSummary div.mainPointImageURL').text();
     $('#link_pointDialog').val(url);
 
+    var sourcesCount = 0;
     $('[name=mainPointSource] a').each(function(i, obj) {    
       var sourcekey = $(obj).data('sourcekey');
       addSourceHTML($(obj).attr('href'), $(obj).text(), sourcekey);
+      sourcesCount = sourcesCount + 1;
     });
+    if (sourcesCount > 0 ) {
+        $("#sourcesPanelTitle .panel-heading").text(sourcesCount + (sourcesCount == 1?" Source":" Sources"));
+    } else {
+        $("#sourcesPanelTitle .panel-heading").text("0 Sources (add some to improve this)");
+    }
+
 
     if(url !== '') {
         if(url.match("https?://")) {

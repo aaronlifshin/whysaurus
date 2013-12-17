@@ -1125,6 +1125,7 @@ function activateHeaderAndDialogs() {
                 $('#pointDialog').removeData('sourcesToRemove');     
                 $('#sourceURL_pointDialog').val("");
                 $('#sourceTitle_pointDialog').val("");
+                $("#sourcesPanelTitle .panel-heading").text('Sources');
             }
         });
 

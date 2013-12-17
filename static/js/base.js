@@ -18,7 +18,7 @@ function showSuccessAlert(alertText) {
 }
 
 function validateURL(textval) {
-     return textval.match(/^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>%"\{\}\\|\\\^\[\]`]+)?$/);
+     return textval.match(/^(ht|f)tps?:\/\/[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>"\{\}\\|\\\^\[\]`]+)?$/);
 }
 
 function validateEmail(textval) {
@@ -291,7 +291,10 @@ function updateDialogHeight() {
 }
 
 function addSource(clickedElement) {
-    var urlVal = $('#sourceURL_pointDialog').val();
+    var urlVal = $('#sourceURL_pointDialog').val() || null;
+    if (urlVal) {
+        urlVal = urlVal.trim();
+    }
     if (urlVal == "") {
         editDialogAlert('URL is required');        
     } else if (!validateURL(urlVal)) {        

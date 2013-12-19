@@ -32,6 +32,7 @@
 // Accent colors
 // -------------------------
 @blue:                  #00ADEE; // hyperlink Cyan
+@blueLight:             #ebfffe;
 @blueDark:              #0064cd;
 @green:                 #0CCF00; // score
 @red:                   #FF000B; // score
@@ -52,9 +53,8 @@
 @linkColorHover:        lighten(@linkColor, 15%);
 
 
-@pointCardBackgroundBase:   #E0FFFE;
-@widgetBG:                  #ebfffe; //lighten(@pointCardBackgroundBase, 10%);
-@pointCardBackground:       darken(@pointCardBackgroundBase, 7.5%);
+@widgetBG:                  lighten(@yellow, 80%);//@blueLight; //lighten(@pointCardBackgroundBase, 10%);
+@pointCardBackground:       darken(@blueLight, 10%);
 @pointCardBgSearchResults:  @pointCardBackground;
 
 

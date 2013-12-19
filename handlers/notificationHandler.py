@@ -14,7 +14,7 @@ class NotificationHandler(AuthHandler):
         rootKeyUrlsafe = self.request.get('rootKey')
         notifyReason = self.request.get('notifyReason')
         sourceUserUrlsafe = self.request.get('userKey')
-        commentText = self.request.get('commentText')        
+        additionalText = self.request.get('additionalText')        
 
         pointRootKey = ndb.Key(urlsafe=rootKeyUrlsafe)
         sourceUserKey = ndb.Key(urlsafe=sourceUserUrlsafe)
@@ -25,7 +25,7 @@ class NotificationHandler(AuthHandler):
                 Notification.createNotificationFromFollow(f, pointRootKey, 
                                                           sourceUserKey, 
                                                           notifyReason,
-                                                          commentText )
+                                                          additionalText )
                 
     def NewNotificationChannel(self):
         user = self.current_user

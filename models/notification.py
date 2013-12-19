@@ -23,7 +23,7 @@ class Notification(ndb.Model):
     clearedDate = ndb.DateTimeProperty(default=None)
     additionalUserKeys = ndb.KeyProperty(repeated=True)
     notificationCategory = ndb.IntegerProperty() # Notifications are combined if they share a category
-    commentText = ndb.StringProperty(indexed=False, default=None) # the reference of the relevant comment
+    additionalText = ndb.StringProperty(indexed=False, default=None)
     
     @webapp2.cached_property
     def pointRootFull(self):
@@ -45,7 +45,7 @@ class Notification(ndb.Model):
     def raisedDateSecs(self):
         epoch = datetime.datetime.utcfromtimestamp(0)
         delta = self.raisedDate - epoch  
-        return int(delta.total_seconds())
+        return int(delta.total_seconds())        
        
     def timeText(self):        
         delta = datetime.datetime.now() - self.raisedDate
@@ -76,11 +76,11 @@ class Notification(ndb.Model):
 
     @classmethod
     def getNotificationCategory(cls, reason):
-        if reason == "edited":
+        if reason in ["edited", "added a supporting point to",  "added a counter point to" ]:
             return 1
         elif reason == "agreed with" or reason == "awarded a ribbon to":
             return 2
-        elif reason == "unlinked a supporting point" or reason == "unlinked a counter point":
+        elif reason == "unlinked a supporting point from" or reason == "unlinked a counter point from":
             return 1
         elif reason == "commented on":    
             return 3
@@ -88,7 +88,7 @@ class Notification(ndb.Model):
             return 4
             
     @classmethod
-    def createNotificationFromFollow(cls, follow, pointKey, userKey, notificationReason, commentText=None):
+    def createNotificationFromFollow(cls, follow, pointKey, userKey, notificationReason, additionalText=None):
         try:
             n = Notification.getSimilarNotification(
                     follow.user, 
@@ -115,7 +115,7 @@ class Notification(ndb.Model):
                                  notificationCategory=
                                      Notification.getNotificationCategory(
                                          notificationReason),
-                                 commentText = commentText
+                                 additionalText = additionalText
                                 )
             n.put()
             targetUser = follow.user.get()

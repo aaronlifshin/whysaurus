@@ -190,12 +190,12 @@ class Point(ndb.Model):
     The /addNotification task will notify all the users that are following the point
     """
     @classmethod
-    def addNotificationTask(cls, pointRootKey, userKey, notifyReason, commentText=None):
+    def addNotificationTask(cls, pointRootKey, userKey, notifyReason, additionalText=None):
         t = Task(url='/addNotifications', 
                  params={'rootKey':pointRootKey.urlsafe(),
                          'userKey':userKey.urlsafe(),
                          'notifyReason': notifyReason,
-                         'commentText': commentText })
+                         'additionalText': additionalText })
         t.add(queue_name="notifications")
         
     @staticmethod
@@ -662,7 +662,15 @@ class Point(ndb.Model):
             newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)
                     
             Follow.createFollow(user.key, theRoot.key, "edited")
-            Point.addNotificationTask(theRoot.key, user.key, "edited")
+            if pointsToLink:
+                # For now we only ever add a single linked point
+                Point.addNotificationTask(
+                    theRoot.key, 
+                    user.key, 
+                    "added a " + pointsToLink[0]['linkType']+ "point to",
+                    pointsToLink[0]['pointCurrentVersion'].title )
+            else:
+                Point.addNotificationTask(theRoot.key, user.key, "edited")
 
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndexNew()

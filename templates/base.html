@@ -87,7 +87,7 @@
                         <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                         
                             {{ user.newNotificationCount }} 
                         </div>
-                      <ul class="span4 dropdown-menu notification-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                      <ul class="span4 dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
                          <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
                         {% if user.notifications %}                                               
                             data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
@@ -125,6 +125,7 @@
     		  {% endif %}
         </div>        
       </div>
+      
       {% if user and user.privateArea %}
         <div class="privateAreaHeader ">
           <div class="container">
@@ -262,7 +263,7 @@
           </form>
       </div>
       
-        <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
+      <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
         <div class="modal-header">
           <h3>Sign In</h3>
         </div>

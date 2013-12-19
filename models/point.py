@@ -518,7 +518,7 @@ class Point(ndb.Model):
             if relevanceVotes:
                 relevanceVoteDict = dict((rVote.childPointRootKey, rVote) 
                     for rVote in relevanceVotes)
-                logging.info('RVD: ' + str(relevanceVoteDict))
+                # logging.info('RVD: ' + str(relevanceVoteDict))
         
                 if supportingPoints:
                     for p in supportingPoints:     

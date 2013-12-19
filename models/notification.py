@@ -15,12 +15,15 @@ from google.appengine.ext.webapp import template
 class Notification(ndb.Model):
     targetUser = ndb.KeyProperty()
     pointRoot = ndb.KeyProperty()
-    followReason = ndb.StringProperty()
-    notificationReason = ndb.StringProperty()
-    sourceUser = ndb.KeyProperty() # User who caused notification to be raised
+    followReason = ndb.StringProperty(indexed=False)
+    notificationReason = ndb.StringProperty(indexed=False)
+    sourceUser = ndb.KeyProperty(indexed=False) # User who caused notification to be raised
     raisedDate = ndb.DateTimeProperty(auto_now_add=True)
     cleared = ndb.BooleanProperty(default=False)
     clearedDate = ndb.DateTimeProperty(default=None)
+    additionalUserKeys = ndb.KeyProperty(repeated=True)
+    notificationCategory = ndb.IntegerProperty() # Notifications are combined if they share a category
+    
     
     @webapp2.cached_property
     def pointRootFull(self):
@@ -34,6 +37,10 @@ class Notification(ndb.Model):
     def referencePoint(self):
         return self.pointRootFull.getCurrent()
     
+    @property
+    def additionalUserCount(self):
+        return len(self.additionalUsers)
+        
     @property
     def raisedDateSecs(self):
         epoch = datetime.datetime.utcfromtimestamp(0)
@@ -61,21 +68,62 @@ class Notification(ndb.Model):
         message = {
                     'type': 'notification',
                     'notificationHTML': notificationHTML,
-                    'timestamp': self.raisedDateSecs
+                    'timestamp': self.raisedDateSecs,
+                    'pointURL': self.referencePoint.url,
+                    'category': self.notificationCategory
                    }
         return json.dumps(message)
 
     @classmethod
+    def getNotificationCategory(cls, reason):
+        if reason == "edited":
+            return 1
+        elif reason == "agreed with" or reason == "awarded a ribbon to":
+            return 2
+        elif reason == "unlinked a supporting point" or reason == "unlinked a counter point":
+            return 1
+        elif reason == "commented on":    
+            return 3
+        else:
+            return 4
+            
+    @classmethod
     def createNotificationFromFollow(cls, follow, pointKey, userKey, notificationReason):
-        n = Notification(targetUser=follow.user, 
-                         pointRoot = pointKey,
-                         followReason = follow.reason,
-                         notificationReason=notificationReason,                         
-                         sourceUser=userKey)
-        n.put()
-        targetUser = follow.user.get()
-        if targetUser.token and targetUser.tokenExpires > datetime.datetime.now():
-            channel.send_message(targetUser.token, n.notificationMessage)
+        try:
+            n = Notification.getSimilarNotification(
+                    follow.user, 
+                    pointKey, 
+                    Notification.getNotificationCategory(notificationReason)
+                )
+
+            if n:               
+                 
+                if userKey != n.sourceUser:
+                    logging.info('NCFF ' + 'not equal')
+                    if not hasattr(n, 'additionalUsers') or n.additionalUsers is None:
+                        n.additionalUsers = [userKey]
+                    elif userKey not in n.additionalUsers: # A new user has triggered the notification
+                        n.additionalUsers.push(userKey)
+                
+                n.raisedDate = datetime.datetime.now()
+
+            else:
+                n = Notification(targetUser=follow.user, 
+                                 pointRoot = pointKey,
+                                 followReason = follow.reason,
+                                 notificationReason=notificationReason,                         
+                                 sourceUser=userKey,
+                                 notificationCategory=
+                                     Notification.getNotificationCategory(
+                                         notificationReason)
+                                )
+            n.put()
+            targetUser = follow.user.get()
+            if targetUser.token and targetUser.tokenExpires > datetime.datetime.now():
+                channel.send_message(targetUser.token, n.notificationMessage)
+                
+        except Exception, e:
+            logging.exception(e)
         
     @classmethod
     def getActiveNotificationsForUser(cls, userKey):
@@ -93,6 +141,14 @@ class Notification(ndb.Model):
         notifications = q.fetch(100)           
         return notifications
     
+    @classmethod
+    def getSimilarNotification(cls, userKey, pointRootKey, category):
+        q = cls.query(cls.targetUser == userKey).filter(cls.pointRoot == pointRootKey)
+        q = q.filter(cls.cleared==False)
+        q = q.filter(cls.notificationCategory==category)
+        notification = q.fetch(1)
+        return notification[0] if notification else None
+        
     @classmethod
     def clearNotifications(cls, userKey, latestTimestamp, earliestTimestamp=None):
         latest = datetime.datetime.fromtimestamp(latestTimestamp+1)        

@@ -855,20 +855,37 @@ function processMessage(messageObj) {
     }
 }
 
-function processNotification(dataObj) {          
-     // Insert new notification
-     $('#notificationMenuHeader').after(dataObj.notificationHTML);
-     
-     // Update the number
-     count = parseInt($('#notificationCount').text());
-     count = count + 1;
-     $('#notificationCount').text(count.toString());
-     $('#notificationCount').show();
-          
-     // Insert the raised date secs value
-     $('#notificationMenuHeader').data('latest', dataObj.timestamp)    
-         
-     activateNotificationMenuItems();
+function existingNotification(notificationData) {
+    matchingNotifications = $('.notificationMenuItem:not(.notificationCleared)[data-pointurl="' + notificationData.pointURL + '"][data-noticat="'+  notificationData.category +'"]');    
+    if (typeof matchingNotifications != "undefined") {
+        return matchingNotifications.first();
+    } else {
+        return null;
+    }
+}
+
+function processNotification(notificationData) {   
+    // check if a notification for this point already exists
+    var notificationToReplace = existingNotification(notificationData);
+           
+    if ( notificationToReplace && notificationToReplace.length > 0 ) {
+        notificationToReplace.closest('li').remove()
+        $('#notificationMenuHeader').after(notificationData.notificationHTML);
+        
+    } else {
+        // Insert new notification
+        $('#notificationMenuHeader').after(notificationData.notificationHTML);
+
+        // Update the number
+        count = parseInt($('#notificationCount').text());
+        count = count + 1;
+        $('#notificationCount').text(count.toString());
+        $('#notificationCount').show();        
+    }
+  
+    // Insert the raised date secs value
+    $('#notificationMenuHeader').data('latest', notificationData.timestamp)     
+    activateNotificationMenuItems();
           
 }
 

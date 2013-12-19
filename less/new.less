@@ -40,9 +40,9 @@ body {
 #logoImage {
     margin-top: 2px;	
 }
-
+  
 .privateAreaHeader {
-	background:#FCF9DF;
+	background:@privateAreaStrip;
 	height: 28px;
 	line-height: 24px;
     //position:relative;
@@ -349,7 +349,7 @@ body {
 	border-color:@grayBoxOutlines;
   	word-wrap: break-word;
 	cursor:pointer;
-	padding:5px;
+	padding:@boxPaddingDefault;
 	margin-bottom: @spaceBtPointCards;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
@@ -815,23 +815,45 @@ body {
 .showRelevance {
     cursor: pointer;
     margin-top: 12px;
-    margin-bottom:1px;
-   	font-color: @blue;
+    margin-bottom:-1px;
+   	color: @blue;
+    border-style:solid;
+	border-width:1px;
+	border-color:@grayBoxOutlines;
+    padding:@boxPaddingDefault;
+    padding-top:@boxPaddingTight;
+    padding-bottom:@boxPaddingTight;
+    display: inline-block;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color:@widgetBG;
+}
+ 
+.relevanceTitle {
+    font-size: @fontSizeLarge;
+    font-weight:bold;
+    color: black;
+    margin-top:0px;
+	margin-right: 32px;	
+	line-height:@lineHeightBig;
 }
 
 .relevanceVote {
 	border-style:solid;
 	border-width:1px;
 	border-color:@grayBoxOutlines;
-    //background-color: @grayLightBG;
+    padding:@boxPaddingDefault;
+    background-color:@widgetBG;
     margin-bottom:-1px;
     //display:inline-block;
-    text-align:center;    
+    text-align:left;    
 }
 
 .relevanceValGroup{
     display:inline-block;
     text-align:center;
+    margin-top: 16px;
+    margin-bottom: 12px;
     margin-left:auto;
     margin-right:auto;
     
@@ -841,14 +863,13 @@ body {
        //margin-left: 20px;       
    }
    
+   
    input[type="radio"] {
        margin-left: 20px;
        margin-right: 20px;
-       //position:absolute;
-       //top: 0%
-       //left: 25%;
-       //margin-left: 50px;
-   }
+       // hide this in order to re-style the radio buttons
+    } 
+ 
 }
 
 .relevanceTextLine {
@@ -856,8 +877,6 @@ body {
 	font-size: @fontSizeSmaller;
 	color: @grayTextMedium;
     line-height: @lineHeightDefault; 
-    margin-bottom:4px;
-    padding-left:4px;
 }
 
 

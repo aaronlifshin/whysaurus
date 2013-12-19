@@ -39,7 +39,7 @@
 @orange:                #f89406;
 @pink:                  #c3325f;
 @purple:                #7a43b6;
-
+@privateAreaStrip:      #FCF9DF;
 
 // Scaffolding
 // -------------------------
@@ -51,8 +51,14 @@
 @linkColor:             @blue;
 @linkColorHover:        lighten(@linkColor, 15%);
 
-@pointCardBackground:   #E0FFFE;
-@pointCardBgSearchResults: lighten(@blue, 25%);
+
+@pointCardBackgroundBase:   #E0FFFE;
+@widgetBG:                  #ebfffe; //lighten(@pointCardBackgroundBase, 10%);
+@pointCardBackground:       darken(@pointCardBackgroundBase, 10%);
+@pointCardBgSearchResults:  @pointCardBackground;
+
+
+
 
 //@pointCardBackground:   lighten(@linkColor, 35%);
 
@@ -85,7 +91,8 @@
 // -------------------------
 @spaceBtPointCards:     6px;
 @spaceBtPointCardsWithRelevance: 24px;
-
+@boxPaddingDefault:     5px;    
+@boxPaddingTight:       2px;  
 
 // Component sizing
 // -------------------------

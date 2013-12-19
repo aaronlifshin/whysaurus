@@ -190,11 +190,12 @@ class Point(ndb.Model):
     The /addNotification task will notify all the users that are following the point
     """
     @classmethod
-    def addNotificationTask(cls, pointRootKey, userKey, notifyReason):
+    def addNotificationTask(cls, pointRootKey, userKey, notifyReason, commentText=None):
         t = Task(url='/addNotifications', 
                  params={'rootKey':pointRootKey.urlsafe(),
                          'userKey':userKey.urlsafe(),
-                         'notifyReason': notifyReason})
+                         'notifyReason': notifyReason,
+                         'commentText': commentText })
         t.add(queue_name="notifications")
         
     @staticmethod

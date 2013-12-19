@@ -28,6 +28,9 @@
                   {{notification.sourceUserFull.name}} {{notification.notificationReason}} 
               {% endif %} 
             <em>{{notification.referencePoint.title}}</em>, a point you {{notification.followReason}}.
+            {% if notification.commentText %}
+            <div class="notificationCommentText"> {{ notification.commentText|safe }} </div>
+            {% endif %}
           {% endif %}
           </div>
           <div class="Submenu_SmallText">

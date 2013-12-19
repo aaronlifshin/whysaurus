@@ -47,7 +47,7 @@ class Comment(ndb.Model):
                               level = parentComment.level + 1 if parentComment else 0)            
             newComment = comment.transactionalCreate(pointRoot, comment)
             Follow.createFollow(user.key, pointRoot.key, "commented on")
-            Point.addNotificationTask(pointRoot.key, user.key, "commented on")
+            Point.addNotificationTask(pointRoot.key, user.key, "commented on", text)
             return newComment        
         else:
             return None

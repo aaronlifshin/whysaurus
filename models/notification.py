@@ -23,7 +23,7 @@ class Notification(ndb.Model):
     clearedDate = ndb.DateTimeProperty(default=None)
     additionalUserKeys = ndb.KeyProperty(repeated=True)
     notificationCategory = ndb.IntegerProperty() # Notifications are combined if they share a category
-    
+    commentText = ndb.StringProperty(indexed=False, default=None) # the reference of the relevant comment
     
     @webapp2.cached_property
     def pointRootFull(self):
@@ -88,7 +88,7 @@ class Notification(ndb.Model):
             return 4
             
     @classmethod
-    def createNotificationFromFollow(cls, follow, pointKey, userKey, notificationReason):
+    def createNotificationFromFollow(cls, follow, pointKey, userKey, notificationReason, commentText=None):
         try:
             n = Notification.getSimilarNotification(
                     follow.user, 
@@ -96,8 +96,7 @@ class Notification(ndb.Model):
                     Notification.getNotificationCategory(notificationReason)
                 )
 
-            if n:               
-                 
+            if n:                                
                 if userKey != n.sourceUser:
                     logging.info('NCFF ' + 'not equal')
                     if not hasattr(n, 'additionalUsers') or n.additionalUsers is None:
@@ -115,7 +114,8 @@ class Notification(ndb.Model):
                                  sourceUser=userKey,
                                  notificationCategory=
                                      Notification.getNotificationCategory(
-                                         notificationReason)
+                                         notificationReason),
+                                 commentText = commentText
                                 )
             n.put()
             targetUser = follow.user.get()
@@ -143,6 +143,8 @@ class Notification(ndb.Model):
     
     @classmethod
     def getSimilarNotification(cls, userKey, pointRootKey, category):
+        if category == 3:
+            return None # no similarity for comments
         q = cls.query(cls.targetUser == userKey).filter(cls.pointRoot == pointRootKey)
         q = q.filter(cls.cleared==False)
         q = q.filter(cls.notificationCategory==category)

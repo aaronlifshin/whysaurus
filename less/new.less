@@ -1343,17 +1343,27 @@ button#counter_addPointWhenNonZero {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .pointDialog {
-	height: 500px;
+	height: 530px;
     position: absolute;
 }
 
+.pointDialogueSubHeading {
+    margin-bottom: -2px;
+}
+
+.pointDialogueSubHeadingTop {
+    margin-top: 10px;
+}
+
+.additionalTextEntryArea {
+    margin-bottom: 12px;
+}
 
 #title_pointDialog {
 	width: 97.5%;
 }
 
 #cancel_pointDialog {
-	margin-left: 22px;
 	width:44px;
 }
 
@@ -1362,11 +1372,12 @@ button#counter_addPointWhenNonZero {
 }
 
 #submit_pointDialog {
-   margin-left: 10px; 
+   margin-left: 51px; 
 }
 
 #sourcesAdd {
 	margin-left: 2px;
+    margin-bottom: 16px;
 }
 
 #collapsibleTitleArea {
@@ -1390,10 +1401,16 @@ button#counter_addPointWhenNonZero {
 
 .removeSource {  /* Dialog and outliner */
 	color:red;
+    position: relative;
+    left: 10px;
+    margin-top: 10px;
 }
 
 #sourcesArea .sourceLink {
-    text-align:left;
+    text-align: left;
+    position: relative;
+    left: -64px;
+    top: 10px;
 }
 
 .pointDialog .textline {
@@ -1413,7 +1430,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 #editor_pointDialog {
     height:60px !important;
-    width:97.5% !important;      
+    width:97.5% !important;    
 }
 
 .mceEditor > table {
@@ -1433,7 +1450,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .fieldEdit {
   float:left;
   padding: 2px;
-  width:411px;
+  width:396px;
 }
 
 .dlgLabelName{
@@ -1452,11 +1469,16 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
   .accordion-group-heading .panel-heading {
       background-color:#efefef;
+      color:@grayTextLight;
+      font-size:@fontSizeLargeCond;
+      line-height:@lineHeightDefault;
+      padding-top: 8px;
+      padding-bottom: 8px;     
   }
 
   .accordion-group-heading:hover .panel-heading {
       background-color:@blueLight;
-      color:#bdbdbd;
+      color:@grayTextLight;
   }
   
   a.accordion-group-heading:hover {
@@ -1471,11 +1493,25 @@ fieldset { padding:0; border:0; margin-top:25px;}
       font-family:"ff-meta-web-pro-condensed", sans-serif;
   }
 
+  .chooseImageButtonArea {
+      margin-top: 24px;
+      margin-bottom: 16px;
+  }
+  
+  .addSourceButton {
+    margin-top: 2px;
+    margin-bottom: 6px;
+  }
+  
   .charCount {
   	font-family: "ff-meta-web-pro", sans-serif;
-  	font-size: 0.675em; 
+  	font-size: @fontSizeMini; 
   	text-transform: uppercase;
-  	font-weight:400;	
+  	font-weight:400;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    position: relative;
+    top: 12px;	
   }
   
 
@@ -1506,9 +1542,18 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 .filepicker-placeholder {
-  width: 64px;
+  /*width: 64px;
   height: 64px;
   margin-left: 7px;
+  */
+    //width: 100px;
+    //height: 100px;
+    width: 79px;
+    height: 79px;
+    margin-left: 7px;
+    position: relative;
+    top: 27px;
+    left: -20px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

@@ -740,9 +740,6 @@ body {
 }
 
 
-
-
-
 .linkBlue {
 	border-top: 4px solid #00adee;
 }
@@ -754,6 +751,16 @@ body {
 	margin-bottom: @spaceBtPointCards;
 	padding-top:10px;
 }
+
+.arrowImage {
+    margin-bottom: 2px;
+    position:relative;
+    //top:-10px;
+    z-index:10; // put arrows on top of other elements
+    //width:82px; // correct size, but requires arrows to be placed in different spans to work
+    //height:94px; // correct size, but requires arrows to be placed in different spans to work
+}
+
 
 .pointListTitle {
     font-size: @fontSizeMedium;
@@ -929,6 +936,7 @@ h4.mission {
 	position: relative;
 	margin-left:0px;
 	padding-top: 10px;
+    z-index:0;
 }
 
 #timestampAndEditLink {

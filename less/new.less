@@ -9,7 +9,7 @@
 
 /* test */
 body {
-	padding-top: 122px;
+	padding-top: 110px;
 }
 
 .title a:visited, .voteArea a:visited {
@@ -40,16 +40,27 @@ body {
 #logoImage {
     margin-top: 2px;	
 }
-
+  
 .privateAreaHeader {
-	background:#FCF9DF;
-	height: 24px;
+	background:@privateAreaStrip;
+	height: 28px;
 	line-height: 24px;
+    //position:relative;
+    margin-top:-27px;
 }
 
 .privateAreaContentOffset {
 	margin-top: 16px;
 }
+
+#areaLine {
+  //font-family: @sansCondFontFamily;
+  font-size: @fontSizeSmall;
+  //font-weight: bold;
+  color: @grayTextMedium;
+  margin-top: 1px;
+}
+
 
 #areaSwap {
     cursor:pointer;
@@ -163,11 +174,11 @@ body {
 
 .headerLinks {	                                
     height:60px;
-    margin-top:-5px;
-    line-height:60px;	
+    margin-top:15px;
 	display:block;
     font-size: @fontSizeMediumCond;
     font-weight: bold;
+    line-height: @baseLineHeight;
 }
 
 .headerLinks a:hover, .userMenuArea a:hover {
@@ -309,7 +320,7 @@ body {
 }
 
 .notificationMenuItem:hover, #notificationMenuHeader:hover, #notificationMenuFooter:hover {
-	background-color:#E0FFFE;
+	background-color:@blueLight;
 }
 
 .notificationCleared {
@@ -338,7 +349,7 @@ body {
 	border-color:@grayBoxOutlines;
   	word-wrap: break-word;
 	cursor:pointer;
-	padding:5px;
+	padding:@boxPaddingDefault;
 	margin-bottom: @spaceBtPointCards;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
@@ -701,7 +712,7 @@ body {
 }
 
 .borderButton:hover {
-    background-color:#E0FFFE;	
+    background-color:@blueLight;	
 }
 
 .dropdown-menu > li > a {
@@ -729,9 +740,6 @@ body {
 }
 
 
-
-
-
 .linkBlue {
 	border-top: 4px solid #00adee;
 }
@@ -743,6 +751,16 @@ body {
 	margin-bottom: @spaceBtPointCards;
 	padding-top:10px;
 }
+
+.arrowImage {
+    margin-bottom: 2px;
+    position:relative;
+    //top:-10px;
+    z-index:10; // put arrows on top of other elements
+    //width:82px; // correct size, but requires arrows to be placed in different spans to work
+    //height:94px; // correct size, but requires arrows to be placed in different spans to work
+}
+
 
 .pointListTitle {
     font-size: @fontSizeMedium;
@@ -803,20 +821,69 @@ body {
 
 .showRelevance {
     cursor: pointer;
+    margin-top: 8px;
+    margin-bottom:-1px;
+   	color: @blue;
+    border-style:solid;
+	border-width:1px;
+	border-color:@grayBoxOutlines;
+    padding:@boxPaddingDefault;
+    padding-top:@boxPaddingTight;
+    padding-bottom:@boxPaddingTight;
+    display: inline-block;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color:white;//@widgetBG;
+}
+ 
+.relevanceTitle {
+    font-size: @fontSizeLarge;
+    font-weight:bold;
+    color: black;
+    margin-top:0px;
+	margin-right: 32px;	
+	line-height:@lineHeightBig;
+}
+
+.relevanceVote {
+	border-style:solid;
+	border-width:1px;
+	border-color:@grayBoxOutlines;
+    padding:@boxPaddingDefault;
+    background-color:@widgetBG;
+    margin-bottom:-1px;
+    //display:inline-block;
+    text-align:left;   
 }
 
 .relevanceValGroup{
     display:inline-block;
     text-align:center;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    margin-left:auto;
+    margin-right:auto;
     
     label {
-       display:block;
-       margin-left: 20px;       
+       //display:block;
+       //margin-top: 30px;
+       //margin-left: 20px;       
    }
+   
    
    input[type="radio"] {
        margin-left: 20px;
-   }
+       margin-right: 20px;
+       // hide this in order to re-style the radio buttons
+    } 
+ 
+}
+
+.relevanceTextLine {
+    //text-align:left; 
+	font-size: @fontSizeSmaller;
+	color: @grayTextMedium;
+    line-height: @lineHeightDefault; 
 }
 
 
@@ -869,6 +936,7 @@ h4.mission {
 	position: relative;
 	margin-left:0px;
 	padding-top: 10px;
+    z-index:0;
 }
 
 #timestampAndEditLink {
@@ -1275,17 +1343,27 @@ button#counter_addPointWhenNonZero {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .pointDialog {
-	height: 500px;
+	height: 530px;
     position: absolute;
 }
 
+.pointDialogueSubHeading {
+    margin-bottom: -2px;
+}
+
+.pointDialogueSubHeadingTop {
+    margin-top: 10px;
+}
+
+.additionalTextEntryArea {
+    margin-bottom: 12px;
+}
 
 #title_pointDialog {
 	width: 97.5%;
 }
 
 #cancel_pointDialog {
-	margin-left: 22px;
 	width:44px;
 }
 
@@ -1294,11 +1372,12 @@ button#counter_addPointWhenNonZero {
 }
 
 #submit_pointDialog {
-   margin-left: 10px; 
+   margin-left: 51px; 
 }
 
 #sourcesAdd {
 	margin-left: 2px;
+    margin-bottom: 16px;
 }
 
 #collapsibleTitleArea {
@@ -1322,10 +1401,16 @@ button#counter_addPointWhenNonZero {
 
 .removeSource {  /* Dialog and outliner */
 	color:red;
+    position: relative;
+    left: 10px;
+    margin-top: 10px;
 }
 
 #sourcesArea .sourceLink {
-    text-align:left;
+    text-align: left;
+    position: relative;
+    left: -64px;
+    top: 10px;
 }
 
 .pointDialog .textline {
@@ -1345,7 +1430,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 #editor_pointDialog {
     height:60px !important;
-    width:97.5% !important;      
+    width:97.5% !important;    
 }
 
 .mceEditor > table {
@@ -1365,7 +1450,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .fieldEdit {
   float:left;
   padding: 2px;
-  width:411px;
+  width:396px;
 }
 
 .dlgLabelName{
@@ -1384,11 +1469,16 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
   .accordion-group-heading .panel-heading {
       background-color:#efefef;
+      color:@grayTextLight;
+      font-size:@fontSizeLargeCond;
+      line-height:@lineHeightDefault;
+      padding-top: 8px;
+      padding-bottom: 8px;     
   }
 
   .accordion-group-heading:hover .panel-heading {
-      background-color:#e0fffe;
-      color:#bdbdbd;
+      background-color:@blueLight;
+      color:@grayTextLight;
   }
   
   a.accordion-group-heading:hover {
@@ -1403,11 +1493,25 @@ fieldset { padding:0; border:0; margin-top:25px;}
       font-family:"ff-meta-web-pro-condensed", sans-serif;
   }
 
+  .chooseImageButtonArea {
+      margin-top: 24px;
+      margin-bottom: 16px;
+  }
+  
+  .addSourceButton {
+    margin-top: 2px;
+    margin-bottom: 6px;
+  }
+  
   .charCount {
   	font-family: "ff-meta-web-pro", sans-serif;
-  	font-size: 0.675em; 
+  	font-size: @fontSizeMini; 
   	text-transform: uppercase;
-  	font-weight:400;	
+  	font-weight:400;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    position: relative;
+    top: 12px;	
   }
   
 
@@ -1438,9 +1542,18 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 .filepicker-placeholder {
-  width: 64px;
+  /*width: 64px;
   height: 64px;
   margin-left: 7px;
+  */
+    //width: 100px;
+    //height: 100px;
+    width: 79px;
+    height: 79px;
+    margin-left: 7px;
+    position: relative;
+    top: 27px;
+    left: -20px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -1452,7 +1565,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 .outlinerRow.highlighted {
-	background-color: #E0FFFE;
+	background-color: @blueLight;
 }
    
 .outlinerInput.level1 {
@@ -1483,7 +1596,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 #outliner_details {
 	margin-left:0px;
 	width:40,83%;
-    background-color: #E0FFFE;
+    background-color: @blueLight;
 }
 
 #outliner_details input {

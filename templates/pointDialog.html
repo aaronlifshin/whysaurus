@@ -11,12 +11,12 @@
             <div class="panel panel-default accordion-group">
                 <a class="accordion-group-heading" data-toggle="collapse" data-parent="#accordion" href="#collapsibleTitleArea">
                     <div class="panel-heading">
-                        Point Text
+                        Add Text
                     </div>
                 </a>
                 <div id="collapsibleTitleArea" class="panel-collapse collapse in">
                     <label>
-                        <div class="pull-left ">Point Title</div>
+                        <div class="pull-left pointDialogueSubHeading pointDialogueSubHeadingTop">Point Title</div>
                         <div id="title_pointDialog_charNum" class="pull-right clearfix charCount">
                             140 characters left
                         </div>
@@ -25,10 +25,10 @@
                         <input id="title_pointDialog" type="text" class="titleEdit" placeholder="Write your point here...">
                     </div>
                     <label>
-                        <div class="pull-left ">Additional Text</div>      
+                        <div class="pull-left pointDialogueSubHeading">Additional Text</div>      
                     </label>      
-                    <div id="editorDiv" class="dlgField row">        
-                        <textarea id="editor_pointDialog" class="mceEditor textEdit span12" placeholder="Add the description here...">
+                    <div id="editorDiv" class="dlgField row additionalTextEntryArea">        
+                        <textarea id="editor_pointDialog" class="mceEditor textEdit span12 " placeholder="Add the description here...">
                         </textarea>
                     </div>      
                 </div>
@@ -36,35 +36,35 @@
             <div class="panel accordion-group">
                 <a class="accordion-group-heading" data-toggle="collapse" data-parent="#accordion" href="#collapsibleSourcesArea" id="sourcesPanelTitle">
                     <div class="panel-heading">                    
-                        Sources
+                        Add Sources
                     </div>
                 </a>
                 
                 <div id="collapsibleSourcesArea" class="panel-collapse collapse ">                    
                     <div class="row-fluid" id="sourcesArea"></div>         
                     <div class="control-group">
-                        <label class="control-label" for="sourceTitle_pointDialog">Title</label>
+                        <label class="control-label pointDialogueSubHeading pointDialogueSubHeadingTop" for="sourceTitle_pointDialog">Title</label>
                         <div class="controls">
                             <input id="sourceTitle_pointDialog" type="text" class=" fieldEdit" name="sourceTitle" placeholder="Add the source's title...">
                         </div>   
                     </div>
                     <div class="control-group pull-left">
-                        <label class="control-label" for="sourceURL_pointDialog">URL</label>        
+                        <label class="control-label pointDialogueSubHeading" for="sourceURL_pointDialog">URL</label>        
                         <div class="controls">
                             <input id="sourceURL_pointDialog" type="text" class=" fieldEdit" name="sourceURL" placeholder="Paste the URL of a source here...">
                         </div>
-                        <button id="sourcesAdd"  class="btn" type="button">Add Source</button> 
+                        <button id="sourcesAdd"  class="btn addSourceButton" type="button">Add Source</button> 
                     </div>
                 </div>
             </div>
             <div class="panel accordion-group">
                 <a class="accordion-group-heading" data-toggle="collapse" data-parent="#accordion" href="#collapsibleImageArea" id="imagePanelTitle">                
                     <div class="panel-heading">
-                        Image                
+                        Add an Image                
                     </div>    
                 </a>
                 <div id="collapsibleImageArea" class="panel-collapse collapse ">                                        
-                    <div class="control-group">
+                    <div class="control-group chooseImageButtonArea">
                         <div class="controls">
                             <input id="link_pointDialog" type="hidden" name="imageURL">
                             <button class="btn  filepicker" type="button">Choose Image</button>
@@ -74,20 +74,20 @@
                         <div class="row-fluid">
                             <div class="span10">
                                 <div class="row-fluid">
-                                    <label class="control-label" for="author_pointDialog">Author</label>
+                                    <label class="control-label pointDialogueSubHeading" for="author_pointDialog">Author</label>
                                     <div class="controls">
                                         <input id="author_pointDialog" type="text" class=" fieldEdit" name="imageAuthor" placeholder="Give credit to the image's creator...">
                                     </div>
                                 </div>
                                 <div class="row-fluid">            
-                                    <label class="control-label" for="description_pointDialog">Description</label>
+                                    <label class="control-label pointDialogueSubHeading" for="description_pointDialog">Description</label>
                                     <div class="controls">
                                         <input id="description_pointDialog" type="text" class=" fieldEdit"  name="imageDescription" placeholder="Add a descriptive caption...">
                                     </div>
                                 </div>  
                             </div>                      
                             <div class="span2">
-                                <img class="filepicker-placeholder" src="/static/img/placeholder_50x50.gif">            
+                                <img class="filepicker-placeholder" src="/static/img/placeholder_white_50x50.gif">            
                             </div>
                         </div>
                     </div>

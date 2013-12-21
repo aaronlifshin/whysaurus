@@ -357,12 +357,14 @@ function populateEditFields() {
       addSourceHTML($(obj).attr('href'), $(obj).text(), sourcekey);
       sourcesCount = sourcesCount + 1;
     });
+    /*
     if (sourcesCount > 0 ) {
-        $("#sourcesPanelTitle .panel-heading").text(sourcesCount + (sourcesCount == 1?" Source":" Sources"));
+       //$("#sourcesPanelTitle .panel-heading").text(sourcesCount + (sourcesCount == 1?" Source":" Source"));
+       $("#sourcesPanelTitle .panel-heading").text("Add Sources");     
     } else {
-        $("#sourcesPanelTitle .panel-heading").text("0 Sources (add some to improve this)");
+       $("#sourcesPanelTitle .panel-heading").text("0 Sources (add some to improve this)");
     }
-
+    */
 
     if(url !== '') {
         if(url.match("https?://")) {

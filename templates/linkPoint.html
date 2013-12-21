@@ -1,5 +1,6 @@
-<a name="showRelevance" class="showRelevance">Relevance: {{point.relevancePercent}} </a>
+<div name="showRelevance" class="pointAreaActions showRelevance"><a>Relevance: {{point.relevancePercent}} </a></div>
 <div name="areaRelevanceRadio" class="relevanceVote hide" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
+    <div class="relevanceTitle">How Relevant is this Point?</div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio" value=0
         {% if point.myVoteValue == 0 %}checked {% endif %} />                    
@@ -20,7 +21,7 @@
             {% if point.myVoteValue == 100 %}checked {% endif %} />
         <label >100%</label>                    
     </div>
-    <div name="relevanceTextLine">
+    <div name="relevanceTextLine"  class="relevanceTextLine">
         {{point.relevanceVoteCount}} User{% if point.relevanceVoteCount != 1 %}s{% endif %} Voting.  Curent Average: {{point.relevancePercent}}
     </div>
 </div>

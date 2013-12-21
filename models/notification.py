@@ -16,13 +16,14 @@ class Notification(ndb.Model):
     targetUser = ndb.KeyProperty()
     pointRoot = ndb.KeyProperty()
     followReason = ndb.StringProperty(indexed=False)
-    notificationReason = ndb.StringProperty(indexed=False)
+    notificationReasonCode = ndb.IntegerProperty()
+    notificationReason = ndb.StringProperty()
     sourceUser = ndb.KeyProperty(indexed=False) # User who caused notification to be raised
     raisedDate = ndb.DateTimeProperty(auto_now_add=True)
     cleared = ndb.BooleanProperty(default=False)
     clearedDate = ndb.DateTimeProperty(default=None)
     additionalUserKeys = ndb.KeyProperty(repeated=True)
-    notificationCategory = ndb.IntegerProperty() # Notifications are combined if they share a category
+    additionalActions = ndb.IntegerProperty(indexed=False, default=0)    
     additionalText = ndb.StringProperty(indexed=False, default=None)
     
     @webapp2.cached_property
@@ -40,6 +41,34 @@ class Notification(ndb.Model):
     @property
     def additionalUserCount(self):
         return len(self.additionalUsers)
+        
+    @property
+    def notificationReasonText(self):
+        c = self.notificationReasonCode
+        plural = False
+        if hasattr(self, 'additionalUsers') and self.additionalUsers is not None:
+            plural = True
+        if hasattr(self, 'additionalActions') and self.additionalActions != 0:
+            plural = True            
+            
+        if c == 0:
+            return "edited"
+        elif c == 1:
+            return "agreed with"
+        elif c == 2:
+            return "awarded a ribbon to"
+        elif c == 3:
+            return "commented on"
+        elif c == 4:
+            return "added supporting points to" if plural else "added a supporting point to"
+        elif c == 5:
+            return "added counter points to" if plural else "added a counter point to"
+        elif c == 6:
+            return "unlinked counter points from" if plural else "unlinked a counter point from"
+        elif c == 7:
+            return "unlinked supporting points from" if plural else "unlinked a supporting point from"
+        else:
+            return "changed" # could raise exception here instead?
         
     @property
     def raisedDateSecs(self):
@@ -70,31 +99,20 @@ class Notification(ndb.Model):
                     'notificationHTML': notificationHTML,
                     'timestamp': self.raisedDateSecs,
                     'pointURL': self.referencePoint.url,
-                    'category': self.notificationCategory
+                    'notificationReasonCode': self.notificationReasonCode
                    }
         return json.dumps(message)
-
-    @classmethod
-    def getNotificationCategory(cls, reason):
-        if reason in ["edited", "added a supporting point to",  "added a counter point to" ]:
-            return 1
-        elif reason == "agreed with" or reason == "awarded a ribbon to":
-            return 2
-        elif reason == "unlinked a supporting point from" or reason == "unlinked a counter point from":
-            return 1
-        elif reason == "commented on":    
-            return 3
-        else:
-            return 4
             
     @classmethod
-    def createNotificationFromFollow(cls, follow, pointKey, userKey, notificationReason, additionalText=None):
+    def createNotificationFromFollow(cls, follow, pointKey, userKey, notificationReasonCode, additionalText=None):
         try:
-            n = Notification.getSimilarNotification(
-                    follow.user, 
-                    pointKey, 
-                    Notification.getNotificationCategory(notificationReason)
-                )
+            if notificationReasonCode == 3: # commented on does not "stack" with similar notifications
+                n = None
+            else:
+                n = Notification.getSimilarNotification(
+                        follow.user, 
+                        pointKey,
+                        notificationReasonCode )
 
             if n:                                
                 if userKey != n.sourceUser:
@@ -103,18 +121,20 @@ class Notification(ndb.Model):
                         n.additionalUsers = [userKey]
                     elif userKey not in n.additionalUsers: # A new user has triggered the notification
                         n.additionalUsers.push(userKey)
+                else:
+                    # additional actions by the initial user that caused the notification
+                    n.additionalActions = n.additionalActions + 1 if n.additionalActions else 1
                 
                 n.raisedDate = datetime.datetime.now()
+                if n.additionalText and additionalText and additionalText is not None:
+                    n.additionalText = n.additionalText + "; " + additionalText
 
             else:
                 n = Notification(targetUser=follow.user, 
                                  pointRoot = pointKey,
                                  followReason = follow.reason,
-                                 notificationReason=notificationReason,                         
-                                 sourceUser=userKey,
-                                 notificationCategory=
-                                     Notification.getNotificationCategory(
-                                         notificationReason),
+                                 notificationReasonCode=notificationReasonCode,                         
+                                 sourceUser=userKey,                          
                                  additionalText = additionalText
                                 )
             n.put()
@@ -142,12 +162,10 @@ class Notification(ndb.Model):
         return notifications
     
     @classmethod
-    def getSimilarNotification(cls, userKey, pointRootKey, category):
-        if category == 3:
-            return None # no similarity for comments
+    def getSimilarNotification(cls, userKey, pointRootKey, reasonCode):
         q = cls.query(cls.targetUser == userKey).filter(cls.pointRoot == pointRootKey)
         q = q.filter(cls.cleared==False)
-        q = q.filter(cls.notificationCategory==category)
+        q = q.filter(cls.notificationReasonCode==int(reasonCode))
         notification = q.fetch(1)
         return notification[0] if notification else None
         

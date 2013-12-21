@@ -139,6 +139,10 @@ function pointUnlink(elem, linkType) {
 			success: function(data){
 				obj = JSON.parse(data);
 				if (obj.result == true) {
+                    // remove the relevanceArea for the point card
+                    pointCard.parent().prev('.relevanceVote').prev().remove();      
+                    pointCard.parent().prev('.relevanceVote').remove();                    
+                                  
 					// remove the a link containing the point card
 					pointCard.parent().remove();
 					if ($('.pointCard', $('#' + linkType + '_nonzeroPoints')).length == 0 ) {
@@ -620,7 +624,8 @@ function sendRelevanceVote(event) {
                 $(that).closest('[name="areaRelevanceRadio"]').prev().text(
                     'Relevance ' + obj.newRelevance);                
                 $(that).parent().nextAll('[name=relevanceTextLine]').text(
-                    obj.newVoteCount + " Users Voting.   Curent Average: " + obj.newRelevance);
+                    obj.newVoteCount + " User" + ( obj.newVoteCount > 1 ? "s":"") +
+                    " Voting.   Curent Average: " + obj.newRelevance);
             } else {
 			    showAlertAfter('Not able to save vote. Try to refresh the page.', 
                     $(that).closest('[name=areaRelevanceRadio]'));

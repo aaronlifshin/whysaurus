@@ -286,8 +286,7 @@ function updateDialogHeight() {
         $(".pointDialog").height(475 + (numSources-1)*20);        
     } else {
         $(".pointDialog").height(475);
-    }
-    
+    }    
 }
 
 function addSource(clickedElement) {
@@ -856,7 +855,8 @@ function processMessage(messageObj) {
 }
 
 function existingNotification(notificationData) {
-    matchingNotifications = $('.notificationMenuItem:not(.notificationCleared)[data-pointurl="' + notificationData.pointURL + '"][data-noticat="'+  notificationData.category +'"]');    
+
+    matchingNotifications = $('.notificationMenuItem:not(.notificationCleared)[data-pointurl="' + notificationData.pointURL + '"][data-reason="'+  notificationData.notificationReasonCode +'"]');    
     if (typeof matchingNotifications != "undefined") {
         return matchingNotifications.first();
     } else {
@@ -865,9 +865,13 @@ function existingNotification(notificationData) {
 }
 
 function processNotification(notificationData) {   
-    // check if a notification for this point already exists
-    var notificationToReplace = existingNotification(notificationData);
-           
+    var notificationToReplace = null;
+    // always add a new notification if it's a "commented on"
+    if (notificationData.notificationReasonCode != 3) {
+        // check if a notification for this point already exists        
+        notificationToReplace = existingNotification(notificationData);        
+    }
+
     if ( notificationToReplace && notificationToReplace.length > 0 ) {
         notificationToReplace.closest('li').remove()
         $('#notificationMenuHeader').after(notificationData.notificationHTML);
@@ -959,6 +963,7 @@ function markNotificationsRead() {
         		if (obj.result == true) {
                     $('#notificationCount').text(0);
                     $('#notificationCount').hide();
+                    $(".notificationMenuItem").addClass(".notificationCleared");
                 } else {
                     console.log('CleanNotifications call returned error: ' + obj.error);        	    
                 }            

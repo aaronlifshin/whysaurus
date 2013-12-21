@@ -21,7 +21,7 @@
         <label >100%</label>                    
     </div>
     <div name="relevanceTextLine">
-        {{point.relevanceVoteCount}} Users Voting.  Curent Average: {{point.relevancePercent}}
+        {{point.relevanceVoteCount}} User{% if point.relevanceVoteCount != 1 %}s{% endif %} Voting.  Curent Average: {{point.relevancePercent}}
     </div>
 </div>
 {% include 'pointBox.html' %} 

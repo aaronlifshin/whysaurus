@@ -190,12 +190,14 @@ class Point(ndb.Model):
     The /addNotification task will notify all the users that are following the point
     """
     @classmethod
-    def addNotificationTask(cls, pointRootKey, userKey, notifyReason, additionalText=None):
-        t = Task(url='/addNotifications', 
-                 params={'rootKey':pointRootKey.urlsafe(),
+    def addNotificationTask(cls, pointRootKey, userKey, notifyReasonCode, additionalText=None):
+        taskParams = {'rootKey':pointRootKey.urlsafe(),
                          'userKey':userKey.urlsafe(),
-                         'notifyReason': notifyReason,
-                         'additionalText': additionalText })
+                         'notifyReasonCode': notifyReasonCode }
+        if additionalText:
+            taskParams['additionalText'] = additionalText
+        t = Task(url='/addNotifications', 
+                 params=taskParams)
         t.add(queue_name="notifications")
         
     @staticmethod
@@ -667,10 +669,10 @@ class Point(ndb.Model):
                 Point.addNotificationTask(
                     theRoot.key, 
                     user.key, 
-                    "added a " + pointsToLink[0]['linkType']+ "point to",
+                    4 if pointsToLink[0]['linkType'] == "supporting" else 5,
                     pointsToLink[0]['pointCurrentVersion'].title )
             else:
-                Point.addNotificationTask(theRoot.key, user.key, "edited")
+                Point.addNotificationTask(theRoot.key, user.key, 0) # "edited" notification
 
             # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
             newPoint.addToSearchIndexNew()
@@ -724,7 +726,8 @@ class Point(ndb.Model):
             theRoot.put()
             
             Follow.createFollow(user.key, theRoot.key, "edited")
-            Point.addNotificationTask(theRoot.key, user.key, "unlinked a %s point from" % linkType)
+            # 
+            Point.addNotificationTask(theRoot.key, user.key, 6 if linkType == "supporting" else 7)
             
             return newPoint
         else:

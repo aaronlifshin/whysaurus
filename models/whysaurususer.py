@@ -260,7 +260,7 @@ class WhysaurusUser(auth_models.User):
         
         # We only send notifications for agrees at the moment
         if voteValue == 1:
-            point.addNotificationTask(pointRootKey, self.key, "agreed with")
+            point.addNotificationTask(pointRootKey, self.key, 1)
 
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
@@ -298,7 +298,7 @@ class WhysaurusUser(auth_models.User):
                 
         # Only send a notification if a ribbnon is awarded
         if ribbonValue:
-            point.addNotificationTask(pointRootKey, self.key, "awarded a ribbon to")
+            point.addNotificationTask(pointRootKey, self.key, 2)
 
         return vote
             

@@ -12,7 +12,7 @@ class NotificationHandler(AuthHandler):
     # This is called by the task queue
     def AddNotification(self):
         rootKeyUrlsafe = self.request.get('rootKey')
-        notifyReason = self.request.get('notifyReason')
+        notifyReasonCode = self.request.get('notifyReasonCode')
         sourceUserUrlsafe = self.request.get('userKey')
         additionalText = self.request.get('additionalText')        
 
@@ -24,7 +24,7 @@ class NotificationHandler(AuthHandler):
             if f.user != sourceUserKey:
                 Notification.createNotificationFromFollow(f, pointRootKey, 
                                                           sourceUserKey, 
-                                                          notifyReason,
+                                                          int(notifyReasonCode),
                                                           additionalText )
                 
     def NewNotificationChannel(self):

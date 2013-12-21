@@ -785,13 +785,20 @@ function activatePointArea() {
             $('body, html').animate({ scrollTop: $("#addComment table").offset().top - 100 }, 500);        
         });
 
-        $('[name=commentReply]').click(showReplyComment);
-        $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
-        $('[name^=relevanceRadio]').off('.ys').on('click.ys', sendRelevanceVote);        
-        
         $('#saveCommentSubmit').off('.ys').on('click.ys', saveComment);    
         $( "#deletePoint" ).button();
-	    $('#viewPointHistory').click(viewPointHistory);		
+	    $('#viewPointHistory').click(viewPointHistory);	
+        
+        $('[name=commentReply]').click(showReplyComment);
+
+        $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
+        $('[name^=relevanceRadio]').off('.ys').on('click.ys', sendRelevanceVote);                	
+        $('input:radio').screwDefaultButtons({
+                image: 'url("/static/img/radio.jpg")',
+                width: 45,
+                height: 45
+        });
+        // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
     makePointsCardsClickable();	    
 

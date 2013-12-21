@@ -80,18 +80,25 @@ def makeURL(sourceStr):
 class Link(ndb.Model):
     version = ndb.KeyProperty(indexed=False)
     root = ndb.KeyProperty(indexed=False)
-    rating = ndb.IntegerProperty(indexed=False)
+    # rating = ndb.IntegerProperty(indexed=False)
     voteCount = ndb.IntegerProperty(indexed=False)
+    fRating = ndb.FloatProperty(indexed=False)
     
+    @property
+    def rating(self):
+        return int(round(self.fRating, 0)) if self.fRating else 0
+        
     def updateRelevanceData(self, oldRelVote, newRelVote):
-        startingRating = self.rating if self.rating else 0
+        startingRating = self.fRating if self.fRating else 0
         if oldRelVote:
+            # this user has already voted
             newSum = startingRating * self.voteCount - oldRelVote.value + newRelVote.value
-            self.rating = newSum/self.voteCount                    
+            logging.info("URD: newsum=" + str(newSum))
+            self.fRating = newSum/self.voteCount                    
         else:
             newSum = startingRating * self.voteCount + newRelVote.value
             self.voteCount = self.voteCount + 1
-            self.rating = newSum/self.voteCount
+            self.fRating = newSum/self.voteCount
         
 
 class Point(ndb.Model):

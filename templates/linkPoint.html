@@ -4,23 +4,24 @@
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=0
         {% if point.myVoteValue == 0 %}checked {% endif %} />                    
-        <label >0%</label>                    
+        <label class="relevanceRadioLabel">0%</label>                    
     </div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=33
         {% if point.myVoteValue == 33 %}checked {% endif %} />
-        <label >33%</label>                    
+        <label class="relevanceRadioLabel">33%</label>                    
     </div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=66
         {% if point.myVoteValue == 66 %}checked {% endif %} />
-        <label >66%</label>                    
+        <label class="relevanceRadioLabel">66%</label>                    
     </div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=100 
             {% if point.myVoteValue == 100 %}checked {% endif %} />
-        <label >100%</label>                    
+        <label class="relevanceRadioLabel">100%</label>                    
     </div>
+    <div class="relevanceLikertLine"></div>
     <div name="relevanceTextLine"  class="relevanceTextLine">
         {{point.relevanceVoteCount}} User{% if point.relevanceVoteCount != 1 %}s{% endif %} Voting.  Curent Average: {{point.relevancePercent}}
     </div>

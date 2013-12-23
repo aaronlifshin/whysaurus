@@ -16,8 +16,8 @@ class AjaxSearch(AuthHandler):
             'linkType': self.request.get('linkType'),
             'thresholds': constants.SCORETHRESHOLDS
         }
-        path = os.path.join(constants.ROOT, 'templates/pointBoxList.html')
-        resultsHTML = template.render(path, template_values)
+        template = self.jinja2_env.get_template('pointBoxList.html')                
+        resultsHTML = template.render(template_values)
         
         if searchResults:
             resultJSON = json.dumps({

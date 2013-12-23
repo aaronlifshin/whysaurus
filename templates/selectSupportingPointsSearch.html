@@ -5,7 +5,7 @@
             Search for supporting points for 
         </h3>
         <h1>
-        {{point.title}}
+            {% if point %}{{ point.title }}{% endif %}
         </h1>
     </div>   
     <div class="row-fluid" id="alertArea"></div>    

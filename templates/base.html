@@ -18,7 +18,7 @@
     <script> var appname = window.navigator.appName; </script>
     
       {% if point %}
-          <title>{{point.title}}</title>   
+          <title>{{ point.title }}</title>   
       {% else %}
           {% if profileUser %}
              <title>{{profileUser.name}} on Whysaurus, the center for collaborative reasoning.</title>
@@ -90,9 +90,9 @@
                       <ul class="span4 dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
                          <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
                         {% if user.notifications %}                                               
-                            data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                            data-latest="{% with n = user.notifications|first %}{{ n.raisedDateSecs }}{% endwith %}"
                             {% if user.notifications|length == 11 %}                            
-                                data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                                data-earliest="{% with n = user.notifications|last %}{{ n.raisedDateSecs }}{% endwith %}"
                             {% endif %}                                                                                                                    
                         {% endif %}                            
                             >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>

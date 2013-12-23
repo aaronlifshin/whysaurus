@@ -31,8 +31,10 @@ class EditPoint(AuthHandler):
             sourceKeysToRemove= sourcesToRemove            
         )
         if newVersion:
-            sources = newVersion.getSources()           
-            sourcesHTML = template.render('templates/sources.html', {'sources':sources})
+            sources = newVersion.getSources()   
+            template = self.jinja2_env.get_template('sources.html')                            
+            sourcesHTML = template.render({'sources':sources})
+            
             resultJSON = json.dumps({
                 'result': True,
                 'version': newVersion.version,

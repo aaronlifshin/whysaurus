@@ -4,10 +4,10 @@
 			<div class="columnHeading">
 				FEATURED POINT
 			</div>
-			{% with featuredPoint as point %}
+			{% with point = featuredPoint %}
 				{% include 'pointBox.html' %}            
 			{% endwith %}
-		{% endif %}
+		{% endif %} 
 		<div id='mainPageMainArea' class="columnHeading ">
 		      <button class="tab selectedTab" id="recentActivity">
 		          RECENT ACTIVITY
@@ -25,7 +25,7 @@
 		<div id="recentActivityArea" class="tabbedArea">
 			{% for point in recentlyActive %}
 			   {% include 'pointBox.html' %}            
-			{% endfor %}               
+			{% endfor %}
 		</div>
 		<div id="editorsPicksArea" class="tabbedArea"></div>
 		<div id="mostAgreesArea" class="tabbedArea"></div>

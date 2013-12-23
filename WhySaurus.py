@@ -1,4 +1,6 @@
 import constants
+import os
+import jinja2
 
 from webapp2 import Route, WSGIApplication
 
@@ -11,9 +13,7 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
-    NotificationHandler, Chat
-    
-    
+    NotificationHandler, Chat    
 
 # Map URLs to handlers
 routes = [
@@ -126,6 +126,6 @@ app_config = {
 }
 
 app = WSGIApplication(routes=routes, config=app_config, debug=True)
-
+    
 if __name__ == '__main__':
     run_wsgi_app(app)

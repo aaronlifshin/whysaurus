@@ -47,8 +47,8 @@ class Profile(AuthHandler):
         user.update(newWebsiteURL, newUserAreas, newUserProfession, newUserBios)
         namespace_manager.set_namespace(userNamespace)
 
-        path = os.path.join(constants.ROOT, 'templates/profile.html')            
-        self.response.out.write(template.render(path, self.makeTemplateValues(user, user))) 
+        template = self.jinja2_env.get_template('profile.html')        
+        self.response.out.write(template.render(self.makeTemplateValues(user, user))) 
             
     def get(self, userURL):
         userNamespace = namespace_manager.get_namespace()
@@ -63,12 +63,9 @@ class Profile(AuthHandler):
             permissionToView = user.admin or user.privateArea == profileUser.privateArea 
         else:
             permissionToView = profileUser.privateArea is None or profileUser.privateArea == ''
-        if profileUser and permissionToView:                
-            path = os.path.join(constants.ROOT, 'templates/profile.html')
-            # self.response.headers["Pragma"]="no-cache"
-            # self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
-            # self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"
-            self.response.out.write(template.render(path, self.makeTemplateValues(user, profileUser))) 
+        if profileUser and permissionToView:      
+            template = self.jinja2_env.get_template('profile.html')                                  
+            self.response.out.write(template.render(self.makeTemplateValues(user, profileUser))) 
         else:
             self.response.out.write('Could not find user: ' + userURL)
 

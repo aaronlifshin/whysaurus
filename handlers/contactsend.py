@@ -19,5 +19,5 @@ class ContactSend(AuthHandler):
         template_values = {
             'message': "Thank you for your message.",
         }
-        path = os.path.join(constants.ROOT, 'templates/message.html')
-        self.response.out.write(template.render(path, template_values))
+        template = self.jinja2_env.get_template('message.html')                        
+        self.response.out.write(template.render(template_values))

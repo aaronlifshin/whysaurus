@@ -22,8 +22,12 @@ class Vote(AuthHandler):
         linkType = self.request.get('linkType')
         vote = self.request.get('vote')        
         user = self.current_user
+        
+        if int(vote) > 100 or int(vote) < 0:
+            resultJSON = json.dumps({'result': False, 'error':'Vote value out of range.'})
+            
         # logging.info('ABOUT TO CHECK ALL THE DATA 1:%s 2:%s 3:%s 4:%s ' % (parentRootURLsafe,childRootURLsafe,linkType, vote))
-        if parentRootURLsafe and childRootURLsafe and linkType and user:
+        elif parentRootURLsafe and childRootURLsafe and linkType and user:
             result, newRelevance, newVoteCount = user.addRelevanceVote(
                 parentRootURLsafe, childRootURLsafe, linkType, int(vote))
             if result:

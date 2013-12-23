@@ -18,12 +18,12 @@
         <div class="span11 notificationText">
           <div>
           {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-              {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %} 
+              {% if notification.additionalUserCount() > 0 %} {{ notification.additionalUserCount() + 1  }} users {% else %} Someone {% endif %} 
               {{notification.notificationReasonText}} 
               <em>{{notification.referencePoint.title}}</em>, a point you {{notification.followReason}}.
           {% else %}
-              {% if notification.additionalUserCount > 0 %} 
-                  {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
+              {% if notification.additionalUserCount() > 0 %} 
+                  {{notification.sourceUserFull.name}} and {{notification.additionalUserCount()}} other{% if notification.additionalUserCount() > 1 %}s{% endif %} {{notification.notificationReasonText}}
               {% else %}
                   {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
               {% endif %} 
@@ -34,7 +34,7 @@
           {% endif %}
           </div>
           <div class="Submenu_SmallText">
-              {{notification.timeText}}
+              {{notification.timeText()}}
           </div>
         </div>                                   
     </div>

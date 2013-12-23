@@ -73,9 +73,9 @@ class AdminPage(AuthHandler):
             'currentArea':self.session.get('currentArea')
         }
 
-        if user and user.admin:                
-            path = os.path.join(constants.ROOT, 'templates/admin.html')
-            self.response.out.write(template.render(path, template_values)) 
+        if user and user.admin:               
+            template = self.jinja2_env.get_template('admin.html')                     
+            self.response.out.write(template.render(template_values)) 
         else:
             self.response.out.write('User not authorized. ')
             
@@ -87,8 +87,8 @@ class AdminPage(AuthHandler):
             'currentArea':self.session.get('currentArea')
         }
         if user and user.admin:                
-            path = os.path.join(constants.ROOT, 'templates/uploadUsers.html')
-            self.response.out.write(template.render(path, template_values)) 
+            template = self.jinja2_env.get_template('uploadUsers.html')                    
+            self.response.out.write(template.render(template_values)) 
         else:
             self.response.out.write('User not authorized. ')
         
@@ -115,8 +115,8 @@ class AdminPage(AuthHandler):
                 'user': loggedInUser,
                 'messages': bigMessage
             }    
-            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-            self.response.out.write(template.render(path, template_values))   
+            template = self.jinja2_env.get_template('message.html')                    
+            self.response.out.write(template.render(template_values))   
         else:
             self.response.out.write('User not authorized. ')
 

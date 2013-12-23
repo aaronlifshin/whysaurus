@@ -38,15 +38,14 @@ class Notification(ndb.Model):
     def referencePoint(self):
         return self.pointRootFull.getCurrent()
     
-    @property
     def additionalUserCount(self):
-        return len(self.additionalUsers)
+        return len(self.additionalUserKeys)
         
     @property
     def notificationReasonText(self):
         c = self.notificationReasonCode
         plural = False
-        if hasattr(self, 'additionalUsers') and self.additionalUsers is not None:
+        if hasattr(self, 'additionalUserKeys') and self.additionalUserKeys is not None:
             plural = True
         if hasattr(self, 'additionalActions') and self.additionalActions != 0:
             plural = True            
@@ -117,10 +116,10 @@ class Notification(ndb.Model):
             if n:                                
                 if userKey != n.sourceUser:
                     logging.info('NCFF ' + 'not equal')
-                    if not hasattr(n, 'additionalUsers') or n.additionalUsers is None:
-                        n.additionalUsers = [userKey]
-                    elif userKey not in n.additionalUsers: # A new user has triggered the notification
-                        n.additionalUsers.push(userKey)
+                    if not hasattr(n, 'additionalUserKeys') or n.additionalUserKeys is None:
+                        n.additionalUserKeys = [userKey]
+                    elif userKey not in n.additionalUserKeys: # A new user has triggered the notification
+                        n.additionalUserKeys.push(userKey)
                 else:
                     # additional actions by the initial user that caused the notification
                     n.additionalActions = n.additionalActions + 1 if n.additionalActions else 1

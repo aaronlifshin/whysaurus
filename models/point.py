@@ -76,6 +76,9 @@ def makeURL(sourceStr):
             newUrl = newUrl + str(redirectURL.numCopies)
             redirectURL.put()        
     return newUrl
+  
+def sortArrayByRating(links):      
+    links.sort(key=lambda x: x.fRating if x.fRating is not None else 50, reverse=True)
     
 class Link(ndb.Model):
     version = ndb.KeyProperty(indexed=False)
@@ -575,7 +578,8 @@ class Point(ndb.Model):
                 voteCount = 0
             )
             
-            links = links + [newLink] if links else [newLink]            
+            links = links + [newLink] if links else [newLink]      
+            sortArrayByRating(links)                  
             self.setStructuredLinkCollection(linkType, links)
 
     def removeLink(self, linkRoot, linkType):
@@ -827,9 +831,8 @@ class Point(ndb.Model):
                     ourLink = link
                     break
             if ourLink:
-                ourLink.updateRelevanceData(oldRelVote, newRelVote)                
-                # TODO: sort the points by vote rating
-                
+                ourLink.updateRelevanceData(oldRelVote, newRelVote) 
+                sortArrayByRating(links)                               
                 self.put()
                 retVal = True, ourLink.rating, ourLink.voteCount
         return retVal        

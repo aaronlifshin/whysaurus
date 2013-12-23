@@ -60,9 +60,7 @@
 	</div>
 	{% if linkedPoints %}            
 		{% for point in linkedPoints %}
-            {% with linkType as linkType %}
-                {% include 'linkPoint.html' %} 
-            {% endwith %}
+            {% include 'linkPoint.html' %} 
 		{% endfor %}
 	{% endif %}          
 </div>	

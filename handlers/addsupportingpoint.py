@@ -44,9 +44,8 @@ class AddSupportingPoint(AuthHandler):
                     'err': str(e)
                 }
             else:
-                path = os.path.join(constants.ROOT, 'templates/linkPoint.html')
-                newLinkPointHTML = json.dumps(template.render(
-                    path, {
+                template = self.jinja2_env.get_template('linkPoint.html')                
+                newLinkPointHTML = json.dumps(template.render({
                         'point': newLinkPoint,
                         'linkType': linkType
                 }))

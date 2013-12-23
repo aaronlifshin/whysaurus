@@ -137,20 +137,18 @@
 <div id="supportingPointsArea" class="tabbedArea">
     <div class="row">
         <div class="span4">
-          {% with recentlyViewedPoints as recentlyViewedPoints  %}
-            {% with supportingPoints as linkedPoints %}
-            {% with "supporting" as linkType %}
+            {% with linkedPoints = supportingPoints %}
+            {% with linkType = "supporting" %}
                 {% include 'linkPointsList.html' %}
             {% endwith %}
             {% endwith %}
         </div>
         <div class="span4">
-            {% with counterPoints as linkedPoints %}
-            {% with "counter" as linkType %}
+            {% with linkedPoints = counterPoints %}
+            {% with linkType = "counter" %}
                 {% include 'linkPointsList.html' %}
             {% endwith %}
             {% endwith %}
-          {% endwith %}
         </div>
   </div>
 

@@ -607,8 +607,17 @@ function showRelevance(event) {
 }
 
 function sendRelevanceVote(event) {
-    relBase = $(this).closest('[name=areaRelevanceRadio]');
-    var that = this;
+    var selectedRadioButton = $(this)
+    if ($(this).hasClass('styledRadio')) {
+        // we got called on the screwdefaultbuttons button
+        selectedRadioButton = $(this).children(":first");
+    }
+    var relBase = selectedRadioButton.closest('[name=areaRelevanceRadio]');
+    var radioButtons = $("[type=radio]", relBase);
+    
+    radioButtons.screwDefaultButtons("disable");
+    $('.styledRadio').off('.ys');                	
+    
     $.ajaxSetup({
 		url: "/relVote",
 		global: false,
@@ -617,26 +626,33 @@ function sendRelevanceVote(event) {
             'parentRootURLsafe': $('#pointArea').data('rootus'),
             'childRootURLsafe': relBase.data('childurlsafe'),
             'linkType': relBase.data('linktype'),
-            'vote': $(this).val(),
+            'vote': selectedRadioButton.val(),
 		},
 		success: function(data){
 			obj = JSON.parse(data);
 			if (obj.result == true) {
                 
-                $(that).closest('[name="areaRelevanceRadio"]').prev().text(
+                selectedRadioButton.closest('[name="areaRelevanceRadio"]').prev().text(
                     'Relevance ' + obj.newRelevance);                
-                $(that).parent().nextAll('[name=relevanceTextLine]').text(
-                    obj.newVoteCount + " User" + ( obj.newVoteCount > 1 ? "s":"") +
-                    " Voting.   Curent Average: " + obj.newRelevance);
+                selectedRadioButton
+                    .closest('[name="areaRelevanceRadio"]')
+                    .children('[name=relevanceTextLine]')
+                    .text(
+                        obj.newVoteCount + " User" + ( obj.newVoteCount > 1 ? "s":"") +
+                        " Voting.   Curent Average: " + obj.newRelevance);
             } else {
 			    showAlertAfter('Not able to save vote. Try to refresh the page.', 
-                    $(that).closest('[name=areaRelevanceRadio]'));
+                    selectedRadioButton.closest('[name=areaRelevanceRadio]'));
                 
             }
+            radioButtons.screwDefaultButtons("enable");
+            $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);                	                        
 		},
 		error: function(xhr, textStatus, error){
             showAlertAfter('The server returned an error. You may try again.', "#addComment");
             stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+            radioButtons.screwDefaultButtons("enable");
+            $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);                	                                                
         }
 	});
 	$.ajax();
@@ -792,12 +808,14 @@ function activatePointArea() {
         $('[name=commentReply]').click(showReplyComment);
 
         $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
-        $('[name^=relevanceRadio]').off('.ys').on('click.ys', sendRelevanceVote);                	
         $('input:radio').screwDefaultButtons({
                 image: 'url("/static/img/radio.jpg")',
                 width: 45,
                 height: 45
         });
+        $('[name^="relevanceRadio"]').off('.ys').on('click.ys', sendRelevanceVote);                	
+        $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);                	
+        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
     makePointsCardsClickable();	    

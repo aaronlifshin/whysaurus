@@ -2,11 +2,13 @@ import os
 import constants
 import logging
 import json
+import jinja2
 
 from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
 from models.point import Point
 from models.redirecturl import RedirectURL
+
 
 class ViewPoint(AuthHandler):
     def createTemplateValues(self, point, pointRoot, full=True):
@@ -65,11 +67,14 @@ class ViewPoint(AuthHandler):
         return templateValues
     
     def outputTemplateValues(self, template_values):
-        path = os.path.join(constants.ROOT, 'templates/point.html')
+
+        
         self.response.headers["Pragma"]="no-cache"
         self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
         self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"
-        self.response.out.write(template.render(path, template_values)) 
+        template = self.jinja2_env.get_template('point.html')
+        html = template.render(template_values)
+        self.response.out.write(html) 
         
     def post(self, pointURL):
         rootKey = self.request.get('rootKey')
@@ -114,8 +119,9 @@ class ViewPoint(AuthHandler):
             if newURL:
                 point, pointRoot = Point.getCurrentByUrl(url)
         if point:
+            template = self.jinja2_env.get_template('pointContent.html')
             vals = self.createTemplateValues(point, pointRoot, full=False)
-            html = template.render('templates/pointContent.html', vals)
+            html = template.render(vals)
 
             resultJSON = json.dumps({
                 'result': True,

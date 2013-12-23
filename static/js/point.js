@@ -408,7 +408,7 @@ function selectPoint(supportingPointURL, currentPointURL, linkType){
 }
 
 function setPointListHeader(linkType) {
-	numLinkPoints = $("#" + linkType + "_nonzeroPoints").children().length - 1;
+	numLinkPoints = $("#" + linkType + "_nonzeroPoints").find('.pointCard').length;
     if (numLinkPoints == 0) {
         header = "Zero " + linkType.capitalize() + " Points";
     } else {
@@ -423,6 +423,7 @@ function pointListAppend(linkType, pointHTML, numLinkPoints) {
     parent.append($.parseJSON(pointHTML));
     setPointListHeader(linkType);	
     makePointsCardsClickable();	 
+    makeRelevanceControlsClickable();
     $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
     $('[name^=relevanceRadio]').off('.ys').on('click.ys', sendRelevanceVote);        
     
@@ -756,6 +757,18 @@ function viewPointHistory() {
 		},
 	});
 }
+
+function makeRelevanceControlsClickable() {
+    $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
+    $('input:radio').screwDefaultButtons({
+            image: 'url("/static/img/radio.jpg")',
+            width: 45,
+            height: 45
+    });
+    $('[name^="relevanceRadio"]').off('.ys').on('click.ys', sendRelevanceVote);                	
+    $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);
+}
+
 function activatePointArea() {    
     if (!loggedIn) {
         $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
@@ -772,8 +785,6 @@ function activatePointArea() {
         make_this_show_login_dlg($( "#showAddComment" ));
         make_this_show_login_dlg($( "[name=commentReply]" ));    
         make_this_show_login_dlg($( "[name=showRelevance]" ));     
-        make_this_show_login_dlg($( "[name^=relevanceRadio]" ));                   
-            
     } else {
 
         $( "#supporting_unlinkToggle" ).button().click(function() {
@@ -807,15 +818,9 @@ function activatePointArea() {
         
         $('[name=commentReply]').click(showReplyComment);
 
-        $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
-        $('input:radio').screwDefaultButtons({
-                image: 'url("/static/img/radio.jpg")',
-                width: 45,
-                height: 45
-        });
-        $('[name^="relevanceRadio"]').off('.ys').on('click.ys', sendRelevanceVote);                	
-        $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);                	
-        
+        makeRelevanceControlsClickable();
+
+                	        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
     makePointsCardsClickable();	    

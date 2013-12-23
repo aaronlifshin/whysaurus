@@ -79,7 +79,7 @@
 	<div id="timestampAndEditLink" class="span8">			  
 		<div class="mainPointLastEdited">
 		  <span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br> 
-          Last Edited {{point.PSTdateEdited}} 
+          Last Edited {{point.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')}} 
 		  <a id="viewPointHistory">View History</a>
 		</div>
 	</div>

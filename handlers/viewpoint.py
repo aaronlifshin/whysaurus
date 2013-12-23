@@ -99,7 +99,9 @@ class ViewPoint(AuthHandler):
                 'pointRoot': pointRoot,
                 'comments':pointRoot.getComments(),
             }
-            html = template.render('templates/pointComments.html', tv)
+            template = self.jinja2_env.get_template('pointComments.html')
+            
+            html = template.render(tv)
             resultJSON = json.dumps({
                 'result': True,
                 'html': html
@@ -152,5 +154,5 @@ class ViewPoint(AuthHandler):
                                need to be logged into those areas to view them.",
                                'currentArea':self.session.get('currentArea')
             }
-            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-            self.response.out.write(template.render(path, template_values ))      
+            template = self.jinja2_env.get_template('message.html')            
+            self.response.out.write(template.render(template_values ))      

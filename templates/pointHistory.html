@@ -3,11 +3,11 @@
 	<div class="span8">{{ numPoints }} versions exist for {{ latestPoint.title|escape }}</div>
 </div>
 {% for fullPoint in pointData %}
-	<div class="row {% cycle 'blueBack' 'pinkBack' %}">
-	    {% with fullPoint.point as point %}		
+	<div class="row {{ loop.cycle( 'blueBack' , 'pinkBack') }}">
+	    {% with point = fullPoint.point %}		
             <div class="span8">
                 <div class="historyLastEdited offset1">
-                    Version {{point.version}}. Created {{point.PSTdateEdited}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>
+                    Version {{point.version}}. Created {{point.dateEditedText}} by <a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a>
                 </div>
             </div>
         
@@ -32,19 +32,20 @@
             </div>
 	    {% endwith %}	    
 	    {% if fullPoint.sources %}
-			<div class=" {% cycle 'blueBack' 'pinkBack' %}">
+        
+			<div class=" {{ loop.cycle( 'blueBack' , 'pinkBack') }}">
 				<div class="span8">Sources:</div>           
 				{% for source in fullPoint.sources %}
 					<div class="span8 offset1">      
-					  <a data-sourceKey={{source.key.urlsafe}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
+					  <a data-sourceKey={{source.key.urlsafe()}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
 					</div>    
 				{% endfor %}
 			</div>
 		{% endif %}
-	    <div class=" {% cycle 'blueBack' 'pinkBack' %}">
+	    <div class=" {{ loop.cycle( 'blueBack' , 'pinkBack') }}">
 	        <div class="span4">
 	            {% if fullPoint.supportingPoints %}
-	              Supporting Points
+	              {{ fullPoint.supportingPoints|length }} Supporting Points
 	              {% for point in fullPoint.supportingPoints %}
 	                  {% include 'pointBox.html' %}            
 	              {% endfor %} 
@@ -52,7 +53,7 @@
 	        </div>
 	        <div class="span4">
 	            {% if fullPoint.counterPoints %}            
-	              Counter Points
+	              {{ fullPoint.counterPoints|length }} Counter Points
 	              {% for point in fullPoint.counterPoints %}
 	                  {% include 'pointBox.html' %}            
 	              {% endfor %} 

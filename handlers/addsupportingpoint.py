@@ -1,6 +1,7 @@
 import json
 import os
 import constants
+import logging
 from google.appengine.ext.webapp import template
 
 from authhandler import AuthHandler
@@ -49,6 +50,7 @@ class AddSupportingPoint(AuthHandler):
                         'point': newLinkPoint,
                         'linkType': linkType
                 }))
+                logging.info('- - - - - ASP: ' + str(newLinkPointHTML))
                 jsonOutput = {
                     'result': True,
                     'version': newPoint.version,

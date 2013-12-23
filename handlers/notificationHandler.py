@@ -22,10 +22,12 @@ class NotificationHandler(AuthHandler):
         
         for f in follows:
             if f.user != sourceUserKey:
-                Notification.createNotificationFromFollow(f, pointRootKey, 
+                Notification.createNotificationFromFollow(self.jinja2_env, 
+                                                          f, pointRootKey, 
                                                           sourceUserKey, 
                                                           int(notifyReasonCode),
-                                                          additionalText )
+                                                          additionalText,
+                                                           )
                 
     def NewNotificationChannel(self):
         user = self.current_user

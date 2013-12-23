@@ -162,6 +162,10 @@ class Point(ndb.Model):
             return math.floor(rat1*100) # Django widthratio requires integers
  
     @property
+    def dateEditedText(self):
+        return self.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')
+        
+    @property
     def PSTdateEdited(self):
         return PST.convert(self.dateEdited)
     
@@ -803,7 +807,8 @@ class Point(ndb.Model):
                     if addResult:
                         results = results + [newResult]
                 """
-                resultPoints = [root.getCurrent() for root in resultRoots]
+                cleanRoots = filter(None, resultRoots)
+                resultPoints = [root.getCurrent() for root in cleanRoots]
             else:
                 resultPoints = None                
             return resultPoints

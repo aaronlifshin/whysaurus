@@ -761,7 +761,7 @@ function viewPointHistory() {
 function makeRelevanceControlsClickable() {
     $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
     $('input:radio').screwDefaultButtons({
-            image: 'url("/static/img/radio.jpg")',
+            image: 'url("/static/img/screwdefault_radio_design.png")',
             width: 45,
             height: 45
     });

@@ -11,8 +11,8 @@ builtins:
 
 handlers:
 - url: /favicon\.ico
-  static_files: static/img/triceratops_icon.png
-  upload: static/img/triceratops_icon.png
+  static_files: static/img/triceratops_favicon.ico
+  upload: static/img/triceratops_favicon.ico
 
 - url: /static
   static_dir: static

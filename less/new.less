@@ -356,6 +356,7 @@ body {
     box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
 
+
 [id$=_nonzeroPoints] .pointCard {
 	position: relative;
 }
@@ -838,6 +839,11 @@ body {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     background-color:white;//@widgetBG;
+    position:relative; // needed for z-index
+    z-index: 1;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
  
 .relevanceTitle {
@@ -857,14 +863,18 @@ body {
     background-color:@widgetBG;
     margin-bottom:-1px;
     //display:inline-block;
-    text-align:left;   
+    text-align:left;
+    position:relative; // needed for z-index
+    z-index:10;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);    
 }
 
 .relevanceValGroup{
     display:inline-block;
     text-align:center;
     margin-top: 16px;
-    margin-bottom: 12px;
     margin-left:auto;
     margin-right:auto;
     
@@ -883,11 +893,31 @@ body {
  
 }
 
+.relevanceRadioLabel {
+    z-index: 10;
+    position: relative;
+    top: -34px;
+    pointer-events:none;
+}
+
+.styledRadio:hover {
+    background-position: 0px -15px;
+}
+
+.relevanceLikertLine {
+    width: 150px;
+    border-top: 6px solid #000;
+    margin-left: 20px;
+    z-index: -10;
+    margin-top: -50px
+}
+
 .relevanceTextLine {
     //text-align:left; 
 	font-size: @fontSizeSmaller;
 	color: @grayTextMedium;
     line-height: @lineHeightDefault; 
+    margin-top: 36px;
 }
 
 

@@ -5,7 +5,9 @@
             Change Editor Pick settings for:
         </h3>
         <h4>
-        {{point.title}}
+        {% if point %}
+            {{point.title}}
+        {% endif %}
         </h4>
     </div>   
     <div class="row-fluid" name="alertArea"></div>    

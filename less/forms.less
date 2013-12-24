@@ -8,7 +8,10 @@
 
 // Make all forms have space below them
 form {
-  margin: 0 0 20px;
+    margin-left: 0;
+    margin-right:  0;
+    margin-top: 0;
+    margin-bottom: @formPadding * .5;
 }
 
 fieldset {
@@ -48,7 +51,7 @@ textarea {
 select,
 textarea {
   font-family: inherit; // And only set font-family here for those that need it (note the missing label element)
-  font-style:italic; 
+  //font-style:italic; 
 }
 
 input,
@@ -100,7 +103,7 @@ input[type="color"],
 input,
 textarea,
 .uneditable-input {
-  width: 206px; // plus 12px padding and 2px border
+  width: 300px; // plus 12px padding and 2px border
 }
 // Reset height since textareas have rows
 textarea {
@@ -652,14 +655,14 @@ legend + .control-group {
 .form-horizontal {
   // Increase spacing between groups
   .control-group {
-    margin-left: 15px;
+    //margin-left: 15px;
     margin-bottom: 2px;
     .clearfix();
   }
   // Float the labels left
   .control-label {
     float: left;
-    width: @horizontalComponentOffset - 20;
+    width: @horizontalComponentOffset; // width: @horizontalComponentOffset - 20;
     padding-right: 5px;
     padding-left:5px;
     background-color: @grayLight;

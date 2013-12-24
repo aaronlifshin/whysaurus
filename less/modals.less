@@ -26,8 +26,8 @@
   top: 10%;
   left: 50%;
   z-index: @zindexModal;
-  width: 560px;
-  margin-left: -280px;
+  width: 480px;
+  margin-left: -225px;
   background-color: @white;
   border: 1px solid #999;
   border: 1px solid rgba(0,0,0,.3);
@@ -44,7 +44,10 @@
   &.fade.in { top: 2%; }
 }
 .modal-header {
-  padding: 20px 15px;
+  padding-top: @formPadding;
+  padding-bottom: @formPadding;
+  padding-left: @formPadding; 
+  padding-right: @formPadding;
   // Close icon
   .close { margin-top: 2px; }
   // Heading
@@ -60,8 +63,11 @@
   position: relative;
   overflow-y: auto;
   //max-height: 400px;
-  padding-left: 15px;
-  padding-right: 15px;
+  //padding-left: 15px;
+  padding-top: @formPadding;
+  padding-bottom: @formPadding;
+  padding-left: @formPadding; 
+  padding-right: @formPadding;
   
 }
 // Remove bottom margin if need be
@@ -71,7 +77,10 @@
 
 // Footer (for actions)
 .modal-footer {
-  padding: 14px 15px 15px;
+  padding-top: @formPadding;
+  padding-bottom: @formPadding;
+  padding-left: @formPadding; 
+  padding-right: @formPadding;
   margin-bottom: 0;
   background-color: #fff;
   .border-radius(0 0 6px 6px);

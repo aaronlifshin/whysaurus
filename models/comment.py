@@ -17,8 +17,8 @@ class Comment(ndb.Model):
     level = ndb.IntegerProperty(default=0)
     
     @property
-    def PSTdate(self):
-        return PST.convert(self.date)
+    def PSTdateText(self):
+        return PST.convert(self.date).strftime('%b. %d, %Y, %I:%M %p')
     
     @classmethod
     @ndb.transactional(xg=True)

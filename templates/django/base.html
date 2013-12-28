@@ -12,13 +12,13 @@
     <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/_ah/channel/jsapi"></script>
-    
+    <script type="text/javascript" src="/static/js/jquery.screwdefaultbuttonsV2.min.js"></script>    
     <script type="text/javascript" src="/static/js/base.js"></script>
     
     <script> var appname = window.navigator.appName; </script>
     
       {% if point %}
-          <title>{{point.title}}</title>   
+          <title>{{ point.title }}</title>   
       {% else %}
           {% if profileUser %}
              <title>{{profileUser.name}} on Whysaurus, the center for collaborative reasoning.</title>
@@ -66,7 +66,7 @@
                   <div class="userMenuArea headerUserName pull-right">
                     <span class="caret vertalignmiddle"></span>                    
                       <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> {{ user.name|escape }} 
-                        <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_47px.png{% endif %}"/> 
+                        <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
                       </a>
                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                       {% if user.admin %}
@@ -89,10 +89,10 @@
                         </div>
                       <ul class="span4 dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
                          <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
-                        {% if user.notifications %}                                               
-                            data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                        {% if user.notifications %} 
+                            data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"                                                                         
                             {% if user.notifications|length == 11 %}                            
-                                data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                                data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"                            
                             {% endif %}                                                                                                                    
                         {% endif %}                            
                             >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
@@ -153,13 +153,10 @@
         </script>
         {% include 'pointDialog.html' %}
         {% include 'selectSupportingPointsSearch.html' %}
-        {% if user.admin %}
-          {% include 'changeEditorsPick.html' %}
-        {% endif %}
     {% else %}
       <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
          <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">          
-            <div class="modal-header"><h3>Login</h3></div>
+            <div class="modal-header"><h3>Sign In</h3></div>
                 
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">    
@@ -182,10 +179,10 @@
                 <div class="row-fluid">
                   <a  id="forgot_emailLoginDialog" class="btn pull-left">Forgot Password</a>  
                   <a  id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>                                        
-                  <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right">Login</a>            
+                  <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right">Sign In</a>            
                 </div>
                 <div class="row-fluid">                
-                    <a  id="showSignupDialog" class="btn btn-cancel">New User? Click here to create a login.</a>                                                    
+                    <a  id="showSignupDialog" class="btn btn-cancel">New to Whysaurus? Click here to sign up.</a>                                                    
                 </div>
             </div> 
           </form>
@@ -193,7 +190,7 @@
               
       <div class="modal hide fade" data-keyboard="true" id="signupDialog" role="dialog" aria-hidden="true">
          <form id='frm_signupDialog' class="form-horizontal" action="" method="POST">          
-            <div class="modal-header"><h3>Create New User</h3></div>    
+            <div class="modal-header"><h3>Sign Up</h3></div>    
             <a  id="backToLogin" class="btn">Already a User? Click here to sign in.</a>                                                    
             
             <div class="row-fluid" id="alertArea"></div>    
@@ -209,50 +206,50 @@
                 <label class="control-label" for="signup_userEmail">Email Address</label>
                 <div class="controls">            
                     <input id="signup_userEmail" name="signup_userEmail" type="text"
-                    placeholder="Use to login and receive Whysaurus notifications."></input>
+                    placeholder="For logging in and receiving Whysaurus notifications..."></input>
                 </div>
               </div>  
               <div class="control-group">            
                 <label class="control-label" for="signup_password1">Password</label>
                 <div class="controls">            
                     <input id="signup_password1" name="signup_password1" type="password"
-                    placeholder="At least 8 characters long, with both a letter and a number"></input>
+                    placeholder="At least 8 characters long, with both a letter and a number..."></input>
                 </div>
               </div>
               <div class="control-group">            
-                <label class="control-label" for="signup_password2">Confirm Pass</label>
+                <label class="control-label" for="signup_password2">Confirm Password</label>
                 <div class="controls">            
                     <input id="signup_password2" name="signup_password2" type="password"
                     placeholder=""></input>
                 </div>
               </div>       
-              <div>Optional Profile Fields Below: </div>
+              <h5 class="modalSubheading">Optional: Tell the community more about yourself </h5>
               <div class="control-group">            
                 <label class="control-label" for="signup_userWebsite">Website URL</label>
                 <div class="controls">            
                     <input id="signup_userWebsite" name="signup_userWebsite" type="text" value=""
-                    placeholder="Link to your website"></input>
+                    placeholder="Link to your website..."></input>
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="signup_userAreas">Expertise</label>                            
                 <div class="controls">            
                     <input id="signup_userAreas" name="signup_userAreas" type="text" value=""
-                    placeholder="Your areas of expertise"></input>
+                    placeholder="Subjects you know about..."></input>
                 </div>
               </div>
               <div class="control-group">
                 <label  class="control-label" for="signup_userProfession">Profession</label>                                      
                 <div class="controls">            
                     <input id="signup_userProfession" name="signup_userProfession" type="text" value=""
-                    placeholder="Your current profession"></input>
+                    placeholder="Your current profession..."></input>
                 </div>
               </div>
               <div class="control-group">
                 <label  class="control-label" for="signup_userBio">Short Biography </label>                                                
                 <div class="controls">            
                     <textarea id="signup_userBio" name="signup_userBio" type="text" rows="3"
-                    placeholder="A short biography"></textarea>   
+                    placeholder="Anything else about yourself that you'd like to share..."></textarea>   
                 </div>
               </div>        
             </div>    

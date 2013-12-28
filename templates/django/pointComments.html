@@ -26,7 +26,7 @@
             <div class="cmmnt-content span11">
               {{comment.text|safe}}
               <a href="/user/{{comment.userUrl}}" class="userlink">{{comment.userName}}</a> 
-                - <span class="pubdate">{{comment.PSTdate}}</span>
+                - <span class="pubdate">{{comment.PSTdateText}}</span>
             </div>
             <div class="span1">
                 <a name="commentReply" data-parentkey="{{comment.key.urlsafe}}">Reply</a>

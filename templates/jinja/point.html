@@ -1,0 +1,14 @@
+{% extends "twoColumnLayout.html" %}
+
+{% block headBlock %}  
+  <script type="text/javascript" src="/static/js/point.js"></script>  
+{% endblock %}
+
+{% block leftColumnContent %}    
+    {% include 'pointContent.html' %}
+{% endblock %}
+
+{% block rightColumnContent %}
+    {% include 'pointComments.html' %}      
+{% endblock %}
+

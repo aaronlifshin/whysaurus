@@ -1,0 +1,52 @@
+<a href="/point/{{ point.url }}" style="text-decoration:none">
+	<div class="pointCard" data-pointurl='{{point.url}}' data-pointrootus='{{point.rootURLsafe}}'>
+	   <div class="row-fluid">
+	       <div class="span10">
+	          <div class="pointTitle">
+	            {{ point.title|escape }}
+	          </div>
+	      </div>             
+	      <div class="span2">
+	        {% if point.imageURL and point.imageURL.strip %}      
+	            <img class="listDisplay" src="{{ point.summaryBigImage }}" />
+	        {% endif %}            
+	      </div>
+	    </div>    
+	      <div class="row-fluid">
+			  {% if point.voteTotal != 0 %}
+				  <span class="stat"><img class="iconAgreesSmall" src="/static/img/agreesIconSmall.png"/>&nbsp{{ point.voteTotal }}&nbsp&nbsp</span>
+			  {% endif %}            
+			  <!--{% if point.ribbonTotal != 0 %}			
+	          	<span class="stat"><img src="/static/img/awardsIconSmall.png"/>{{ point.ribbonTotal }}</span>
+  			  {% endif %} -->            
+			  {% if point.sources|length != 0 %}							
+			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall.png"/>&nbsp{{ point.sources|length }}</span>
+			  {% endif %}            				
+	      </div>
+		  {% if point.numSupporting > 0 or point.numCounter > 0 %}
+		      <div class="row-fluid no-space gauge">
+		          <span class="linkStat 
+		                    {% if point.onlyCounter %} counterColor 
+		                    {% else %} supportColor 
+		                    {% endif %}
+		                pull-left" 
+		                style="width:{{ (point.linksRatio/100)*100 }}%">
+	            
+		          </span>
+		          <span class="linkStat                     
+		                    {% if point.onlySupport  %} supportColor 
+		                    {% else %} counterColor 
+		                    {% endif %} pull-right" 
+		                style="width:{{ (point.reverseLinksRatio/100)*100 }}%">
+	             
+		          </span>
+		          <div class="gaugeText gaugeSupporting">
+					  {{ point.numSupporting }} SUPPORTING
+		          </div>
+		          <div class="gaugeText gaugeCounter">
+					  {{ point.numCounter }} COUNTER
+		          </div>			  
+		      </div>  
+		  {% endif %}             
+	</div>
+</a>

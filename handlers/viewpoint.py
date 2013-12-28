@@ -72,9 +72,8 @@ class ViewPoint(AuthHandler):
         self.response.headers["Pragma"]="no-cache"
         self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
         self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"
-        template = self.jinja2_env.get_template('point.html')
-        html = template.render(template_values)
-        self.response.out.write(html) 
+        html = self.template_render('point.html', template_values)
+        self.response.out.write(html)
         
     def post(self, pointURL):
         rootKey = self.request.get('rootKey')
@@ -98,10 +97,8 @@ class ViewPoint(AuthHandler):
             tv = {
                 'pointRoot': pointRoot,
                 'comments':pointRoot.getComments(),
-            }
-            template = self.jinja2_env.get_template('pointComments.html')
-            
-            html = template.render(tv)
+            }        
+            html = self.template_render('pointComments.html', tv)
             resultJSON = json.dumps({
                 'result': True,
                 'html': html
@@ -121,9 +118,8 @@ class ViewPoint(AuthHandler):
             if newURL:
                 point, pointRoot = Point.getCurrentByUrl(url)
         if point:
-            template = self.jinja2_env.get_template('pointContent.html')
             vals = self.createTemplateValues(point, pointRoot, full=False)
-            html = template.render(vals)
+            html = self.template_render('pointContent.html', vals)
 
             resultJSON = json.dumps({
                 'result': True,
@@ -154,5 +150,4 @@ class ViewPoint(AuthHandler):
                                need to be logged into those areas to view them.",
                                'currentArea':self.session.get('currentArea')
             }
-            template = self.jinja2_env.get_template('message.html')            
-            self.response.out.write(template.render(template_values ))      
+            self.response.out.write(self.template_render('message.html', template_values ))      

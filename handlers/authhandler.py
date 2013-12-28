@@ -70,10 +70,21 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     @webapp2.cached_property
     def jinja2_env(self):
         return jinja2.Environment(
-            loader=jinja2.FileSystemLoader('templates'),
+            loader=jinja2.FileSystemLoader('templates/jinja'),
             extensions=['jinja2.ext.autoescape', 'jinja2.ext.with_'],
             autoescape=True)    
             
+    def template_render(self, templateName, templateVals):
+        engine = constants.TEMPLATE_RENDERING_ENGINE
+        if engine == 'jinja':
+            t = self.jinja2_env.get_template(templateName)
+            return t.render(templateVals)
+        elif engine == 'django':
+            path = os.path.join(constants.ROOT, "templates/django/" + templateName)
+            return template.render(path, templateVals)
+        else:
+            raise WhysaurusException("Unknown template engine specified" )
+        
     def signup(self):
         email = self.request.get('email')
         name = self.request.get('userName')
@@ -120,9 +131,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         except Exception as e:
             message = "Got unknown exception " + str(e)
 
-        
-        template = self.jinja2_env.get_template('message.html')                
-        self.response.out.write(template.render({'message': message } ))
+        self.response.out.write(
+            self.template_render('message.html', {'message': message } ))
                   
     def verify(self, *args, **kwargs):
         user_id = kwargs['user_id']
@@ -141,8 +151,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             message = 'Verification URL not valid.  Verification URLs can only be used once.  Perhaps your email has already been validated.';
             logging.info('Could not find any user with id "%s" signup token "%s"',
               user_id, signup_token)
-            template = self.jinja2_env.get_template('message.html')         
-            self.response.out.write(template.render({'message': message} ))                  
+            self.response.out.write(
+                self.template_render('message.html', {'message': message} ))                  
         elif verification_type == 'v':
             # store user data in the session
             self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
@@ -154,8 +164,9 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 user.put()
     
             message = 'User email address has been verified.'
-            template = self.jinja2_env.get_template('message.html')        
-            self.response.out.write(template.render({'message': message, 'user': user } ))   
+            self.response.out.write(
+                self.template_render('message.html', {
+                    'message': message, 'user': user } ))
         elif verification_type == 'p':
             self.auth.unset_session() # The user is not logged in. They can only to reset the password
             logging.info('Got user2: %s' % str(user))
@@ -165,8 +176,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                       'user_id': user_id
             
                       }
-            template = self.jinja2_env.get_template('message.html')                    
-            self.response.out.write(template.render(template_values))
+            self.response.out.write(
+                self.template_render('message.html', template_values))
         else:
             logging.info('Verification type not supported')
             self.abort(404)
@@ -215,8 +226,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         self.response.out.write(resultJSON)
      
     def passwordChangePage(self):    
-        template = self.jinja2_env.get_template('resetpassword.html')                
-        self.response.out.write(template.render({
+        self.response.out.write(self.template_render('resetpassword.html', {
             'user': self.current_user, 
             'currentArea':self.session.get('currentArea')
         }))
@@ -249,8 +259,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 template_values['message']  = "Password changed successfully. You may now login with the new password."
             else:
                 template_values['message']  = "There was an error. Could not change the password."
-        template = self.jinja2_env.get_template('message.html')                        
-        self.response.out.write(template.render(template_values ))                       
+        self.response.out.write(
+            self.template_render('message.html', template_values ))                       
     
     def emailNewPassword(self): 
         pass

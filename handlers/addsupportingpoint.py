@@ -45,12 +45,11 @@ class AddSupportingPoint(AuthHandler):
                     'err': str(e)
                 }
             else:
-                template = self.jinja2_env.get_template('linkPoint.html')                
-                newLinkPointHTML = json.dumps(template.render({
+                newLinkPointHTML = json.dumps(
+                    self.template_render('linkPoint.html', {
                         'point': newLinkPoint,
                         'linkType': linkType
-                }))
-                logging.info('- - - - - ASP: ' + str(newLinkPointHTML))
+                    }))
                 jsonOutput = {
                     'result': True,
                     'version': newPoint.version,

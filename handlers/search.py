@@ -16,10 +16,8 @@ class Search(AuthHandler):
             'searchResults': searchResults,
             'searchString': searchString,
         }
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-        
-        template = self.jinja2_env.get_template('searchResults.html')                
-        html = template.render(template_values)
+        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')        
+        html = self.template.render('searchResults.html', template_values)
         
         json_values = {'html':html,
                        'searchString': searchString,

@@ -7,24 +7,23 @@ from authhandler import AuthHandler
 
 class About(AuthHandler):
     def get(self):
-        template = self.jinja2_env.get_template('about.html')        
-        path = os.path.join(constants.ROOT, 'templates/about.html')
-        self.response.out.write(template.render({'user': self.current_user, 
-                                                       'currentArea':self.session.get('currentArea')
-}))
+        self.response.out.write(
+            self.template_render('about.html', 
+                {'user': self.current_user, 
+                 'currentArea':self.session.get('currentArea')}))
 
 
 class Help(AuthHandler):
-    def get(self):
-        template = self.jinja2_env.get_template('help.html')        
-        self.response.out.write(template.render({'user': self.current_user, 
-                                                       'currentArea':self.session.get('currentArea')
-}))
+    def get(self):        
+        self.response.out.write(
+            self.template_render('help.html', 
+                {'user': self.current_user, 
+                'currentArea':self.session.get('currentArea')}))
 
 
 class Contact(AuthHandler):
     def get(self):
-        template = self.jinja2_env.get_template('contact.html')        
-        self.response.out.write(template.render({'user': self.current_user,
-                                                       'currentArea':self.session.get('currentArea')
-}))
+        self.response.out.write(
+            self.template_render('contact.html',
+                {'user': self.current_user,
+                'currentArea':self.session.get('currentArea')}))

@@ -22,7 +22,7 @@ class NotificationHandler(AuthHandler):
         
         for f in follows:
             if f.user != sourceUserKey:
-                Notification.createNotificationFromFollow(self.jinja2_env, 
+                Notification.createNotificationFromFollow(self, 
                                                           f, pointRootKey, 
                                                           sourceUserKey, 
                                                           int(notifyReasonCode),

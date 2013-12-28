@@ -19,8 +19,7 @@ class MainPage(AuthHandler):
             'featuredPoint': featuredPoint,
             'user': self.current_user
         }
-        template = self.jinja2_env.get_template('mainPageLeftColumn.html')
-        html = template.render(vals)
+        html = self.template_render('mainPageLeftColumn.html', vals)
 
         resultJSON = json.dumps({
             'result': True,
@@ -41,8 +40,7 @@ class MainPage(AuthHandler):
             'recentlyViewed': recentlyViewedPoints,
             'user': user
         }
-        template = self.jinja2_env.get_template('mainPageRightColumn.html')        
-        html = template.render(vals)
+        html = self.template_render('mainPageRightColumn.html', vals)
         
 
         resultJSON = json.dumps({
@@ -75,5 +73,4 @@ class MainPage(AuthHandler):
             'thresholds': constants.SCORETHRESHOLDS,
             'currentArea':self.session.get('currentArea')
         }
-        template = self.jinja2_env.get_template('index.html')                
-        self.response.out.write(template.render(template_values))
+        self.response.out.write(self.template_render('index.html', template_values))

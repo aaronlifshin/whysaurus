@@ -91,8 +91,9 @@ class Notification(ndb.Model):
 
     @property
     def notificationMessage(self):
-        template = self.jinja2_env.get_template('notificationMenu.html')        
-        notificationHTML = template.render({ 'notification': self})
+        notificationHTML = self.handler.template_render(
+            'notificationMenu.html', 
+            { 'notification': self})
         message = {
                     'type': 'notification',
                     'notificationHTML': notificationHTML,
@@ -103,7 +104,7 @@ class Notification(ndb.Model):
         return json.dumps(message)
             
     @classmethod
-    def createNotificationFromFollow(cls, jinja2_env, follow, pointKey, userKey, notificationReasonCode, additionalText=None):
+    def createNotificationFromFollow(cls, handler, follow, pointKey, userKey, notificationReasonCode, additionalText=None):
         try:
             if notificationReasonCode == 3: # commented on does not "stack" with similar notifications
                 n = None
@@ -139,7 +140,7 @@ class Notification(ndb.Model):
             n.put()
             targetUser = follow.user.get()
             if targetUser.token and targetUser.tokenExpires > datetime.datetime.now():
-                n.jinja2_env = jinja2_env
+                n.handler = handler
                 channel.send_message(targetUser.token, n.notificationMessage)
                 
         except Exception, e:

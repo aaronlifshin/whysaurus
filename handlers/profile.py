@@ -45,10 +45,11 @@ class Profile(AuthHandler):
         newUserProfession=self.request.get('userProfession')
         newUserBios=self.request.get('userBio')
         user.update(newWebsiteURL, newUserAreas, newUserProfession, newUserBios)
-        namespace_manager.set_namespace(userNamespace)
-
-        template = self.jinja2_env.get_template('profile.html')        
-        self.response.out.write(template.render(self.makeTemplateValues(user, user))) 
+        namespace_manager.set_namespace(userNamespace)        
+        self.response.out.write(
+            self.template_render(
+                'profile.html', 
+                self.makeTemplateValues(user, user))) 
             
     def get(self, userURL):
         userNamespace = namespace_manager.get_namespace()
@@ -63,9 +64,11 @@ class Profile(AuthHandler):
             permissionToView = user.admin or user.privateArea == profileUser.privateArea 
         else:
             permissionToView = profileUser.privateArea is None or profileUser.privateArea == ''
-        if profileUser and permissionToView:      
-            template = self.jinja2_env.get_template('profile.html')                                  
-            self.response.out.write(template.render(self.makeTemplateValues(user, profileUser))) 
+        if profileUser and permissionToView:                                        
+            self.response.out.write(
+                self.template_render(
+                    'profile.html', 
+                    self.makeTemplateValues(user, profileUser))) 
         else:
             self.response.out.write('Could not find user: ' + userURL)
 

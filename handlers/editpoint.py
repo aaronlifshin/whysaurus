@@ -32,8 +32,7 @@ class EditPoint(AuthHandler):
         )
         if newVersion:
             sources = newVersion.getSources()   
-            template = self.jinja2_env.get_template('sources.html')                            
-            sourcesHTML = template.render({'sources':sources})
+            sourcesHTML = self.template_render('sources.html', {'sources':sources})
             
             resultJSON = json.dumps({
                 'result': True,

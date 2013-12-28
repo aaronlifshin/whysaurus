@@ -22,8 +22,8 @@ class GetPointsList(AuthHandler):
 
         template_values = {
             'points':points
-        }
-        template = self.jinja2_env.get_template('pointBoxList.html')                        
+        }                        
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-        self.response.out.write(json.dumps(template.render(template_values)))
+        self.response.out.write(json.dumps(
+            self.template_render('pointBoxList.html', template_values)))
 

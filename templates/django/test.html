@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+HI HI
+<script>
+
+	$(document).ready(function() {
+		var edSummary = tinyMCE.get('editor_createPointDialog');
+  		edSummary.setContent('');
+	});
+</script>
+{% endblock %}

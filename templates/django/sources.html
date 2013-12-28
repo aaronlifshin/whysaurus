@@ -2,7 +2,7 @@
     <div id="mainPointSources" class="mainPointSourcesHeading"> Sources: </div>
     {% for source in sources %}
          <div name="mainPointSource" class="mainPointSourceEntry">                     
-            <a data-sourceKey={{source.key.urlsafe()}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
+            <a data-sourceKey={{source.key.urlsafe}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
          </div>                   
     {% endfor %}
 {% endif %}

@@ -1,27 +1,26 @@
-<div name="showRelevance" class="pointAreaActions showRelevance defaultShadow"><a>Relevance: {{point.relevancePercent}} </a></div>
-<div name="areaRelevanceRadio" class="relevanceVote hide defaultShadow" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
+<div name="showRelevance" class="pointAreaActions showRelevance"><a>Relevance: {{point.relevancePercent}} </a></div>
+<div name="areaRelevanceRadio" class="relevanceVote hide" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
     <div class="relevanceTitle">How Relevant is this Point?</div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=0
         {% if point.myVoteValue == 0 %}checked {% endif %} />                    
-        <label class="relevanceRadioLabel">0%</label>                    
+        <label >0%</label>                    
     </div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=33
         {% if point.myVoteValue == 33 %}checked {% endif %} />
-        <label class="relevanceRadioLabel">33%</label>                    
+        <label >33%</label>                    
     </div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=66
         {% if point.myVoteValue == 66 %}checked {% endif %} />
-        <label class="relevanceRadioLabel">66%</label>                    
+        <label >66%</label>                    
     </div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=100 
             {% if point.myVoteValue == 100 %}checked {% endif %} />
-        <label class="relevanceRadioLabel">100%</label>                    
+        <label >100%</label>                    
     </div>
-    <div class="relevanceLikertLine"></div>
     <div name="relevanceTextLine"  class="relevanceTextLine">
         {{point.relevanceVoteCount}} User{% if point.relevanceVoteCount != 1 %}s{% endif %} Voting.  Curent Average: {{point.relevancePercent}}
     </div>

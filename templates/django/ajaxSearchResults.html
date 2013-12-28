@@ -1,0 +1,29 @@
+           
+        {% for point in searchResults %}      
+          <div class="row-fluid" id="searchPoint_{{point.url}}">
+            <div class="span1 noRightChannel">
+                <a id="popoutPoint_{{point.url}}" 
+                    data-pointurl="{{point.url}}"
+                    data-pointtitle="{{point.title}}"></a>
+            </div>
+            <div class="{% if point.voteTotal >= thresholds.green %}
+                    green
+                  {% else %}
+                  {% if point.voteTotal <= thresholds.red %} red {% else %} yellow {% endif %}
+                  {% endif %} pointSmall span11" id="selectPoint_div_search_{{point.url}}"
+                  alt="Use: {{point.title}}"
+                  data-pointurl="{{point.url}}" data-linktype="{{linkType}}">
+                  <div class="span10 title">
+                      <h5><span class="score">{{point.voteTotal}}</span> 
+                      <a >{{point.title}}</a></H5>
+                  </div>
+                  <div class="span2">
+                      <a class="pull-right" id="selectPoint_arrow_{{point.url}}"
+                          alt="Use {{point.title}}">
+                      </a>
+                  </div>             
+            </div> 
+          </div>
+                    
+        {% endfor %}
+ 

@@ -55,8 +55,7 @@
 	         </li>       
 	         <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                          
 	       </ul>
-	     </div>	
-           {% include 'changeEditorsPick.html' %}         			
+	     </div>				
 	{% endif %}  
     
 <div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}" data-rootus="{{point.rootURLsafe}}">
@@ -80,7 +79,7 @@
 	<div id="timestampAndEditLink" class="span8">			  
 		<div class="mainPointLastEdited">
 		  <span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br> 
-          Last Edited {{point.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')}} 
+          Last Edited {{point.PSTdateEdited}} 
 		  <a id="viewPointHistory">View History</a>
 		</div>
 	</div>
@@ -138,18 +137,20 @@
 <div id="supportingPointsArea" class="tabbedArea">
     <div class="row">
         <div class="span4">
-            {% with linkedPoints = supportingPoints %}
-            {% with linkType = "supporting" %}
+          {% with recentlyViewedPoints as recentlyViewedPoints  %}
+            {% with supportingPoints as linkedPoints %}
+            {% with "supporting" as linkType %}
                 {% include 'linkPointsList.html' %}
             {% endwith %}
             {% endwith %}
         </div>
         <div class="span4">
-            {% with linkedPoints = counterPoints %}
-            {% with linkType = "counter" %}
+            {% with counterPoints as linkedPoints %}
+            {% with "counter" as linkType %}
                 {% include 'linkPointsList.html' %}
             {% endwith %}
             {% endwith %}
+          {% endwith %}
         </div>
   </div>
 
@@ -157,5 +158,4 @@
 
 
 <div id="historyArea" class="tabbedArea"> </div>
-
 

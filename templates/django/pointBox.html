@@ -30,14 +30,14 @@
 		                    {% else %} supportColor 
 		                    {% endif %}
 		                pull-left" 
-		                style="width:{{ (point.linksRatio/100)*100 }}%">
+		                style="width:{% widthratio point.linksRatio 100 100 %}%">
 	            
 		          </span>
 		          <span class="linkStat                     
 		                    {% if point.onlySupport  %} supportColor 
 		                    {% else %} counterColor 
 		                    {% endif %} pull-right" 
-		                style="width:{{ (point.reverseLinksRatio/100)*100 }}%">
+		                style="width:{% widthratio point.reverseLinksRatio 100 100 %}%">
 	             
 		          </span>
 		          <div class="gaugeText gaugeSupporting">

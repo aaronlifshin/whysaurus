@@ -18,7 +18,7 @@
 				<button id="{{linkType}}_addPointWhenNonZero" name="{{linkType}}_addPointWhenNonZero"
 					data-toggle="dropdown"
 					class="btn dropdown-toggle">
-					Add a {{linkType|title}} Point
+					Add a {{linkType|title}} point
 				</button>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenNonZero">
 					<li>
@@ -60,7 +60,9 @@
 	</div>
 	{% if linkedPoints %}            
 		{% for point in linkedPoints %}
-            {% include 'linkPoint.html' %} 
+            {% with linkType as linkType %}
+                {% include 'linkPoint.html' %} 
+            {% endwith %}
 		{% endfor %}
 	{% endif %}          
 </div>	
@@ -74,7 +76,7 @@
 		<div class="dropdown">
 		    <button name="{{linkType}}_linkPoint" class="btn dropdown-toggle span6 offset3" 
 		    id="{{linkType}}_addPointWhenZero" data-toggle="dropdown">
-				Add a {{linkType|title}} Point
+				Add a {{linkType|title}} point
 		    </button>                    
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenZero">
 		      <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 

@@ -14,7 +14,7 @@
               <textarea id="commentText" width="100%"
                class="mceEditor textEdit" rows="3"                       
                placeholder="Type your comment here..."></textarea>
-              <input id="rootUrlSafe" type="hidden" name="p" value="{{pointRoot.key.urlsafe()}}" />            
+              <input id="rootUrlSafe" type="hidden" name="p" value="{{pointRoot.key.urlsafe}}" />            
             <div class="">
               <button id='saveCommentSubmit' class="pull-right">Save Comment</button>
             </div>
@@ -26,10 +26,10 @@
             <div class="cmmnt-content span11">
               {{comment.text|safe}}
               <a href="/user/{{comment.userUrl}}" class="userlink">{{comment.userName}}</a> 
-                - <span class="pubdate">{{comment.PSTdateText}}</span>
+                - <span class="pubdate">{{comment.PSTdate}}</span>
             </div>
             <div class="span1">
-                <a name="commentReply" data-parentkey="{{comment.key.urlsafe()}}">Reply</a>
+                <a name="commentReply" data-parentkey="{{comment.key.urlsafe}}">Reply</a>
             </div>
           </div>
        {% endfor %}

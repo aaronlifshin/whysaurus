@@ -8,8 +8,7 @@
 				'supportingPointURL': pointUrl,
 				'parentPointURL': parentPointUrl
 				},
-			success: function(data){
-			  obj = JSON.parse(data);
+			success: function(obj){
 			  if (obj.result == true) {
 				window.location.href="/point/" + parentPointURL;
 			  } else {
@@ -47,8 +46,7 @@
                 'imageAuthor':$('#author_createSupportingPoint').val(),
                 'imageDescription': $('#description_createSupportingPoint').val()
 			},
-			success: function(data){
-				obj = JSON.parse(data);
+			success: function(obj){
 				if (obj.result == true) {
 				    window.location.href="/point/" + parentPointURL;
 				} else {
@@ -112,9 +110,8 @@ $(document).ready(function() {
 					'searchTerms': $(".searchBox").val(),
 					'exclude' : parentPointURL
 				},
-				success: function(data){
+				success: function(obj){
 					$("[id^=searchPoint]",$(".searchColumn")).remove();
-					obj = JSON.parse(data);
 					if (obj.result == true) {
 						appendAfter = $(".searchColumn");
 						for(var i=0; i < obj.searchResults.length; i++){						    

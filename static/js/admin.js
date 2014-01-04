@@ -58,8 +58,7 @@ function saveUsers() {
     		    'action': 'saveUsers',
     			'newUserValues': JSON.stringify(users)
     		},
-            success: function(data){
-    			obj = JSON.parse(data);
+            success: function(obj){
     			if (obj.result == true) { 
                     showSuccessAlert('Private areas for users have been saved successfully')
                     stopSpinnerOnButton('#saveUsers', saveUsers);                
@@ -96,8 +95,7 @@ function createPrivateArea() {
     		    'action': 'createPrivateArea',
     			'privateAreaName': $("#privateAreaName").val()
     		},
-    		success: function(data){
-    			obj = JSON.parse(data);
+    		success: function(obj){
     			if (obj.result == true) {                    
                     stopSpinnerOnButton('#submit_createPrivateArea', createPrivateArea);
                    
@@ -152,8 +150,7 @@ function resetPassword(clickedElem) {
     		data: {
     		    'userurl': userURL
     		},
-            success: function(data){
-    			obj = JSON.parse(data);
+            success: function(obj){
     			if (obj.result == true) { 
                     showSuccessAlert('Changed password for user ' + obj.username + '. New password: ' + obj.password);                             
     			} else {

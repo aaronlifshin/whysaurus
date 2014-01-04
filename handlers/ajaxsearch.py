@@ -24,5 +24,5 @@ class AjaxSearch(AuthHandler):
                 'resultsHTML': resultsHTML,
                 'searchString': self.request.get('searchTerms')
             })
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

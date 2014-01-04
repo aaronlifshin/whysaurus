@@ -12,7 +12,7 @@ class Vote(AuthHandler):
         if point and user:
             if user.addVote(point, int(self.request.get('vote'))):
                 resultJSON = json.dumps({'result': True, 'newVote': self.request.get('vote')})
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
 
     def relevanceVote(self):
@@ -37,6 +37,6 @@ class Vote(AuthHandler):
                     'newRelevance': str(newRelevance) + ' %',
                     'newVoteCount': newVoteCount
                 })
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)       
 

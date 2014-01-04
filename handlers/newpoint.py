@@ -34,5 +34,5 @@ class NewPoint(AuthHandler):
         else:
             resultJSON = json.dumps({'result': False, 'error': 'You appear not to be logged in.'})
 
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

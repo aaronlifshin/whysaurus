@@ -10,7 +10,7 @@ function validatePasswordChange() {
         showAlert('Please make your password 8 or more characters in length.');
         valid = false;
     } else if (!validatePassword(password1)) {
-        showAlert('Please include  at least one letter and at least one number in your passoword.');
+        showAlert('Please include  at least one letter and at least one number in your password.');
         valid = false;
     }
     return valid;

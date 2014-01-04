@@ -103,7 +103,7 @@ class ViewPoint(AuthHandler):
                 'result': True,
                 'html': html
             }) 
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON) 
                   
     def getPointContent(self):  
@@ -128,7 +128,7 @@ class ViewPoint(AuthHandler):
                 'myVote': vals['voteValue'],
                 'html': html,
             })  
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
                                 
     def get(self, pointURL):

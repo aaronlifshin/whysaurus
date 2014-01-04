@@ -11,5 +11,5 @@ class SetRibbon(AuthHandler):
         if point and user:
             if user.setRibbon(point, newRibbonValue):
                 resultJSON = json.dumps({'result': True, 'ribbonTotal': point.ribbonTotal})
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

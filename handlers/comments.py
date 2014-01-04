@@ -34,6 +34,6 @@ class Comments(AuthHandler):
             except WhysaurusException as e:
                 results['error'] = str(e)
         resultJSON = json.dumps(results)
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
         

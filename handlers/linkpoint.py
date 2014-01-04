@@ -48,5 +48,5 @@ class LinkPoint(AuthHandler):
                     json.dumps({'result': False, 'error': 'There was a problem updating the point.'})
         else:
             resultJSON = json.dumps({'result': 'ACCESS DENIED!'})
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

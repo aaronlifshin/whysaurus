@@ -554,7 +554,7 @@ class Point(ndb.Model):
     def getLinkedPointsLastChange(self, linkType):
         linkColl = self.getStructuredLinkCollection(linkType)
         if len(linkColl) > 0:
-            pointKeys = [link.version for link in linkColl]
+            pointKeys = [link.version for link in linkColl if link.version]
             points = ndb.get_multi(pointKeys)
             return points
         else:

@@ -1,5 +1,4 @@
 application: whysaurus
-version: profile
 version: a
 runtime: python27
 api_version: 1

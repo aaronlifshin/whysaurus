@@ -19,7 +19,8 @@ class ViewPoint(AuthHandler):
         voteValue = 0
         ribbonValue = False
         if user:
-            voteValue, ribbonValue = user.getVoteValues(point.key.parent())
+            voteFuture = user.getVoteFuture(point.key.parent())
+            # voteValue, ribbonValue = user.getVoteValues(point.key.parent())
         
         # We need to get the recently viewed points here
         # Because the user can add them as counter/supporting points
@@ -38,6 +39,12 @@ class ViewPoint(AuthHandler):
         # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list
         if addedToRecentlyViewed or not user:
             pointRoot.addViewCount()
+        
+        if user:
+            vote = voteFuture.get_result()
+            voteValue = vote.value if vote else 0
+            ribbonValue = vote.ribbon if vote else False
+
 
         templateValues = {
             'point': point,
@@ -67,8 +74,6 @@ class ViewPoint(AuthHandler):
         return templateValues
     
     def outputTemplateValues(self, template_values):
-
-        
         self.response.headers["Pragma"]="no-cache"
         self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
         self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"
@@ -111,6 +116,7 @@ class ViewPoint(AuthHandler):
 
         newURL = None
         url = self.request.get('url')
+        
         point, pointRoot = Point.getCurrentByUrl(url)
         if point is None:
             # Try to find a redirector

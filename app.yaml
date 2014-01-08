@@ -1,13 +1,12 @@
 application: whysaurus
-version: b
+version: profile
 runtime: python27
 api_version: 1
 threadsafe: true
 
 builtins:
 - remote_api: on
-- appstats: on
-
+- appstats: off
 
 handlers:
 - url: /favicon\.ico
@@ -32,10 +31,16 @@ handlers:
   script: WhySaurus.app
   secure: always
 
+- url: /gae_mini_profiler/static
+  static_dir: gae_mini_profiler/static
+- url: /gae_mini_profiler/.*
+  script: gae_mini_profiler.main.application
+  
 - url: /.*
   script: WhySaurus.app
   secure: always
   
+
 
 libraries:
 - name: django

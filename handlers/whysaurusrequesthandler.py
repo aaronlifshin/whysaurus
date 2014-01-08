@@ -50,15 +50,18 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
     def auth(self):
         return auth.get_auth()
 
+    # returns the currently logged in user
     @webapp2.cached_property
     def current_user(self):
         """Returns currently logged in user"""
-        user_dict = self.auth.get_user_by_session()
+        user_dict = self.auth.get_user_by_session(True)
         if user_dict and user_dict['user_id'] is not None:
             previousNamespace = namespace_manager.get_namespace()
-            namespace_manager.set_namespace('') # DEFAULT NAMESPACE
+            # USER MODEL IS ALWAYS STORED IN DEFAULT NAMESPACE
+            namespace_manager.set_namespace('') 
             user = self.auth.store.user_model.get_by_id(user_dict['user_id'])        
             namespace_manager.set_namespace(previousNamespace)
+            # self.session['user'] = user
             return user
         else:
             return None

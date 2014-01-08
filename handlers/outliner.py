@@ -18,7 +18,9 @@ class Outliner(AuthHandler):
             'user':self.current_user,
             'currentArea':self.session.get('currentArea')
         }
-        path = os.path.join(os.path.dirname(__file__), '../templates/outliner.html')
-        self.response.out.write(template.render(path, template_values))    
+        self.response.out.write(
+            self.template_render(
+                'outliner.html', 
+                template_values))
           
        

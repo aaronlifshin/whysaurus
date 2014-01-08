@@ -4,6 +4,8 @@ import json
 import os
 import webapp2
 import jinja2
+import time
+import gae_mini_profiler.profiler
 
 from lib.simpleauth import SimpleAuthHandler
 from whysaurusrequesthandler import WhysaurusRequestHandler
@@ -17,7 +19,8 @@ from google.appengine.ext.webapp import template
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
 
-
+ 
+    
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     """Inherits from gae-simpleauth (SimpleAuthHandler)
        Authentication handler for OAuth 2.0, 1.0(a) and OpenID."""
@@ -65,25 +68,30 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             'nickname': 'name',
             'email': 'link'
         }
-    }    
-    
+    }        
+        
     @webapp2.cached_property
-    def jinja2_env(self):
+    def jinja2_env(self):        
         return jinja2.Environment(
             loader=jinja2.FileSystemLoader('templates/jinja'),
             extensions=['jinja2.ext.autoescape', 'jinja2.ext.with_'],
             autoescape=True)    
             
     def template_render(self, templateName, templateVals):
+        startTime = int(time.time() * 1000)
+        html = ''
         engine = constants.TEMPLATE_RENDERING_ENGINE
         if engine == 'jinja':
             t = self.jinja2_env.get_template(templateName)
-            return t.render(templateVals)
+            html = t.render(templateVals)
         elif engine == 'django':
             path = os.path.join(constants.ROOT, "templates/django/" + templateName)
-            return template.render(path, templateVals)
+            html = template.render(path, templateVals)
         else:
             raise WhysaurusException("Unknown template engine specified" )
+        endTime = int(time.time() * 1000)
+        logging.info("*^*^*^* Rendering %s took %d msec " % (templateName, endTime - startTime))
+        return html
         
     def signup(self):
         email = self.request.get('email')

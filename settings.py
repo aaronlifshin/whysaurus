@@ -12,6 +12,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'whysaurus',
+    'gae_mini_profiler'
 )
 
 MIDDLEWARE_CLASSES = (

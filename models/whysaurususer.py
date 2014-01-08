@@ -226,6 +226,10 @@ class WhysaurusUser(auth_models.User):
     def editedCount(self): 
         return len(self.editedPointRootKeys)         
 
+    def getVoteFuture(self, pointRootKey):
+        return UserVote.query(            
+            UserVote.pointRootKey==pointRootKey, ancestor=self.key).get_async()
+
     def getVoteValues(self, pointRootKey):
         vote = UserVote.query(            
             UserVote.pointRootKey==pointRootKey, ancestor=self.key).get()
@@ -382,7 +386,7 @@ class WhysaurusUser(auth_models.User):
     
     def updateRecentlyViewed(self, pointRootKey):
         self._updateRecentlyViewed(pointRootKey)
-        self.put()
+        self.put_async()
         return self.recentlyViewedRootKeys
     
     def recordCreatedPoint(self, pointRootKey):

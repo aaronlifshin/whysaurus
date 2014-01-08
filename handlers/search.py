@@ -17,7 +17,7 @@ class Search(AuthHandler):
             'searchString': searchString,
         }
         self.response.headers.add_header('content-type', 'application/json', charset='utf-8')        
-        html = self.template.render('searchResults.html', template_values)
+        html = self.template_render('searchResults.html', template_values)
         
         json_values = {'html':html,
                        'searchString': searchString,

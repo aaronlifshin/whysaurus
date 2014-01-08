@@ -505,7 +505,7 @@ class Point(ndb.Model):
     def getLinkedPoints(self, linkType, user):
         linkColl = self.getStructuredLinkCollection(linkType)
         if len(linkColl) > 0:
-            rootKeys = [link.root for link in linkColl]
+            rootKeys = [link.root for link in linkColl if link.root]
             roots = ndb.get_multi(rootKeys)
             linkedPoints = []            
                             
@@ -904,6 +904,7 @@ class PointRoot(ndb.Model):
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
         
+    
     def getBacklinkPoints(self, linkType):
         backlinkRootKeys, backlinksArchiveKeys = self.getBacklinkCollections(linkType)
         backlinkRoots = ndb.get_multi(backlinkRootKeys)
@@ -1017,7 +1018,7 @@ class PointRoot(ndb.Model):
         if not self.viewCount:
             self.viewCount = 1
         self.viewCount = self.viewCount + 1
-        self.put()
+        self.put_async()
 
     def getAllVersions(self):
         return Point.query(ancestor=self.key).fetch()

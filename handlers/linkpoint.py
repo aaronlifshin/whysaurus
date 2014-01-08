@@ -30,7 +30,6 @@ class LinkPoint(AuthHandler):
                 resultJSON = json.dumps({'result': False, 'error': e.message})
             else:
                 if newVersion:
-                    template = self.jinja2_env.get_template()
                     newLinkPointHTML = json.dumps(
                         self.template_render('linkPoint.html', {
                             'point': supportingPoint, 

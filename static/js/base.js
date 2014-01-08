@@ -515,6 +515,8 @@ function setCommentCount(numComments) {
 }
 
 function getSearchResults(searchTerms) {
+    startSpinnerOnButton('.searchIcon');
+    
   	$.ajaxSetup({
 		url: "/search",
 		global: false,
@@ -531,7 +533,12 @@ function getSearchResults(searchTerms) {
 		        $("#mainContainer").append(obj.html);
 		        makePointsCardsClickable();	                
 		    }
+		    stopSpinnerOnButton('.searchIcon', searchDialogSearch);                        
 		},
+		error: function(xhr, textStatus, error){
+    		showAlert('<strong>Oops!</strong> There was a problem during the search.  Refreshing and searching again might help.');            
+            stopSpinnerOnButton('.searchIcon', createNewUser);            
+        }
 	});
 	$.ajax();
 }

@@ -900,8 +900,11 @@ body {
     pointer-events:none;
 }
 
+// Using the !important command only because the screwdefaultbuttons.js
+//  plugin is applying style tags directly to the element in the html
+//  and this is th least-worst way to override that
 .styledRadio:hover {
-//    background-position: 0px -15px;
+    background-position: 0px -225px !important;
 //    background-color: red;
 }
 

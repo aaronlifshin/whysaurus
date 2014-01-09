@@ -65,6 +65,7 @@ class MainPage(AuthHandler):
             user.getActiveNotifications()
         else:
             recentlyViewedPoints = []
+        
         template_values = {
             'recentlyActive': newPoints,
             'recentlyViewed': recentlyViewedPoints,

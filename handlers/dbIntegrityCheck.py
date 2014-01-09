@@ -32,8 +32,7 @@ class DBIntegrityCheck(AuthHandler):
             'user': self.current_user,
             'currentArea':self.session.get('currentArea')
         }
-        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-        self.response.out.write(template.render(path, template_values))      
+        self.response.out.write(self.template_render('message.html', template_values))                    
 
                                 
     def cleanDeadBacklinks(self, pointURL):        
@@ -48,14 +47,15 @@ class DBIntegrityCheck(AuthHandler):
             'user': self.current_user,
             'currentArea':self.session.get('currentArea')
         }
-        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-        self.response.out.write(template.render(path, template_values))                                                 
+        self.response.out.write(self.template_render('message.html', template_values))        
+                                                 
 
-    def reconcileVersionArrays(self, pointURL):
+    def cleanEmptyLinks(self, pointURL):
         point, pointRoot = Point.getCurrentByUrl(pointURL)
         if pointRoot:
-            pointsRemoved = pointRoot.reconcileVersionArrays()
-            message = 'Removed %d points from version root arrays in %s' % (pointsRemoved, point.title)
+            linksRemoved, versionCount = pointRoot.cleanEmptyLinks()
+            message = 'Removed %d dead links from structured link arrays in %d versions of %s' % \
+                (linksRemoved, versionCount, point.title)
         else:
             message = 'Could not find point'
         template_values = {
@@ -63,8 +63,7 @@ class DBIntegrityCheck(AuthHandler):
             'user': self.current_user,
             'currentArea':self.session.get('currentArea')
         }
-        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-        self.response.out.write(template.render(path, template_values)) 
+        self.response.out.write(self.template_render('message.html', template_values))        
         
     def queueNightlyTask(self):
         now = PST.convert(datetime.datetime.now())
@@ -82,8 +81,7 @@ class DBIntegrityCheck(AuthHandler):
             'user': self.current_user,
             'currentArea':self.session.get('currentArea')
         }
-        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-        self.response.out.write(template.render(path, template_values))
+        self.response.out.write(self.template_render('message.html', template_values))                
       
     def checkPointNew(self, point):
         try:
@@ -282,8 +280,8 @@ class DBIntegrityCheck(AuthHandler):
             'user': self.current_user,
             'currentArea':self.session.get('currentArea')
         }
-        path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-        self.response.out.write(template.render(path, template_values)) 
+        self.response.out.write(self.template_render('message.html', template_values))        
+      
         
     
     # This method is a static method so that it cat be used inside of pointRootsMap
@@ -346,8 +344,7 @@ class DBIntegrityCheck(AuthHandler):
                 
 
         if mode and mode == 'screen':
-            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-            self.response.out.write(template.render(path, template_values))
+            self.response.out.write(self.template_render('message.html', template_values))                    
         else:
             path = os.path.join(os.path.dirname(__file__), '../templates/dbcheck.html')
             mail.send_mail(sender='aaron@whysaurus.com',
@@ -363,5 +360,5 @@ class DBIntegrityCheck(AuthHandler):
                 'user': self.current_user,
                 'currentArea':self.session.get('currentArea')
             }
-            path = os.path.join(os.path.dirname(__file__), '../templates/message.html')
-            self.response.out.write(template.render(path, template_values))
+            self.response.out.write(self.template_render('message.html', template_values))        
+            

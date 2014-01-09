@@ -918,31 +918,22 @@ class PointRoot(ndb.Model):
         return currentPoints
     
     # This is used to fix database problems
-    """
-    # NOT NEEDED UNDER NEW DB STURCTURE
-    def reconcileVersionArrays(self):
-        removedRoots = 0
-    
-        pointVersionArray = self.getAllVersions()   
-        for point in pointVersionArray:
-            writePoint = False
+    def cleanEmptyLinks(self):
+        numCleaned = 0
+        allVersions = self.getAllVersions()
+        for point in allVersions:
+            cleaned = False
             for linkType in ["supporting", "counter"]:
-                rootColl, lastChangeColl = point.getLinkCollections(linkType)
-                rootsToRemove = []
-                lastChangeRoots = [p.parent() for p in lastChangeColl]
-                for rootKey in rootColl:
-                    if rootKey not in lastChangeRoots:
-                        rootsToRemove = rootsToRemove + [rootKey]
-                for rootKeyToRemove in rootsToRemove:
-                    rootColl.remove(rootKeyToRemove)
-                    point.setLinkCollections(linkType, rootColl, lastChangeColl)
-                    removedRoots = removedRoots + 1
-                    writePoint = True
-            if writePoint:
-                point.put()
-        return removedRoots
-    """
-                            
+                links = point.getStructuredLinkCollection(linkType)
+                cleanLinks = [l for l in links if l.version is not None and l.root is not None]
+                numCleaned = numCleaned + len(links) - len(cleanLinks)
+                if len(links) != len(cleanLinks):
+                    cleaned = True                
+                    point.setStructuredLinkCollection(linkType, cleanLinks)
+            if cleaned: 
+                point.put()                
+        return numCleaned, len(allVersions)        
+        
     # This is used to fix database problems
     def removeDeadBacklinks(self):
         removedRoots = 0

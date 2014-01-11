@@ -80,7 +80,8 @@ class AaronTask(AuthHandler):
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     GENERIC FUNCTION FOR DOING SOMETHING TO EVERY POINT ROOT
        Will do 10 roots, then call a URL which is expected to 
-       call the function again
+       call the function again.
+       firstURL is the point to (re)start the execution with
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
     """  
     def pointRootsMap(self, f, taskURL, firstURL = None):

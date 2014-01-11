@@ -11,7 +11,7 @@ indexes:
   properties:
   - name: parentPointRootKey
   - name: childPointRootKey
-  - name: linkTyoe
+  - name: linkType
   
 
 

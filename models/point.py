@@ -96,7 +96,6 @@ class Link(ndb.Model):
         if oldRelVote:
             # this user has already voted
             newSum = startingRating * self.voteCount - oldRelVote.value + newRelVote.value
-            logging.info("URD: newsum=" + str(newSum))
             self.fRating = newSum/self.voteCount                    
         else:
             newSum = startingRating * self.voteCount + newRelVote.value
@@ -282,7 +281,9 @@ class Point(ndb.Model):
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
         point.put() 
-        sources = Source.constructFromArrays(sourceURLs, sourceNames, point.key)
+        sources = None
+        if sourceURLs and sourceNames:
+            sources = Source.constructFromArrays(sourceURLs, sourceNames, point.key)
         if sources:
             sourceKeys = []
             for source in sources:
@@ -560,9 +561,10 @@ class Point(ndb.Model):
         else:
             return None   
 
-    def addLink(self, linkRoot, linkCurrentVersion, linkType):
+    def addLink(self, linkRoot, linkCurrentVersion, linkType, voteCount, fRating):
         links = self.getStructuredLinkCollection(linkType)        
-        
+        if not voteCount:
+            voteCount = 0
         if linkCurrentVersion:
             if linkRoot is None:
                 raise WhysaurusException(
@@ -576,12 +578,15 @@ class Point(ndb.Model):
                     raise WhysaurusException(
                         "That point is already a %s point of %s" % 
                             (linkType, self.title))
+
+            logging.info('Linking the new point. Have: %d, %d' % (voteCount, fRating))
             newLink = Link(
                 root = linkRoot.key,
                 version = linkCurrentVersion.key,
-                voteCount = 0
+                voteCount = voteCount,
+                fRating = fRating
             )
-            
+            linkCurrentVersion._linkInfo = newLink
             links = links + [newLink] if links else [newLink]      
             sortArrayByRating(links)                  
             self.setStructuredLinkCollection(linkType, links)
@@ -603,10 +608,13 @@ class Point(ndb.Model):
         self.put() # Save the old version
         if pointsToLink:
             for pointToLink in pointsToLink:
+                logging.info('Linking the new point. Have: %d, %d' % ( pointToLink['voteCount'], pointToLink['fRating']))
                 # addLink only adds to arrays
                 newPoint.addLink(pointToLink['pointRoot'],
                                  pointToLink['pointCurrentVersion'],
-                                 pointToLink['linkType'])
+                                 pointToLink['linkType'],
+                                 pointToLink['voteCount'] if 'voteCount' in pointToLink else 0,
+                                 pointToLink['fRating'] if 'fRating' in pointToLink else 0)
                 # addLinkedPoint will add the backlink to the pointRoot and put
                 pointToLink['pointRoot'].addLinkedPoint(newPoint.key.parent(),
                                                         pointToLink['linkType'])
@@ -623,7 +631,7 @@ class Point(ndb.Model):
         return newPoint, theRoot
 
 
-    # newSupportingPoint is the PointRoot of the supporting point
+    # pointsToLink is a set of links of the new point we want to link
     def update( self, newTitle=None, newContent=None, newSummaryText=None, 
                 pointsToLink=None, user=None, imageURL=None, imageAuthor=None,
                 imageDescription=None, sourcesToAdd=None, sourceKeysToRemove=None):
@@ -641,15 +649,7 @@ class Point(ndb.Model):
                 newPoint.summaryText = self.summaryText
 
             newPoint.authorName = user.name            
-            newPoint.authorURL = user.url
-            
-            # TO REMOVE -- - 
-            newPoint.supportingPointsRoots = list(self.supportingPointsRoots)
-            newPoint.supportingPointsLastChange = list(self.supportingPointsLastChange)
-            newPoint.counterPointsRoots = list(self.counterPointsRoots)
-            newPoint.counterPointsLastChange = list(self.counterPointsLastChange)
-            # END TO REMOVE - - - - 
-            
+            newPoint.authorURL = user.url                        
             newPoint.supportingLinks = list(self.supportingLinks)
             newPoint.counterLinks = list(self.counterLinks)
                     

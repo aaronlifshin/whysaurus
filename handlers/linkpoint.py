@@ -1,11 +1,13 @@
 import json
 import os
 import constants
+import logging
 from google.appengine.ext.webapp import template
 
 
 from authhandler import AuthHandler
 from models.point import Point
+from models.uservote import RelevanceVote
 from models.whysaurusexception import WhysaurusException
 
 class LinkPoint(AuthHandler):
@@ -17,10 +19,15 @@ class LinkPoint(AuthHandler):
         linkType = self.request.get('linkType')
 
         if user:
-            try:
+            try:                                
+                voteCount, rating, myVote = RelevanceVote.getExistingVoteNumbers(
+                    oldPointRoot.key, supportingPointRoot.key, linkType, user)
+                supportingPoint._relevanceVote = myVote
                 newLink = [{'pointRoot':supportingPointRoot,
                             'pointCurrentVersion':supportingPoint,
-                            'linkType':self.request.get('linkType')}
+                            'linkType':self.request.get('linkType'),
+                            'voteCount': voteCount,
+                            'fRating':rating }
                             ]
                 newVersion = oldPoint.update(
                     pointsToLink=newLink,

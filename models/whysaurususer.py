@@ -309,9 +309,8 @@ class WhysaurusUser(auth_models.User):
     def addRelevanceVote(self, parentRootURLsafe, childRootURLsafe, linkType, vote):
         parentRootKey = ndb.Key(urlsafe=parentRootURLsafe)
         childRootKey = ndb.Key(urlsafe=childRootURLsafe)
-        pointRoot = parentRootKey.get();
-        curPoint = pointRoot.current.get();
-        
+        pointRoot = parentRootKey.get()
+        curPoint = pointRoot.current.get()
         
         oldRelVote = RelevanceVote.query(
             RelevanceVote.parentPointRootKey == parentRootKey,
@@ -354,7 +353,9 @@ class WhysaurusUser(auth_models.User):
                     # Update the user's vote for this link
                     oldRelVote.value = newRelVote.value
                     oldRelVote.put()
+                    logging.info('TARV: Updating existing vote.')
                 else:
+                    logging.info('TARV: Adding new vote.')
                     newRelVote.put()
                 return True, newRelevance, voteCount
         except Exception as e:

@@ -608,7 +608,9 @@ class Point(ndb.Model):
         self.put() # Save the old version
         if pointsToLink:
             for pointToLink in pointsToLink:
-                logging.info('Linking the new point. Have: %d, %d' % ( pointToLink['voteCount'], pointToLink['fRating']))
+                if 'voteCount' in pointToLink:
+                    logging.info('Linking the new point. Have: %d, %d' % \
+                        ( pointToLink['voteCount'], pointToLink['fRating']))
                 # addLink only adds to arrays
                 newPoint.addLink(pointToLink['pointRoot'],
                                  pointToLink['pointCurrentVersion'],

@@ -25,7 +25,7 @@ class MainPage(AuthHandler):
             'result': True,
             'html': html,
         }) 
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON) 
         
     def getMainPageRight(self):      
@@ -47,7 +47,7 @@ class MainPage(AuthHandler):
             'result': True,
             'html': html,
         }) 
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON) 
     
     def get(self):

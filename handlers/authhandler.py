@@ -108,7 +108,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             results = {'result': False, 'error': str(e)}
 
         resultJSON = json.dumps(results)
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
         
     def login(self):
@@ -230,7 +230,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                                and request a password reset.'}
 
         resultJSON = json.dumps(results)
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
      
     def passwordChangePage(self):    
@@ -284,7 +284,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     newPassword = u.resetPassword()
                     results = {'result': True, 'username': u.name, 'password': newPassword}
         resultJSON = json.dumps(results)
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
         
 

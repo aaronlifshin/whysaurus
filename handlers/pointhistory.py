@@ -19,6 +19,6 @@ class PointHistory(AuthHandler):
             'currentArea':self.session.get('currentArea')
 
         }
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(json.dumps(
             self.template_render('pointHistory.html', template_values)))

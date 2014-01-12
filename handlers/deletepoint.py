@@ -20,5 +20,5 @@ class DeletePoint(AuthHandler):
                     resultJSON = json.dumps({'result': True, 'deletedURL': urlToDelete})
                 else:
                     resultJSON = json.dumps({'result': False, 'error': error})
-        self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

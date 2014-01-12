@@ -91,9 +91,8 @@ function callPointEdit(){
             'sourcesNames': JSON.stringify(getNewSourcesNames()),
             'sourcesToRemove': JSON.stringify($('#pointDialog').data('sourcesToRemove'))
 			},
-			success: function(data){
+			success: function(obj){
 				var ed = tinyMCE.get('editor_pointDialog');
-			    obj = JSON.parse(data);
 				$('.mainPointContent').html(ed.getContent());
 				$('.mainPointTitle h1').html($('#title_pointDialog').val());				
 				updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
@@ -136,8 +135,7 @@ function pointUnlink(elem, linkType) {
 			'supportingPointURL': supportingPointURL,
 			'linkType': linkType
 			},
-			success: function(data){
-				obj = JSON.parse(data);
+			success: function(obj){
 				if (obj.result == true) {
                     // remove the relevanceArea for the point card
                     pointCard.parent().prev('.relevanceVote').prev().remove();      
@@ -237,8 +235,7 @@ function upVote() {
     		'vote': $('#voteTotal').data('myvote') == 1 ? 0 : 1,
     		'pointURL': $('#pointArea').data('pointurl')
     		},
-       success: function(data){
-            obj = JSON.parse(data);
+       success: function(obj){
             if (obj.result == true) {
             updateVoteButtonLabels(obj.newVote);
             } else {
@@ -258,8 +255,7 @@ function downVote() {
     		'vote': $('#voteTotal').data('myvote') == -1 ? 0 : -1,
     		'pointURL': $('#pointArea').data('pointurl')
     		},
-        success: function(data){
-            obj = JSON.parse(data);
+        success: function(obj){
             if (obj.result == true) {
               updateVoteButtonLabels(obj.newVote);
             } else {
@@ -280,8 +276,7 @@ function changeRibbon() {
     		'pointURL': $('#pointArea').data('pointurl'),
     		'ribbon':newRibbonValue
     		},
-        success: function(data){
-            obj = JSON.parse(data);
+        success: function(obj){
             if (obj.result == true) {
               updateRibbon(newRibbonValue, obj.ribbonTotal);
             } else {
@@ -314,8 +309,7 @@ function deletePoint(urlToDelete) {
         data: {
             'urlToDelete': urlToDelete
             },
-        success: function(data){
-            obj = JSON.parse(data);
+        success: function(obj){
             if (obj.result == true) {
             			  alert('Deleted point ' + obj.deletedURL);
             			  window.location = "/";
@@ -385,8 +379,7 @@ function selectPoint(supportingPointURL, currentPointURL, linkType){
 			'parentPointURL': currentPointURL,
 			'linkType': linkType
 			},
-		success: function(data){
-		  obj = JSON.parse(data);
+		success: function(obj){
 		  if (obj.result == true) {
               pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
 			  updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  
@@ -420,7 +413,7 @@ function setPointListHeader(linkType) {
 function pointListAppend(linkType, pointHTML, numLinkPoints) {
 
     parent = $("#" + linkType + "_nonzeroPoints");
-    parent.append($.parseJSON(pointHTML));
+    parent.append(pointHTML);
     setPointListHeader(linkType);	
     makePointsCardsClickable();	 
     makeRelevanceControlsClickable();
@@ -476,8 +469,7 @@ function addPoint(linkType){
             'sourcesURLs': JSON.stringify(getNewSourcesURLs()),
             'sourcesNames': JSON.stringify(getNewSourcesNames())
 		},
-		success: function(data){
-			obj = JSON.parse(data);
+		success: function(obj){
 			if (obj.result == true) {
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
   			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  				
@@ -629,8 +621,7 @@ function sendRelevanceVote(event) {
             'linkType': relBase.data('linktype'),
             'vote': selectedRadioButton.val(),
 		},
-		success: function(data){
-			obj = JSON.parse(data);
+		success: function(obj){
 			if (obj.result == true) {
                 
                 selectedRadioButton.closest('[name="areaRelevanceRadio"]').prev().text(
@@ -674,8 +665,7 @@ function saveComment(event) {
         	'p':$('#rootUrlSafe').val(),
         	'parentKey': $('#addComment').data('parentkey')
 		},
-		success: function(data){
-			obj = JSON.parse(data);
+		success: function(obj){
 			if (obj.result == true) {
                 insertComment(obj);
                 ed.setContent('');                                              
@@ -712,8 +702,7 @@ function changeEditorsPick() {
     			'editorsPick': pick,
     			'editorsPickSort': pickSort
     		},
-    		success: function(data) {
-		    	obj = JSON.parse(data);
+    		success: function(obj) {
     			if (obj.result == true) {
     		        // set the values in the main point page
         		    if (pick) {
@@ -742,7 +731,7 @@ function viewPointHistory() {
 		url: '/pointHistory',
 		type: 'GET',
 		data: { 'pointUrl': $('#pointArea').data('pointurl') },
-		success: function(data) {
+		success: function(obj) {
 			$('#historyArea').empty();
 			$('#historyArea').html($.parseJSON(data));
 			makePointsCardsClickable();	
@@ -849,8 +838,7 @@ function makeFeaturedPick() {
     		data: {
     			'urlToEdit': $('#pointArea').data('pointurl')
     		},
-    		success: function(data) {
-		    	obj = JSON.parse(data);
+    		success: function(obj) {
     			if (obj.result == true) {
     		        showSuccessAlert('This is now the featured point.')
         		} else {

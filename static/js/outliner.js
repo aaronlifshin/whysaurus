@@ -262,8 +262,7 @@ function saveMainPoint() {
             'furtherInfos': JSON.stringify(pointData[3]),  
             'sources': JSON.stringify(sources)  
         },
-        success: function(data) {
-            obj = JSON.parse(data);
+        success: function(obj) {
             $("#spinnerImage0").remove();   
             if (obj.result === true) {
                 var params = [];

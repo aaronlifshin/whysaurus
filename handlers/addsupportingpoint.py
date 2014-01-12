@@ -60,7 +60,7 @@ class AddSupportingPoint(AuthHandler):
                     'authorURL': self.current_user.url,
                 }
             resultJSON = json.dumps(jsonOutput)
-            self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+            self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
             self.response.out.write(resultJSON)
         else:
             self.response.out.write('Need to be logged in')

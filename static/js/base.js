@@ -176,8 +176,7 @@ function newPoint() {
       'sourcesURLs': JSON.stringify(u),
       'sourcesNames': JSON.stringify(n)
     },
-    success: function(data) {
-      obj = JSON.parse(data);
+    success: function(obj) {
       if (obj.result === true) {
         var params = [];
         params["rootKey"] = obj.rootKey;
@@ -407,8 +406,7 @@ function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, 
         url: ajaxURL,
       	type: 'POST',
       	data: postData,
-      	success: function(data) {
-      	    obj = $.parseJSON(data);
+      	success: function(obj) {
       	    if (obj.result) {
       	       	$(columnSelector).empty();
           		$(columnSelector).html(obj.html);
@@ -459,8 +457,7 @@ function loadPointContent(pointurl, shouldPushState) {
       	url: '/getPointContent',
       	type: 'POST',
       	data: { 'url': pointurl },
-      	success: function(data) {
-      	    obj = $.parseJSON(data);
+      	success: function(obj) {
       	    if (obj.result) {
       	       	$('#leftColumn').empty();
       	       	$('#leftColumn').html(obj.html);   
@@ -494,9 +491,9 @@ function loadPointList(listType, areaToLoad, selectedTab) {
     	url: '/getPointsList',
     	type: 'POST',
     	data: { 'type': listType },
-    	success: function(data) {
+    	success: function(obj) {
     		$(areaToLoad).empty();
-    		$(areaToLoad).html($.parseJSON(data));
+    		$(areaToLoad).html(obj);
     		makePointsCardsClickable();
     	},
     	error: function(data) {
@@ -524,8 +521,7 @@ function getSearchResults(searchTerms) {
 		data: {
 			'searchTerms': searchTerms,		
 		},
-		success: function(data) {
-            obj = JSON.parse(data);
+		success: function(obj) {
 		    if (obj.result == 0) {
 		        showAlert("No results found for: <strong>" + obj.searchString + "</strong>");
 		    } else {
@@ -544,10 +540,8 @@ function getSearchResults(searchTerms) {
 }
 
 
-function displaySearchResults(data, linkType){
+function displaySearchResults(obj, linkType){
 	$("#searchResultsArea").children().remove();
-		
-	obj = JSON.parse(data);
 	
 	if (obj.result == true) {
 		appendAfter = $("#searchResultsArea");
@@ -572,8 +566,8 @@ function searchDialogSearch() {
 			'exclude' : $('#pointArea').data('pointurl'),
 			'linkType' : $("#selectLinkedPointSearch").data("linkType")
 		},
-		success: function(data) {
-		    displaySearchResults(data, $("#selectLinkedPointSearch").data("linkType"));
+		success: function(obj) {
+		    displaySearchResults(obj, $("#selectLinkedPointSearch").data("linkType"));
 		    stopSpinnerOnButton('#submitLinkedPointSearch', searchDialogSearch);            
 		},
 	});
@@ -639,7 +633,7 @@ function validateSignupDialog() {
         dialogAlert('#signupDialog','Please make your password 8 or more characters in length.');
         valid = false;
     } else if (!validatePassword(password1)) {
-        dialogAlert('#signupDialog','Please include  at least one letter and at least one number in your passoword.');
+        dialogAlert('#signupDialog','Please include  at least one letter and at least one number in your password.');
         valid = false;
     }    
     if (userName.length >= 500) {
@@ -697,8 +691,7 @@ function createNewUser() {
                 'email': $("#signup_userEmail").val(),   
                 'password':$("#signup_password1").val(),
     		},
-            success: function(data){
-    			obj = JSON.parse(data);
+            success: function(obj){
     			if (obj.result == true) { 
     			    stopSpinnerOnButton('#submit_signupDialog', createNewUser);
     			    clearSignupDialog();            
@@ -748,8 +741,7 @@ function forgotPassword() {
         		data: {
         		    'email': $("#login_userEmail").val(),
         		},
-                success: function(data){
-        			obj = JSON.parse(data);
+                success: function(obj){
         			if (obj.result == true) { 
         			    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
                         $("#emailLoginDialog").modal('hide');  
@@ -812,8 +804,7 @@ function switchArea() {
 		global: false,
 		type: "POST",
 		data:{},
-        success: function(data){
-			obj = JSON.parse(data);
+        success: function(obj){
 			if (obj.result == true) { 
                 window.location.href="/";                
 			} else {
@@ -922,8 +913,7 @@ function reconnectChannel(errorObj) {
             		url: "/newNotificationChannel",
             		global: false,
             		type: "POST",           		
-                 success: function(data) {
-            			obj = JSON.parse(data);
+                 success: function(obj) {
             			if (obj.result == true) { 
             			    channelToken = obj.token;
             			    notificationChannelOpen();
@@ -966,8 +956,7 @@ function markNotificationsRead() {
         	    'latest':latest,
         	    'earliest':earliest
         	},         		
-            success: function(data) {
-                obj = JSON.parse(data);
+            success: function(obj) {
         		if (obj.result == true) {
                     $('#notificationCount').text(0);
                     $('#notificationCount').hide();

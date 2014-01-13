@@ -78,9 +78,11 @@
 	{% if point.imageURL and point.imageURL.strip %}	
 	<!-- update insertImage in point.js if editing this HTML -->		  
 	    <div id="mainPointImageArea" class="span3" >
-            <img class="pointDisplay" src="{{ point.fullPointImage }}" />
-            <div class="mainPointImageCaption">{{point.imageDescription}}</div>
-            <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+            <div class="imageAreaMaxHeight">
+                <img class="pointDisplay" src="{{ point.fullPointImage }}" />
+                <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+                <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+            </div>
 	    </div>
 	{% endif %}			
   

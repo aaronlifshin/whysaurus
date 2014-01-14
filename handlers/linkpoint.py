@@ -12,6 +12,7 @@ from models.whysaurusexception import WhysaurusException
 
 class LinkPoint(AuthHandler):
     def post(self):
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'        
         resultJSON = json.dumps({'result': False})
         supportingPoint, supportingPointRoot = Point.getCurrentByUrl(self.request.get('supportingPointURL'))
         oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
@@ -37,11 +38,10 @@ class LinkPoint(AuthHandler):
                 resultJSON = json.dumps({'result': False, 'error': e.message})
             else:
                 if newVersion:
-                    newLinkPointHTML = json.dumps(
-                        self.template_render('linkPoint.html', {
-                            'point': supportingPoint, 
-                            'linkType': linkType
-                        }))
+                    newLinkPointHTML = self.template_render('linkPoint.html', {
+                        'point': supportingPoint, 
+                        'linkType': linkType
+                    })
                     resultJSON = json.dumps({
                         'result': True,
                         'numLinkPoints': newVersion.linkCount(linkType),
@@ -54,5 +54,4 @@ class LinkPoint(AuthHandler):
                     json.dumps({'result': False, 'error': 'There was a problem updating the point.'})
         else:
             resultJSON = json.dumps({'result': 'ACCESS DENIED!'})
-        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

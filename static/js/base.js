@@ -511,7 +511,11 @@ function setCommentCount(numComments) {
     $('#commentCount').text(numComments + " COMMENT" + (numComments == 1? "":"S"));
 }
 
-function getSearchResults(searchTerms) {
+function getSearchResults() {
+    searchTerms = $("#searchBox").val();
+    if (searchTerms == "") {
+        return;
+    }
     startSpinnerOnButton('.searchIcon');
     
   	$.ajaxSetup({
@@ -529,7 +533,7 @@ function getSearchResults(searchTerms) {
 		        $("#mainContainer").append(obj.html);
 		        makePointsCardsClickable();	                
 		    }
-		    stopSpinnerOnButton('.searchIcon', searchDialogSearch);                        
+		    stopSpinnerOnButton('.searchIcon', getSearchResults);                        
 		},
 		error: function(xhr, textStatus, error){
     		showAlert('<strong>Oops!</strong> There was a problem during the search.  Refreshing and searching again might help.');            
@@ -882,8 +886,10 @@ function processNotification(notificationData) {
         // Update the number
         count = parseInt($('#notificationCount').text());
         count = count + 1;
-        $('#notificationCount').text(count.toString());
-        $('#notificationCount').show();        
+        if (!isNan(count)) {
+            $('#notificationCount').text(count.toString());
+            $('#notificationCount').show();                    
+        }        
     }
   
     // Insert the raised date secs value
@@ -1055,16 +1061,15 @@ function activateHeaderAndDialogs() {
 
     $('#pointDialog .filepicker').bindFilepicker();
 
+    
     $("#searchBox").keyup(function(event) {
         if (event.keyCode == 13) {
-            getSearchResults($("#searchBox").val());
+            getSearchResults();
         }
     });
 
     $(".searchIcon", $("#searchArea")).click(function(event) {
-        if ($("#searchBox").val() != "") {
-            getSearchResults($("#searchBox").val());
-        }
+            getSearchResults();
     });
 
     initTinyMCE();
@@ -1219,7 +1224,12 @@ function activateMainPageRightColumn() {
     
 }
 
+function preloadImages() {
+    $('<img />').attr('src','/static/img/screwdefault_radio_design.png').appendTo('body').css('display','none');    
+}
+
 $(document).ready(function() {
+    preloadImages();
     activateHeaderAndDialogs();
     activateMainPageRightColumn();
     activateMainPageLeftColumn();

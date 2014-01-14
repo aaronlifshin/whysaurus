@@ -19,17 +19,17 @@ class MainPage(AuthHandler):
             'featuredPoint': featuredPoint,
             'user': self.current_user
         }
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'        
         html = self.template_render('mainPageLeftColumn.html', vals)
-
         resultJSON = json.dumps({
             'result': True,
             'html': html,
         }) 
-        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON) 
         
     def getMainPageRight(self):      
         user = self.current_user
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'        
 
         if user:
             recentlyViewedPoints = user.getRecentlyViewed()
@@ -47,7 +47,6 @@ class MainPage(AuthHandler):
             'result': True,
             'html': html,
         }) 
-        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON) 
     
     def get(self):

@@ -230,6 +230,12 @@ class WhysaurusUser(auth_models.User):
         return UserVote.query(            
             UserVote.pointRootKey==pointRootKey, ancestor=self.key).get_async()
 
+    @ndb.tasklet
+    def getVote_async(self, pointRootKey):
+        vote = yield UserVote.query(            
+            UserVote.pointRootKey==pointRootKey, ancestor=self.key).get_async()
+        raise ndb.Return(vote)
+
     def getVoteValues(self, pointRootKey):
         vote = UserVote.query(            
             UserVote.pointRootKey==pointRootKey, ancestor=self.key).get()
@@ -340,6 +346,20 @@ class WhysaurusUser(auth_models.User):
                 ancestor = self.key).fetch(maxNumVotes*2)
         return rVotes
 
+    @ndb.tasklet
+    def getRelevanceVotes_async(self, parentPoint):
+        parentRootKey = parentPoint.key.parent();
+        maxNumVotes = parentPoint.numSupporting + parentPoint.numCounter;
+        
+        rVotes = None
+        if maxNumVotes > 0:
+            # MULTIPLY numVotes * 2 because the current set of points may be smaller
+            # than the set for a given version
+            rVotes = yield RelevanceVote.query(
+                RelevanceVote.parentPointRootKey == parentRootKey, 
+                ancestor = self.key).fetch_async(maxNumVotes*2)
+        raise ndb.Return(rVotes)
+        
     
     # Returns: true/false, new vote value, new number of votes on this line 
     @ndb.transactional(xg=True)
@@ -428,6 +448,21 @@ class WhysaurusUser(auth_models.User):
                     pointRoot.getCurrent()]
         return recentlyViewedPoints
     
+    @ndb.tasklet
+    def getRecentlyViewed_async(self, excludeList=None):
+        recentlyViewedPoints = []
+        keysToGet = self.filterKeylistByCurrentNamespace(self.recentlyViewedRootKeys)
+        if excludeList:
+            for x in excludeList:
+                try:
+                    keysToGet.remove(x)
+                except ValueError:
+                    pass
+        pointRoots = yield ndb.get_multi_async(keysToGet)                
+        recentlyViewedPoints = yield map(lambda x: x.getCurrent_async(), 
+            [pr for pr in pointRoots if pr])                            
+        raise ndb.Return(recentlyViewedPoints)             
+        
     def getCreated(self):
         createdPoints = []
         # logging.info("Create point root keys: %d" % len(self.createdPointRootKeys))
@@ -440,6 +475,7 @@ class WhysaurusUser(auth_models.User):
             if pointRoot:
                 createdPoints = createdPoints + [pointRoot.getCurrent()]
         return createdPoints
+        
 
     def getEdited(self):
         editedPoints = []

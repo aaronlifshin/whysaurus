@@ -45,22 +45,21 @@ class AddSupportingPoint(AuthHandler):
                     'err': str(e)
                 }
             else:
-                newLinkPointHTML = json.dumps(
-                    self.template_render('linkPoint.html', {
-                        'point': newLinkPoint,
-                        'linkType': linkType
-                    }))
+                self.response.headers["Content-Type"] = 'application/json; charset=utf-8'                
+                newLinkPointHTML = self.template_render('linkPoint.html', {
+                    'point': newLinkPoint,
+                    'linkType': linkType
+                })
                 jsonOutput = {
                     'result': True,
                     'version': newPoint.version,
                     'author': newPoint.authorName,
                     'dateEdited': newPoint.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),
                     'numLinkPoints': newPoint.linkCount(linkType),
-                    'newLinkPoint':newLinkPointHTML,
-                    'authorURL': self.current_user.url,
+                    'newLinkPoint': newLinkPointHTML,
+                    'authorURL': self.current_user.url
                 }
-            resultJSON = json.dumps(jsonOutput)
-            self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
-            self.response.out.write(resultJSON)
+            logging.info(json.dumps(jsonOutput))                
+            self.response.out.write(json.dumps(jsonOutput))
         else:
             self.response.out.write('Need to be logged in')

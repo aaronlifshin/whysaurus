@@ -13,6 +13,13 @@ class RedirectURL(ndb.Model):
             return redirectURL.toURL
         else:
             return None
+            
+    @staticmethod
+    @ndb.tasklet
+    def getByFromURL_asynch(url):
+        redirectQuery = RedirectURL.gql("WHERE fromURL= :1", url)
+        redirectURLfuture = yield redirectQuery.get_async()
+        ndb.Return(redirectURLfuture)
 
     @staticmethod
     def updateRedirects(toURL, updatedToURL):

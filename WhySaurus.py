@@ -1,7 +1,6 @@
 import constants
 import os
 import jinja2
-import gae_mini_profiler.profiler
 
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
@@ -134,8 +133,7 @@ app_config = {
 
 webapp.template.register_template_library('gae_mini_profiler.templatetags.profiler_tags')
 
-app = ndb.toplevel(WSGIApplication(routes=routes, config=app_config, debug=True))
-app = gae_mini_profiler.profiler.ProfilerWSGIMiddleware(app)    
+app = WSGIApplication(routes=routes, config=app_config, debug=True)
 
 if __name__ == '__main__':
     run_wsgi_app(app)

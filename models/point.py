@@ -224,6 +224,28 @@ class Point(ndb.Model):
             return point, pointRoot
         else:
             return (None, None)
+    
+    # This method will check redirects and yield
+    @staticmethod
+    @ndb.tasklet
+    def findCurrent_async(url):
+        q = PointRoot.query(PointRoot.url == url)
+        pointRoot = yield q.get_async()
+        if pointRoot:
+            logging.info('HERE')
+            point = yield pointRoot.getCurrent_async()            
+            raise ndb.Return(point, pointRoot)            
+        else:
+            # Try to find a redirector
+            newURLfuture = yield RedirectURL.getByFromURL_asynch(url)
+            newURL = newURLfuture.get_result()
+            q = PointRoot.query(PointRoot.url == newURL)
+            point = yield q.get_async()
+            if pointRoot:
+                pointFuture = yield pointRoot.getCurrent_async()                
+                raise ndb.Return(point, pointRoot)
+            else:
+                raise ndb.Return(None, None)                            
 
     @staticmethod
     def getCurrentByRootKey(rootKey):
@@ -525,6 +547,29 @@ class Point(ndb.Model):
         else:
             return None        
     
+    
+    @ndb.tasklet
+    def getLinkedPoints_async(self, linkType):
+        linkColl = self.getStructuredLinkCollection(linkType)
+        if len(linkColl) > 0:
+            rootKeys = [link.root for link in linkColl if link.root]
+            
+            roots = yield ndb.get_multi_async(rootKeys)
+            linkedPoints = yield map(lambda x: x.getCurrent_async(), 
+                        [r for r in roots if r])                        
+            
+            i = 0
+            # this let met skip over link entries that do not have a root or do not match for some reason
+            for point in linkedPoints:
+                if linkColl[i].root == point.key.parent():                   
+                    point._linkInfo = linkColl[i]
+                i = i+1
+                    
+            raise ndb.Return(linkedPoints)
+        else:
+            raise ndb.Return(None)
+        
+         
     # gets both supporting and counter points, with their relevance
     def getAllLinkedPoints(self, user):
         supportingPoints = self.getLinkedPoints("supporting", user)
@@ -534,18 +579,23 @@ class Point(ndb.Model):
             # get all relevance votes with this as the parent point
             relevanceVotes = user.getRelevanceVotes(self)
             if relevanceVotes:
-                relevanceVoteDict = dict((rVote.childPointRootKey, rVote) 
-                    for rVote in relevanceVotes)
-                # logging.info('RVD: ' + str(relevanceVoteDict))
+                self.addRelevanceVotes(relevanceVotes, supportingPoints, counterPoints)                
+        return supportingPoints, counterPoints
         
-                if supportingPoints:
-                    for p in supportingPoints:     
-                        if p.key.parent() in relevanceVoteDict:
-                            p._relevanceVote =relevanceVoteDict[p.key.parent()]                    
-                if counterPoints:                
-                    for p in counterPoints:
-                        if p.key.parent() in relevanceVoteDict:
-                            p._relevanceVote =relevanceVoteDict[p.key.parent()]
+    
+    def addRelevanceVotes(self, relevanceVotes, supportingPoints, counterPoints):
+        if relevanceVotes:
+            relevanceVoteDict = dict((rVote.childPointRootKey, rVote) 
+                for rVote in relevanceVotes)
+
+            if supportingPoints:
+                for p in supportingPoints:     
+                    if p.key.parent() in relevanceVoteDict:
+                        p._relevanceVote =relevanceVoteDict[p.key.parent()]                    
+            if counterPoints:                
+                for p in counterPoints:
+                    if p.key.parent() in relevanceVoteDict:
+                        p._relevanceVote =relevanceVoteDict[p.key.parent()]
     
         return supportingPoints, counterPoints
     
@@ -756,6 +806,14 @@ class Point(ndb.Model):
             return sources
         else:
             return None
+    
+    @ndb.tasklet
+    def getSources_async(self):
+        if len(self.sources) > 0:
+            sources = yield ndb.get_multi_async(self.sources)
+            raise ndb.Return(sources)
+        else:
+            raise ndb.Return(None)
 
     def unlink(self, unlinkPointURL, linkType, user):
         unlinkPoint, unlinkPointRoot = Point.getCurrentByUrl(
@@ -765,6 +823,7 @@ class Point(ndb.Model):
         return newVersion
 
     @classmethod
+    @ndb.tasklet
     def search(cls, searchTerms, excludeURL=None, linkType = ""):
 
         if searchTerms:
@@ -796,26 +855,15 @@ class Point(ndb.Model):
                     except ValueError:
                         pass 
                 searchKeys = [ndb.Key(urlsafe=rootKey) for rootKey in docIds]
-                resultRoots = ndb.get_multi(searchKeys)
-                logging.info("Search Keys %s" % str(searchKeys))
-                """
-                for docId in docIds:
-                    newResult = {}
-                    addResult = True
-                    for field in doc.fields:
-                        newResult[field.name] = field.value
-                        if field.name == 'url' and field.value in excludeList:
-                            addResult = False
-                    if addResult:
-                        results = results + [newResult]
-                """
-                cleanRoots = filter(None, resultRoots)
-                resultPoints = [root.getCurrent() for root in cleanRoots]
+                resultRoots = yield ndb.get_multi_async(searchKeys)
+                logging.info("Search Keys %s" % str(searchKeys))          
+                resultPoints = yield map(lambda x: x.getCurrent_async(), 
+                            [r for r in resultRoots if r])
             else:
                 resultPoints = None                
-            return resultPoints
+            raise ndb.Return(resultPoints)
         else:
-            return None
+            raise ndb.Return(None)
         
     def addToSearchIndexNew(self):
         index = search.Index(name='points')
@@ -897,7 +945,12 @@ class PointRoot(ndb.Model):
         # else:
         #     logging.info("CURRENT UNAVAILABLE in %s" % self.url)
         # return Point.query(Point.current == True, ancestor=self.key).get()
-
+    
+    @ndb.tasklet
+    def getCurrent_async(self):
+        current = yield self.current.get_async()
+        raise ndb.Return(current)
+        
     def getBacklinkCollections(self, linkType):
         if linkType == 'supporting':
             return self.pointsSupportedByMe, self.supportedArchiveForDelete
@@ -1011,7 +1064,8 @@ class PointRoot(ndb.Model):
         if not self.viewCount:
             self.viewCount = 1
         self.viewCount = self.viewCount + 1
-        self.put_async()
+        future = self.put_async()
+        return future
 
     def getAllVersions(self):
         return Point.query(ancestor=self.key).fetch()

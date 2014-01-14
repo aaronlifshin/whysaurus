@@ -5,8 +5,9 @@ from jinja2 import exceptions
 from google.appengine.api import namespace_manager
 
 class WhysaurusRequestHandler(webapp2.RequestHandler):
-       
-    def dispatch(self):
+    _user = None
+        
+    def dispatch(self):        
         # Get a session store for this request.
         self.session_store = sessions.get_store(request=self.request)
 
@@ -53,18 +54,22 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
     # returns the currently logged in user
     @webapp2.cached_property
     def current_user(self):
-        """Returns currently logged in user"""
-        user_dict = self.auth.get_user_by_session(True)
-        if user_dict and user_dict['user_id'] is not None:
-            previousNamespace = namespace_manager.get_namespace()
-            # USER MODEL IS ALWAYS STORED IN DEFAULT NAMESPACE
-            namespace_manager.set_namespace('') 
-            user = self.auth.store.user_model.get_by_id(user_dict['user_id'])        
-            namespace_manager.set_namespace(previousNamespace)
-            # self.session['user'] = user
-            return user
-        else:
-            return None
+        if self._user:
+            return self._user
+        else:    
+            """Returns currently logged in user"""
+            user_dict = self.auth.get_user_by_session(True)
+            if user_dict and user_dict['user_id'] is not None:
+                previousNamespace = namespace_manager.get_namespace()
+                # USER MODEL IS ALWAYS STORED IN DEFAULT NAMESPACE
+                namespace_manager.set_namespace('') 
+                user = self.auth.store.user_model.get_by_id(user_dict['user_id']) 
+                self._user = user       
+                namespace_manager.set_namespace(previousNamespace)
+                # self.session['user'] = user
+                return user
+            else:
+                return None
 
     @webapp2.cached_property
     def logged_in(self):

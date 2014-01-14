@@ -20,5 +20,7 @@ class PointHistory(AuthHandler):
 
         }
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
-        self.response.out.write(json.dumps(
-            self.template_render('pointHistory.html', template_values)))
+        json_values = {
+            'historyHTML': self.template_render('pointHistory.html', template_values)
+        }
+        self.response.out.write(json.dumps(json_values))

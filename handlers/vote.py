@@ -34,7 +34,7 @@ class Vote(AuthHandler):
                 resultJSON = json.dumps({
                     'result': True, 
                     'newVote': vote,
-                    'newRelevance': str(newRelevance) + ' %',
+                    'newRelevance': str(newRelevance) + '%',
                     'newVoteCount': newVoteCount
                 })
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'

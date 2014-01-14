@@ -14,6 +14,11 @@ body {
 	padding-top: 110px;
 }
 
+/* if we want to set a "visited" color for links, uncomment this... 
+a:visited {
+    color: @purple;
+}*/
+
 .title a:visited, .voteArea a:visited {
 	text-decoration: none;
 }
@@ -634,7 +639,7 @@ body {
 
 .pointAreaActions {
     font-family: @sansFontFamily;
-	font-size:@fontSizeSmall;
+	font-size:@fontSizeMedium;
 	font-color: @blue;
 	margin-bottom:10px;
 }
@@ -815,20 +820,22 @@ body {
 }
 
 .mainPointContent{
-	color:@grayTextMedium;
+	color:@grayTextLight; //@grayTextMedium;
 	font-family: @sansFontFamily;
     font-size: @fontSizeSmall;
     /*width: 362px;*/
-	margin-right: 32px;	
+	margin-right: 32px;		
 }
 
 .mainPointContent p {
-    line-height: 130%;	
+    line-height: 140%;
+    margin-bottom:11px;
 }
 
 .showRelevance {
     cursor: pointer;
-    margin-top: 8px;
+    font-size: @fontSizeSmall;
+    margin-top: 2px;
     margin-bottom:-1px;
    	color: @blue;
     border-style:solid;
@@ -855,6 +862,14 @@ body {
     margin-top:0px;
 	margin-right: 32px;	
 	line-height:@lineHeightBig;
+}
+
+.relevanceEditIcon {
+    padding-left: 4px;
+    padding-bottom: 0px;
+    height: 15px;
+    position: relative;
+    bottom: 1px;
 }
 
 .relevanceVote {
@@ -936,13 +951,13 @@ body {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .mainPointSourcesHeading{
-    font-size: @fontSizeSmaller;
-    color: @grayTextMedium;
+    font-size: @fontSizeSmallCaps;
+    color: @grayTextLight; //@grayTextMedium;
     margin-bottom: 3px;
 }
 
 .mainPointSourceEntry{
-    font-size: @fontSizeSmaller;
+    font-size: @fontSizeSmall;
     margin-top: -4px;
 }
 
@@ -959,6 +974,7 @@ h4.condensed {
 
 .mainPointTitleText {
     padding-right:8px;
+    margin-top: 4px;
 }
 
 h4.mainPointTitleText {
@@ -997,9 +1013,9 @@ h4.mission {
 }
 
 .mainPointLastEdited {
-	font-size: @fontSizeSmaller;
-	color: @grayTextMedium;
-    line-height: @lineHeightDefault; 
+	font-size: @fontSizeSmall;
+	color: @grayTextLight; //@grayTextMedium;
+    line-height: @lineHeightBig; 
 	float: left;
     /*text-transform: Uppercase;*/
     margin-top: 10px;
@@ -1008,6 +1024,7 @@ h4.mission {
 
 .contributor {
     text-transform: Uppercase;
+	font-size: @fontSizeSmallCaps;
 }
 
 

@@ -14,6 +14,11 @@ body {
 	padding-top: 110px;
 }
 
+/* if we want to set a "visited" color for links, uncomment this... 
+a:visited {
+    color: @purple;
+}*/
+
 .title a:visited, .voteArea a:visited {
 	text-decoration: none;
 }
@@ -634,7 +639,7 @@ body {
 
 .pointAreaActions {
     font-family: @sansFontFamily;
-	font-size:@fontSizeSmall;
+	font-size:@fontSizeMedium;
 	font-color: @blue;
 	margin-bottom:10px;
 }
@@ -815,19 +820,21 @@ body {
 }
 
 .mainPointContent{
-	color:@grayTextMedium;
+	color:@grayTextLight; //@grayTextMedium;
 	font-family: @sansFontFamily;
     font-size: @fontSizeSmall;
     /*width: 362px;*/
-	margin-right: 32px;	
+	margin-right: 32px;		
 }
 
 .mainPointContent p {
-    line-height: 130%;	
+    line-height: 140%;
+    margin-bottom:11px;
 }
 
 .showRelevance {
     cursor: pointer;
+    font-size: @fontSizeSmall;
     margin-top: 2px;
     margin-bottom:-1px;
    	color: @blue;
@@ -862,7 +869,7 @@ body {
     padding-bottom: 0px;
     height: 15px;
     position: relative;
-    bottom: 2px;
+    bottom: 1px;
 }
 
 .relevanceVote {
@@ -944,13 +951,13 @@ body {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .mainPointSourcesHeading{
-    font-size: @fontSizeSmaller;
-    color: @grayTextMedium;
+    font-size: @fontSizeSmallCaps;
+    color: @grayTextLight; //@grayTextMedium;
     margin-bottom: 3px;
 }
 
 .mainPointSourceEntry{
-    font-size: @fontSizeSmaller;
+    font-size: @fontSizeSmall;
     margin-top: -4px;
 }
 
@@ -1005,9 +1012,9 @@ h4.mission {
 }
 
 .mainPointLastEdited {
-	font-size: @fontSizeSmaller;
-	color: @grayTextMedium;
-    line-height: @lineHeightDefault; 
+	font-size: @fontSizeSmall;
+	color: @grayTextLight; //@grayTextMedium;
+    line-height: @lineHeightBig; 
 	float: left;
     /*text-transform: Uppercase;*/
     margin-top: 10px;
@@ -1016,6 +1023,7 @@ h4.mission {
 
 .contributor {
     text-transform: Uppercase;
+	font-size: @fontSizeSmallCaps;
 }
 
 

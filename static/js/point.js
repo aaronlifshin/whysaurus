@@ -57,6 +57,7 @@ function updateVersionHeader(authorURL, author, dateEdited) {
 	$('.mainPointLastEdited').html('Most Recent Contributor: ' + 
 	    '<a href=\'/user/' + authorURL +'\'>'+ author + '</a> on ' + dateEdited + 
 	    '. <a id="viewPointHistory">View History</a>');
+    $('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);	        
 }
 
 function callPointEdit(){
@@ -724,7 +725,8 @@ function changeEditorsPick() {
 }
 
 function viewPointHistory() {
-    $('#historyArea').html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
+    $('#viewPointHistory').parent().after("<img id=\"historyAreaLoadingSpinner\" src=\"/static/img/ajax-loader.gif\"/>");
+    
 	$('#leftColumn .tabbedArea').hide();
 	$('#leftColumn #historyArea').show();
 	$.ajax({
@@ -732,8 +734,8 @@ function viewPointHistory() {
 		type: 'GET',
 		data: { 'pointUrl': $('#pointArea').data('pointurl') },
 		success: function(obj) {
-			$('#historyArea').empty();
-			$('#historyArea').html($.parseJSON(data));
+			$('#historyAreaLoadingSpinner').remove();
+			$('#historyArea').html(obj.historyHTML);
 			makePointsCardsClickable();	
 		    $('#viewSupportingPoints').off('.ys').on('click.ys', function() {
 				$('#leftColumn #supportingPointsArea').show();
@@ -803,7 +805,7 @@ function activatePointArea() {
 
         $('#saveCommentSubmit').off('.ys').on('click.ys', saveComment);    
         $( "#deletePoint" ).button();
-	    $('#viewPointHistory').click(viewPointHistory);	
+	    $('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);	
         
         $('[name=commentReply]').click(showReplyComment);
 

@@ -633,8 +633,11 @@ function sendRelevanceVote(event) {
 			obj = JSON.parse(data);
 			if (obj.result == true) {
                 
-                selectedRadioButton.closest('[name="areaRelevanceRadio"]').prev().text(
-                    'Relevance ' + obj.newRelevance);                
+                // switching from .text() to .html() in order to insert the pencil -JF
+                //selectedRadioButton.closest('[name="areaRelevanceRadio"]').prev().text(
+                //    'Relevance ' + obj.newRelevance); 
+                selectedRadioButton.closest('[name="areaRelevanceRadio"]').prev().html(
+                    'Relevance ' + obj.newRelevance + '<img class="relevanceEditIcon" src="/static/img/pencil_icon_blue.png"/>'); 
                 selectedRadioButton
                     .closest('[name="areaRelevanceRadio"]')
                     .children('[name=relevanceTextLine]')

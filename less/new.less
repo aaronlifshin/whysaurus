@@ -1,5 +1,7 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
+// scrollbar always visible to prevent horizontal shifting
+html {overflow-y: scroll;}
 
 .no-space [class*="span"] {
     margin: 0 0 0 0 ;
@@ -759,7 +761,7 @@ body {
 
 .arrowImage {
     margin-bottom: 2px;
-    position:relative;
+    //position:relative;
     //top:-10px;
     z-index:10; // put arrows on top of other elements
     //width:82px; // correct size, but requires arrows to be placed in different spans to work
@@ -935,10 +937,13 @@ body {
 
 .mainPointSourcesHeading{
     font-size: @fontSizeSmaller;
+    color: @grayTextMedium;
+    margin-bottom: 3px;
 }
 
 .mainPointSourceEntry{
     font-size: @fontSizeSmaller;
+    margin-top: -4px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -952,6 +957,10 @@ h4.condensed {
 }
 */
 
+.mainPointTitleText {
+    padding-right:8px;
+}
+
 h4.mainPointTitleText {
     font-size: @fontSizeLarge;
     color: black;
@@ -959,6 +968,8 @@ h4.mainPointTitleText {
 	margin-right: 32px;	
 	line-height:@lineHeightBig;
 }
+
+
 
 
 
@@ -991,7 +1002,7 @@ h4.mission {
     line-height: @lineHeightDefault; 
 	float: left;
     /*text-transform: Uppercase;*/
-    margin-top: -5px;
+    margin-top: 10px;
 	/*padding-top:10px;*/
 }
 
@@ -1016,6 +1027,11 @@ h4.mission {
 #mainPointImageArea {
 	float: right;
 	margin-left: 0px;
+}
+
+.imageAreaMaxHeight {
+    max-height: 180px;
+    overflow: hidden;
 }
 
 .mainPointImageCaption{
@@ -1100,26 +1116,22 @@ img.smallDisplay {
 	padding-left: 5px;
 }
 
-// for 
-.addthis {
-    z-index: 20;
-}
+
 
 a#editPoint {
 	float: right;
 	background-image: url('/static/img/pencil_icon.png');
 	background-color: transparent;
 	background-repeat: no-repeat;
-	background-position: 95% 0%;
+	background-position: 100% 100%;
 	padding-right: 19px;
 	height: 20px;	
 	margin-right: 25px;
-	
 }	
 
 a#editPoint:hover {
 	color: #00ADEE;
-	background-position: 95% 100%;
+	background-position: 100% 100%;
 }
 
 button#supporting_addPointWhenNonZero,
@@ -1239,7 +1251,7 @@ button#counter_addPointWhenNonZero {
    Whysaurus User login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #signupDialog {   
-	height: 525px;
+	//height: 525px; // fixing the heigh creates a problem when alerts appear
 	position: absolute;
 }
    
@@ -1684,14 +1696,40 @@ fieldset { padding:0; border:0; margin-top:25px;}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
     PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+#display_userName {
+    width: 80%; // TEMPORARY: remove this once we have full size profile pics
+}
+ 
+.profileEditButton {
+    font-family: ff-meta-web-pro,sans-serif;
+    font-size: 14px;
+    font-weight:normal;
+	background-image: url('/static/img/pencil_icon.png');
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: 100% 100%;
+	padding-right: 17px;
+	height: 20px;
+    margin-top: 2px;
+    line-height: 22px;	
+}
+
+.profileEditButton:hover {
+	color: #00ADEE;
+	background-position: 100% 100%;
+    cursor:pointer;
+}
+
+ 
 .profilePic {
-	width:80%; 
+	width:80%; // TEMPORARY: remove this once we have full size profile pics
     margin-bottom:8px;
 }
 
 .profileStatsArea {
     margin-bottom:8px;
 }
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
     MODAL DILAOGS

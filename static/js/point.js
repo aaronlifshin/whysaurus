@@ -54,8 +54,8 @@ function insertImage(imageURL, author, description) {
 }
 
 function updateVersionHeader(authorURL, author, dateEdited) {
-	$('.mainPointLastEdited').html('Most Recent Contributor: ' + 
-	    '<a href=\'/user/' + authorURL +'\'>'+ author + '</a> on ' + dateEdited + 
+	$('.mainPointLastEdited').html('<span class="contributor">Most Recent Contributor: </span>' + 
+	    '<a href=\'/user/' + authorURL +'\'>'+ author + '</a><br>Last Edited ' + dateEdited + 
 	    '. <a id="viewPointHistory">View History</a>');
     $('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);	        
 }
@@ -104,7 +104,7 @@ function callPointEdit(){
 
 				$('#mainPointSources').remove();
 				$('[name=mainPointSource]').remove();				
-				$('.mainPointImageURL').after(obj.sourcesHTML);
+				$('.mainPointContent').after(obj.sourcesHTML);
 				$('#viewPointHistory').click(viewPointHistory);
 				                
             	stopSpinner();

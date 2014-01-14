@@ -63,9 +63,17 @@
 	<div id="pointSummary" class = "span5">
 	          <div class="mainPointTitle editable"><h1 class="mainPointTitleText">{{ point.title|escape }}</h1></div>
 			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
+              {% include 'sources.html' %}
+              <div id="timestampAndEditLink" >			  
+                <div class="mainPointLastEdited">
+                    <span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br> 
+                    Last Edited {{point.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')}} 
+                    <a id="viewPointHistory">View History</a>
+                </div>
+              </div>
 	          <!-- Hacky way to get imageurl into the edit dialog. :/ -->
 	          <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
-	          {% include 'sources.html' %}
+
 
 	</div>    
 	{% if point.imageURL and point.imageURL.strip %}	
@@ -77,13 +85,7 @@
 	    </div>
 	{% endif %}			
   
-	<div id="timestampAndEditLink" class="span8">			  
-		<div class="mainPointLastEdited">
-		  <span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br> 
-          Last Edited {{point.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')}} 
-		  <a id="viewPointHistory">View History</a>
-		</div>
-	</div>
+
 	  
 	<div id="scoreAndVotingSection" class="pointAreaActions span8">
 		<div class="span5">		    			   

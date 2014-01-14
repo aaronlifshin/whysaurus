@@ -80,6 +80,14 @@ def makeURL(sourceStr):
 def sortArrayByRating(links):      
     links.sort(key=lambda x: x.fRating if x.fRating is not None else 50, reverse=True)
     
+@ndb.tasklet
+def getCurrent_async(pointRoot):
+    if pointRoot:
+        current = yield pointRoot.current.get_async()
+        raise ndb.Return(current)
+    else:
+        raise ndb.Return(None)
+            
 class Link(ndb.Model):
     version = ndb.KeyProperty(indexed=False)
     root = ndb.KeyProperty(indexed=False)
@@ -233,7 +241,7 @@ class Point(ndb.Model):
         pointRoot = yield q.get_async()
         if pointRoot:
             logging.info('HERE')
-            point = yield pointRoot.getCurrent_async()            
+            point = yield getCurrent_async(pointRoot)            
             raise ndb.Return(point, pointRoot)            
         else:
             # Try to find a redirector
@@ -242,7 +250,7 @@ class Point(ndb.Model):
             q = PointRoot.query(PointRoot.url == newURL)
             point = yield q.get_async()
             if pointRoot:
-                pointFuture = yield pointRoot.getCurrent_async()                
+                pointFuture = yield getCurrent_async(pointRoot)                
                 raise ndb.Return(point, pointRoot)
             else:
                 raise ndb.Return(None, None)                            
@@ -554,9 +562,8 @@ class Point(ndb.Model):
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl if link.root]
             
-            roots = yield ndb.get_multi_async(rootKeys)
-            linkedPoints = yield map(lambda x: x.getCurrent_async(), 
-                        [r for r in roots if r])                        
+            linkedPoints = yield map(lambda x: getCurrent_async(x), 
+                         (yield ndb.get_multi_async(rootKeys)))                        
             
             i = 0
             # this let met skip over link entries that do not have a root or do not match for some reason
@@ -855,10 +862,8 @@ class Point(ndb.Model):
                     except ValueError:
                         pass 
                 searchKeys = [ndb.Key(urlsafe=rootKey) for rootKey in docIds]
-                resultRoots = yield ndb.get_multi_async(searchKeys)
                 logging.info("Search Keys %s" % str(searchKeys))          
-                resultPoints = yield map(lambda x: x.getCurrent_async(), 
-                            [r for r in resultRoots if r])
+                resultPoints = yield map(lambda x: getCurrent_async(x), (yield ndb.get_multi_async(searchKeys)))
             else:
                 resultPoints = None                
             raise ndb.Return(resultPoints)
@@ -946,10 +951,7 @@ class PointRoot(ndb.Model):
         #     logging.info("CURRENT UNAVAILABLE in %s" % self.url)
         # return Point.query(Point.current == True, ancestor=self.key).get()
     
-    @ndb.tasklet
-    def getCurrent_async(self):
-        current = yield self.current.get_async()
-        raise ndb.Return(current)
+
         
     def getBacklinkCollections(self, linkType):
         if linkType == 'supporting':

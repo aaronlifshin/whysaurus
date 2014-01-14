@@ -14,6 +14,7 @@ from google.appengine.api import channel
 
 from models.notification import Notification
 from models.chatUser import ChatUser
+from models.point import getCurrent_async
 
 from whysaurusexception import WhysaurusException
 from uservote import UserVote
@@ -458,9 +459,7 @@ class WhysaurusUser(auth_models.User):
                     keysToGet.remove(x)
                 except ValueError:
                     pass
-        pointRoots = yield ndb.get_multi_async(keysToGet)                
-        recentlyViewedPoints = yield map(lambda x: x.getCurrent_async(), 
-            [pr for pr in pointRoots if pr])                            
+        recentlyViewedPoints = yield map(lambda x: getCurrent_async(x), (yield ndb.get_multi_async(keysToGet)))
         raise ndb.Return(recentlyViewedPoints)             
         
     def getCreated(self):

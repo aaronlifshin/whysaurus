@@ -11,7 +11,7 @@ from models.point import Point
 from models.redirecturl import RedirectURL
 
 
-class ViewPointA(AuthHandler):
+class ViewPoint(AuthHandler):
     # either url or rootKey needs to be passed in
     @ndb.toplevel
     def createTemplateValues(self, url=None, full=True, rootKey=None):

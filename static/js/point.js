@@ -798,7 +798,7 @@ function activatePointArea() {
         
         $('#showAddComment').click(function() {
             tinyMCE.execCommand('mceRemoveControl', false, 'commentText');
-            $("#addComment").insertAfter($(event.target).parent());    
+            $("#addComment").insertAfter($(event.target).parent());            
             initTinyMCE();            
             $('#addComment').removeClass('hide');
             $('#showAddComment').parent().addClass('hide');

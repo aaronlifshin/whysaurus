@@ -1123,16 +1123,15 @@ a#editPoint {
 	background-image: url('/static/img/pencil_icon.png');
 	background-color: transparent;
 	background-repeat: no-repeat;
-	background-position: 95% 0%;
+	background-position: 100% 100%;
 	padding-right: 19px;
 	height: 20px;	
 	margin-right: 25px;
-	
 }	
 
 a#editPoint:hover {
 	color: #00ADEE;
-	background-position: 95% 100%;
+	background-position: 100% 100%;
 }
 
 button#supporting_addPointWhenNonZero,
@@ -1248,7 +1247,7 @@ button#counter_addPointWhenNonZero {
    Whysaurus User login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #signupDialog {   
-	height: 525px;
+	//height: 525px; // fixing the heigh creates a problem when alerts appear
 	position: absolute;
 }
    
@@ -1693,14 +1692,40 @@ fieldset { padding:0; border:0; margin-top:25px;}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
     PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+#display_userName {
+    width: 80%; // TEMPORARY: remove this once we have full size profile pics
+}
+ 
+.profileEditButton {
+    font-family: ff-meta-web-pro,sans-serif;
+    font-size: 14px;
+    font-weight:normal;
+	background-image: url('/static/img/pencil_icon.png');
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: 100% 100%;
+	padding-right: 17px;
+	height: 20px;
+    margin-top: 2px;
+    line-height: 22px;	
+}
+
+.profileEditButton:hover {
+	color: #00ADEE;
+	background-position: 100% 100%;
+    cursor:pointer;
+}
+
+ 
 .profilePic {
-	width:80%; 
+	width:80%; // TEMPORARY: remove this once we have full size profile pics
     margin-bottom:8px;
 }
 
 .profileStatsArea {
     margin-bottom:8px;
 }
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
     MODAL DILAOGS

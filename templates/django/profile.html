@@ -6,14 +6,18 @@
   <div class="row {% if user and user.privateArea %}privateAreaContentOffset{% endif %}">
     <div id="userInfoArea" class="span3" >
         <div class="row-fluid">
-          <div id="display_userName" class="columnHeading columnHeadingBig span6" style="line-height:25px">
+          <div id="display_userName" class="columnHeading columnHeadingBig" style="line-height:25px">
               {{profileUser.name}}
-          </div>   
-          <div class=span6>
+
               {% if viewingOwnPage %}                
-                <button id='editButton' class="pull-right">EDIT</button>    
-              {% endif %}                            
-          </div>      
+                <a id='editButton' class="pull-right profileEditButton">EDIT</a>  
+                
+              {% endif %} 
+
+          </div>   
+
+                                         
+     
         </div>        
         {% if profileUser.avatar_url %}   
              <img class="profilePic" src='{{profileUser.avatar_url}}'/>                            

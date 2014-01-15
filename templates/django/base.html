@@ -34,7 +34,6 @@
       {% endif %}
       <!-- Analytics -->     
       <script type="text/javascript">
-
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-42013841-1']);
         _gaq.push(['_trackPageview']);
@@ -44,7 +43,6 @@
           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
-
       </script>
       
   </head>
@@ -85,9 +83,9 @@
                       {% if user.admin %}
                           <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                       {% endif %}
-                      <li><a tabindex="-1" href="/user/{{user.url}}"> Profile </a></li>   
+                      <li><a tabindex="-1" href="/user/{{user.url}}" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Profile'])"> Profile </a></li>   
                       {% if user.emailUser %}
-                          <li><a tabindex="-1" href="/changePassword">Change Password</a></li>
+                          <li><a tabindex="-1" href="/changePassword" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Change Password'])">Change Password</a></li>
                       {% endif %}                 
                       <li><a tabindex="-1" href="/logout"> Logout </a></li>
                      </ul>
@@ -192,7 +190,7 @@
                 <div class="row-fluid">
                   <a  id="forgot_emailLoginDialog" class="btn pull-left">Forgot Password</a>  
                   <a  id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>                                        
-                  <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right">Sign In</a>            
+                  <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right" onclick="_gaq.push(['_trackEvent', 'Login', 'Sign in Whysaurus User'])">Sign In</a>            
                 </div>
                 <div class="row-fluid">                
                     <a  id="showSignupDialog" class="btn btn-cancel">New to Whysaurus? Click here to sign up.</a>                                                    
@@ -268,7 +266,7 @@
             </div>    
             <div class="modal-footer">
                 <a  id="cancel_signupDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>            
-                <a  id="submit_signupDialog" class="btn btn-primary pull-right">Create User</a>            
+                <a  id="submit_signupDialog" class="btn btn-primary pull-right" onclick="_gaq.push(['_trackEvent', 'Login', 'Create Whysaurus User'])">Create User</a>            
             </div> 
           </form>
       </div>
@@ -279,10 +277,10 @@
         </div>
         <div class="modal-body">
           It's Easy
-          <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook"> Sign in with Facebook </a></div>
-          <div id="signInWithGoogle_Dlg" class="boxedElement"><a tabindex="2" href="/auth/google"> Sign in with Google </a></div>
-          <div id="signInWithTwitter_Dlg" class="boxedElement"><a tabindex="3" href="/auth/twitter"> Sign in with Twitter </a></div>
-          <div id="signInWithEmail_Dlg" class="boxedElement"><a tabindex="4" > Sign in with Whysaurus </a> </div>
+          <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook" onclick="_gaq.push(['_trackEvent', 'Login', 'With Facebook', 'Dialog'])";> Sign in with Facebook </a></div>
+          <div id="signInWithGoogle_Dlg" class="boxedElement" onclick="_gaq.push(['_trackEvent', 'Login', 'With Google', 'Dialog'])"><a tabindex="2" href="/auth/google"> Sign in with Google </a></div>
+          <div id="signInWithTwitter_Dlg" class="boxedElement" onclick="_gaq.push(['_trackEvent', 'Login', 'With Twitter', 'Dialog'])"><a tabindex="3" href="/auth/twitter"> Sign in with Twitter </a></div>
+          <div id="signInWithEmail_Dlg" class="boxedElement" onclick="_gaq.push(['_trackEvent', 'Login', 'With Whysaurus', 'Dialog'])"><a tabindex="4" > Sign in with Whysaurus </a> </div>
           
         </div>
         <div class="modal-footer">

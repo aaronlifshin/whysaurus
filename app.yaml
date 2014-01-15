@@ -1,12 +1,12 @@
 application: whysaurus
-version: profile
+version: c
 runtime: python27
 api_version: 1
 threadsafe: true
 
 builtins:
 - remote_api: on
-- appstats: on
+- appstats: off
 
 handlers:
 - url: /favicon\.ico

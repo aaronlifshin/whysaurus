@@ -127,12 +127,15 @@ function pointUnlink(elem, linkType) {
     
     pointCard = $(elem).parent().parent();
     supportingPointURL = pointCard.data('pointurl');
+    pointURL = $('#pointArea').data('pointurl');
+    _gaq.push(['_trackEvent', 'Link Manipulation', 'Unlink ' + linkType , supportingPointURL + ' from ' + pointURL]);            
+    
 	$.ajaxSetup({
 	   url: "/unlinkPoint",
 	   global: false,
 	   type: "POST",
 		 data: {
-			'mainPointURL': $('#pointArea').data('pointurl'),
+			'mainPointURL': pointURL,
 			'supportingPointURL': supportingPointURL,
 			'linkType': linkType
 			},
@@ -228,19 +231,24 @@ function updateVoteButtonLabels(newVote){
 }
 
 function upVote() {
+    
+    pointURL = $('#pointArea').data('pointurl');
+    vote = $('#voteTotal').data('myvote') == 1 ? 0 : 1;
+    _gaq.push(['_trackEvent', 'Vote', 'Up', pointURL, vote]);
+    
     $.ajaxSetup({
        url: "/vote",
        global: false,
        type: "POST",
        data: {
-    		'vote': $('#voteTotal').data('myvote') == 1 ? 0 : 1,
-    		'pointURL': $('#pointArea').data('pointurl')
+    		'vote': vote,
+    		'pointURL': pointURL
     		},
        success: function(obj){
             if (obj.result == true) {
-            updateVoteButtonLabels(obj.newVote);
+                updateVoteButtonLabels(obj.newVote);
             } else {
-            alert('An error happened and your vote may not have counted. Try a page refresh?');
+                alert('An error happened and your vote may not have counted. Try a page refresh?');
             }
         }
     });
@@ -248,13 +256,16 @@ function upVote() {
 }
 
 function downVote() {
+    pointURL = $('#pointArea').data('pointurl');
+    vote = $('#voteTotal').data('myvote') == -1 ? 0 : -1;
+    _gaq.push(['_trackEvent', 'Vote', 'Down', pointURL, vote]);
     $.ajaxSetup({
         url: "/vote",
         global: false,
         type: "POST",
         data: {
-    		'vote': $('#voteTotal').data('myvote') == -1 ? 0 : -1,
-    		'pointURL': $('#pointArea').data('pointurl')
+    		'vote': vote,
+    		'pointURL': pointURL
     		},
         success: function(obj){
             if (obj.result == true) {
@@ -507,6 +518,9 @@ function setUpMenuAreas() {
     $("[name^=selectPoint_menu_]").on('click', function(e){
         var theLink = $(this);
         var linkPointURL = theLink.data('pointurl');
+        _gaq.push(['_trackEvent', 'Link Manipulation', 
+            'Added ' + linkType + ' from recently viewed', 
+            linkPointURL + ' to ' + parentPointURL]);                        
         selectPoint(linkPointURL, $('#pointArea').data('pointurl'), theLink.data('linktype'));
         $("[name^=selectPoint_menu_]").filter("*[data-pointurl=\""+ linkPointURL + "\"]").remove();
     });
@@ -541,8 +555,7 @@ function setUpMenuAreas() {
         linktype = $(this).data('linktype');
         $("#selectLinkedPointSearch").data("linkType", linktype);
         $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');  
-        $("#linkedPointSearchDialog .modal-header h4").text($('#pointSummary div.mainPointTitle').text());        
-              
+        $("#linkedPointSearchDialog .modal-header h4").text($('#pointSummary div.mainPointTitle').text());                      
         $("#linkedPointSearchDialog").modal('show');
         $('body, html').animate({ scrollTop: 0}, 500);        
     });
@@ -610,8 +623,11 @@ function sendRelevanceVote(event) {
     var radioButtons = $("[type=radio]", relBase);
     
     radioButtons.screwDefaultButtons("disable");
-    $('.styledRadio').off('.ys');                	
-    
+    $('.styledRadio').off('.ys');        
+    voteValue = selectedRadioButton.val();	
+    linkType = relBase.data('linktype');
+    _gaq.push(['_trackEvent', 'Vote', 'Relevance of ' + linkType , voteValue]);
+                        
     $.ajaxSetup({
 		url: "/relVote",
 		global: false,
@@ -619,8 +635,8 @@ function sendRelevanceVote(event) {
 		data: {
             'parentRootURLsafe': $('#pointArea').data('rootus'),
             'childRootURLsafe': relBase.data('childurlsafe'),
-            'linkType': relBase.data('linktype'),
-            'vote': selectedRadioButton.val(),
+            'linkType': linkType,
+            'vote': voteValue,
 		},
 		success: function(obj){
 			if (obj.result == true) {
@@ -782,15 +798,16 @@ function activatePointArea() {
     } else {
 
         $( "#supporting_unlinkToggle" ).button().click(function() {
+            _gaq.push(['_trackEvent', 'Link Manipulation', 'Toggle Unlink Supporting' , $('#pointArea').data('pointurl')]);            
         	toggleUnlink(this, "supporting");
         });
 
         $( "#counter_unlinkToggle" ).button().click(function() {
+            _gaq.push(['_trackEvent', 'Link Manipulation', 'Toggle Unline Counter', $('#pointArea').data('pointurl')]);                        
             toggleUnlink(this, "counter");
         });
 
         $( "#upVote" ).click(function() {upVote();});
-
         $( "#downVote" ).click(function() {	downVote();	});
         $( "#blueRibbon" ).click(function() {changeRibbon();});        
 

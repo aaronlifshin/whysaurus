@@ -13,7 +13,7 @@ def webapp_add_wsgi_middleware(app):
 def gae_mini_profiler_should_profile_production():
     #from google.appengine.api import users
     #return users.is_current_user_admin()
-    return True
+    return False
       
 def gae_mini_profiler_should_profile_development():    
     return True

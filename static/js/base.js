@@ -256,11 +256,14 @@ function stopSpinner() {
 function submitPointDialog(clickedElement) {
     var dialogAction = $(clickedElement).data('dialogaction');
     if (dialogAction == "new") {
+        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'New']);
         newPoint();
     } else if (dialogAction == "edit") {
+        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'Edit']);        
         callPointEdit();
     } else if (dialogAction == "createLinked") {
         var linkType = $(clickedElement).data('linktype');
+        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'Add ' + linkType + ' point']);                
         addPoint(linkType);
     }
 }
@@ -579,11 +582,14 @@ function searchDialogSearch() {
 }
 
 
-function selectSearchLinkPoint(elem, linktype) {
+function selectSearchLinkPoint(elem, linkType) {
     pointCards = $('.pointCard', $('#searchResultsArea'));    
     pointCards.unbind('click');
-    startSpinnerOnButton('#pointSelectText');    
-    selectPoint($(elem).data('pointurl'), $('#pointArea').data('pointurl'), linktype);  
+    startSpinnerOnButton('#pointSelectText');   
+    linkPointURL =  $(elem).data('pointurl');
+    parentPointURL =  $('#pointArea').data('pointurl');
+     _gaq.push(['_trackEvent', 'Link Manipulation', 'Added ' + linkType + ' from search' , linkPointURL + ' to ' + parentPointURL]);                
+    selectPoint(linkPointURL, parentPointURL, linkType);  
 }
 
 function setUpSelectPointButtons() {
@@ -1076,14 +1082,17 @@ function activateHeaderAndDialogs() {
     makeHomeNavsClickable();
 		
     $('[id^="signInWithFacebook"]').click(function() {
+        _gaq.push(['_trackEvent', 'Login', 'With Facebook', 'Menu']);                    
         window.location.href = "/auth/facebook";
     });
 
     $('[id^="signInWithGoogle"]').click(function() {
+        _gaq.push(['_trackEvent', 'Login', 'With Google', 'Menu']);                            
         window.location.href = "/auth/google";
     });
 
     $('[id^="signInWithTwitter"]').click(function() {
+        _gaq.push(['_trackEvent', 'Login', 'With Twitter', 'Menu']);                                    
         window.location.href = "/auth/twitter";
     });
     
@@ -1116,6 +1125,7 @@ function activateHeaderAndDialogs() {
 
     } else {
         $( "#CreatePoint" ).on('click', function() {
+            _gaq.push(['_trackEvent', 'Header Menu', 'Make a Point']);
             showPointDialog("new", "New Point");
         });
 

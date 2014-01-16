@@ -24,11 +24,11 @@
         {% else %}
             <img class="profilePic" src='/static/img/avatar_profilePage_default.png'/>
         {% endif %} 
-        <div class="profileStatsArea">        
+        <div class="profileStatsArea userInfoAreaTempWidth">        
             <div>Created: {{profileUser.createdCount }}</div>
             <div>Edited: {{profileUser.editedCount }}</div>
         </div>
-        <div id="display_userWebsite" >
+        <div id="display_userWebsite userInfoAreaTempWidth" >
           {% if profileUser.websiteURL %}
               <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>
           {% else %}
@@ -37,7 +37,7 @@
             {% endif %}            
           {% endif %}
         </div>
-        <div id="display_userAreas" >
+        <div id="display_userAreas userInfoAreaTempWidth" >
           {% if profileUser.areasOfExpertise %}
               Areas of Expertise: {{profileUser.areasOfExpertise}}
           {% else %}
@@ -46,7 +46,7 @@
             {% endif %}
           {% endif %}
         </div>        
-        <div id="display_userProfession" >
+        <div id="display_userProfession userInfoAreaTempWidth" >
           {% if profileUser.currentProfession %}
               Current Profession: {{profileUser.currentProfession}}
           {% else %}

@@ -607,6 +607,7 @@ function showReplyComment(event) {
 function showRelevance(event) {
     relArea = $(this).next();
     if (relArea.hasClass('hide')) {
+        $('.relevanceVote').addClass('hide'); // hide any other open relevance area
         relArea.removeClass('hide');
     } else {
         relArea.addClass('hide');

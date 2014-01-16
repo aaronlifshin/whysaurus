@@ -95,7 +95,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown">                      
                             <img id="notificationIcon" src="/static/img/notificationIcon.png"/>  
                         </a>                                                                         
-                        <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                         
+                        <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                       
                             {{ user.newNotificationCount }} 
                         </div>
                       <ul class="span4 dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">

@@ -7,23 +7,32 @@ from authhandler import AuthHandler
 
 class About(AuthHandler):
     def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
         self.response.out.write(
             self.template_render('about.html', 
-                {'user': self.current_user, 
+                {'user': user, 
                  'currentArea':self.session.get('currentArea')}))
 
 
 class Help(AuthHandler):
-    def get(self):        
+    def get(self):      
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()  
         self.response.out.write(
             self.template_render('help.html', 
-                {'user': self.current_user, 
+                {'user': user, 
                 'currentArea':self.session.get('currentArea')}))
 
 
 class Contact(AuthHandler):
     def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
         self.response.out.write(
             self.template_render('contact.html',
-                {'user': self.current_user,
+                {'user': user,
                 'currentArea':self.session.get('currentArea')}))

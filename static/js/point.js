@@ -424,8 +424,7 @@ function setPointListHeader(linkType) {
 
 function pointListAppend(linkType, pointHTML, numLinkPoints) {
 
-    parent = $("#" + linkType + "_nonzeroPoints");
-    parent.append(pointHTML);
+    var newPointCard = $(pointHTML).appendTo("#" + linkType + "_nonzeroPoints");    
     setPointListHeader(linkType);	
     makePointsCardsClickable();	 
     makeRelevanceControlsClickable();
@@ -436,10 +435,9 @@ function pointListAppend(linkType, pointHTML, numLinkPoints) {
       $("#" + linkType + "_zeroPoints").hide();
       $("#" + linkType + "_nonzeroPoints").show();
     }
-	
-    var newElem = parent.find('>:last-child');
-    var position = newElem.offset();
-    $("html, body").animate({ scrollTop: position.top - newElem.height()}, "slow");
+    	
+    var position = newPointCard.offset();
+    $("html, body").animate({ scrollTop: position.top - newPointCard.height() - 60}, "slow");
     
 }
 
@@ -517,11 +515,14 @@ function setUpMenuAreas() {
     // Dropdown add of the recently viewed points
     $("[name^=selectPoint_menu_]").on('click', function(e){
         var theLink = $(this);
+        
         var linkPointURL = theLink.data('pointurl');
+        var parentPointURL = $('#pointArea').data('pointurl');
+        var linkType =  theLink.data('linktype');
         _gaq.push(['_trackEvent', 'Link Manipulation', 
             'Added ' + linkType + ' from recently viewed', 
             linkPointURL + ' to ' + parentPointURL]);                        
-        selectPoint(linkPointURL, $('#pointArea').data('pointurl'), theLink.data('linktype'));
+        selectPoint(linkPointURL, parentPointURL, linkType);
         $("[name^=selectPoint_menu_]").filter("*[data-pointurl=\""+ linkPointURL + "\"]").remove();
     });
 

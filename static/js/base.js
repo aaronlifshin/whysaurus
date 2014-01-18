@@ -1101,6 +1101,11 @@ function activateHeaderAndDialogs() {
     if (!loggedIn) {
         $("#CreatePoint").attr('href', "#loginDialog");
         $("#CreatePoint").attr('data-toggle', "modal");
+        $("#CreatePoint").off(".ys").on("click.ys", function(event) {
+            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            console.log('Required login ' +  event.target.id);
+        });
+        
         $("#loginWithEmail").on('click', function() {
             $("#emailLoginDialog").modal('show');
         });

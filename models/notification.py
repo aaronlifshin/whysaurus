@@ -46,10 +46,8 @@ class Notification(ndb.Model):
         c = self.notificationReasonCode
         plural = False
         if hasattr(self, 'additionalUserKeys') and self.additionalUserKeys:
-            logging.info('NRT ' + 'addi keys exist: ' + str(self.additionalUserKeys))
             plural = True
         if hasattr(self, 'additionalActions') and self.additionalActions != 0:
-            logging.info('NRT ' + 'addi actions exist: ' + str(self.additionalActions))
             plural = True            
             
         if c == 0:
@@ -118,7 +116,6 @@ class Notification(ndb.Model):
 
             if n:                                
                 if userKey != n.sourceUser:
-                    logging.info('NCFF ' + 'not equal')
                     if not hasattr(n, 'additionalUserKeys') or n.additionalUserKeys is None:
                         n.additionalUserKeys = [userKey]
                     elif userKey not in n.additionalUserKeys: # A new user has triggered the notification
@@ -133,7 +130,6 @@ class Notification(ndb.Model):
                     n.additionalText = n.additionalText + "; " + additionalText
 
             else:
-                logging.info('NCFF ' + 'creating a new N')                
                 n = Notification(targetUser=follow.user, 
                                  pointRoot = pointKey,
                                  followReason = follow.reason,
@@ -142,7 +138,6 @@ class Notification(ndb.Model):
                                  additionalText = additionalText                                 
                                 )
             n.put()
-            logging.info('Added new n: ' + str(n))
             targetUser = follow.user.get()
             if targetUser.token and targetUser.tokenExpires > datetime.datetime.now():
                 n.handler = handler

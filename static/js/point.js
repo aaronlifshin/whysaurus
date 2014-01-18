@@ -340,6 +340,10 @@ function deletePoint(urlToDelete) {
 function make_this_show_login_dlg(button) {
     button.attr('href',"#loginDialog");
     button.attr('data-toggle',"modal");
+    button.off(".ys").on("click.ys", function(event) {
+        _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+        console.log('Required login ' +  event.target.id);
+    });
 }
 
 function populateEditFields() {
@@ -782,9 +786,7 @@ function makeRelevanceControlsClickable() {
 }
 
 function activatePointArea() {    
-    if (!loggedIn) {
-        $( "[name=linkSupportingPoint]" ).attr('href',"#loginDialog");
-        $( "[name=linkSupportingPoint]" ).attr('data-toggle',"modal");
+    if (!loggedIn) {        
         make_this_show_login_dlg($( "[id$=unlinkToggle]" ));
         make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));
         make_this_show_login_dlg($( "[id$=addPointWhenZero]" ));

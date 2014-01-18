@@ -1235,7 +1235,7 @@ function activateMainPageRightColumn() {
 }
 
 function preloadImages() {
-    $('<img />').attr('src','/static/img/screwdefault_radio_design.png').appendTo('body').css('display','none');    
+    $('<img />').attr('src','/static/img/screwdefault_radio_design_roSpinner.gif').appendTo('body').css('display','none');    
 }
 
 $(document).ready(function() {

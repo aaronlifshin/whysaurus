@@ -7,6 +7,7 @@ from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
 from models.notification import Notification
 from models.whysaurususer import WhysaurusUser
+from models.whysaurusexception import WhysaurusException
 from google.appengine.api import namespace_manager
 
 
@@ -44,7 +45,16 @@ class Profile(AuthHandler):
         newUserAreas=self.request.get('userAreas')
         newUserProfession=self.request.get('userProfession')
         newUserBios=self.request.get('userBio')
-        user.update(newWebsiteURL, newUserAreas, newUserProfession, newUserBios)
+        newEmail=self.request.get('userEmail')
+        newNotificationFrequency=self.request.get('userNotificationFrequency')
+        
+        try:
+            user.update(self, newWebsiteURL, newUserAreas, newUserProfession, newUserBios, newEmail, newNotificationFrequency)
+        except WhysaurusException as e:
+            self.response.out.write(
+                self.template_render(
+                    'message.html', {'message': str(e) } ))             
+                
         namespace_manager.set_namespace(userNamespace)        
         self.response.out.write(
             self.template_render(

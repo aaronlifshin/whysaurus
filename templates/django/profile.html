@@ -10,14 +10,10 @@
               {{profileUser.name}}
 
               {% if viewingOwnPage %}                
-                <a id='editButton' class="pull-right profileEditButton">EDIT</a>  
-                
+                <a name=profileEdit class="pull-right profileEditButton">EDIT</a>                  
               {% endif %} 
-
           </div>   
 
-                                         
-     
         </div>        
         {% if profileUser.avatar_url %}   
              <img class="profilePic" src='{{profileUser.avatar_url}}'/>                            
@@ -28,6 +24,20 @@
             <div>Created: {{profileUser.createdCount }}</div>
             <div>Edited: {{profileUser.editedCount }}</div>
         </div>
+        {% if viewingOwnPage %}       
+            <a name=profileEdit class="pull-right profileEditButton">EDIT</a>                  
+            <div id="display_userEmail userInfoAreaTempWidth" >
+                {% if profileUser.email %}
+                    Your email: {{profileUser.email}} <br> 
+                    Email Notifications: {{profileUser.notificationFrequencyText}}
+                {% else %}        
+                    <a name="profileEdit">Add your email</a>
+                {% endif %}            
+            </div>
+            
+        {% endif %}
+        
+        
         <div id="display_userWebsite userInfoAreaTempWidth" >
           {% if profileUser.websiteURL %}
               <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>
@@ -76,7 +86,33 @@
                 <div class="controls">            
                     <input id="userName" name="userName"  type="text" value="{{profileUser.name}}"></input>
                 </div>
-              </div>  -->           
+              </div>  -->     
+                <div class="control-group">            
+                    <label class="control-label" for="userEmail">Email</label>
+                    <div class="controls">            
+                        <input id="userEmail" name="userEmail" type="text" value="{% if profileUser.email %}{{profileUser.email}}{% endif %}"></input>
+                    </div>
+                </div>
+                
+                <div id="notificationFrequencyGroup">    
+                    <label id="notificationFrequencyGroupLabel" class="control-label" for="notificationFrequency">Email Notifications</label>                
+                    <div class="relevanceValGroup">
+                        <input type="radio" name="userNotificationFrequency" value='Daily'
+                        {% if profileUser.notificationFrequencyText == 'Daily' %}checked {% endif %} />                    
+                        <label class="notificationFrequencyLabel">Daily</label>                    
+                    </div>   
+                    <div class="relevanceValGroup">
+                        <input type="radio" name="userNotificationFrequency" value='Weekly'
+                        {% if profileUser.notificationFrequencyText == 'Weekly' %}checked {% endif %} />                   
+                        <label class="notificationFrequencyLabel">Weekly</label>                    
+                    </div>   
+                    <div class="relevanceValGroup">
+                        <input type="radio" name="userNotificationFrequency" value='Never'
+                        {% if profileUser.notificationFrequencyText == 'Never' %}checked {% endif %} />                    
+                        <label class="notificationFrequencyLabel">Never</label>                    
+                    </div>                       
+                </div>
+                    
               <div class="control-group">            
                 <label class="control-label" for="userWebsite">Website URL</label>
                 <div class="controls">            

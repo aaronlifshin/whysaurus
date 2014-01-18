@@ -9,6 +9,19 @@ function validateProfileDialog() {
     areasVal = $("#userAreas").val();
     professionVal = $("#userProfession").val();
     bioVal = $("#userBio").val();
+    email = $("#userEmail").val();
+    notificationFrequency = $('input[type="radio"]:checked').val();
+    
+    if (email.trim() != "" && !validateEmail(email)) {
+        profileDialogAlert('That doesn\'t look like a valid email address.');
+        valid = false;  
+    }
+    
+    if (notificationFrequency != 'Never' && email.trim() == "" ) {
+        profileDialogAlert('Please supply an email address if you wish to receive ' + notificationFrequency + ' notifications.');
+        valid = false;  
+    } 
+    
     /*if (userName.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Username (500 characters)');
         valid = false;
@@ -60,14 +73,16 @@ $(document).ready(function() {
     $('#editedPoints').click(function() {
         toggleTabbedArea("#profileTabbedArea", this, "#editedPointsArea");
     });
-    
-    $('#editButton').click(function() {
-        $("#profileDialog").modal('show');        
-    });
-    
+        
     $('[name=profileEdit]').click(function() {
         $("#profileDialog").modal('show');        
     });
     
-    $('#submit_profileDialog').click( saveProfileInfo );        
+    $('#submit_profileDialog').click( saveProfileInfo );    
+    
+    $('input:radio').screwDefaultButtons({
+            image: 'url("/static/img/screwdefault_radio_design_roSpinner.gif")',
+            width: 45,
+            height: 45
+    });    
 });

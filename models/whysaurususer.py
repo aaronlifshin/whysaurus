@@ -4,9 +4,12 @@ import logging
 import random
 import string
 import datetime
+import webapp2
 
 from google.appengine.ext import ndb
 import webapp2_extras.appengine.auth.models as auth_models
+from webapp2_extras.appengine.auth.models import Unique
+
 from webapp2_extras import security
 from google.appengine.api import namespace_manager
 from google.appengine.api import mail
@@ -40,6 +43,7 @@ class WhysaurusUser(auth_models.User):
     token = ndb.StringProperty()  
     tokenExpires = ndb.DateTimeProperty()  
     lastLogin = ndb.DateTimeProperty()
+    notificationFrequency = ndb.StringProperty(default=None)
     _notifications = None
     
     # linkedInProfileLink = ndb.StringProperty()
@@ -133,47 +137,53 @@ class WhysaurusUser(auth_models.User):
         if password is None:
             raise WhysaurusException('Unable to create user. No password supplied.')
             
-        user_data = WhysaurusUser.create_user(auth_id,
+        result, creationData = WhysaurusUser.create_user(auth_id,
           unique_properties,
           url=url, email=email, name=name, password_raw=password,
           websiteURL=website, areasOfExpertise=areas, currentProfession=profession, bio=bio, verified=False)
          
-        if not user_data[0]: #user_data is a tuple
-            if 'name' in user_data[1]:
+        if not results: #user_data is a tuple
+            if 'name' in creationData:
                 raise WhysaurusException('Unable to create user because the username %s is already in use' % name)
-            elif 'email' in user_data[1]:
+            elif 'email' in creationData:
                 raise WhysaurusException('Unable to create user because the email %s is already in use' % email)
             else:
                 raise WhysaurusException('Unable to create user for email %s because of \
                     duplicate keys %s' % (auth_id, user_data[1]))
         else:    
-            user = user_data[1]
+            user = creationData
             if email:
                 user_id = user.get_id()
                 user.auth_ids.append('%s: %s' % ('email', email))
-                user.put()
-            
-                token = WhysaurusUser.create_signup_token(user_id)
-        
-                verification_url = handler.uri_for('verification', type='v', user_id=user_id,
-                                                   signup_token=token, _full=True)
-        
-                mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
-                    to=email,
-                    subject='Whysaurus Email Verification',
-                    body="Thank you for signing up for Whysaurus. \n\
-                        Please verify your email address by navigating to this link: \
-                        %s\n\nAaron Lifshin \nCTO" % verification_url, 
-                    html="Thank you for signing up for Whysaurus. <br>\
-                        Please verify your email address by clicking on \
-                        <a href=\"%s\">this link</a>.<br><br>Aaron Lifshin <br> \
-                        CTO" % verification_url,                
-                    reply_to="aaron@whysaurus.com"
-                )            
-                logging.info('Created a user. Email: %s. Verification URL was: %s' % (email, verification_url))
+                user.put()            
+                WhysaurusUser.send_verification_email(handler, user_id, email, "signing up for Whysaurus")
+                
             else:
                 logging.info('Created a username only user. Name: %s.' % name)
             return user # SUCCESS       
+
+
+    @staticmethod
+    def send_verification_email(handler, user_id, email, reason):
+        token = WhysaurusUser.create_signup_token(user_id)
+
+        verification_url = handler.uri_for('verification', type='v', user_id=user_id,
+                                           signup_token=token, _full=True)
+
+        mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
+            to=email,
+            subject='Whysaurus Email Verification',
+            body="Thank you for %s. \n\
+                Please verify your email address by navigating to this link: \
+                %s\n\nAaron Lifshin \nCTO" % (reason, verification_url), 
+            html="Thank you for %s. <br>\
+                Please verify your email address by clicking on \
+                <a href=\"%s\">this link</a>.<br><br>Aaron Lifshin <br> \
+                CTO" % (reason, verification_url),                
+            reply_to="aaron@whysaurus.com"
+        )            
+        logging.info('Sending verification email for %s. Email: %s. Verification URL was: %s' % \
+            (reason, email, verification_url))
 
     @classmethod
     def get_by_auth_token(cls, user_id, token, subject='auth'):
@@ -206,7 +216,14 @@ class WhysaurusUser(auth_models.User):
         qry = cls.gql("WHERE name= :1", name)
         return qry.get()        
 
-    @property
+    @webapp2.cached_property
+    def notificationFrequencyText(self):
+        if self.notificationFrequency:
+            return self.notificationFrequency
+        else:
+            return "Never"
+        
+    @webapp2.cached_property
     def emailUser(self):
         auth_ids = self.auth_ids
         emailUser = False
@@ -485,12 +502,32 @@ class WhysaurusUser(auth_models.User):
                 editedPoints = editedPoints + [pointRoot.getCurrent()]
         return editedPoints
     
-    def update(self, newWebsiteURL, newUserAreas, newUserProfession, newUserBio):
+    def update(self, handler, newWebsiteURL, newUserAreas, newUserProfession, newUserBio, newEmail, newNotificationFrequency):
         # self.name = newName if newName.strip() != "" else None
         self.websiteURL =  newWebsiteURL if newWebsiteURL.strip() != "" else None
         self.areasOfExpertise = newUserAreas if newUserAreas.strip() != "" else None
         self.currentProfession = newUserProfession if newUserProfession.strip() != "" else None
         self.bio = newUserBio if newUserBio.strip() != "" else None
+        self.notificationFrequency = newNotificationFrequency if newNotificationFrequency.strip() != "" else None
+        if newEmail != self.email:
+            new_auth_id = '%s: %s' % ('email', newEmail)            
+            # Make sure that email is unique
+            success = Unique.create(new_auth_id)                                
+            if success:    
+                if (self.emailUser):
+                    # Replace the email in the auth ID array
+                    new_auth_ids = [x for x in self.auth_ids if not 'email' in x]
+                    new_auth_ids.append(new_auth_id)
+                    self.auth_ids = new_auth_ids
+                # send a validation email 
+                WhysaurusUser.send_verification_email(
+                    handler, 
+                    self.get_id(), 
+                    newEmail, 
+                    "updating your email address")
+                self.email = newEmail if newEmail.strip() != "" else None                
+            else:
+                raise WhysaurusException("The email address %s already exists" % newEmail)                       
         self.put()
         
     @staticmethod

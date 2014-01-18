@@ -972,7 +972,6 @@ function markNotificationsRead() {
         		if (obj.result == true) {
                     $('#notificationCount').text(0);
                     $('#notificationCount').hide();
-                    $(".notificationMenuItem").addClass(".notificationCleared");
                 } else {
                     console.log('CleanNotifications call returned error: ' + obj.error);        	    
                 }            
@@ -987,10 +986,11 @@ function markNotificationsRead() {
 
 
 function activateNotificationMenuItems() {
-    $('.notificationMenuItem').off(".ys").on("click.ys", function() {
+    $('.notificationMenuItem').off(".ys").on("click.ys", function(event) {
         if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             window.location.href=$(this).data('refpoint');        
         } else {
+            $(this).addClass("notificationCleared");            
             loadPoint($(this).data('pointurl'), true);
         }
     });

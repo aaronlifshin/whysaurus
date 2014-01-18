@@ -240,7 +240,6 @@ class Point(ndb.Model):
         q = PointRoot.query(PointRoot.url == url)
         pointRoot = yield q.get_async()
         if pointRoot:
-            logging.info('HERE')
             point = yield getCurrent_async(pointRoot)            
             raise ndb.Return(point, pointRoot)            
         else:
@@ -801,7 +800,7 @@ class Point(ndb.Model):
             
             Follow.createFollow(user.key, theRoot.key, "edited")
             # 
-            Point.addNotificationTask(theRoot.key, user.key, 6 if linkType == "supporting" else 7)
+            Point.addNotificationTask(theRoot.key, user.key, 7 if linkType == "supporting" else 6)
             
             return newPoint
         else:

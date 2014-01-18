@@ -36,7 +36,7 @@ class RelevanceVote(ndb.Model):
             myVotes = [v for v in rVotes if v.key.parent() == user.key] 
             if len(myVotes) > 1:
                 raise WhysaurusException('Multiple relevance votes recorded for one user')
-            else:
+            elif len(myVotes) == 1:                
                 myVote = myVotes[0]
             total = sum(vote.value for vote in rVotes)
             voteCount = len(rVotes)

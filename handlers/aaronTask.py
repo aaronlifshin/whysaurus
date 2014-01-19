@@ -82,6 +82,7 @@ class AaronTask(AuthHandler):
             pointRoot.comments = []
             pointRoot.put()
             logging.info('Archived %d comments in %s' % (pointRoot.numArchivedComments, pointRoot.url))
+
                   
     """
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

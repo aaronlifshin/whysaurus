@@ -1857,11 +1857,13 @@ a[name="profileEdit"] {
 	padding-top: 1px;
 	padding-bottom: 30px;
 }
-#comments { display: block; }
-#comments {
+
+.commentArea {
+    display: block;
 	margin: 0 0 0 0;
 }
-#comments .cmmnt { 
+
+.commentArea .cmmnt { 
     list-style:none;    
 	// background-color: #f8f8f8;
     border-bottom:1px solid #d7d7d7;    
@@ -1869,14 +1871,14 @@ a[name="profileEdit"] {
     position: relative;
 }
 
-#comments .cmmnt .userlink, #comments .cmmnt .pubdate {
+.commentArea .cmmnt .userlink, .commentArea .cmmnt .pubdate {
 	font-size: @fontSizeMini; 
     line-height: @lineHeightDefault;
     //position: relative;
     //bottom: 4px;
 }
 
-#comments .cmmnt .avatar img { 
+.commentArea .cmmnt .avatar img { 
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px; 
   border-radius: 3px; 
@@ -1890,8 +1892,11 @@ a[name="profileEdit"] {
   transition: all 0.4s linear;
 }
 
-#comments .cmmnt .avatar a:hover img { opacity: 0.77; }
-#comments .cmmnt .cmmnt-content { 
+.commentArea .cmmnt .avatar a:hover img { 
+    opacity: 0.77; 
+}
+
+.commentArea .cmmnt .cmmnt-content { 
     padding-left: 6px;
 	padding-top: 4px; 
 	padding-right: 6px; 
@@ -1908,6 +1913,19 @@ a[name="commentReply"] {
 	right: 5px;
     position: absolute;
    	font-size: @fontSizeSmaller; 
+}
+
+a[name="commentArchive"] {
+	cursor: pointer; 
+	float:right;
+	bottom: 2px;
+	right: 45px;
+    position: absolute;
+   	font-size: @fontSizeSmaller; 
+}
+
+#commentViewArchived {
+    cursor: pointer;    
 }
    
 .cmmnt.level1 {

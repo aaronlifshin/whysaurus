@@ -11,7 +11,7 @@
     </div>
   
     <div class="row-fluid">              
-      <div id="addComment" class="hide">
+        <div id="addComment" class="hide">
               <textarea id="commentText" width="100%"
                class="mceEditor textEdit" rows="3"                       
                placeholder="Type your comment here..."></textarea>
@@ -19,20 +19,31 @@
             <div class="">
               <button id='saveCommentSubmit' class="pull-right">Save Comment</button>
             </div>
-       </div>
-     </div>
-       <div id="comments">     
-       {% for comment in comments %}
-          <div class="row-fluid cmmnt level{{comment.level}}">
-            <div class="cmmnt-content span11">
-              {{comment.text|safe}}
-              <a href="/user/{{comment.userUrl}}" class="userlink">{{comment.userName}}</a> 
-                - <span class="pubdate">{{comment.PSTdateText}}</span>
+        </div>
+    </div>
+    <div id="comments" class="commentArea">     
+        {% for comment in comments %}
+            <div class="row-fluid cmmnt level{{comment.level}}">
+                <div class="cmmnt-content span11">
+                  {{comment.text|safe}}
+                  <a href="/user/{{comment.userUrl}}" class="userlink">{{comment.userName}}</a> 
+                    - <span class="pubdate">{{comment.PSTdateText}}</span>
+                </div>
+                <div class="span1">
+                    <a name="commentReply" data-parentkey="{{comment.key.urlsafe}}">Reply</a>
+                    {% if user and user.admin and comment.level == 0 %}
+                        <a name="commentArchive" data-commentkey="{{comment.key.urlsafe}}">Archive</a>
+                    {% endif %}
+                </div>
             </div>
-            <div class="span1">
-                <a name="commentReply" data-parentkey="{{comment.key.urlsafe}}">Reply</a>
-            </div>
-          </div>
-       {% endfor %}
-       </div>   
-</div>       
+        {% endfor %}
+    </div>   
+        {% if pointRoot.numArchivedComments > 0 %}
+        <div id="archivedComments" class="commentArea">   
+            This point has {{pointRoot.numArchivedComments}} archived comment{%if pointRoot.numArchivedComments > 1%}s{% endif%}.                     
+            <a id="commentViewArchived" alt="Show Archived Comments">Show</a>
+        </div>
+        {% endif %}
+</div>      
+
+

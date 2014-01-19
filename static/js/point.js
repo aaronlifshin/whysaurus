@@ -712,6 +712,62 @@ function saveComment(event) {
     
 }
 
+function archiveComments(event) {
+    var commentKey = $(event.target).data('commentkey');
+    var pointKey = $('#rootUrlSafe').val();
+    var elementForMessage = event.target.parentElement.parentElement;
+    startSpinnerOnButton(event.target);    
+    $.ajaxSetup({
+		url: "/archiveComments",
+		global: false,
+		type: "POST",
+		data: {
+		    'rootKey': pointKey,
+        	'parentKey': commentKey
+		},
+		success: function(obj){
+			if (obj.result == true) {                
+                showAlertTypeAfter('This comment thread (' + obj.numArchived + ' comments) has been archived.', elementForMessage, "alert-success")
+                stopSpinnerOnButton(event.target, saveComment);                
+			} else {
+			    showAlertAfter(obj.error ? obj.error: "There was an error", elementForMessage);
+                stopSpinnerOnButton(event.target, saveComment);
+			}
+		},
+		error: function(xhr, textStatus, error){
+            showAlertAfter('The server returned an error. You may try again.',elementForMessage);
+            stopSpinnerOnButton(event.target, saveComment);
+        }
+	});
+	$.ajax();    
+}
+
+function showArchivedComments(event) {
+    var pointKey = $('#rootUrlSafe').val();
+    startSpinnerOnButton(event.target);    
+    $.ajaxSetup({
+		url: "/getArchivedComments",
+		global: false,
+		type: "POST",
+		data: {
+		    'rootKey': pointKey,
+		},
+		success: function(obj){
+			if (obj.result == true) {                
+                $('#archivedComments').html(obj.html);
+			} else {
+			    showAlertAfter(obj.error ? obj.error: "There was an error", event.target);
+			}
+            stopSpinnerOnButton(event.target, event.target);
+		},
+		error: function(xhr, textStatus, error){
+            showAlertAfter('The server returned an error. You may try again.',event.target);
+            stopSpinnerOnButton(event.target, event.target);
+        }
+	});
+	$.ajax();    
+}
+
 function changeEditorsPick() {
     pick = $('#editorsPick').get(0).checked;
     pickSort = $("#editorsPickSort").val();
@@ -832,6 +888,9 @@ function activatePointArea() {
 	    $('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);	
         
         $('[name=commentReply]').click(showReplyComment);
+        $('[name=commentArchive]').click(archiveComments);
+        $('#commentViewArchived').click(showArchivedComments);
+        
 
         makeRelevanceControlsClickable();
 

@@ -1,7 +1,6 @@
 import logging
 
 from google.appengine.ext import ndb
-from models.point import PointRoot, Point
 from whysaurusexception import WhysaurusException 
 from models.timezones import PST
 from models.follow import Follow
@@ -29,8 +28,7 @@ class Comment(ndb.Model):
 
 
     @classmethod
-    def create(cls, text, user, pointRootUrlSafe, parent = None):
-        pointRoot = PointRoot.getByUrlsafe(pointRootUrlSafe)
+    def create(cls, text, user, pointRoot, parent = None):
         parentCommentKey = None
         parentComment = None
         if parent:
@@ -42,12 +40,12 @@ class Comment(ndb.Model):
                 raise WhysaurusException("9 levels of replies are maximum for now.")
 
         if pointRoot:            
-            comment = Comment(text=text, userName = user.name, userUrl=user.url, 
-                              avatar_url = user.avatar_url if hasattr(user, 'avatar_url') else '/static/img/icon_triceratops_black_47px.png', parentComment = parentCommentKey, 
+            comment = Comment(parent=parentCommentKey, text=text, userName = user.name, userUrl=user.url, 
+                              avatar_url = user.avatar_url if hasattr(user, 'avatar_url') else '/static/img/icon_triceratops_black_47px.png', 
+                              parentComment = parentCommentKey,                               
                               level = parentComment.level + 1 if parentComment else 0)            
             newComment = comment.transactionalCreate(pointRoot, comment)
             Follow.createFollow(user.key, pointRoot.key, "commented on")
-            Point.addNotificationTask(pointRoot.key, user.key, 3, text)
             return newComment        
         else:
             return None

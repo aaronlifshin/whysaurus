@@ -74,8 +74,15 @@ class AaronTask(AuthHandler):
                     newLink.voteCount = 0
                     structuredLinkCollection = structuredLinkCollection + [newLink]
                     point.setStructuredLinkCollection(linkType, structuredLinkCollection)
-            point.put()                                           
-      
+            point.put()               
+            
+    def pointRootArchiveComments(self, pointRoot):
+        if pointRoot.comments:
+            pointRoot.archivedComments = pointRoot.comments
+            pointRoot.comments = []
+            pointRoot.put()
+            logging.info('Archived %d comments in %s' % (pointRoot.numArchivedComments, pointRoot.url))
+                  
     """
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     GENERIC FUNCTION FOR DOING SOMETHING TO EVERY POINT ROOT
@@ -118,6 +125,21 @@ class AaronTask(AuthHandler):
             f=self.pointRootLinkChange, 
             taskURL='/job/MakeLinks',
             firstURL=firstURL if firstURL else None)
+            
+
+    """
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    ARCHIVE ALL COMMENTS
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+    """
+    def ArchiveAllComments(self):
+        firstURL = self.request.get('nexturl') 
+               
+        self.pointRootsMap(
+            f=self.pointRootArchiveComments, 
+            taskURL='/job/ArchiveAllComments',
+            firstURL=firstURL if firstURL else None)
+            
             
          
     def MakeLinksAllAreas(self):

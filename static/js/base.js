@@ -9,6 +9,10 @@ function showAlertAfter(alertText, elementSelector) {
         $(elementSelector).after($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertText + '</div>'));
 }
 
+function showAlertTypeAfter(alertText, elementSelector, alertType) {
+        $(elementSelector).after($('<div class="alert ' + alertType + '"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertText + '</div>'));
+}
+
 function showErrorAlert(alertHTML) {
     $('#mainContainer').prepend($('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
 }

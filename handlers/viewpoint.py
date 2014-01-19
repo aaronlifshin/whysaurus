@@ -77,7 +77,7 @@ class ViewPoint(AuthHandler):
                 ribbonValue = vote.ribbon if vote else False
                 
             # viewCountFuture.get_result()
-                        
+            logging.info("++++++ " + str(pointRoot.numArchivedComments))
             templateValues = {
                 'point': point,
                 'pointRoot': pointRoot,
@@ -127,11 +127,12 @@ class ViewPoint(AuthHandler):
             if newURL:
                 point, pointRoot = Point.getCurrentByUrl(url)   
         if pointRoot:
-            tv = {
+            template_values = {
+                'user': self.current_user,                
                 'pointRoot': pointRoot,
-                'comments':pointRoot.getComments(),
+                'comments':pointRoot.getComments()
             }        
-            html = self.template_render('pointComments.html', tv)
+            html = self.template_render('pointComments.html', template_values)
             resultJSON = json.dumps({
                 'result': True,
                 'html': html

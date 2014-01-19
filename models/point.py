@@ -38,6 +38,8 @@ from source import Source
 from timezones import PST
 from follow import Follow
 from uservote import RelevanceVote
+from comment import Comment 
+
 
 def convertListToKeys(urlsafeList):
     if urlsafeList:
@@ -930,6 +932,7 @@ class PointRoot(ndb.Model):
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
     comments = ndb.KeyProperty(repeated=True, indexed=False)
+    archivedComments = ndb.KeyProperty(repeated=True, indexed=False)    
     supportedCount = ndb.ComputedProperty(lambda e: len(e.pointsSupportedByMe))
     
     
@@ -940,7 +943,11 @@ class PointRoot(ndb.Model):
 
     @property
     def numComments(self):
-        return len(comments) if comments else 0
+        return len(self.comments) if self.comments else 0
+        
+    @property
+    def numArchivedComments(self):
+        return len(self.archivedComments) if self.archivedComments else 0
         
     def getCurrent(self):
         # if self.current:
@@ -1019,6 +1026,9 @@ class PointRoot(ndb.Model):
     def getComments(self):
         return ndb.get_multi(self.comments)
 
+    def getArchivedComments(self):
+        return ndb.get_multi(self.archivedComments)
+        
     def removeLinkedPoint(self, linkPointRootKey, linkType, archive=True):
         if linkType == 'supporting':
             try:
@@ -1188,6 +1198,43 @@ class PointRoot(ndb.Model):
         else:
             self.comments = [comment.key]
         self.put()
+        
+    # shift this comment and all its childern into the archived array
+    # return the number of comments archived
+    def archiveComments(self, commentKeyUrlsafe):
+        if self.comments:
+            commentsArchived = 0
+            mainCommentKey = ndb.Key(urlsafe=commentKeyUrlsafe)
+            if self._archiveCommentKey(mainCommentKey):
+                commentsArchived = 1
+            else:
+                raise WhysaurusException('Comment requested for archiving was not found in this point')
+                
+            # Archive his whole thread if it exists
+            qry = Comment.query(ancestor=mainCommentKey)
+            for key in qry.iter(keys_only=True):  
+                if self._archiveCommentKey(key):              
+                    commentsArchived = commentsArchived + 1
+
+            if commentsArchived > 0:
+                self.put()
+                
+            return commentsArchived
+            
+        else:
+            raise WhysaurusException('No comments found in this point. Archive request should not have been sent')
+        
+    # shift one key between arrays. True if shifted
+    def _archiveCommentKey(self, commentKey):       
+        if commentKey in self.comments:
+            idx = self.comments.index(commentKey)
+            del self.comments[idx]
+            if not self.archivedComments:
+                self.archivedComments = []
+            self.archivedComments.append(commentKey)
+            return True
+        else:
+            return False            
         
     def updateEditorsPick(self, editorsPick, editorsPickSort):
         self.editorsPick = editorsPick

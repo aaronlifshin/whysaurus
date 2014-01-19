@@ -40,7 +40,7 @@
     </div>   
         {% if pointRoot.numArchivedComments > 0 %}
         <div id="archivedComments" class="commentArea">   
-            This point has {{pointRoot.numArchivedComments}} archived comment{%if pointRoot.numArchivedComments > 1%}s{% endif%}.                     
+            This point has <span id="numArchivedComments">{{pointRoot.numArchivedComments}}</span> archived comment{%if pointRoot.numArchivedComments > 1%}s{% endif%}.                     
             <a id="commentViewArchived" alt="Show Archived Comments">Show</a>
         </div>
         {% endif %}

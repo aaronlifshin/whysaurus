@@ -715,7 +715,7 @@ function saveComment(event) {
 function archiveComments(event) {
     var commentKey = $(event.target).data('commentkey');
     var pointKey = $('#rootUrlSafe').val();
-    var elementForMessage = event.target.parentElement.parentElement;
+    var commentRow = event.target.parentElement.parentElement;
     startSpinnerOnButton(event.target);    
     $.ajaxSetup({
 		url: "/archiveComments",
@@ -727,15 +727,22 @@ function archiveComments(event) {
 		},
 		success: function(obj){
 			if (obj.result == true) {                
-                showAlertTypeAfter('This comment thread (' + obj.numArchived + ' comments) has been archived.', elementForMessage, "alert-success")
+                var currentElement = $(commentRow);
+                for (var i=0;i<obj.numArchived;i++)
+                { 
+                    currentElement.hide();
+                    currentElement = currentElement.next();
+                }
+                showAlertTypeAfter('This comment thread (' + obj.numArchived + ' comments) has been archived.', 
+                    commentRow, "alert-success")
                 stopSpinnerOnButton(event.target, saveComment);                
 			} else {
-			    showAlertAfter(obj.error ? obj.error: "There was an error", elementForMessage);
+			    showAlertAfter(obj.error ? obj.error: "There was an error", commentRow);
                 stopSpinnerOnButton(event.target, saveComment);
 			}
 		},
 		error: function(xhr, textStatus, error){
-            showAlertAfter('The server returned an error. You may try again.',elementForMessage);
+            showAlertAfter('The server returned an error. You may try again.',commentRow);
             stopSpinnerOnButton(event.target, saveComment);
         }
 	});

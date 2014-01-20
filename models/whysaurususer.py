@@ -44,6 +44,7 @@ class WhysaurusUser(auth_models.User):
     tokenExpires = ndb.DateTimeProperty()  
     lastLogin = ndb.DateTimeProperty()
     notificationFrequency = ndb.StringProperty(default=None)
+    lastEmailSent = ndb.DateTimeProperty()
     _notifications = None
     
     # linkedInProfileLink = ndb.StringProperty()
@@ -142,7 +143,7 @@ class WhysaurusUser(auth_models.User):
           url=url, email=email, name=name, password_raw=password,
           websiteURL=website, areasOfExpertise=areas, currentProfession=profession, bio=bio, verified=False)
          
-        if not results: #user_data is a tuple
+        if not result: #user_data is a tuple
             if 'name' in creationData:
                 raise WhysaurusException('Unable to create user because the username %s is already in use' % name)
             elif 'email' in creationData:
@@ -557,5 +558,61 @@ class WhysaurusUser(auth_models.User):
         for i in range(length):
             password += random.choice(chars)
         return password
+
+    def clearLastEmailed(self):
+        self.lastEmailSent = None
+        self.put()
+
+    @classmethod
+    def sendNotificationEmails(cls, handler):
+        # retrieve and iterate all users where the frequency is daily or weekly
+        qry = cls.query(WhysaurusUser.notificationFrequency.IN(['Daily', 'Weekly']))
+        for user in qry.iter():        
+            # how many days since your last confession .. .  I mean... email
+            lastSentTime = user.lastEmailSent if user.lastEmailSent else datetime.datetime(2000,1,1)
+            now = datetime.datetime.now() 
+            today = datetime.datetime(now.year, now.month, now.day)
+            lastDaySent = datetime.datetime(lastSentTime.year, lastSentTime.month, lastSentTime.day)            
+            timeDelta = today - lastDaySent            
+            daysDiff = timeDelta.days
+        
+            shouldEmail = False
+        
+            if user.notificationFrequency == "Daily" and daysDiff >= 1:
+                shouldEmail = True
+            elif user.notificationFrequency == "Daily" and daysDiff >= 7:
+                shouldEmail = True
+        
+            if shouldEmail:
+                logging.info('Checking for active notifications for user %s' % user.name)            
+                notifications = user.getActiveNotifications()
+                if notifications:
+                    # generate the email body from the notifications
+                    html = handler.template_render(                
+                        'notificationEmail.html', 
+                        {'user':user, 'notifications':notifications}
+                    )
+                    text = 'Hi there, %s, \n\n Whysaurus has seen activity on the following points: \n' % user.name
+                    points = [n.referencePoint.title + '\n' for n in notifications]
+                    points = list(set(points))
+                    for point in points:                    
+                        text = text + point
+                    
+                    mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
+                        to = user.email,
+                        subject= user.name + ', People are reacting to your views on Whysaurus!',
+                        body = text, 
+                        html = html,                
+                        reply_to="aaron@whysaurus.com"
+                    )
+
+                    logging.info('Sent mail to user %s' % user.name)
+                    # write the time the last notification was sent
+                    user.lastEmailSent = datetime.datetime.now()
+                    user.put()
+                                
+            else:
+                logging.info('User %s has no unread notifications or was emailed recently' % user.name)
+
 
     

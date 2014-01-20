@@ -3,6 +3,7 @@ import logging
 from google.appengine.ext import ndb
 
 from authhandler import AuthHandler
+from models.whysaurususer import WhysaurusUser 
 from models.whysaurusexception import WhysaurusException 
 from models.timezones import PST
 from models.notification import Notification
@@ -57,5 +58,18 @@ class NotificationHandler(AuthHandler):
         resultJSON = json.dumps(results)
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
+
+    # send the notification emails
+    # this one is protected by login:admin and called from the cron job
+    # so it doesn't check user inside the handler
+    def sendNotificationEmails(self):
+        WhysaurusUser.sendNotificationEmails(self)
+        self.response.out.write('') # succeed!
+        
+        
+        
+        
+        
+        
 
         

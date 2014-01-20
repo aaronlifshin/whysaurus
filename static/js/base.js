@@ -50,11 +50,18 @@ function removeDisableColorButtonPrimary(buttonID) {
 }
 
 // remove styling and remove ellipsis
-function resetSubmitButton(buttonID) {  
+function resetSubmitButton(buttonID, label) {  
    removeDisableColorButtonPrimary(buttonID);
-   $(buttonID).text("Publish to Library");
+   $(buttonID).text("Publish to Library"); 
 }
-   
+ 
+// remove styling and remove ellipsis
+function resetSubmitButtonNew(buttonID, label) {  
+   removeDisableColorButtonPrimary(buttonID);
+   //$(buttonID).text("Publish to Library");
+   $(buttonID).text(label);   
+}
+ 
 function startSpinnerOnButton(buttonID) {
    disableButtonPrimary($(buttonID));
    $(buttonID).before("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
@@ -713,8 +720,8 @@ function createNewUser() {
     if (validateSignupDialog()) {
         //startSpinnerOnButton('#submit_signupDialog');
         disableButtonPrimary('#submit_signupDialog');
-        //$('#submit_signupDialog').text("Create User...");
-        $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");        
+        $('#submit_signupDialog').text("Create User...");
+        $('#submit_signupDialog').after("<img id=\"spinnerImage\" class=\"spinnerCreateUserButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");        
         $.ajaxSetup({
     		url: "/signup",
     		global: false,
@@ -731,7 +738,7 @@ function createNewUser() {
             success: function(obj){
     			if (obj.result == true) { 
     			    stopSpinnerOnButton('#submit_signupDialog', createNewUser);
-                    removeDisableColorButtonPrimary('#submit_signupDialog');  
+                    resetSubmitButtonNew('#submit_signupDialog', 'Create User');
     			    clearSignupDialog();            
                     $("#signupDialog").modal('hide');                                           
                     showSuccessAlert('User created successfully. Please check your email for a validation message.');
@@ -742,7 +749,7 @@ function createNewUser() {
     		    		dialogAlert('#signupDialog',"There was an error");
     		    	}
                     stopSpinnerOnButton('#submit_signupDialog', createNewUser);
-                    removeDisableColorButtonPrimary('#submit_signupDialog');                    
+                    resetSubmitButtonNew('#submit_signupDialog', 'Create User');                    
     			}
     		},
     		error: function(xhr, textStatus, error){

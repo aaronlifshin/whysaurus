@@ -547,9 +547,26 @@ a:visited {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .valueProp {
 	font-weight:bold;    
-	font-size: @fontSizeLargeCond;     
+	font-size: @fontSizeBitLarge;     
 	font-family:@sansCondFontFamily;
-	line-height: @lineHeightDefault;    
+	line-height: @lineHeightBig;    
+}
+
+.explanationColumn {
+    position:relative;
+    top:2px;
+}
+
+.explanationText {
+	color: black;
+	font-size: @fontSizeMedium;
+	line-height: @lineHeightBig;	
+	margin-bottom: 9px;	
+    margin-left:0;
+}
+
+.explanationImage {
+    margin-bottom:24px;
 }
 
 .columnHeading {
@@ -1361,6 +1378,10 @@ button#counter_addPointWhenNonZero {
 .pushDown20px {
 	margin-bottom:20px;
 }
+.pushDown18px {
+	margin-bottom:18px;
+}
+
 
  /* +++++++++++++++++++++++++++++++++++++++++++++++
    END Select Supporting Point Page stuff
@@ -1445,16 +1466,62 @@ button#counter_addPointWhenNonZero {
 }
 
 #cancel_pointDialog {
-	width:44px;
+    //float:right;
+    //margin-right:16px;
 }
+
+#submit_pointDialog {
+   //float:right;
+   //margin-right: 8px;
+}
+
+.twoButtonsCancel {
+	//width:44px;
+    float:right;
+    margin-right:16px;
+}
+
+.twoButtonsSubmit {
+   float:right;
+   margin-right: 8px;
+}
+
+
+
 
 #buttonBar {
 	margin-top: 20px;
 }
 
-#submit_pointDialog {
-   margin-left: 12px; 
+// TO DO: make the spinner position class uniform
+//  we shouldn't need to have three different classes for it 
+.spinnerAddImagePosition {
+   max-width:16px;
+   max-height:16px;
+   padding-left:30px;
+   margin-top:41px;
 }
+
+.spinnerPointSubmitButtonPosition {
+   //margin-top:7px;
+    position: relative;
+    left: 23px;
+    top: 4px;
+   //float:right;
+}
+
+.spinnerCreateUserButtonPosition {
+    float: right;
+    position: relative;
+    top: 8px;
+    right: 8px;
+}
+
+.primaryButtonDisabled {
+    //background-color: @btnPrimaryBackgroundDisabled;
+    color:@btnPrimaryTypeDisabled;
+}
+
 
 #sourcesAdd {
 	margin-left: 2px;
@@ -1542,7 +1609,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .fieldEdit {
   float:left;
   padding: 2px;
-  width:320px;
+  width:315px;
 }
 
 .dlgLabelName{

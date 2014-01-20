@@ -37,16 +37,39 @@ function isNormalInteger(str) {
    var n = ~~Number(str);
    return String(n) === str && n >= 0;
 }
-   
-function startSpinnerOnButton(buttonID) {
+  
+function disableButtonPrimary(buttonID) {
    $(buttonID).off('click');
-   $(buttonID).hide();
-   $(buttonID).after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+   $(buttonID).addClass('primaryButtonDisabled');
+}
+
+// stopSpinner() is re-enabling the button's functionality, 
+//  so we only need a function to remove the disabled styling
+function removeDisableColorButtonPrimary(buttonID) {  
+   $(buttonID).removeClass('primaryButtonDisabled');
+}
+
+// remove styling and remove ellipsis
+function resetSubmitButton(buttonID, label) {  
+   removeDisableColorButtonPrimary(buttonID);
+   $(buttonID).text("Publish to Library"); 
+}
+ 
+// remove styling and remove ellipsis
+function resetSubmitButtonNew(buttonID, label) {  
+   removeDisableColorButtonPrimary(buttonID);
+   //$(buttonID).text("Publish to Library");
+   $(buttonID).text(label);   
+}
+ 
+function startSpinnerOnButton(buttonID) {
+   disableButtonPrimary($(buttonID));
+   $(buttonID).before("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 }
 
 function stopSpinnerOnButton(buttonID, clickHandler) {
    $("#spinnerImage").remove();
-   $(buttonID).off(".ys").on("click.ys", clickHandler );        
+   $(buttonID).off(".ys").on("click.ys", clickHandler ); 
    $(buttonID).show();
 }
    
@@ -161,9 +184,9 @@ function newPoint() {
   
   var ed = tinyMCE.get('editor_pointDialog');
   var text = tinyMCE.activeEditor.getBody().textContent;
-  $("#submit_pointDialog").off('click');
-  $("#submit_pointDialog").hide();
-  $("#submit_pointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+  disableButtonPrimary('#submit_pointDialog');
+  $('#submit_pointDialog').text("Publish to Library...");
+  $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");
   var u = getNewSourcesURLs();
   var n = getNewSourcesNames();
   $.ajaxSetup({
@@ -193,7 +216,7 @@ function newPoint() {
     error: function(xhr, textStatus, error){
         editDialogAlert('The server returned an error: ' + xhr + '. You may try again.');
     	stopSpinner();
-    }
+    }    
   });
   $.ajax();
 }
@@ -579,7 +602,8 @@ function searchDialogSearch() {
 		},
 		success: function(obj) {
 		    displaySearchResults(obj, $("#selectLinkedPointSearch").data("linkType"));
-		    stopSpinnerOnButton('#submitLinkedPointSearch', searchDialogSearch);            
+		    stopSpinnerOnButton('#submitLinkedPointSearch', searchDialogSearch);
+            removeDisableColorButtonPrimary('#submitLinkedPointSearch');             
 		},
 	});
 	$.ajax();
@@ -689,9 +713,15 @@ function validateSignupDialog() {
     return valid;
 }
 
+
+
+
 function createNewUser() {
     if (validateSignupDialog()) {
-        startSpinnerOnButton('#submit_signupDialog');
+        //startSpinnerOnButton('#submit_signupDialog');
+        disableButtonPrimary('#submit_signupDialog');
+        $('#submit_signupDialog').text("Create User...");
+        $('#submit_signupDialog').after("<img id=\"spinnerImage\" class=\"spinnerCreateUserButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");        
         $.ajaxSetup({
     		url: "/signup",
     		global: false,
@@ -708,6 +738,7 @@ function createNewUser() {
             success: function(obj){
     			if (obj.result == true) { 
     			    stopSpinnerOnButton('#submit_signupDialog', createNewUser);
+                    resetSubmitButtonNew('#submit_signupDialog', 'Create User');
     			    clearSignupDialog();            
                     $("#signupDialog").modal('hide');                                           
                     showSuccessAlert('User created successfully. Please check your email for a validation message.');
@@ -717,13 +748,15 @@ function createNewUser() {
     		    	} else {
     		    		dialogAlert('#signupDialog',"There was an error");
     		    	}
-                    stopSpinnerOnButton('#submit_signupDialog', createNewUser);            
+                    stopSpinnerOnButton('#submit_signupDialog', createNewUser);
+                    resetSubmitButtonNew('#submit_signupDialog', 'Create User');                    
     			}
     		},
     		error: function(xhr, textStatus, error){
                 dialogAlert('#signupDialog','The server returned an error. You may try again. ' + error);
                 stopSpinnerOnButton('#submit_signupDialog', createNewUser);            
-            }
+                removeDisableColorButtonPrimary('#submit_signupDialog');  
+                }
     	});
     	$.ajax();
         
@@ -758,6 +791,7 @@ function forgotPassword() {
                 success: function(obj){
         			if (obj.result == true) { 
         			    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
+                        removeDisableColorButtonPrimary('#forgot_emailLoginDialog'); 
                         $("#emailLoginDialog").modal('hide');  
                         if (obj.message) {
                             showAlert(obj.message);
@@ -766,12 +800,14 @@ function forgotPassword() {
                         }                
         			} else {
                         dialogAlert('#emailLoginDialog', obj.error ? obj.error : "There was an error");
-                        stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
+                        stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
+                        removeDisableColorButtonPrimary('#forgot_emailLoginDialog');                        
         			}
         		},
         		error: function(xhr, textStatus, error){
                     dialogAlert('#emailLoginDialog','The server returned an error. You may try again. ' + error);
-                    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);            
+                    stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
+                    removeDisableColorButtonPrimary('#forgot_emailLoginDialog');                     
                 }
         	});
             $.ajax();
@@ -1046,8 +1082,9 @@ function activateHeaderAndDialogs() {
                 function(fpfiles){
                     var file = fpfiles[0];
                     
-                    $('.filepicker-placeholder').attr('src', '/static/img/icon_triceratops_black_47px.png').addClass('spin');
-                    startSpinnerOnButton('#submit_pointDialog');
+                    disableButtonPrimary('#submit_pointDialog');
+                    $('.filepicker-placeholder').addClass('spinnerAddImagePosition');
+                    $('.filepicker-placeholder').attr('src', '/static/img/ajax-loader.gif');
                     filepicker.convert(file, 
                         {width: 112, height: 112, fit: 'clip'}, 
                         {path: 'SummaryBig-' + file.key});
@@ -1060,6 +1097,8 @@ function activateHeaderAndDialogs() {
                                 .attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key))
                                 .removeClass('spin');
                             stopSpinner();
+                            $('.filepicker-placeholder').removeClass('spinnerAddImagePosition');
+                            resetSubmitButton('#submit_pointDialog');
                     });
 
                     $(self).prev('[name=imageURL]').val(file.key);

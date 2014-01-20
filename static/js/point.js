@@ -73,9 +73,9 @@ function callPointEdit(){
     
 	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;
-    $("#submit_pointDialog").off('click');
-    $("#submit_pointDialog").hide();
-    $("#submit_pointDialog").after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+    disableButtonPrimary('#submit_pointDialog');
+    $('#submit_pointDialog').text("Publish to Library...");
+    $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");
 	$.ajaxSetup({
 	   url: "/editPoint",
 	   global: false,
@@ -109,15 +109,16 @@ function callPointEdit(){
 				                
             	stopSpinner();
 				$("#pointDialog").modal('hide');
+                resetSubmitButton('#submit_pointDialog');
 				$('#pointArea').data('pointurl', obj.pointURL);
 			},
      		error: function(xhr, textStatus, error){
                 alert('The server returned an error. You may try again.');
             	stopSpinner();
+                resetSubmitButton('#submit_pointDialog');
             }
 	 });
 	$.ajax();
-
 }
 
 function pointUnlink(elem, linkType) {
@@ -462,11 +463,12 @@ function addPoint(linkType){
     
 	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;
-    $('#submit_pointDialog').off('click');
-    $('#submit_pointDialog').hide();
-    $('#submit_pointDialog').after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
-    
-    
+    //$('#submit_pointDialog').off('click');
+    //$('#submit_pointDialog').hide();
+    //$('#submit_pointDialog').after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+    disableButtonPrimary('#submit_pointDialog');
+    $('#submit_pointDialog').text("Publish to Library...");
+    $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");      
 	$.ajaxSetup({
 		url: "/addSupportingPoint",
 		global: false,
@@ -487,8 +489,9 @@ function addPoint(linkType){
 			if (obj.result == true) {
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
   			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  				
-                stopSpinner();
+                stopSpinner();                
     		    $("#pointDialog").modal('hide');
+                resetSubmitButton('#submit_pointDialog');
 			} else {
 				if (obj.error) {
 		    		editDialogAlert(obj.error);
@@ -496,11 +499,13 @@ function addPoint(linkType){
 		    		editDialogAlert("There was an error");
 		    	}
                 stopSpinner();
+                resetSubmitButton('#submit_pointDialog');
 			}
 		},
 		error: function(xhr, textStatus, error){
             editDialogAlert('The server returned an error: ' + str(error) + ' You may try again.');
             stopSpinner();
+            resetSubmitButton('#submit_pointDialog');
         }
 	});
 	$.ajax();

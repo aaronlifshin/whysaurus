@@ -1067,7 +1067,7 @@ function showPointDialog(dialogAction, dialogTitle) {
 }
 
 var channelErrors = 0; 
-var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'COMPUTER', 'URL', 'FACEBOOK'];
+var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'URL', 'COMPUTER', 'FACEBOOK'];
 
 function activateHeaderAndDialogs() {
     filepicker.setKey("AinmHvEQdOt6M2iFVrYowz");
@@ -1083,8 +1083,12 @@ function activateHeaderAndDialogs() {
                     var file = fpfiles[0];
                     
                     disableButtonPrimary('#submit_pointDialog');
-                    $('.filepicker-placeholder').addClass('spinnerAddImagePosition');
-                    $('.filepicker-placeholder').attr('src', '/static/img/ajax-loader.gif');
+                    // need to use a spinner baked into a larger gif bc when we use the regular spinner file
+                    //  it jumps up in scale for an instant while switching over to the image thumbnail                    
+                    $('.filepicker-placeholder').attr('src', '/static/img/ajax-loader_88x99.gif');
+                    // this approach created the blinky-scale thing:
+                    //$('.filepicker-placeholder').attr('src', '/static/img/ajax-loader.gif');
+                    //$('.filepicker-placeholder').addClass('spinnerAddImagePosition');
                     filepicker.convert(file, 
                         {width: 112, height: 112, fit: 'clip'}, 
                         {path: 'SummaryBig-' + file.key});
@@ -1093,16 +1097,15 @@ function activateHeaderAndDialogs() {
                         {width: 54, height: 54, fit: 'clip'}, 
                         {path: 'SummaryMedium-' + file.key}, 
                         function(medium){
-                            $('.filepicker-placeholder')
-                                .attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key))
-                                .removeClass('spin');
-                            stopSpinner();
-                            $('.filepicker-placeholder').removeClass('spinnerAddImagePosition');
+                            $('.filepicker-placeholder').attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key));                                                               
+                            stopSpinner();                            
                             resetSubmitButton('#submit_pointDialog');
-                    });
+                            //$('.filepicker-placeholder').removeClass('spinnerAddImagePosition');
+                        });
 
                     $(self).prev('[name=imageURL]').val(file.key);
                 }
+                
             );
             return false;
         });

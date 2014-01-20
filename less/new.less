@@ -1841,14 +1841,35 @@ fieldset { padding:0; border:0; margin-top:25px;}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
     PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.profileInfoHeading {
+	font-weight:bold;
+	font-size: @fontSizeMediumCond; 
+	color:@grayTextExtraLight;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    margin-top: 18px;	
+}   
+   
+.profileBodyText {
+    font-family: @sansFontFamily;
+    font-size: @fontSizeMedium;
+    font-weight:normal;
+    line-height: @lineHeightDefault;
+    
+}   
+   
 #display_userName {
     width: 80%; // TEMPORARY: remove this once we have full size profile pics
 }
  
+#display_userEmail {
+    margin-bottom:18px;
+} 
+ 
 .profileEditButton {
-    font-family: ff-meta-web-pro,sans-serif;
-    font-size: 14px;
-    font-weight:normal;
 	background-image: url('/static/img/pencil_icon.png');
 	background-color: transparent;
 	background-repeat: no-repeat;
@@ -1867,7 +1888,6 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
 .profilePic {
 	width:80%; // TEMPORARY: remove this once we have full size profile pics
-    margin-bottom:8px;
 }
 
 .userInfoAreaTempWidth {
@@ -1953,8 +1973,6 @@ a[name="profileEdit"] {
     margin-top: 12px;
     padding-left: 6px;
 }   
-
-
 
 .commentArea .cmmnt .avatar img { 
   -webkit-border-radius: 3px; 

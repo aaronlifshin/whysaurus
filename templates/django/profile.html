@@ -10,7 +10,7 @@
               {{profileUser.name}}
 
               {% if viewingOwnPage %}                
-                <a name=profileEdit class="pull-right profileEditButton">EDIT</a>                  
+                <a name=profileEdit class="pull-right profileBodyText profileEditButton">EDIT</a>                  
               {% endif %} 
           </div>   
 
@@ -20,25 +20,30 @@
         {% else %}
             <img class="profilePic" src='/static/img/avatar_profilePage_default.png'/>
         {% endif %} 
-        <div class="profileStatsArea userInfoAreaTempWidth">        
+        <div class="profileStatsArea profileBodyText userInfoAreaTempWidth">        
+            <p class="profileInfoHeading">Stats</p>
             <div>Created: {{profileUser.createdCount }}</div>
             <div>Edited: {{profileUser.editedCount }}</div>
         </div>
         {% if viewingOwnPage %}       
-            <a name=profileEdit class="pull-right profileEditButton">EDIT</a>                  
-            <div id="display_userEmail userInfoAreaTempWidth" >
+                
+            <div id="display_userEmail" class="profileBodyText userInfoAreaTempWidth" >
+                <p class="profileInfoHeading">Email Settings</p>
                 {% if profileUser.email %}
-                    Your email: {{profileUser.email}} <br> 
-                    Email Notifications: {{profileUser.notificationFrequencyText}}
+                    {{profileUser.email}} <br> 
+                    Email Notifications: {{profileUser.notificationFrequencyText}}<br> 
+                    <a name=profileEdit class="profileBodyText profileEditButton">Edit Email Settings</a> 
                 {% else %}        
-                    <a name="profileEdit">Add your email</a>
+                    <a name="profileEdit">Add your email</a><br> 
                 {% endif %}            
-            </div>
+ 
+                </div>
             
         {% endif %}
         
         
-        <div id="display_userWebsite userInfoAreaTempWidth" >
+        <div id="display_userWebsite" class="profileBodyText userInfoAreaTempWidth" >
+          <p class="profileInfoHeading">Bio</p>
           {% if profileUser.websiteURL %}
               <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>
           {% else %}
@@ -47,7 +52,7 @@
             {% endif %}            
           {% endif %}
         </div>
-        <div id="display_userAreas userInfoAreaTempWidth" >
+        <div id="display_userAreas" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.areasOfExpertise %}
               Areas of Expertise: {{profileUser.areasOfExpertise}}
           {% else %}
@@ -56,7 +61,7 @@
             {% endif %}
           {% endif %}
         </div>        
-        <div id="display_userProfession userInfoAreaTempWidth" >
+        <div id="display_userProfession" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.currentProfession %}
               Current Profession: {{profileUser.currentProfession}}
           {% else %}
@@ -65,7 +70,7 @@
             {% endif %}            
           {% endif %}
         </div>
-        <div id="display_userBio" >
+        <div id="display_userBio" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.bio %}
               Bio: {{profileUser.bio}}
           {% else %}

@@ -246,13 +246,12 @@ class Point(ndb.Model):
             raise ndb.Return(point, pointRoot)            
         else:
             # Try to find a redirector
-            newURLfuture = yield RedirectURL.getByFromURL_asynch(url)
-            if newURLFuture:
-                newURL = newURLfuture.get_result()
-                q = PointRoot.query(PointRoot.url == newURL)
-                point = yield q.get_async()
+            newRedirectURL = yield RedirectURL.getByFromURL_asynch(url)
+            if newRedirectURL:
+                q = PointRoot.query(PointRoot.url == newRedirectURL.toURL)
+                pointRoot = yield q.get_async()
                 if pointRoot:
-                    pointFuture = yield getCurrent_async(pointRoot)                
+                    point = yield getCurrent_async(pointRoot)                
                     raise ndb.Return(point, pointRoot)
                 else:
                     raise ndb.Return(None, None)                            

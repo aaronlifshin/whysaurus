@@ -19,7 +19,7 @@ class RedirectURL(ndb.Model):
     def getByFromURL_asynch(url):
         redirectQuery = RedirectURL.gql("WHERE fromURL= :1", url)
         redirectURLfuture = yield redirectQuery.get_async()
-        ndb.Return(redirectURLfuture)
+        raise ndb.Return(redirectURLfuture)
 
     @staticmethod
     def updateRedirects(toURL, updatedToURL):

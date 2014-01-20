@@ -1,0 +1,4 @@
+cron:
+- description: daily email notification send
+  url: /tasks/sendNotificationEmails
+  schedule: every monday 09:00

@@ -77,7 +77,6 @@ class ViewPoint(AuthHandler):
                 ribbonValue = vote.ribbon if vote else False
                 
             # viewCountFuture.get_result()
-            logging.info("++++++ " + str(pointRoot.numArchivedComments))
             templateValues = {
                 'point': point,
                 'pointRoot': pointRoot,

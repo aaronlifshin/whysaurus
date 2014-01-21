@@ -821,6 +821,8 @@ a:visited {
 	border-color: @grayBoxOutlines;
 	margin-bottom: @spaceBtPointCards;
 	padding-top:10px;
+    // for some reason dropdown menus seem to be ignoring z-index so this is a work-around:
+    position: relative; z-index: -10;
 }
 
 .arrowImage {
@@ -908,7 +910,7 @@ a:visited {
     border-top-right-radius: 5px;
     background-color:white;//@widgetBG;
     position:relative; // needed for z-index
-    z-index: 1;
+    z-index: -10;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
@@ -1213,6 +1215,8 @@ a#editPoint:hover {
 button#supporting_addPointWhenNonZero,
 button#counter_addPointWhenNonZero {	
 	margin-left:20px;
+    position:relative;
+    z-index:1;
 }
 
 #supporting_unlinkToggle, #counter_unlinkToggle {
@@ -1552,6 +1556,10 @@ button#counter_addPointWhenNonZero {
     position: relative;
     top: 8px;
     right: 8px;
+}
+
+.btn {
+    z-index:-99999;
 }
 
 .primaryButtonDisabled {

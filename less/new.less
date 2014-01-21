@@ -730,19 +730,56 @@ a:visited {
 }
 
 .borderButton {
-	font-family: "ff-meta-web-pro-condensed";
+	font-family: @sansCondFontFamily;
     font-weight: 700;
-    font-size: .9em;
-    color: #707070;
+    font-size: @fontSizeMediumCond;
+    color: @grayTextMedium;
     background:none;
     background-color:#FFFFFF;
-    border: 1px solid #B9BBBD;
+    border: 1px solid @grayTextExtraLight;
     border-radius: 2px;
 	padding: 9px 15px 4px;
 }
 
 .borderButton:hover {
     background-color:@blueLight;	
+}
+
+.radioButtonGrpDefault {
+    //border: 1px solid @grayTextExtraLight;
+    display: inline-block;
+    border-radius: 2px;
+    margin-left:12px;
+}
+
+.radioButtonLabelDefault {
+    display: inline-block;
+    font-size:@fontSizeMediumCond;
+	font-family: @sansCondFontFamily;
+    font-weight: 700;
+    color: @grayTextLight;
+    background:none;
+    background-color:#FFFFFF;
+    //border: 1px solid @grayTextExtraLight;
+    //padding-top:5px;
+    //padding-bottom:3px;
+    margin-right:18px;
+}
+
+.radioButtonDefault:hover {
+   // background-color:@pointCardBackground;
+   //color: @grayTextLight;
+}
+
+/*
+.radioButtonDefault:checked {
+   background-color:@pointCardBackground;
+   color: @grayTextLight;
+}
+*/
+
+.radioButtonActive {
+    background-color:@linkColorHover;
 }
 
 .dropdown-menu {
@@ -1910,8 +1947,8 @@ a[name="profileEdit"] {
 }
 
 #notificationFrequencyGroupLabel{
-    margin-right: 20px;
-    margin-top: 25px;  
+    //margin-right: 20px;
+    //margin-top: 25px;  
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

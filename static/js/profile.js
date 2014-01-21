@@ -80,9 +80,9 @@ $(document).ready(function() {
     
     $('#submit_profileDialog').click( saveProfileInfo );    
     
-    $('input:radio').screwDefaultButtons({
-            image: 'url("/static/img/screwdefault_radio_design_roSpinner.gif")',
-            width: 45,
-            height: 45
-    });    
+    //$('input:radio').screwDefaultButtons({
+    //        image: 'url("/static/img/screwdefault_radio_design_roSpinner.gif")',
+    //        width: 45,
+    //        height: 45
+    //});    
 });

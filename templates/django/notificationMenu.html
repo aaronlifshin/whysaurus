@@ -19,21 +19,23 @@
           <div>
           {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
               {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %} 
-              {{notification.notificationReasonText}} 
-              <em>{{notification.referencePoint.title}}</em>, a point you {{notification.followReason}}.
+              {{notification.notificationReasonText}} a point you {{notification.followReason}}:
+              <em>{{notification.referencePoint.title}}</em>
           {% else %}
               {% if notification.additionalUserCount > 0 %} 
                   {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
               {% else %}
                   {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
               {% endif %} 
-            <em>{{notification.referencePoint.title}}</em>, a point you {{notification.followReason}}.
-            {% if notification.additionalText and notification.additionalText != None %}
+              a point you {{notification.followReason}}:
+            <em>{{notification.referencePoint.title}}</em>
+            <!-- Removing comments because they can get quite long, and to keep notifications consistent -->
+            <!-- {% if notification.additionalText and notification.additionalText != None %}
             <div class="notificationCommentText"> {{ notification.additionalText|safe }} </div>
-            {% endif %}
+            {% endif %}-->
           {% endif %}
           </div>
-          <div class="Submenu_SmallText">
+          <div class="Submenu_SmallText notificationTimeStamp">
               {{notification.timeText}}
           </div>
         </div>                                   

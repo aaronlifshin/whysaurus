@@ -1,14 +1,3 @@
-<style>
-.notificationMenuItem, #notificationMenuHeader, #notificationMenuFooter {
-cursor: pointer;
-padding: 4px 4px 4px 4px;
-border-bottom: 1px solid #d7d7d7;
-width: auto;
-}
-
-
-</style>
-
 Hi there, {{user.name}},
 
 Whysaurus has seen some activity on points that you are interested in:
@@ -32,8 +21,9 @@ Whysaurus has seen some activity on points that you are interested in:
           {% endif %}
         {% endif %}
         </div>
-        <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%;">
+        <div style="font-weight:400; font-size:0.75em; color:#bdbdbd; line-height:120%;">
             {{notification.timeText}}
         </div>
    <br>
 {% endfor %}
+

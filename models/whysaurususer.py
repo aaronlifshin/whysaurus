@@ -124,9 +124,7 @@ class WhysaurusUser(auth_models.User):
         if saveUser:
             self.put()
         return self            
-        
-            
-    
+
     @classmethod
     def signup(cls, handler, email, name, password, website, areas, profession, bio):
                    

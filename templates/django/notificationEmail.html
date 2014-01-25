@@ -7,8 +7,9 @@ Whysaurus has seen some activity on points that you are interested in:
         <div>
         {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
             {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %} 
-            {{notification.notificationReasonText}} 
-            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}"><em>{{notification.referencePoint.title}}</em> </a> , a point you {{notification.followReason}}.
+            {{notification.notificationReasonText}}
+            a point you {{notification.followReason}}:            
+            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}"><em>{{notification.referencePoint.title}}</em></a> 
         {% else %}
             {% if notification.additionalUserCount > 0 %} 
                 {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
@@ -16,12 +17,9 @@ Whysaurus has seen some activity on points that you are interested in:
                 {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
             {% endif %} 
           <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}"><em>{{notification.referencePoint.title}}</em></a>, a point you {{notification.followReason}}.
-          {% if notification.additionalText and notification.additionalText != None %}
-          <div> {{ notification.additionalText|safe }} </div>
-          {% endif %}
         {% endif %}
         </div>
-        <div style="font-weight:400; font-size:0.75em; color:#bdbdbd; line-height:120%;">
+        <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%; margin-top: 4px; margin-bottom: 8px;">
             {{notification.timeText}}
         </div>
    <br>

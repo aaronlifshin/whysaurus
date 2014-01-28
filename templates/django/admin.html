@@ -6,16 +6,16 @@
   <button id='createPrivateArea'>Create Private Area</button>
   <button id='saveUsers'>Save Users</button>  
   <a href='uploadUserPage' id='uploadUsers'>Upload Users</a>  
+  <a href='/dailyReport' id='dailyReport'>Go to daily report</a>  
   
           
-  <table id="userTable">
+  <table id="userTable" class="adminTable">
     <tr>
         <th>User Unique URL</th>
         <th>User Name</th>
         <th>Created</th>
         <th>Edited</th>  
         <th>Viewed </th>        
-        <th>Timestamp </th> 
         <th>Last Login </th>                      		                     
         <th>User Private Area</th> 
         <th>Password reset</th>                      
@@ -27,10 +27,9 @@
         <td>{{yUser.u.createdCount}}</td>       
         <td>{{yUser.u.editedCount}}</td>  
         <td>{{yUser.u.recentlyViewedRootKeys|length}}</td>           
-        <td>{{yUser.u.PSTupdated}}</td>    
-        <td>{{yUser.u.PSTupdated}}</td>                     		                 
+        <td>{{yUser.u.PSTlastlogin}}</td>                     		                 
         <td>
-        <div class="dropdown span4">     
+        <div class="dropdown">     
           <a class="dropdown-toggle" data-toggle="dropdown" >
             {% if yUser.u.privateArea %}
                 {{yUser.u.privateArea}}

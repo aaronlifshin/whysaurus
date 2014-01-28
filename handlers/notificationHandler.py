@@ -47,7 +47,6 @@ class NotificationHandler(AuthHandler):
         user = self.current_user
         latestTimestamp = self.request.get('latest')
         earliestTimestamp = self.request.get('earliest')
-        logging.info('TL: %s, TE: %s' %(latestTimestamp, earliestTimestamp))
         results = {'result': False}
         if not user:
             results = {'result': False, 'error': 'User not logged in'}

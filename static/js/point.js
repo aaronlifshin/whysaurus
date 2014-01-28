@@ -565,7 +565,7 @@ function setUpMenuAreas() {
         linktype = $(this).data('linktype');
         $("#selectLinkedPointSearch").data("linkType", linktype);
         $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');  
-        $("#linkedPointSearchDialog .modal-header h4").text($('#pointSummary div.mainPointTitle').text());                      
+        $("#linkedPointSearchDialog .modal-header h1").text($('#pointSummary div.mainPointTitle').text());                      
         $("#linkedPointSearchDialog").modal('show');
         $('body, html').animate({ scrollTop: 0}, 500);        
     });

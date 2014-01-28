@@ -18,7 +18,7 @@ from handlers import MainPage, About, Help, Contact, ContactSend, NewPoint,\
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
-    NotificationHandler, Chat    
+    NotificationHandler, Chat, EventRecorder
 
 # Map URLs to handlers
 routes = [
@@ -56,6 +56,7 @@ routes = [
     Route('/setribbon', SetRibbon),
     Route('/search', Search),
     Route('/admin', AdminPage),
+    Route('/dailyReport', handler='WhySaurus.AdminPage:dailyReport', name='dailyReport'),    
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),
     Route('/getPointsList', GetPointsList),
@@ -104,7 +105,9 @@ routes = [
           name='leaveChatRoom'),
     Route('/send', handler='WhySaurus.Chat:send', name='send'),
     Route('/broadcastChatroom', handler='WhySaurus.Chat:broadcastChatroom', 
-          name='broadcastChatroom'),    
+          name='broadcastChatroom'),  
+    Route('/recordEvent', handler='WhySaurus.EventRecorder:recordEvent', 
+            name='recordEvent'),  
     Route('/switchArea', handler='WhySaurus.Profile:setArea', name='switchArea'),
     Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),
     Route('/archiveComments', handler='WhySaurus.Comments:archiveComments', name='archiveComments'),

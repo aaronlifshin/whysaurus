@@ -461,7 +461,8 @@ function loadMainPageLeftColumn(shouldPushState) {
         function(shouldPushState) {
             $('#mainContainer').data('contentpath', '/');                        
             if (shouldPushState) {
-      		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');          		          		              		
+      		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');   
+                _gaq.push(['_trackPageview', "/" ]);      		          		              		                       		          		              		
       		}
 			activateMainPageLeftColumn();
       		document.title = 'Whysaurus - A better way to explain ideas';      		
@@ -498,7 +499,9 @@ function loadPointContent(pointurl, shouldPushState) {
           		    activatePointArea();
           		}
           		if (shouldPushState) {
-          		    history.pushState({whysaurus: true, }, obj.title, '/point/' + obj.url);          		          		              		
+                    var newURL = '/point/' + obj.url;
+          		    history.pushState({whysaurus: true, }, obj.title, newURL);    
+                     _gaq.push(['_trackPageview', newURL ]);      		          		              		
           		}          	
           		document.title = obj.title;
           		

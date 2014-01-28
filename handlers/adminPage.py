@@ -9,6 +9,8 @@ from authhandler import AuthHandler
 from models.whysaurususer import WhysaurusUser
 from models.privateArea import PrivateArea
 from models.whysaurusexception import WhysaurusException
+from models.reportEvent import DayEventSummary
+
 
 class AdminPage(AuthHandler):
     def createPrivateArea(self, newName):
@@ -60,6 +62,7 @@ class AdminPage(AuthHandler):
     def get(self):
         user = self.current_user
         queryUsr = WhysaurusUser.query()
+        queryUsr = queryUsr.order(-WhysaurusUser.lastLogin)
         areas = PrivateArea.query().fetch(50)
         users = []
         i = 0
@@ -116,11 +119,20 @@ class AdminPage(AuthHandler):
                 'messages': bigMessage
             }    
             self.response.out.write(
-                self.template.render('message.html', template_values))   
+                self.template_render('message.html', template_values))   
         else:
             self.response.out.write('User not authorized. ')
-
-
             
+            
+    def dailyReport(self):
+        user = self.current_user      
+        if user and user.admin:    
+            template_values = {
+                'user': user,
+                'dayReportTable': DayEventSummary.getReport()
+            }   
+            self.response.out.write(
+                self.template_render('dailyReport.html', template_values))        
+
             
             

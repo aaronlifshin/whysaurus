@@ -77,7 +77,7 @@ class Notification(ndb.Model):
        
     def timeText(self):        
         delta = datetime.datetime.now() - self.raisedDate
-        delta_mins = delta.seconds / 60
+        delta_mins = delta.total_seconds() / 60
         if delta_mins == 1:
             return "1 minute ago"
         elif delta_mins < 60:                    
@@ -118,8 +118,9 @@ class Notification(ndb.Model):
                 if userKey != n.sourceUser:
                     if not hasattr(n, 'additionalUserKeys') or n.additionalUserKeys is None:
                         n.additionalUserKeys = [userKey]
-                    elif userKey not in n.additionalUserKeys: # A new user has triggered the notification
-                        n.additionalUserKeys.push(userKey)
+                    elif userKey not in n.additionalUserKeys: 
+                        # A new user has triggered the notification
+                        n.additionalUserKeys =  n.additionalUserKeys + [userKey]
                 else:
                     logging.info('NCFF ' + 'adding an action')                    
                     # additional actions by the initial user that caused the notification

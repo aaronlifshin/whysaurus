@@ -3,7 +3,7 @@ import logging
 from authhandler import AuthHandler
 from models.point import Point
 from models.source import Source
-
+from models.reportEvent import ReportEvent
 
 class NewPoint(AuthHandler):
     def post(self):
@@ -29,6 +29,8 @@ class NewPoint(AuthHandler):
                     resultJSON = json.dumps({'result': True, 
                                      'pointURL': newPoint.url,
                                      'rootKey': newPointRoot.key.urlsafe()})
+                    ReportEvent.queueEventRecord(user.key.urlsafe(), newPoint.key.urlsafe(), None, "Create Point")
+                    
                 else:
                     resultJSON = json.dumps({'result': False, 'error': 'Failed to create point.'})
         else:

@@ -24,6 +24,8 @@ from uservote import UserVote
 from uservote import RelevanceVote
 from timezones import PST
 
+from models.reportEvent import ReportEvent
+
 
 class WhysaurusUser(auth_models.User):
     created = ndb.DateTimeProperty(auto_now_add=True)
@@ -114,6 +116,9 @@ class WhysaurusUser(auth_models.User):
         if not self.token or self.tokenExpires < now: 
             self.createChannel()                 
         self.put()
+        
+        ReportEvent.queueEventRecord(self.key.urlsafe(), None, None, "Login")    
+                        
         return
     
     def createChannel(self, saveUser=False):
@@ -159,6 +164,7 @@ class WhysaurusUser(auth_models.User):
                 
             else:
                 logging.info('Created a username only user. Name: %s.' % name)
+            ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")            
             return user # SUCCESS       
 
 
@@ -590,12 +596,14 @@ class WhysaurusUser(auth_models.User):
                         'notificationEmail.html', 
                         {'user':user, 'notifications':notifications}
                     )
-                    text = 'Hi there, %s, \n\n Whysaurus has seen activity on the following points: \n' % user.name
+               
                     points = [n.referencePoint.title + '\n' for n in notifications]
-                    points = list(set(points))
-                    for point in points:                    
-                        text = text + point
-                    
+                    points = list(set(points))                    
+                    text = handler.template_render(                
+                        'notificationEmailText.html', 
+                        {'user':user, 'pointTitles':points}
+                    )
+                                  
                     mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
                         to = user.email,
                         subject= user.name + ', People are reacting to your views on Whysaurus!',

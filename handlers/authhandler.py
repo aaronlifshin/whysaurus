@@ -19,6 +19,8 @@ from google.appengine.ext.webapp import template
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
 
+from models.reportEvent import ReportEvent
+
  
     
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
@@ -302,11 +304,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             #
             # In a real app you could compare _attrs with user's properties fetched
             # from the datastore and update local user in case something's changed.  
-            
-            # AL: Users will now manage their profiles within Whysaurus
-            # There is no need to retrieve the ATTRS again          
-            # user.populate(**_attrs)
-            # user.put()
+                        
             self.auth.set_session(self.auth.store.user_to_dict(user))
             self.current_user = user
             user.login()
@@ -332,13 +330,14 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 u.login()
 
             else:
-                logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))                
+                logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))  
                 _attrs['url'] = WhysaurusUser.constructURL(_attrs['name'])
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
                     user.login()
                     self.auth.set_session(self.auth.store.user_to_dict(user))
                     self.redirect("/")
+                    ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")                                                              
                 else:
                     logging.info('Creation failed: ' + str(ok))
         # Remember auth data during redirect, just for this demo. You wouldn't

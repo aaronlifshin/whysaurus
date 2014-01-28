@@ -30,7 +30,8 @@ __all__ = [
 	'AdminPage',
 	'Comments',
 	'AddNotifications',
-	'Chat'
+	'Chat',
+    'EventRecorder'
 ]
 
 from mainpage import MainPage
@@ -63,6 +64,8 @@ from adminPage import AdminPage
 from comments import Comments
 from notificationHandler import NotificationHandler
 from chat import Chat
+from eventRecorder import EventRecorder
+
 
 
 

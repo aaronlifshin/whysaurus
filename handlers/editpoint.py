@@ -4,51 +4,56 @@ from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
 from models.point import Point, FeaturedPoint
 from models.source import Source
-
+from models.reportEvent import ReportEvent
 
 # AJAX. CALLED FROM THE POINT VIEW PAGE
 class EditPoint(AuthHandler):
     def post(self):
-        resultJSON = json.dumps({'result': False})
-        oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
-        sourcesURLs=json.loads(self.request.get('sourcesURLs')) \
-            if self.request.get('sourcesURLs') else None
-        sourcesNames=json.loads(self.request.get('sourcesNames')) \
-            if self.request.get('sourcesNames') else None
-        sourcesToRemove=json.loads(self.request.get('sourcesToRemove')) \
-            if self.request.get('sourcesToRemove') else None      
-        sources = Source.constructFromArrays(sourcesURLs, sourcesNames, oldPoint.key)
+        user = self.current_user
+        if user:        
+            resultJSON = json.dumps({'result': False})
+            oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
+            sourcesURLs=json.loads(self.request.get('sourcesURLs')) \
+                if self.request.get('sourcesURLs') else None
+            sourcesNames=json.loads(self.request.get('sourcesNames')) \
+                if self.request.get('sourcesNames') else None
+            sourcesToRemove=json.loads(self.request.get('sourcesToRemove')) \
+                if self.request.get('sourcesToRemove') else None      
+            sources = Source.constructFromArrays(sourcesURLs, sourcesNames, oldPoint.key)
 
-        newVersion = oldPoint.update(
-            newTitle=self.request.get('title'),
-            newContent=self.request.get('content'),
-            newSummaryText=self.request.get('plainText'),
-            user=self.current_user,
-            imageURL=self.request.get('imageURL'),
-            imageAuthor=self.request.get('imageAuthor'),
-            imageDescription=self.request.get('imageDescription'),
-            sourcesToAdd=sources,
-            sourceKeysToRemove= sourcesToRemove            
-        )
-        if newVersion:
-            sources = newVersion.getSources()   
-            sourcesHTML = self.template_render('sources.html', {'sources':sources})
+            newVersion = oldPoint.update(
+                newTitle=self.request.get('title'),
+                newContent=self.request.get('content'),
+                newSummaryText=self.request.get('plainText'),
+                user=self.current_user,
+                imageURL=self.request.get('imageURL'),
+                imageAuthor=self.request.get('imageAuthor'),
+                imageDescription=self.request.get('imageDescription'),
+                sourcesToAdd=sources,
+                sourceKeysToRemove= sourcesToRemove            
+            )
+            if newVersion:
+                sources = newVersion.getSources()   
+                sourcesHTML = self.template_render('sources.html', {'sources':sources})
             
-            resultJSON = json.dumps({
-                'result': True,
-                'version': newVersion.version,
-                'author': newVersion.authorName,
-                'authorURL': self.current_user.url,
-                'dateEdited': newVersion.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),
-                'pointURL':newVersion.url,
-                'imageURL': newVersion.imageURL,
-                'imageAuthor': newVersion.imageAuthor,
-                'imageDescription': newVersion.imageDescription,
-                'sourcesHTML': sourcesHTML
-            })
+                resultJSON = json.dumps({
+                    'result': True,
+                    'version': newVersion.version,
+                    'author': newVersion.authorName,
+                    'authorURL': self.current_user.url,
+                    'dateEdited': newVersion.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),
+                    'pointURL':newVersion.url,
+                    'imageURL': newVersion.imageURL,
+                    'imageAuthor': newVersion.imageAuthor,
+                    'imageDescription': newVersion.imageDescription,
+                    'sourcesHTML': sourcesHTML
+                })
+                ReportEvent.queueEventRecord(user.key.urlsafe(), newVersion.key.urlsafe(), None, "Edit Point")
+            else:
+                resultJSON = json.dumps({'result': False, 'error': 'You appear not to be logged in.'})
+                
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
-        self.response.out.write(resultJSON)
-        
+        self.response.out.write(resultJSON)        
         
     def changeEditorsPick(self):
         result = {'result': False}

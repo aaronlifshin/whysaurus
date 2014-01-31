@@ -1,5 +1,5 @@
 Hi there, {{user.name}},<br>
-Whysaurus has seen some activity on points that you are interested in:<br>
+Whysaurus has seen activity on points you're interested in:<br>
 <br>
 <br>
 {% for notification in user.notifications %}
@@ -15,8 +15,9 @@ Whysaurus has seen some activity on points that you are interested in:<br>
                 {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
             {% else %}
                 {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
-            {% endif %} 
-          <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}"><em>{{notification.referencePoint.title}}</em></a>, a point you {{notification.followReason}}.
+            {% endif %}
+            a point you {{notification.followReason}}:           
+            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}"><em>{{notification.referencePoint.title}}</em></a>
         {% endif %}
         </div>
         <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%; margin-top: 4px; margin-bottom: 8px;">
@@ -25,6 +26,5 @@ Whysaurus has seen some activity on points that you are interested in:<br>
    <br>
 {% endfor %}
 <br>
-this is a test by josh from: 2014.01.29
 <br>
 

@@ -7,17 +7,17 @@ Whysaurus has seen activity on points you're interested in:<br>
         <div>
         {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
             {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %} 
-            {{notification.notificationReasonText}}
-            a point you {{notification.followReason}}:            
-            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}"><em>{{notification.referencePoint.title}}</em></a> 
+            {{notification.notificationReasonText}}           
+            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
+            a point you {{notification.followReason}}.            
         {% else %}
             {% if notification.additionalUserCount > 0 %} 
                 {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
             {% else %}
                 {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
-            {% endif %}
-            a point you {{notification.followReason}}:           
-            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}"><em>{{notification.referencePoint.title}}</em></a>
+            {% endif %}           
+            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
+            (a point you {{notification.followReason}}).
         {% endif %}
         </div>
         <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%; margin-top: 4px; margin-bottom: 8px;">

@@ -122,11 +122,10 @@ function callPointEdit(){
 }
 
 function pointUnlink(elem, linkType) {
-    startSpinnerOnButton('.unlinkbutton a');
-    $( ".pointCard" ).unbind('mouseenter');
-    $( ".pointCard" ).unbind('mouseleave');
     
-    pointCard = $(elem).parent().parent();
+    startSpinnerOnButton(elem);
+
+    pointCard = $(elem).closest('div.relevanceVote').next().children('.pointCard');
     supportingPointURL = pointCard.data('pointurl');
     pointURL = $('#pointArea').data('pointurl');
     _gaq.push(['_trackEvent', 'Link Manipulation', 'Unlink ' + linkType , supportingPointURL + ' from ' + pointURL]);            
@@ -159,7 +158,6 @@ function pointUnlink(elem, linkType) {
 				} else {
 					showErrorAlert('There was an error during unlinking: ' + obj.error); 
 				}
-				toggleUnlink($('#' + linkType + '_unlinkToggle'), linkType);              
 			}
       });
 	$.ajax();
@@ -853,9 +851,32 @@ function makeRelevanceControlsClickable() {
     $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);
 }
 
+function sharePointOnTwitter() {
+    var url = $('#pointArea').data('pointurl');
+    var pointTitle = $('#pointSummary div.mainPointTitle').text();
+    var len = pointTitle.length;
+    var text = "";
+    if (len > 115) {
+        text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/point/" + url;
+    } else {
+        text = pointTitle + " https://www.whysaurus.com/point/" + url;        
+    }
+    var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);   
+    window.open(webUrl,'_blank');        
+}
+
+function postOnFacebook() {
+    var url = $('#pointArea').data('pointurl');
+    var pointTitle = $('#pointSummary div.mainPointTitle').text();
+    FB.ui({
+      method: 'feed',
+      link: "https://www.whysaurus.com/point/" + url,
+      caption: pointTitle,
+    }, function(response){});    
+}
+
 function activatePointArea() {    
     if (!loggedIn) {        
-        make_this_show_login_dlg($( "[id$=unlinkToggle]" ));
         make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));
         make_this_show_login_dlg($( "[id$=addPointWhenZero]" ));
         make_this_show_login_dlg($( "#editPoint" ));
@@ -869,15 +890,6 @@ function activatePointArea() {
         make_this_show_login_dlg($( "[name=showRelevance]" ));     
     } else {
 
-        $( "#supporting_unlinkToggle" ).button().click(function() {
-            _gaq.push(['_trackEvent', 'Link Manipulation', 'Toggle Unlink Supporting' , $('#pointArea').data('pointurl')]);            
-        	toggleUnlink(this, "supporting");
-        });
-
-        $( "#counter_unlinkToggle" ).button().click(function() {
-            _gaq.push(['_trackEvent', 'Link Manipulation', 'Toggle Unline Counter', $('#pointArea').data('pointurl')]);                        
-            toggleUnlink(this, "counter");
-        });
 
         $( "#upVote" ).click(function() {upVote();});
         $( "#downVote" ).click(function() {	downVote();	});
@@ -902,11 +914,11 @@ function activatePointArea() {
         $('[name=commentReply]').click(showReplyComment);
         $('[name=commentArchive]').click(archiveComments);
         $('#commentViewArchived').click(showArchivedComments);
+        $('#tweet').click(sharePointOnTwitter);
+        $('#postOnFacebook').click(postOnFacebook);
         
-
-        makeRelevanceControlsClickable();
-
-                	        
+        
+        makeRelevanceControlsClickable();      	        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
     makePointsCardsClickable();	    

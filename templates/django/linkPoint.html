@@ -26,5 +26,8 @@
     <div name="relevanceTextLine"  class="relevanceTextLine">
         {{point.relevanceVoteCount}} User{% if point.relevanceVoteCount != 1 %}s{% endif %} Voting.  Curent Average: {{point.relevancePercent}}
     </div>
+    <div class='unlinkbutton'>
+        <a href='javascript:;' onclick='javascript:pointUnlink(this, "{{linkType}}")' alt='Unlink " + linkType + " Point'>Unlink This Point</a>
+    </div>
 </div>
 {% include 'pointBox.html' %} 

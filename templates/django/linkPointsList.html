@@ -14,7 +14,7 @@
 			{% endif %}
 		</div>
 		<div id="{{linkType}}_pointActions" class="row-fluid">
-			<div class="dropdown span6">
+			<div class="dropdown span8 offset2">
 				<button id="{{linkType}}_addPointWhenNonZero" name="{{linkType}}_addPointWhenNonZero"
 					data-toggle="dropdown"
 					class="btn dropdown-toggle">
@@ -55,7 +55,6 @@
 					{% endif %}                              
 				</ul>				
 			</div>
-			<button id="{{linkType}}_unlinkToggle" class="Heading_GreyMid borderButton span5" type="submit">Unlink a Point</button>	
 		</div>
 	</div>
 	{% if linkedPoints %}            

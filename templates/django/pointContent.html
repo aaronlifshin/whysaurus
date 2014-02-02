@@ -96,7 +96,7 @@
                         {{pointRoot.editorsPick}}{%if pointRoot.editorsPick %} - {{pointRoot.editorsPickSort}} {% endif %}
                     </a>
                     </li>       
-                    <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                          
+                    <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                        
                 </ul>
             </div>				
             {% endif %}
@@ -105,17 +105,9 @@
 		<div class="span1 dropdown">	
 			<a class="dropdown-toggle" data-toggle="dropdown">Share </a><span class="caret linkBlue"></span>   
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-				<li>                
-					<div class="addthis_toolbox addthis_default_style" 
-						 addthis:url="{{point.url}}" addthis:title="{{point.title}}">
-						<a class="addthis_button_facebook"></a>
-						<a class="addthis_button_twitter"></a>
-						<a class="addthis_button_email"></a>
-						<!-- <a class="addthis_button_print"></a> -->
-						<a class="addthis_button_compact"></a>
-						<!-- <a class="addthis_counter addthis_bubble_style"></a> -->
-					</div>
-				</li>                                    
+				<li><a id="tweet" href='javascript:;'>Tweet this</a></li> 
+				<li><a id="postOnFacebook" href='javascript:;'>Post on Facebook</a></li>  
+                <li><a href="mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: {{ point.title|escape }}. %0D%0A View it here: (https://www.whysaurus.com/{{point.url}})">Email a friend</a></li>                                                             
 			</ul>                       
 		</div>  
 	  

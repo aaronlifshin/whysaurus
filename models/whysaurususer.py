@@ -77,7 +77,13 @@ class WhysaurusUser(auth_models.User):
     def getActiveNotifications(self):
         self._notifications, self._newNotificationCount, \
             self._moreNotificationsExist = \
-                Notification.getActiveNotificationsForUser(self.key)
+                Notification.getLatestNotificationsForUser(self.key)
+        return self._notifications
+
+    def getUnreadNotifications(self):
+        self._notifications, self._newNotificationCount, \
+            self._moreNotificationsExist = \
+                Notification.getUnreadNotificationsForUser(self.key)
         return self._notifications
 
     # A small subset of user stuff to store the relevant information for chat
@@ -589,7 +595,7 @@ class WhysaurusUser(auth_models.User):
         
             if shouldEmail:
                 logging.info('Checking for active notifications for user %s' % user.name)            
-                notifications = user.getActiveNotifications()
+                notifications = user.getUnreadNotifications()
                 if notifications:
                     # generate the email body from the notifications
                     html = handler.template_render(                

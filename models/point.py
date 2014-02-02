@@ -22,6 +22,8 @@ we know where roots were
 The backlinks are in the pointRoot and reflect the current version
 
 """
+from __future__ import division
+
 import re
 import logging
 import math
@@ -79,8 +81,8 @@ def makeURL(sourceStr):
             redirectURL.put()        
     return newUrl
   
-def sortArrayByRating(links):      
-    links.sort(key=lambda x: x.fRating if x.fRating is not None else 50, reverse=True)
+def sortArrayByRating(links):
+    links.sort(key=lambda x: x.sortValue, reverse=True)
     
 @ndb.tasklet
 def getCurrent_async(pointRoot):
@@ -100,6 +102,15 @@ class Link(ndb.Model):
     @property
     def rating(self):
         return int(round(self.fRating, 0)) if self.fRating else 0
+        
+    @property
+    def sortValue(self):
+        if self.voteCount == 0:
+            return 50
+        elif self.fRating is None:
+            return 50
+        else:
+            return self.fRating
         
     def updateRelevanceData(self, oldRelVote, newRelVote):
         startingRating = self.fRating if self.fRating else 0

@@ -1069,6 +1069,33 @@ function showPointDialog(dialogAction, dialogTitle) {
         
 }
 
+function toggleManifesto() {
+    var area = $('#manifestoText');
+    if (area.is(":visible")) {
+        area.slideUp();
+        $("body").animate({ 'padding-top' : 110 });
+    } else {
+        var height = area.height();
+        area.slideDown();
+        $("body").animate({ 'padding-top' : height + 110 });
+    }  
+}
+
+function hideManifesto(e) {
+	window.localStorage.setItem('whysarusManifestoHidden', 'true');     
+    e.stopPropagation();
+    $('.manifestoHeader').hide();
+}
+    
+function manifestoActivate() {
+    var shouldHide = window.localStorage.getItem("whysarusManifestoHidden");
+    if ( ! shouldHide ) {
+        $('.manifestoHeader').show();        
+        $('.manifestoHeader').on('click', toggleManifesto); 
+        $('#hideManifesto').on('click', hideManifesto);        
+    }
+}
+
 var channelErrors = 0; 
 var FILEPICKER_SERVICES = ['IMAGE_SEARCH', 'URL', 'COMPUTER', 'FACEBOOK'];
 
@@ -1146,6 +1173,9 @@ function activateHeaderAndDialogs() {
     });
     
     window.onpopstate = navigateHistory;  		
+
+    manifestoActivate();
+
 
     if (!loggedIn) {
         $("#CreatePoint").attr('href', "#loginDialog");

@@ -336,15 +336,6 @@ function deletePoint(urlToDelete) {
     $.ajax();
 }
 
-function make_this_show_login_dlg(button) {
-    button.attr('href',"#loginDialog");
-    button.attr('data-toggle',"modal");
-    button.off(".ys").on("click.ys", function(event) {
-        _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
-        console.log('Required login ' +  event.target.id);
-    });
-}
-
 function populateEditFields() {
     var ed = tinyMCE.get('editor_pointDialog');
 
@@ -916,7 +907,6 @@ function activatePointArea() {
         $('#commentViewArchived').click(showArchivedComments);
         $('#tweet').click(sharePointOnTwitter);
         $('#postOnFacebook').click(postOnFacebook);
-        
         
         makeRelevanceControlsClickable();      	        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');

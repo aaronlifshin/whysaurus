@@ -35,7 +35,7 @@ routes = [
     Route('/WhatIsWhysaurus', Help),
     Route('/contact', Contact),
     Route('/contactSend', ContactSend),
-    Route('/newPoint', NewPoint),
+    Route('/newPoint', handler='WhySaurus.NewPoint:newPoint', name='newPoint'),
     Route('/deletePoint', DeletePoint),
     Route('/editPoint', EditPoint),
     Route('/changeEditorsPick', handler='WhySaurus.EditPoint:changeEditorsPick', name='changeEditorsPick'),

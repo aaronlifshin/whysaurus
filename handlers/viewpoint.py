@@ -89,7 +89,6 @@ class ViewPoint(AuthHandler):
                 'user': user,
                 'voteValue': voteValue,
                 'ribbonValue': ribbonValue,
-                'thresholds': constants.SCORETHRESHOLDS,
                 'currentArea':self.session.get('currentArea'),
             }
             

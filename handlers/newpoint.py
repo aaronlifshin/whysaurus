@@ -5,11 +5,14 @@ from models.point import Point
 from models.source import Source
 from models.reportEvent import ReportEvent
 
+from google.appengine.ext import ndb
+
 class NewPoint(AuthHandler):
-    def post(self):
+    @ndb.toplevel
+    def newPoint(self):        
         user = self.current_user
         resultJSON = json.dumps({'result': False, 'error': 'Not authorized'})
-        if user:
+        if user:            
             if not self.request.get('title'):                
                 resultJSON = json.dumps({'result': False, 'error': 'Your point must have a title'})
             else:
@@ -25,16 +28,53 @@ class NewPoint(AuthHandler):
                     imageDescription=self.request.get('imageDescription'),
                     sourceURLs=sourcesURLs,
                     sourceNames=sourcesNames)
+                       
                 if newPoint:
+                    
+                    recentlyViewed, sources = yield user.getRecentlyViewed_async( \
+                                excludeList=[newPoint.key.parent()] + \
+                                newPoint.getLinkedPointsRootKeys("supporting") + \
+                                newPoint.getLinkedPointsRootKeys("counter")), \
+                            newPoint.getSources_async()
+                            
+                    templateValues = {
+                        'point': newPoint,
+                        'pointRoot': newPointRoot,
+                        'recentlyViewedPoints': recentlyViewed,
+                        'supportingPoints': None,
+                        'counterPoints': None,
+                        'supportedPoints':newPointRoot.getBacklinkPoints("supporting"),
+                        'counteredPoints':newPointRoot.getBacklinkPoints("counter"),
+                        'sources': sources,
+                        'user': user,
+                        'voteValue': 0,
+                        'ribbonValue': False,
+                        'currentArea':self.session.get('currentArea')
+                    }
+                    html = self.template_render('pointContent.html', templateValues)
+
+                    templateValues = {
+                        'user': self.current_user,                
+                        'pointRoot': newPointRoot,
+                        'comments': None
+                    }        
+                    commentHTML = self.template_render('pointComments.html', templateValues)
                     resultJSON = json.dumps({'result': True, 
                                      'pointURL': newPoint.url,
-                                     'rootKey': newPointRoot.key.urlsafe()})
-                    ReportEvent.queueEventRecord(user.key.urlsafe(), newPoint.key.urlsafe(), None, "Create Point")
-                    
+                                     'title':newPoint.title,
+                                     'html': html,
+                                     'commentHTML': commentHTML,
+                                     'rootKey': newPointRoot.key.urlsafe()
+                                 })
+                    ReportEvent.queueEventRecord(user.key.urlsafe(), newPoint.key.urlsafe(), None, "Create Point") 
                 else:
                     resultJSON = json.dumps({'result': False, 'error': 'Failed to create point.'})
         else:
             resultJSON = json.dumps({'result': False, 'error': 'You appear not to be logged in.'})
 
+        self.response.headers["Pragma"]="no-cache"
+        self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
+        self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"  
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
+

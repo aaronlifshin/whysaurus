@@ -40,6 +40,7 @@ function isNormalInteger(str) {
   
 function disableButtonPrimary(buttonID) {
    $(buttonID).off('click');
+   $(buttonID).off('.ys'); 
    $(buttonID).addClass('primaryButtonDisabled');
 }
 
@@ -142,11 +143,14 @@ function getCaretPosition (oField) {
     return (iCaretPos);
 }
 
-
-/*function positionEditDialog() {
-  dialogHeight = $(".pointDialog").height();
-  $("[id$='_ifr']").height(dialogHeight - 550);
-}*/
+function make_this_show_login_dlg(button) {
+    button.attr('href',"#loginDialog");
+    button.attr('data-toggle',"modal");
+    button.off(".ys").on("click.ys", function(event) {
+        _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+        console.log('Required login ' +  event.target.id);
+    });
+}
 
 function getNewSourcesURLs() {
     var links  = $('.sourceLink');
@@ -172,28 +176,84 @@ function getNewSourcesNames() {
     return sources;
 }
 
+function createPointFromMainPage() {
+    _gaq.push(['_trackEvent', 'Main Page Action', 'Make a Point']);
+    
+    if ($('#newPointTitle').val().length > MAX_TITLE_CHARS) {
+        showAlert('Please do not exceed 140 characters for the title.');
+        return;
+    }
+    if ($('#newPointTitle').val().length == "") {
+        showAlert('To create a point you must enter something for the title!');      
+        return;
+    }
+    
+    startSpinnerOnButton('#mainPagePublish');    
+        
+    // These points only have a title!!
+    ajaxData = {
+      'content': '',
+      'plainText': '',
+      'title': $('#newPointTitle').val(),
+      'imageURL': '',
+      'imageAuthor': '',
+      'imageDescription': '',
+      'sourcesURLs':'',
+      'sourcesNames': ''
+    };
+    
+    newPointAjax(ajaxData, showAlert, '#mainPagePublish', function() {
+        $('#mainPagePublish').off('.ys').on('click.ys', createPointFromMainPage );
+    });
+}
+
+
+function newPointAjax(ajaxData, errorAlertFunction, buttonSelector, finallyCall) {
+    $.ajaxSetup({
+        url: "/newPoint",
+        type: "POST",
+        data: ajaxData,
+        success: function(obj) {
+            if ( obj.result === true ) {
+               	$("#rightColumn").empty();
+          		$("#rightColumn").html(obj.commentHTML);
+                replacePointContent(obj.html, obj.pointURL, obj.title, true);                
+                stopSpinnerOnButton(buttonSelector);
+				$('#pointArea').data('pointurl', obj.pointURL);    
+                if (typeof finallyCall == 'function') {finallyCall();};                
+            } else {
+                errorAlertFunction(obj.result);
+                stopSpinnerOnButton(buttonSelector); 
+                if (typeof finallyCall == 'function') {finallyCall();};                
+            }
+        },
+        error: function(xhr, textStatus, error){
+            errorAlertFunction('The server returned an error: ' + xhr + '. You may try again.');
+            stopSpinnerOnButton(buttonSelector); 
+            if (typeof finallyCall == 'function') {finallyCall();};                
+        }    
+    });
+    $.ajax();    
+}   
+
 function newPoint() {
-  if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
+    if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
       editDialogAlert('Please do not exceed 140 characters for the title.');
       return;
-  }
-  if ($('#title_pointDialog').val().length == "") {
+    }
+    if ($('#title_pointDialog').val().length == "") {
       editDialogAlert('To create a point you must enter something for the title!');      
       return;
-  }
-  
-  var ed = tinyMCE.get('editor_pointDialog');
-  var text = tinyMCE.activeEditor.getBody().textContent;
-  disableButtonPrimary('#submit_pointDialog');
-  $('#submit_pointDialog').text("Publish to Library...");
-  $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");
-  var u = getNewSourcesURLs();
-  var n = getNewSourcesNames();
-  $.ajaxSetup({
-    url: "/newPoint",
-    global: false,
-    type: "POST",
-    data: {
+    }
+
+    startSpinnerOnButton('#submit_pointDialog');    
+
+    var ed = tinyMCE.get('editor_pointDialog');
+    var text = tinyMCE.activeEditor.getBody().textContent;       
+    var u = getNewSourcesURLs();
+    var n = getNewSourcesNames();
+    
+    ajaxData = {
       'content': ed.getContent(),
       'plainText': text.substring(0, 250),
       'title': $('#title_pointDialog').val(),
@@ -202,23 +262,15 @@ function newPoint() {
       'imageDescription': $('#description_pointDialog').val(),
       'sourcesURLs': JSON.stringify(u),
       'sourcesNames': JSON.stringify(n)
-    },
-    success: function(obj) {
-      if (obj.result === true) {
-        var params = [];
-        params["rootKey"] = obj.rootKey;
-        post_to_url("/point/" +  obj.pointURL, params);
-      } else {
-        editDialogAlert(obj.result);
-    	stopSpinner();
-      }
-    },
-    error: function(xhr, textStatus, error){
-        editDialogAlert('The server returned an error: ' + xhr + '. You may try again.');
-    	stopSpinner();
-    }    
-  });
-  $.ajax();
+    };
+    
+    newPointAjax(ajaxData, editDialogAlert, '#submit_pointDialog', function() {
+		$("#pointDialog").modal('hide');
+        resetSubmitButton('#submit_pointDialog');
+        $('#submit_pointDialog').off('.ys').on('click.ys', function(e){
+            submitPointDialog(this);
+        });
+    });  
 }
 
 function openLoginDialog() {
@@ -249,6 +301,20 @@ function clearDefaultContent(ed) {
   }
 }
 
+function setCharNum(inputElement, charNumSelector) {
+    var numLeft = MAX_TITLE_CHARS ;
+    if (inputElement && inputElement.value) {
+        numLeft = MAX_TITLE_CHARS - inputElement.value.length;
+    }
+
+    $(charNumSelector).text(numLeft);    
+    if (numLeft < 0) {
+         $(charNumSelector).addClass("redScore");        
+    } else {
+         $(charNumSelector).removeClass("redScore");        
+    }    
+}
+
 function setCharNumText(titleField) {
     var numLeft = MAX_TITLE_CHARS ;
     if (titleField && titleField.value) {
@@ -274,7 +340,7 @@ function editDialogAlert(alertHTML) {
 
 function stopSpinner() {
     $("#spinnerImage").remove();
-    $('#submit_pointDialog').on('click', function(e){submitPointDialog(this);});
+    $('#submit_pointDialog').off('.ys').on('click.ys', function(e){submitPointDialog(this);});
     $('#submit_pointDialog').show();
 }
 
@@ -425,6 +491,24 @@ function makeHomeNavsClickable() {
     });
 }
 
+function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState) {
+   	$('#leftColumn').empty();
+   	$('#leftColumn').html(pointHTML);   
+   	$('#mainContainer').data('contentpath', '/point/' + pointURL);
+	if (typeof(activatePointArea) != 'function') {
+	    $.getScript('/static/js/point.js', function() {activatePointArea});              		
+	} else {
+	    activatePointArea();
+	}
+	if (shouldPushState) {
+        var newURL = '/point/' + pointURL;
+	    history.pushState({whysaurus: true, }, pointTitle, newURL);    
+         _gaq.push(['_trackPageview', newURL ]);      		          		              		
+	}          	
+	document.title = pointTitle;    
+}
+
+
 // On a successful load onSuccess is called with the shouldPushState as a parameter
 function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, shouldPushState ) {
     $(columnSelector).empty();
@@ -490,21 +574,7 @@ function loadPointContent(pointurl, shouldPushState) {
       	data: { 'url': pointurl },
       	success: function(obj) {
       	    if (obj.result) {
-      	       	$('#leftColumn').empty();
-      	       	$('#leftColumn').html(obj.html);   
-      	       	$('#mainContainer').data('contentpath', '/point/' + obj.url);
-          		if (typeof(activatePointArea) != 'function') {
-          		    $.getScript('/static/js/point.js', function() {activatePointArea});              		
-          		} else {
-          		    activatePointArea();
-          		}
-          		if (shouldPushState) {
-                    var newURL = '/point/' + obj.url;
-          		    history.pushState({whysaurus: true, }, obj.title, newURL);    
-                     _gaq.push(['_trackPageview', newURL ]);      		          		              		
-          		}          	
-          		document.title = obj.title;
-          		
+                replacePointContent(obj.html, obj.url, obj.title, shouldPushState );          		
       	    } else {
                 $('#leftColumn').empty();
                 showAlert('<strong>Oops!</strong> There was a problem loading the point. Refreshing the page may help.');
@@ -1175,7 +1245,7 @@ function activateHeaderAndDialogs() {
     window.onpopstate = navigateHistory;  		
 
     manifestoActivate();
-
+    $("#newPointTitle").on('keyup', function(e) {setCharNum(e.target, "#newPointTitle_charNum");});
 
     if (!loggedIn) {
         $("#CreatePoint").attr('href', "#loginDialog");
@@ -1184,7 +1254,7 @@ function activateHeaderAndDialogs() {
             _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
             console.log('Required login ' +  event.target.id);
         });
-        
+                
         $("#loginWithEmail").on('click', function() {
             $("#emailLoginDialog").modal('show');
         });
@@ -1207,12 +1277,16 @@ function activateHeaderAndDialogs() {
         $('#submit_emailLoginDialog').click( login );    
         $('#forgot_emailLoginDialog').click( forgotPassword );        
 
+        make_this_show_login_dlg($('#mainPagePublish'));
+                    
     } else {
         $( "#CreatePoint" ).on('click', function() {
             _gaq.push(['_trackEvent', 'Header Menu', 'Make a Point']);
             showPointDialog("new", "New Point");
         });
 
+        $('#mainPagePublish').off('.ys').on('click.ys', createPointFromMainPage );
+        
         $("#pointDialog").on('hidden', function() {
             // We have to check it it's really hidden, because this event is also triggered on accordion hides
             if ($("#pointDialog").css('display') == 'none') {
@@ -1237,10 +1311,10 @@ function activateHeaderAndDialogs() {
             $('#title_pointDialog').focus();           
         });
 
-        $("#submit_pointDialog").on('click', function(e) {
+        $('#submit_pointDialog').off('.ys').on('click.ys', function(e){
             submitPointDialog(this);
         });
-
+        
         $("#sourcesAdd").on('click', function(e) {
             e.preventDefault();
             addSource(this);
@@ -1301,6 +1375,14 @@ function activateMainPageLeftColumn() {
     $('#mostAgrees').click(function() {
         loadPointList('topRated', '#mostAgreesArea', this);
     });
+
+    $("#newPointTitle").on('keyup', function(e) {setCharNum(e.target, "#newPointTitle_charNum");});
+
+    if ( loggedIn ) {
+        $('#mainPagePublish').off('.ys').on('click.ys', createPointFromMainPage );
+    } else {
+        make_this_show_login_dlg($('#mainPagePublish'));        
+    }
 }
 
 function activateMainPageRightColumn() {    

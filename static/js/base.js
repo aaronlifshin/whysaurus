@@ -1297,7 +1297,7 @@ function activateHeaderAndDialogs() {
                 $('#link_pointDialog').val('');
                 $('#author_pointDialog').val('');
                 $('#description_pointDialog').val('');
-                $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
+                $('.filepicker-placeholder').attr('src', "/static/img/placeholder_white_50x50.gif");
                 $('[name=source_pointDialog]').remove();
                 $('#pointDialog').removeData('sourcesToRemove');     
                 $('#sourceURL_pointDialog').val("");

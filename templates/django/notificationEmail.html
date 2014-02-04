@@ -5,11 +5,12 @@ Whysaurus has seen activity on points you're interested in:<br>
 {% for notification in user.notifications %}
     
         <div>
+        <!-- ReasonCode 1 = agree, ReasonCode 2 = ribbon --> 
         {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %} 
+            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} Someone {% endif %} 
             {{notification.notificationReasonText}}           
             <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
-            a point you {{notification.followReason}}.            
+            (a point you {{notification.followReason}}).            
         {% else %}
             {% if notification.additionalUserCount > 0 %} 
                 {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}

@@ -3,7 +3,7 @@
     data-refpoint="/point/{{notification.referencePoint.url}}"
     data-pointurl="{{notification.referencePoint.url}}"
     data-reason="{{notification.notificationReasonCode}}">
-        <div class="span1">
+        <div class="notificationMargin">
             {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
                 <img class="notificationAvatar" src="/static/img/icon_triceratops_black_47px.png"/>            
             {% else %}            
@@ -15,7 +15,7 @@
             {% endif %}
             
         </div>
-        <div class="span11 notificationText">
+        <div class="notificationText">
           <div>
           {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
               {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %} 

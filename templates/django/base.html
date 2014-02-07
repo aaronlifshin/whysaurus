@@ -116,7 +116,7 @@
                         <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                       
                             {{ user.newNotificationCount }} 
                         </div>
-                      <ul class="span4 dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
+                      <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
                          <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
                         {% if user.notifications %} 
                             data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"                                                                         

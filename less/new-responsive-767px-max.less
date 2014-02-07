@@ -5,16 +5,56 @@
 
 @media (max-width: 767px) {
 
-
-
   .navbar-fixed-top,
   .navbar-fixed-bottom,
   .navbar-static-top {
     margin-left: 0px;   // Bootstrap default is -20px, not sure why that is -JF
   }
   
+  // HEADER
+  
   .responsiveLabel {
     display:none;
+  }
+  
+  // keep logo at the same scale and position as the 768-979 responsive setup
+  #logoImage {
+    margin-top: 7px;
+    margin-left: 4px;
+    max-width: 112px;
+    float:left;
+  }
+
+  .headerLinks {
+    float:left;
+    width: initial;
+    margin-right: 8px;
+  }  
+  
+  .headerLinks a {
+    padding-right: 4%;
+  }
+    
+  #homeNav {
+    margin-left:8px;
+  }
+  
+  #searchArea {
+    float: left;
+    width: 240px;
+  }
+  
+  .headerUserName {
+    position: relative;
+    right: 24px;
+  }
+
+  .aboutMenu {
+    left:8px;
+  }
+  
+  #notificationIcon {
+    margin-right: 34px;
   }
   
 }
@@ -23,6 +63,33 @@
 // ---------------------
 
 @media (max-width: 480px) {
+
+  #homeNav {
+    display:none;
+  }
+  
+  #makePointIcon {
+    margin-left:8px;
+  }
+  
+  #searchArea {
+    width: 136px;
+  }
+  
+  #notificationIcon {
+    width: 24px;
+    margin-right: 39px;
+  }
+  
+  .headerUserName {
+    position: relative;
+    right: 34px;
+  }
+  
+  .userMenuArea #avatar {
+    width: 30px;
+    height: 30px;
+  }
 
 }
 

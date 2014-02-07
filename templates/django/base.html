@@ -51,7 +51,12 @@
       <div class="container">
          <div class="row">
           <div class="span2">
-            <a id="logoNav" href="/"><img class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png"/></a>
+            <a id="logoNav" href="/">
+                <span class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png">
+                    <img class="hidden-xs hidden-phone" src="/static/img/whysaurus_logo.png"/>
+                    <img class="visible-xs visible-phone" src="/static/img/whysaurus_logo_v02_y_32px.png"/>
+                </span>
+            </a>
           </div>
           <div class="span3 headerLinks Heading_Black_Caps">
             <a id="homeNav" href="/">
@@ -60,17 +65,34 @@
               <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>             
             </a>          
             <a id="CreatePoint" href='javascript:;' alt="Make a Point">
-              <img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/
-              <span class="hidden-tablet hidden-sm hidden-phone hidden-xs">MAKE A POINT</span>
+              <img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/>
+              <span class="hidden-xs hidden-phone">MAKE A POINT</span>
             </a> 
           </div>
           <div id="searchArea" class="span3">
               <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
               <div class="searchIcon pull-right"></div>
           </div>
+        <div class="headerLinks Heading_Black_Caps pull-left">
+            <span class="aboutMenu">
+              <a class="userControls dropdown-toggle" data-toggle="dropdown">
+                <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
+                <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
+                <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
+                </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                      <li><a id="help" href="/WhatIsWhysaurus" >What is Whysaurus </a></li>                  
+                      <li><a href="/team">Team</a></li>
+                      <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
+                      <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
+                      <li class="divider"></li>                      
+                      <li><a href="/contact">Send us Feedback</a></li>                      
+                  </ul>                       
+            </span]>  
+          </div>          
     		  {% if user %}              
                   <div class="userMenuArea headerUserName pull-right">
-                    <span class="caret vertalignmiddle"></span>                    
+                    <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
                       <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
                         <span class="responsiveLabel">{{ user.name|escape }}</span> 
                         <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
@@ -119,7 +141,7 @@
                     </div>          
                                                                                                                                           
     		  {% else %}
-                <div class="span4 userMenuArea Heading_Black_Caps">
+                <div class="userMenuArea Heading_Black_Caps">
                   <script> var loggedIn = false; </script>
                   <a class="dropdown-toggle pull-right headerUserName" data-toggle="dropdown">SIGN IN </a>
                   <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
@@ -130,23 +152,6 @@
                   </ul>
                 </div>
     		  {% endif %}
-            <div class="headerLinks Heading_Black_Caps pull-left">
-            <span class="aboutMenu">
-              <a class="userControls dropdown-toggle" data-toggle="dropdown">
-                <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
-                <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
-                <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
-                </a>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a id="help" href="/WhatIsWhysaurus" >What is Whysaurus </a></li>                  
-                      <li><a href="/team">Team</a></li>
-                      <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
-                      <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
-                      <li class="divider"></li>                      
-                      <li><a href="/contact">Send us Feedback</a></li>                      
-                  </ul>                       
-            </span]>  
-          </div>
         </div>        
       </div>
       

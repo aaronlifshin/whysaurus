@@ -1,5 +1,6 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
+
 // scrollbar always visible to prevent horizontal shifting
 html {overflow-y: scroll;}
 
@@ -118,7 +119,6 @@ a:visited {
 }
 
 #searchArea{
-	left:-20px;
     top: -3px;
 	height: 60px;
 	line-height:60px;
@@ -126,7 +126,13 @@ a:visited {
 }
 
 #searchBox {
-	width:90%;
+	width:100%; 
+    // use these three CSS3 box-sizing calls to cause the padding to cut
+    //  into the box width instead of add to it
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;  
+    height:30px;
 	margin-top:0px;
 	padding-right:40px;
 	border: 1px solid #000000;
@@ -134,6 +140,16 @@ a:visited {
   	-moz-border-radius: 0px;
   	border-radius: 2px; 
   	font-size: 16px;
+}
+
+#searchArea .searchIcon {
+	position: relative;
+	top: -41px;
+	right: -2px;
+	height: 16px;
+	width:25px;
+	background-image: url("/static/img/icon_magnifyingGlass.png");
+	background-repeat: no-repeat;
 }
 
 .mainPageInput {
@@ -153,16 +169,6 @@ a:visited {
 
 .newPointCall {
     min-height:0px !important;
-}
-
-#searchArea .searchIcon {
-	position: absolute;
-	top: 20px;
-	right: -22px;
-	height: 16px;
-	width:25px;
-	background-image: url("/static/img/icon_magnifyingGlass.png");
-	background-repeat: no-repeat;
 }
 
 #searchArea .searchIcon:hover  {
@@ -306,7 +312,7 @@ a:visited {
 }
 
 #notificationIcon {
-	margin-right:28px;	
+	margin-right:16px;	
 }
 
 #notificationCount {
@@ -2202,3 +2208,8 @@ a[name="commentArchive"] {
     background-color: #ffe4b9;
     padding: 5px 5px;
 }
+
+// adjustments to responsive css
+@import "new-responsive-767px-max.less";
+@import "new-responsive-768px-979px.less";
+@import "new-responsive-1200px-min.less";

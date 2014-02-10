@@ -28,7 +28,7 @@
   .headerLinks {
     float:left;
     width: initial;
-    margin-right: 8px;
+    margin-right: 6px; // for some reason this doesn't always load up correctly
   }  
   
   .headerLinks a {
@@ -41,7 +41,7 @@
   
   #searchArea {
     float: left;
-    width: 240px;
+    width: 154px;
   }
   
   .headerUserName {
@@ -54,7 +54,7 @@
   }
   
   #notificationIcon {
-    margin-right: 34px;
+    margin-right: 28px;
   }
   
   #notificationCount {
@@ -120,3 +120,17 @@
 
 }
 
+
+// SMALLER PHONES
+// ---------------------
+
+@media (max-width: 420px) {
+
+    .hidden-xxs {
+        display: none;
+    }
+    .visible-xxs {
+        display: inherit;   
+    }
+    
+}

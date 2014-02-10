@@ -1,13 +1,13 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
-
+  
 // scrollbar always visible to prevent horizontal shifting
 html {overflow-y: scroll;}
 
 .no-space [class*="span"] {
     margin: 0 0 0 0 ;
 }
-
+  
 .center { float: none; margin-left: auto; margin-right: auto; }
 
 /* test */
@@ -15,6 +15,15 @@ body {
 	padding-top: 110px;
 }
 
+/* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
+.hidden-xxs {
+    display: inherit;
+}
+.visible-xxs {
+    display: none;   
+}
+    
+    
 /* if we want to set a "visited" color for links, uncomment this... 
 a:visited {
     color: @purple;

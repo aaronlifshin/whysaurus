@@ -79,15 +79,15 @@
                 <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
                 <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
                 <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
-                </a>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+              </a>
+              <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                       <li><a id="help" href="/WhatIsWhysaurus" >What is Whysaurus </a></li>                  
                       <li><a href="/team">Team</a></li>
                       <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
                       <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
                       <li class="divider"></li>                      
                       <li><a href="/contact">Send us Feedback</a></li>                      
-                  </ul>                       
+              </ul>                       
             </span>  
           </div>          
     	  {% if user %}              
@@ -97,7 +97,7 @@
                         <span class="responsiveLabel">{{ user.name|escape }}</span> 
                         <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
                     </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                    <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                       {% if user.admin %}
                           <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                       {% endif %}
@@ -140,10 +140,10 @@
             </div>          
                                                                                                                                           
     	  {% else %}
-            <div class="userMenuArea Heading_Black_Caps">
+            <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
                   <script> var loggedIn = false; </script>
-                  <a class="dropdown-toggle pull-right headerUserName" data-toggle="dropdown">SIGN IN </a>
-                  <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                  <a class="dropdown-toggle" data-toggle="dropdown">SIGN IN </a>
+                  <ul id="userMenuSignedOut" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                     <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
                     <li><a tabindex="-1" href="/auth/google"> Google </a></li>
                     <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>

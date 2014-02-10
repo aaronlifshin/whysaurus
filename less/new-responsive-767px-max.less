@@ -81,6 +81,13 @@
     //float: left;
   }
   
+  #userMenuSignedIn {
+    margin-left: -46px;
+  }
+  
+  #userMenuSignedOut {
+    margin-top: -8px;
+  }
 }
 
 // UP TO LANDSCAPE PHONE
@@ -128,12 +135,18 @@
   
   .notification-menu {
     width: 340px;
+    margin-left: -312px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
   }
   
   .notificationText {
     width: 290px;
   }
-
+  
+  #userMenuSignedIn {
+    margin-left: -55px;
+    margin-top: -8px;
+  }
+   
 }
 
 
@@ -157,13 +170,21 @@
     width:118px;
   }
   
+  #aboutDropdown {
+    left: -64px;
+  }
+  
   .notification-menu {
-    right: -55px !important; //need the important tag to override the pull-right>.dropdown-menu
+    margin-left: -242px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
     width: 305px;
   }
   
   .notificationText {
     width:254px;
   }
-    
+  
+  #userMenuSignedOut {
+    margin-left: -45px;
+    margin-top: -8px;
+  }
 }

@@ -47,7 +47,7 @@
       
   </head>
   <body>
-      <div id="header" class="navbar navbar-fixed-top grayBackground">
+    <div id="header" class="navbar navbar-fixed-top grayBackground">
       <div class="container">
          <div class="row">
           <div class="span2">
@@ -73,7 +73,7 @@
               <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
               <div class="searchIcon pull-right"></div>
           </div>
-        <div class="headerLinks Heading_Black_Caps pull-left">
+          <div class="headerLinks Heading_Black_Caps pull-left">
             <span class="aboutMenu">
               <a class="userControls dropdown-toggle" data-toggle="dropdown">
                 <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
@@ -88,16 +88,16 @@
                       <li class="divider"></li>                      
                       <li><a href="/contact">Send us Feedback</a></li>                      
                   </ul>                       
-            </span]>  
+            </span>  
           </div>          
-    		  {% if user %}              
-                  <div class="userMenuArea headerUserName pull-right">
+    	  {% if user %}              
+            <div class="userMenuArea headerUserName pull-right">
                     <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
                         <span class="responsiveLabel">{{ user.name|escape }}</span> 
                         <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
-                      </a>
-                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                       {% if user.admin %}
                           <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                       {% endif %}
@@ -106,10 +106,9 @@
                           <li><a tabindex="-1" href="/changePassword" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Change Password'])">Change Password</a></li>
                       {% endif %}                 
                       <li><a tabindex="-1" href="/logout"> Logout </a></li>
-                     </ul>
-                   </div>   
-                   
-                   <div id="notifications" class="pull-right">                    
+                    </ul>
+            </div>                      
+            <div id="notifications" class="pull-right">                    
                         <a class="dropdown-toggle" data-toggle="dropdown">                      
                             <img id="notificationIcon" src="/static/img/notificationIcon.png"/>  
                         </a>                                                                         
@@ -138,10 +137,10 @@
 	                        </li>  
                         {% endif %}                                     
                       </ul> 
-                    </div>          
+            </div>          
                                                                                                                                           
-    		  {% else %}
-                <div class="userMenuArea Heading_Black_Caps">
+    	  {% else %}
+            <div class="userMenuArea Heading_Black_Caps">
                   <script> var loggedIn = false; </script>
                   <a class="dropdown-toggle pull-right headerUserName" data-toggle="dropdown">SIGN IN </a>
                   <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
@@ -150,8 +149,8 @@
                     <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
                     <li><a tabindex="-1" id="loginWithEmail"> Whysaurus </a></li>                    
                   </ul>
-                </div>
-    		  {% endif %}
+            </div>
+    	  {% endif %}
         </div>        
       </div>
       
@@ -176,7 +175,7 @@
             <div class="container">
                 <div class="row">
                     <div class="span10">
-                        What is this about?  Read our manifesto: <strong>Bring Reason to the Web.</strong>
+                        What is this about?  Read our Manifesto: <strong>Bring Reason to the Web.</strong>
                     </div>            
                     <div class="pull-right" id="hideManifesto">
                         Hide this
@@ -200,8 +199,9 @@ Does your lorem ipsum text long for something a little meatier? Give our generat
                 </div>
             </div>
         </div>
-	</div>
-    {% endif %}
+      {% endif %}
+    </div>
+
     
 
     {% if user %}
@@ -335,9 +335,9 @@ Does your lorem ipsum text long for something a little meatier? Give our generat
           <a  tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
         </div>
       </div>
-  {% endif %}
-  <div id="fb-root"></div>
-  <script>
+    {% endif %}
+    <div id="fb-root"></div>
+    <script>
     window.fbAsyncInit = function() {
       FB.init({
         appId      : '144595249045851',
@@ -355,12 +355,12 @@ Does your lorem ipsum text long for something a little meatier? Give our generat
      }(document, 'script', 'facebook-jssdk'));
   </script>
   
-  <div class="container" id="mainContainer">
+    <div class="container" id="mainContainer">
 	  <!--<div class="chatRoom">ChatroomContent</div>-->
 
     {% block mainPageContent %} 
     {% endblock %}
   </div>     
-  {% profiler_includes %} 
+    {% profiler_includes %} 
   </body> 
 </html>

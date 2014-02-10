@@ -95,6 +95,10 @@
   #loginDialog {
     margin-left: 0; 
   }
+  
+  input, textarea, .uneditable-input {
+    width: 63%;
+  }
 
 }
 
@@ -154,18 +158,37 @@
     margin-left: -55px;
     margin-top: -8px;
   }
+
+  // DIALOGS
   
   .fieldEdit {
     width:230px;
   }
-    
+     
   .filepicker-placeholder {
     width: 32px;
     height: 32px;
     margin-left: 0; 
     top: 0;
     left: 0; 
-    }    
+  }  
+
+  .modal-body {
+    padding-top:0px;
+  }
+  
+  .form-horizontal .control-label { 
+    display: inline-block;
+    margin-top: 9px;
+    padding-top: 7px;
+    padding-right: 12px;
+    margin-bottom:0px;
+  }   
+  
+  input, textarea, .uneditable-input {
+    min-width: auto;
+    width:98%;
+  }
 }
 
 // NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)

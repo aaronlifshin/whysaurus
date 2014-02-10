@@ -53,8 +53,15 @@
     left:8px;
   }
   
+  #notifications {
+    width: 28px;
+    position:relative;
+    right:28px;
+  }
+
   #notificationIcon {
-    margin-right: 28px;
+    width: 28px;
+    margin-right: 0;
   }
   
   #notificationCount {
@@ -89,9 +96,14 @@
     width: 130px;
   }
   
+  #notifications {
+    width: 24px;
+    position:relative;
+    right:39px;
+  }
+  
   #notificationIcon {
     width: 24px;
-    margin-right: 39px;
   }
   
   #notificationCount {
@@ -111,11 +123,11 @@
   }
   
   .notification-menu {
-    width: 295px;
+    width: 340px;
   }
   
   .notificationText {
-    width: 248px;
+    width: 290px;
   }
 
 }
@@ -126,11 +138,28 @@
 
 @media (max-width: 420px) {
 
-    .hidden-xxs {
-        display: none;
-    }
-    .visible-xxs {
-        display: inherit;   
-    }
+  .hidden-xxs {
+    display: none;
+  }
+  .visible-xxs {
+    display: inherit;   
+  }
+
+  #makePointIcon {
+    margin-left: 6px;
+  }
+  
+  #searchArea {
+    width:118px;
+  }
+  
+  .notification-menu {
+    right: -55px !important; //need the important tag to override the pull-right>.dropdown-menu
+    width: 305px;
+  }
+  
+  .notificationText {
+    width:254px;
+  }
     
 }

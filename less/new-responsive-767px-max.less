@@ -149,11 +149,27 @@
    
 }
 
-
-// SMALLER PHONES
+// NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)
 // ---------------------
 
 @media (max-width: 420px) {
+
+  .hidden-xxs {
+    display: none;
+  }
+  .visible-xxs {
+    display: inherit;   
+  }
+  #searchArea {
+    width:182px;
+  }
+}
+
+
+// IPHONES 3GS - 5
+// ---------------------
+
+@media (max-width: 383px) {
 
   .hidden-xxs {
     display: none;
@@ -167,7 +183,7 @@
   }
   
   #searchArea {
-    width:118px;
+    width:124px;
   }
   
   #aboutDropdown {
@@ -186,5 +202,15 @@
   #userMenuSignedOut {
     margin-left: -45px;
     margin-top: -8px;
+  }
+}
+
+
+// SMALLER PHONES
+// ---------------------
+
+@media (max-width: 319px) {
+  #searchArea {
+    width:118px;
   }
 }

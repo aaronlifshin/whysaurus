@@ -41,20 +41,22 @@
                 </a>
                 
                 <div id="collapsibleSourcesArea" class="panel-collapse collapse ">                    
-                    <div class="row-fluid" id="sourcesArea"></div>         
+                    <div class="row-fluid" id="sourcesArea" class="responsiveInline"></div>         
                     <div class="control-group">
                         <label class="control-label pointDialogueSubHeading pointDialogueSubHeadingTop" for="sourceTitle_pointDialog">Title</label>
                         <div class="controls">
-                            <input id="sourceTitle_pointDialog" type="text" class=" fieldEdit" name="sourceTitle" placeholder="Add the source's title...">
+                            <input id="sourceTitle_pointDialog" type="text" class="fieldEdit" name="sourceTitle" placeholder="Add the source's title...">
                         </div>   
                     </div>
-                    <div class="control-group pull-left">
+                    <div class="control-group">
                         <label class="control-label pointDialogueSubHeading" for="sourceURL_pointDialog">URL</label>        
                         <div class="controls">
                             <input id="sourceURL_pointDialog" type="text" class=" fieldEdit" name="sourceURL" placeholder="Paste the URL of a source here...">
                         </div>
-                        <button id="sourcesAdd"  class="btn addSourceButton" type="button">Add Source</button> 
                     </div>
+                    <div class="control-group">
+                        <button id="sourcesAdd"  class="btn addSourceButton" type="button">Add Source</button> 
+                    </div>                                                        
                 </div>
             </div>
             <div class="panel accordion-group">
@@ -73,7 +75,7 @@
                     </div>
                     <div class="control-group">
                         <div class="row-fluid">
-                            <div class="span9">
+                            <div class="imageTextFieldsArea">
                                 <div class="row-fluid">
                                     <label class="control-label pointDialogueSubHeading" for="author_pointDialog">Image Credit</label>
                                     <div class="controls">
@@ -87,7 +89,7 @@
                                     </div>
                                 </div>  
                             </div>                      
-                            <div class="span3">
+                            <div class="imageThumbnailArea">
                                 <img class="filepicker-placeholder" src="/static/img/placeholder_white_50x50.gif">            
                             </div>
                         </div>

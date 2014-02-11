@@ -413,8 +413,8 @@ function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
         newDiv.data('sourcekey', sourceKey);
     }
     //newDiv.html("<a class=\"span2 offset1 removeSource\" href=\"#\">x</a>" + 
-    newDiv.html("<a class=\"span2 removeSource\" href=\"#\">x</a>" + 
-    "<a class=\"span9 sourceLink\" target=\"_blank\" href=\"" +  sourceURL+"\">"+ sourceTitle + "</a>");
+    newDiv.html("<a class=\"removeSource \" href=\"#\">x</a>" + 
+    "<a class=\"sourceLink \" target=\"_blank\" href=\"" +  sourceURL+"\">"+ sourceTitle + "</a>");
     appendAfter.append(newDiv);        
     updateDialogHeight();
     $('.removeSource',newDiv).on('click', function(e) {removeSource(this);});

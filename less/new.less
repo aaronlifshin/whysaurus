@@ -45,6 +45,10 @@ a:visited {
     max-width: 640px;
 }
 
+.noLeftMargin {
+    margin-left:0 !important;
+}
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    DROPDOWNS
@@ -702,6 +706,20 @@ a:visited {
     top:2px;
 }
 
+.explanationRow {
+    margin-top:28px;
+    min-height:1px;
+    //margin-bottom:16px;
+    width:800px;
+    margin-left:0;
+}
+
+.explanationBlock {
+    display:block;
+    float:left;
+    margin-left:42px;
+}
+
 .explanationText {
 	color: black;
 	font-size: @fontSizeMedium;
@@ -710,8 +728,25 @@ a:visited {
     margin-left:0;
 }
 
+.explanationTextCentered {
+	color: black;
+	font-size: @baseFontSize;
+	line-height: @lineHeightBig;	
+    text-align:center;
+    font-weight:bold;
+    max-width: 164px;
+    margin:auto;
+	margin-bottom: 12px;	
+}
+
 .explanationImage {
     margin-bottom:24px;
+}
+
+.explanationImageCentered {
+    display:block;
+    margin:auto;
+    margin-bottom:36px;
 }
 
 .columnHeading {
@@ -727,7 +762,6 @@ a:visited {
 	font-size: @fontSizeLargeCond; 
     color: black;
 }
-
 
 
 .bottomBorder {

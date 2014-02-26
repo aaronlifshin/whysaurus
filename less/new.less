@@ -535,6 +535,7 @@ a:visited {
 .pointCard .pointTitle {
 	color: black;
 	font-size: @fontSizeMedium;
+    font-weight:bold;
 	line-height: @lineHeightBig;	
 	margin-bottom: 22px;	
     padding-left: 1px;
@@ -995,15 +996,13 @@ a:visited {
 }
 
 .pointColumnMenuArea {
-	border-style: solid;
-	border-width: 1px;
-	border-color: @grayBoxOutlines;
-	margin-bottom: @spaceBtPointCards;
-	padding-top:10px;
+	margin-top:@spaceBtPointCards;
 }
 
 .arrowImage {
     margin-bottom: 2px;
+    margin-left:6px;
+    width:48px;
     //position:relative;
     //top:-10px;
     z-index:10; // put arrows on top of other elements
@@ -1011,19 +1010,40 @@ a:visited {
     //height:94px; // correct size, but requires arrows to be placed in different spans to work
 }
 
+.arrowImageCurved {
+    margin-bottom: 4px;
+    margin-left:0px;
+    position:relative;
+    top:-1px;
+}
 
 .pointListTitle {
     font-size: @fontSizeMedium;
+    font-weight:bold;
     color: black;
+    padding-top: 0px;
+    padding-left:8px;
 }
 
+.pointListTitleZero {
+    padding-left:16px;
+}
+
+
+
+.pointListTitleBorder {
+    //border-top-width: 1px;
+    //border-top-color: @grayBoxOutlines;
+    //border-top-style: solid;
+    //padding-top: 10px;
+}
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
 	margin-bottom: 5%;
 }
 
 #supporting_numberOfPoints, #counter_numberOfPoints {
-	margin-bottom: 1em;
+	margin-bottom: 12px;
 }
 
 #supporting_zeroPointsText, #counter_zeroPointsText {
@@ -1065,7 +1085,7 @@ a:visited {
 .showRelevance {
     cursor: pointer;
     font-size: @fontSizeSmall;
-    margin-top: 2px;
+    margin-top: 0px;
     margin-bottom:-1px;
    	color: @blue;
     border-style:solid;
@@ -1223,6 +1243,34 @@ h4.mainPointTitleText {
 	line-height:@lineHeightBig;
 }
 
+.arrowText {
+    font-size: @fontSizeMedium;
+    font-weight:bold;
+	line-height:@lineHeightBig;
+    color: black;
+    position:relative;
+    top:-71px;
+    left:18px;
+    margin-bottom:-16px;
+}
+
+
+.pointListTextBig {
+    font-size: @fontSizeLarge;
+    font-weight:bold;
+	line-height:@lineHeightBig;
+    color: black;
+    margin-top:4px;
+    margin-left:4px;
+    margin-bottom:12px;
+}
+
+.pointListTextSmall {
+    font-size: @fontSizeMedium;
+    color: black;
+    margin-top:0px;
+	line-height:@lineHeightDefault;
+}
 
 
 
@@ -1390,7 +1438,7 @@ a#editPoint:hover {
 
 button#supporting_addPointWhenNonZero,
 button#counter_addPointWhenNonZero {	
-	margin-left:20px;
+	margin-left:0px;
     position:relative;
     z-index:1;
 }
@@ -1402,8 +1450,17 @@ button#counter_addPointWhenNonZero {
 
 #supporting_pointActions, #counter_pointActions, 
 #supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
- {
+{
 	margin-bottom:10px;
+    padding-left:8px;
+}
+#supporting_pointActions, #counter_pointActions, 
+{
+    padding-left:8px;
+}
+#supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
+ {
+    padding-left:16px;
 }
 
 

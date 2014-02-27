@@ -66,6 +66,25 @@ a:visited {
 }
 
 
+.borderButton {
+	font-family: @sansCondFontFamily;
+    font-weight: 700;
+    font-size: @fontSizeMediumCond;
+    color: @grayTextMedium;
+    background:none;
+    background-color:#FFFFFF;
+    border: 1px solid @grayOutlinesMid;
+    border-radius: 2px;
+	padding: 9px 15px 4px;
+}
+
+.borderButton:hover {
+    background-color:@blueLight;	
+    text-decoration:none;
+}
+
+
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    DROPDOWNS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -549,7 +568,7 @@ a:visited {
 	font-size: @fontSizeMedium;
     font-weight:bold;
 	line-height: @lineHeightBig;	
-	margin-bottom: 22px;	
+	margin-bottom: 8px;	
     padding-left: 1px;
 }
 
@@ -558,6 +577,10 @@ a:visited {
     /*font-weight: bold;*/
 	font-family: @sansFontFamily;
 	font-size: @fontSizeSmaller;	
+}
+
+.pointBoxStatsRow {
+    margin-bottom:24px;
 }
 
 .pointCard .linkStat {
@@ -599,6 +622,20 @@ a:visited {
     padding: 2px;
  }
 
+ .pointActionButton {
+    margin-top:0px;
+    margin-bottom:2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 5px;
+    padding-bottom:3px;
+ }
+ 
+ .pointActionButtonBorder {
+    padding-top: 3px;
+    padding-bottom:2px;
+} 
+ 
 .pointCard .gaugeCounter {
 	right: 3px;
 }
@@ -862,9 +899,21 @@ a:visited {
 
 .pointAreaActions {
     font-family: @sansFontFamily;
-	font-size:@fontSizeMedium;
-	font-color: @blue;
+	font-size:@fontSizeActions;
+	color: @blue;
 	margin-bottom:10px;
+}
+
+.pointBoxActionLine {
+    font-family: @sansFontFamily;
+	font-size: @fontSizeActions;
+	color: @blue;
+}
+
+
+.pointBoxActions {
+	margin-bottom:2px;
+    margin-right:4px;
 }
 
 #scoreAndVotingSection {
@@ -927,22 +976,6 @@ a:visited {
     -moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
     box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
     /* background-position:-60px center; */
-}
-
-.borderButton {
-	font-family: @sansCondFontFamily;
-    font-weight: 700;
-    font-size: @fontSizeMediumCond;
-    color: @grayTextMedium;
-    background:none;
-    background-color:#FFFFFF;
-    border: 1px solid @grayOutlinesMid;
-    border-radius: 2px;
-	padding: 9px 15px 4px;
-}
-
-.borderButton:hover {
-    background-color:@blueLight;	
 }
 
 .radioButtonGrpDefault {
@@ -1016,7 +1049,7 @@ a:visited {
 }
 
 .pointColumnMenuArea {
-	margin-top:@spaceBtPointCards;
+	margin-top:@spaceBtPointCards * 2;
 }
 
 .arrowImage {
@@ -1042,7 +1075,7 @@ a:visited {
     font-weight:bold;
     color: black;
     padding-top: 0px;
-    padding-left:8px;
+    padding-left:6px;
 }
 
 .pointListTitleZero {
@@ -1099,7 +1132,7 @@ a:visited {
 
 .upstreamLinks{
 	font-family: @sansFontFamily;
-    font-size: @fontSizeSmall;	
+    font-size: @fontSizeActions;	
 }
 
 .upstreamSupporting {
@@ -1118,7 +1151,7 @@ a:visited {
 
 .showRelevance {
     cursor: pointer;
-    font-size: @fontSizeSmall;
+    font-size: @fontSizeActions;
     margin-top: 0px;
     margin-bottom:-1px;
    	color: @blue;
@@ -1487,11 +1520,11 @@ button#counter_addPointWhenNonZero {
 #supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
 {
 	margin-bottom:10px;
-    padding-left:8px;
+    padding-left:6px;
 }
 #supporting_pointActions, #counter_pointActions, 
 {
-    padding-left:8px;
+    padding-left:6px;
 }
 #supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
  {

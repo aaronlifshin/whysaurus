@@ -5,15 +5,7 @@
 	          <div class="pointTitle">
 	            <a href="/point/{{ point.url }}" style="text-decoration:none">{{ point.title|escape }}</a>
 	          </div>
-	      </div>     
-        {% if point.imageURL and point.imageURL.strip %}                        
-	      <div class="span2">
-	            <img class="listDisplay" src="{{ point.summaryBigImage }}" />
-	      </div>
-        {% endif %}            
-          
-	    </div>    
-	      <div class="row-fluid">
+              <div class="row-fluid pointBoxStatsRow">
 			  {% if point.voteTotal != 0 %}
 				  <span class="stat"><img class="iconAgreesSmall" src="/static/img/agreesIconSmall.png"/>&nbsp{{ point.voteTotal }}&nbsp&nbsp</span>
 			  {% endif %}            
@@ -23,7 +15,40 @@
 			  {% if point.sources|length != 0 %}							
 			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall.png"/>&nbsp{{ point.sources|length }}</span>
 			  {% endif %}            				
+              </div>
+	      </div>     
+        {% if point.imageURL and point.imageURL.strip %}                        
+	      <div class="span2">
+	            <img class="listDisplay" src="{{ point.summaryBigImage }}" />
 	      </div>
+        {% endif %}            
+          
+	    </div>    
+      
+          <div class="pointBoxActionLine">  
+          <a class="pointBoxActions">Agree</a>&#149;
+          <a class="pointBoxActions">Disagree</a>&#149;
+          {% if point.numSupporting > 0 or point.numCounter > 0 %}
+            <a class="pointBoxActions">See Evidence</a>
+          {% else %} 
+            <a class="pointBoxActions">Needs Evidence</a>
+          {% endif %} 
+          </div>
+          
+          <!--
+          <a class="btn btn-primary pointActionButton">Agree</a>
+          <a class="btn btn-primary pointActionButton">Disagree</a>
+          {% if point.numSupporting > 0 or point.numCounter > 0 %}
+            <a class="btn btn-primary pointActionButton seeEvidenceButton">See Evidence</a>
+          {% else %} 
+            <a class="borderButton pointActionButton pointActionButtonBorder needsEvidenceButton ">Needs Evidence</a>
+          {% endif %} 
+          -->        
+          
+          
+          
+          
+          <!--
 		  {% if point.numSupporting > 0 or point.numCounter > 0 %}
 		      <div class="row-fluid no-space gauge">
 		          <span class="linkStat 
@@ -48,6 +73,7 @@
 					  {{ point.numCounter }} COUNTER
 		          </div>			  
 		      </div>  
-		  {% endif %}             
+		  {% endif %} 
+          -->          
 	</div>
 

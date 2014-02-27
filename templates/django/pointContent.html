@@ -72,10 +72,10 @@
 	<div id="scoreAndVotingSection" class="pointAreaActions span8">
 		<div class="span5">
             <div class="span3">        
-                <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > AGREE</a>
-                or
+                <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > Agree</a>
+                &#149;
                 <a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
-                DISAGREE</a><img class="iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
+                Disagree</a><img class="iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
 	    </div>		   
 			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->

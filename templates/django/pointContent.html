@@ -1,6 +1,6 @@
 <div id="leftColumnPoint" >
 	<div class="dropdown pull-left">
-	    <a class="dropdown-toggle upstreamLinks upstreamSupporting {% if not supportedPoints %} disabled {% endif %}" 
+	    <a class="dropdown-toggle upstreamLinks upstreamSupporting {% if not supportedPoints %} disabled opacityZero {% endif %}" 
 	    id="supportedByMeMenu" data-toggle="dropdown">
 	     {% if supportedPoints %} 
 	        Supporting {{ supportedPoints|length }} Point{% if supportedPoints|length != 1 %}s{% endif %}   
@@ -19,7 +19,7 @@
 	</div>
             
 	<div class="dropdown pull-right">
-		<a class="dropdown-toggle upstreamLinks upstreamCountering {% if not counteredPoints %} disabled {% endif %} "
+		<a class="dropdown-toggle upstreamLinks upstreamCountering {% if not counteredPoints %} disabled opacityZero {% endif %} "
 		id="counteredByMeToggle" data-toggle="dropdown">
 		{% if counteredPoints %}
 		  Countering {{ counteredPoints|length }} Point{% if counteredPoints|length != 1 %}s{% endif %}

@@ -125,7 +125,10 @@ function pointUnlink(elem, linkType) {
     
     startSpinnerOnButton(elem);
 
-    pointCard = $(elem).closest('div.relevanceVote').next().children('.pointCard');
+    pointCard = $(elem).closest('div.relevanceVote').next();    
+    // previously:
+    //pointCard = $(elem).closest('div.relevanceVote').next().children('.pointCard');
+    
     supportingPointURL = pointCard.data('pointurl');
     pointURL = $('#pointArea').data('pointurl');
     _gaq.push(['_trackEvent', 'Link Manipulation', 'Unlink ' + linkType , supportingPointURL + ' from ' + pointURL]);            
@@ -141,19 +144,30 @@ function pointUnlink(elem, linkType) {
 			},
 			success: function(obj){
 				if (obj.result == true) {
-                    // remove the relevanceArea for the point card
-                    pointCard.parent().prev('.relevanceVote').prev().remove();      
-                    pointCard.parent().prev('.relevanceVote').remove();                    
-                                  
+                
+                    // remove the relevanceArea for the point card                 
+                    pointCard.prev('.relevanceVote').prev().remove();      
+                    pointCard.prev('.relevanceVote').remove(); 
+                    // previously:
+                    //pointCard.parent().prev('.relevanceVote').prev().remove();      
+                    //pointCard.parent().prev('.relevanceVote').remove();  
+                    
 					// remove the a link containing the point card
-					pointCard.parent().remove();
+					pointCard.remove();
+                    // previously:
+					//pointCard.parent().remove();
+                   
 					if ($('.pointCard', $('#' + linkType + '_nonzeroPoints')).length == 0 ) {
 						$("#" + linkType + "_zeroPoints").show();
 						$("#" + linkType + "_nonzeroPoints").hide();
-						$("[name=" + linkType + "_linkPoint]").button();
-					} else {
-						setPointListHeader(linkType);
-					}
+                        $("#" + linkType + "_nonzeroPointsFooter").addClass("hide");
+                        
+						$("[name=" + linkType + "_linkPoint]").button();                        
+					} 
+                    // no longer needed
+                    //else {
+						//setPointListHeader(linkType);
+					//}
 					updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
 				} else {
 					showErrorAlert('There was an error during unlinking: ' + obj.error); 
@@ -419,7 +433,8 @@ function setPointListHeader(linkType) {
 function pointListAppend(linkType, pointHTML, numLinkPoints) {
 
     var newPointCard = $(pointHTML).appendTo("#" + linkType + "_nonzeroPoints");    
-    setPointListHeader(linkType);	
+    // no longer being used:
+    //setPointListHeader(linkType);	
     makePointsCardsClickable();	 
     makeRelevanceControlsClickable();
     $('[name=showRelevance]').off('.ys').on('click.ys', showRelevance);
@@ -427,6 +442,7 @@ function pointListAppend(linkType, pointHTML, numLinkPoints) {
     
     if ($("[id^=" + linkType +"Point_]").length == 0 ) {
       $("#" + linkType + "_zeroPoints").hide();
+      $("#" + linkType + "_nonzeroPointsFooter").removeClass("hide");
       $("#" + linkType + "_nonzeroPoints").show();
     }
     	

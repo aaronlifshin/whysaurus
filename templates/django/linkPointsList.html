@@ -1,16 +1,5 @@
 <div class="row-fluid">
-
         <img class="arrowImageCurved" src="/static/img/arrow_open_blank.png"/>
-        <!--<img class="arrowImageCurved" src="/static/img/{% if linkType == 'supporting'%}arrow_open_why.png{% else %}{% if linkType == 'counter' %}arrow_open_whynot.png{% endif %}{% endif %}"/>-->
-    	<!--<img class="arrowImage" src="/static/img/arrow_empty_why_48pxHi.png"/>-->
-        <!--<img class="arrowImage" src="/static/img/{% if linkType == 'supporting'%}arrow_empty_why_48pxHi.png{% else %}{% if linkType == 'counter' %}arrow_empty_whynot_48pxHi.png{% endif %}{% endif %}"/>-->
-        <!--<p class="pointListTextBig">
-        {% if linkType == 'supporting' %}
-            Why it's TRUE:
-        {% else %}   
-            Why it's FALSE:
-        {% endif %}
-        </p>-->
         <p class="arrowText">
         {% if linkType == 'supporting' %}
             Why it's TRUE
@@ -18,7 +7,6 @@
             Why it's FALSE
         {% endif %}
         </p>        
-
 </div>
   
 <div class="{% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
@@ -28,8 +16,11 @@
                 {% include 'linkPoint.html' %} 
             {% endwith %}
 		{% endfor %}
-	{% endif %}  
-	<div id="{{linkType}}_menuArea"  class="pointColumnMenuArea">
+	{% endif %}
+</div>
+
+<!-- footer for lists with 1 more point.  These are always present, and shown if a point is added -->    
+<div id="{{linkType}}_nonzeroPointsFooter"  class="pointColumnMenuArea {% if linkedPoints %} {% else %} hide {% endif %}">
     	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pointListTitleBorder">
             Got a reason why the top point is {% if linkType == 'supporting'%}true{% else %}{% if linkType == 'counter' %}false{% endif %}{% endif %}?
         </div>
@@ -76,14 +67,10 @@
 				</ul>				
 			</div>
 		</div>
-	</div>
+</div>    
 
 
 
-
-
-    
-</div>	
 <!-- zero point areas are below here.  These are always present, and shown if the last point is unlinked -->
 <div id="{{linkType}}_zeroPoints" class="{% if linkedPoints %}hide{%else%}{% endif %}">
 <div>
@@ -124,14 +111,6 @@
 		    </ul>			
 		</div>
 	</div>
-	<!-- 
-    <div id="addEvidencePromptText" class="pagination-centered row">
-        {% if linkType == "supporting" %}
-            If this point is true, add evidence to support it.
-        {% else %}
-            If this point is false, add points to counter it.          
-        {% endif %}
-    </div>
-	-->
+
 </div>
 </div>

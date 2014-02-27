@@ -28,26 +28,13 @@
           <div class="pointBoxActionLine">  
           <a class="pointBoxActions">Agree</a>&#149;
           <a class="pointBoxActions">Disagree</a>&#149;
-          {% if point.numSupporting > 0 or point.numCounter > 0 %}
+          {% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
             <a class="pointBoxActions">See Evidence</a>
           {% else %} 
             <a class="pointBoxActions">Needs Evidence</a>
           {% endif %} 
           </div>
-          
-          <!--
-          <a class="btn btn-primary pointActionButton">Agree</a>
-          <a class="btn btn-primary pointActionButton">Disagree</a>
-          {% if point.numSupporting > 0 or point.numCounter > 0 %}
-            <a class="btn btn-primary pointActionButton seeEvidenceButton">See Evidence</a>
-          {% else %} 
-            <a class="borderButton pointActionButton pointActionButtonBorder needsEvidenceButton ">Needs Evidence</a>
-          {% endif %} 
-          -->        
-          
-          
-          
-          
+           
           <!--
 		  {% if point.numSupporting > 0 or point.numCounter > 0 %}
 		      <div class="row-fluid no-space gauge">

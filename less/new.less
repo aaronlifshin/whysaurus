@@ -15,6 +15,10 @@ body {
 	padding-top: 110px;
 }
 
+a:hover {
+    cursor:pointer;
+}
+
 /* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
 .hidden-xxs {
     display: inherit;
@@ -40,6 +44,18 @@ a:visited {
 .voteArea a:hover {
     text-decoration: none;
 }
+
+.disabled {
+    color:@grayTextLight;
+    cursor:default;
+}
+
+.disabled:hover {
+    color:@grayTextLight !important;
+    cursor:default;
+    text-decoration: none !important;
+}
+
 
 .fullPageText {
     max-width: 640px;
@@ -1077,6 +1093,20 @@ a:visited {
 	margin-right: 32px;		
 }
 
+.upstreamLinks{
+	font-family: @sansFontFamily;
+    font-size: @fontSizeSmall;	
+}
+
+.upstreamSupporting {
+    padding-left:16px;
+}
+
+.upstreamCountering {
+    padding-right:16px;
+}
+
+
 .mainPointContent p {
     line-height: 140%;
     margin-bottom:11px;
@@ -1286,6 +1316,7 @@ h4.mission {
 #pointArea {
 	position: relative;
 	margin-left:0px;
+    margin-top:4px;
 	padding-top: 10px;
 }
 
@@ -1803,6 +1834,7 @@ button#counter_addPointWhenNonZero {
 }
 
 
+
 #sourcesAdd {
 	margin-left: 2px;
     margin-bottom: 8px;
@@ -2220,7 +2252,7 @@ a[name="profileEdit"] {
   
 .commentsColumn {
     position:relative;
-    top: 34px;
+    top: 24px;
 }   
    
 .commentsButton {

@@ -73,7 +73,7 @@
 		<div class="span5">
             <div class="span3">        
                 <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > Agree</a>
-                &#149;
+                &#183;<!-- &#183; = small dot -->
                 <a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
                 Disagree</a><img class="iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
 	    </div>		   

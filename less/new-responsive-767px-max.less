@@ -1,0 +1,325 @@
+//
+// Responsive: Landscape phone to desktop/tablet
+// --------------------------------------------------
+
+
+@media (max-width: 767px) {
+
+  .navbar-fixed-top,
+  .navbar-fixed-bottom,
+  .navbar-static-top {
+    margin-left: 0px;   // Bootstrap default is -20px, not sure why that is -JF
+  }
+  
+  // for elements that we want to display inline, even when the grid system is abandoned for small screens
+  .responsiveInline {
+    display:inline !important;
+  }
+  
+  // HEADER
+  
+  .responsiveLabel {
+    display:none;
+  }
+  
+  // keep logo at the same scale and position as the 768-979 responsive setup
+  #logoImage {
+    margin-top: 7px;
+    margin-left: 4px;
+    max-width: 112px;
+    float:left;
+  }
+
+  .headerLinks {
+    float:left;
+    width: initial;
+    margin-right: 6px; // for some reason this doesn't always load up correctly
+  }  
+  
+  .headerLinks a {
+    padding-right: 4%;
+  }
+    
+  #homeNav {
+    margin-left:8px;
+  }
+  
+  #CreatePoint {
+    margin-left:0px; //no longer on the grid
+  }
+  
+  #searchArea {
+    float: left;
+    width: 154px;
+  }
+  
+  .headerUserName {
+    position: relative;
+    right: 24px;
+  }
+
+  .aboutMenu {
+    left:8px;
+  }
+  
+  #notifications {
+    width: 28px;
+    position:relative;
+    right:28px;
+  }
+
+  #notificationIcon {
+    width: 28px;
+    margin-right: 0;
+  }
+  
+  #notificationCount {
+    left: 37%;
+  }
+  
+  .notificationAvatar {
+    max-width: 22px;
+    //float: left;
+  }
+  
+  .notificationText {
+    //float: left;
+  }
+  
+  #userMenuSignedIn {
+    margin-left: -46px;
+  }
+  
+  #userMenuSignedOut {
+    margin-top: -8px;
+  }
+  
+  // PROFILE PAGE
+  
+  .profilePic {
+    max-width: 64px;
+  }
+  /*
+  .profileEditButton {
+    float:none;
+    margin-left:4px;
+  }*/
+  
+  .profileAreaColumn {
+    margin-bottom:18px;
+  }
+  
+  // DIALOGS 
+  
+  #loginDialog {
+    margin-left: 0; 
+  }
+  
+  input, textarea, .uneditable-input {
+    width: 63%;
+  }
+  
+  #title_pointDialog {
+    width: 97.5%;   
+  }
+  
+  .imageTextFieldsArea {
+    width:70%;
+  }
+  
+  #sourceTitle_pointDialog {
+    with:70%;
+  }
+  
+  .filepicker-placeholder {
+    //width: 64px;
+    //height: 64px;
+    //margin-left: 18px; 
+    //top: 0;
+    //left: 0; 
+  } 
+}
+  
+// SPECIAL CASE FOR Explanatory Illustrations
+// ---------------------
+@media (max-width: 540px) {
+
+  // Explanation Illustrations
+  .explanationRow {
+    width: 200px;
+  }
+  
+  .explanationBlock {
+    margin-left:0px;
+  }
+  
+  .explanationImageCentered {
+    margin-bottom:28px;
+  }
+}
+
+// UP TO LANDSCAPE PHONE
+// ---------------------
+
+@media (max-width: 480px) {
+
+  #homeNav {
+    display:none;
+  }
+  
+  #makePointIcon {
+    margin-left:8px;
+  }
+  
+  #searchArea {
+    width: 130px;
+  }
+  
+  #notifications {
+    width: 24px;
+    position:relative;
+    right:39px;
+  }
+  
+  #notificationIcon {
+    width: 24px;
+  }
+  
+  #notificationCount {
+    top: 25%;
+    left: 29%;
+    line-height: @lineHeightBig;
+  }
+  
+  .headerUserName {
+    position: relative;
+    right: 34px;
+  }
+  
+  .userMenuArea #avatar {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .notification-menu {
+    width: 340px;
+    margin-left: -312px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
+  }
+  
+  .notificationText {
+    width: 290px;
+  }
+  
+  #userMenuSignedIn {
+    margin-left: -55px;
+    margin-top: -8px;
+  }
+
+  // DIALOGS
+  
+  .imageTextFieldsArea {
+    width:100%;
+  }
+     
+  .filepicker-placeholder {
+    width: 33px;
+    height: 33px;
+    margin-left: 0; 
+    position: absolute;
+    top: 24px;
+    left: 132px; 
+  }  
+
+  .modal-body {
+    padding-top:0px;
+  }
+  
+  .form-horizontal .control-label { 
+    display: inline-block;
+    margin-top: 9px;
+    padding-top: 7px;
+    padding-right: 12px;
+    margin-bottom:0px;
+  }   
+  
+  input, textarea, .uneditable-input {
+    min-width: auto;
+    width:98%;
+  }
+}
+
+// NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)
+// ---------------------
+
+@media (max-width: 420px) {
+
+  .hidden-xxs {
+    display: none;
+  }
+  .visible-xxs {
+    display: inherit;   
+  }
+  #searchArea {
+    width:182px;
+  }
+  
+  // DIALOGS
+  
+  .fieldEdit {
+    width:96%;
+  }
+}
+
+
+// IPHONES 3GS - 5
+// ---------------------
+
+@media (max-width: 383px) {
+
+  .hidden-xxs {
+    display: none;
+  }
+  .visible-xxs {
+    display: inherit;   
+  }
+
+  #makePointIcon {
+    margin-left: 6px;
+  }
+  
+  #searchArea {
+    width:124px;
+  }
+  
+  #aboutDropdown {
+    left: -64px;
+  }
+  
+  .notification-menu {
+    margin-left: -242px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
+    width: 305px;
+  }
+  
+  .notificationText {
+    width:254px;
+  }
+  
+  #userMenuSignedOut {
+    margin-left: -45px;
+    margin-top: -8px;
+  }
+  
+  // DIALOGS
+  
+
+}
+
+
+// SMALLER PHONES
+// ---------------------
+
+@media (max-width: 319px) {
+  #searchArea {
+    width:118px;
+  }
+}

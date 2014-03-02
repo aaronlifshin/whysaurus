@@ -413,8 +413,8 @@ function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
         newDiv.data('sourcekey', sourceKey);
     }
     //newDiv.html("<a class=\"span2 offset1 removeSource\" href=\"#\">x</a>" + 
-    newDiv.html("<a class=\"span2 removeSource\" href=\"#\">x</a>" + 
-    "<a class=\"span9 sourceLink\" target=\"_blank\" href=\"" +  sourceURL+"\">"+ sourceTitle + "</a>");
+    newDiv.html("<a class=\"removeSource \" href=\"#\">x</a>" + 
+    "<a class=\"sourceLink \" target=\"_blank\" href=\"" +  sourceURL+"\">"+ sourceTitle + "</a>");
     appendAfter.append(newDiv);        
     updateDialogHeight();
     $('.removeSource',newDiv).on('click', function(e) {removeSource(this);});
@@ -1297,7 +1297,7 @@ function activateHeaderAndDialogs() {
                 $('#link_pointDialog').val('');
                 $('#author_pointDialog').val('');
                 $('#description_pointDialog').val('');
-                $('.filepicker-placeholder').attr('src', "/static/img/placeholder_50x50.gif");
+                $('.filepicker-placeholder').attr('src', "/static/img/placeholder_white_50x50.gif");
                 $('[name=source_pointDialog]').remove();
                 $('#pointDialog').removeData('sourcesToRemove');     
                 $('#sourceURL_pointDialog').val("");

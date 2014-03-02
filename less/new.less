@@ -1,19 +1,33 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
+       
 // scrollbar always visible to prevent horizontal shifting
 html {overflow-y: scroll;}
 
 .no-space [class*="span"] {
     margin: 0 0 0 0 ;
 }
-
+        
 .center { float: none; margin-left: auto; margin-right: auto; }
 
 /* test */
 body {
-	padding-top: 110px;
+	padding-top: 100px;
 }
 
+a:hover {
+    cursor:pointer;
+}
+
+/* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
+.hidden-xxs {
+    display: inherit;
+}
+.visible-xxs {
+    display: none;   
+}
+    
+    
 /* if we want to set a "visited" color for links, uncomment this... 
 a:visited {
     color: @purple;
@@ -31,9 +45,73 @@ a:visited {
     text-decoration: none;
 }
 
+.disabled {
+    color:@grayTextLight;
+    cursor:default;
+}
+
+.disabled:hover {
+    color:@grayTextLight !important;
+    cursor:default;
+    text-decoration: none !important;
+}
+
+.opacityZero {
+    opacity:0;
+}
+
+.dropdown .caret {
+	margin-left:1px;
+}
+
 .fullPageText {
     max-width: 640px;
 }
+
+.noLeftMargin {
+    margin-left:0 !important;
+}
+
+
+.borderButton {
+	font-family: @sansCondFontFamily;
+    font-weight: 700;
+    font-size: @fontSizeMediumCond;
+    color: @grayTextMedium;
+    background:none;
+    background-color:#FFFFFF;
+    border: 1px solid @grayOutlinesMid;
+    border-radius: 2px;
+	padding: 9px 15px 4px;
+}
+
+.borderButton:hover {
+    background-color:@blueLight;	
+    text-decoration:none;
+}
+
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   DROPDOWNS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.dropdown-menu {
+    padding-top:7px;
+    padding-bottom:8px;
+}
+   
+.dropdown-menu>li>a {
+    padding-top:3px;
+    padding-right:20px;
+    padding-bottom: 3px;
+    padding-left:10px;
+}
+
+.iconDropdown {
+    padding-right:3px;
+}
+
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,23 +121,27 @@ a:visited {
 #header{
     height:48px;	
 }
-
+ 
 #logoImage {
     margin-top: 2px;	
+}
+ 
+#CreatePoint {
+    margin-left:9px; //nudge this link onto the grid
 }
   
 .privateAreaHeader {
 	background:@privateAreaStrip;
 	height: 28px;
 	line-height: 24px;
-    margin-top:-27px;
+    margin-top:-12px;
 }
 
 .manifestoHeader {
 	background:#FF000B;
 	height: 28px;
 	line-height: 24px;
-    margin-top:-27px;
+    margin-top:-12px;
     cursor:pointer;
     color: white;
 }
@@ -96,7 +178,6 @@ a:visited {
 }
 
 #searchArea{
-	left:-20px;
     top: -3px;
 	height: 60px;
 	line-height:60px;
@@ -104,7 +185,13 @@ a:visited {
 }
 
 #searchBox {
-	width:90%;
+	width:100%; 
+    // use these three CSS3 box-sizing calls to cause the padding to cut
+    //  into the box width instead of add to it
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;  
+    height:30px;
 	margin-top:0px;
 	padding-right:40px;
 	border: 1px solid #000000;
@@ -112,6 +199,16 @@ a:visited {
   	-moz-border-radius: 0px;
   	border-radius: 2px; 
   	font-size: 16px;
+}
+
+#searchArea .searchIcon {
+	position: relative;
+	top: -41px;
+	right: -2px;
+	height: 16px;
+	width:25px;
+	background-image: url("/static/img/icon_magnifyingGlass.png");
+	background-repeat: no-repeat;
 }
 
 .mainPageInput {
@@ -131,16 +228,6 @@ a:visited {
 
 .newPointCall {
     min-height:0px !important;
-}
-
-#searchArea .searchIcon {
-	position: absolute;
-	top: 20px;
-	right: -22px;
-	height: 16px;
-	width:25px;
-	background-image: url("/static/img/icon_magnifyingGlass.png");
-	background-repeat: no-repeat;
 }
 
 #searchArea .searchIcon:hover  {
@@ -199,14 +286,14 @@ a:visited {
 .topSpace {
 	height:22px;
 }
-
+  
 .Heading_Black_Caps {
 	size:0.875em;
     font-family: "ff-meta-web-pro-condensed", sans-serif;
     color:black;
     font-weight: bold;
 }
-
+   
 .headerUserName {	                                
     font-family: @sansCondFontFamily;
     color: black;
@@ -216,8 +303,7 @@ a:visited {
 }
 
 .headerLinks {	                                
-    height:60px;
-    margin-top:15px;
+    margin-top:14px;
 	display:block;
     font-size: @fontSizeMediumCond;
     font-weight: bold;
@@ -230,36 +316,52 @@ a:visited {
 }
 
 .headerLinks a {
-    padding-right:6%;	
+    padding-right:5%;	
 }
 
 .headerUserName a {	                                
     color: black;
 }
-
-
-
+ 
 .Heading_Black_Caps a {
 	color:black;
 	cursor:pointer;
 }
-
+   
 .aboutMenu {
 	position:relative;	
 	width:60px;
+    left: @gridGutterWidth;
 }
-
+    
 .aboutMenu a {
     padding-right:0;	
 }
+  
+#aboutDropdown {
+    margin-top:11px;
+}  
+  
+.headerLinkIcon {
+    max-height:22px;
+    padding:0;
+    margin:0;
+    margin-right: 2px;
+    position: relative;
+    top: -1px;
+}
 
+.nudgeLeft {
+    margin-left:-3px;
+}
+   
 .userMenuArea #avatar {
 	margin-left:5px;
     margin-top: -2px;
 	height:40px;
 	width:40px;
 }
-
+ 
 .userMenuArea a, #notifications a.dropdown-toggle  {
 	height:60px;
 	line-height:60px;
@@ -268,6 +370,33 @@ a:visited {
 .userMenuArea .dropdown-menu li a {
 	height:auto;
 }
+       
+#userMenuSignedIn {
+    min-width: 90px;
+    margin-right: 98px;
+    margin-top: -1px;
+}
+      
+#userMenuSignedOut {
+    min-width: 90px;
+    margin-left: -46px;
+    margin-top: -1px;
+}
+    
+// bootstrap default is to set right to 0, but I'm not sure why - it seems to cause only problems - JF
+.pull-right > .dropdown-menu {
+  right: auto;
+}
+
+
+.dropdown-menu {
+  //min-width: initial; // bootstrap default is 160px, but it looks better without this - JF
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 4px;  
+  border-bottom-left-radius: 4px;
+}
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END HEADER BAR STUFF
@@ -279,14 +408,16 @@ a:visited {
 
 #notifications {
     position: relative;	
+    right: 18px;
     top:-8px;
     cursor:pointer;
 }
-
+ 
 #notificationIcon {
-	margin-right:28px;	
-}
 
+    max-width: 28px;
+}
+ 
 #notificationCount {
 	position: absolute;
 	top: 20%;
@@ -297,15 +428,16 @@ a:visited {
 	padding-right: 3px;
 	padding-top: 1px;
     padding-bottom: 0px;
-	left: 48%;
+	left: 77%;
 	font-family: "ff-meta-web-pro-condensed", sans-serif;
 	font-size: 0.75em;
 	font-weight: 700;
 	border-radius:2px;
 }
-
-
+  
+   
 .notification-menu {
+    margin-left: -328px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
 	border-radius:0px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -316,6 +448,31 @@ a:visited {
     height: auto;
     max-height: 600px;    
     top:53px;
+    width: 360px; 
+    padding-top: 4px;
+}
+
+.notificationMargin {
+    width: 21px;
+    display: block;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+}
+
+.notificationText {
+    display: block;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+    margin-left: 4px;
+    padding-left: 3px;
+    width: 300px;
+    margin-top: -1px;
     
 }
 
@@ -354,12 +511,10 @@ a:visited {
 	width:auto;
 }
 
-.notificationText {
-	padding-left: 3px;
-}
 
 .notificationAvatar {
 	float:right;
+    margin-top:1px;
 }
 
 .notificationMenuItem:hover, #notificationMenuHeader:hover, #notificationMenuFooter:hover {
@@ -394,6 +549,7 @@ a:visited {
 	cursor:pointer;
 	padding:@boxPaddingDefault;
 	margin-bottom: @spaceBtPointCards;
+    //margin-top: 4px;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
@@ -403,7 +559,7 @@ a:visited {
 [id$=_nonzeroPoints] .pointCard {
 	position: relative;
 }
-
+/*
 .pointCard:hover, .pointSmall:hover, .pointListPoint:hover {
     background-color:   @pointCardBackground;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityRO);
@@ -414,16 +570,13 @@ a:visited {
 .pointCard:hover .score, .pointSmall:hover .score, .pointListPoint:hover .score {
 	color:white;
 }
-
-.pointCard:hover a.navWhy, .pointSmall:hover a.navWhy {
-   background-image: url('/static/img/arrow_why_45_black.png');
-}
-
+*/
 .pointCard .pointTitle {
 	color: black;
 	font-size: @fontSizeMedium;
+    //font-weight:bold;
 	line-height: @lineHeightBig;	
-	margin-bottom: 22px;	
+	margin-bottom: 12px;	
     padding-left: 1px;
 }
 
@@ -431,7 +584,14 @@ a:visited {
 	color: @grayTextMedium;
     /*font-weight: bold;*/
 	font-family: @sansFontFamily;
-	font-size: @fontSizeSmaller;	
+	font-size: @fontSizeSmaller;
+    padding-right:6px;
+    padding-left:0px;
+}
+
+.pointBoxStatsRow {
+    //margin-bottom:24px;
+    margin-left:3px;
 }
 
 .pointCard .linkStat {
@@ -473,6 +633,20 @@ a:visited {
     padding: 2px;
  }
 
+ .pointActionButton {
+    margin-top:0px;
+    margin-bottom:2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 5px;
+    padding-bottom:3px;
+ }
+ 
+ .pointActionButtonBorder {
+    padding-top: 3px;
+    padding-bottom:2px;
+} 
+ 
 .pointCard .gaugeCounter {
 	right: 3px;
 }
@@ -482,8 +656,16 @@ a:visited {
 }
 
 .pointCard .pointTitle a:hover, .pointSmall .smallTitle a:hover {
-	text-decoration:none;
+	//text-decoration:none;
 }
+
+.pointTitle a {
+    color:black;
+}
+.pointTitle a:hover {
+    text-decoration:underline !important;
+}
+
 
 .pointSmall {
 	/* background-color: #f8f8f8; */
@@ -593,6 +775,20 @@ a:visited {
     top:2px;
 }
 
+.explanationRow {
+    margin-top:28px;
+    min-height:1px;
+    //margin-bottom:16px;
+    width:800px;
+    margin-left:0;
+}
+
+.explanationBlock {
+    display:block;
+    float:left;
+    margin-left:42px;
+}
+
 .explanationText {
 	color: black;
 	font-size: @fontSizeMedium;
@@ -601,8 +797,25 @@ a:visited {
     margin-left:0;
 }
 
+.explanationTextCentered {
+	color: black;
+	font-size: @baseFontSize;
+	line-height: @lineHeightBig;	
+    text-align:center;
+    font-weight:bold;
+    max-width: 164px;
+    margin:auto;
+	margin-bottom: 12px;	
+}
+
 .explanationImage {
     margin-bottom:24px;
+}
+
+.explanationImageCentered {
+    display:block;
+    margin:auto;
+    margin-bottom:36px;
 }
 
 .columnHeading {
@@ -618,7 +831,6 @@ a:visited {
 	font-size: @fontSizeLargeCond; 
     color: black;
 }
-
 
 
 .bottomBorder {
@@ -698,10 +910,25 @@ a:visited {
 
 .pointAreaActions {
     font-family: @sansFontFamily;
-	font-size:@fontSizeMedium;
-	font-color: @blue;
+	font-size:@fontSizeActions;
+    color:@blue;
 	margin-bottom:10px;
 }
+
+.pointBoxActionLine {
+    font-family: @sansFontFamily;
+	font-size: @fontSizeActions;
+	color: @blue;
+}
+
+.pointBoxActions {
+	margin-bottom:2px;
+    margin-right:4px;
+}
+
+.needsEvidence {
+    opacity:0.5;
+}   
 
 #scoreAndVotingSection {
 	margin-top: 12px;
@@ -714,12 +941,7 @@ a:visited {
 #scoreAndVotingSection div {
 	margin-left:0px;
 }
-
-@media (max-width: 1200px) {
-	#scoreAndVotingSection .caret {
-		border:none;
-	}
-}
+ 
 
 .iconSourcesSmall {
     padding-right: -10px;
@@ -763,22 +985,6 @@ a:visited {
     -moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
     box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
     /* background-position:-60px center; */
-}
-
-.borderButton {
-	font-family: @sansCondFontFamily;
-    font-weight: 700;
-    font-size: @fontSizeMediumCond;
-    color: @grayTextMedium;
-    background:none;
-    background-color:#FFFFFF;
-    border: 1px solid @grayTextExtraLight;
-    border-radius: 2px;
-	padding: 9px 15px 4px;
-}
-
-.borderButton:hover {
-    background-color:@blueLight;	
 }
 
 .radioButtonGrpDefault {
@@ -852,15 +1058,13 @@ a:visited {
 }
 
 .pointColumnMenuArea {
-	border-style: solid;
-	border-width: 1px;
-	border-color: @grayBoxOutlines;
-	margin-bottom: @spaceBtPointCards;
-	padding-top:10px;
+	margin-top:@spaceBtPointCards * 2;
 }
 
 .arrowImage {
     margin-bottom: 2px;
+    margin-left:6px;
+    width:48px;
     //position:relative;
     //top:-10px;
     z-index:10; // put arrows on top of other elements
@@ -868,19 +1072,40 @@ a:visited {
     //height:94px; // correct size, but requires arrows to be placed in different spans to work
 }
 
+.arrowImageCurved {
+    margin-bottom: -4px;
+    margin-left:0px;
+    position:relative;
+    top:-1px;
+}
 
 .pointListTitle {
     font-size: @fontSizeMedium;
+    font-weight:bold;
     color: black;
+    padding-top: 0px;
+    padding-left:6px;
 }
 
+.pointListTitleZero {
+    padding-left:16px;
+}
+
+
+
+.pointListTitleBorder {
+    //border-top-width: 1px;
+    //border-top-color: @grayBoxOutlines;
+    //border-top-style: solid;
+    //padding-top: 10px;
+}
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
 	margin-bottom: 5%;
 }
 
 #supporting_numberOfPoints, #counter_numberOfPoints {
-	margin-bottom: 1em;
+	margin-bottom: 12px;
 }
 
 #supporting_zeroPointsText, #counter_zeroPointsText {
@@ -892,15 +1117,16 @@ a:visited {
 	margin-top: 1em;
 }
 
+.unlinkbutton {
+    margin-top: 2px;
+}
 
 .unlinkbutton a {
     cursor: pointer;
-    font-size: @fontSizeSmall;
-    
+    font-size: @fontSizeSmall;   
     padding-top:10px;
-    padding-left: 10px;
-    color: #3ccaff;
-        
+    padding-left: 0px;
+    color: #3ccaff;       
     height: 100%;
     width: 100%;
 }
@@ -913,6 +1139,20 @@ a:visited {
 	margin-right: 32px;		
 }
 
+.upstreamLinks{
+	font-family: @sansFontFamily;
+    font-size: @fontSizeActions;	
+}
+
+.upstreamSupporting {
+    padding-left:16px;
+}
+
+.upstreamCountering {
+    padding-right:16px;
+}
+
+
 .mainPointContent p {
     line-height: 140%;
     margin-bottom:11px;
@@ -920,8 +1160,8 @@ a:visited {
 
 .showRelevance {
     cursor: pointer;
-    font-size: @fontSizeSmall;
-    margin-top: 2px;
+    font-size: @fontSizeActions;
+    margin-top: 0px;
     margin-bottom:-1px;
    	color: @blue;
     border-style:solid;
@@ -952,6 +1192,14 @@ a:visited {
 
 .relevanceEditIcon {
     padding-left: 4px;
+    padding-bottom: 0px;
+    height: 15px;
+    position: relative;
+    bottom: 1px;
+}
+
+.relevanceUnlinkIcon {
+    padding-left: 0px;
     padding-bottom: 0px;
     height: 15px;
     position: relative;
@@ -1071,6 +1319,34 @@ h4.mainPointTitleText {
 	line-height:@lineHeightBig;
 }
 
+.arrowText {
+    font-size: @fontSizeMedium;
+    font-weight:bold;
+	line-height:@lineHeightBig;
+    color: black;
+    position:relative;
+    top:-63px;
+    left:18px;
+    margin-bottom:-12px;
+}
+
+
+.pointListTextBig {
+    font-size: @fontSizeLarge;
+    font-weight:bold;
+	line-height:@lineHeightBig;
+    color: black;
+    margin-top:4px;
+    margin-left:4px;
+    margin-bottom:12px;
+}
+
+.pointListTextSmall {
+    font-size: @fontSizeMedium;
+    color: black;
+    margin-top:0px;
+	line-height:@lineHeightDefault;
+}
 
 
 
@@ -1086,6 +1362,7 @@ h4.mission {
 #pointArea {
 	position: relative;
 	margin-left:0px;
+    margin-top:4px;
 	padding-top: 10px;
 }
 
@@ -1216,6 +1493,7 @@ img.smallDisplay {
 
 #stats li {
 	padding-left: 5px;
+    color:black;
 }
 
 
@@ -1238,7 +1516,7 @@ a#editPoint:hover {
 
 button#supporting_addPointWhenNonZero,
 button#counter_addPointWhenNonZero {	
-	margin-left:20px;
+	margin-left:0px;
     position:relative;
     z-index:1;
 }
@@ -1250,8 +1528,17 @@ button#counter_addPointWhenNonZero {
 
 #supporting_pointActions, #counter_pointActions, 
 #supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
+{
+	margin-bottom:150px;
+    padding-left:6px;
+}
+#supporting_pointActions, #counter_pointActions, 
+{
+    padding-left:6px;
+}
+#supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
  {
-	margin-bottom:10px;
+    padding-left:16px;
 }
 
 
@@ -1484,7 +1771,7 @@ button#counter_addPointWhenNonZero {
     height: 100%;
     width: 100%;
 }
-
+          
 .popoutPoint {
     width:20px;
     height:20px;
@@ -1495,7 +1782,7 @@ button#counter_addPointWhenNonZero {
     border-style:none;
     background-image: url("/static/img/addPoint_icon_popout_20pxHi_v12.png");
 }
-
+ 
 .popoutPoint:hover {
      background-position: 0 100%;
 }
@@ -1510,7 +1797,7 @@ button#counter_addPointWhenNonZero {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .pointDialog {
-	height: 530px;
+	/* height: 530px; */ /* not sure why we were specifying height... */
     position: absolute;
 }
 
@@ -1523,11 +1810,16 @@ button#counter_addPointWhenNonZero {
 }
 
 .additionalTextEntryArea {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 #title_pointDialog {
-	width: 97.5%;
+	width: 96.8%;
+}
+
+//#description_pointDialog {
+.bottomTextField {
+    margin-bottom:0px !important; // remove bottom margin since this is a bottom field
 }
 
 #cancel_pointDialog {
@@ -1551,11 +1843,8 @@ button#counter_addPointWhenNonZero {
    margin-right: 8px;
 }
 
-
-
-
 #buttonBar {
-	margin-top: 20px;
+	margin-top: 0px;
 }
 
 // TO DO: make the spinner position class uniform
@@ -1592,16 +1881,17 @@ button#counter_addPointWhenNonZero {
 }
 
 
+
 #sourcesAdd {
 	margin-left: 2px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 #collapsibleTitleArea {
     padding-left: 10px;
     padding-right: 10px;    
 }
-
+   
 #collapsibleSourcesArea {
     padding-left: 10px;
     padding-right: 10px;    
@@ -1611,10 +1901,10 @@ button#counter_addPointWhenNonZero {
     padding-left: 10px;
     padding-right: 10px;    
 }
-
-
+  
 [name="source_pointDialog"] {
 	min-height: 20px;
+    margin-top:6px;
 }
 
 [name="source_pointDialog"] [class*="span"] {
@@ -1627,23 +1917,37 @@ button#counter_addPointWhenNonZero {
 	padding: 0px 0px 15px;
 }
 
+.fieldEditImageArea {
+    width:315px;
+}
+
 .removeSource {  /* Dialog and outliner */
 	color:red;
     position: relative;
-    //left: 10px;
-    margin-top: 8px;
 }
 
+#sourcesArea {
+    margin-bottom:-2px;
+}
+ 
 #sourcesArea .sourceLink {
     text-align: left;
     position: relative;
-    left: -60px;
-    margin-top: 8px;
+    margin-left: 6px;
 }
 
 .pointDialog .textline {
 	text-align:left;
 	margin-left:15px;
+}
+
+.imageTextFieldsArea {
+    display:inline-block;
+    width:328px;
+}
+
+.imageThumbnailArea {
+    display:inline;
 }
 
 fieldset { padding:0; border:0; margin-top:25px;}
@@ -1660,12 +1964,12 @@ fieldset { padding:0; border:0; margin-top:25px;}
     height:60px !important;
     width:97.5% !important;    
 }
-
+  
 .mceEditor > table {
     width:100% !important;	
     height:60px !important;
 }
-
+  
 #textEdit_tbl {width:100% !important;height:60px !important;}
 #textEdit_ifr {width:100% !important;height:60px !important;}
 
@@ -1674,11 +1978,10 @@ fieldset { padding:0; border:0; margin-top:25px;}
   padding: 2px;
 }
 
-
 .fieldEdit {
   float:left;
   padding: 2px;
-  width:315px;
+  width:97%;
 }
 
 .dlgLabelName{
@@ -1723,8 +2026,8 @@ fieldset { padding:0; border:0; margin-top:25px;}
   }
 
   .chooseImageButtonArea {
-      margin-top: 24px;
-      margin-bottom: 16px;
+      margin-top: 14px;
+      margin-bottom: 10px;
   }
   
   .addSourceButton {
@@ -1758,7 +2061,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
     -webkit-transform: rotate(360deg);
   }
 }
-
+ 
 @keyframes rotate {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
@@ -1770,7 +2073,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
   animation: rotate 2s linear infinate;
 }
 
-
+ 
 
 .filepicker-placeholder {
   /*width: 64px;
@@ -1781,10 +2084,9 @@ fieldset { padding:0; border:0; margin-top:25px;}
     //height: 100px;
     width: 88px;
     height: 99px;
-    margin-left: 7px;
+    margin-left: 6px;
     position: relative;
-    top: 27px;
-    left: 9px;
+    top: -7px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -1932,6 +2234,8 @@ fieldset { padding:0; border:0; margin-top:25px;}
    
 #display_userName {
     width: 80%; // TEMPORARY: remove this once we have full size profile pics
+    display: inline;
+    margin-right:5px;
 }
  
 #display_userEmail {
@@ -1958,7 +2262,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .profilePic {
 	width:80%; // TEMPORARY: remove this once we have full size profile pics
 }
-
+ 
 .userInfoAreaTempWidth {
 	width:80%; // TEMPORARY: remove this class once we have full size profile pics
 }
@@ -1995,7 +2299,7 @@ a[name="profileEdit"] {
   
 .commentsColumn {
     position:relative;
-    top: 34px;
+    top: 24px;
 }   
    
 .commentsButton {
@@ -2171,3 +2475,8 @@ a[name="commentArchive"] {
     background-color: #ffe4b9;
     padding: 5px 5px;
 }
+
+// adjustments to responsive css
+@import "new-responsive-767px-max.less";
+@import "new-responsive-768px-979px.less";
+@import "new-responsive-1200px-min.less";

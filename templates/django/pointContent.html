@@ -1,14 +1,14 @@
 <div id="leftColumnPoint" >
 	<div class="dropdown pull-left">
-	    <button class="dropdown-toggle borderButton {% if not supportedPoints %} disabled {% endif %}" 
+	    <a class="dropdown-toggle upstreamLinks upstreamSupporting {% if not supportedPoints %} disabled opacityZero {% endif %}" 
 	    id="supportedByMeMenu" data-toggle="dropdown">
-	     {% if supportedPoints %}
-	        Supporting {{ supportedPoints|length }} point{% if supportedPoints|length != 1 %}s{% endif %}    
-	        <span class="caret"></span>              
+	     {% if supportedPoints %} 
+	        Supporting {{ supportedPoints|length }} Point{% if supportedPoints|length != 1 %}s{% endif %}   
+	        <span class="caret linkBlue"></span>              
 	     {% else %} 
-	        Supporting 0 points 
+	        Supporting 0 Points 
 	     {% endif %}
-	    </button>
+	    </a>
 	      <ul class="dropdown-menu" role="menu" aria-labelledby="supportedByMeMenu">
 	          {% for supPoint in supportedPoints %}
 	              <li><a name="pointNavMenu" tabindex="-1"
@@ -17,16 +17,17 @@
 	          {% endfor %}
 	      </ul>
 	</div>
-	<div class="dropdown pull-left">
-		<button class="dropdown-toggle borderButton {% if not counteredPoints %} disabled {% endif %} "
+            
+	<div class="dropdown pull-right">
+		<a class="dropdown-toggle upstreamLinks upstreamCountering {% if not counteredPoints %} disabled opacityZero {% endif %} "
 		id="counteredByMeToggle" data-toggle="dropdown">
 		{% if counteredPoints %}
-		  Countering {{ counteredPoints|length }} point{% if counteredPoints|length != 1 %}s{% endif %}
-		  <span class="caret"></span>            
+		  Countering {{ counteredPoints|length }} Point{% if counteredPoints|length != 1 %}s{% endif %}
+		  <span class="caret linkBlue"></span>            
 		{% else %} 
-		  Countering 0 points
+		  Countering 0 Points
 		{% endif %} 
-		</button>
+		</a>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="counteredByMeMenu">
 		    {% for cnPoint in counteredPoints %}
 		        <li><a name="pointNavMenu" tabindex="-1"
@@ -69,14 +70,15 @@
 	<div id="scoreAndVotingSection" class="pointAreaActions span8">
 		<div class="span5">
             <div class="span3">        
-			<a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > AGREE</a>
-			or
-			<a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
-			DISAGREE</a> <img class="iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
-	    	</div>		   
+                <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > Agree</a>
+                &#183;<!-- &#183; = small dot -->
+                <a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
+                Disagree</a><img class="iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
+	    </div>		   
 			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->
-            {% if user.admin %}		   
+
+        {% if user.admin %}		   
             <div class="span1 dropdown">             
                 <a class="dropdown-toggle" id="pointAdminMenu" data-toggle="dropdown">
                 Admin <span class="caret linkBlue"></span> 
@@ -97,18 +99,19 @@
                     <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                        
                 </ul>
             </div>				
-            {% endif %}
+        {% endif %} 
+            
+            
+
 		</div>
-	
-		<div class="span1 dropdown">	
-			<a class="dropdown-toggle" data-toggle="dropdown">Share </a><span class="caret linkBlue"></span>   
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-				<li><a id="tweet" href='javascript:;'>Tweet this</a></li> 
-				<li><a id="postOnFacebook" href='javascript:;'>Post on Facebook</a></li>  
-                <li><a href="mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: {{ point.title|escape }}. %0D%0A View it here: (https://www.whysaurus.com/{{point.url}})">Email a friend</a></li>                                                             
-			</ul>                       
-		</div>  
-	  
+            <div class="span1 dropdown">	
+                <a class="dropdown-toggle" data-toggle="dropdown">Share </a><span class="caret linkBlue"></span>   
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                    <li><a id="tweet" href='javascript:;'><img class="iconDropdown" src="/static/img/icon_twitter_blue_16px.png"/>Tweet this</a></li> 
+                    <li><a id="postOnFacebook" href='javascript:;'><img class="iconDropdown" src="/static/img/icon_fb_blue_16px.png"/>Post on Facebook</a></li>  
+                    <li><a href="mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: {{ point.title|escape }}. %0D%0A View it here: (https://www.whysaurus.com/{{point.url}})"><img class="iconDropdown" src="/static/img/icon_email_blue_16px.png"/>Email a friend</a></li>                                                             
+                </ul>                       
+        </div>         
 		<div class="span1 dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown">Stats </a><span class="caret linkBlue"></span> 
 			<ul id="stats" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
@@ -118,7 +121,9 @@
 				<li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
 				<li>Viewed: {{ pointRoot.viewCount }}</li>
 			</ul>  
-		</div>	
+		</div>
+        
+       	
 	  
 		<div class="span1 pull-right">
 	        <a id="editPoint" >Edit </a>
@@ -128,7 +133,7 @@
 	  		
 
 	</div>  		                
-	</div>
+</div>
 </div> <!-- id="leftColumnPoint" class="tabbedArea"-->
 
 <div id="supportingPointsArea" class="tabbedArea">
@@ -149,7 +154,7 @@
             {% endwith %}
           {% endwith %}
         </div>
-  </div>
+    </div>
 
 </div> <!-- id="supportingPointsArea" class="tabbedArea"-->
 

@@ -554,7 +554,7 @@ a:visited {
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
-
+  
 
 [id$=_nonzeroPoints] .pointCard {
 	position: relative;
@@ -578,6 +578,7 @@ a:visited {
 	line-height: @lineHeightBig;	
 	margin-bottom: 12px;	
     padding-left: 1px;
+    padding-right:4px;
 }
 
 .pointCard .stat {
@@ -1293,6 +1294,7 @@ a:visited {
 .mainPointSourceEntry{
     font-size: @fontSizeSmall;
     margin-top: -4px;
+    margin-bottom:8px;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -1309,6 +1311,7 @@ h4.condensed {
 .mainPointTitleText {
     padding-right:8px;
     margin-top: 4px;
+    margin-bottom:11px;
 }
 
 h4.mainPointTitleText {
@@ -1380,18 +1383,18 @@ h4.mission {
     line-height: @lineHeightBig; 
 	float: left;
     /*text-transform: Uppercase;*/
-    margin-top: 10px;
+    //margin-top: 10px;
 	/*padding-top:10px;*/
 }
 
 .contributor {
-    text-transform: Uppercase;
+    //text-transform: Uppercase;
 	font-size: @fontSizeSmallCaps;
 }
 
 
 #pointSummary {
-	margin-bottom: 1em;
+	margin-bottom: 12px;
 }
 
 .mainPointInfo{font-size:0.8em;font-style:italic;bottom:10px;left:10px;font-weight:bold}
@@ -1437,6 +1440,7 @@ h4.mission {
 
 img.pointDisplay{
 	width: 95%;
+    position:relative;
 }
 
 img.listDisplay {

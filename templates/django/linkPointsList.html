@@ -1,23 +1,34 @@
 <div class="row-fluid">
-    <div class="span2 offset5 pagination-centered">
-    	<img class="arrowImage" src="/static/img/{% if linkType == 'supporting'%}arrow_grey_why.png{% else %}{% if linkType == 'counter' %}arrow_grey_whynot.png{% endif %}{% endif %}"/>
-	</div>
+        <img class="arrowImageCurved" src="/static/img/arrow_open_blank.png"/>
+        <p class="arrowText">
+        {% if linkType == 'supporting' %}
+            Why it's TRUE
+        {% else %}   
+            Why it's FALSE
+        {% endif %}
+        </p>        
 </div>
   
 <div class="{% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
-	<div id="{{linkType}}_menuArea"  class="pointColumnMenuArea">
-		<div id="{{linkType}}_numberOfPoints" class="pointListTitle pagination-centered">
-			{% if linkedPoints %}
-				{{ linkedPoints|length }} {{linkType|title}} Point{% if linkedPoints|length > 1 %}s{% endif %}
-			{% else %}
-				0 {{linkType|title}} Points
-			{% endif %}
-		</div>
+	{% if linkedPoints %}            
+		{% for point in linkedPoints %}
+            {% with linkType as linkType %}
+                {% include 'linkPoint.html' %} 
+            {% endwith %}
+		{% endfor %}
+	{% endif %}
+</div>
+
+<!-- footer for lists with 1 more point.  These are always present, and shown if a point is added -->    
+<div id="{{linkType}}_nonzeroPointsFooter"  class="pointColumnMenuArea {% if linkedPoints %} {% else %} hide {% endif %}">
+    	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pointListTitleBorder">
+            Got a reason why the top point is {% if linkType == 'supporting'%}true{% else %}{% if linkType == 'counter' %}false{% endif %}{% endif %}?
+        </div>
 		<div id="{{linkType}}_pointActions" class="row-fluid">
-			<div class="dropdown span8 offset2">
+			<div class="dropdown">
 				<button id="{{linkType}}_addPointWhenNonZero" name="{{linkType}}_addPointWhenNonZero"
 					data-toggle="dropdown"
-					class="btn dropdown-toggle">
+					class="btn dropdown-toggle pointActionButton">
 					Add a {{linkType|title}} Point
 				</button>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenNonZero">
@@ -56,25 +67,19 @@
 				</ul>				
 			</div>
 		</div>
-	</div>
-	{% if linkedPoints %}            
-		{% for point in linkedPoints %}
-            {% with linkType as linkType %}
-                {% include 'linkPoint.html' %} 
-            {% endwith %}
-		{% endfor %}
-	{% endif %}          
-</div>	
+</div>    
+
+
 
 <!-- zero point areas are below here.  These are always present, and shown if the last point is unlinked -->
 <div id="{{linkType}}_zeroPoints" class="{% if linkedPoints %}hide{%else%}{% endif %}">
-<div class="pointColumnMenuArea">
-	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pagination-centered">
-		Zero {{linkType|title}} Points
+<div>
+	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pointListTitleZero">
+		Got a reason why this is {% if linkType == 'supporting'%}true{% else %}{% if linkType == 'counter' %}false{% endif %}{% endif %}?
 	</div>
 	<div id="{{linkType}}_pointActionsWhenZero" class="row-fluid">
 		<div class="dropdown">
-		    <button name="{{linkType}}_linkPoint" class="btn dropdown-toggle span6 offset3" 
+		    <button name="{{linkType}}_linkPoint" class="btn dropdown-toggle pointActionButton" 
 		    id="{{linkType}}_addPointWhenZero" data-toggle="dropdown">
 				Add a {{linkType|title}} Point
 		    </button>                    
@@ -106,14 +111,6 @@
 		    </ul>			
 		</div>
 	</div>
-	<!-- 
-    <div id="addEvidencePromptText" class="pagination-centered row">
-        {% if linkType == "supporting" %}
-            If this point is true, add evidence to support it.
-        {% else %}
-            If this point is false, add points to counter it.          
-        {% endif %}
-    </div>
-	-->
+
 </div>
 </div>

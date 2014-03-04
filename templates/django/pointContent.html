@@ -55,17 +55,15 @@
 	</div>    
 	{% if point.imageURL and point.imageURL.strip %}	
 	<!-- update insertImage in point.js if editing this HTML -->		  
-	    <div id="mainPointImageArea" class="span3" >
-            <div class="imageAreaMaxHeight">
-                <img class="pointDisplay" src="{{ point.fullPointImage }}" />
-                <!-- to vertically-center crop query image height and add a style tag with a "bottom" offset" -->
-                <div class="mainPointImageCaption">{{point.imageDescription}}</div>
-                <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
-            </div>
+	<div id="mainPointImageArea" class="span3" >
+        <div class="imageAreaMaxHeight">
+            <img class="pointDisplay" src="{{ point.fullPointImage }}" />
+            <!-- to vertically-center crop query image height and add a style tag with a "bottom" offset" -->
         </div>
+        <div class="mainPointImageCaption">{{point.imageDescription}}</div>
+        <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
+    </div>
 	{% endif %}			
-  
-
 	  
 	<div id="scoreAndVotingSection" class="pointAreaActions span8">
 		<div class="span5">

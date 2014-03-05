@@ -15,6 +15,15 @@
   .responsiveInline {
     display:inline !important;
   }
+
+  .responsiveRightMargin {
+    margin-right: 24px !important;
+  }
+  
+  .responsiveUnfloat {
+    float: none !important;
+    display: inline !important;
+  }
   
   // HEADER
   
@@ -154,24 +163,57 @@
   #pointSummary {
     position:relative;
     top: -8px;
+    margin-bottom: 0px;
   }
   
   .mainPointTitleText {
     margin-top:10px;
+    padding-right:0;
+  }
+  
+  .mainPointContent {
+    margin-right:16px;
   }
   
   #timestampAndEditLink {
     display:inline-block;
   }
   
+  #mainPointImageArea {
+    margin-bottom: 16px;
+  }
+  
   img.pointDisplay {
     width: inherit;
+  }
+  
+  .imageAreaMaxHeight {
+    max-height: 240px;
+  }
+  
+  .mainPointImageCaption {
+    /*  will become unnecessary as more images are saved with a width of 720px 
+    and there are fewer images with the original 310px width */
+    max-width: 310px; 
+  }
+  
+  .pointAreaActions {
+    padding-right: 6px;
+    margin-bottom: 12px;
+  }
+  
+  a#editPoint {
+    float:none;
   }
   
   // SUPPORTING AND COUNTER POINTS
   
   .pointColumnMenuArea {
     margin-top:-20px;
+  }
+  
+  #supportingPointsArea {
+    margin-top:18px;
   }
   
   #supporting_pointActions, #counter_pointActions, 
@@ -218,6 +260,16 @@
   
   .explanationImageCentered {
     margin-bottom:28px;
+  }
+  
+  // TOP POINT
+  .responsiveRightMargin {
+    margin-right: 14px !important;
+  }
+  
+  // hide carets
+  #scoreAndVotingSection .caret {
+    border:none;
   }
 }
 
@@ -309,6 +361,8 @@
     min-width: auto;
     width:98%;
   }
+  
+
 }
 
 // NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)

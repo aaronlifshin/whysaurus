@@ -100,7 +100,8 @@
         {% endif %} 
 
 		</div>
-            <div class="span1 dropdown responsiveInline responsiveRightMargin">	
+        <div class="span2 responsiveInline">
+            <div class="shareMenu dropdown responsiveInline responsiveRightMargin">	
                 <a class="dropdown-toggle" data-toggle="dropdown">
                 <span class="hidden-xxs">Share</span><img class="shareIcon" src="/static/img/share_icon_blue.png"/>
                 </a>
@@ -111,17 +112,17 @@
                     <li><a href="mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: {{ point.title|escape }}. %0D%0A View it here: (https://www.whysaurus.com/{{point.url}})"><img class="iconDropdown" src="/static/img/icon_email_blue_16px.png"/>Email a friend</a></li>                                                             
                 </ul>                       
             </div>         
-		<div class="span1 dropdown responsiveInline responsiveRightMargin hidden-xxs">
-			<a class="dropdown-toggle" data-toggle="dropdown">Stats </a><span class="caret linkBlue"></span> 
-			<ul id="stats" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-				<li>STATISTICS</li>
-                <li class="divider"></li>                      				
-				<li>Agreed: <span id='upVoteStat'>{{ point.upVotes }}</span> </li>
-				<li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
-				<li>Viewed: {{ pointRoot.viewCount }}</li>
-			</ul>  
-		</div>
-          
+            <div class="statsMenu dropdown responsiveInline responsiveRightMargin hidden-xxs">
+                <a class="dropdown-toggle" data-toggle="dropdown">Stats </a><span class="caret linkBlue"></span> 
+                <ul id="stats" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                    <li>STATISTICS</li>
+                    <li class="divider"></li>                      				
+                    <li>Agreed: <span id='upVoteStat'>{{ point.upVotes }}</span> </li>
+                    <li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
+                    <li>Viewed: {{ pointRoot.viewCount }}</li>
+                </ul>  
+            </div>
+         </div>  
 		<div class="span1 pull-right responsiveUnfloat">
 	        <a id="editPoint" >Edit </a>
 		</div>		

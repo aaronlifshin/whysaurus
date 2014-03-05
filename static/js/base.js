@@ -1192,7 +1192,7 @@ function activateHeaderAndDialogs() {
                     filepicker.convert(file, 
                         {width: 112, height: 112, fit: 'clip'}, 
                         {path: 'SummaryBig-' + file.key});
-                    filepicker.convert(file, {width: 310, fit: 'clip'}, {path: 'FullPoint-' + file.key});
+                    filepicker.convert(file, {width: 760, fit: 'clip'}, {path: 'FullPoint-' + file.key});
                     filepicker.convert(file, 
                         {width: 54, height: 54, fit: 'clip'}, 
                         {path: 'SummaryMedium-' + file.key}, 

@@ -17,7 +17,7 @@
   }
 
   .responsiveRightMargin {
-    margin-right: 24px !important;
+    margin-right: 15px !important;
   }
   
   .responsiveUnfloat {
@@ -197,10 +197,18 @@
     max-width: 310px; 
   }
   
+  #scoreAndVotingSection {    
+  }
+
   .pointAreaActions {
     padding-right: 6px;
     margin-bottom: 12px;
   }
+
+  
+  .topPointVotingArea {
+    display:inline !important;
+  } 
   
   a#editPoint {
     float:none;
@@ -233,7 +241,6 @@
   
   // COMMENTS
   
-  
   .commentsColumn {
     top:12px;
     margin-bottom: 64px;
@@ -263,9 +270,6 @@
   }
   
   // TOP POINT
-  .responsiveRightMargin {
-    margin-right: 14px !important;
-  }
   
   // hide carets
   #scoreAndVotingSection .caret {
@@ -362,6 +366,10 @@
     width:98%;
   }
   
+  // POINT AREA
+  #scoreAndVotingSection {
+    line-height: @lineHeightXL;
+  }
 
 }
 
@@ -371,11 +379,16 @@
 @media (max-width: 420px) {
 
   .hidden-xxs {
-    display: none;
+    display: none !important;
   }
   .visible-xxs {
     display: inherit;   
   }
+  
+  .responsiveRightMargin {
+    margin-right: 14px !important;
+  }
+  
   #searchArea {
     width:182px;
   }
@@ -384,7 +397,15 @@
   
   .fieldEdit {
     width:96%;
+  }    
+  
+  // POINT AREA
+  .topPointVotingArea {
+    //display:block !important;
+    margin-right: 30px;
   }
+
+  
 }
 
 
@@ -428,7 +449,19 @@
   
   // DIALOGS
   
-
+  // TOP POINT
+  
+  .pointAreaActions {
+    padding-right: 6px;
+    margin-bottom: 10px;
+  }
+     
+  .iphone5-adminLink {
+    position: absolute; 
+    bottom: -34px;
+    padding-left: 58px;
+  }
+  
 }
 
 

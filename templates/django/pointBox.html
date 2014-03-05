@@ -21,16 +21,17 @@
             <a class="pointBoxActions">See Evidence<!--({{ point.numSupporting }}-{{ point.numCounter }})--></a>
           {% else %} 
             <a class="pointBoxActions needsEvidence">Needs Evidence</a>
-          {% endif %} 
+          {% endif %}         
           <span class="pointBoxStatsRow">
 			  {% if point.voteTotal != 0 %}
-				  <span class="stat"><img class="iconAgreesSmall" src="/static/img/agreesIconSmall.png"/>&nbsp{{ point.voteTotal }}</span>
+                  &#183;<!-- &#183 = small dot -->
+				  <span class="stat"><img class="iconAgreesSmall" src="/static/img/agreesIconSmall_blue.png"/>&nbsp{{ point.voteTotal }}</span>
 			  {% endif %}            
 			  <!--{% if point.ribbonTotal != 0 %}			
 	          	<span class="stat"><img src="/static/img/awardsIconSmall.png"/>{{ point.ribbonTotal }}</span>
   			  {% endif %} -->            
 			  {% if point.sources|length != 0 %}							
-			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall.png"/>&nbsp{{ point.sources|length }}</span>
+			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_blue.png"/>&nbsp{{ point.sources|length }}</span>
 			  {% endif %}
 			  <!--{% if point.numSupporting > 0 %}							
 			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/link_icon_16px.png"/>&nbsp{{ point.numSupporting }}-{{ point.numCounter }}</span>

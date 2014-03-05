@@ -18,11 +18,11 @@ body {
 a:hover {
     cursor:pointer;
 }
-
+  
 /* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
 .hidden-xxs {
     display: inherit;
-}
+} 
 .visible-xxs {
     display: none;   
 }
@@ -580,17 +580,17 @@ a:visited {
 }
 
 .pointCard .stat {
-	color: @grayTextMedium;
+	//color: @grayTextMedium;
     /*font-weight: bold;*/
 	font-family: @sansFontFamily;
 	font-size: @fontSizeSmaller;
-    padding-right:6px;
-    padding-left:0px;
+    padding-right:3px;
+    padding-left:3px;
 }
 
 .pointBoxStatsRow {
     //margin-bottom:24px;
-    margin-left:3px;
+    margin-left:-2px;
 }
 
 .pointCard .linkStat {
@@ -922,16 +922,22 @@ a:visited {
 
 .pointBoxActions {
 	margin-bottom:2px;
-    margin-right:4px;
-}
+    margin-right:4px; 
+} 
 
-.needsEvidence {
+.shareIcon {
+    width: 15px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+}
+  
+.needsEvidence { 
     opacity:0.5;
-}   
-
+}    
+ 
 #scoreAndVotingSection {
-	margin-top: 12px;
-}
+	margin-top: 12px;  
+}  
 
 #scoreAndVotingSection a {
 	cursor:pointer;
@@ -948,12 +954,15 @@ a:visited {
 
 
 .iconAgreesSmall {
-    padding-top: 2px;
+    //padding-top: 2px;
+    width: 25px;
+    opacity: .72;
+    
 }
 
 .iconAgreesSmallMainPoint {
-    padding-top: 2px;
-    padding-left: 4px;
+    padding-top: 1px;
+    padding-left: 6px;
     padding-right: 2px;
 }
 

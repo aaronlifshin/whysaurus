@@ -63,6 +63,10 @@ a:visited {
     opacity:0;
 }
 
+#mainContainer {
+    //margin-top: 8px;
+}
+
 .dropdown .caret {
 	margin-left:1px;
 }
@@ -931,7 +935,6 @@ a:visited {
 	background:@privateAreaStrip;
 	height: 28px;
 	line-height: 24px;
-    margin-top:-12px;
 }
 
 
@@ -982,9 +985,12 @@ a:visited {
 }
 
 #recentlyViewed {
-    margin-top:160px;
+    //margin-top:160px;
 }
 
+#userInfoArea {
+    margin-top:38px;    
+}
 
 .bottomBorder {
 	border-bottom: 1px solid #d7d7d7;
@@ -2428,7 +2434,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 } 
  
 .profileEditButton {
-	background-image: url('/static/img/pencil_icon.png');
+	background-image: url('/static/img/pencil_icon_blue.png');
 	background-color: transparent;
 	background-repeat: no-repeat;
 	background-position: 100% 100%;
@@ -2446,6 +2452,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
 .profilePic {
 	width:80%; // TEMPORARY: remove this once we have full size profile pics
+    margin-top:2px;
 }
  
 .userInfoAreaTempWidth {

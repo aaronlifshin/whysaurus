@@ -118,7 +118,7 @@ a:visited {
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   HEADER BAR STUFF AND PRIVATE AREA BAR (MOSTLY)
+   HEADER BAR STUFF(MOSTLY)
    +++++++++++++++++++++++++++++++++++++++++++++++ */
       
 #header{
@@ -132,49 +132,7 @@ a:visited {
 #CreatePoint {
     margin-left:9px; //nudge this link onto the grid
 }
-  
-.privateAreaHeader {
-	background:@privateAreaStrip;
-	height: 28px;
-	line-height: 24px;
-    margin-top:-12px;
-}
-
-.manifestoHeader {
-	background:#FF000B;
-	height: 28px;
-	line-height: 24px;
-    margin-top:-12px;
-    cursor:pointer;
-    color: white;
-}
-
-#manifestoText {
-    color: black;    
-    background-color:white;
-} 
-
-#hideManifesto {
-    z-index: 100000; 
-}
-
-.privateAreaContentOffset {
-	margin-top: 16px;
-}
-
-#areaLine {
-  //font-family: @sansCondFontFamily;
-  font-size: @fontSizeSmall;
-  //font-weight: bold;
-  color: @grayTextMedium;
-  margin-top: 1px;
-}
-
-
-#areaSwap {
-    cursor:pointer;
-}
-
+ 
 .grayBackground {
 	background:#F0F0F0;
 }
@@ -763,15 +721,56 @@ a:visited {
 }
 
 
-/* +++++++++++++++++++++++++++++++++++++++++++++++
-   MAIN PAGE COLUMNS
-   +++++++++++++++++++++++++++++++++++++++++++++++ */
-.valueProp {
-	font-weight:bold;    
-	font-size: @fontSizeBitLarge;     
-	font-family:@sansCondFontFamily;
-	line-height: @lineHeightBig;    
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   MANIFESTO, PRIVATE AREA BAR and other HOMEPAGE ROW CONTENT
+   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.manifestoHeaderArea {
+    margin-top: -52px;
+    //margin-bottom: @homepageRowVerticalPadding;
+    cursor: pointer;
 }
+
+.manifestoTitle {
+    font-size: @fontSizeLarge;
+    font-weight: bold;
+    line-height: @lineHeightBig;
+    text-align: center;
+    padding-top: @homepageRowVerticalPadding;
+    padding-bottom: @homepageRowVerticalPadding;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.manifestoTitleBig {
+    font-size: @fontSizeExtraLarge;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color:black;
+    
+}
+
+.manifestoTitleBig:hover {
+    color:black;
+}
+
+#hideManifesto {
+    font-size: @fontSizeSmall;
+    margin-top: (-1 * @homepageRowVerticalPadding) - 4px;
+    z-index: 100000; 
+}
+
+#manifestoText {
+    color: black;    
+    background-color:white;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+} 
+
 
 .explanationColumn {
     position:relative;
@@ -784,6 +783,25 @@ a:visited {
     //margin-bottom:16px;
     width:800px;
     margin-left:0;
+    padding-bottom:36px;
+}
+
+#explanationRowHomepage {
+    margin-top:@homepageRowVerticalPadding;
+    padding-bottom:@homepageRowVerticalPadding;
+    //min-height:1px;
+    //margin-bottom:16px;
+    //width:800px;
+    //margin-left:0;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.explanationsCentered {
+    margin-left:auto;
+    margin-right:auto;
+    max-width:576px;
 }
 
 .explanationBlock {
@@ -805,10 +823,10 @@ a:visited {
 	font-size: @baseFontSize;
 	line-height: @lineHeightBig;	
     text-align:center;
-    font-weight:bold;
+    //font-weight:bold;
     max-width: 164px;
     margin:auto;
-	margin-bottom: 12px;	
+	margin-bottom: 10px;	
 }
 
 .explanationImage {
@@ -818,7 +836,58 @@ a:visited {
 .explanationImageCentered {
     display:block;
     margin:auto;
-    margin-bottom:36px;
+    //margin-bottom:36px;
+}
+
+.cheatImageLeft {
+    padding-left:16px;
+}
+
+#oneLinePointCreate {
+    margin-top:@homepageRowVerticalPadding;
+    padding-bottom: @homepageRowVerticalPadding;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+} 
+
+.privateAreaHeader {
+	background:@privateAreaStrip;
+	height: 28px;
+	line-height: 24px;
+    margin-top:-12px;
+}
+
+
+.privateAreaContentOffset {
+	margin-top: 16px;
+}
+
+#areaLine {
+  //font-family: @sansCondFontFamily;
+  font-size: @fontSizeSmall;
+  //font-weight: bold;
+  color: @grayTextMedium;
+  margin-top: 1px;
+}
+
+
+#areaSwap {
+    cursor:pointer;
+}
+
+
+
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   MAIN PAGE COLUMNS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.valueProp {
+	font-weight:bold;    
+	font-size: @fontSizeBitLarge;     
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightBig;    
 }
 
 .columnHeading {

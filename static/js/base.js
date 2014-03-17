@@ -547,7 +547,7 @@ function navigateHistory(event) {
 }
 
 function loadPoint(url, addToHistory) {    
-    $("#explanationColumn").hide();
+    $("#explanationRowHomepage").hide();
     $("#oneLinePointCreate").hide();
 	loadPointContent(url, addToHistory);    
 	loadPointComments(url);  
@@ -1254,11 +1254,11 @@ function toggleManifesto() {
     var area = $('#manifestoText');
     if (area.is(":visible")) {
         area.slideUp();
-        $("body").animate({ 'padding-top' : 110 });
+        //$("body").animate({ 'padding-top' : 110 });
     } else {
         var height = area.height();
         area.slideDown();
-        $("body").animate({ 'padding-top' : height + 110 });
+        //$("body").animate({ 'padding-top' : height + 110 });
     }  
 }
 

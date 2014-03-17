@@ -95,7 +95,7 @@ a:visited {
 
 //help page
 #basics {
-    margin-top: 16px;
+   // margin-top: 16px;
 }
 
 
@@ -176,14 +176,41 @@ a:visited {
 	background-repeat: no-repeat;
 }
 
+.newPointInputRowFieldArea {
+    // use the full width, minus the space needed for the publish button
+    // the ~ and "" is needed to pass the calc command through the less compiler
+    width: -moz-calc(~"100% - 140px");
+    width: -webkit-calc(~"100% - 140px");
+    width: calc(~"100% - 146px");
+    margin-right:8px;
+    display:inline;
+}
+
+.newPointInputRowButtonArea {
+    width:140px;
+    display:inline;
+}
+
+.newPointCharNum {
+    font-size: @fontSizeSmall;
+    color: @grayTextLight;
+}
+
+ 
 .mainPageInput {
+    // use border-box to keep padding from making the element bigger
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 	border: 1px solid #000000;
 	-webkit-border-radius: 0px;
   	-moz-border-radius: 0px;
   	border-radius: 2px; 
   	font-size: 16px;   
-    width:75%; 
-    height: 28px;    
+    height: 32px;  
+    width: 100%;   
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .newPointInputRow {
@@ -193,7 +220,19 @@ a:visited {
 
 .newPointCall {
     min-height:0px !important;
+    //margin-left: auto;
+    //margin-right: auto;
+    //max-width: 75%;
 }
+
+.newPointCallTitle {
+    font-size: @fontSizeExtraLarge;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 4px;
+    line-height: @lineHeightBig;
+}
+
 
 #searchArea .searchIcon:hover  {
     background-image: url("/static/img/icon_magnifyingGlass.png");
@@ -753,7 +792,7 @@ a:visited {
     font-size: @fontSizeExtraLarge;
     text-transform: uppercase;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     color:black;
     
 }
@@ -903,6 +942,7 @@ a:visited {
 	font-family:@sansCondFontFamily;
 	line-height: @lineHeightDefault;
     margin-bottom: 2px;	
+    margin-top:@homepageRowVerticalPadding;
 }
 
 .columnHeadingBig {

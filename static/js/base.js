@@ -375,6 +375,97 @@ function removeSource(clickedElement) {
     $(clickedElement).parent().remove();    
 }
 
+
+function votePointCard(elem, voteType) {
+    var pointCard = $(elem).closest('.pointCard');
+    var pointURL = pointCard.data('pointurl');  
+    var oldVoteObj = $('[name=voteTotal]', pointCard);
+    var oldVote = oldVoteObj.data('myvote');
+    var newVote = null;
+    if (voteType == "up") {
+        newVote = oldVote == 1 ? 0 : 1;    
+    } else if (voteType == "down") {
+        newVote = oldVote == -1 ? 0 : -1;    
+    }
+    
+    _gaq.push(['_trackEvent', 'Vote', 'MainPage ' + voteType, pointURL, newVote]);
+    
+    $.ajaxSetup({
+       url: "/vote",
+       global: false,
+       type: "POST",
+       data: {
+    		'vote': newVote,
+    		'pointURL': pointURL
+    		},
+       success: function(obj){
+            if (obj.result == true) {
+                var voteTotal = updateVoteTotal(
+                    obj.newVote, 
+                    oldVoteObj, 
+                    $('[name=UpVote]', pointCard), 
+                    $('[name=DownVote]', pointCard)
+                );
+                if (voteTotal) {
+                    $('[name=voteTotalArea]', pointCard).show();
+                } else {
+                    $('[name=voteTotalArea]', pointCard).hide();                    
+                }
+            } else {
+                alert('An error happened and your vote may not have counted. Try a page refresh?');
+            }
+        }
+    });
+    $.ajax();
+}
+
+
+function voteToggle(turnOn, voteLabel, classWhenOn) {
+    if (turnOn) {
+        voteLabel.removeClass("inactiveVote");
+        voteLabel.addClass(classWhenOn);
+    } else {
+        voteLabel.removeClass(classWhenOn);
+        voteLabel.addClass("inactiveVote");
+    }
+}
+
+function updateVoteTotal(newVote, voteTotalObj, upVote, downVote) {
+    var voteTotal = parseInt(voteTotalObj.text());
+    myVote = voteTotalObj.data('myvote');
+    var newVoteTotal = voteTotal;
+    
+    if (myVote == 0 && newVote == 1) {// UPVOTE
+        newVoteTotal = voteTotal + 1;
+        voteTotalObj.text(newVoteTotal);
+        voteToggle(true, upVote, "greenVote");
+    } else if (myVote == 0 && newVote == -1) { // DOWNVOTE    
+        newVoteTotal = voteTotal - 1;            
+        voteTotalObj.text(newVoteTotal);
+        voteToggle(true, downVote, "redVote");
+    } else if (myVote == 1  &&  newVote == 0) { // CANCEL UPVOTE    
+        newVoteTotal = voteTotal - 1;                       
+        voteTotalObj.text(newVoteTotal);        
+        voteToggle(false, upVote, "greenVote");
+    } else if (myVote == -1  &&  newVote == 0) { // CANCEL DOWNVOTE       
+        newVoteTotal = voteTotal + 1;
+        voteTotalObj.text(newVoteTotal);        
+        voteToggle(false, downVote, "redVote");
+    } else if (myVote == -1  &&  newVote == 1) { // DOWN TO UP       
+        newVoteTotal = voteTotal + 2;
+        voteTotalObj.text(newVoteTotal);        
+        voteToggle(false, downVote, "redVote");
+        voteToggle(true, upVote, "greenVote");
+    } else if (myVote == 1  &&  newVote == -1) {// UP TO DOWN  
+        newVoteTotal = voteTotal - 2;
+        voteTotalObj.text(newVoteTotal);        
+        voteToggle(false, upVote, "greenVote");
+        voteToggle(true, downVote, "redVote");
+    }
+    voteTotalObj.data('myvote', newVote);
+    return newVoteTotal;
+}
+
 function updateDialogHeight() {
     numSources = $("[name='source_pointDialog']").length;
     if (numSources > 1) {
@@ -456,13 +547,20 @@ function navigateHistory(event) {
 }
 
 function loadPoint(url, addToHistory) {    
-	loadPointContent(url, addToHistory);
+    $("#explanationColumn").hide();
+    $("#oneLinePointCreate").hide();
+	loadPointContent(url, addToHistory);    
 	loadPointComments(url);  
+    /*$('#rightColumn').show();    
+    $('#leftColumn').removeClass('span12').addClass('span8');*/
 }
 
 function loadHomePage(shouldPushState) {
 	loadMainPageLeftColumn(shouldPushState);    
-	loadMainPageRightColumn();
+    loadMainPageRightColumn();
+    
+    /*$('#rightColumn').hide();
+    $('#leftColumn').removeClass('span8').addClass('span12');*/
 }
 
 function makePointsCardsClickable() {
@@ -476,6 +574,19 @@ function makePointsCardsClickable() {
             ev.preventDefault();
         }
     });
+    
+    $('[name=UpVote]').click(function(e) {
+        var event = e || window.event;
+        votePointCard(this, "up");
+        e.stopPropagation();
+    });
+    
+    $('[name=DownVote]').click(function(e) {
+        var event = e || window.event;
+        votePointCard(this, "down");
+        e.stopPropagation();        
+    });
+    
 }
 
 function makeHomeNavsClickable() {
@@ -1225,7 +1336,7 @@ function activateHeaderAndDialogs() {
     });
 
     initTinyMCE();
-    makeHomeNavsClickable();
+    //makeHomeNavsClickable();
 		
     $('[id^="signInWithFacebook"]').click(function() {
         _gaq.push(['_trackEvent', 'Login', 'With Facebook', 'Menu']);                    

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+
+<div id="content" class="fullPageText">
+    {% include "manifestoContent.html" %}
+</div>
+<script>
+    $(document).ready(function() {
+         $('.manifestoHeader').hide();
+    });
+</script>  
+ {% endblock %}
+ 

@@ -156,8 +156,10 @@ class Point(ndb.Model):
     fullPointImage = ImageUrl('FullPoint')
     imageDescription = ndb.StringProperty(default='', indexed=False)
     imageAuthor = ndb.StringProperty(default='', indexed=False)
+    _vote = None
     _relevanceVote = None
     _linkInfo = None
+    
 
     @property
     def numSupporting(self):
@@ -207,6 +209,10 @@ class Point(ndb.Model):
     @property
     def relevanceVoteCount(self):
         return 0 if self._linkInfo is None else self._linkInfo.voteCount
+        
+    @property
+    def vote(self):
+        return self._vote
         
     @property
     def myVoteValue(self):
@@ -571,7 +577,7 @@ class Point(ndb.Model):
     
     
     @ndb.tasklet
-    def getLinkedPoints_async(self, linkType):
+    def getLinkedPoints_async(self, linkType, user):
         linkColl = self.getStructuredLinkCollection(linkType)
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl if link.root]
@@ -579,6 +585,9 @@ class Point(ndb.Model):
             linkedPoints = yield map(lambda x: getCurrent_async(x), 
                          (yield ndb.get_multi_async(rootKeys)))                        
             
+            if user:
+                linkedPoints = yield map(lambda x: x.addVote_async(user),linkedPoints) 
+                                
             i = 0
             # this let met skip over link entries that do not have a root or do not match for some reason
             for point in linkedPoints:
@@ -931,7 +940,17 @@ class Point(ndb.Model):
                         linkRoot.addLinkedPoint(self.key.parent(), linkType)
                         addedRoots = addedRoots + 1
         return addedRoots
-
+        
+    @ndb.tasklet
+    def addVote_async(self, user):
+        if user:
+            self._vote = yield user.getVoteValue_async(self.key.parent())
+        raise ndb.Return(self)
+        
+    def addVote(self, user):
+        if user:
+            self._vote = user.getVoteValue(self.key.parent())
+        return self
 
 class PointRoot(ndb.Model):
     url = ndb.StringProperty()
@@ -1095,20 +1114,56 @@ class PointRoot(ndb.Model):
         return Point.query(ancestor=self.key).fetch()
 
     @staticmethod
-    def getEditorsPicks():
+    def getEditorsPicks(user):
         editorsPicks = []
         pointsRootsQuery = PointRoot.gql("WHERE editorsPick = TRUE ORDER BY editorsPickSort ASC")
-        pointRoots = pointsRootsQuery.fetch(100)
+        pointRoots = pointsRootsQuery.fetch(50)
         for pointRoot in pointRoots:
             editorsPicks = editorsPicks + [pointRoot.getCurrent()]
         return editorsPicks
 
     @staticmethod
-    def getRecentCurrentPoints():
+    @ndb.tasklet
+    def getRecentCurrentPoints_async(user):
         pointsQuery = Point.gql(
             "WHERE current = TRUE ORDER BY dateEdited DESC")
-        return pointsQuery.fetch(50)
-
+        resultPoints = None
+        if user:
+            resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
+        else:
+            resultPoints = yield pointsQuery.fetch_async(50)
+        raise ndb.Return(resultPoints)
+        
+    @staticmethod
+    @ndb.tasklet    
+    def getTopViewedPoints_async(user):
+        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC") 
+            
+        resultPoints = None
+        if user:
+            resultPoints = yield map(
+                lambda x: ndb.get_async(x.current).addVote_async(user), \
+                (yield rootsQuery.fetch_async(50))
+            )
+        else:
+            resultPoints = yield map(
+                lambda x: ndb.get_async(x.current), \
+                (yield rootsQuery.fetch_async(50))
+            )
+        raise ndb.Return(resultPoints)
+        
+    @staticmethod
+    def getRecentCurrentPoints(user):
+        pointsQuery = Point.gql(
+            "WHERE current = TRUE ORDER BY dateEdited DESC")
+        resultPoints = None
+        if user:
+            resultPoints =  map(lambda x: x.addVote(user), (pointsQuery.fetch(50)))
+            logging.info('RP ' + str(resultPoints))
+        else:
+            resultPoints =  pointsQuery.fetch(50)
+        return resultPoints
+        
     @staticmethod
     def getTopRatedPoints(filterList = None):
         pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
@@ -1121,18 +1176,45 @@ class PointRoot(ndb.Model):
         return topPoints
     
     @staticmethod
-    def getTopAwardPoints():       
+    def getTopRatedPoints(filterList = None):
+        pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
+        topPointsRaw = pointsQuery.fetch(50)
+        topPoints = [] if filterList else topPointsRaw
+        if filterList:
+            for point in topPointsRaw:
+                if not point in filterList:
+                    topPoints = topPoints + [point]
+        return topPoints
+    
+    
+    @staticmethod
+    def getTopViewedPoints(user):
+        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC")        
+        roots = rootsQuery.fetch(50)
+        currentKeys = [root.current for root in roots]
+        return ndb.get_multi(currentKeys)
+        
+
+
+
+    # NOT USED CURRENTLY
+    @staticmethod
+    def getTopAwardPoints(user):       
         pointsQuery = Point.gql("WHERE current = TRUE ORDER BY ribbonTotal DESC")
         points =  pointsQuery.fetch(50)
         logging.info("GTAP Got %d points" % len(points))
         return points
 
+
+
+
     @staticmethod
-    def getTopViewedPoints():
+    def getTopViewedPoints(user):
         rootsQuery = PointRoot.gql("ORDER BY viewCount DESC")        
         roots = rootsQuery.fetch(50)
         currentKeys = [root.current for root in roots]
         return ndb.get_multi(currentKeys)
+        
 
     def delete(self, user):
         if not user.admin:

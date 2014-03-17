@@ -57,15 +57,15 @@ class ViewPoint(AuthHandler):
                         point.getLinkedPointsRootKeys("supporting") + \
                         point.getLinkedPointsRootKeys("counter")), \
                     point.getSources_async(), \
-                    point.getLinkedPoints_async("supporting"), \
-                    point.getLinkedPoints_async("counter")
+                    point.getLinkedPoints_async("supporting", user), \
+                    point.getLinkedPoints_async("counter", user)
                 point.addRelevanceVotes(relevanceVotes, supportingPoints, counterPoints)
 
                 addedToRecentlyViewed = user.updateRecentlyViewed(point.key.parent())
             else:
                 sources, supportingPoints, counterPoints = yield point.getSources_async(), \
-                    point.getLinkedPoints_async("supporting"), \
-                    point.getLinkedPoints_async("counter")
+                    point.getLinkedPoints_async("supporting", None), \
+                    point.getLinkedPoints_async("counter", None)
                 recentlyViewed = None
             
             # For now add to a point's view count if user is not logged in or if view point is added to the recently viewed list

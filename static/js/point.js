@@ -177,6 +177,7 @@ function pointUnlink(elem, linkType) {
 	$.ajax();
 }
 
+// DEPRECATED
 function upVoteToggle(turnOn) {
     if (turnOn) {
         $( "#upVote").removeClass("inactiveVote");
@@ -186,7 +187,7 @@ function upVoteToggle(turnOn) {
         $( "#upVote").addClass("inactiveVote");
     }
 }
-
+// DEPRECATED
 function downVoteToggle(turnOn) {
     if (turnOn) {
         $( "#downVote").removeClass("inactiveVote");
@@ -197,7 +198,10 @@ function downVoteToggle(turnOn) {
     }
 }
 
-function updateVoteButtonLabels(newVote){
+
+// Deprecated, as separate counts are no longer shown
+// Leaving it in here in case they come back
+function updateVoteButtonLabelsOld(newVote){
     var downvoteLabel = $( "#downVoteStat" ).text();
     var upvoteLabel = $( "#upVoteStat" ).text();
     var voteTotal = $( "#voteTotal" ).text();
@@ -243,8 +247,7 @@ function updateVoteButtonLabels(newVote){
     $('#voteTotal').data('myvote', newVote);
 }
 
-function upVote() {
-    
+function upVote() {    
     pointURL = $('#pointArea').data('pointurl');
     vote = $('#voteTotal').data('myvote') == 1 ? 0 : 1;
     _gaq.push(['_trackEvent', 'Vote', 'Up', pointURL, vote]);
@@ -259,7 +262,7 @@ function upVote() {
     		},
        success: function(obj){
             if (obj.result == true) {
-                updateVoteButtonLabels(obj.newVote);
+                updateVoteTotal(obj.newVote, $('#voteTotal'), $( "#upVote") , $( "#downVote"));
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
             }
@@ -282,9 +285,9 @@ function downVote() {
     		},
         success: function(obj){
             if (obj.result == true) {
-              updateVoteButtonLabels(obj.newVote);
+                updateVoteTotal(obj.newVote, $('#voteTotal'), $( "#upVote"), $( "#downVote"));
             } else {
-              alert('An error happened and your vote may not have counted. Try a page refresh?');
+                alert('An error happened and your vote may not have counted. Try a page refresh?');
             }
         }
     });

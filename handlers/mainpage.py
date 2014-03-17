@@ -7,8 +7,11 @@ from google.appengine.ext.webapp import template
 
 from authhandler import AuthHandler
 from models.point import PointRoot, FeaturedPoint
+from google.appengine.ext import ndb
 
 class MainPage(AuthHandler):
+    
+    # NOT USED FOR NOW (doesn't get votes
     def getMainPageLeft(self):
         
         newPoints = PointRoot.getRecentCurrentPoints()
@@ -48,16 +51,19 @@ class MainPage(AuthHandler):
             'html': html,
         }) 
         self.response.out.write(resultJSON) 
-    
+        
+        
+        
+    @ndb.toplevel    
     def get(self):
-
-        newPoints = PointRoot.getRecentCurrentPoints()
-        featuredPoint = FeaturedPoint.getFeaturedPoint()
         user = None
 
         if self.logged_in:
             user = self.current_user
-
+            
+        newPoints = yield PointRoot.getRecentCurrentPoints_async(user)        
+        featuredPoint = FeaturedPoint.getFeaturedPoint()
+        
         # GET RECENTLY VIEWED
         if user:
             recentlyViewedPoints = user.getRecentlyViewed()

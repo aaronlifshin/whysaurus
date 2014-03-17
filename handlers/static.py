@@ -36,3 +36,13 @@ class Contact(AuthHandler):
             self.template_render('contact.html',
                 {'user': user,
                 'currentArea':self.session.get('currentArea')}))
+
+class Manifesto(AuthHandler):
+    def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
+        self.response.out.write(
+            self.template_render('manifesto.html',
+                {'user': user,
+                'currentArea':self.session.get('currentArea')}))

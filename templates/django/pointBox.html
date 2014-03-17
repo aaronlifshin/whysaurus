@@ -1,5 +1,5 @@
 
-	<div class="pointCard" data-pointurl='{{point.url}}' data-pointrootus='{{point.rootURLsafe}}'>
+	<div class="pointCard" data-pointurl='{{point.url}}'>
 	   <div class="row-fluid">
 	       <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %}">
 	          <div class="pointTitle">
@@ -14,18 +14,17 @@
           
 	    </div>    
       
-        <div class="pointBoxActionLine">  
-          <a class="pointBoxActions">Agree</a>&#183;<!-- &#183; = small dot -->
-          <a class="pointBoxActions">Disagree</a>&#183;<!-- &#183 = small dot -->
+        <div class="pointBoxActionLine"> 
+          <a name="UpVote" class="pointBoxActions {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %}">Agree</a>&#183;<!-- &#183; = small dot -->
+          <a name="DownVote" class="pointBoxActions {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}">Disagree</a>&#183;<!-- &#183 = small dot -->
           {% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
             <a class="pointBoxActions">See Evidence<!--({{ point.numSupporting }}-{{ point.numCounter }})--></a>
           {% else %} 
             <a class="pointBoxActions needsEvidence">Needs Evidence</a>
           {% endif %} 
-          <span class="pointBoxStatsRow">
-			  {% if point.voteTotal != 0 %}
-				  <span class="stat"><img class="iconAgreesSmall" src="/static/img/agreesIconSmall.png"/>&nbsp{{ point.voteTotal }}</span>
-			  {% endif %}            
+          <span class="pointBoxStatsRow">			  
+              <span name="voteTotalArea" class="stat" {% if point.voteTotal == 0 %}style="display:none"{% endif %}            
+><img class="iconAgreesSmall" src="/static/img/agreesIconSmall.png"/><span name="voteTotal" data-myvote="{{point.vote}}">&nbsp{{ point.voteTotal }}</span></span>
 			  <!--{% if point.ribbonTotal != 0 %}			
 	          	<span class="stat"><img src="/static/img/awardsIconSmall.png"/>{{ point.ribbonTotal }}</span>
   			  {% endif %} -->            

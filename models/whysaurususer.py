@@ -264,7 +264,18 @@ class WhysaurusUser(auth_models.User):
         vote = yield UserVote.query(            
             UserVote.pointRootKey==pointRootKey, ancestor=self.key).get_async()
         raise ndb.Return(vote)
+        
+    def getVoteValue(self, pointRootKey):
+        vote = UserVote.query(            
+            UserVote.pointRootKey==pointRootKey, ancestor=self.key).get()
+        return vote.value if vote else 0
 
+    @ndb.tasklet
+    def getVoteValue_async(self, pointRootKey):
+        vote = yield UserVote.query(            
+            UserVote.pointRootKey==pointRootKey, ancestor=self.key).get_async()
+        raise ndb.Return(vote.value if vote else 0)
+        
     def getVoteValues(self, pointRootKey):
         vote = UserVote.query(            
             UserVote.pointRootKey==pointRootKey, ancestor=self.key).get()

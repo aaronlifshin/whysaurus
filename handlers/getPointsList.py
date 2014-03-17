@@ -10,15 +10,21 @@ from models.point import PointRoot
 class GetPointsList(AuthHandler):
     def post(self):      
         points = None
+        user = None
+
+        if self.logged_in:
+            user = self.current_user
+            
         listType = self.request.get('type')
+        
         if listType == 'topAwards':
-            points = PointRoot.getTopAwardPoints()
+            points = PointRoot.getTopAwardPoints(user)
         elif listType == 'topViewed':
-            points = PointRoot.getTopViewedPoints()
+            points = PointRoot.getTopViewedPoints(user)
         elif listType == 'topRated':
-            points = PointRoot.getTopRatedPoints()
+            points = PointRoot.getTopRatedPoints(user)
         elif listType == 'editorsPics':
-            points = PointRoot.getEditorsPicks()
+            points = PointRoot.getEditorsPicks(user)
 
         template_values = {
             'points':points

@@ -151,6 +151,7 @@ a:visited {
 
 #searchBox {
 	width:100%; 
+    color:black;
     // use these three CSS3 box-sizing calls to cause the padding to cut
     //  into the box width instead of add to it
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -211,6 +212,7 @@ a:visited {
     width: 100%;   
     padding-left: 4px;
     padding-right: 4px;
+    padding-bottom: 4px;
 }
 
 .newPointInputRow {
@@ -223,6 +225,9 @@ a:visited {
     //margin-left: auto;
     //margin-right: auto;
     //max-width: 75%;
+    max-width: 624px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .newPointCallTitle {
@@ -239,32 +244,28 @@ a:visited {
     background-position: 0 -16px;
 }
 
-
-#searchBox::-webkit-input-placeholder {
+#newPointTitle::-webkit-input-placeholder, #searchBox::-webkit-input-placeholder {
 	font-size: 0.9375em;
-	font:Georgia, Garamond, serif;
 	color:#6D6E70;
 	font-style: italic;
 	padding-top: 0.18em;
 }
 
-#searchBox:-moz-placeholder { /* Firefox 18- */
+#newPointTitle::-webkit-input-placeholder, #searchBox:-moz-placeholder { /* Firefox 18- */
     font-size: 0.9375em;
-    font:Georgia, Garamond, serif;
     color:#6D6E70;
     font-style: italic;   
 	padding-top: 0.18em;
 }
 
-#searchBox::-moz-placeholder {  /* Firefox 19+ */
+#newPointTitle::-webkit-input-placeholder, #searchBox::-moz-placeholder {  /* Firefox 19+ */
     font-size: 0.9375em;
-    font:Georgia, Garamond, serif;
     color:#6D6E70;
     font-style: italic;
 	padding-top: 0.18em;
 }
 
-#searchBox:-ms-input-placeholder {  
+#newPointTitle::-webkit-input-placeholder, #searchBox:-ms-input-placeholder {  
     font-size: 0.9375em;
     font:Georgia, Garamond, serif;
     color:#6D6E70;
@@ -807,6 +808,10 @@ a:visited {
     z-index: 100000; 
 }
 
+.manifestoTextTopHeader {
+    //font-size: @fontSizeXXXL;
+}
+
 #manifestoText {
     color: black;    
     background-color:white;
@@ -815,6 +820,9 @@ a:visited {
     border-bottom-style: solid;
 } 
 
+.textPageBulletList {
+    margin-top:8px;
+}
 
 .explanationColumn {
     position:relative;
@@ -845,8 +853,9 @@ a:visited {
 .explanationsCentered {
     margin-left:auto;
     margin-right:auto;
-    margin-top:6px;
+    //margin-top:6px;
     max-width:640px;
+    padding-left:14px;
 }
 
 .explanationBlock {

@@ -18,6 +18,10 @@ body {
 a:hover {
     cursor:pointer;
 }
+
+.inlineBlock {
+    display: inline-block;
+}
   
 /* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
 .hidden-xxs {
@@ -1510,23 +1514,27 @@ img.smallDisplay {
 	margin-right: 10px;
 	line-height:120%;
 }
-*/
-
+*/  
+      
 #stats li {
 	padding-left: 5px;
     color:black;
 }
 
-
+ 
+.editPointArea {
+    margin-right: 0px;
+}
 
 a#editPoint {
-	float: right;
-	background-image: url('/static/img/pencil_icon.png');
-	background-color: transparent;
-	background-repeat: no-repeat;
-	background-position: 100% 100%;
-	padding-right: 19px;
-	height: 20px;	
+	//float: right;
+	//background-image: url('/static/img/pencil_icon.png');
+	//background-color: transparent;
+	//background-repeat: no-repeat;
+	//background-position: 100% 100%;
+	//padding-right: 19px;
+	//height: 20px;	
+    width:40px;
 	margin-right: 25px;
 }	
 
@@ -1534,6 +1542,12 @@ a#editPoint:hover {
 	color: #00ADEE;
 	background-position: 100% 100%;
 }
+
+.editIcon {
+	padding-left:2px;
+}
+
+
 
 button#supporting_addPointWhenNonZero,
 button#counter_addPointWhenNonZero {	
@@ -2317,7 +2331,7 @@ a[name="profileEdit"] {
    COMMENTS AREA OF POINT PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
-  
+   
 .commentsColumn {
     position:relative;
     top: 24px;

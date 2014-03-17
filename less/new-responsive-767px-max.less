@@ -17,7 +17,7 @@
   }
 
   .responsiveRightMargin {
-    margin-right: 24px !important;
+    margin-right: 20px !important;
   }
   
   .responsiveUnfloat {
@@ -210,7 +210,12 @@
     display:inline !important;
   } 
   
+  .editPointArea {
+    margin-right: -10px;
+  }
+  
   a#editPoint {
+    margin-right:0;
     float:none;
   }
   
@@ -268,13 +273,7 @@
   .explanationImageCentered {
     margin-bottom:28px;
   }
-  
-  // TOP POINT
-  
-  // hide carets
-  #scoreAndVotingSection .caret {
-    border:none;
-  }
+
 }
 
 // UP TO LANDSCAPE PHONE
@@ -283,7 +282,7 @@
 @media (max-width: 480px) {
 
   .responsiveRightMargin {
-    margin-right: 12px !important;
+    margin-right: 8px !important;
   } 
 
   #homeNav {
@@ -374,7 +373,11 @@
   #scoreAndVotingSection {
     line-height: @lineHeightXL;
   }
-
+  
+  // hide carets
+  #scoreAndVotingSection .caret {
+    border:none;
+  }
 }
 
 // NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)
@@ -434,7 +437,7 @@
   }
   
   .responsiveRightMargin {
-    margin-right: 10px !important;
+    margin-right: 9px !important;
   }
 
   #makePointIcon {
@@ -485,6 +488,11 @@
 // ---------------------
 
 @media (max-width: 319px) {
+
+  .hidden-xxxs {
+    display: none !important;
+  }
+
   #searchArea {
     width:118px;
   }

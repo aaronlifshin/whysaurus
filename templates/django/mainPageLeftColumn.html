@@ -1,6 +1,6 @@
 
 <div class="row">        
-	<div class="span6 offset2">
+	<div class="span8 offset2">
 		{% if featuredPoint %}
 			<div class="columnHeading">
 				FEATURED POINT
@@ -11,7 +11,7 @@
 		{% endif %}
 		<div id='mainPageMainArea' class="columnHeading ">
 		      <button class="tab selectedTab" id="recentActivity">
-		          RECENT ACTIVITY
+		          RECENTLY ACTIVE
 		      </button>
 		      <button class="tab" id="editorsPicks">
 		          EDITORS PICKS
@@ -22,9 +22,19 @@
 		      <button class="tab" id="mostViews">
 		          MOST VIEWS
 		      </button>
+              {% if user %}
+                <button class="tab" id="recentlyViewedTab">
+		          RECENTLY VIEWED
+                </button>
+              {% endif %}              
 		</div>
 		<div id="recentActivityArea" class="tabbedArea">
 			{% for point in recentlyActive %}
+			   {% include 'pointBox.html' %}            
+			{% endfor %}               
+		</div>
+        <div id="recentlyViewedArea" class="tabbedArea">
+			{% for point in recentlyViewed %}
 			   {% include 'pointBox.html' %}            
 			{% endfor %}               
 		</div>

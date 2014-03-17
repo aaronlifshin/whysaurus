@@ -1486,7 +1486,11 @@ function activateMainPageLeftColumn() {
     $('#mostAgrees').click(function() {
         loadPointList('topRated', '#mostAgreesArea', this);
     });
-
+    
+    $('#recentlyViewedTab').click(function() {
+        toggleTabbedArea("#leftColumn", this, "#recentlyViewedArea"); 
+    });
+    
     $("#newPointTitle").on('keyup', function(e) {setCharNum(e.target, "#newPointTitle_charNum");});
 
     if ( loggedIn ) {

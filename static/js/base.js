@@ -68,6 +68,11 @@ function startSpinnerOnButton(buttonID) {
    $(buttonID).before("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
 }
 
+function startSpinnerAfterButton(buttonID) {
+   disableButtonPrimary($(buttonID));
+   $(buttonID).after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
+}
+
 function stopSpinnerOnButton(buttonID, clickHandler) {
    $("#spinnerImage").remove();
    $(buttonID).off(".ys").on("click.ys", clickHandler ); 
@@ -188,7 +193,7 @@ function createPointFromMainPage() {
         return;
     }
     
-    startSpinnerOnButton('#mainPagePublish');    
+    startSpinnerAfterButton('#mainPagePublish');    
         
     // These points only have a title!!
     ajaxData = {

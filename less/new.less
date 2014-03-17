@@ -231,11 +231,14 @@ a:visited {
 }
  
 .newPointCallTitle {
-    font-size: @fontSizeExtraLarge;
-    text-transform: uppercase;
+    font-size: 38px;
+    //text-transform: uppercase;
     font-weight: bold;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
     line-height: @lineHeightBig;
+    letter-spacing: .65px;
+    text-align: center;
+    
 }
 
 .mainPageMainStream {
@@ -802,7 +805,7 @@ a:visited {
     font-size: @fontSizeExtraLarge;
     text-transform: uppercase;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 0.65px;
     color:black;
     
 }
@@ -828,6 +831,15 @@ a:visited {
     border-bottom-width: 1px;
     border-bottom-style: solid;
 } 
+
+.twitter-share-button {
+    margin-top:16px;
+}
+
+.fb-share-button {
+    bottom: 4px;
+    margin-left: 4px;
+}
 
 .textPageBulletList {
     margin-top:8px;
@@ -908,7 +920,7 @@ a:visited {
 }
 
 #oneLinePointCreate {
-    margin-top:@homepageRowVerticalPadding;
+    margin-top:@homepageRowVerticalPadding + 4px;
     padding-bottom: @homepageRowVerticalPadding;
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
@@ -956,7 +968,7 @@ a:visited {
 
 .columnHeading {
 	font-weight:bold;
-	font-size: @fontSizeMediumCond; 
+	font-size: @fontSizeMedium; 
 	color:@grayTextDark;
 	font-family:@sansCondFontFamily;
 	line-height: @lineHeightDefault;

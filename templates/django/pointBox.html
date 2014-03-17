@@ -24,12 +24,12 @@
           {% endif %} 
           <span class="pointBoxStatsRow">			  
               <span name="voteTotalArea" class="stat" {% if point.voteTotal == 0 %}style="display:none"{% endif %}            
-><img class="iconAgreesSmall" src="/static/img/agreesIconSmall.png"/><span name="voteTotal" data-myvote="{{point.vote}}">&nbsp{{ point.voteTotal }}</span></span>
+><img class="iconAgreesSmall" src="/static/img/agreesIconSmall_blue.png"/><span name="voteTotal" data-myvote="{{point.vote}}">&nbsp{{ point.voteTotal }}</span></span>
 			  <!--{% if point.ribbonTotal != 0 %}			
 	          	<span class="stat"><img src="/static/img/awardsIconSmall.png"/>{{ point.ribbonTotal }}</span>
   			  {% endif %} -->            
 			  {% if point.sources|length != 0 %}							
-			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall.png"/>&nbsp{{ point.sources|length }}</span>
+			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_blue.png"/>&nbsp{{ point.sources|length }}</span>
 			  {% endif %}
 			  <!--{% if point.numSupporting > 0 %}							
 			  	<span class="stat"><img class="iconSourcesSmall" src="/static/img/link_icon_16px.png"/>&nbsp{{ point.numSupporting }}-{{ point.numCounter }}</span>

@@ -15,6 +15,15 @@
   .responsiveInline {
     display:inline !important;
   }
+
+  .responsiveRightMargin {
+    margin-right: 24px !important;
+  }
+  
+  .responsiveUnfloat {
+    float: none !important;
+    display: inline !important;
+  }
   
   // HEADER
   
@@ -138,6 +147,109 @@
     //top: 0;
     //left: 0; 
   } 
+  
+  // TOP POINT
+  .upstreamLinks {
+    position: relative;
+    bottom: 4px;
+  }
+  
+  #pointArea {
+    padding-left: @boxPaddingFull;
+    padding-right: @boxPaddingFull;  
+    top: 19px;
+  }
+  
+  #pointSummary {
+    position:relative;
+    top: -8px;
+    margin-bottom: 0px;
+  }
+  
+  .mainPointTitleText {
+    margin-top:10px;
+    padding-right:0;
+  }
+  
+  .mainPointContent {
+    margin-right:16px;
+  }
+  
+  #timestampAndEditLink {
+    display:inline-block;
+  }
+  
+  #mainPointImageArea {
+    margin-bottom: 16px;
+  }
+  
+  img.pointDisplay {
+    width: inherit;
+  }
+  
+  .imageAreaMaxHeight {
+    max-height: 240px;
+  }
+  
+  .mainPointImageCaption {
+    /*  will become unnecessary as more images are saved with a width of 720px 
+    and there are fewer images with the original 310px width */
+    max-width: 310px; 
+  }
+  
+  #scoreAndVotingSection {    
+  }
+
+  .pointAreaActions {
+    padding-right: 6px;
+    margin-bottom: 12px;
+  }
+
+  
+  .topPointVotingArea {
+    display:inline !important;
+  } 
+  
+  a#editPoint {
+    float:none;
+  }
+  
+  // SUPPORTING AND COUNTER POINTS
+  
+  .pointColumnMenuArea {
+    margin-top:-20px;
+  }
+  
+  #supportingPointsArea {
+    margin-top:18px;
+  }
+  
+  #supporting_pointActions, #counter_pointActions, 
+  #supporting_pointActionsWhenZero, 
+  #counter_pointActionsWhenZero {
+    margin-bottom:48px;
+  }
+  
+  .pointListTitleZero {
+    padding-left:0;
+  }
+  
+  #supporting_pointActionsWhenZero, 
+  #counter_pointActionsWhenZero {
+    padding-left:0; 
+  }
+  
+  // COMMENTS
+  
+  .commentsColumn {
+    top:12px;
+    margin-bottom: 64px;
+  }
+  
+  .commentsButton {
+    margin-bottom:12px;
+  }
+  
 }
   
 // SPECIAL CASE FOR Explanatory Illustrations
@@ -156,12 +268,23 @@
   .explanationImageCentered {
     margin-bottom:28px;
   }
+  
+  // TOP POINT
+  
+  // hide carets
+  #scoreAndVotingSection .caret {
+    border:none;
+  }
 }
 
 // UP TO LANDSCAPE PHONE
 // ---------------------
 
 @media (max-width: 480px) {
+
+  .responsiveRightMargin {
+    margin-right: 12px !important;
+  } 
 
   #homeNav {
     display:none;
@@ -246,6 +369,12 @@
     min-width: auto;
     width:98%;
   }
+  
+  // POINT AREA
+  #scoreAndVotingSection {
+    line-height: @lineHeightXL;
+  }
+
 }
 
 // NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)
@@ -254,11 +383,16 @@
 @media (max-width: 420px) {
 
   .hidden-xxs {
-    display: none;
+    display: none !important;
   }
   .visible-xxs {
     display: inherit;   
   }
+  
+  .responsiveRightMargin {
+    margin-right: 14px !important;
+  }
+  
   #searchArea {
     width:182px;
   }
@@ -267,7 +401,23 @@
   
   .fieldEdit {
     width:96%;
+  }    
+  
+  // POINT AREA
+  .topPointVotingArea {
+    //display:block !important;
+    margin-right: 30px;
   }
+
+  .iconAgreesSmallMainPoint {
+    padding-left:4px;
+  }
+  
+  .shareIcon {
+    width: 20px; // make it bigger when the label goes away
+    padding-left:0;
+  }
+  
 }
 
 
@@ -281,6 +431,10 @@
   }
   .visible-xxs {
     display: inherit;   
+  }
+  
+  .responsiveRightMargin {
+    margin-right: 10px !important;
   }
 
   #makePointIcon {
@@ -311,7 +465,19 @@
   
   // DIALOGS
   
-
+  // TOP POINT
+  
+  .pointAreaActions {
+    padding-right: 6px;
+    margin-bottom: 10px;
+  }
+     
+  .iphone5-adminLink {
+    //position: absolute; 
+    //bottom: -34px;
+    //padding-left: 58px;
+  }
+  
 }
 
 

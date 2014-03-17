@@ -3,30 +3,29 @@
        
 // scrollbar always visible to prevent horizontal shifting
 html {overflow-y: scroll;}
-
+ 
 .no-space [class*="span"] {
     margin: 0 0 0 0 ;
-}
-        
+}           
+             
 .center { float: none; margin-left: auto; margin-right: auto; }
 
 /* test */
 body {
 	padding-top: 100px;
 }
-
+       
 a:hover {
     cursor:pointer;
 }
-
+  
 /* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
 .hidden-xxs {
     display: inherit;
-}
+} 
 .visible-xxs {
     display: none;   
 }
-    
     
 /* if we want to set a "visited" color for links, uncomment this... 
 a:visited {
@@ -581,17 +580,17 @@ a:visited {
 }
 
 .pointCard .stat {
-	color: @grayTextMedium;
+	//color: @grayTextMedium;
     /*font-weight: bold;*/
 	font-family: @sansFontFamily;
 	font-size: @fontSizeSmaller;
-    padding-right:6px;
-    padding-left:0px;
+    padding-right:3px;
+    padding-left:3px;
 }
 
 .pointBoxStatsRow {
     //margin-bottom:24px;
-    margin-left:3px;
+    margin-left:-2px;
 }
 
 .pointCard .linkStat {
@@ -923,16 +922,22 @@ a:visited {
 
 .pointBoxActions {
 	margin-bottom:2px;
-    margin-right:4px;
-}
+    margin-right:4px; 
+} 
 
-.needsEvidence {
+.shareIcon {
+    width: 14px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+}
+  
+.needsEvidence { 
     opacity:0.5;
-}   
-
+}    
+ 
 #scoreAndVotingSection {
-	margin-top: 12px;
-}
+	margin-top: 12px;  
+}  
 
 #scoreAndVotingSection a {
 	cursor:pointer;
@@ -941,7 +946,7 @@ a:visited {
 #scoreAndVotingSection div {
 	margin-left:0px;
 }
- 
+     
 
 .iconSourcesSmall {
     padding-right: -10px;
@@ -949,13 +954,26 @@ a:visited {
 
 
 .iconAgreesSmall {
-    padding-top: 2px;
+    //padding-top: 2px;
+    width: 25px;
+    opacity: .72;
+    
 }
 
 .iconAgreesSmallMainPoint {
-    padding-top: 2px;
-    padding-left: 4px;
+    padding-top: 1px;
+    padding-left: 6px;
     padding-right: 2px;
+    opacity:.9;
+}
+
+.shareMenu {
+    display:inline;
+    margin-right: 21px;
+}
+
+.statsMenu {
+    display:inline;
 }
 
 #blueRibbon {
@@ -1203,9 +1221,9 @@ a:visited {
     padding-bottom: 0px;
     height: 15px;
     position: relative;
-    bottom: 1px;
+    bottom: 1px; 
 }
-
+         
 .relevanceVote {
 	border-style:solid;
 	border-width:1px;
@@ -1390,8 +1408,7 @@ h4.mission {
     //text-transform: Uppercase;
 	font-size: @fontSizeSmallCaps;
 }
-
-
+   
 #pointSummary {
 	margin-bottom: 12px;
 }
@@ -1408,13 +1425,14 @@ h4.mission {
 #mainPointImageArea {
 	float: right;
 	margin-left: 0px;
+    margin-bottom: 4px;
 }
-
+  
 .imageAreaMaxHeight {
-    max-height: 180px;
+    max-height: 150px;
     overflow: hidden;
 }
-
+    
 .mainPointImageCaption{
 	font-size: @fontSizeSmaller;
 	font-style: italic;

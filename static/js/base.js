@@ -208,7 +208,9 @@ function createPointFromMainPage() {
     };
     
     newPointAjax(ajaxData, showAlert, '#mainPagePublish', function() {
-        $('#mainPagePublish').off('.ys').on('click.ys', createPointFromMainPage );
+        $("#explanationRowHomepage").hide();       
+        $("#oneLinePointCreate").hide();
+        $('#mainPagePublish').off('.ys').on('click.ys', createPointFromMainPage );        
     });
 }
 

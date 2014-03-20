@@ -21,14 +21,17 @@
           <title>{{ point.title }}</title>   
       {% else %}
           {% if profileUser %}
-             <title>{{profileUser.name}} on Whysaurus, the center for collaborative reasoning.</title>
+             <title>{{profileUser.name}} on Whysaurus</title>
           {% else %}
             <title>Whysaurus : Bring Reason to the Web</title>
-            <meta name="description" content="Whysaurus offers collaborative tools to explain ideas by 
-            dividing them into bite-size points. 
-            It is a tool for crowdsourcing structured debate arguments. 
-            When users come up with a good explanation, others can reuse it to support or counter any Whysaurus point.  
-            Users create and refine points together, to arrive at the best explanation over time.  
+            <meta name="description" content="
+            A new kind of discussion platform with a design that encourages rational deliberation.
+            In Whysaurus, arguments are divided into points. 
+            Points can support or counter each other, so users can drill down to see the proof behind proof on any idea.
+            Each point can be rated so the flaws in any argument can be quickly and precisely identified. 
+            Points have character limits, so there is little room for flowery rhetoric.
+            Each point can be discussed in their own comment thread, so conversations stay tightly focused.
+            Points can be re-used, so users don't need to start from scratch when building new arguments.
             Whysaurus will become a reference repository of explanations and convincing arguments for positions.">            
           {% endif %}              
       {% endif %}

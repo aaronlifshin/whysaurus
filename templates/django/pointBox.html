@@ -1,13 +1,13 @@
 
 	<div class="pointCard" data-pointurl='{{point.url}}'>
 	   <div class="row-fluid">
-	       <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %}">
+	       <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %} {% if point.imageURL and point.imageURL.strip %}responsivePointBoxTitleWithImage{% endif %}">
 	          <div class="pointTitle">
 	            <a href="/point/{{ point.url }}" style="text-decoration:none">{{ point.title|escape }}</a>
 	          </div>
 	      </div>     
         {% if point.imageURL and point.imageURL.strip %}                        
-	      <div class="span2">
+	      <div class="span2 responsivePointBoxImage">
 	            <img class="listDisplay" src="{{ point.summaryBigImage }}" />
 	      </div>
         {% endif %}            

@@ -14,6 +14,10 @@ html {overflow-y: scroll;}
 body {
 	padding-top: @headerHeight;
 }
+
+h1 {
+    line-height: @lineHeightBig;
+}
        
 a:hover {
     cursor:pointer;
@@ -683,7 +687,11 @@ a:visited {
 
 .pointTitle a {
     color:black;
+    //font-size: @fontSizeLarge;
+    //font-weight: bold;
+    //line-height: @lineHeightBig
 }
+
 .pointTitle a:hover {
     text-decoration:underline !important;
 }
@@ -715,6 +723,11 @@ a:visited {
 	font-size: 0.75em;
 	line-height: 1.3125em;	
 	margin-bottom: 8px;	
+}
+
+
+.pointBoxActionLine a {
+    color: @grayTextLight;
 }
 
 .pointSmall .smallStat {

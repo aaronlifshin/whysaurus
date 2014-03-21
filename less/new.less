@@ -242,6 +242,18 @@ a:visited {
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
+    
+}
+
+.explanationTitle {
+    font-size: 24px;
+    //text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 8px;
+    line-height: @lineHeightBig;
+    letter-spacing: .65px;
+    text-align: center;
+    
 }
  
 .newPointCallTitle {
@@ -255,14 +267,26 @@ a:visited {
     
 }
 
+.sectionTitle {
+    font-size: 38px;
+    //text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 8px;
+    line-height: @lineHeightBig;
+    letter-spacing: .65px;
+    margin-top:16px;
+    //text-align: center;
+    
+}
+
+
 .mainPageMainStream {
-    //min-height:0px !important;
-    //margin-left: auto;
-    //margin-right: auto;
+    min-height:0px !important;
     //max-width: 75%;
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
+    padding-left:0px;
 }
 
 #searchArea .searchIcon:hover  {
@@ -817,8 +841,8 @@ a:visited {
     font-weight: bold;
     line-height: @lineHeightBig;
     text-align: center;
-    padding-top: @homepageRowVerticalPadding;
-    padding-bottom: @homepageRowVerticalPadding;
+    padding-top: @homepageRowVerticalPadding * .8;
+    padding-bottom: @homepageRowVerticalPadding  * .8;
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -839,7 +863,7 @@ a:visited {
 
 #hideManifesto {
     font-size: @fontSizeSmall;
-    margin-top: (-1 * @homepageRowVerticalPadding) - 4px;
+    margin-top: -24px;
     z-index: 100000; 
 }
 
@@ -885,7 +909,7 @@ a:visited {
 #explanationRowHomepage {
     margin-top:@homepageRowVerticalPadding;
     margin-left:0;
-    padding-bottom:@homepageRowVerticalPadding;
+    padding-bottom:@homepageRowVerticalPadding * .8;
     //min-height:1px;
     //margin-bottom:16px;
     //width:800px;
@@ -931,20 +955,42 @@ a:visited {
 .explanationImage {
     margin-bottom:24px;
 }
-
+  
 .explanationImageCentered {
     display:block;
     margin:auto;
     //margin-bottom:36px;
 }
-
+ 
 .cheatImageLeft {
     padding-left:16px;
 }
 
+.homepageCallsToActionFluid {
+    width: 20%;
+    float: left;
+    display:inline-block;
+}
+
+.homepageCallsToAction {
+    margin-left: 0;
+    font-weight:bold;
+	font-size: 31px; 
+	color:@grayOutlinesMid;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    text-transform: uppercase;
+    padding-left: 62px;
+}
+
+#homepageCallsToActionMain {
+    margin-left: 16px;
+    margin-top:@homepageRowVerticalPadding
+}
+
 #oneLinePointCreate {
-    margin-top:@homepageRowVerticalPadding + 4px;
-    padding-bottom: @homepageRowVerticalPadding;
+    margin-top:@homepageRowVerticalPadding;
+    padding-bottom: @homepageRowVerticalPadding * .8;
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -995,8 +1041,19 @@ a:visited {
 	font-family:@sansCondFontFamily;
 	line-height: @lineHeightDefault;
     margin-bottom: 2px;	
-    margin-top:@homepageRowVerticalPadding * 2;
+    margin-top:@homepageRowVerticalPadding;
 }
+
+.columnHeadingFeatured {
+	font-weight:bold;
+	font-size: @fontSizeMedium; 
+	color:@grayTextDark;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    margin-bottom: 2px;	
+    margin-top:@homepageRowVerticalPadding + 16px;
+}
+
 
 .columnHeadingBig {
 	font-size: @fontSizeLargeCond; 

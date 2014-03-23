@@ -1,4 +1,5 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
 
        
 // scrollbar always visible to prevent horizontal shifting
@@ -13,6 +14,9 @@ html {overflow-y: scroll;}
 /* test */
 body {
 	padding-top: @headerHeight;
+    font-family: ff-meta-web-pro,sans-serif;
+    font-size: @baseFontSize;
+    line-height: @baseLineHeight;
 }
 
 h1 {
@@ -923,14 +927,52 @@ a:visited {
     margin-left:auto;
     margin-right:auto;
     //margin-top:6px;
-    max-width:930px;
+    max-width:930px; 
     //padding-left:14px;
-}
+} 
 
 .explanationBlock {
     display:block;
     float:left;
     margin-left:42px;
+} 
+
+.slideGroup {
+    margin-left:auto;
+    margin-right:auto;
+    max-width: 250px;    
+}
+ 
+.carousel {
+    margin-bottom:4px;
+}
+
+.carousel-control {
+    background:none;
+    top: 37%;
+    left:0;
+}
+
+.left.carousel-control {
+    left:-12px;
+}
+
+.carousel-indicators {
+    top:initial;
+    right:0;
+}
+
+.carousel-indicators li:hover {
+    cursor:pointer;
+    background-color: @grayTextExtraLight;
+}
+
+.carousel-indicators .active {
+    background-color: @grayOutlinesMid;
+}
+
+.glyphGrey {
+    color: @grayTextExtraLight;
 }
 
 .explanationText {
@@ -952,6 +994,19 @@ a:visited {
 	margin-bottom: 10px;	
 }
 
+.slideGroup > .explanationTextCentered {
+    position: relative;
+    top: -18px;
+}
+
+.slideText {
+    display: inline-block;
+}
+
+.slideImage {
+    display: inline-block
+}
+
 .explanationImage {
     margin-bottom:24px;
 }
@@ -961,6 +1016,16 @@ a:visited {
     margin:auto;
     //margin-bottom:36px;
 }
+
+.carousel-indicators li {
+    border-color: @grayOutlinesMid;
+    border-width: 1px;
+    border-style: solid;
+}
+
+
+
+
  
 .cheatImageLeft {
     padding-left:16px;

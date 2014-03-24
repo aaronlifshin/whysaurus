@@ -1,5 +1,5 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
-@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
 
        
 // scrollbar always visible to prevent horizontal shifting
@@ -7,11 +7,11 @@ html {overflow-y: scroll;}
  
 .no-space [class*="span"] {
     margin: 0 0 0 0 ;
-}           
-             
+}            
+                
 .center { float: none; margin-left: auto; margin-right: auto; }
 
-/* test */
+/* test */  
 body {
 	padding-top: @headerHeight;
     font-family: ff-meta-web-pro,sans-serif;
@@ -19,19 +19,7 @@ body {
     line-height: @baseLineHeight;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 10px 0;
-  font-family: @headingsFontFamily;
-  font-weight: @headingsFontWeight;
-  line-height: @lineHeightDefault;
-  color: @headingsColor;
-  text-rendering: optimizelegibility; // Fix the character spacing for headings
-  small {
-    font-weight: normal;
-    line-height: 1;
-    color: @grayLight;
-  }
-}
+
 
 
 h1 { font-size: @fontSizeLarge;  } // standard main point headings
@@ -2591,6 +2579,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .modal textarea {
     //width:75%;
     resize:none;
+    //height: 32px;
 }
 
 .modalSubheading {

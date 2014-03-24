@@ -19,6 +19,29 @@ body {
     line-height: @baseLineHeight;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0;
+  font-family: @headingsFontFamily;
+  font-weight: @headingsFontWeight;
+  line-height: @lineHeightDefault;
+  color: @headingsColor;
+  text-rendering: optimizelegibility; // Fix the character spacing for headings
+  small {
+    font-weight: normal;
+    line-height: 1;
+    color: @grayLight;
+  }
+}
+
+
+h1 { font-size: @fontSizeLarge;  } // standard main point headings
+h2 { font-size: @fontSizeLarge * 1.9; margin: 48px 0 0px 0; -webkit-text-stroke: 0.5px;} 
+h3 { font-size: @fontSizeLarge * 1.66; }
+h4 { font-size: @fontSizeLarge * 1.1; margin: 32px 0 10px 0; -webkit-text-stroke: 0.2px;}
+h5 { font-size: @fontSizeLarge * 0.66; }
+h6 { font-size: @fontSizeLarge * 0.50; }
+
+
 h1 {
     line-height: @lineHeightBig;
 }
@@ -827,11 +850,11 @@ a:visited {
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
-
+ 
 .boxedElement H5 {
 	padding-left: 5px;
 }
-
+ 
 .pointSummaryText {
 	padding-left: 5px;
 }
@@ -851,10 +874,10 @@ a:visited {
 .manifestoTitle {
     font-size: @fontSizeLarge;
     font-weight: bold;
-    line-height: @lineHeightBig;
+    line-height: @lineHeightXL;
     text-align: center;
-    padding-top: @homepageRowVerticalPadding * .8;
-    padding-bottom: @homepageRowVerticalPadding  * .8;
+    padding-top: @homepageRowVerticalPadding * .65 ;
+    padding-bottom: @homepageRowVerticalPadding  ;
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -875,7 +898,7 @@ a:visited {
 
 #hideManifesto {
     font-size: @fontSizeSmall;
-    margin-top: -24px;
+    margin-top: -20px;
     z-index: 100000; 
 }
 
@@ -898,6 +921,7 @@ a:visited {
 .fb-share-button {
     bottom: 4px;
     margin-left: 4px;
+    display:inline !important; // need to override facebook's automated restyling for mobile
 }
 
 .textPageBulletList {
@@ -945,19 +969,21 @@ a:visited {
     border-top-style: solid;
 }
 
-
+ 
 .explanationsCentered {
     margin-left:auto;
     margin-right:auto;
     //margin-top:6px;
-    max-width:930px; 
+    width:796px; //need to set width precisely to get the centering via margin:auto to work, afaik -JF
     //padding-left:14px;
-} 
-
+    min-height:1px;
+}  
+ 
 .explanationBlock {
     display:block;
     float:left;
     margin-left:42px;
+    
 } 
   
 .slideGroup {
@@ -1737,7 +1763,7 @@ h4.mission {
     //margin-top: 10px;
 	/*padding-top:10px;*/
 }
-
+ 
 .contributor {
     //text-transform: Uppercase;
 	font-size: @fontSizeSmallCaps;
@@ -1760,6 +1786,7 @@ h4.mission {
 	float: right;
 	margin-left: 0px;
     margin-bottom: 4px;
+    margin-right:-2px; //patching a bug with positioning, not sure why this is nec but its working -JF
 }
   
 .imageAreaMaxHeight {

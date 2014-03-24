@@ -54,6 +54,10 @@ a:hover {
     display: inline-block;
 }
   
+.inline {
+    display:inline;
+}  
+  
 /* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
 .hidden-xxs {
     display: inherit;
@@ -214,8 +218,8 @@ a:visited {
   	-moz-border-radius: 0px;
   	border-radius: 2px; 
   	font-size: 16px;
-}
-
+}  
+   
 #searchArea .searchIcon {
 	position: relative;
 	top: -41px;
@@ -229,8 +233,8 @@ a:visited {
 .newPointInputRowFieldArea {
     // use the full width, minus the space needed for the publish button
     // the ~ and "" is needed to pass the calc command through the less compiler
-    width: -moz-calc(~"100% - 140px");
-    width: -webkit-calc(~"100% - 140px");
+    width: -moz-calc(~"100% - 146px");
+    width: -webkit-calc(~"100% - 146px");
     width: calc(~"100% - 146px");
     margin-right:8px;
     display:inline;
@@ -279,7 +283,7 @@ a:visited {
     margin-right: auto;
     
 }
-
+  
 .explanationTitle {
     font-size: 24px;
     //text-transform: uppercase;
@@ -289,16 +293,17 @@ a:visited {
     letter-spacing: .65px;
     text-align: center;
     
-}
- 
+}  
+  
 .newPointCallTitle {
     font-size: 38px;
     //text-transform: uppercase;
     font-weight: bold;
     padding-bottom: 8px;
-    line-height: @lineHeightBig;
+    line-height: @lineHeightDefault;
     letter-spacing: .65px;
     text-align: center;
+    display: inline-block; // needed so that child spans can inherit this when they toggle on for responsive visibility
     
 }
 
@@ -905,7 +910,7 @@ a:visited {
 .manifestoTextTopHeader {
     //font-size: @fontSizeXXXL;
 }
-
+ 
 #manifestoText {
     color: black;    
     background-color:white;

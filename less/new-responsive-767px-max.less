@@ -278,8 +278,8 @@
   }
   
   .newPointCallTitle {
-    font-size:28px;
-    text-align:left;
+    font-size:21px;
+    //text-align:left;
   }
   
   // FULL TEXT PAGES
@@ -410,6 +410,7 @@
   #scoreAndVotingSection .caret {
     border:none;
   }
+    
 }
 
 // NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)
@@ -459,6 +460,23 @@
     //font-size:28px;
   }
   
+  .newPointInputRowFieldArea {
+    width: -moz-calc(~"100% - 75px");
+    width: -webkit-calc(~"100% - 75px");
+    width: calc(~"100% - 75px");
+  }
+  
+  #mainPagePublish {
+    padding-left:10px;
+    padding-right: 10px;
+  }
+  
+  // INDEX PAGE
+  
+  .newPointCallTitle {
+    font-size: 24px;
+  }
+  
 }
 
 
@@ -467,13 +485,6 @@
 
 @media (max-width: 383px) {
 
-  .hidden-xxs {
-    display: none;
-  }
-  .visible-xxs {
-    display: inherit;   
-  }
-  
   .responsiveRightMargin {
     margin-right: 9px !important;
   }
@@ -524,8 +535,10 @@
   .manifestoTitle {
     padding-bottom: 27px;
   }
-  
-  
+  .newPointCallTitle {
+    font-size: 19px;
+  }
+
   
 }
 

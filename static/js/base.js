@@ -253,7 +253,9 @@ function newPoint() {
       return;
     }
 
-    startSpinnerOnButton('#submit_pointDialog');    
+    disableButtonPrimary('#submit_pointDialog');
+    $('#submit_pointDialog').text("Publish to Library...");
+    $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");
 
     var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;       

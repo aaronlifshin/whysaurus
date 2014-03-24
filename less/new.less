@@ -1,6 +1,16 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
 
+
+// undo some weird stuff that the bootstrap-glyphicons.css for bootstrap 3 is doing
+// this file is being imported at the top of bootstrap.less, so that it overrides as little as possible
+// it is being used for the arrow icons in the explanatory illustration carousel
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit; 
+}
+
        
 // scrollbar always visible to prevent horizontal shifting
 html {overflow-y: scroll;}
@@ -2246,10 +2256,14 @@ button#counter_addPointWhenNonZero {
 .spinnerPointSubmitButtonPosition {
    //margin-top:7px;
     position: relative;
-    left: 23px;
+    left: 8px;
     top: 4px;
    //float:right;
 }
+
+
+
+
 
 .spinnerCreateUserButtonPosition {
     float: right;

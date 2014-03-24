@@ -1,5 +1,5 @@
 Hi there, {{user.name}},<br>
-Whysaurus has seen activity on points you're interested in:<br>
+Whysaurus has seen activity on points you're interested in:
 <br>
 {% for notification in user.notifications %}
     
@@ -23,7 +23,7 @@ Whysaurus has seen activity on points you're interested in:<br>
         <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%; margin-top: 4px; margin-bottom: 8px;">
             {{notification.timeText}}
         </div>
-   <br>
+
 {% endfor %}
 <br>
 Whysaurus is a work-in-progress. If you have suggestions for how to improve this project, please respond to this email with your thoughts - we'd love to hear them.<br>

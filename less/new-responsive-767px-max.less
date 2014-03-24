@@ -59,7 +59,10 @@
   
   #searchArea {
     float: left;
-    width: 154px;
+    //width: 154px;
+    width: -moz-calc(~"100% - 335px");
+    width: -webkit-calc(~"100% - 335px");
+    width: calc(~"100% - 335px");
   }
   
   .headerUserName {
@@ -326,7 +329,9 @@
   }
   
   #searchArea {
-    width: 130px;
+    width: -moz-calc(~"100% - 295px");
+    width: -webkit-calc(~"100% - 295px");
+    width: calc(~"100% - 295px");
   }
   
   #notifications {
@@ -430,7 +435,10 @@
   }
   
   #searchArea {
-    width:182px;
+    //width:182px;
+    width: -moz-calc(~"100% - 215px");
+    width: -webkit-calc(~"100% - 215px");
+    width: calc(~"100% - 215px");
   }
   
   // DIALOGS
@@ -493,10 +501,6 @@
     margin-left: 6px;
   }
   
-  #searchArea {
-    width:124px;
-  }
-  
   #aboutDropdown {
     left: -64px;
   }
@@ -552,7 +556,4 @@
     display: none !important;
   }
 
-  #searchArea {
-    width:118px;
-  }
 }

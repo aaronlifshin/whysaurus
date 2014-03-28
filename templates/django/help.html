@@ -2,7 +2,13 @@
 
 {% block mainPageContent %}
 
-<div id="content" class="fullPageText">
+<div id="content">
+
+{% include "explanationIllustrations.html" %}
+
+
+<div id="helpHeading" class="fullPageText span8 offset2">
+    <div class="fixOffset2">
 <!--
     <h4>Table Of Contents</h4>
     <ol>
@@ -11,31 +17,9 @@
     <li><a id="bestLink" href="#best">Best Practices</a></li>
     </ol>
 -->
-
-<h2 id="basics" class="h2">What is Whysaurus?</h2>
-
-    <div class="row explanationRow">
-        <div class="explanationBlock noLeftMargin">
-            <div class="explanationTextCentered">
-                Points are supported by other points:
-            </div>
-            <img class="explanationImageCentered cheatImageLeft" src="/static/img/homepage_illustration1_center.png"/></a>
-        </div>
-        <div class="explanationBlock">        
-            <div class="explanationTextCentered">
-                Points can be part of multiple explanations:
-            </div>
-            <img class="explanationImageCentered" src="/static/img/homepage_illustration2_center.png"/></a>
-        </div>
-        <div class="explanationBlock">        
-            <div class="explanationTextCentered">
-                Making Points is collaborative:
-            </div>      
-            <img class="explanationImageCentered" src="/static/img/homepage_illustration3_center.png"/></a>            
-        </div>
-    </div>
-
-
+     <h2 id="basics" class="h2">What Is Whysaurus?</h2>
+<br>   
+<br>          
 <strong>Whysaurus is made of points</strong>
 <p>Whysaurus helps you explain ideas by dividing them into bite-size points. 
 Each point can be supported or countered by other points, as well as rated and commented.</p>
@@ -56,10 +40,11 @@ the history, so that it is never lost and can be recovered.</p>
 Together, we can create a reference repository of the best explanations accessible to all.
 </p>
 
-<h4>Mission</h4>
+<h4>What is your Mission?</h4>
 <p>Whysaurus seeks to connect people who are passionate about reason, 
     to create tools for illustrating the relationships between ideas, 
-    to share the world's best explanations and to help us all to organize our thoughts.
+    to share the world's best explanations and to help us all to organize our thoughts. 
+    For more about what we believe, check out our <a href="https://www.whysaurus.com/manifesto" target="_blank">Manifesto</a>
 </p>
 
 <h4>What can I use Whysaurus for?</h4>
@@ -205,6 +190,8 @@ Whysaurus is a civil community. Please act respectfully and do your best to make
 Please send us a suggestion <a href="contact" target="_blank">here</a>.
 <br>
 <br>
+</div>
+</div>
 </div>
 <script>
 

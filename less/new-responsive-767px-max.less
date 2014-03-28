@@ -59,7 +59,10 @@
   
   #searchArea {
     float: left;
-    width: 154px;
+    //width: 154px;
+    width: -moz-calc(~"100% - 335px");
+    width: -webkit-calc(~"100% - 335px");
+    width: calc(~"100% - 335px");
   }
   
   .headerUserName {
@@ -69,6 +72,11 @@
 
   .aboutMenu {
     left:8px;
+  }
+  
+  #aboutDropdown {
+    min-width:120px;
+    left: -16px;
   }
   
   #notifications {
@@ -205,6 +213,11 @@
     margin-bottom: 12px;
   }
 
+  .pointAreaActions.showRelevance {
+    margin-bottom: -1px;
+  }
+  
+  
   
   .topPointVotingArea {
     display:inline !important;
@@ -220,6 +233,17 @@
   }
   
   // SUPPORTING AND COUNTER POINTS
+  
+  .responsivePointBoxTitleWithImage {
+    float: left !important;
+    max-width: 75%;
+  }
+  
+  .responsivePointBoxImage {
+    max-width: 20%;
+    float: right !important; 
+  }
+  
   
   .pointColumnMenuArea {
     margin-top:-20px;
@@ -254,6 +278,27 @@
   .commentsButton {
     margin-bottom:12px;
   }
+
+  
+  // INDEX PAGE
+  
+  .explanationTextCentered {
+        max-width: 200px;
+  }
+  
+  .explanationTextCentered.lessWidth {
+        max-width: 155px;
+  }
+  
+  .newPointCallTitle {
+    font-size:21px;
+    //text-align:left;
+  }
+  
+  // FULL TEXT PAGES
+  .fullPageText {
+    padding-left: 4px;
+  }
   
 }
   
@@ -271,7 +316,7 @@
   }
   
   .explanationImageCentered {
-    margin-bottom:28px;
+    //margin-bottom:28px;
   }
 
 }
@@ -294,8 +339,15 @@
   }
   
   #searchArea {
-    width: 130px;
+    width: -moz-calc(~"100% - 295px");
+    width: -webkit-calc(~"100% - 295px");
+    width: calc(~"100% - 295px");
   }
+  
+  #aboutDropdown {
+    left: -34px;
+  }
+  
   
   #notifications {
     width: 24px;
@@ -378,6 +430,7 @@
   #scoreAndVotingSection .caret {
     border:none;
   }
+    
 }
 
 // NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)
@@ -397,7 +450,14 @@
   }
   
   #searchArea {
-    width:182px;
+    //width:182px;
+    width: -moz-calc(~"100% - 215px");
+    width: -webkit-calc(~"100% - 215px");
+    width: calc(~"100% - 215px");
+  } 
+  
+  .notification-menu {
+    margin-left: -282px;
   }
   
   // DIALOGS
@@ -421,6 +481,29 @@
     padding-left:0;
   }
   
+    // INDEX PAGE
+  
+  .newPointCallTitle {
+    //font-size:28px;
+  }
+  
+  .newPointInputRowFieldArea {
+    width: -moz-calc(~"100% - 75px");
+    width: -webkit-calc(~"100% - 75px");
+    width: calc(~"100% - 75px");
+  }
+  
+  #mainPagePublish {
+    padding-left:10px;
+    padding-right: 10px;
+  }
+  
+  // INDEX PAGE
+  
+  .newPointCallTitle {
+    font-size: 24px;
+  }
+  
 }
 
 
@@ -429,13 +512,6 @@
 
 @media (max-width: 383px) {
 
-  .hidden-xxs {
-    display: none;
-  }
-  .visible-xxs {
-    display: inherit;   
-  }
-  
   .responsiveRightMargin {
     margin-right: 9px !important;
   }
@@ -444,12 +520,8 @@
     margin-left: 6px;
   }
   
-  #searchArea {
-    width:124px;
-  }
-  
   #aboutDropdown {
-    left: -64px;
+    left: -30px;
   }
   
   .notification-menu {
@@ -481,6 +553,16 @@
     //padding-left: 58px;
   }
   
+  // INDEX PAGE
+  
+  .manifestoTitle {
+    padding-bottom: 27px;
+  }
+  .newPointCallTitle {
+    font-size: 19px;
+  }
+
+  
 }
 
 
@@ -493,7 +575,4 @@
     display: none !important;
   }
 
-  #searchArea {
-    width:118px;
-  }
 }

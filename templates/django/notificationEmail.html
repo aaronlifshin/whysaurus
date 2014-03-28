@@ -1,7 +1,6 @@
 Hi there, {{user.name}},<br>
 Whysaurus has seen activity on points you're interested in:<br>
 <br>
-<br>
 {% for notification in user.notifications %}
     
         <div>
@@ -24,9 +23,8 @@ Whysaurus has seen activity on points you're interested in:<br>
         <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%; margin-top: 4px; margin-bottom: 8px;">
             {{notification.timeText}}
         </div>
-   <br>
+
 {% endfor %}
-<br>
 <br>
 Whysaurus is a work-in-progress. If you have suggestions for how to improve this project, please respond to this email with your thoughts - we'd love to hear them.<br>
 <br>
@@ -34,6 +32,6 @@ Whysaurus is a work-in-progress. If you have suggestions for how to improve this
 Warmly,<br>
 Whysaurus<br>
 <br>
-ps You can adjust the frequency of these emails by clicking "Edit Email Settings" on <a href="http://www.whysaurus.com/user/USERNAME">your profile page.</a>
+You can adjust the frequency of these emails by clicking "Edit Email Settings" on <a href="http://www.whysaurus.com/user/USERNAME">your profile page.</a>
 <br>
 <br>

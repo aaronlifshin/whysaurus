@@ -131,6 +131,14 @@ class SimpleAuthHandler(object):
     of the module. See README for details on error handling.
     """
     self.session['original_url'] = self.request.referer         
+    
+    postLoginAction = self.request.get("postloginaction")
+    if postLoginAction:
+        if postLoginAction == "createFromMain":        
+            pointText = self.request.get("pointtext")
+            self.session['pointtext'] = pointText
+        self.session['postloginaction'] = postLoginAction                         
+    
     cfg = self.PROVIDERS.get(provider, (None,))
     meth = self._auth_method(cfg[0], 'init')
     # We don't respond directly in here. Specific methods are in charge
@@ -157,6 +165,7 @@ class SimpleAuthHandler(object):
     except AuthProviderResponseError as e:
       logging.info('%s returned an error: %s ', e[1], e[0] )
       target = str(self.session['original_url'])
+      logging.info('Redirecting to ' % target)
       self.redirect(target)
 
   def _auth_method(self, auth_type, step):

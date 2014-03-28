@@ -70,7 +70,7 @@ _config = lib_config.register("gae_mini_profiler", {
     # Default to disabling in production if this function isn't overridden.
     "should_profile_production": lambda: False,
     # Default to enabling in development if this function isn't overridden.
-    "should_profile_development": lambda: True})
+    "should_profile_development": lambda: False})
 
 
 _mode = lib_config.register("gae_mini_profiler", {

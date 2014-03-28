@@ -80,7 +80,7 @@ function stopSpinnerOnButton(buttonID, clickHandler) {
 }
    
 function post_to_url(path, params, method) {
-  method = method || "post"; // Set method to post by default, if not specified.
+  method = method || "POST"; // Set method to post by default, if not specified.
 
   // The rest of this code assumes you are not using a library.
   // It can be made less wordy if you use one.
@@ -148,10 +148,13 @@ function getCaretPosition (oField) {
     return (iCaretPos);
 }
 
-function make_this_show_login_dlg(button) {
+function make_this_show_login_dlg(button, populateDialogFields) {
     button.attr('href',"#loginDialog");
     button.attr('data-toggle',"modal");
     button.off(".ys").on("click.ys", function(event) {
+        if (typeof populateDialogFields == 'function' ) {
+            populateDialogFields();
+        }
         _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
         console.log('Required login ' +  event.target.id);
     });
@@ -214,6 +217,10 @@ function createPointFromMainPage() {
     });
 }
 
+function populateLoginDialogForMainPageCreate() {
+     $("#loginDialog").data('postloginaction', 'createFromMain');
+     $("#loginDialog").data('pointtext', $('#newPointTitle').val());
+}
 
 function newPointAjax(ajaxData, errorAlertFunction, buttonSelector, finallyCall) {
     $.ajaxSetup({
@@ -582,18 +589,22 @@ function makePointsCardsClickable() {
         }
     });
     
-    $('[name=UpVote]').click(function(e) {
-        var event = e || window.event;
-        votePointCard(this, "up");
-        e.stopPropagation();
-    });
+    if (loggedIn) {    
+        $('[name=UpVote]').click(function(e) {
+            var event = e || window.event;
+            votePointCard(this, "up");
+            e.stopPropagation();
+        });
     
-    $('[name=DownVote]').click(function(e) {
-        var event = e || window.event;
-        votePointCard(this, "down");
-        e.stopPropagation();        
-    });
-    
+        $('[name=DownVote]').click(function(e) {
+            var event = e || window.event;
+            votePointCard(this, "down");
+            e.stopPropagation();        
+        });
+    } else {
+        make_this_show_login_dlg($('[name=DownVote]'));
+        make_this_show_login_dlg($('[name=UpVote]'));
+    }
 }
 
 function makeHomeNavsClickable() {
@@ -1344,7 +1355,7 @@ function activateHeaderAndDialogs() {
 
     initTinyMCE();
     //makeHomeNavsClickable();
-		
+	/*	
     $('[id^="signInWithFacebook"]').click(function() {
         _gaq.push(['_trackEvent', 'Login', 'With Facebook', 'Menu']);                    
         window.location.href = "/auth/facebook";
@@ -1359,6 +1370,7 @@ function activateHeaderAndDialogs() {
         _gaq.push(['_trackEvent', 'Login', 'With Twitter', 'Menu']);                                    
         window.location.href = "/auth/twitter";
     });
+    */
     
     window.onpopstate = navigateHistory;  		
 
@@ -1503,7 +1515,7 @@ function activateMainPageLeftColumn() {
     if ( loggedIn ) {
         $('#mainPagePublish').off('.ys').on('click.ys', createPointFromMainPage );
     } else {
-        make_this_show_login_dlg($('#mainPagePublish'));        
+        make_this_show_login_dlg($('#mainPagePublish'), populateLoginDialogForMainPageCreate);        
     }
 }
 
@@ -1524,6 +1536,20 @@ function activateMainPageRightColumn() {
 
 function preloadImages() {
     $('<img />').attr('src','/static/img/screwdefault_radio_design_roSpinner.gif').appendTo('body').css('display','none');    
+}
+
+function loginWith(ev, provider) {
+    _gaq.push(['_trackEvent', 'Login', 'With ' + provider, 'Dialog']);
+    var url = "/auth/" + provider.toLowerCase();
+    var action = $('#loginDialog').data('postloginaction') || null;
+    if (action == 'createFromMain') {
+        post_to_url(url, {
+            'postloginaction':action,
+            'pointtext': $("#loginDialog").data('pointtext')
+        });        
+    } else {
+        window.location.href = url;               
+    }
 }
 
 $(document).ready(function() {

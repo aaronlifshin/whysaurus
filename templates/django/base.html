@@ -320,9 +320,9 @@
         </div>
         <div class="modal-body">
           It's Easy
-          <div id="signInWithFacebook_Dlg" class="boxedElement"><a tabindex="1" href="/auth/facebook" onclick="_gaq.push(['_trackEvent', 'Login', 'With Facebook', 'Dialog'])";> Sign in with Facebook </a></div>
-          <div id="signInWithGoogle_Dlg" class="boxedElement" onclick="_gaq.push(['_trackEvent', 'Login', 'With Google', 'Dialog'])"><a tabindex="2" href="/auth/google"> Sign in with Google </a></div>
-          <div id="signInWithTwitter_Dlg" class="boxedElement" onclick="_gaq.push(['_trackEvent', 'Login', 'With Twitter', 'Dialog'])"><a tabindex="3" href="/auth/twitter"> Sign in with Twitter </a></div>
+          <div id="signInWithFacebook_Dlg" class="boxedElement"  onclick="loginWith(event, 'Facebook')"><a tabindex="1" href="javascript:;" > Sign in with Facebook </a></div>
+          <div id="signInWithGoogle_Dlg" class="boxedElement" onclick="loginWith(event, 'Google')"><a tabindex="2" href="javascript:;"> Sign in with Google </a></div>
+          <div id="signInWithTwitter_Dlg" class="boxedElement" onclick="loginWith(event, 'Twitter')"><a tabindex="3" href="javascript:;"> Sign in with Twitter </a></div>
           <div id="signInWithEmail_Dlg" class="boxedElement" onclick="_gaq.push(['_trackEvent', 'Login', 'With Whysaurus', 'Dialog'])"><a tabindex="4" > Sign in with Whysaurus </a> </div>
           
         </div>
@@ -356,6 +356,6 @@
     {% block mainPageContent %} 
     {% endblock %}
   </div>     
-    {% profiler_includes %} 
+    {% profiler_includes %}    
   </body> 
 </html>

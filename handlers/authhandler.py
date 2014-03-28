@@ -344,11 +344,22 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         # normally do this.
         # self.session.add_flash(data, 'data - from _on_signin(...)')
         # self.session.add_flash(auth_info, 'auth_info - from _on_signin(...)')
-        target = str(self.session['original_url'])
-        if target.find("/login") != -1: # LOGIN page cannot handle it
-            target = "/"
-        logging.info('_ON_SIGNIN: Redirecting to %s' % target)
-        self.redirect(target)
+
+        postLoginAction = str(self.session['postloginaction'])
+        if postLoginAction:
+            self.doPostLoginAction(postLoginAction, self.session)
+        else:  
+            target = str(self.session['original_url'])
+            if target.find("/login") != -1: # LOGIN page cannot handle it
+                target = "/"
+            logging.info('_ON_SIGNIN: Redirecting to %s' % target)
+            self.redirect(target)
+        
+    def doPostLoginAction(self, postLoginAction, sessionData ):
+        if postLoginAction == "createFromMain":
+            pointText = str(sessionData['pointtext'])
+            self.handlePointCreate(title=pointText)
+            
 
     def logout(self):
         self.session['currentArea'] = ''

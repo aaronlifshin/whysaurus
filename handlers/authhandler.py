@@ -344,9 +344,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         # normally do this.
         # self.session.add_flash(data, 'data - from _on_signin(...)')
         # self.session.add_flash(auth_info, 'auth_info - from _on_signin(...)')
-
-        postLoginAction = str(self.session['postloginaction'])
-        if postLoginAction:
+        if 'postloginaction' in self.session:
+            postLoginAction = str(self.session['postloginaction'])
             self.doPostLoginAction(postLoginAction, self.session)
         else:  
             target = str(self.session['original_url'])

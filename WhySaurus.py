@@ -123,7 +123,7 @@ routes = [
     Route('/changePassword', 'WhySaurus.AuthHandler:passwordChangePage', name='changePage'),
     Route('/<type:v|p>/<user_id:\d+>-<signup_token:.+>',
                   handler='WhySaurus.AuthHandler:verify', name='verification'),
-    Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login', methods=['POST']),
+    Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),
     Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler:_auth_callback', name='auth_callback')
 ]
 

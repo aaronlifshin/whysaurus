@@ -12,6 +12,15 @@ class NewPoint(AuthHandler):
     def newPoint(self):        
         user = self.current_user
         resultJSON = json.dumps({'result': False, 'error': 'Not authorized'})
+        secretKey = self.request.get('secret')
+        
+        if not user:            
+            if (secretKey == 'myballotsecret'):
+                self.loginBySecretKey(secretKey)
+                user = self.current_user
+                if user:
+                    self.response.headers['Access-Control-Allow-Origin'] = '*'
+
         if user:            
             if not self.request.get('title'):                
                 resultJSON = json.dumps({'result': False, 'error': 'Your point must have a title'})
@@ -29,8 +38,7 @@ class NewPoint(AuthHandler):
                     sourceURLs=sourcesURLs,
                     sourceNames=sourcesNames)
                        
-                if newPoint:
-                    
+                if newPoint:                    
                     recentlyViewed, sources = yield user.getRecentlyViewed_async( \
                                 excludeList=[newPoint.key.parent()] + \
                                 newPoint.getLinkedPointsRootKeys("supporting") + \

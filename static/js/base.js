@@ -199,7 +199,7 @@ function createPointFromMainPage() {
     startSpinnerAfterButton('#mainPagePublish');    
         
     // These points only have a title!!
-    ajaxData = {
+    var ajaxData = {
       'content': '',
       'plainText': '',
       'title': $('#newPointTitle').val(),

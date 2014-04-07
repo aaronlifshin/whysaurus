@@ -109,7 +109,7 @@ class AdminPage(AuthHandler):
                     user = WhysaurusUser.signup(self, email=username, name=username, 
                                                 password=randomPassword, website=None, areas=None, 
                                                 profession=None, bio=None)
-                    user.updatePrivateArea('Canon_Human_Environments')
+                    user.updatePrivateArea('Cannon_Human_Environments')
                     bigMessage.append('%s,%s' % ( username, randomPassword))
                 except WhysaurusException as e:
                     bigMessage.append('Could not create user: %s. Error was:%s' % (username, str(e)))

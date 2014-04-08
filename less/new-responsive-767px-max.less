@@ -111,6 +111,20 @@
     margin-top: -8px;
   }
   
+  .privateAreaHeader {
+    position: relative;
+    // undo padding from body added in responsive-767px-max.less
+    left: -20px;
+    width: -moz-calc(~"100% + 40px");
+    width: -webkit-calc(~"100% + 40px");
+    width: calc(~"100% + 40px");
+  }
+  
+  #areaLine {
+    padding-left: 20px; // redo padding from body added in responsive-767px-max.less 
+    padding-right: 20px;
+    }
+  
   // PROFILE PAGE
   
   .profilePic {

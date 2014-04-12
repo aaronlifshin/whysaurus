@@ -596,12 +596,14 @@ function makePointsCardsClickable() {
             var event = e || window.event;
             votePointCard(this, "up");
             e.stopPropagation();
+            return false;
         });
     
         $('[name=DownVote]').click(function(e) {
             var event = e || window.event;
             votePointCard(this, "down");
-            e.stopPropagation();        
+            e.stopPropagation();  
+            return false;      
         });
     } else {
         make_this_show_login_dlg($('[name=DownVote]'));

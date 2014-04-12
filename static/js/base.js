@@ -562,10 +562,10 @@ function navigateHistory(event) {
     
 }
 
-function loadPoint(url, addToHistory) {    
+function loadPoint(url, addToHistory, replaceHistory) {    
     $("#explanationRowHomepage").hide();
     $("#oneLinePointCreate").hide();
-	loadPointContent(url, addToHistory);    
+	loadPointContent(url, addToHistory, replaceHistory);    
 	loadPointComments(url);  
     /*$('#rightColumn').show();    
     $('#leftColumn').removeClass('span12').addClass('span8');*/
@@ -622,7 +622,7 @@ function makeHomeNavsClickable() {
     });
 }
 
-function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState) {
+function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState, replaceState) {
    	$('#leftColumn').empty();
    	$('#leftColumn').html(pointHTML);   
    	$('#mainContainer').data('contentpath', '/point/' + pointURL);
@@ -631,11 +631,15 @@ function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState) {
 	} else {
 	    activatePointArea();
 	}
+    var newURL = '/point/' + pointURL;
 	if (shouldPushState) {
-        var newURL = '/point/' + pointURL;
-	    history.pushState({whysaurus: true, }, pointTitle, newURL);    
-         _gaq.push(['_trackPageview', newURL ]);      		          		              		
+        if (replaceState) {
+    	    history.replaceState({whysaurus: true, }, pointTitle, newURL);                
+        } else {
+    	    history.pushState({whysaurus: true, }, pointTitle, newURL);                
+        }        
 	}          	
+     _gaq.push(['_trackPageview', newURL ]);      		          		              		
 	document.title = pointTitle;    
 }
 
@@ -695,7 +699,7 @@ function loadPointComments(pointurl) {
         'There was a problem loading the comments.', null, false)
 }
 
-function loadPointContent(pointurl, shouldPushState) {
+function loadPointContent(pointurl, shouldPushState, replaceState) {
     $('#leftColumn').empty();
     $('#leftColumn').html('<div class="row-fluid "> \
         <img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
@@ -705,7 +709,7 @@ function loadPointContent(pointurl, shouldPushState) {
       	data: { 'url': pointurl },
       	success: function(obj) {
       	    if (obj.result) {
-                replacePointContent(obj.html, obj.url, obj.title, shouldPushState );          		
+                replacePointContent(obj.html, obj.url, obj.title, shouldPushState, replaceState );          		
       	    } else {
                 $('#leftColumn').empty();
                 showAlert('<strong>Oops!</strong> There was a problem loading the point. Refreshing the page may help.');

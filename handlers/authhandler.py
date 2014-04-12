@@ -20,7 +20,7 @@ from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
 
 from models.reportEvent import ReportEvent
-
+from models.point import Point
  
     
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
@@ -365,11 +365,36 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             logging.info('_ON_SIGNIN: Redirecting to %s' % target)
             self.redirect(target)
         
+    
     def doPostLoginAction(self, postLoginAction, sessionData ):
         if postLoginAction == "createFromMain":
+            user = self.current_user
             pointText = str(sessionData['pointtext'])
-            self.handlePointCreate(title=pointText)
-            
+            newPoint, newPointRoot = Point.create(
+                title=pointText,
+                content="",
+                summaryText="",
+                user=user,
+                imageURL=None,
+                imageAuthor=None,
+                imageDescription=None,
+                sourceURLs=[],
+                sourceNames=[])
+            if newPoint:    
+                template_values = {
+                    'user': user, 
+                    'currentArea':self.session.get('currentArea'),
+                    'pointURL':newPoint.url
+                }
+                html = self.template_render('waitingPage.html', template_values)
+                self.response.out.write(html)
+            else:
+               logging.error("Was not able to create point with title: " + pointText)    
+               self.redirect(sessionData['original_url'])
+        else:
+            logging.info("Unknown Post Login action " + postLoginAction)    
+            self.redirect(sessionData['original_url'])
+    
 
     def logout(self):
         self.session['currentArea'] = ''

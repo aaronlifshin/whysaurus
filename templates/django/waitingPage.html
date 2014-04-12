@@ -1,0 +1,18 @@
+{% extends "twoColumnLayout.html" %}
+
+{% block headBlock %}  
+  <script type="text/javascript" src="/static/js/point.js"></script>  
+  <script type="text/javascript" src="/static/js/waitingPage.js"></script>    
+  <script type="text/javascript" src="/static/js/jquery.screwdefaultbuttonsV2.min.js"></script>
+{% endblock %}
+
+{% block leftColumnContent %}   
+    <div id="leftColumnPoint" data-waitingurl="{{pointURL}}">
+        Loading your new point . . . If you are not redirected within 5 seconds, <a href="/point/{{pointURL}}">click here</a>.
+    </div>
+{% endblock %}
+
+{% block rightColumnContent %}
+    <div id="rightColumnContent" class="row-fluid commentsColumn">
+    </div>
+{% endblock %}

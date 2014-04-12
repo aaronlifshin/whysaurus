@@ -127,6 +127,9 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     def login(self):
         email = self.request.get('login_userEmail')
         password = self.request.get('login_userPassword')
+        postLoginAction = self.request.get('login_userAction')
+        logging.info("PLA " + postLoginAction)
+
         if not email:
             self.redirect("/")
 
@@ -142,9 +145,18 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             self.current_user = user
             if self.current_user.privateArea and self.current_user.privateArea is not None:
                 self.setUserArea(usePrivate=True)
-            user.login()
-            self.redirect("/")
-            return
+            user.login() # records login informaton
+            logging.info("PLA 2 " + postLoginAction)
+            
+            if (postLoginAction == "createFromMain"):
+                logging.info("PLA 3" + postLoginAction)
+                
+                self.session['pointtext'] = self.request.get('login_userPointText')
+                self.doPostLoginAction(postLoginAction, self.session)
+                return
+            else:
+                self.redirect("/")
+                return
         except InvalidAuthIdError as e:
             message = 'Could not log in user %s because the email or username was not recognized ' % email
         except InvalidPasswordError as e:

@@ -1400,6 +1400,10 @@ function activateHeaderAndDialogs() {
         });
 
         $("#signInWithEmail_Dlg").on('click', function() {
+            if ($("#loginDialog").data('postloginaction') == 'createFromMain') {            
+                $("#login_userPointText").val($('#newPointTitle').val());
+                $("#login_userAction").val($("#loginDialog").data('postloginaction'));      
+            }                  
             $("#loginDialog").modal('hide');
             $("#emailLoginDialog").modal('show');           
         });

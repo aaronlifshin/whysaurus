@@ -13,7 +13,10 @@ class Search(AuthHandler):
     @ndb.toplevel
     def post(self):
         searchString = self.request.get('searchTerms')
-        searchResultsFuture = Point.search(searchString)    
+        searchResultsFuture = Point.search(
+            user=self.current_user, 
+            searchTerms=searchString
+        )
         searchResults = None
         if searchResultsFuture:
             searchResults = searchResultsFuture.get_result()

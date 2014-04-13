@@ -854,7 +854,7 @@ class Point(ndb.Model):
 
     @classmethod
     @ndb.tasklet
-    def search(cls, searchTerms, excludeURL=None, linkType = ""):
+    def search(cls, user, searchTerms, excludeURL=None, linkType = ""):
 
         if searchTerms:
             index = search.Index('points')
@@ -887,6 +887,8 @@ class Point(ndb.Model):
                 searchKeys = [ndb.Key(urlsafe=rootKey) for rootKey in docIds]
                 logging.info("Search Keys %s" % str(searchKeys))          
                 resultPoints = yield map(lambda x: getCurrent_async(x), (yield ndb.get_multi_async(searchKeys)))
+                if user:
+                    resultPoints = yield map(lambda x: x.addVote_async(user), resultPoints)                    
             else:
                 resultPoints = None                
             raise ndb.Return(resultPoints)

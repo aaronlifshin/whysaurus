@@ -17,9 +17,9 @@
           <div name="UpVote" class="pointBoxActions {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %}">Agree</div>&#183;<!-- &#183; = small dot -->
           <div name="DownVote" class="pointBoxActions {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}">Disagree</div>&#183;<!-- &#183 = small dot -->
           {% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
-            <a class="pointBoxActions">See Evidence<!--({{ point.numSupporting }}-{{ point.numCounter }})--></a>
+            <div class="pointBoxActions">See Evidence<!--({{ point.numSupporting }}-{{ point.numCounter }})--></div>  
           {% else %} 
-            <a class="pointBoxActions needsEvidence">Needs Evidence</a>
+            <div class="pointBoxActions needsEvidence">Needs Evidence</div>
           {% endif %} 
           <span class="pointBoxStatsRow">			  
               <span name="voteTotalArea" class="stat" {% if point.voteTotal == 0 %}style="display:none"{% endif %}            

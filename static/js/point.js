@@ -530,7 +530,7 @@ function linkPointControlsInitialState() {
 
 function setUpMenuAreas() {
     // Dropdown add of the recently viewed points
-    $("[name^=selectPoint_menu_]").on('click', function(e){
+    $("[name^=selectPoint_menu_]").off('.ys').on('click.ys', function(e){
         var theLink = $(this);
         
         var linkPointURL = theLink.data('pointurl');
@@ -544,24 +544,24 @@ function setUpMenuAreas() {
     });
 
     // Edit the current point
-    $( "#editPoint" ).on('click', function() {
+    $( "#editPoint" ).off('.ys').on('click.ys', function() {
         populateEditFields();
         showPointDialog("edit", "Edit Point");        
     });
     
-    $( "#addImage" ).on('click', function() {
+    $( "#addImage" ).off('.ys').on('click.ys', function() {
         populateEditFields();
         showPointDialog("edit", "Edit Point");
     });
     
-    $( "#changeImage" ).on('click', function() {
+    $( "#changeImage" ).off('.ys').on('click.ys', function() {
         populateEditFields();
         showPointDialog("edit", "Edit Point");
         
     });
 
     // Create a new linked point
-    $( "[name=createLinked]" ).on('click', function() {
+    $( "[name=createLinked]" ).off('.ys').on('click.ys', function() {
         var linkType = $(this).data('linktype');
         $("#submit_pointDialog").data("linktype", linkType);
         var dialogName = "Create " + linkType.capitalize() + " Point";
@@ -569,7 +569,7 @@ function setUpMenuAreas() {
     });
     
     // Show the search dialog
-    $( "[name$=_searchForPoint]" ).on('click', function(e){
+    $( "[name$=_searchForPoint]" ).off('.ys').on('click.ys', function(e){
         linktype = $(this).data('linktype');
         $("#selectLinkedPointSearch").data("linkType", linktype);
         $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');  
@@ -580,15 +580,15 @@ function setUpMenuAreas() {
     
   
     // These elements are admin only, but jquery degrades gracefully, so not checking for their presence
-    $('#changeEditorsPickTrigger').on('click', function() {
+    $('#changeEditorsPickTrigger').off('.ys').on('click.ys', function() {
         title = $('#pointSummary div.mainPointTitle').text();
         $("#changeEditorsPick .modal-header h4").text(title);
         $("#changeEditorsPick").modal('show');
     }); 
     
-    $('#submitChangeEditorsPick').on('click', changeEditorsPick);     
+    $('#submitChangeEditorsPick').off('.ys').on('click.ys', changeEditorsPick);     
     
-    $('#makeFeaturedPick').on('click', makeFeaturedPick);   
+    $('#makeFeaturedPick').off('.ys').on('click.ys', makeFeaturedPick);   
     
 }
 

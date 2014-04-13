@@ -12,7 +12,12 @@ class AjaxSearch(AuthHandler):
     @ndb.toplevel
     def post(self):
         resultJSON = json.dumps({'result': False})
-        searchResultsFuture = Point.search(self.request.get('searchTerms'), self.request.get('exclude'), self.request.get('linkType') )
+        searchResultsFuture = Point.search(
+            searchTerms=self.request.get('searchTerms'), 
+            user=self.current_user,
+            excludeURL=self.request.get('exclude'), 
+            linkType=self.request.get('linkType') 
+        )
         searchResults = None
         if searchResultsFuture:
             searchResults = searchResultsFuture.get_result()

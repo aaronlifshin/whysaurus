@@ -34,6 +34,8 @@ class LinkPoint(AuthHandler):
                     pointsToLink=newLink,
                     user=user
                 )
+                # get my vote for this point, to render it in the linkPoint template
+                supportingPoint.addVote(user)
             except WhysaurusException as e:
                 resultJSON = json.dumps({'result': False, 'error': e.message})
             else:
@@ -53,5 +55,5 @@ class LinkPoint(AuthHandler):
                 else:
                     json.dumps({'result': False, 'error': 'There was a problem updating the point.'})
         else:
-            resultJSON = json.dumps({'result': 'ACCESS DENIED!'})
+            resultJSON = json.dumps({'result': 'User not logged in. ACCESS DENIED!'})
         self.response.out.write(resultJSON)

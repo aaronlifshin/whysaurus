@@ -85,6 +85,12 @@ class WhysaurusUser(auth_models.User):
             self._moreNotificationsExist = \
                 Notification.getUnreadNotificationsForUser(self.key)
         return self._notifications
+        
+    def getUnreadNotificationsAfter(self, afterDate):
+        self._notifications, self._newNotificationCount, \
+            self._moreNotificationsExist = \
+                Notification.getUnreadNotificationsForUserAfterDate(self.key, afterDate)
+        return self._notifications
 
     # A small subset of user stuff to store the relevant information for chat
     def makeChatUser(self):
@@ -606,8 +612,10 @@ class WhysaurusUser(auth_models.User):
         
             if shouldEmail:
                 logging.info('Checking for active notifications for user %s' % user.name)            
-                notifications = user.getUnreadNotifications()
+                notifications = user.getUnreadNotificationsAfter(lastSentTime)
                 if notifications:
+                    logging.info('Sending %d notifications to user %s' % (len(notifications), user.name))  
+                    
                     # generate the email body from the notifications
                     html = handler.template_render(                
                         'notificationEmail.html', 

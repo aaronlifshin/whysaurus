@@ -158,12 +158,28 @@ class Notification(ndb.Model):
         
     @classmethod
     def getUnreadNotificationsForUser(cls, userKey):
-        q = cls.query(ndb.AND(cls.targetUser == userKey, cls.cleared==False))        
+        q = cls.query(ndb.AND(
+            cls.targetUser == userKey, 
+            cls.cleared==False
+        ))        
         q = q.order(-cls.raisedDate)     
         notifications = q.fetch(11)      
         newCount = len(notifications)        
         moreExist = len(notifications) == 11
-        return notifications[0:10], newCount, moreExist  
+        return notifications[0:10], newCount, moreExist 
+        
+    @classmethod
+    def getUnreadNotificationsForUserAfterDate(cls, userKey, afterDate):
+        q = cls.query(ndb.AND(
+            cls.targetUser == userKey, 
+            cls.cleared==False,
+            cls.raisedDate > afterDate
+        )) 
+        q = q.order(-cls.raisedDate)     
+        notifications = q.fetch(11)      
+        newCount = len(notifications)        
+        moreExist = len(notifications) == 11
+        return notifications[0:10], newCount, moreExist 
            
     @classmethod
     def getAllNotificationsForUser(cls, userKey):

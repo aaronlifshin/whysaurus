@@ -1121,6 +1121,18 @@ class PointRoot(ndb.Model):
         for pointRoot in pointRoots:
             editorsPicks = editorsPicks + [pointRoot.getCurrent()]
         return editorsPicks
+        
+    @staticmethod
+    @ndb.tasklet    
+    def getEditorsPicks_async(user):        
+        rootsQuery = PointRoot.gql("WHERE editorsPick = TRUE ORDER BY editorsPickSort ASC")
+        resultPoints = yield map(lambda x: x.current.get_async(), (yield rootsQuery.fetch_async(50)))
+        if user:
+            resultPoints = yield map(
+                lambda x: x.addVote_async(user), 
+                resultPoints
+            )
+        raise ndb.Return(resultPoints)     
 
     @staticmethod
     @ndb.tasklet
@@ -1133,25 +1145,7 @@ class PointRoot(ndb.Model):
         else:
             resultPoints = yield pointsQuery.fetch_async(50)
         raise ndb.Return(resultPoints)
-        
-    @staticmethod
-    @ndb.tasklet    
-    def getTopViewedPoints_async(user):
-        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC") 
-            
-        resultPoints = None
-        if user:
-            resultPoints = yield map(
-                lambda x: ndb.get_async(x.current).addVote_async(user), \
-                (yield rootsQuery.fetch_async(50))
-            )
-        else:
-            resultPoints = yield map(
-                lambda x: ndb.get_async(x.current), \
-                (yield rootsQuery.fetch_async(50))
-            )
-        raise ndb.Return(resultPoints)
-        
+                
     @staticmethod
     def getRecentCurrentPoints(user):
         pointsQuery = Point.gql(
@@ -1173,18 +1167,18 @@ class PointRoot(ndb.Model):
             for point in topPointsRaw:
                 if not point in filterList:
                     topPoints = topPoints + [point]
-        return topPoints
-    
+        return topPoints    
+  
     @staticmethod
-    def getTopRatedPoints(filterList = None):
+    @ndb.tasklet        
+    def getTopRatedPoints_async(user):
         pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
-        topPointsRaw = pointsQuery.fetch(50)
-        topPoints = [] if filterList else topPointsRaw
-        if filterList:
-            for point in topPointsRaw:
-                if not point in filterList:
-                    topPoints = topPoints + [point]
-        return topPoints
+        resultPoints = None
+        if user:
+            resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
+        else:
+            resultPoints = yield pointsQuery.fetch_async(50)            
+        raise ndb.Return(resultPoints)
     
     
     @staticmethod
@@ -1194,8 +1188,18 @@ class PointRoot(ndb.Model):
         currentKeys = [root.current for root in roots]
         return ndb.get_multi(currentKeys)
         
-
-
+    @staticmethod
+    @ndb.tasklet    
+    def getTopViewedPoints_async(user):
+        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC") 
+            
+        resultPoints = yield map(lambda x: x.current.get_async(), (yield rootsQuery.fetch_async(50)))
+        if user:
+            resultPoints = yield map(
+                lambda x: x.addVote_async(user), 
+                resultPoints
+            )
+        raise ndb.Return(resultPoints)
 
     # NOT USED CURRENTLY
     @staticmethod
@@ -1204,18 +1208,7 @@ class PointRoot(ndb.Model):
         points =  pointsQuery.fetch(50)
         logging.info("GTAP Got %d points" % len(points))
         return points
-
-
-
-
-    @staticmethod
-    def getTopViewedPoints(user):
-        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC")        
-        roots = rootsQuery.fetch(50)
-        currentKeys = [root.current for root in roots]
-        return ndb.get_multi(currentKeys)
         
-
     def delete(self, user):
         if not user.admin:
             return False, 'Not authorized'

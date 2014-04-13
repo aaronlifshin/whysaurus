@@ -2,12 +2,15 @@ import os
 import constants
 import json
 
+from google.appengine.ext import ndb
+
 from google.appengine.ext.webapp import template
 
 from authhandler import AuthHandler
 from models.point import PointRoot
 
 class GetPointsList(AuthHandler):
+    @ndb.toplevel        
     def post(self):      
         points = None
         user = None
@@ -17,14 +20,15 @@ class GetPointsList(AuthHandler):
             
         listType = self.request.get('type')
         
-        if listType == 'topAwards':
-            points = PointRoot.getTopAwardPoints(user)
-        elif listType == 'topViewed':
-            points = PointRoot.getTopViewedPoints(user)
+        # NO LONGER USING "most ribbons"
+        # if listType == 'topAwards':
+        #    points = PointRoot.getTopAwardPoints(user)
+        if listType == 'topViewed':            
+            points = yield PointRoot.getTopViewedPoints_async(user)
         elif listType == 'topRated':
-            points = PointRoot.getTopRatedPoints(user)
+            points = yield PointRoot.getTopRatedPoints_async(user)
         elif listType == 'editorsPics':
-            points = PointRoot.getEditorsPicks(user)
+            points = yield PointRoot.getEditorsPicks_async(user)
 
         template_values = {
             'points':points

@@ -592,22 +592,32 @@ function makePointsCardsClickable() {
     });
     
     if (loggedIn) {    
-        $('[name=UpVote]').click(function(e) {
+        $('[name=UpVote]').off('.ys').on('click.ys', function(e) {
             var event = e || window.event;
             votePointCard(this, "up");
             e.stopPropagation();
             return false;
         });
     
-        $('[name=DownVote]').click(function(e) {
+        $('[name=DownVote]').off('.ys').on('click.ys', function(e) {
             var event = e || window.event;
             votePointCard(this, "down");
             e.stopPropagation();  
             return false;      
         });
     } else {
-        make_this_show_login_dlg($('[name=DownVote]'));
-        make_this_show_login_dlg($('[name=UpVote]'));
+        $('[name=UpVote]').off('.ys').on('click.ys', function(event) {
+            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            $("#loginDialog").modal('show');
+            event.stopPropagation();  
+            return false;    
+        });
+        $('[name=DownVote]').off('.ys').on('click.ys', function(event) {
+            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            $("#loginDialog").modal('show');
+            event.stopPropagation();  
+            return false;    
+        }); 
     }
 }
 

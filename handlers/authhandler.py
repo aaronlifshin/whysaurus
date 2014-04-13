@@ -399,13 +399,15 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     'pointURL':newPoint.url
                 }
                 html = self.template_render('waitingPage.html', template_values)
+                self.session['postloginaction'] = None
+                self.session['pointText'] = None                    
                 self.response.out.write(html)
             else:
                logging.error("Was not able to create point with title: " + pointText)    
-               self.redirect(sessionData['original_url'])
+               self.redirect(str(sessionData['original_url']))
         else:
             logging.info("Unknown Post Login action " + postLoginAction)    
-            self.redirect(sessionData['original_url'])
+            self.redirect(str(sessionData['original_url']))
     
 
     def logout(self):

@@ -878,13 +878,24 @@ function sharePointOnTwitter() {
 function postOnFacebook() {
     var url = $('#pointArea').data('pointurl');
     var pointTitle = $('#pointSummary div.mainPointTitle').text();
-
-    FB.ui({
+    var dialogParams = {
         app_id: 144595249045851,
         method: 'feed',
         link: "https://www.whysaurus.com/point/" + url,
-        caption: pointTitle,
-    }, function(response){});
+        name: pointTitle,        
+        description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?'
+    };
+    var imageUrl = $(".pointDisplay").attr('src') || null;
+
+    if (!imageUrl) {
+        // if there is no image in the page, pass the logo
+        imageUrl = window.location.protocol + "//" + window.location.host + "/static/img/whysaurus_logo.png";
+        dialogParams['picture'] = imageUrl;                
+    } else {
+        imageUrl = imageUrl.slice(2);
+    }
+    
+    FB.ui(dialogParams, function(response){});
 }
 
 function activatePointArea() {    

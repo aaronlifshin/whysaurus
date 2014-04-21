@@ -21,6 +21,8 @@ from webapp2_extras.auth import InvalidPasswordError
 
 from models.reportEvent import ReportEvent
 from models.point import Point
+from models.reportEvent import ReportEvent
+
  
     
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
@@ -411,6 +413,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     self.session['postloginaction'] = None
                     self.session['pointText'] = None                    
                     self.response.out.write(html)
+                    ReportEvent.queueEventRecord(user.key.urlsafe(), newPoint.key.urlsafe(), None, "Create Point")    
                 else:
                    logging.error("Was not able to create point with title: " + pointText)    
                    self.redirect(str(sessionData['original_url']))

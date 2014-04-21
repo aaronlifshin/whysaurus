@@ -1248,12 +1248,17 @@ function markNotificationsRead() {
 
 
 function activateNotificationMenuItems() {
-    $('.notificationMenuItem').off(".ys").on("click.ys", function(event) {
-        if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
-            window.location.href=$(this).data('refpoint');        
+    $('.notificationMenuItem').off(".ys").on("click.ys", function(ev) {
+        if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
+            return;
+        } else if (ev.which == 2) { // Middle mouse button
+            return;
+        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+            return;
         } else {
             $(this).addClass("notificationCleared");            
             loadPoint($(this).data('pointurl'), true);
+            ev.preventDefault();            
         }
     });
 }

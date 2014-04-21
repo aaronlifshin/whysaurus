@@ -17,7 +17,11 @@ class DayEventSummary(ndb.Model):
         days = {}
         # {'2014-01-27': {u'Login': 7, u'Edit Point': 1, u'Create Point': 1, u'New User': 3}}        
         # Must match the template output order
-        defaultDay = OrderedDict((('New User', 0), ('Login', 0), ('Create Point', 0), ('Edit Point' , 0)))
+        
+        
+        defaultDay = {'New User' : 0, 'Login': 0, 'Create Point': 0, 'Edit Point': 0}
+                      
+        # OrderedDict((('New User', 0), ('Login', 0), ('Create Point', 0), ('Edit Point' , 0)))
         
         for day in q.iter():            
             if str(day.day) in days:
@@ -26,6 +30,7 @@ class DayEventSummary(ndb.Model):
                 days[str(day.day)] = defaultDay.copy()
                 days[str(day.day)][day.name] = day.count
                 
+        days = OrderedDict(sorted(days.items(), key=lambda t: t[0], reverse=True))
 
         logging.info(str(days))
         return days

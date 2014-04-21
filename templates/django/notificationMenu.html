@@ -1,5 +1,5 @@
 <li>
-    <div class="notificationMenuItem row-fluid Submenu_text_main {%if notification.cleared %}notificationCleared{% endif %}" 
+    <a href="/point/{{notification.referencePoint.url}}" class="notificationMenuItem row-fluid Submenu_text_main {%if notification.cleared %}notificationCleared{% endif %}" 
     data-refpoint="/point/{{notification.referencePoint.url}}"
     data-pointurl="{{notification.referencePoint.url}}"
     data-reason="{{notification.notificationReasonCode}}">
@@ -39,5 +39,5 @@
               {{notification.timeText}}
           </div>
         </div>                                   
-    </div>
+    </a>
 </li>

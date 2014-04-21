@@ -878,17 +878,13 @@ function sharePointOnTwitter() {
 function postOnFacebook() {
     var url = $('#pointArea').data('pointurl');
     var pointTitle = $('#pointSummary div.mainPointTitle').text();
-    var picUrl = $(".mainPointImageURL").attr("src") || null;
-    if (!picUrl) {
-        picUrl = window.location.host + "/static/img/whysaurus_logo.png";
-    }
 
     FB.ui({
-      method: 'feed',
-      link: window.location.host + "/point/" + url,
-      caption: pointTitle,
-      picture: picUrl
-    }, function(response){});    
+        app_id: 144595249045851,
+        method: 'feed',
+        link: "https://www.whysaurus.com/point/" + url,
+        caption: pointTitle,
+    }, function(response){});
 }
 
 function activatePointArea() {    
@@ -930,12 +926,14 @@ function activatePointArea() {
         $('[name=commentReply]').click(showReplyComment);
         $('[name=commentArchive]').click(archiveComments);
         $('#commentViewArchived').click(showArchivedComments);
-        $('#tweet').click(sharePointOnTwitter);
-        $('#postOnFacebook').click(postOnFacebook);
+
         
         makeRelevanceControlsClickable();      	        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
+    $('#tweet').click(sharePointOnTwitter);
+    $('#postOnFacebook').click(postOnFacebook);
+    
     makePointsCardsClickable();	    
 
     // Menus going up the tree

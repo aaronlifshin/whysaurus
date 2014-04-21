@@ -144,7 +144,11 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             user = self.auth.store.user_model.get_by_id(u['user_id'])
             self.current_user = user
             if self.current_user.privateArea and self.current_user.privateArea is not None:
-                self.setUserArea(usePrivate=True)
+                if 'postloginaction' in self.session:
+                    logging.info('There was a post login action, \
+                        so the user is not logged into the private area.')
+                else:
+                    self.setUserArea(usePrivate=True)
             user.login() # records login informaton
             logging.info("PLA 2 " + postLoginAction)
             
@@ -332,7 +336,10 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             self.current_user = user
             user.login()
             if user.privateArea and user.privateArea is not None:
-                self.setUserArea(usePrivate=True)
+                if 'postloginaction' in self.session:
+                    logging.info('There was a post login action, so the user is not logged into the private area.')
+                else:
+                    self.setUserArea(usePrivate=True)
         else:
             # check whether there's a user currently logged in
             # then, create a new user if nobody's signed in,
@@ -369,6 +376,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         # self.session.add_flash(auth_info, 'auth_info - from _on_signin(...)')
         if 'postloginaction' in self.session:
             postLoginAction = str(self.session['postloginaction'])
+            logging.info('Doing post login action: ' + postLoginAction)            
             self.doPostLoginAction(postLoginAction, self.session)
         else:  
             target = str(self.session['original_url'])
@@ -382,29 +390,33 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         if postLoginAction == "createFromMain":
             user = self.current_user
             pointText = str(sessionData['pointtext'])
-            newPoint, newPointRoot = Point.create(
-                title=pointText,
-                content="",
-                summaryText="",
-                user=user,
-                imageURL=None,
-                imageAuthor=None,
-                imageDescription=None,
-                sourceURLs=[],
-                sourceNames=[])
-            if newPoint:    
-                template_values = {
-                    'user': user, 
-                    'currentArea':self.session.get('currentArea'),
-                    'pointURL':newPoint.url
-                }
-                html = self.template_render('waitingPage.html', template_values)
-                self.session['postloginaction'] = None
-                self.session['pointText'] = None                    
-                self.response.out.write(html)
+            if user:
+                newPoint, newPointRoot = Point.create(
+                    title=pointText,
+                    content="",
+                    summaryText="",
+                    user=user,
+                    imageURL=None,
+                    imageAuthor=None,
+                    imageDescription=None,
+                    sourceURLs=[],
+                    sourceNames=[])
+                if newPoint:    
+                    template_values = {
+                        'user': user, 
+                        'currentArea':self.session.get('currentArea'),
+                        'pointURL':newPoint.url
+                    }
+                    html = self.template_render('waitingPage.html', template_values)
+                    self.session['postloginaction'] = None
+                    self.session['pointText'] = None                    
+                    self.response.out.write(html)
+                else:
+                   logging.error("Was not able to create point with title: " + pointText)    
+                   self.redirect(str(sessionData['original_url']))
             else:
-               logging.error("Was not able to create point with title: " + pointText)    
-               self.redirect(str(sessionData['original_url']))
+                logging.error("User was not available, and so could not create point with title: " + pointText)    
+                self.redirect(str(sessionData['original_url']))
         else:
             logging.info("Unknown Post Login action " + postLoginAction)    
             self.redirect(str(sessionData['original_url']))

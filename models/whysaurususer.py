@@ -45,7 +45,7 @@ class WhysaurusUser(auth_models.User):
     token = ndb.StringProperty()  
     tokenExpires = ndb.DateTimeProperty()  
     lastLogin = ndb.DateTimeProperty()
-    notificationFrequency = ndb.StringProperty(default=None)
+    notificationFrequency = ndb.StringProperty(default="Weekly")
     lastEmailSent = ndb.DateTimeProperty()
     _notifications = None
     

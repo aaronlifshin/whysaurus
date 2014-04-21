@@ -295,17 +295,26 @@ class SimpleAuthHandler(object):
       raise AuthProviderResponseError(
         "No OAuth verifier was provided", provider)
 
+
     consumer_key, consumer_secret = self._get_consumer_info_for(provider)
     token = oauth1.Token(request_token['oauth_token'], 
                          request_token['oauth_token_secret'])
     token.set_verifier(verifier)
     client = self._oauth1_client(token, consumer_key, consumer_secret)
     resp, content = client.request(access_token_url, "POST")
+    logging.info('Content ' + str(content))
+    logging.info('Response ' + str(resp))
 
+    if "<error>" in content:
+        raise AuthProviderResponseError(
+          "The authentication provided returned an error response", provider)
+          
     _parser = getattr(self, self.TOKEN_RESPONSE_PARSERS[provider])
     _fetcher = getattr(self, '_get_%s_user_info' % provider)
 
     auth_info = _parser(content)
+
+    logging.info('Token ' + str(auth_info))
     user_data = _fetcher(auth_info, key=consumer_key, secret=consumer_secret)
     return (user_data, auth_info)
     

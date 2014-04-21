@@ -654,6 +654,7 @@ a:visited {
 [id$=_nonzeroPoints] .pointCard {
 	position: relative;
 }
+
 /*
 .pointCard:hover, .pointSmall:hover, .pointListPoint:hover {
     background-color:   @pointCardBackground;
@@ -674,6 +675,10 @@ a:visited {
 	margin-bottom: 12px;	
     padding-left: 1px;
     padding-right:4px;
+}
+
+.pointCard a:hover {
+    text-decoration:underline;
 }
 
 .pointCard .stat {
@@ -1289,6 +1294,10 @@ a:visited {
     z-index:1000;
 }
 
+[name="UpVote"]:hover, [name="DownVote"]:hover {
+    text-decoration:underline;
+}
+       
 .shareIcon {
     width: 14px;
     padding-bottom: 2px;

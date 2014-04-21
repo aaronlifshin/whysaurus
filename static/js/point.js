@@ -878,10 +878,16 @@ function sharePointOnTwitter() {
 function postOnFacebook() {
     var url = $('#pointArea').data('pointurl');
     var pointTitle = $('#pointSummary div.mainPointTitle').text();
+    var picUrl = $(".mainPointImageURL").attr("src") || null;
+    if (!picUrl) {
+        picUrl = window.location.host + "/static/img/whysaurus_logo.png";
+    }
+
     FB.ui({
       method: 'feed',
-      link: "https://www.whysaurus.com/point/" + url,
+      link: window.location.host + "/point/" + url,
       caption: pointTitle,
+      picture: picUrl
     }, function(response){});    
 }
 

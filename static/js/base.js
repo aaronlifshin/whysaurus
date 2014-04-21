@@ -583,6 +583,8 @@ function makePointsCardsClickable() {
     $( ".pointCard" ).click( function(ev) {
         if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
             return;
+        } else if (ev.which == 2) { // Middle mouse button
+            return;
         } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             return;
         } else {
@@ -1500,7 +1502,7 @@ function activateHeaderAndDialogs() {
     var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
     var isChrome = !!window.chrome && !isOpera;         
     if (isChrome == false) {
-        showAlert('You are using Whysaurus in a unsupported browser.  Only Chrome is currently fully supported.');
+        showAlert('You are using Whysaurus in an unsupported browser.  Only Chrome is currently fully supported.');
     }
         
 }

@@ -367,8 +367,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
                     user.login()
+                    self.current_user = user
                     self.auth.set_session(self.auth.store.user_to_dict(user))
-                    self.redirect("/")
                     ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")                                                              
                 else:
                     logging.info('Creation failed: ' + str(ok))

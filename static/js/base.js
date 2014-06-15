@@ -739,6 +739,8 @@ function loadPointContent(pointurl, shouldPushState, replaceState) {
 function loadPointList(listType, areaToLoad, selectedTab) {
     $(areaToLoad).html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
     toggleTabbedArea('#leftColumn', selectedTab, areaToLoad);
+    _gaq.push(['_trackEvent', 'Main Page', 'Filter', listType]);
+    
     $.ajax({
     	url: '/getPointsList',
     	type: 'POST',
@@ -1524,6 +1526,7 @@ function activateMainPageLeftColumn() {
     });
 
     $('#editorsPicks').click(function() {
+            
         loadPointList('editorsPics', '#editorsPicksArea', this);        
     });
     

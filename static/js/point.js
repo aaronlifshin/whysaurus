@@ -677,7 +677,8 @@ function sendRelevanceVote(event) {
                 
             }
             radioButtons.screwDefaultButtons("enable");
-            $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);                	                        
+            $('.styledRadio').off('.ys').on('click.ys', sendRelevanceVote);
+            relBase.addClass('hide');
 		},
 		error: function(xhr, textStatus, error){
             showAlertAfter('The server returned an error. You may try again.', "#addComment");

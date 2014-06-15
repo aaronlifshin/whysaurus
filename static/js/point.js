@@ -943,7 +943,7 @@ function activatePointArea() {
         makeRelevanceControlsClickable();      	        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
-    $('#showBelowThreshold').click( function() {
+    $('[id$=showBelowThreshold]').click( function() {
         $(".belowThreshold").toggle();
     });       
     $('#tweet').click(sharePointOnTwitter);

@@ -19,8 +19,8 @@
 	{% endif %}
 </div>
 
-<div id="showBelowArea">
-  <a id="showBelowThreshold" href="javascript:;">Toggle points below the relevance threshold</a>
+<div id="{{linkType}}_showBelowArea">
+  <a id="{{linkType}}_showBelowThreshold" href="javascript:;">Toggle points below the relevance threshold</a>
 </div>
 <!-- footer for lists with 1 or more points.  These are always present, and shown if a point is added -->    
 <div id="{{linkType}}_nonzeroPointsFooter"  class="pointColumnMenuArea {% if linkedPoints %} {% else %} hide {% endif %}">

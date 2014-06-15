@@ -205,6 +205,13 @@ class Point(ndb.Model):
             return 'Please Set' 
         else:
             return str(self._linkInfo.rating) + '%'
+            
+    @property
+    def belowRelevanceThreshold(self):
+        if self._linkInfo is None or self._linkInfo.voteCount == 0:
+            return False 
+        else:
+            return self._linkInfo.rating < 33
     
     @property
     def relevanceVoteCount(self):

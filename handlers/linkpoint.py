@@ -20,13 +20,16 @@ class LinkPoint(AuthHandler):
         linkType = self.request.get('linkType')
 
         if user:
-            try:                                
+            try:     
+                # This code is if the vote existed before and the point was unlinked, and now 
+                # it is being re-linked                           
                 voteCount, rating, myVote = RelevanceVote.getExistingVoteNumbers(
                     oldPointRoot.key, supportingPointRoot.key, linkType, user)
                 supportingPoint._relevanceVote = myVote
+                linkType = self.request.get('linkType')
                 newLink = [{'pointRoot':supportingPointRoot,
                             'pointCurrentVersion':supportingPoint,
-                            'linkType':self.request.get('linkType'),
+                            'linkType':linkType,
                             'voteCount': voteCount,
                             'fRating':rating }
                             ]
@@ -34,6 +37,10 @@ class LinkPoint(AuthHandler):
                     pointsToLink=newLink,
                     user=user
                 )
+                user.addRelevanceVote(
+                  oldPointRoot.key.urlsafe(), 
+                  supportingPointRoot.key.urlsafe(), linkType, 100)   
+
                 # get my vote for this point, to render it in the linkPoint template
                 supportingPoint.addVote(user)
             except WhysaurusException as e:

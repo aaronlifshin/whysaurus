@@ -1,4 +1,4 @@
-<div class="pointCard" data-pointurl='{{point.url}}'>
+<div class="pointCard {% if point.belowRelevanceThreshold %} belowThreshold{% endif %}" data-pointurl='{{point.url}}'>
    <div class="row-fluid">
        <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %} {% if point.imageURL and point.imageURL.strip %}responsivePointBoxTitleWithImage{% endif %}">
           <div class="pointTitle">

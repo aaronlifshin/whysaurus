@@ -38,7 +38,10 @@ class AddSupportingPoint(AuthHandler):
                 newPoint = oldPoint.update(
                     pointsToLink=newLinks,                 
                     user=user
-                )
+                )            
+                user.addRelevanceVote(
+                  oldPointRoot.key.urlsafe(), 
+                  newLinkPointRoot.key.urlsafe(), linkType, 100)                    
             except WhysaurusException as e:
                 jsonOutput = {
                     'result': False,

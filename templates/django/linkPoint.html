@@ -1,11 +1,11 @@
-<div name="showRelevance" class="pointAreaActions showRelevance defaultShadow"><a>Relevance: {{point.relevancePercent}}<img class="relevanceEditIcon" src="/static/img/pencil_icon_blue.png"/></a></div>
+<div name="showRelevance" class="pointAreaActions showRelevance defaultShadow{% if point.belowRelevanceThreshold %} belowThreshold{% endif %}"><a>Relevance: {{point.relevancePercent}} ({{point.belowRelevanceThreshold}})<img class="relevanceEditIcon" src="/static/img/pencil_icon_blue.png"/></a></div>
 
-<div name="areaRelevanceRadio" class="relevanceVote hide defaultShadow" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
+<div name="areaRelevanceRadio" class="relevanceVote hide defaultShadow {% if point.belowRelevanceThreshold %} belowThreshold{% endif %}" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
     <div class="relevanceTitle">How Relevant is this Point?</div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=0
         {% if point.myVoteValue == 0 %}checked {% endif %} />                    
-        <label class="relevanceRadioLabel">0%</label>                    
+        <label class="relevanceRadioLabel">0%</label>
     </div>
     <div class="relevanceValGroup">
         <input type="radio" name="relevanceRadio_{{point.rootURLsafe}}" value=33

@@ -19,7 +19,10 @@
 	{% endif %}
 </div>
 
-<!-- footer for lists with 1 more point.  These are always present, and shown if a point is added -->    
+<div id="showBelowArea">
+  <a id="showBelowThreshold" href="javascript:;">Toggle points below the relevance threshold</a>
+</div>
+<!-- footer for lists with 1 or more points.  These are always present, and shown if a point is added -->    
 <div id="{{linkType}}_nonzeroPointsFooter"  class="pointColumnMenuArea {% if linkedPoints %} {% else %} hide {% endif %}">
     	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pointListTitleBorder">
             Got a reason why the top point is {% if linkType == 'supporting'%}true{% else %}{% if linkType == 'counter' %}false{% endif %}{% endif %}?

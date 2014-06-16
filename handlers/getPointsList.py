@@ -23,6 +23,8 @@ class GetPointsList(AuthHandler):
         # NO LONGER USING "most ribbons"
         # if listType == 'topAwards':
         #    points = PointRoot.getTopAwardPoints(user)
+        if listType == 'recentActivityAll':
+            points = yield PointRoot.getRecentActivityAll_async(user)
         if listType == 'topViewed':            
             points = yield PointRoot.getTopViewedPoints_async(user)
         elif listType == 'topRated':

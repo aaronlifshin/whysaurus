@@ -19,6 +19,9 @@
 		      <button class="tab selectedTab" id="recentActivity">
 		          RECENTLY ACTIVE
 		      </button>
+		      <button class="tab" id="recentActivityAll">
+		          RECENTLY ACTIVE ALL
+		      </button>
 		      <button class="tab" id="editorsPicks">
 		          EDITORS PICKS
 		      </button>
@@ -44,6 +47,7 @@
 			   {% include 'pointBox.html' %}            
 			{% endfor %}               
 		</div>
+		<div id="recentActivityAllArea" class="tabbedArea"></div>
 		<div id="editorsPicksArea" class="tabbedArea"></div>
 		<div id="mostAgreesArea" class="tabbedArea"></div>
 		<div id="mostViewsArea" class="tabbedArea"></div>

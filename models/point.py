@@ -1150,8 +1150,8 @@ class PointRoot(ndb.Model):
         return editorsPicks
         
     @staticmethod
-    @ndb.tasklet    
-    def getEditorsPicks_async(user):        
+    @ndb.tasklet
+    def getEditorsPicks_async(user):
         rootsQuery = PointRoot.gql("WHERE editorsPick = TRUE ORDER BY editorsPickSort ASC")
         resultPoints = yield map(lambda x: x.current.get_async(), (yield rootsQuery.fetch_async(50)))
         if user:
@@ -1159,13 +1159,25 @@ class PointRoot(ndb.Model):
                 lambda x: x.addVote_async(user), 
                 resultPoints
             )
-        raise ndb.Return(resultPoints)     
+        raise ndb.Return(resultPoints)
+
+    @staticmethod
+    @ndb.tasklet
+    def getRecentActivityAll_async(user):
+        pointsQuery = Point.gql(
+            "WHERE current = TRUE ORDER BY dateEdited DESC")
+        resultPoints = None
+        if user:
+            resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
+        else:
+            resultPoints = yield pointsQuery.fetch_async(50)
+        raise ndb.Return(resultPoints)
 
     @staticmethod
     @ndb.tasklet
     def getRecentCurrentPoints_async(user):
         pointsQuery = Point.gql(
-            "WHERE current = TRUE ORDER BY dateEdited DESC")
+            "WHERE current = TRUE AND isTop = TRUE ORDER BY dateEdited DESC")
         resultPoints = None
         if user:
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
@@ -1176,7 +1188,7 @@ class PointRoot(ndb.Model):
     @staticmethod
     def getRecentCurrentPoints(user):
         pointsQuery = Point.gql(
-            "WHERE current = TRUE ORDER BY dateEdited DESC")
+            "WHERE current = TRUE AND isTop = TRUE ORDER BY dateEdited DESC")
         resultPoints = None
         if user:
             resultPoints =  map(lambda x: x.addVote(user), (pointsQuery.fetch(50)))

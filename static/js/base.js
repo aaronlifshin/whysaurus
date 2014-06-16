@@ -1525,9 +1525,12 @@ function activateMainPageLeftColumn() {
         toggleTabbedArea("#leftColumn", this, "#recentActivityArea");        
     });
 
+    $('#recentActivityAll').click(function() {
+        loadPointList('recentActivityAll', '#recentActivityAllArea', this);
+    });
+
     $('#editorsPicks').click(function() {
-            
-        loadPointList('editorsPics', '#editorsPicksArea', this);        
+        loadPointList('editorsPics', '#editorsPicksArea', this);
     });
     
     $('#mostViews').click(function() {

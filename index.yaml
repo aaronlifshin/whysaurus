@@ -58,6 +58,13 @@ indexes:
 - kind: Point
   properties:
   - name: current
+  - name: isTop
+  - name: dateEdited
+    direction: desc
+
+- kind: Point
+  properties:
+  - name: current
   - name: ribbonTotal
     direction: desc
 

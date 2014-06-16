@@ -27,6 +27,11 @@ from google.appengine.api import namespace_manager
 
 # One-off tasks for changing DB stuff for new versions
 class AaronTask(AuthHandler):
+    def CalculateTopPoints(self):
+        prs = PointRoot.query()
+        for pr in prs.iter():
+            pr.setTop()
+
     def QueueTask(self):
         taskurl = self.request.get('task')
         if taskurl:

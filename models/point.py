@@ -159,6 +159,7 @@ class Point(ndb.Model):
     _vote = None
     _relevanceVote = None
     _linkInfo = None
+    isTop = ndb.BooleanProperty(default=True)
     
 
     @property
@@ -369,16 +370,18 @@ class Point(ndb.Model):
         pointRoot.numCopies = 0
         pointRoot.editorsPick = False
         pointRoot.viewCount = 1
+        isTop = True
         if backlink:
+            isTop = False
             if linktype == 'supporting':
                 pointRoot.pointsSupportedByMe = [backlink]
             elif linktype == 'counter':
                 pointRoot.pointsCounteredByMe = [backlink]
                 
         createdPoint, createdPointRoot = Point.transactionalCreate(
-                            pointRoot,title, content, summaryText, user,
+                            pointRoot, title, content, summaryText, user,
                             imageURL, imageAuthor, imageDescription, 
-                            sourceURLs, sourceNames )
+                            sourceURLs, sourceNames, isTop = isTop)
         Follow.createFollow(user.key, createdPointRoot.key, "created")
         return createdPoint, createdPointRoot
 
@@ -975,6 +978,8 @@ class PointRoot(ndb.Model):
     comments = ndb.KeyProperty(repeated=True, indexed=False)
     archivedComments = ndb.KeyProperty(repeated=True, indexed=False)    
     supportedCount = ndb.ComputedProperty(lambda e: len(e.pointsSupportedByMe))
+    # A top point is not used as a support for other points, aka the root of an argument tree
+    isTop = ndb.BooleanProperty(default=True)
     
     
     @classmethod
@@ -1063,7 +1068,17 @@ class PointRoot(ndb.Model):
             self.pointsCounteredByMe.remove(linkPointRootKey)
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)  
-    
+        self.setTop()
+
+    def setTop(self):
+        if len(self.pointsSupportedByMe) + len(self.pointsCounteredByMe) == 0:
+            self.isTop = True
+            self.put()
+            current = self.getCurrent()
+            if current:
+                current.isTop = True
+                current.put()
+
     def getComments(self):
         return ndb.get_multi(self.comments)
 
@@ -1095,6 +1110,7 @@ class PointRoot(ndb.Model):
             self.put()
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
+        self.setTop()
 
 
     def addLinkedPoint(self, linkPointRootKey, linkType):
@@ -1102,11 +1118,13 @@ class PointRoot(ndb.Model):
             if linkPointRootKey not in self.pointsSupportedByMe:
                 self.pointsSupportedByMe = self.pointsSupportedByMe + \
                 [linkPointRootKey]
+                self.isTop = False
                 self.put()
         elif linkType == 'counter':
             if linkPointRootKey not in self.pointsCounteredByMe:
                 self.pointsCounteredByMe = self.pointsCounteredByMe + \
                 [linkPointRootKey]
+                self.isTop = False
                 self.put()
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)

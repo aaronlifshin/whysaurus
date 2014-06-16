@@ -85,6 +85,7 @@ routes = [
     #Route('/DeleteDuplicateFollows', handler='WhySaurus.AaronTask:DeleteDuplicateFollows'),
     Route('/job/AaronTask', AaronTask),
     Route('/job/QueueTask', handler='WhySaurus.AaronTask:QueueTask', name='queueTask'),
+    Route('/job/CalculateTopPoints', handler='WhySaurus.AaronTask:CalculateTopPoints'),
     Route('/job/RebuildSearchIndex', RebuildSearchIndex),
     Route('/job/DBIntegrityCheck', DBIntegrityCheck),
     Route('/job/addDBTask', 'WhySaurus.DBIntegrityCheck:addDBTask', name='addDBTask'),

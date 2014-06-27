@@ -362,7 +362,13 @@ function populateEditFields() {
     setCharNumText($('#title_pointDialog')[0]);
     if (ed) {
         ed.setContent($('#pointSummary .mainPointContent').html() );
+        /* IN PROGRESS: this code will be used to create placeholder text in the additional text area
+        // hide placeholder-label
+        if(ed.getContent() != '') {
+            $('label[for="mceEditor"]').hide();
+        } /*
     }
+    
     $('#author_pointDialog').val($('#mainPointImageArea .mainPointImageAuthor').text());
     $('#description_pointDialog').val($('#mainPointImageArea .mainPointImageCaption').text());
     var url = $('#pointSummary div.mainPointImageURL').text();

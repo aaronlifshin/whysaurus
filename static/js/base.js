@@ -1051,7 +1051,8 @@ function initTinyMCE() {
       paste_text_sticky_default: true,
       plugins: "autolink,lists,spellchecker,iespell,inlinepopups,noneditable,paste",
       // Theme options
-      theme_advanced_buttons1: "bold,italic,underline,|,sub,sup,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,spellchecker",
+      //theme_advanced_buttons1: "bold,italic,underline,|,sub,sup,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,spellchecker",
+      theme_advanced_buttons1: "bold,italic,|,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,|,spellchecker",
       theme_advanced_buttons2: "",
       theme_advanced_buttons3: "",
       theme_advanced_buttons4: "",
@@ -1069,6 +1070,28 @@ function initTinyMCE() {
       external_link_list_url: "js/link_list.js",
       external_image_list_url: "js/image_list.js",
       media_external_list_url: "js/media_list.js",
+      /* IN PROGRESS: this code will be used to create placeholder text in the additional text area
+      // Setup Placeholder Label - toggle all labels that have the attr 'editor_pointDialog' 
+      setup : function(ed) {
+        // the line below is for tinyMCE 3.x
+        //   for tinyMCE 4.x change it to 
+        //     ed.on('init', function() {
+        // NEED TO GET THIS CODE INTO THE PLACES WHERE THE DIALOG GETS DRAWN 
+        ed.onInit.add(function() {
+            if(ed.getContent() != '') {
+                $('label[for="mceEditor"]').hide();
+            }       
+            $(ed.getDoc()).contents().find('body').focus(function(){
+                $('label[for="mceEditor"]').hide();
+            });             
+            $(ed.getDoc()).contents().find('body').blur(function(){
+                if(ed.getContent() == '') {
+                    $('label[for="mceEditor"]').show();
+                }
+            });
+        });       
+      }  */  
+          
     });
 }
 
@@ -1292,8 +1315,9 @@ function showPointDialog(dialogAction, dialogTitle) {
         $('#collapsibleSourcesArea').removeClass('in'); 
         $('#collapsibleSourcesArea').css('height', '0px');                
     }
-        
+    
 }
+
 
 function toggleManifesto() {
     var area = $('#manifestoText');

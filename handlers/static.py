@@ -47,6 +47,16 @@ class Manifesto(AuthHandler):
                 {'user': user,
                 'currentArea':self.session.get('currentArea')}))
                 
+class Education(AuthHandler):
+    def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
+        self.response.out.write(
+            self.template_render('education.html',
+                {'user': user,
+                'currentArea':self.session.get('currentArea')}))
+                
 class ListSignUp(AuthHandler):
     def get(self):
         user = self.current_user

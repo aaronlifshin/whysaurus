@@ -35,7 +35,7 @@ body {
 h1 { font-size: @fontSizeLarge;  } // standard main point headings
 h2 { font-size: @fontSizeLarge * 1.9; margin: 48px 0 0px 0; -webkit-text-stroke: 0.5px;} 
 h3 { font-size: @fontSizeLarge * 1.66; }
-h4 { font-size: @fontSizeLarge * 1.1; margin: 32px 0 10px 0; -webkit-text-stroke: 0.2px;}
+h4 { font-size: @fontSizeLargeShave; margin: 32px 0 12px 0; -webkit-text-stroke: 0.2px;}
 h5 { font-size: @fontSizeLarge * 0.66; }
 h6 { font-size: @fontSizeLarge * 0.50; }
 
@@ -2387,11 +2387,28 @@ fieldset { padding:0; border:0; margin-top:25px;}
     height:60px !important;
     width:97.5% !important;    
 }
-  
+   
 .mceEditor > table {
     width:100% !important;	
     height:60px !important;
 }
+
+/* MCE Placeholder Text: The wrapper of the editor and it's placeholder */
+#editorDiv {
+    //float: left;
+    //width: 604px;
+    //position: relative;
+}
+ 
+/* MCE Placeholder Text: The placeholder */
+#editorDiv label {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    color: #bbbbbb;
+    position: absolute;
+}
+
   
 #textEdit_tbl {width:100% !important;height:60px !important;}
 #textEdit_ifr {width:100% !important;height:60px !important;}

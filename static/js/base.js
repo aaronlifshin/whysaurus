@@ -1076,7 +1076,6 @@ function initTinyMCE() {
         // the line below is for tinyMCE 3.x
         //   for tinyMCE 4.x change it to 
         //     ed.on('init', function() {
-        // NEED TO GET THIS CODE INTO THE PLACES WHERE THE DIALOG GETS DRAWN 
         ed.onInit.add(function() {
             if(ed.getContent() != '') {
                 $('label[for="mceEditor"]').hide();
@@ -1091,7 +1090,7 @@ function initTinyMCE() {
             });
         });       
       }  
-          
+      /* END ATPT CODE */  
     });
 }
 

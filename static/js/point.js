@@ -362,11 +362,11 @@ function populateEditFields() {
     setCharNumText($('#title_pointDialog')[0]);
     if (ed) {
         ed.setContent($('#pointSummary .mainPointContent').html() );
-        /* IN PROGRESS: this code will be used to create placeholder text in the additional text area
+        /* ATPT IN PROGRESS: this code will be used to create working placeholder text in the additional text area */
         // hide placeholder-label
         if(ed.getContent() != '') {
             $('label[for="mceEditor"]').hide();
-        } /*
+        } 
     }
     
     $('#author_pointDialog').val($('#mainPointImageArea .mainPointImageAuthor').text());

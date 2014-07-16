@@ -2228,6 +2228,20 @@ button#counter_addPointWhenNonZero {
     margin-top: 10px;
 }
 
+#additionalTextPlaceholderLabel {
+    font-size: @fontSizeSmall;
+    font-weight: normal;
+    color: @grayTextDark !important;
+    top: 141px !important;
+    left: 18px !important; 
+    cursor: text;
+    pointer-events:none;
+    width: 420px;
+    line-height: @lineHeightXL;
+    font-family: ff-meta-web-pro,sans-serif;
+    font-style: italic;
+}
+
 .additionalTextEntryArea {
     margin-bottom: 8px;
 }
@@ -2235,6 +2249,11 @@ button#counter_addPointWhenNonZero {
 #title_pointDialog {
 	width: 96.8%;
 }
+#title_pointDialog::-webkit-input-placeholder { font-style: italic; }
+#title_pointDialog:-moz-placeholder { font-style: italic; }
+#title_pointDialog::-moz-placeholder { font-style: italic; }
+#title_pointDialog:-ms-input-placeholder { font-style: italic; }
+#title_pointDialog::-ms-input-placeholder { font-style: italic; }
 
 //#description_pointDialog {
 .bottomTextField {

@@ -1070,7 +1070,7 @@ function initTinyMCE() {
       external_link_list_url: "js/link_list.js",
       external_image_list_url: "js/image_list.js",
       media_external_list_url: "js/media_list.js",
-      /* IN PROGRESS: this code will be used to create placeholder text in the additional text area
+      /* ATPT IN PROGRESS: this code will be used to create working placeholder text in the additional text area */  
       // Setup Placeholder Label - toggle all labels that have the attr 'editor_pointDialog' 
       setup : function(ed) {
         // the line below is for tinyMCE 3.x
@@ -1090,7 +1090,7 @@ function initTinyMCE() {
                 }
             });
         });       
-      }  */  
+      }  
           
     });
 }

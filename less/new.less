@@ -35,7 +35,7 @@ body {
 h1 { font-size: @fontSizeLarge;  } // standard main point headings
 h2 { font-size: @fontSizeLarge * 1.9; margin: 48px 0 0px 0; -webkit-text-stroke: 0.5px;} 
 h3 { font-size: @fontSizeLarge * 1.66; }
-h4 { font-size: @fontSizeLargeShave; margin: 32px 0 12px 0; -webkit-text-stroke: 0.2px;}
+h4 { font-size: @fontSizeLargeShave; margin: 28px 0 8px 0; -webkit-text-stroke: 0.2px;}
 h5 { font-size: @fontSizeLarge * 0.66; }
 h6 { font-size: @fontSizeLarge * 0.50; }
 
@@ -105,7 +105,7 @@ a:visited {
 }  
 
 .fullPageText {
-    max-width: 660px;
+    max-width: 510px;
 }
 
 // I don't understand why this is necessary... -JF
@@ -2920,6 +2920,44 @@ a[name="commentArchive"] {
     border-width : 0 0 2px 2px;
 }	
 
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   AFFIX
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.affix, .affix-top, affix-bottom  {   
+    margin-left:-16px;
+    padding: 0;
+} 
+   
+.affix-top  {
+    margin-top: 54px;
+}
+
+.affix {
+    top: 72px;
+}
+
+#educationInfoNav {
+    list-style-position:outside;
+    margin:0;
+}
+
+#educationInfoNav li {
+    font-size: @fontSizeActions;
+    line-height: 175%;
+    list-style-type: none;
+    list-style-position:outside;
+}
+
+
+
+
+h2.idLinkOffset:before {
+  display: block; 
+  content: " "; 
+  margin-top: -70px; 
+  height: 70px; 
+  visibility: hidden; 
+}
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    ADMIN PAGE

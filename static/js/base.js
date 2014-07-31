@@ -1610,10 +1610,17 @@ function loginWith(ev, provider) {
     }
 }
 
+function activateGradeStandards() {    
+    $('.ulGradeStandard').click(function () {
+         $("li", this).toggle();
+    });   
+}
+
+
 $(document).ready(function() {
     preloadImages();
     activateHeaderAndDialogs();
     activateMainPageRightColumn();
     activateMainPageLeftColumn();
- 
+    activateGradeStandards();
 });

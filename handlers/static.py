@@ -57,6 +57,16 @@ class Education(AuthHandler):
                 {'user': user,
                 'currentArea':self.session.get('currentArea')}))
                 
+class CommonCore(AuthHandler):
+    def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
+        self.response.out.write(
+            self.template_render('commonCore.html',
+                {'user': user,
+                'currentArea':self.session.get('currentArea')}))
+                
 class ListSignUp(AuthHandler):
     def get(self):
         user = self.current_user

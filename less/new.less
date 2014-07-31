@@ -105,7 +105,7 @@ a:visited {
 }  
 
 .fullPageText {
-    max-width: 510px;
+    max-width: 540px;
 }
 
 // I don't understand why this is necessary... -JF
@@ -2921,11 +2921,12 @@ a[name="commentArchive"] {
 }	
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-   AFFIX
+   AFFIX and EDUCATION NAVIGATION
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .affix, .affix-top, affix-bottom  {   
     margin-left:-16px;
     padding: 0;
+    padding-right: 16px;
 } 
    
 .affix-top  {
@@ -2934,11 +2935,13 @@ a[name="commentArchive"] {
 
 .affix {
     top: 72px;
+    width:inherit;
 }
 
 #educationInfoNav {
     list-style-position:outside;
     margin:0;
+    padding-right:8px;
 }
 
 #educationInfoNav li {
@@ -2948,8 +2951,36 @@ a[name="commentArchive"] {
     list-style-position:outside;
 }
 
+#commonCoreLogo {
+    //height: 96px;
+    //margin-top: 54px;
+    //margin-bottom: -36px;
+    padding-top: 27px;
+    width: 89%;
+    margin-left: 3px;
+    max-width: 260px;
+}
+ 
+.edIntroLine {
+    //margin-top:54px;
+    font-style: italic;
+    margin-bottom: 12px;
+}
 
+.edCaption {
+    font-style:italic;
+}
 
+#ccSpecialPlaceOfArgument {
+   //margin-top:24px;
+}
+
+.introQuote {
+    font-size: 14px;
+    margin-top:8px;
+    margin-bottom:8px;
+    //font-family:@sansCondFontFamily;
+}
 
 h2.idLinkOffset:before {
   display: block; 
@@ -2958,6 +2989,16 @@ h2.idLinkOffset:before {
   height: 70px; 
   visibility: hidden; 
 }
+
+.ulGradeStandard {
+    margin: 0px;
+    list-style-type: none;
+    list-style-position:outside;
+}
+.ulGradeStandard li {
+    margin-left:8px;
+}
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    ADMIN PAGE

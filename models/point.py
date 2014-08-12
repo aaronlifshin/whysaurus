@@ -320,7 +320,7 @@ class Point(ndb.Model):
     @ndb.transactional(xg=True)
     def transactionalCreate(pointRoot, title, content, summaryText, user,
                             imageURL=None, imageAuthor=None, 
-                            imageDescription=None, sourceURLs=None, sourceNames=None):
+                            imageDescription=None, sourceURLs=None, sourceNames=None, isTop=False):
         pointRoot.put()
         point = Point(parent=pointRoot.key)
         point.title = title
@@ -338,6 +338,7 @@ class Point(ndb.Model):
         point.imageURL = imageURL
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
+        point.isTop = isTop
         point.put() 
         sources = None
         if sourceURLs and sourceNames:
@@ -352,6 +353,7 @@ class Point(ndb.Model):
         point.addToSearchIndexNew()
 
         pointRoot.current = point.key
+        pointRoot.isTop = isTop
         pointRoot.put()
 
         # No automatic agreement
@@ -372,11 +374,14 @@ class Point(ndb.Model):
         pointRoot.viewCount = 1
         isTop = True
         if backlink:
+            logging.info('- - -- -  Creating with a BL')
             isTop = False
             if linktype == 'supporting':
                 pointRoot.pointsSupportedByMe = [backlink]
             elif linktype == 'counter':
                 pointRoot.pointsCounteredByMe = [backlink]
+        else:
+            logging.info('-NO BL FOUND')
                 
         createdPoint, createdPointRoot = Point.transactionalCreate(
                             pointRoot, title, content, summaryText, user,
@@ -1078,6 +1083,15 @@ class PointRoot(ndb.Model):
             if current:
                 current.isTop = True
                 current.put()
+        else:
+          self.isTop = False
+          self.put()
+          current = self.getCurrent()
+          if current:
+              current.isTop = False
+              current.put()
+          
+          
 
     def getComments(self):
         return ndb.get_multi(self.comments)

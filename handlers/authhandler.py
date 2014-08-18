@@ -22,8 +22,7 @@ from webapp2_extras.auth import InvalidPasswordError
 from models.reportEvent import ReportEvent
 from models.point import Point
 from models.reportEvent import ReportEvent
-
- 
+from models.privateArea import PrivateArea
     
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     """Inherits from gae-simpleauth (SimpleAuthHandler)
@@ -126,6 +125,15 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             user.login()
             return
         
+    def setPrivateAreaUser(self, areaName):
+        if PrivateArea.exists(areaName):
+            self.session['currentArea'] = areaName            
+            self.response.out.write(
+                self.template_render('areaCreateUser.html', {'privateAreaName':areaName}))            
+        else:
+            self.response.out.write('Sorry, the private area %s does not appear \
+                to exist. Click <a href="/">here</a> to go home' % areaName)
+            
     def login(self):
         email = self.request.get('login_userEmail')
         password = self.request.get('login_userPassword')
@@ -364,6 +372,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             else:
                 logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))  
                 _attrs['url'] = WhysaurusUser.constructURL(_attrs['name'])
+                _attrs['privateArea'] = self.session.get('currentArea')
+                
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
                     user.login()

@@ -1435,7 +1435,7 @@ function activateHeaderAndDialogs() {
             console.log('Required login ' +  event.target.id);
         });
                 
-        $("#loginWithEmail").on('click', function() {
+        $(".loginWithEmail").on('click', function() {
             $("#emailLoginDialog").modal('show');
         });
         $("#showSignupDialog").on('click', function() {

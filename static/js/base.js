@@ -1399,6 +1399,14 @@ function activateHeaderAndDialogs() {
         }
     });
 
+    //pg
+    $("#newPointTitle").keyup(function(event) {
+        if (event.keyCode == 13) {
+            createPointFromMainPage();
+        }
+    });
+
+
     $(".searchIcon", $("#searchArea")).click(function(event) {
             getSearchResults();
     });

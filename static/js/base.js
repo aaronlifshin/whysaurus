@@ -1399,6 +1399,14 @@ function activateHeaderAndDialogs() {
         }
     });
 
+    //pg
+    $("#newPointTitle").keyup(function(event) {
+        if (event.keyCode == 13) {
+            createPointFromMainPage();
+        }
+    });
+
+
     $(".searchIcon", $("#searchArea")).click(function(event) {
             getSearchResults();
     });
@@ -1435,7 +1443,7 @@ function activateHeaderAndDialogs() {
             console.log('Required login ' +  event.target.id);
         });
                 
-        $("#loginWithEmail").on('click', function() {
+        $(".loginWithEmail").on('click', function() {
             $("#emailLoginDialog").modal('show');
         });
         $("#showSignupDialog").on('click', function() {

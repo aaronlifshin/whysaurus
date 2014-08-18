@@ -153,11 +153,13 @@ class WhysaurusUser(auth_models.User):
         if password is None:
             raise WhysaurusException('Unable to create user. No password supplied.')
             
+        privateArea = handler.session.get('currentArea')
         result, creationData = WhysaurusUser.create_user(auth_id,
           unique_properties,
           url=url, email=email, name=name, password_raw=password,
-          websiteURL=website, areasOfExpertise=areas, currentProfession=profession, bio=bio, verified=False)
-         
+          websiteURL=website, areasOfExpertise=areas, currentProfession=profession, 
+          bio=bio, verified=False, privateArea=privateArea)
+ 
         if not result: #user_data is a tuple
             if 'name' in creationData:
                 raise WhysaurusException('Unable to create user because the username %s is already in use' % name)

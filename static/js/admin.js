@@ -87,13 +87,14 @@ function saveUsers() {
 function createPrivateArea() {
     if (validatePrivateArea()) {
         startSpinnerOnButton('#submit_createPrivateArea');
+        var privateAreaName = $("#privateAreaName").val();
     	$.ajaxSetup({
     		url: "/admin",
     		global: false,
     		type: "POST",
     		data: {
     		    'action': 'createPrivateArea',
-    			'privateAreaName': $("#privateAreaName").val()
+            'privateAreaName': privateAreaName
     		},
     		success: function(obj){
     			if (obj.result == true) {                    
@@ -107,6 +108,8 @@ function createPrivateArea() {
                     });
                     $('[name=privateArea]').click(function() {changePrivateAreaValue(this);});
         		    $("#privateAreaDialog").modal('hide');
+                var privateAreaURL= 'https://www.whysausus.com/area/' + privateAreaName;
+                showSuccessAlert('Private area ' + privateAreaName + ' has been created successfully. Users can go to <a href=\'' + privateAreaURL + '\'>' + privateAreaURL + '</a> to create accounts within this area.' )                
     			} else {
     				if (obj.error) {
     		    		dialogAlert('#privateAreaDialog',obj.error);

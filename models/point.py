@@ -673,7 +673,12 @@ class Point(ndb.Model):
                     raise WhysaurusException(
                         "That point is already a %s point of %s" % 
                             (linkType, self.title))
-
+                            
+            linkRoot.isTop = False
+            linkCurrentVersion.isTop = False
+            linkRoot.put()
+            linkCurrentVersion.put()
+            
             logging.info('Linking the new point. Have: %d, %d' % (voteCount, fRating))
             newLink = Link(
                 root = linkRoot.key,
@@ -715,6 +720,7 @@ class Point(ndb.Model):
                 # addLinkedPoint will add the backlink to the pointRoot and put
                 pointToLink['pointRoot'].addLinkedPoint(newPoint.key.parent(),
                                                         pointToLink['linkType'])
+
         if sources:
             sourceKeys = newPoint.sources
             for source in sources:
@@ -1132,13 +1138,11 @@ class PointRoot(ndb.Model):
             if linkPointRootKey not in self.pointsSupportedByMe:
                 self.pointsSupportedByMe = self.pointsSupportedByMe + \
                 [linkPointRootKey]
-                self.isTop = False
                 self.put()
         elif linkType == 'counter':
             if linkPointRootKey not in self.pointsCounteredByMe:
                 self.pointsCounteredByMe = self.pointsCounteredByMe + \
                 [linkPointRootKey]
-                self.isTop = False
                 self.put()
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)

@@ -949,9 +949,25 @@ function activatePointArea() {
         makeRelevanceControlsClickable();      	        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
-    $('[id$=showBelowThreshold]').click( function() {
-        $(".belowThreshold").toggle();
-    });       
+	
+	// if low relevance SPs exist, show the toggle
+	if ($("#supporting_nonzeroPoints div[name=showRelevance].belowThreshold").length > 0) {
+		$('[id$=supporting_showBelowArea]').show();
+	}
+		
+	// if low relevance CPs exist, show the toggle
+	if ($("#counter_nonzeroPoints div[name=showRelevance].belowThreshold").length > 0) {
+		$('[id$=counter_showBelowArea]').show();
+	}
+	
+	// functions to operate toggle button
+    $('#supporting_showBelowThreshold').click( function() {
+        $("#supporting_nonzeroPoints .belowThreshold").toggle();
+    });    
+    $('#counter_showBelowThreshold').click( function() {
+        $("#counter_nonzeroPoints .belowThreshold").toggle();
+    });    
+           
     $('#tweet').click(sharePointOnTwitter);
     $('#postOnFacebook').click(postOnFacebook);
     

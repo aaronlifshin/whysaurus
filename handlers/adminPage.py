@@ -22,9 +22,7 @@ class AdminPage(AuthHandler):
                 'newNamespace': newName
             }
         except WhysaurusException as e:
-            results['error'] = str(e)
-        else:
-            results['error'] = "New name must not be longer that 100 and may only include alphanumeric characters and . - _"
+            results['error'] = str(e)     
         return results
     
     def saveUsers(self, users):
@@ -44,16 +42,18 @@ class AdminPage(AuthHandler):
     def post(self):
         results = {'result': False}
         user = self.current_user  
-        if user.admin:
-            action=self.request.get('action')
-            if (action == 'createPrivateArea'):
-                newName=self.request.get('privateAreaName')
-                results = self.createPrivateArea(newName)
-            elif (action == 'saveUsers'): 
+        
+        action=self.request.get('action')
+        if (action == 'createPrivateArea'):
+            # Anyone can create a private area
+            newName=self.request.get('privateAreaName')
+            results = self.createPrivateArea(newName)
+        elif (action == 'saveUsers'): 
+            if user.admin:
                 users = json.loads(self.request.get('newUserValues'))
                 results = self.saveUsers(users)
-        else:
-            results['error'] = "User must be admin."
+            else:
+                results['error'] = "User must be admin."
         resultJSON = json.dumps(results)
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

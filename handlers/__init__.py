@@ -31,7 +31,8 @@ __all__ = [
 	'Comments',
 	'AddNotifications',
 	'Chat',
-    'EventRecorder'
+    'EventRecorder',
+    'CreatePrivateAreaPage'
 ]
 
 from mainpage import MainPage
@@ -65,6 +66,9 @@ from comments import Comments
 from notificationHandler import NotificationHandler
 from chat import Chat
 from eventRecorder import EventRecorder
+from createPrivateAreaPage import CreatePrivateAreaPage
+
+
 
 
 

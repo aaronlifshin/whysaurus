@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+
+  Create a user for {{privateAreaName}}
+  <ul id="areaCreateUserOptions">
+    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
+    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
+    <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
+    <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
+  </ul>
+
+{% endblock %}

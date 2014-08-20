@@ -108,7 +108,7 @@ function createPrivateArea() {
                     });
                     $('[name=privateArea]').click(function() {changePrivateAreaValue(this);});
         		    $("#privateAreaDialog").modal('hide');
-                var privateAreaURL= 'https://www.whysausus.com/area/' + privateAreaName;
+                var privateAreaURL= 'https://www.whysaurus.com/area/' + privateAreaName;
                 showSuccessAlert('Private area ' + privateAreaName + ' has been created successfully. Users can go to <a href=\'' + privateAreaURL + '\'>' + privateAreaURL + '</a> to create accounts within this area.' )                
     			} else {
     				if (obj.error) {

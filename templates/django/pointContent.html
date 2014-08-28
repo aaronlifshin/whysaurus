@@ -88,13 +88,14 @@
                     <li><a href='/job/cleanDeadBacklinks/{{point.url}}'>Root Backlink Clean</a></li>
                     <li><a href='/job/cleanEmptyLinks/{{point.url}}'>Clean Empty Links</a></li>
                     <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>
-                    <li><a href='/job/DBcheckPoint/{{point.url}}'>DB Check This Point</a></li>                    
+                    <li><a href='/job/DBcheckPoint/{{point.url}}'>DB Check This Point</a></li>                     
                     <li><a id='changeEditorsPickTrigger'>
                         Editors Pick: 
                         {{pointRoot.editorsPick}}{%if pointRoot.editorsPick %} - {{pointRoot.editorsPickSort}} {% endif %}
                     </a>
                     </li>       
-                    <li><a id='makeFeaturedPick'>Make Featured</a></li>                                                        
+                    <li><a id='makeFeaturedPick'>Make Featured</a></li>
+                    <li><a id='refreshTopStatus'>Refresh Top Status</a></li>                       
                 </ul>
             </div>	
             {% include 'changeEditorsPick.html' %}             			

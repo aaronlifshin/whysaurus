@@ -595,7 +595,8 @@ function setUpMenuAreas() {
     $('#submitChangeEditorsPick').off('.ys').on('click.ys', changeEditorsPick);     
     
     $('#makeFeaturedPick').off('.ys').on('click.ys', makeFeaturedPick);   
-    
+    $('#refreshTopStatus').off('.ys').on('click.ys', refreshTopStatus);     
+
 }
 
 
@@ -794,6 +795,10 @@ function showArchivedComments(event) {
 	});
 	$.ajax();    
 }
+
+
+
+
 
 function changeEditorsPick() {
     pick = $('#editorsPick').get(0).checked;
@@ -1007,6 +1012,28 @@ function makeFeaturedPick() {
     	});
     	$.ajax();
 }
+
+function refreshTopStatus() {   
+         $.ajaxSetup({
+    		url: "/refreshTopStatus",
+    		global: false,
+    		type: "POST",
+    		data: {
+    			'urlToEdit': $('#pointArea').data('pointurl')
+    		},
+    		success: function(obj) {
+    			if (obj.result == true) {
+    		        showSuccessAlert('Top Status Refreshed.')
+        		} else {
+        		    showErrorAlert('Server error: ' + obj.error + '. You may try again.', '#changeEditorsPick [name="alertArea"]');                    
+        		}        		          
+    		},    		
+    	});
+    	$.ajax();
+    //showSuccessAlert('here.')  
+}
+
+
 
 $(document).ready(function() {
     activatePointArea();

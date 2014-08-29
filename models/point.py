@@ -727,7 +727,7 @@ class Point(ndb.Model):
                 source.put()
                 sourceKeys = sourceKeys + [source.key]
             newPoint.sources = sourceKeys
-        newPoint.put()
+        newPoint.put()       
         theRoot.current = newPoint.key
         theRoot.put()
         user.recordEditedPoint(theRoot.key) # Add to the user's edited list    
@@ -779,8 +779,11 @@ class Point(ndb.Model):
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)
-                    
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)    
+
+            # Not sure why this is needed: this should be getting handled by code already in addLink
+            theRoot.setTop()
+            
             Follow.createFollow(user.key, theRoot.key, "edited")
             if pointsToLink:
                 # For now we only ever add a single linked point
@@ -1425,5 +1428,3 @@ class FeaturedPoint(ndb.Model):
             pointRoot = fp.featuredPoint.get()
             point = pointRoot.getCurrent() if pointRoot else None
         return point
-
-        

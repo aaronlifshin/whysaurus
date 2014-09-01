@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: Enumerate namespaces (or just private areas) and sync with --namespace=<whatever>
 if [ -z "${GAE_ROOT}" ]; then
 	dir=$(which dev_appserver.py)
 	if [ -n "${dir}" ]; then

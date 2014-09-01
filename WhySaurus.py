@@ -114,9 +114,11 @@ routes = [
           name='broadcastChatroom'),  
     Route('/recordEvent', handler='WhySaurus.EventRecorder:recordEvent', 
             name='recordEvent'),  
-    Route('/switchArea', handler='WhySaurus.Profile:setArea', name='switchArea'),
-    Route('/createArea', handler='WhySaurus.CreatePrivateAreaPage', name='createPrivateAreaPage'),        
-    Route('/area/<areaName>', handler='WhySaurus.AuthHandler:setPrivateAreaUser', name='setPrivateAreaUser'),    
+    # Private Areas
+    Route('/switchArea/<area_name>', handler='WhySaurus.Profile:setArea', name='switchArea'),
+    Route('/createArea', handler='WhySaurus.CreatePrivateAreaPage', name='createPrivateAreaPage'),
+    Route('/area/<areaName>', handler='WhySaurus.AuthHandler:setPrivateAreaUser', name='setPrivateAreaUser'),
+
     Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),
     Route('/archiveComments', handler='WhySaurus.Comments:archiveComments', name='archiveComments'),
     Route('/getArchivedComments', handler='WhySaurus.Comments:getArchivedComments', name='getArchivedComments'),    

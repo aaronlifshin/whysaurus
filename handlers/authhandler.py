@@ -153,13 +153,20 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
               save_session=True)
             user = self.auth.store.user_model.get_by_id(u['user_id'])
             self.current_user = user
-            if self.current_user.privateArea and self.current_user.privateArea is not None:
-                if 'postloginaction' in self.session:
-                    logging.info('There was a post login action, \
+
+            # See if we can log them into a private area
+            if 'postloginaction' in self.session:
+                # Public area, no op
+                logging.info('There was a post login action, \
                         so the user is not logged into the private area.')
-                else:
-                    self.setUserArea(usePrivate=True)
-            user.login() # records login informaton
+            elif len(user.privateAreas) == 1:
+                # One private area, put 'em in
+                self.setUserArea(user.privateAreas[0])
+            # Otherwise, public
+            # TODO: Maybe log them into their last recently used area
+
+            # record login informaton
+            user.login()
             logging.info("PLA 2 " + postLoginAction)
             
             if (postLoginAction == "createFromMain"):
@@ -341,15 +348,14 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             #
             # In a real app you could compare _attrs with user's properties fetched
             # from the datastore and update local user in case something's changed.  
-                        
+
             self.auth.set_session(self.auth.store.user_to_dict(user))
             self.current_user = user
             user.login()
-            if user.privateArea and user.privateArea is not None:
-                if 'postloginaction' in self.session:
+            if 'postloginaction' in self.session:
                     logging.info('There was a post login action, so the user is not logged into the private area.')
-                else:
-                    self.setUserArea(usePrivate=True)
+            elif len(user.privateAreas) == 0:
+                    self.setUserArea(user.privateAreas[0])
         else:
             # check whether there's a user currently logged in
             # then, create a new user if nobody's signed in,

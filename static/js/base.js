@@ -1094,22 +1094,32 @@ function initTinyMCE() {
     });
 }
 
-function switchArea() {
+function switchArea(e) {
+    // Something target to get public area or something.
+    // Or we could have a link for public, and dropdown for not.
+    var areaName = "";
+
+    if(e.target.nodeName == "SELECT"){
+      areaName = $(e.target).find("option:selected").data("area");
+    } else {
+      areaName = $(e.target).data("area");
+    }
+
     $.ajaxSetup({
-		url: "/switchArea",
+		url: "/switchArea/" + areaName,
 		global: false,
 		type: "POST",
 		data:{},
-        success: function(obj){
+    success: function(obj){
 			if (obj.result == true) { 
-                window.location.href="/";                
+          window.location.href="/";
 			} else {
 			    showAlert("Something went wrong. Not able to change area.");
 			}
 		},
 		error: function(xhr, textStatus, error){
-		    showAlert("There was an error. Not able to change area. " + textStatus);       
-        }
+		    showAlert("There was an error. Not able to change area. " + textStatus);
+    }
 	});
 	$.ajax();
 }
@@ -1530,7 +1540,8 @@ function activateHeaderAndDialogs() {
         $('#submitLinkedPointSearch').click(searchDialogSearch);
         
         $(".removeSource").on('click', function(e) {removeSource(this);});
-        $("#areaSwap").on('click', switchArea);   
+        $("#areaSwap").on('click', switchArea);
+        $(".areaChoose").on('change', switchArea);
         makeNotificationMenuClickable();     
         notificationChannelOpen();
     }

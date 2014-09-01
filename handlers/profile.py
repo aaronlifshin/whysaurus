@@ -23,10 +23,10 @@ class Profile(AuthHandler):
         template_values = {
             'user': self.current_user,
             'profileUser': profileUser,
-            'viewingOwnPage': viewingOwnPage,            
-            'createdPoints' : profileUser.getCreated(),
+            'viewingOwnPage': viewingOwnPage,
+            'createdPoints': profileUser.getCreated(),
             'editedPoints': profileUser.getEdited(),
-            'currentArea':self.session.get('currentArea')
+            'currentArea': self.session.get('currentArea')
         }
         if viewingOwnPage:
             template_values['recentlyViewed'] = profileUser.getRecentlyViewed()
@@ -71,10 +71,11 @@ class Profile(AuthHandler):
         namespace_manager.set_namespace(userNamespace)
 
         if user:
-            permissionToView = user.admin or user.privateArea == profileUser.privateArea 
+            permissionToView = user.admin or self.session.get('currentArea') in profileUser.privateAreas
         else:
-            permissionToView = profileUser.privateArea is None or profileUser.privateArea == ''
-        if profileUser and permissionToView:                                        
+            permissionToView = len(profileUser.privateAreas) == 0
+
+        if profileUser and permissionToView:
             self.response.out.write(
                 self.template_render(
                     'profile.html', 
@@ -82,9 +83,9 @@ class Profile(AuthHandler):
         else:
             self.response.out.write('Could not find user: ' + userURL)
 
-    def setArea(self):
+    def setArea(self, area_name):
         results = {'result': False}
-        newArea = self.setUserArea(namespace_manager.get_namespace() == '')
+        newArea = self.setUserArea(area_name)
         logging.info('NEW AREA was: %s' % newArea)
         if newArea is not None:            
             results = {'result': True, 'newArea': newArea}
@@ -92,6 +93,3 @@ class Profile(AuthHandler):
         resultJSON = json.dumps(results)
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
-        
-
-        

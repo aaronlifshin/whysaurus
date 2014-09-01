@@ -16,32 +16,39 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
             if user:
                 sessionArea = self.session.get('currentArea')
                 if sessionArea is None: # Sometimes the session seems to expire
-                    if user.privateArea and user.privateArea is not None:
-                        sessionArea = self.setUserArea(usePrivate=True)
-                if sessionArea != '' and sessionArea == user.privateArea:
-                    namespace_manager.set_namespace(self.session.get('currentArea')) 
+                    if len(user.privateAreas) == 1:
+                        sessionArea = self.setUserArea(user.privateAreas[0])
+                if sessionArea != '' and sessionArea in user.privateAreas:
+                    namespace_manager.set_namespace(sessionArea)
             # Dispatch the request.
             webapp2.RequestHandler.dispatch(self)
         finally:
             # Save all sessions.
             self.session_store.save_sessions(self.response)
 
-    def setUserArea(self, usePrivate=True):
-        theU = self.current_user        
-        newArea = ''
-
-        if theU:
-            if usePrivate: 
-                self.session['currentArea'] = theU.privateArea
-                namespace_manager.set_namespace(theU.privateArea) 
-                newArea = theU.privateArea         
-            else:
-                self.session['currentArea'] = ''
-                namespace_manager.set_namespace('')     
-            return newArea
-        else:
+    # This has no checks on wheter the user is a part of the area
+    # in some cases we want to switch the current area
+    # even if they're not logged in
+    # e.g. to create a user in that area
+    def setUserArea(self, area_name):
+        u = self.current_user
+        if u is None:
             return None
-        
+
+        # Handler doesn't like being called with a blank url var
+        # so "public" is our special string to denote... that
+        if area_name == 'public':
+            area_name = ''
+
+        # Force public if they're trying something uncouth
+        if area_name != '' and not area_name in u.privateAreas:
+            area_name = ''
+
+        self.session['currentArea'] = area_name
+        namespace_manager.set_namespace(area_name)
+
+        return area_name
+
     @webapp2.cached_property
     def session(self):
         """Returns a session using the default cookie key"""

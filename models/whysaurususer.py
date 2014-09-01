@@ -40,7 +40,9 @@ class WhysaurusUser(auth_models.User):
     areasOfExpertise =  ndb.StringProperty()
     currentProfession =  ndb.StringProperty()
     bio =  ndb.StringProperty()
+    # TODO; take out once migrated to privateAreas
     privateArea = ndb.StringProperty()
+    privateAreas = ndb.StringProperty(repeated=True)
     password = ndb.StringProperty()
     token = ndb.StringProperty()  
     tokenExpires = ndb.DateTimeProperty()  
@@ -140,7 +142,16 @@ class WhysaurusUser(auth_models.User):
         logging.info('Creating new token for user %s: %s' % (self.url, self.token))        
         if saveUser:
             self.put()
-        return self            
+        return self
+
+    # OMG Django I hate you so much
+    @property
+    def anyPrivateAreas(self):
+        return len(self.privateAreas) > 0
+
+    @property
+    def manyPrivateAreas(self):
+        return len(self.privateAreas) > 1
 
     @classmethod
     def signup(cls, handler, email, name, password, website, areas, profession, bio):
@@ -152,13 +163,16 @@ class WhysaurusUser(auth_models.User):
         
         if password is None:
             raise WhysaurusException('Unable to create user. No password supplied.')
-            
-        privateArea = handler.session.get('currentArea')
+
+        privateAreas = []
+        if handler.session.get('currentArea'):
+            privateAreas = [handler.session.get('currentArea')]
+
         result, creationData = WhysaurusUser.create_user(auth_id,
           unique_properties,
           url=url, email=email, name=name, password_raw=password,
           websiteURL=website, areasOfExpertise=areas, currentProfession=profession, 
-          bio=bio, verified=False, privateArea=privateArea)
+          bio=bio, verified=False, privateAreas=privateAreas)
  
         if not result: #user_data is a tuple
             if 'name' in creationData:
@@ -293,10 +307,12 @@ class WhysaurusUser(auth_models.User):
             return 0, False                    
 
     def updatePrivateArea(self, newPA):
-        self.privateArea = newPA
-        self.put()
-       
-       
+        if newPA != '':
+            self.privateAreas.append(newPA)
+            return self.put()
+        else:
+            return False
+
     def _getOrCreateVote(self, pointRootKey):
         vote = UserVote.query(             
             UserVote.pointRootKey==pointRootKey, ancestor=self.key).get()            

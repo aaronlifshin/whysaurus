@@ -33,7 +33,7 @@ class AdminPage(AuthHandler):
             else:
                 results = {
                     'result': False, 
-                    'error': "COuld not find user %s. Other users may have been updated." % user['userAuthIDs']
+                    'error': "Could not find user %s. Other users may have been updated." % user['userAuthIDs']
                 } 
                 return results       
         return {'result': True}
@@ -46,7 +46,7 @@ class AdminPage(AuthHandler):
         action=self.request.get('action')
         if (action == 'createPrivateArea'):
             # Anyone can create a private area
-            newName=self.request.get('privateAreaName')
+            newName = self.request.get('privateAreaName')
             results = self.createPrivateArea(newName)
         elif (action == 'saveUsers'): 
             if user.admin:
@@ -61,8 +61,16 @@ class AdminPage(AuthHandler):
     
     def get(self):
         user = self.current_user
-        queryUsr = WhysaurusUser.query()
-        queryUsr = queryUsr.order(-WhysaurusUser.lastLogin)
+        if user is None:
+            self.response.out.write('Need to login.')
+            return
+
+        if not user.admin:
+            self.response.out.write('User not authorized.')
+            return
+
+        query = WhysaurusUser.query()
+        queryUsr = query.order(-WhysaurusUser.lastLogin)
         areas = PrivateArea.query().fetch(50)
         users = []
         i = 0
@@ -76,12 +84,9 @@ class AdminPage(AuthHandler):
             'currentArea':self.session.get('currentArea')
         }
 
-        if user and user.admin:               
-            self.response.out.write(
-                self.template_render('admin.html', template_values)) 
-        else:
-            self.response.out.write('User not authorized. ')
-            
+        self.response.out.write(
+            self.template_render('admin.html', template_values))
+
     def uploadUserPage(self):
         user = self.current_user
 

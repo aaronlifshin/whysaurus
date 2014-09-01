@@ -1,13 +1,13 @@
 function validatePrivateArea() {
     var valid = true;
     var privateAreaName = $("#privateAreaName").val();   
-    var re=new RegExp('[0-9A-Za-z._-]{0,100}'); 
+    var re=new RegExp('[0-9A-Za-z._-]+');
     if (privateAreaName.length >= 100) {
-        dialogAlert('#privateAreaDialog','Please do not exceed maximum length for Private Area Name (100 characters)');
+        dialogAlert('#privateAreaDialog','Private Area Name needs to be shorter (100 characters)');
         valid = false;
     }       
     if (re.exec(privateAreaName) != privateAreaName) {
-        dialogAlert('#privateAreaDialog','The only characters allowed are alphanumeric and . - _');
+        dialogAlert('#privateAreaDialog','The allowed characters are A-Z, a-z, 0-9, and period (.), dash (-) and underscore (_)');
         valid = false;
     }
     return valid;

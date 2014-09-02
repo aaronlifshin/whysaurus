@@ -1635,7 +1635,6 @@ function activateGradeStandards() {
     });   
 }
 
-
 $(document).ready(function() {
     preloadImages();
     activateHeaderAndDialogs();

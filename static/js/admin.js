@@ -26,26 +26,20 @@ function PAstopSpinner() {
 }
 
 function getUsersData() {
-    var userElems = $('[name=userRow]');
-    var users = [];
-        
-    for(var i = 0; i < userElems.length; i++){
-        u = $(userElems[i])
-        if (u.data('privateArea') || u.data('clear') ) {
-            if (u.data('clear') == true) {
-                newPrivateArea = ''
-            } else {
-                newPrivateArea = u.data('privateArea')                
-            }
-            user = {
-                'newPrivateArea':newPrivateArea,
-                'url':u.data('url')
-            };
-            users.push(user);            
-        }
-    }
-    return users;
+    return $('[name=userRow]').map(function(){
+        var $u = $(this);
+
+        var privateAreas = $u.find('.private-area-chooser option:selected').map(function(){
+            return this.value;
+        });
+
+        return {
+            privateAreas: privateAreas.toArray(),
+            url: $u.data('url')
+        };
+    }).toArray();
 }
+
 function saveUsers() {
     users = getUsersData();
     if (typeof users !== 'undefined' && users.length > 0) {
@@ -172,6 +166,14 @@ function resetPassword(clickedElem) {
     }
 }
 
+function setupChosen() {
+    $('.chosen-select').chosen().change(
+      function(e, o){
+        
+      }
+    );
+}
+
 $(document).ready(function() {
     $('[name=privateArea]').click(function() {
         changePrivateAreaValue(this);       
@@ -187,5 +189,5 @@ $(document).ready(function() {
     
     $('#submit_createPrivateArea').click( createPrivateArea );
     $('#saveUsers').click( saveUsers );        
-            
+    setupChosen();
 });

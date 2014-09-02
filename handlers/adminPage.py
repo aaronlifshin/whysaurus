@@ -29,7 +29,7 @@ class AdminPage(AuthHandler):
         for user in users:
             u = WhysaurusUser.getByUrl(user['url'])
             if u:
-                u.updatePrivateArea(user['newPrivateArea'])
+                u.updatePrivateAreas(user['privateAreas'])
             else:
                 results = {
                     'result': False, 
@@ -69,12 +69,11 @@ class AdminPage(AuthHandler):
             self.response.out.write('User not authorized.')
             return
 
-        query = WhysaurusUser.query()
-        queryUsr = query.order(-WhysaurusUser.lastLogin)
-        areas = PrivateArea.query().fetch(50)
+        queryUsr = WhysaurusUser.query().order(-WhysaurusUser.lastLogin)
+        areas = PrivateArea.query()
         users = []
         i = 0
-        for yUser in queryUsr.iter():            
+        for yUser in queryUsr.iter():
             users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
             i = i+1
         template_values = {
@@ -114,7 +113,7 @@ class AdminPage(AuthHandler):
                     user = WhysaurusUser.signup(self, email=username, name=username, 
                                                 password=randomPassword, website=None, areas=None, 
                                                 profession=None, bio=None)
-                    user.updatePrivateArea('Cannon_Human_Environments')
+                    user.updatePrivateAreas(['Cannon_Human_Environments'])
                     bigMessage.append('%s,%s' % ( username, randomPassword))
                 except WhysaurusException as e:
                     bigMessage.append('Could not create user: %s. Error was:%s' % (username, str(e)))
@@ -138,6 +137,3 @@ class AdminPage(AuthHandler):
             }   
             self.response.out.write(
                 self.template_render('dailyReport.html', template_values))        
-
-            
-            

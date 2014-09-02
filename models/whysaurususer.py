@@ -242,12 +242,23 @@ class WhysaurusUser(auth_models.User):
     @classmethod
     def get_by_email(cls, email):
         qry = cls.gql("WHERE email= :1", email)
-        return qry.get()     
+        return qry.get()
     
     @classmethod
     def get_by_name(cls, name):
         qry = cls.gql("WHERE name= :1", name)
-        return qry.get()        
+        return qry.get()
+
+    @classmethod
+    def migrate_private_areas_cls(cls):
+        q = cls.query()
+        for u in q.iter():
+            u.migrate_private_areas_self()
+
+    def migrate_private_areas_self(self):
+        if self.privateArea:
+            self.privateAreas = [self.privateArea]
+            self.put()
 
     @webapp2.cached_property
     def notificationFrequencyText(self):
@@ -306,12 +317,9 @@ class WhysaurusUser(auth_models.User):
         else:
             return 0, False                    
 
-    def updatePrivateArea(self, newPA):
-        if newPA != '':
-            self.privateAreas.append(newPA)
-            return self.put()
-        else:
-            return False
+    def updatePrivateAreas(self, pas):
+        self.privateAreas = pas
+        self.put()
 
     def _getOrCreateVote(self, pointRootKey):
         vote = UserVote.query(             

@@ -29,19 +29,15 @@
         <td>{{yUser.u.recentlyViewedRootKeys|length}}</td>           
         <td>{{yUser.u.PSTlastlogin}}</td>                     		                 
         <td>
-        <div class="dropdown">     
-          <a class="dropdown-toggle" data-toggle="dropdown" >
-            {% if yUser.u.privateArea %}
-                {{yUser.u.privateArea}}
-            {% else %}Select User Private Area{% endif %}
-            </a>                   
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                {% for area in areas %}
-                    <li><a name="privateArea" data-foruser="{{yUser.index}}" tabindex="-1" >{{area.name}}</a></li>
-                {% endfor %}
-                <li><a name="privateArea" data-foruser="{{yUser.index}}" tabindex="-1" >-- SET TO NONE</a></li>                
-            </ul>
-        </div>
+          <select data-placeholder="Choose an area..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
+          {% for area in areas %}
+            {% if area.name in yUser.u.privateAreas %}
+              <option selected="true" value="{{area.name}}">{{area.name}}</option>
+            {% else %}
+              <option value="{{area.name}}">{{area.name}}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
         </td>  
         <td>
             {% if yUser.u.emailUser %}

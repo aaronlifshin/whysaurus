@@ -170,10 +170,10 @@
     </div>
 
      {% if user and user.anyPrivateAreas %}
-        <div class="privateAreaHeader">
+        <div class="privateAreaHeader {% if currentArea == '' %}publicAreaColor{% endif %}">
           <div class="container">
               <div class="row">
-                  <div class="span12" id="areaLine">
+                  <div id="areaLine" class="span12" >
                     {% if currentArea != '' %}
                        You are in the <strong>{{currentArea}}</strong> private area. To enter the <strong>Public Area</strong> 
                        <a class="clickable" id="areaSwap" data-area="public">click here</a>
@@ -185,8 +185,7 @@
                              <option value="{{area}}" data-area="{{area}}">{{area}}</option>
                            {% endfor %}
                          </select>
-                       {% endif %}
-                       .
+                       {% else %}.{% endif %}
                     {% else %}
                        You are in the <strong>Public Area</strong>. To enter the <strong>{{user.privateAreas.0}}</strong> private area
                        <a class="clickable" id="areaSwap" data-area="{{user.privateAreas.0}}">click here</a>
@@ -198,8 +197,7 @@
                              <option value="{{area}}" data-area="{{area}}">{{area}}</option>
                            {% endfor %}
                          </select>
-                       {% endif %}
-                       .
+                       {% else %}.{% endif %}
                     {% endif %}                              
                   </div>
               </div>

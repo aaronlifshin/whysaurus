@@ -78,6 +78,11 @@ indexes:
   ancestor: yes
   properties:
   - name: version
+
+- kind: Point
+  ancestor: yes
+  properties:
+  - name: version
     direction: desc
 
 - kind: PointRoot

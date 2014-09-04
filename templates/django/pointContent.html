@@ -45,8 +45,9 @@
 	          {% include 'sources.html' %}
               <div id="timestampAndEditLink" >			  
                 <div class="mainPointLastEdited">
-                    <span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br> 
-                    Last Edited {{point.PSTdateEdited}} 
+                    <!--<span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br>-->
+                    <span id="pointCreator" class="contributor"></span><!-- creator inserted via javascript, for now -->
+                    <!--<br>Last Edited {{point.PSTdateEdited}} -->
                     <a id="viewPointHistory">View History</a>
                 </div>
               </div>

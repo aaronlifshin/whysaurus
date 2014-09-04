@@ -95,8 +95,10 @@ function callPointEdit(){
 			success: function(obj){
 				var ed = tinyMCE.get('editor_pointDialog');
 				$('.mainPointContent').html(ed.getContent());
-				$('.mainPointTitle h1').html($('#title_pointDialog').val());				
-				updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
+				$('.mainPointTitle h1').html($('#title_pointDialog').val());
+
+                // this refreshes the old header (time stamp, most recent contributor)
+				//updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
 				    
                 if (obj.imageURL) {
 					insertImage(obj.imageURL, obj.imageAuthor, obj.imageDescription);
@@ -910,6 +912,32 @@ function postOnFacebook() {
     FB.ui(dialogParams, function(response){});
 }
 
+// should this get replaced by adding fields to the database?
+function setPointCreator() { 
+    pointURL = $('#pointArea').data('pointurl');
+	$.ajax({
+		url: '/getPointCreator',
+		type: 'GET',
+		data: { 'pointURL': pointURL },
+    	success: function(obj) {
+    			if (obj.result == true) {                    
+                    $('#pointCreator').html('Begun by: <a target="_blank" href="../user/'+ obj.creatorURL +'">'+ obj.creatorName +'</a><br>');
+
+                    /* Code for listing number of contributors
+                    if (obj.numAuthors > 1) { 
+                        ContributorPluralCheck = 'Contributors' } 
+                    else { 
+                        ContributorPluralCheck = 'Contributor' }                        
+                    $('#pointCreator').html('Begun by: <a target="_blank" href="../user/'+ obj.creatorURL +'">'+ obj.creatorName +'</a><br>'+ obj.numAuthors +' '+ ContributorPluralCheck +',  ');
+                    */
+                    //showSuccessAlert(obj.creatorURL + ' ' + obj.creatorName);   // echo for debugging                    
+        		} else {
+        		    showErrorAlert('Error setting creator');                    
+        		}        		          
+    	},         
+	});  
+}
+
 function activatePointArea() {    
     if (!loggedIn) {        
         make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));
@@ -932,6 +960,8 @@ function activatePointArea() {
 
         setUpMenuAreas();
         
+        setPointCreator();
+        
         $('#showAddComment').click(function() {
             tinyMCE.execCommand('mceRemoveControl', false, 'commentText');
             $("#addComment").insertAfter($(event.target).parent());            
@@ -941,7 +971,7 @@ function activatePointArea() {
             $('#addComment').data('parentkey', '');
             $('body, html').animate({ scrollTop: $("#addComment table").offset().top - 100 }, 500);        
         });
-
+        
         $('#saveCommentSubmit').off('.ys').on('click.ys', saveComment);    
         $( "#deletePoint" ).button();
 	    $('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);	

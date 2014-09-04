@@ -24,3 +24,33 @@ class PointHistory(AuthHandler):
             'historyHTML': self.template_render('pointHistory.html', template_values)
         }
         self.response.out.write(json.dumps(json_values))
+
+    """ should this get replaced by adding fields to the database?  """  
+    def getPointCreator(self):
+        result = {'result': False}
+        point, pointRoot = Point.getCurrentByUrl(self.request.get('pointURL'))
+        versionsOfThisPoint = Point.query(ancestor=pointRoot.key).order(Point.version)
+        firstVersion = versionsOfThisPoint.get()
+        
+        authors = []
+        """code for listing number of contributors"""
+        """
+        for point in versionsOfThisPoint:
+            thisAuthor = {"authorName": point.authorName, "authorURL": point.authorURL }
+            if thisAuthor not in authors:
+                authors.append(thisAuthor)
+        """                
+        
+        resultJSON = json.dumps({
+                    'result': True, 
+                    'creatorName' : firstVersion.authorName,
+                    'creatorURL'  : firstVersion.authorURL,
+                    'numAuthors'  : len(authors)
+                })
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
+        self.response.out.write(resultJSON) 
+        
+        
+        
+        
+        

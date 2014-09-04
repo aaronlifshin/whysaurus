@@ -64,6 +64,7 @@ routes = [
     Route('/dailyReport', handler='WhySaurus.AdminPage:dailyReport', name='dailyReport'),    
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),
+    Route('/getPointCreator', handler='WhySaurus.PointHistory:getPointCreator', name='getPointCreator'), 
     Route('/getPointsList', GetPointsList),
     Route('/outliner', Outliner),
     Route('/addTree', AddTree),

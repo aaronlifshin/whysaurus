@@ -315,7 +315,7 @@ class Point(ndb.Model):
             return retVal
         else:
             return None
-
+            
     @staticmethod
     @ndb.transactional(xg=True)
     def transactionalCreate(pointRoot, title, content, summaryText, user,
@@ -1015,9 +1015,7 @@ class PointRoot(ndb.Model):
         return self.current.get()
         # else:
         #     logging.info("CURRENT UNAVAILABLE in %s" % self.url)
-        # return Point.query(Point.current == True, ancestor=self.key).get()
-    
-
+        # return Point.query(Point.current == True, ancestor=self.key).get()    
         
     def getBacklinkCollections(self, linkType):
         if linkType == 'supporting':
@@ -1098,9 +1096,7 @@ class PointRoot(ndb.Model):
           current = self.getCurrent()
           if current:
               current.isTop = False
-              current.put()
-          
-          
+              current.put()         
 
     def getComments(self):
         return ndb.get_multi(self.comments)

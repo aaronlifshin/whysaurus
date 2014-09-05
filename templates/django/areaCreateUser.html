@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 
 {% block mainPageContent %}
-
   <br>
-  To create a log-in for the "{{privateAreaName}}" private area,<br>
-  select one of the methods listed below:<br>
-  <br>
-  <ul id="areaCreateUserOptions">
-    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
-    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
-    <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
-    <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
-  </ul>
+  {% if user %}
+    You are logged in as: {{ user.name }}    <br/>
+    <a href="/"> Check out the home page </a>
+  {% else %}
+    
+    To create a log-in for the "{{privateAreaName}}" private area,<br>
+    select one of the methods listed below:<br>
+    <br>
+    
+    <ul id="areaCreateUserOptions">
+      <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
+      <li><a tabindex="-1" href="/auth/google"> Google </a></li>
+      <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
+      <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
+    </ul>
+  {% endif %}
 
 {% endblock %}

@@ -127,9 +127,15 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         
     def setPrivateAreaUser(self, areaName):
         if PrivateArea.exists(areaName):
-            self.session['currentArea'] = areaName            
+            self.session['currentArea'] = areaName
+            user = self.current_user    
             self.response.out.write(
-                self.template_render('areaCreateUser.html', {'privateAreaName':areaName}))            
+                self.template_render(
+                    'areaCreateUser.html', 
+                    {
+                        'privateAreaName':areaName,
+                        'user':user
+                    }))          
         else:
             self.response.out.write('Sorry, the private area %s does not appear \
                 to exist. Click <a href="/">here</a> to go home' % areaName)
@@ -353,9 +359,9 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             self.current_user = user
             user.login()
             if 'postloginaction' in self.session:
-                    logging.info('There was a post login action, so the user is not logged into the private area.')
-            elif len(user.privateAreas) == 0:
-                    self.setUserArea(user.privateAreas[0])
+                logging.info('There was a post login action, so the user is not logged into the private area.')
+            elif len(user.privateAreas) > 0:
+                self.setUserArea(user.privateAreas[0])
         else:
             # check whether there's a user currently logged in
             # then, create a new user if nobody's signed in,

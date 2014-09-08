@@ -1460,6 +1460,10 @@ function activateHeaderAndDialogs() {
             $("#emailLoginDialog").modal('hide');
             $("#signupDialog").modal('show')            
         });
+        $("#fromAreaShowSignupDialog").on('click', function() {
+            $("#signupDialog").modal('show')            
+        });        
+        
 
         $("#signInWithEmail_Dlg").on('click', function() {
             if ($("#loginDialog").data('postloginaction') == 'createFromMain') {            

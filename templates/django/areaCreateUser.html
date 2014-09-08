@@ -6,17 +6,29 @@
     You are logged in as: {{ user.name }}    <br/>
     <a href="/"> Check out the home page </a>
   {% else %}
-    
-    To create a log-in for the "{{privateAreaName}}" private area,<br>
-    select one of the methods listed below:<br>
+    <strong>To join the "{{privateAreaName}}" private area:</strong> <br/>
+    <br/>
+    <em>If you already have a Whysaurus account,</em><br/>
+    send an email with your username to joshua at whysaurus dot com;<br/>
+    <br/>    
+    <em>If you are new to Whysaurus,</em> <br/>
+    select a method listed below to create an account with private area access:<br>
     <br>
     
     <ul id="areaCreateUserOptions">
       <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
       <li><a tabindex="-1" href="/auth/google"> Google </a></li>
-      <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
-      <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
+      <!-- currently not working
+      <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>  -->
+      <!-- this version brings up the sign-in with email window 
+      <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>  -->
+      
+      <!-- this version brings up the create new account with email window -->
+      <li><a tabindex="-1" id="fromAreaShowSignupDialog"> Whysaurus </a></li>  
+
+      
     </ul>
+
   {% endif %}
 
 {% endblock %}

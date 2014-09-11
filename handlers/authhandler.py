@@ -384,7 +384,9 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             else:
                 logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))  
                 _attrs['url'] = WhysaurusUser.constructURL(_attrs['name'])
-                _attrs['privateAreas'] = [self.session.get('currentArea')]
+                currentArea = self.session.get('currentArea')
+                if currentArea:                    
+                    _attrs['privateAreas'] = [currentArea]
                 
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:

@@ -71,8 +71,10 @@ function callPointEdit(){
         return;
     }
     
-	var ed = tinyMCE.get('editor_pointDialog');
+	var ed = tinyMCE.get('editor_pointDialog'); 
     var text = tinyMCE.activeEditor.getBody().textContent;
+  
+    
     disableButtonPrimary('#submit_pointDialog');
     $('#submit_pointDialog').text("Publish to Library...");
     $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");
@@ -478,7 +480,7 @@ function addPoint(linkType){
     }
     
 	var ed = tinyMCE.get('editor_pointDialog');
-    var text = tinyMCE.activeEditor.getBody().textContent;
+    var text = tinyMCE.activeEditor.getBody().textContent;  
     //$('#submit_pointDialog').off('click');
     //$('#submit_pointDialog').hide();
     //$('#submit_pointDialog').after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");

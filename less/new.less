@@ -48,6 +48,10 @@ a:hover {
     cursor:pointer;
 }
 
+.hiddenForNow {
+    display: none;
+}
+
 .inlineBlock {
     display: inline-block;
 }
@@ -692,7 +696,7 @@ a:visited {
 
 .pointBoxStatsRow {
     //margin-bottom:24px;
-    margin-left:-2px;
+    margin-left:2px;
 }
 
 .pointCard .linkStat {
@@ -1299,11 +1303,50 @@ a:visited {
 }
 
 .pointBoxActions {
+	font-size: @fontSizeActions;
+    color:@blue;
 	margin-bottom:2px;
     margin-right:4px; 
     display:inline-block;
     z-index:1000;
 }
+
+.inlineDot {
+    margin:0;
+    padding:0;
+	font-size: @fontSizeActions;
+    color:@blue;
+}
+
+.noRightMargin {
+    margin-right:0;
+}
+
+.agreeInlineMargin {
+    margin-left: 4px;
+}
+
+.arrowChar {
+	font-size: @fontSizeActions * 1.66;
+    font-weight: bold;
+    color: black;
+}
+
+.arrowCharAgainst {
+	margin-left:4px;
+    color: @red;
+    opacity:.5;
+}
+
+.hoverDescription {
+    display:none;
+}
+
+.hoverDescription:hover {
+    display:in-line;
+}
+
+
 
 [name="UpVote"]:hover, [name="DownVote"]:hover {
     text-decoration:underline;

@@ -741,10 +741,11 @@ a:visited {
  .pointActionButton {
     margin-top:0px;
     margin-bottom:2px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 5px;
-    padding-bottom:3px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom:5px;
+    font-size: 20px
  }
  
  .pointActionButtonBorder {
@@ -1526,9 +1527,9 @@ a:visited {
 .pointListTitle {
     font-size: @fontSizeMedium;
     font-weight:bold;
-    color: black;
+    //color: @grayTextMedium;
     padding-top: 0px;
-    padding-left:6px;
+    padding-left:12px;
 }
 
 .pointListFooter {
@@ -1549,7 +1550,7 @@ a:visited {
 }
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
-	margin-bottom: 5%;
+	margin-bottom: 6%;
 }
 
 #supporting_numberOfPoints, #counter_numberOfPoints {
@@ -1988,7 +1989,7 @@ a#editPoint:hover {
 
 button#supporting_addPointWhenNonZero,
 button#counter_addPointWhenNonZero {	
-	margin-left:0px;
+	margin-left:6px;
     position:relative;
     z-index:1;
 }
@@ -2826,7 +2827,16 @@ a[name="profileEdit"] {
    COMMENTS AREA OF POINT PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
-   
+.commentInstruction {
+    font-size: @fontSizeMedium;
+    //font-weight:bold;
+    color: @grayTextMedium;
+    padding: 0px;
+    padding-left: 4px;
+    margin-bottom: 18px;
+}
+ 
+ 
 .commentsColumn {
     position:relative;
     top: 36px;

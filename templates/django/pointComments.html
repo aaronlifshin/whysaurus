@@ -1,6 +1,11 @@
 <div id="rightColumnContent" class="row-fluid commentsColumn">
     <div class="row-fluid">
-        <button id="showAddComment" class="borderButton commentsButton">New Comment<img class="commentIcon" src="/static/img/speech_bubble_icon_grey.png"/></button>      
+        <div class="commentInstruction">
+            Can this point be improved? Add a <a id="showAddComment">Comment.</a> 
+        </div>
+        <!--<button id="showAddComment" class="borderButton commentsButton">New Comment<img class="commentIcon" src="/static/img/speech_bubble_icon_grey.png"/></button>  -->    
+
+
         <!-- old comments heading:
         <div class="span6 columnHeading" id="commentCount">
             {{Comments|length}} Comment{% if comments|length != 1 %}s{%endif%}

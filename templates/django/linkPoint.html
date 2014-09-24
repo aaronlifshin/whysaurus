@@ -1,4 +1,4 @@
-<div name="showRelevance" class="pointAreaActions showRelevance defaultShadow{% if point.belowRelevanceThreshold %} belowThreshold{% endif %}"><a>Relevance: {{point.relevancePercent}}<img class="relevanceEditIcon" src="/static/img/pencil_icon_blue.png"/></a></div>
+<div name="showRelevance" class="pointAreaActions showRelevance showChildOnHover defaultShadow{% if point.belowRelevanceThreshold %} belowThreshold{% endif %}"><a>Relevance: {{point.relevancePercent}}<span class="hiddenTillRevealed"> &#151; Vote</span><img class="relevanceEditIcon" src="/static/img/pencil_icon_blue.png"/></a></div>
 
 <div name="areaRelevanceRadio" class="relevanceVote hide defaultShadow" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
     <div class="relevanceTitle">How Relevant is this Point?</div>

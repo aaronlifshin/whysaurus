@@ -15,25 +15,27 @@
                     </div>
                 </a>
                 <div id="collapsibleTitleArea" class="panel-collapse collapse in">
-                    <label>
-                        <div class="pull-left pointDialogueSubHeading pointDialogueSubHeadingTop">Point Title</div>
-                        <div id="title_pointDialog_charNum" class="pull-right clearfix charCount">
-                            140 characters left
-                        </div>
-                    </label>
+                    <!--<label>
+                         <div class="pull-left pointDialogueSubHeading pointDialogueSubHeadingTop">Point Title</div> 
+                    </label>-->
                     <div class="dlgField">      
-                        <input id="title_pointDialog" type="text" class="titleEdit" placeholder="eg &quot;Birds evolved from dinosaurs.&quot;">
+                        <!-- <input id="title_pointDialog" type="text" class="titleEdit" placeholder="eg &quot;Birds evolved from dinosaurs.&quot;"> -->
+                        <textarea id="title_pointDialog" rows="3" class="titleEdit" placeholder="Make a single specific claim, eg &quot;Birds evolved from dinosaurs.&quot;"></textarea>                        
                     </div>
-                    <!-- hiding for now -->
+                    <div id="title_pointDialog_charNum" class="pull-right clearfix charCount">
+                         140 characters left
+                    </div>
+                    <!-- hiding for now, using the class "hiddenForNow", to avoid re-writing the javascript etc that is expecting the additional text field 
+                     if we decide to keep this hidden we can go back and hide it the right way -->
                     <label>
                         <div class="pull-left pointDialogueSubHeading hiddenForNow">Additional Text</div>      
                     </label>      
-                    <div id="editorDiv" class="dlgField row additionalTextEntryArea hiddenForNow">   
-                            
+                    <div id="editorDiv" class="dlgField row additionalTextEntryArea hiddenForNow">                               
                         <label for="mceEditor" id="additionalTextPlaceholderLabel">Optional: add some context.<br>Note that "Additional Text" isn't displayed in "thumbnail" view.<br><br>Be sure to put the evidence for this claim in Supporting Points.</label>             
                         <textarea id="editor_pointDialog" class="mceEditor textEdit span12 " placeholder="Add the description here...">
                         </textarea>
-                    </div>                       
+                    </div>  
+                    <!-- end of the bits hidden the janky way -->
                 </div>
             </div>
             <div class="panel accordion-group">
@@ -102,7 +104,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <div class="row-fluid" id="buttonBar">      
+        <div class="row-fluid" id="buttonBar">
             <div class="span7 offset5">     
                 <a id="cancel_pointDialog" class="btn btn-cancel twoButtonsCancel" data-dismiss="modal">Cancel</a>
                 <a id="submit_pointDialog" class="btn btn-primary twoButtonsSubmit">Publish to Library</a>            

@@ -848,12 +848,11 @@ a:visited {
 	color:@green;
 }
 .redScore {
-	color:@red;
+	color:@red !important;
 }
 .yellowScore {
 	color:#EBC821;
 }
-
 
 .boxedElement {
 	border-style:solid;
@@ -2263,8 +2262,8 @@ button#counter_addPointWhenNonZero {
 #searchResultsArea .pointCard:hover {
     background-color: @pointCardBgSearchResults;	
 }
-
-
+ 
+  
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Edit point dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -2272,6 +2271,8 @@ button#counter_addPointWhenNonZero {
 .pointDialog {
 	/* height: 530px; */ /* not sure why we were specifying height... */
     position: absolute;
+    width: 640px;
+    margin-left: -325px;
 }
 
 .pointDialogueSubHeading {
@@ -2281,6 +2282,38 @@ button#counter_addPointWhenNonZero {
 .pointDialogueSubHeadingTop {
     margin-top: 10px;
 }
+
+#title_pointDialog {
+	width: 97.6%;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    //height: 36px;
+    font-size: 18px;
+    line-height: 130%;
+    padding:6px;
+    color:@grayTextDark;
+}
+#title_pointDialog::-webkit-input-placeholder { font-style: italic; }
+#title_pointDialog:-moz-placeholder { font-style: italic; }
+#title_pointDialog::-moz-placeholder { font-style: italic; }
+#title_pointDialog:-ms-input-placeholder { font-style: italic; }
+#title_pointDialog::-ms-input-placeholder { font-style: italic; }
+
+.charCount {
+  	font-family: "ff-meta-web-pro", sans-serif;
+  	font-size: @fontSizeMini; 
+  	text-transform: uppercase;
+  	font-weight:400;
+    margin-bottom: 16px;
+    padding-bottom: 0px;
+    position: relative;
+    //top: 12px;
+    color: @grayTextExtraLight;
+}
+
+
+
+
 
 #additionalTextPlaceholderLabel {
     font-size: @fontSizeSmall;
@@ -2300,15 +2333,6 @@ button#counter_addPointWhenNonZero {
     margin-bottom: 8px;
 }
 
-#title_pointDialog {
-	width: 96.8%;
-    margin-bottom: 27px;
-}
-#title_pointDialog::-webkit-input-placeholder { font-style: italic; }
-#title_pointDialog:-moz-placeholder { font-style: italic; }
-#title_pointDialog::-moz-placeholder { font-style: italic; }
-#title_pointDialog:-ms-input-placeholder { font-style: italic; }
-#title_pointDialog::-ms-input-placeholder { font-style: italic; }
 
 //#description_pointDialog {
 .bottomTextField {
@@ -2549,16 +2573,6 @@ fieldset { padding:0; border:0; margin-top:25px;}
     margin-bottom: 6px;
   }
   
-  .charCount {
-  	font-family: "ff-meta-web-pro", sans-serif;
-  	font-size: @fontSizeMini; 
-  	text-transform: uppercase;
-  	font-weight:400;
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    position: relative;
-    top: 12px;	
-  }
   
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -3045,7 +3059,7 @@ h2.idLinkOffset:before {
   visibility: hidden; 
 }
 
-.ulGradeStandard {
+.ulGradeStandard {  
     margin: 0px;
     list-style-type: none;
     list-style-position:outside;

@@ -424,7 +424,6 @@ function votePointCard(elem, voteType) {
                 );
                 if (voteTotal) {
                     $('[name=voteTotalArea]', pointCard).show();
-                    $('[name=pointBoxActionLine]', pointCard).show();
                 } else {
                     $('[name=voteTotalArea]', pointCard).hide();                    
                 }

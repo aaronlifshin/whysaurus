@@ -61,10 +61,13 @@ a:hover {
 }
 
 .bottomBorderOnHover:hover {
-    //background-color: yellow;
+/*
     border-width: 1px;
     border-bottom-style: solid;
-    //padding-bottom: 2px;
+    padding-bottom: -1px;
+    padding-right:0 !important;
+    margin-right: 4px;
+*/
 }
 
 
@@ -136,6 +139,21 @@ a:visited {
 
 .noLeftMargin {
     margin-left:0 !important;
+}
+
+.position-halfway {
+    position: absolute;
+    left: 50%;
+}
+
+.position-onethird {
+    position: absolute;
+    left: 33%;
+}
+
+.position-twothirds {
+    position: absolute;
+    left: 66%;
 }
 
 
@@ -1314,7 +1332,8 @@ a:visited {
 
 .pointBoxActions {
 	font-size: @fontSizeActions;
-    color: @blue; //@grayTextLight; //@blue;
+    color: @grayTextLight; //@blue;
+    font-weight: bold;
 	margin-bottom:2px;
     margin-right:4px; 
     display:inline-block;
@@ -1326,8 +1345,25 @@ a:visited {
 }
 
 .netAgreeStat {
-    color: grey;
+    //color: grey;
 }
+
+.fadeStatsWhenZero {
+    opacity: .8;
+    color: @grayTextExtraLight;
+    font-weight: normal;
+}
+
+.fadeStatsWhenZero:hover {
+    opacity: .8;
+    color: @grayTextMedium;
+    font-weight: bold;
+}
+
+.fadeArrowWhenZero {
+    opacity: .6;
+}
+
 
 .inlineDot {
     margin:0;
@@ -1347,13 +1383,11 @@ a:visited {
 .arrowChar {
 	font-size: @fontSizeActions * 1.66;
     font-weight: bold;
-    color: black;
-    opacity: .9;
+    color: @grayTextDark;
 }
 
 .arrowCharAgainst {
-    color: @red;
-    opacity:.5;
+    color: rgba(204, 0, 8, 0.7); // equal to @red * opacity .7
 }
 
 
@@ -1388,16 +1422,17 @@ a:visited {
 
 .iconSourcesSmall {
     padding-right: -10px;
-    padding-left:4px;
+    padding-left:2px;
 }
 
 
 .iconAgreesSmall {
     //padding-top: 2px;
     width: 25px;
-    opacity: .72;
-    //margin-right: 4px;
-    padding-left:4px;
+    //opacity: .72;
+    margin-right: 4px;
+    padding-left: 2px;
+    font-weight: bold; //chrome seems to have a bug where this image position changes when its parent is toggled bt bold and not-bold, so just keeping it bold
     
 }
 
@@ -1624,6 +1659,7 @@ a:visited {
 .showRelevance {
     cursor: pointer;
     font-size: @fontSizeActions;
+    font-weight: bold;
     margin-top: 0px;
     margin-bottom:-1px;
    	color: @blue;

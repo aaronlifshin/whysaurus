@@ -422,10 +422,18 @@ function votePointCard(elem, voteType) {
                     $('[name=UpVote]', pointCard), 
                     $('[name=DownVote]', pointCard)
                 );
-                if (voteTotal) {
-                    $('[name=voteTotalArea]', pointCard).show();
+                if (voteTotal < 0) {
+                    $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                
+                    $('[name=voteTotalArea]', pointCard).addClass('redScore');
+                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_red.png');
+                } else if (voteTotal == 0) {
+                    $('[name=voteTotalArea]', pointCard).addClass('fadeStatsWhenZero'); 
+                    $('[name=voteTotalArea]', pointCard).removeClass('redScore');
+                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   
                 } else {
-                    $('[name=voteTotalArea]', pointCard).hide();                    
+                    $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                 
+                    $('[name=voteTotalArea]', pointCard).removeClass('redScore'); 
+                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   
                 }
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');

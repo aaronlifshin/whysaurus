@@ -423,14 +423,16 @@ function votePointCard(elem, voteType) {
                     $('[name=DownVote]', pointCard)
                 );
                 if (voteTotal < 0) {
+                    $('[name=voteTotalArea]', pointCard).show();
                     $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                
                     $('[name=voteTotalArea]', pointCard).addClass('redScore');
                     $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_red.png');
-                } else if (voteTotal == 0) {
+                } else if (voteTotal == 0) {                   
                     $('[name=voteTotalArea]', pointCard).addClass('fadeStatsWhenZero'); 
                     $('[name=voteTotalArea]', pointCard).removeClass('redScore');
                     $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   
                 } else {
+                    $('[name=voteTotalArea]', pointCard).show();                
                     $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                 
                     $('[name=voteTotalArea]', pointCard).removeClass('redScore'); 
                     $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   

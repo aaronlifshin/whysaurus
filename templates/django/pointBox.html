@@ -33,11 +33,11 @@
         -->              
         	
         <span class="stat showStatOnHover">
-            <span class="arrowChar arrowCharSupporting">&#10551;</span>{{ point.numSupporting }}<span class="hiddenStatTillRevealed"> Supporting Point{% if point.numSupporting != 1 %}s{% endif %}</span>
+            <img class="arrowIcon" src="/static/img/arrowBent_small_black.png"/><span>{{ point.numSupporting }}</span><span class="hiddenStatTillRevealed"> Supporting Point{% if point.numSupporting != 1 %}s{% endif %}</span>
         </span>		
               
         <span class="stat showStatOnHover">
-            <span class="arrowChar arrowCharAgainst">&#10551;</span>{{ point.numCounter }}<span class="hiddenStatTillRevealed"> Counter Point{% if point.numCounter != 1 %}s{% endif %}</span>
+            <img class="arrowIcon" src="/static/img/arrowBent_small_red.png"/><span>{{ point.numCounter }}</span><span class="hiddenStatTillRevealed"> Counter Point{% if point.numCounter != 1 %}s{% endif %}</span>
         </span>
         
         <span name="voteTotalArea" class="stat showStatOnHover {% if point.voteTotal == 0 %}hiddenForNow{% endif %} {% if point.voteTotal < 0 %}redScore{% endif %}  ">

@@ -52,12 +52,28 @@ a:hover {
     display: none;
 }
 
+.hiddenAgreeCtrlTillRevealed {
+    opacity:0; // switch this to zero to enable showing disagree/agree only on hover
+}
+
+.hiddenStatTillRevealed {
+    display: none;
+}
+
 .hiddenTillRevealed {
     display: none;
 }
 
+.showStatOnHover:hover .hiddenStatTillRevealed {
+    display: inline;
+}
+
 .showChildOnHover:hover .hiddenTillRevealed {
     display: inline;
+}
+
+.pointCard:hover .hiddenAgreeCtrlTillRevealed {
+    opacity:1;
 }
 
 .inlineBlock {
@@ -699,7 +715,7 @@ a:visited {
 	font-size: @fontSizeMedium;
     //font-weight:bold;
 	line-height: @lineHeightBig;	
-	margin-bottom: 12px;	
+	margin-bottom: 8px;	
     padding-left: 1px;
     padding-right:4px;
 }
@@ -1379,7 +1395,7 @@ a:visited {
     padding:0;
 	font-size: @fontSizeActions;
     color:@blue;
-}
+} 
 
 .noRightMargin {
     margin-right:0;
@@ -1387,6 +1403,7 @@ a:visited {
 
 .agreeInlineMargin {
     margin-left: 4px;
+    margin-right: 2px;
 }
 
 .arrowChar {

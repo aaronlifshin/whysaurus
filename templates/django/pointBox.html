@@ -10,12 +10,10 @@
               <a href="/point/{{ point.url }}" style="text-decoration:none">                  
                   {{ point.title|escape }}
               </a>
-              <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin">Agree</div>
-              <!--<span class="pointBoxActions noRightMargin">&#183;</span> &#183; = small dot -->
-              <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}">&nbsp;Disagree</div> 
-              <!-- an experiment
-              <span name="voteTotalArea" class="pointBoxActions showChildOnHover netAgreeStat" {% if point.voteTotal == 0 %}style="display:none"{% endif %}><img class="iconAgreesSmall" src="/static/img/agreesIconSmall_blue.png"/><span name="voteTotal" data-myvote="{{point.vote}}"><span class="hiddenTillRevealed">Net Agrees </span>{{ point.voteTotal }}</span></span> 
-              -->
+              <span class="hiddenAgreeCtrlTillRevealed">
+                <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin">Agree</div>
+                <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}">Disagree</div>
+              </span>
           </div>
        </div>     
     {% if point.imageURL and point.imageURL.strip %}                        
@@ -34,22 +32,22 @@
         {% endif %}
         -->              
         	
-        <span class="stat showChildOnHover">
-            <span class="arrowChar arrowCharSupporting">&#10551;</span>{{ point.numSupporting }}<span class="hiddenTillRevealed"> Supporting Point{% if point.numSupporting != 1 %}s{% endif %}</span>
+        <span class="stat showStatOnHover">
+            <span class="arrowChar arrowCharSupporting">&#10551;</span>{{ point.numSupporting }}<span class="hiddenStatTillRevealed"> Supporting Point{% if point.numSupporting != 1 %}s{% endif %}</span>
         </span>		
               
-        <span class="stat showChildOnHover">
-            <span class="arrowChar arrowCharAgainst">&#10551;</span>{{ point.numCounter }}<span class="hiddenTillRevealed"> Counter Point{% if point.numCounter != 1 %}s{% endif %}</span>
+        <span class="stat showStatOnHover">
+            <span class="arrowChar arrowCharAgainst">&#10551;</span>{{ point.numCounter }}<span class="hiddenStatTillRevealed"> Counter Point{% if point.numCounter != 1 %}s{% endif %}</span>
         </span>
         
-        <span name="voteTotalArea" class="stat showChildOnHover {% if point.voteTotal == 0 %}hiddenForNow{% endif %} {% if point.voteTotal < 0 %}redScore{% endif %}  ">
-            <img class="iconAgreesSmall" src="/static/img/agreesIconSmall_{% if point.voteTotal >= 0 %}grey{% else %}red{% endif %}.png"/><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}<span class="hiddenTillRevealed" name="netagreestext"> Net Agrees</span></span>
+        <span name="voteTotalArea" class="stat showStatOnHover {% if point.voteTotal == 0 %}hiddenForNow{% endif %} {% if point.voteTotal < 0 %}redScore{% endif %}  ">
+            <img class="iconAgreesSmall" src="/static/img/agreesIconSmall_{% if point.voteTotal >= 0 %}grey{% else %}red{% endif %}.png"/><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}<span class="hiddenStatTillRevealed" name="netagreestext"> Net Agrees</span></span>
         </span>       
  		  
         {% if point.sources|length > 0 %}
-		<span class="stat showChildOnHover">
+		<span class="stat showStatOnHover">
             <img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/>              
-            {{ point.sources|length }}<span class="hiddenTillRevealed"> Source{% if point.sources|length != 1 %}s{% endif %}</span>
+            {{ point.sources|length }}<span class="hiddenStatTillRevealed"> Source{% if point.sources|length != 1 %}s{% endif %}</span>
         </span>
         {% endif %} 
 		

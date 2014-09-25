@@ -429,7 +429,7 @@ function votePointCard(elem, voteType) {
                     $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_red.png');
                     // I'm not sure why this code is necessary: for some reason this span isn't being added when vote goes from zero to non-zero - JF                    
                     if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {
-                        $('[name=voteTotal]', pointCard).append('<span class="hiddenTillRevealed name="netagreestext"> Net Agrees</span>');
+                        $('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
                     }
                 } else if (voteTotal == 0) {                   
                     $('[name=voteTotalArea]', pointCard).removeClass('redScore');
@@ -441,7 +441,7 @@ function votePointCard(elem, voteType) {
                     $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');
                     // I'm not sure why this code is necessary: for some reason this span isn't being added when vote goes from zero to non-zero - JF
                     if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {                 
-                        $('[name=voteTotal]', pointCard).append('<span class="hiddenTillRevealed name="netagreestext"> Net Agrees</span>');
+                        $('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
                     }
                 }
             } else {
@@ -1656,10 +1656,24 @@ function activateGradeStandards() {
     });   
 }
 
+// if we're on mobile, show vital actions that are usually only revealed on hover
+function ifMobileShowHovers() {
+    try {
+        if(/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(navigator.userAgent)) {
+            $("<style type='text/css'> .hiddenAgreeCtrlTillRevealed { opacity:1; } </style>").appendTo("head");
+            //alert('mobile!');
+            return true; };
+        //alert('not mobile!');
+        return false;
+    } catch(e){ console.log("Error in isMobile"); return false; }
+}
+
+
 $(document).ready(function() {
     preloadImages();
     activateHeaderAndDialogs();
     activateMainPageRightColumn();
     activateMainPageLeftColumn();
     activateGradeStandards();
+    ifMobileShowHovers();
 });

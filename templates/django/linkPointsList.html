@@ -26,7 +26,7 @@
 <!-- footer for lists with 1 or more points.  These are always present, and shown if a point is added -->    
 <div id="{{linkType}}_nonzeroPointsFooter"  class="pointColumnMenuArea {% if linkedPoints %} {% else %} hide {% endif %}">
     	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pointListTitleBorder">
-            Got a reason why the top point is {% if linkType == 'supporting'%}true{% else %}{% if linkType == 'counter' %}false{% endif %}{% endif %}?
+            Contribute evidence {% if linkType == 'supporting'%}in favor{% else %}{% if linkType == 'counter' %}against{% endif %}{% endif %}
         </div>
 		<div id="{{linkType}}_pointActions" class="row-fluid">
 			<div class="dropdown">
@@ -79,7 +79,7 @@
 <div id="{{linkType}}_zeroPoints" class="{% if linkedPoints %}hide{%else%}{% endif %}">
 <div>
 	<div id="{{linkType}}_numberOfPoints" class="pointListTitle pointListFooterBigPad">
-		Got a reason why this is {% if linkType == 'supporting'%}true{% else %}{% if linkType == 'counter' %}false{% endif %}{% endif %}?
+		Contribute evidence {% if linkType == 'supporting'%}in favor{% else %}{% if linkType == 'counter' %}against{% endif %}{% endif %}
 	</div>
 	<div id="{{linkType}}_pointActionsWhenZero" class="row-fluid">
 		<div class="dropdown">

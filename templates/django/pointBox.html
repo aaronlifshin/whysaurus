@@ -34,21 +34,20 @@
         {% endif %}
         -->              
         	
-        <span class="stat showChildOnHover bottomBorderOnHover">
+        <span class="stat showChildOnHover">
             <span class="arrowChar arrowCharSupporting">&#10551;</span>{{ point.numSupporting }}<span class="hiddenTillRevealed"> Supporting Point{% if point.numSupporting != 1 %}s{% endif %}</span>
         </span>		
               
-        <span class="stat showChildOnHover bottomBorderOnHover">
+        <span class="stat showChildOnHover">
             <span class="arrowChar arrowCharAgainst">&#10551;</span>{{ point.numCounter }}<span class="hiddenTillRevealed"> Counter Point{% if point.numCounter != 1 %}s{% endif %}</span>
         </span>
         
         <span name="voteTotalArea" class="stat showChildOnHover {% if point.voteTotal == 0 %}hiddenForNow{% endif %} {% if point.voteTotal < 0 %}redScore{% endif %}  ">
-            <img class="iconAgreesSmall" src="/static/img/agreesIconSmall_{% if point.voteTotal >= 0 %}grey{% else %}red{% endif %}.png"/><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}<span class="hiddenTillRevealed"> Net Agrees</span></span>
-        </span> 
-      
+            <img class="iconAgreesSmall" src="/static/img/agreesIconSmall_{% if point.voteTotal >= 0 %}grey{% else %}red{% endif %}.png"/><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}<span class="hiddenTillRevealed" name="netagreestext"> Net Agrees</span></span>
+        </span>       
  		  
         {% if point.sources|length > 0 %}
-		<span class="stat showChildOnHover bottomBorderOnHover">
+		<span class="stat showChildOnHover">
             <img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/>              
             {{ point.sources|length }}<span class="hiddenTillRevealed"> Source{% if point.sources|length != 1 %}s{% endif %}</span>
         </span>

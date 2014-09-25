@@ -423,19 +423,26 @@ function votePointCard(elem, voteType) {
                     $('[name=DownVote]', pointCard)
                 );
                 if (voteTotal < 0) {
-                    $('[name=voteTotalArea]', pointCard).show();
+                    $('[name=voteTotalArea]', pointCard).show();                    
                     $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                
                     $('[name=voteTotalArea]', pointCard).addClass('redScore');
                     $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_red.png');
+                    // I'm not sure why this code is necessary: for some reason this span isn't being added when vote goes from zero to non-zero - JF                    
+                    if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {
+                        $('[name=voteTotal]', pointCard).append('<span class="hiddenTillRevealed name="netagreestext"> Net Agrees</span>');
+                    }
                 } else if (voteTotal == 0) {                   
-                    $('[name=voteTotalArea]', pointCard).addClass('fadeStatsWhenZero'); 
                     $('[name=voteTotalArea]', pointCard).removeClass('redScore');
                     $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   
                 } else {
                     $('[name=voteTotalArea]', pointCard).show();                
                     $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                 
                     $('[name=voteTotalArea]', pointCard).removeClass('redScore'); 
-                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   
+                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');
+                    // I'm not sure why this code is necessary: for some reason this span isn't being added when vote goes from zero to non-zero - JF
+                    if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {                 
+                        $('[name=voteTotal]', pointCard).append('<span class="hiddenTillRevealed name="netagreestext"> Net Agrees</span>');
+                    }
                 }
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');

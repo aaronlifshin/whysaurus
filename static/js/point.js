@@ -940,6 +940,12 @@ function setPointCreator() {
 	});  
 }
 
+function activateCommentHint() {    
+    $('#commentHintLink').click(function () {
+         $($('#commentHint'), this).toggle();
+    });   
+}
+
 function activatePointArea() {    
     if (!loggedIn) {        
         make_this_show_login_dlg($( "[id$=addPointWhenNonZero]" ));
@@ -987,6 +993,8 @@ function activatePointArea() {
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
 	
+    activateCommentHint();
+    
 	// if low relevance SPs exist, show the toggle
 	if ($("#supporting_nonzeroPoints div[name=showRelevance].belowThreshold").length > 0) {
 		$('[id$=supporting_showBelowArea]').show();

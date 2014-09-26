@@ -1650,6 +1650,7 @@ function loginWith(ev, provider) {
     }
 }
 
+
 function activateGradeStandards() {    
     $('.ulGradeStandard').click(function () {
          $("li", this).toggle();

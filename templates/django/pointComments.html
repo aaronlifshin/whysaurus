@@ -2,7 +2,9 @@
     <div class="row-fluid">
         <div class="commentInstruction">
             <!-- header is obscuring id links so I'm being hacky and linking to the previous id -->
-            Discuss how to make this point <a href="/WhatIsWhysaurus#PointStrengthLink" target="_blank">stronger</a> by adding a <a id="showAddComment">Comment.</a> 
+            Discuss how to make this point <a id="commentHintLink">stronger</a> - <br>
+            <span id="commentHint" class="hide"><br>Is the point unclear?<br>Should it be more specific?<br>Does it need evidence?<br><br></span>
+            <a id="showAddComment">Add a Comment.</a> 
         </div> 
         
         <!--<button id="showAddComment" class="borderButton commentsButton">New Comment<img class="commentIcon" src="/static/img/speech_bubble_icon_grey.png"/></button>  -->    
@@ -28,6 +30,11 @@
             </div>
         </div>
     </div>
+    
+    {% if comments|length > 0 %}
+    <div class="commentsHeading">Comments:</div>
+    {% endif %} 
+    
     <div id="comments" class="commentArea">     
         {% for comment in comments %}
             <div class="row-fluid cmmnt level{{comment.level}}">

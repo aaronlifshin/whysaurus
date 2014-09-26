@@ -2929,7 +2929,18 @@ a[name="profileEdit"] {
     padding-left: 4px;
     margin-bottom: 18px;
 }
- 
+
+.commentsHeading {
+    font-size: @fontSizeSmall;
+    font-weight:bold;
+    color: @grayTextLighter;
+    padding: 0px;
+    padding-left: 4px;
+    margin-bottom: 12px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: @grayBoxOutlines;
+}
  
 .commentsColumn {
     position:relative;
@@ -2965,8 +2976,7 @@ a[name="profileEdit"] {
 
 .commentArea .cmmnt { 
     list-style:none;    
-	// background-color: #f8f8f8;
-    border-bottom:1px solid #d7d7d7;    
+    border-bottom:1px solid @grayBoxOutlines;    
     word-wrap: break-word;
     position: relative;
 }

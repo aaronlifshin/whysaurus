@@ -220,7 +220,7 @@ class Point(ndb.Model):
         
     @property
     def vote(self):
-        return self._vote
+        return 0 if self._vote is None else self._vote
         
     @property
     def myVoteValue(self):

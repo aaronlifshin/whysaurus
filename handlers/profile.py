@@ -68,10 +68,12 @@ class Profile(AuthHandler):
         # USERS ARE STORED IN THE DEFAULT NAMESPACE
         namespace_manager.set_namespace('')
         profileUser = WhysaurusUser.getByUrl(userURL)
+        if profileUser:
+            logging.info("got Profile User. Areas were: " + str(profileUser.privateAreas))
         namespace_manager.set_namespace(userNamespace)
 
         if user:
-            permissionToView = user.admin or self.session.get('currentArea') in profileUser.privateAreas
+            permissionToView = user.admin or profileUser.privateAreas == [] or self.session.get('currentArea') in profileUser.privateAreas
         else:
             permissionToView = len(profileUser.privateAreas) == 0
 

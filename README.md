@@ -3,6 +3,15 @@ whysaurus
 
 Whysaurus
 
+License:
+Whysaurus source code is available under 
+Creative Commons Attribution-NonCommercial 
+CC BY-NC
+
+This license lets others remix, tweak, and build upon your work non-commercially, and although their new works must also acknowledge you and be non-commercial, they don’t have to license their derivative works on the same terms.
+
+[View License Deed](https://creativecommons.org/licenses/by-sa/4.0) | [View Legal Code](https://creativecommons.org/licenses/by-sa/4.0/legalcode)
+
 Setup:
 
 1. Clone

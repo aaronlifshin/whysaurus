@@ -730,6 +730,8 @@ class Point(ndb.Model):
         newPoint.put()       
         theRoot.current = newPoint.key
         theRoot.put()
+        theRoot.setTop()
+                
         user.recordEditedPoint(theRoot.key) # Add to the user's edited list    
         return newPoint, theRoot
 
@@ -782,7 +784,6 @@ class Point(ndb.Model):
             newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)    
 
             # Not sure why this is needed: this should be getting handled by code already in addLink
-            theRoot.setTop()
             
             Follow.createFollow(user.key, theRoot.key, "edited")
             if pointsToLink:

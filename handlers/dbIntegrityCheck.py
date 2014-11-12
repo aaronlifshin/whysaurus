@@ -20,6 +20,44 @@ from google.appengine.api.taskqueue import Task
 
 class DBIntegrityCheck(AuthHandler):
     
+    def cleanMultipleCurrent(self, pointURL):
+        pointData = Point.getFullHistory(pointURL)
+        lastVersion = 0
+        message = ''
+        logging.info(pointData)
+        if pointData:
+            # Find the maximum version
+            for fullPoint in pointData:
+                point = fullPoint['point']
+                if point.version > lastVersion:
+                    lastVersion = point.version
+            message = message + 'Last Version is %d. ' % lastVersion
+
+            # Set anything that is not the maximum version to be not current
+            pointsCleaned = 0
+            for fullPoint in pointData:
+                point = fullPoint['point']                
+                if point.version < lastVersion:
+                    logging.info('V %d ' % point.version)                    
+                    if point.current:                        
+                        point.current = False
+                        point.put()
+                        pointsCleaned = pointsCleaned + 1
+                elif point.version == lastVersion:
+                    point.current = True
+                    point.put()
+                    
+            message = message + 'Updated to turn off current on %d versions' % pointsCleaned
+        else:
+            message = 'Unable to retrieve history'
+                
+        template_values = {
+            'message': message,            
+            'user': self.current_user,
+            'currentArea':self.session.get('currentArea')
+        }
+        self.response.out.write(self.template_render('message.html', template_values))                            
+    
     def addMissingBacklinks(self, pointURL):
         point, pointRoot = Point.getCurrentByUrl(pointURL)
         if point:
@@ -190,6 +228,8 @@ class DBIntegrityCheck(AuthHandler):
                 Found %d points marked current. URL keys: %s" % \
                 (pointRoot.url, pointRoot.url, \
                  curCount, curURLs))
+                messages.append('<a href=\"/job/cleanCurrents/%s\"> \
+                    Clean multiple current points</a>' % pointRoot.url)
                 foundError = True
                 
             for linkType in ["supporting", "counter"]:
@@ -267,16 +307,16 @@ class DBIntegrityCheck(AuthHandler):
         if not isError1 and not isError2:
             message = 'No errors were found.'
         else:
-            message = []
+            messages = []
             if messages1:
-                message = message + messages1
+                messages += messages1
             if messages2:
-                message = message + messages2
-            if message == []:
-                message = ['Errors generated, but no messages generated.']
+                messages += messages2
+            if messages == []:
+                messages = ['Errors generated, but no messages generated.']
             
         template_values = {
-            'message': message,            
+            'messages': messages,            
             'user': self.current_user,
             'currentArea':self.session.get('currentArea')
         }

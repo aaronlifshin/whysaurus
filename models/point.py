@@ -840,6 +840,7 @@ class Point(ndb.Model):
             newPoint.imageDescription = self.imageDescription
             newPoint.imageAuthor = self.imageAuthor
             newPoint.url = self.url
+            newPoint.isTop = self.isTop
             self.current = False
             newPoint.current = True
             self.put()
@@ -848,7 +849,7 @@ class Point(ndb.Model):
             theRoot.put()
             
             Follow.createFollow(user.key, theRoot.key, "edited")
-            # 
+            
             Point.addNotificationTask(theRoot.key, user.key, 7 if linkType == "supporting" else 6)
             
             return newPoint
@@ -1092,12 +1093,12 @@ class PointRoot(ndb.Model):
                 current.isTop = True
                 current.put()
         else:
-          self.isTop = False
-          self.put()
-          current = self.getCurrent()
-          if current:
-              current.isTop = False
-              current.put()         
+            self.isTop = False
+            self.put()
+            current = self.getCurrent()
+            if current:
+                current.isTop = False
+                current.put()         
 
     def getComments(self):
         return ndb.get_multi(self.comments)

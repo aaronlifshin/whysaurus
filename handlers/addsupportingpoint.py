@@ -8,6 +8,7 @@ from authhandler import AuthHandler
 from models.point import Point
 from models.source import Source
 from models.whysaurusexception import WhysaurusException
+from models.reportEvent import ReportEvent
 
 class AddSupportingPoint(AuthHandler):
     def post(self):
@@ -48,6 +49,8 @@ class AddSupportingPoint(AuthHandler):
                     'err': str(e)
                 }
             else:
+                ReportEvent.queueEventRecord(user.key.urlsafe(), newLinkPoint.key.urlsafe(), newPoint.key.urlsafe(), "Create Point") 
+                
                 self.response.headers["Content-Type"] = 'application/json; charset=utf-8'                
                 newLinkPointHTML = self.template_render('linkPoint.html', {
                     'point': newLinkPoint,

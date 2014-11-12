@@ -18,39 +18,43 @@ class EditPoint(AuthHandler):
             sourcesNames=json.loads(self.request.get('sourcesNames')) \
                 if self.request.get('sourcesNames') else None
             sourcesToRemove=json.loads(self.request.get('sourcesToRemove')) \
-                if self.request.get('sourcesToRemove') else None      
-            sources = Source.constructFromArrays(sourcesURLs, sourcesNames, oldPoint.key)
-
-            newVersion = oldPoint.update(
-                newTitle=self.request.get('title'),
-                newContent=self.request.get('content'),
-                newSummaryText=self.request.get('plainText'),
-                user=self.current_user,
-                imageURL=self.request.get('imageURL'),
-                imageAuthor=self.request.get('imageAuthor'),
-                imageDescription=self.request.get('imageDescription'),
-                sourcesToAdd=sources,
-                sourceKeysToRemove= sourcesToRemove            
-            )
-            if newVersion:
-                sources = newVersion.getSources()   
-                sourcesHTML = self.template_render('sources.html', {'sources':sources})
-            
-                resultJSON = json.dumps({
-                    'result': True,
-                    'version': newVersion.version,
-                    'author': newVersion.authorName,
-                    'authorURL': self.current_user.url,
-                    'dateEdited': newVersion.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),
-                    'pointURL':newVersion.url,
-                    'imageURL': newVersion.imageURL,
-                    'imageAuthor': newVersion.imageAuthor,
-                    'imageDescription': newVersion.imageDescription,
-                    'sourcesHTML': sourcesHTML
-                })
-                ReportEvent.queueEventRecord(user.key.urlsafe(), newVersion.key.urlsafe(), None, "Edit Point")
+                if self.request.get('sourcesToRemove') else None    
+            if oldPoint == None:
+                resultJSON = json.dumps({'result': False, 
+                    'error': 'Unable to edit point. Please refresh the page and try again.'})
             else:
-                resultJSON = json.dumps({'result': False, 'error': 'You appear not to be logged in.'})
+                sources = Source.constructFromArrays(sourcesURLs, sourcesNames, oldPoint.key)
+                newVersion = oldPoint.update(
+                    newTitle=self.request.get('title'),
+                    newContent=self.request.get('content'),
+                    newSummaryText=self.request.get('plainText'),
+                    user=self.current_user,
+                    imageURL=self.request.get('imageURL'),
+                    imageAuthor=self.request.get('imageAuthor'),
+                    imageDescription=self.request.get('imageDescription'),
+                    sourcesToAdd=sources,
+                    sourceKeysToRemove= sourcesToRemove            
+                )
+                if newVersion:
+                    sources = newVersion.getSources()   
+                    sourcesHTML = self.template_render('sources.html', {'sources':sources})
+            
+                    resultJSON = json.dumps({
+                        'result': True,
+                        'version': newVersion.version,
+                        'author': newVersion.authorName,
+                        'authorURL': self.current_user.url,
+                        'dateEdited': newVersion.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),
+                        'pointURL':newVersion.url,
+                        'imageURL': newVersion.imageURL,
+                        'imageAuthor': newVersion.imageAuthor,
+                        'imageDescription': newVersion.imageDescription,
+                        'sourcesHTML': sourcesHTML
+                    })
+                    ReportEvent.queueEventRecord(user.key.urlsafe(), newVersion.key.urlsafe(), None, "Edit Point")
+                else:
+                    # This is the only way newVersion will fail
+                    resultJSON = json.dumps({'result': False, 'error': 'You appear not to be logged in.'})
                 
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)        

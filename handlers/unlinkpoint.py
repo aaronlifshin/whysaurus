@@ -7,14 +7,12 @@ class UnlinkPoint(AuthHandler):
     def post(self):
 
         resultJSON = json.dumps({'result': False})
-        logging.info('YO YOYOYO: ' + self.request.get('supportingPointURL'))
         
         if self.current_user:
             if self.request.get('mainPointURL'):
                 mainPoint, pointRoot = Point.getCurrentByUrl(self.request.get('mainPointURL'))
                 if self.request.get('supportingPointURL'):
                     supportingPointURL = self.request.get('supportingPointURL')
-                    logging.info('UL: ' + self.request.get('supportingPointURL'))
                     newVersion = mainPoint.unlink(self.request.get('supportingPointURL'), 
                                                   self.request.get('linkType'), 
                                                   self.current_user)

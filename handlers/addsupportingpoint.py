@@ -62,7 +62,6 @@ class AddSupportingPoint(AuthHandler):
                     'newLinkPoint': newLinkPointHTML,
                     'authorURL': self.current_user.url
                 }
-            logging.info(json.dumps(jsonOutput))                
             self.response.out.write(json.dumps(jsonOutput))
         else:
             self.response.out.write('Need to be logged in')

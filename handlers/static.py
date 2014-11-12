@@ -66,7 +66,27 @@ class CommonCore(AuthHandler):
             self.template_render('commonCore.html',
                 {'user': user,
                 'currentArea':self.session.get('currentArea')}))
-                
+ 
+class APUSH(AuthHandler):
+    def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
+        self.response.out.write(
+            self.template_render('apushistory.html',
+                {'user': user,
+                'currentArea':self.session.get('currentArea')}))
+
+class Walkthrough(AuthHandler):
+    def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
+        self.response.out.write(
+            self.template_render('walkthrough.html',
+                {'user': user,
+                'currentArea':self.session.get('currentArea')}))
+                               
 class ListSignUp(AuthHandler):
     def get(self):
         user = self.current_user

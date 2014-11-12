@@ -36,7 +36,7 @@ __all__ = [
 ]
 
 from mainpage import MainPage
-from static import About, Help, Contact, Manifesto, Education, CommonCore, ListSignUp
+from static import About, Help, Contact, Manifesto, Education, CommonCore, ListSignUp, APUSH, Walkthrough
 from contactsend import ContactSend
 from newpoint import NewPoint
 from deletepoint import DeletePoint

@@ -86,9 +86,9 @@
                 <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
               </a>
               <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a id="help" href="/manifesto" >Manifesto </a></li>                                    
-                      <li><a id="help" href="/WhatIsWhysaurus" >FAQ </a></li>                  
-                      <li><a id="help" href="/education" >Education</a></li>  
+                      <li><a id="help1" href="/manifesto" >Manifesto </a></li>                                    
+                      <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>                  
+                      <li><a id="help3" href="/education" >Education</a></li>  
                       <li class="divider"></li>   
                       <li><a href="/team">Team</a></li>
                       <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
@@ -165,9 +165,8 @@
     	  {% endif %}
         </div>        
       </div>
-      
-
     </div>
+
 
      {% if user and user.anyPrivateAreas %}
         <div class="privateAreaHeader {% if currentArea == '' %}publicAreaColor{% endif %}">
@@ -207,20 +206,10 @@
         <div class="row-fluid manifestoHeader" style="display:none;">
             <div class="container manifestoHeaderArea">
                 <div class="manifestoTitle">
-                    Read our <a class="manifestoTitleBig">Manifesto</a> for online argument
+                    <a href="/education">How to use Whysaurus in classrooms</a>
                 </div>            
                 <div class="pull-right" id="hideManifesto">
                     Hide this
-                </div>  
-                
-            </div>
-        </div>
-        <div id="manifestoText" style="display:none;"> 
-            <div class="container">
-                <div class="row">               
-                    <div class="span8 offset2" >
-                        {% include "manifestoContent.html" %}                        
-                    </div>
                 </div>
             </div>
         </div>

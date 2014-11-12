@@ -12,7 +12,8 @@ from webapp2 import Route, WSGIApplication
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from models.whysaurususer import WhysaurusUser
-from handlers import MainPage, About, Help, Contact, Manifesto, ListSignUp, Education, CommonCore, ContactSend, NewPoint,\
+from handlers import MainPage, About, Help, Contact, Manifesto, ListSignUp, \
+    Education, CommonCore, APUSH, Walkthrough, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
     LinkPoint, Vote, SetRibbon, TestPage, Search, \
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
@@ -34,6 +35,8 @@ routes = [
     Route('/listSignUp', ListSignUp),
     Route('/education', Education),
     Route('/commonCore', CommonCore),
+    Route('/apushistory', APUSH),
+    Route('/walkthrough', Walkthrough),
     Route('/team', About),
     Route('/help', Help),
     Route('/WhatIsWhysaurus', Help),
@@ -44,7 +47,7 @@ routes = [
     Route('/editPoint', EditPoint),
     Route('/changeEditorsPick', handler='WhySaurus.EditPoint:changeEditorsPick', name='changeEditorsPick'),
     Route('/makeFeatured', handler='WhySaurus.EditPoint:makeFeatured', name='makeFeatured'),
-    Route('/refreshTopStatus', handler='WhySaurus.EditPoint:refreshTopStatus', name='refreshTopStatus'),    
+    Route('/refreshTopStatus', handler='WhySaurus.EditPoint:refreshTopStatus', name='refreshTopStatus'),
     Route('/unlinkPoint', UnlinkPoint),
     Route('/point/<pointURL>', ViewPoint),
     Route('/getPointContent', 

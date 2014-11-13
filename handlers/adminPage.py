@@ -10,6 +10,7 @@ from models.whysaurususer import WhysaurusUser
 from models.privateArea import PrivateArea
 from models.whysaurusexception import WhysaurusException
 from models.reportEvent import DayEventSummary
+from google.appengine.api import namespace_manager
 
 
 class AdminPage(AuthHandler):
@@ -60,6 +61,7 @@ class AdminPage(AuthHandler):
           
     
     def get(self):
+        namespace_manager.set_namespace('')    
         user = self.current_user
         if user is None:
             self.response.out.write('Need to login.')
@@ -137,3 +139,41 @@ class AdminPage(AuthHandler):
             }   
             self.response.out.write(
                 self.template_render('dailyReport.html', template_values))        
+
+                
+    def get_pa(self):
+        userNamespace = namespace_manager.get_namespace()        
+        # USERS ARE STORED IN THE DEFAULT NAMESPACE
+        namespace_manager.set_namespace('')
+    
+        user = self.current_user
+        if user is None:
+            self.response.out.write('Need to login.')
+            return
+
+        queryUsr = WhysaurusUser.query().order(-WhysaurusUser.lastLogin)
+        users = []
+        i = 0
+        currentPrivateArea = self.session.get('currentArea')
+        
+        logging.info("Private Area Admin: %s", currentPrivateArea)
+        logging.info("User query result: %s", queryUsr.get())
+        
+        for yUser in queryUsr.iter():
+            logging.info("XXX current user privateAreas: %s", yUser.privateAreas)
+            currentUserPrivateAreas = yUser.privateAreas
+            for currUserPA in currentUserPrivateAreas:
+                if (currUserPA == currentPrivateArea):
+                    users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
+                    i = i+1
+        template_values = {
+            'user': user,
+            'users': users,
+            'currentArea':currentPrivateArea
+        }
+        
+        namespace_manager.set_namespace(userNamespace)   
+
+        self.response.out.write(
+            self.template_render('adminPrivateArea.html', template_values))
+                

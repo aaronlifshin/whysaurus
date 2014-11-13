@@ -61,6 +61,7 @@ routes = [
     Route('/setribbon', SetRibbon),
     Route('/search', Search),
     Route('/admin', AdminPage),
+    Route('/adminPrivateArea', handler='WhySaurus.AdminPage:get_pa', name='get_pa'),    
     Route('/dailyReport', handler='WhySaurus.AdminPage:dailyReport', name='dailyReport'),    
     Route('/ajaxSearch', AjaxSearch),
     Route('/pointHistory', PointHistory),

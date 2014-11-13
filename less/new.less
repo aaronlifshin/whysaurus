@@ -931,7 +931,7 @@ a:visited {
 }
 
 .manifestoTitle {
-    font-size: @fontSizeLarge;
+    font-size: @baseFontSize * 1.5;
     font-weight: bold;
     line-height: @lineHeightXL;
     text-align: center;
@@ -940,6 +940,10 @@ a:visited {
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
     border-bottom-style: solid;
+}
+
+.manifestoTitle a {
+    color: black;
 }
 
 .manifestoTitleBig {
@@ -3175,15 +3179,22 @@ h2.idLinkOffset:before {
   visibility: hidden; 
 }
 
-.ulGradeStandard {  
+.assignmentBullets {
+  line-height: 133%;
+}
+
+.infoToggle, .infoNonToggle, .superInfoToggle, .subInfoToggle {  
     margin: 0px;
     list-style-type: none;
     list-style-position:outside;
 }
-.ulGradeStandard li {
+.infoToggle, .subInfoToggle, .infoNonToggle, li {
     margin-left:8px;
 }
 
+.infoToggle {
+    //background-color:red;
+}
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    ADMIN PAGE

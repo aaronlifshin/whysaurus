@@ -1650,12 +1650,29 @@ function loginWith(ev, provider) {
     }
 }
 
-
-function activateGradeStandards() {    
-    $('.ulGradeStandard').click(function () {
+function activateInfoToggles() {    
+    $('.infoToggle').click(function () {
          $("li", this).toggle();
-    });   
+    }); 
+    $('.superInfoToggle').click(function () {
+         var ul = $(this).closest("ul");
+         $('.superInfo', ul).toggle();
+         //.first("li").css("background-color", "red");
+         //first("li").toggle();
+    }); 
+
+    
 }
+
+
+        //$(this).next().toggle();
+   /* $('.superInfoToggle').click(function () {
+        //("li:first", this).toggle();
+        //$(this).next().toggle();
+    }); */
+    /*$('.subInfoToggle:not(.infoToggle)').click(function () {
+         $("li:first", this).toggle();
+    });   */
 
 // if we're on mobile, show vital actions that are usually only revealed on hover
 function ifMobileShowHovers() {
@@ -1675,6 +1692,6 @@ $(document).ready(function() {
     activateHeaderAndDialogs();
     activateMainPageRightColumn();
     activateMainPageLeftColumn();
-    activateGradeStandards();
+    activateInfoToggles();
     ifMobileShowHovers();
 });

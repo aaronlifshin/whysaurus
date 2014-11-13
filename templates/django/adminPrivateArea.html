@@ -8,7 +8,6 @@
         <th>User Name</th>
         <th>Created</th>
         <th>Edited</th>  
-        <th>Viewed </th>        
         <th>Last Login </th>                      		                     
     </tr>
   {% for yUser in users %}
@@ -16,7 +15,6 @@
         <td><a href="/user/{{yUser.u.url}}">{{yUser.u.name}}</a></td>  
         <td>{{yUser.u.createdCount}}</td>       
         <td>{{yUser.u.editedCount}}</td>  
-        <td>{{yUser.u.recentlyViewedRootKeys|length}}</td>           
         <td>{{yUser.u.PSTlastlogin}}</td>                     		                 
     </tr>
   {% endfor %}

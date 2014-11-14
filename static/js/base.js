@@ -1650,18 +1650,21 @@ function loginWith(ev, provider) {
     }
 }
 
-function activateInfoToggles() {    
+function activateInfoToggles() {
+
+    // basic toggle, but doesn't work correctly if 
+    // there are ul's or li's in the content being revealed
     $('.infoToggle').click(function () {
          $("li", this).toggle();
-    }); 
+    });
+
+    // works for nested ul's, but a bit more complicated.
+    //  currently being used by the APUSH Sample Assignments 
+    //  on education.html
     $('.superInfoToggle').click(function () {
          var ul = $(this).closest("ul");
          $('.superInfo', ul).toggle();
-         //.first("li").css("background-color", "red");
-         //first("li").toggle();
     }); 
-
-    
 }
 
 

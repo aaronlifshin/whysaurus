@@ -110,7 +110,7 @@
                         <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
                     </a>
                     <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      {% if currentArea != '' %}
+                      {% if currentArea and currentArea != '' %}
                         <li><a tabindex="-1" href="/adminPrivateArea">{{currentArea}} roster</a></li>
                       {% endif %}
                       {% if user.admin %}

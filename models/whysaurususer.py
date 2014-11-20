@@ -601,7 +601,7 @@ class WhysaurusUser(auth_models.User):
             
     @staticmethod
     def getByUrl(url):
-        logging.info('Method getByUrl URL=%s' % url)
+        #logging.info('Method getByUrl URL=%s' % url)
         qry = WhysaurusUser.gql("WHERE url= :1", url)
         return qry.get()
 

@@ -191,7 +191,7 @@ class AdminPage(AuthHandler):
                     users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
                     i = i+1
 
-        paginator = Paginator(users, 25) 
+        paginator = Paginator(users, 35) 
         page = self.request.get('page')
 
         try:

@@ -4,6 +4,8 @@ import logging
 import json
 import string
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
 from models.whysaurususer import WhysaurusUser
@@ -78,9 +80,23 @@ class AdminPage(AuthHandler):
         for yUser in queryUsr.iter():
             users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
             i = i+1
+            
+        paginator = Paginator(users, 25) 
+        page = self.request.get('page')
+
+        try:
+            paginatedUsers = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paginatedUsers = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paginatedUsers = paginator.page(paginator.num_pages)
+
+            
         template_values = {
             'user': user,
-            'users': users,
+            'users': paginatedUsers,
             'areas': areas,
             'currentArea':self.session.get('currentArea')
         }
@@ -166,9 +182,23 @@ class AdminPage(AuthHandler):
                 if (currUserPA == currentPrivateArea):
                     users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
                     i = i+1
+
+        paginator = Paginator(users, 25) 
+        page = self.request.get('page')
+
+        try:
+            paginatedUsers = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            paginatedUsers = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            paginatedUsers = paginator.page(paginator.num_pages)
+                    
+                    
         template_values = {
             'user': user,
-            'users': users,
+            'users': paginatedUsers,
             'currentArea':currentPrivateArea
         }
         

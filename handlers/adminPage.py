@@ -29,6 +29,11 @@ class AdminPage(AuthHandler):
         return results
     
     def saveUsers(self, users):
+
+        userNamespace = namespace_manager.get_namespace()        
+        # USERS ARE STORED IN THE DEFAULT NAMESPACE
+        namespace_manager.set_namespace('')
+        
         for user in users:
             u = WhysaurusUser.getByUrl(user['url'])
             if u:
@@ -38,7 +43,10 @@ class AdminPage(AuthHandler):
                     'result': False, 
                     'error': "Could not find user %s. Other users may have been updated." % user['userAuthIDs']
                 } 
-                return results       
+                return results     
+        
+        namespace_manager.set_namespace(userNamespace)   
+              
         return {'result': True}
 
     

@@ -63,108 +63,110 @@
                 </span>
             </a>
           </div>
-          <div class="span3 headerLinks Heading_Black_Caps">
-            <a id="homeNav" href="/">
-              <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
-              <img id="homeIcon" class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
-              <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>             
-            </a>          
-            <a id="CreatePoint" href='javascript:;' alt="Make a Point">
-              <img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/>
-              <span class="hidden-xs hidden-phone">MAKE A POINT</span>
-            </a> 
-          </div>       
-          <div id="searchArea" class="span3">
-              <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
-              <div class="searchIcon pull-right"></div>
-          </div>
-          <div class="headerLinks Heading_Black_Caps pull-left">
-            <span class="aboutMenu">
-              <a class="userControls dropdown-toggle" data-toggle="dropdown">
-                <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
-                <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
-                <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
-              </a>
-              <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a id="help1" href="/manifesto" >Manifesto </a></li>                                  
-                      <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>                  
-                      <li><a id="help3" href="/education" >Education</a></li>  
-                      <li class="divider"></li>   
-                      <li><a href="/team">Team</a></li>
-                      <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
-                      <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
-                      <li class="divider"></li>                      
-                      <li><a href="/contact">Send us Feedback</a></li>                      
-              </ul>                       
-            </span>  
-          </div>          
-    	  {% if user %}              
-            <div class="userMenuArea headerUserName pull-right">
-                    <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
-                        <span class="responsiveLabel">
-                            <!--{{ user.name|escape }}-->                        
-                            <!--{{ user.name|slice:"12" }}{% if user.name|length > 12 %}...{% endif %} --> 
-                            {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}                       
-                        </span> 
-                        <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
-                    </a>
-                    <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      {% if currentArea and currentArea != '' %}
-                        <li><a tabindex="-1" href="/roster">{{currentArea}} roster</a></li>
-                      {% endif %}
-                      {% if user.admin %}
-                          <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
-                      {% endif %}
-                      <li><a tabindex="-1" href="/user/{{user.url}}" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Profile'])"> Profile </a></li>   
-                      {% if user.emailUser %}
-                          <li><a tabindex="-1" href="/changePassword" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Change Password'])">Change Password</a></li>
-                      {% endif %}                 
-                      <li><a tabindex="-1" href="/logout"> Logout </a></li>
-                    </ul>
-            </div>                      
-            <div id="notifications" class="pull-right">                    
-                        <a class="dropdown-toggle" data-toggle="dropdown">                      
-                            <img id="notificationIcon" src="/static/img/notificationIcon.png"/>  
-                        </a>                                                                         
-                        <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                       
-                            {{ user.newNotificationCount }} 
-                        </div>
-                      <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
-                         <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
-                        {% if user.notifications %} 
-                            data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"                                                                         
-                            {% if user.notifications|length == 11 %}                            
-                                data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"                            
-                            {% endif %}                                                                                                                    
-                        {% endif %}                            
-                            >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
+          {% if headerHideActions == True %}
+              <div class="span3 headerLinks Heading_Black_Caps">
+                <a id="homeNav" href="/">
+                  <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
+                  <img id="homeIcon" class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
+                  <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>             
+                </a>          
+                <a id="CreatePoint" href='javascript:;' alt="Make a Point">
+                  <img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/>
+                  <span class="hidden-xs hidden-phone">MAKE A POINT</span>
+                </a> 
+              </div>       
+              <div id="searchArea" class="span3">
+                  <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
+                  <div class="searchIcon pull-right"></div>
+              </div>
+              <div class="headerLinks Heading_Black_Caps pull-left">
+                <span class="aboutMenu">
+                  <a class="userControls dropdown-toggle" data-toggle="dropdown">
+                    <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
+                    <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
+                    <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
+                  </a>
+                  <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                          <li><a id="help1" href="/manifesto" >Manifesto </a></li>                                  
+                          <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>                  
+                          <li><a id="help3" href="/education" >Education</a></li>  
+                          <li class="divider"></li>   
+                          <li><a href="/team">Team</a></li>
+                          <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
+                          <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
+                          <li class="divider"></li>                      
+                          <li><a href="/contact">Send us Feedback</a></li>                      
+                  </ul>                       
+                </span>  
+              </div>          
+        	  {% if user %}              
+                <div class="userMenuArea headerUserName pull-right">
+                        <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
+                            <span class="responsiveLabel">
+                                <!--{{ user.name|escape }}-->                        
+                                <!--{{ user.name|slice:"12" }}{% if user.name|length > 12 %}...{% endif %} --> 
+                                {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}                       
+                            </span> 
+                            <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
+                        </a>
+                        <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                          {% if currentArea and currentArea != '' %}
+                            <li><a tabindex="-1" href="/roster">{{currentArea}} roster</a></li>
+                          {% endif %}
+                          {% if user.admin %}
+                              <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
+                          {% endif %}
+                          <li><a tabindex="-1" href="/user/{{user.url}}" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Profile'])"> Profile </a></li>   
+                          {% if user.emailUser %}
+                              <li><a tabindex="-1" href="/changePassword" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Change Password'])">Change Password</a></li>
+                          {% endif %}                 
+                          <li><a tabindex="-1" href="/logout"> Logout </a></li>
+                        </ul>
+                </div>                      
+                <div id="notifications" class="pull-right">                    
+                            <a class="dropdown-toggle" data-toggle="dropdown">                      
+                                <img id="notificationIcon" src="/static/img/notificationIcon.png"/>  
+                            </a>                                                                         
+                            <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                       
+                                {{ user.newNotificationCount }} 
+                            </div>
+                          <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
+                             <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
+                            {% if user.notifications %} 
+                                data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"                                                                         
+                                {% if user.notifications|length == 11 %}                            
+                                    data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"                            
+                                {% endif %}                                                                                                                    
+                            {% endif %}                            
+                                >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
                             
-                        {% if user.notifications %}                      
-                         {% for notification in user.notifications %}
-                                {% include 'notificationMenu.html' %} 
-                         {% endfor %} 
-                       {% endif %}
+                            {% if user.notifications %}                      
+                             {% for notification in user.notifications %}
+                                    {% include 'notificationMenu.html' %} 
+                             {% endfor %} 
+                           {% endif %}
                        
-                       {% if user.moreNotificationsExist  %}
-	                        <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
-	                            More notifications... Click here to view all
-	                        </li>  
-                        {% endif %}                                     
-                      </ul> 
-            </div>          
+                           {% if user.moreNotificationsExist  %}
+    	                        <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
+    	                            More notifications... Click here to view all
+    	                        </li>  
+                            {% endif %}                                     
+                          </ul> 
+                </div>          
                                                                                                                                           
-    	  {% else %}
-            <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
-                  <script> var loggedIn = false; </script>
-                  <a class="dropdown-toggle" data-toggle="dropdown">SIGN IN </a>
-                  <ul id="userMenuSignedOut" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                    <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
-                    <li><a tabindex="-1" href="/auth/google"> Google </a></li>
-                    <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
-                    <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
-                  </ul>
-            </div>
+        	  {% else %}
+                <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
+                      <script> var loggedIn = false; </script>
+                      <a class="dropdown-toggle" data-toggle="dropdown">SIGN IN </a>
+                      <ul id="userMenuSignedOut" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
+                        <li><a tabindex="-1" href="/auth/google"> Google </a></li>
+                        <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
+                        <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
+                      </ul>
+                </div>
+        	  {% endif %}
     	  {% endif %}
         </div>        
       </div>

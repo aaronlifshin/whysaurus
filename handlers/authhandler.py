@@ -134,8 +134,9 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     'areaCreateUser.html', 
                     {
                         'privateAreaName':areaName,
-                        'user':user
-                    }))          
+                        'user':user,
+                        'headerHideActions':True
+                    }))
         else:
             self.response.out.write('Sorry, the private area %s does not appear \
                 to exist. Click <a href="/">here</a> to go home' % areaName)

@@ -37,6 +37,7 @@
             Whysaurus will become a reference repository of explanations and convincing arguments for positions.">            
           {% endif %}              
       {% endif %}
+      
       <!-- Analytics -->     
       <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -51,6 +52,7 @@
       </script>
       
   </head>
+  
   <body>
     <div id="header" class="navbar navbar-fixed-top grayBackground">
       <div class="container">
@@ -63,7 +65,7 @@
                 </span>
             </a>
           </div>
-          {% if headerHideActions == True %}
+          {% if headerHideActions != 1 %}
               <div class="span3 headerLinks Heading_Black_Caps">
                 <a id="homeNav" href="/">
                   <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
@@ -167,8 +169,8 @@
                       </ul>
                 </div>
         	  {% endif %}
-    	  {% endif %}
-        </div>        
+    	  {% endif %} <!-- headerhideactions -->
+        </div>
       </div>
     </div>
 
@@ -207,18 +209,20 @@
               </div>
           </div>
         </div>
-        {% else %}
-        <div class="row-fluid manifestoHeader" style="display:none;">
-            <div class="container manifestoHeaderArea">
-                <div class="manifestoTitle">
-                    <a target="_blank" href="/education">How to use Whysaurus in classrooms</a>
-                </div>            
-                <div class="pull-right" id="hideManifesto">
-                    Hide this
-                </div>
+     {% endif %}
+        
+    {% if showManifesto == 1 %}        
+    <div class="row-fluid manifestoHeader" style="display:none;">
+        <div class="container manifestoHeaderArea">
+            <div class="manifestoTitle">
+                <a target="_blank" href="/education">How to use Whysaurus in classrooms</a>
+            </div>            
+            <div class="pull-right" id="hideManifesto">
+                Hide this
             </div>
         </div>
-      {% endif %}
+    </div>
+   {% endif %}
     
     
 

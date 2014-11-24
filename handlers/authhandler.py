@@ -135,7 +135,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     {
                         'privateAreaName':areaName,
                         'user':user,
-                        'headerHideActions':True
+                        'headerHideActions':1
                     }))
         else:
             self.response.out.write('Sorry, the private area %s does not appear \

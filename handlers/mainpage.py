@@ -76,6 +76,7 @@ class MainPage(AuthHandler):
             'recentlyViewed': recentlyViewedPoints,
             'featuredPoint': featuredPoint,
             'user': user,
+            'showManifesto': 1,
             'thresholds': constants.SCORETHRESHOLDS,
             'currentArea':self.session.get('currentArea')
         }

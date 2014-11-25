@@ -26,14 +26,11 @@ class AdminPage(AuthHandler):
             }
         except WhysaurusException as e:
             results['error'] = str(e)     
+        
         return results
     
     def saveUsers(self, users):
 
-        userNamespace = namespace_manager.get_namespace()        
-        # USERS ARE STORED IN THE DEFAULT NAMESPACE
-        namespace_manager.set_namespace('')
-        
         for user in users:
             u = WhysaurusUser.getByUrl(user['url'])
             if u:
@@ -45,12 +42,15 @@ class AdminPage(AuthHandler):
                 } 
                 return results     
         
-        namespace_manager.set_namespace(userNamespace)   
-              
         return {'result': True}
 
     
     def post(self):
+        
+        userNamespace = namespace_manager.get_namespace()        
+        namespace_manager.set_namespace('')
+
+        
         results = {'result': False}
         user = self.current_user  
         
@@ -68,10 +68,14 @@ class AdminPage(AuthHandler):
         resultJSON = json.dumps(results)
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
+        
+        namespace_manager.set_namespace(userNamespace)   
           
     
     def get(self):
-        namespace_manager.set_namespace('')    
+        userNamespace = namespace_manager.get_namespace()        
+        namespace_manager.set_namespace('')
+   
         user = self.current_user
         if user is None:
             self.response.out.write('Need to login.')
@@ -112,7 +116,14 @@ class AdminPage(AuthHandler):
         self.response.out.write(
             self.template_render('admin.html', template_values))
 
+        namespace_manager.set_namespace(userNamespace)  
+
     def uploadUserPage(self):
+
+        userNamespace = namespace_manager.get_namespace()        
+        namespace_manager.set_namespace('')
+
+        
         user = self.current_user
 
         template_values = {
@@ -124,9 +135,15 @@ class AdminPage(AuthHandler):
                 self.template_render('uploadUsers.html', template_values)) 
         else:
             self.response.out.write('User not authorized. ')
+            
+        namespace_manager.set_namespace(userNamespace)       
         
         
     def uploadUsers(self):
+
+        userNamespace = namespace_manager.get_namespace()        
+        namespace_manager.set_namespace('')
+        
         loggedInUser = self.current_user
         if loggedInUser and loggedInUser.admin:                    
             userNames=self.request.get('userNames')
@@ -152,7 +169,8 @@ class AdminPage(AuthHandler):
                 self.template_render('message.html', template_values))   
         else:
             self.response.out.write('User not authorized. ')
-            
+
+        namespace_manager.set_namespace(userNamespace)               
             
     def dailyReport(self):
         user = self.current_user      

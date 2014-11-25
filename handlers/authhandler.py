@@ -209,7 +209,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                                                      'signup')
         logging.info('Got user: %s' % str(user))
         if not user:
-            message = 'Verification URL not valid.  Verification URLs can only be used once.  Perhaps your email has already been validated.';
+            tokenType = 'Verification' if verification_type == 'v' else 'Password reset'
+            message = '%s URL not valid.  %s URLs can only be used once.' % (tokenType, tokenType)           
             logging.info('Could not find any user with id "%s" signup token "%s"',
               user_id, signup_token)
             self.response.out.write(
@@ -229,16 +230,20 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 self.template_render('message.html', {
                     'message': message, 'user': user } ))
         elif verification_type == 'p':
-            self.auth.unset_session() # The user is not logged in. They can only to reset the password
+            # self.auth.unset_session() # The user is not logged in. They can only to reset the password
+            # Log in the user, just this once
+            self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
+            
+            # remove signup token, we don't want users to come back with an old link
+            self.auth.store.user_model.delete_signup_token(user.get_id(), signup_token)
+            
             logging.info('Got user2: %s' % str(user))
             template_values = {
                       'user': user,
-                      'token': signup_token,
-                      'user_id': user_id
-            
+                      'user_id': user_id,
+                      'message': 'You have been logged in. Please change the password from the user menu in the upper right.'
                       }
-            self.response.out.write(
-                self.template_render('message.html', template_values))
+            self.redirect('/changePassword')
         else:
             logging.info('Verification type not supported')
             self.abort(404)

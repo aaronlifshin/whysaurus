@@ -664,8 +664,8 @@ class Point(ndb.Model):
             for link in links:
                 if link.root == linkRoot.key:
                     raise WhysaurusException(
-                        "That point root is already a %s point of %s" % 
-                            (linkType, self.title))
+                        "That point root is already a %s point of %s. Comparison was: %s to %s." % 
+                            (linkType, self.title, link.root.urlsafe(), linkRoot.key.urlsafe()))
                 elif link.version == linkCurrentVersion.key:
                     raise WhysaurusException(
                         "That point version is already a %s point of %s" % 
@@ -729,7 +729,7 @@ class Point(ndb.Model):
         # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
         possiblyUpdatedRoot = theRoot.key.get()
         possiblyNewCurrent = possiblyUpdatedRoot.getCurrent()
-        if (possiblyNewCurrent.key != self.key):
+        if (possiblyNewCurrent.key != self.key):            
             newPoint.version = possiblyNewCurrent.version + 1
             possiblyNewCurrent.current = False
             possiblyNewCurrent.put()

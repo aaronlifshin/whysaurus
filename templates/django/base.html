@@ -50,7 +50,8 @@
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
       </script>
-      
+        
+        <script> var loggedIn = {% if user %}true{% else %}false{% endif %}; </script>
   </head>
   
   <body>
@@ -100,7 +101,8 @@
                           <li><a href="/contact">Send us Feedback</a></li>                      
                   </ul>                       
                 </span>  
-              </div>          
+              </div>     
+                   
         	  {% if user %}              
                 <div class="userMenuArea headerUserName pull-right">
                         <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
@@ -159,7 +161,6 @@
                                                                                                                                           
         	  {% else %}
                 <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
-                      <script> var loggedIn = false; </script>
                       <a class="dropdown-toggle" data-toggle="dropdown">SIGN IN </a>
                       <ul id="userMenuSignedOut" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                         <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>

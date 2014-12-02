@@ -13,12 +13,12 @@ from models.reportEvent import ReportEvent
 class AddSupportingPoint(AuthHandler):
     def post(self):
         jsonOutput = {'result': False}
-        oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
         user = self.current_user
-        linkType = self.request.get('linkType')
-        sourcesURLs=json.loads(self.request.get('sourcesURLs'))
-        sourcesNames=json.loads(self.request.get('sourcesNames'))
         if user:
+            oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
+            linkType = self.request.get('linkType')
+            sourcesURLs=json.loads(self.request.get('sourcesURLs'))
+            sourcesNames=json.loads(self.request.get('sourcesNames'))
             newLinkPoint, newLinkPointRoot = Point.create(
                 title=self.request.get('title'),
                 content=self.request.get('content'),
@@ -39,10 +39,7 @@ class AddSupportingPoint(AuthHandler):
                 newPoint = oldPoint.update(
                     pointsToLink=newLinks,                 
                     user=user
-                )            
-                user.addRelevanceVote(
-                  oldPointRoot.key.urlsafe(), 
-                  newLinkPointRoot.key.urlsafe(), linkType, 100)                    
+                )           
             except WhysaurusException as e:
                 jsonOutput = {
                     'result': False,

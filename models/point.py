@@ -374,14 +374,11 @@ class Point(ndb.Model):
         pointRoot.viewCount = 1
         isTop = True
         if backlink:
-            logging.info('- - -- -  Creating with a BL')
             isTop = False
             if linktype == 'supporting':
                 pointRoot.pointsSupportedByMe = [backlink]
             elif linktype == 'counter':
                 pointRoot.pointsCounteredByMe = [backlink]
-        else:
-            logging.info('-NO BL FOUND')
                 
         createdPoint, createdPointRoot = Point.transactionalCreate(
                             pointRoot, title, content, summaryText, user,
@@ -727,7 +724,17 @@ class Point(ndb.Model):
                 source.put()
                 sourceKeys = sourceKeys + [source.key]
             newPoint.sources = sourceKeys
+        
+        # CONCURRENCY FIX
+        # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
+        possiblyNewCurrent = theRoot.getCurrent()
+        if (possiblyNewCurrent.key != self.key):
+            newPoint.version = possiblyNewCurrent.version + 1
+            possiblyNewCurrent.current = False
+            possiblyNewCurrent.put()
+        
         newPoint.put()       
+        
         theRoot.current = newPoint.key
         theRoot.put()
         theRoot.setTop()
@@ -783,9 +790,9 @@ class Point(ndb.Model):
 
             newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)    
 
-            # Not sure why this is needed: this should be getting handled by code already in addLink
-            
+            # Not sure why this is needed: this should be getting handled by code already in addLink         
             Follow.createFollow(user.key, theRoot.key, "edited")
+             
             if pointsToLink:
                 # For now we only ever add a single linked point
                 Point.addNotificationTask(
@@ -793,6 +800,12 @@ class Point(ndb.Model):
                     user.key, 
                     4 if pointsToLink[0]['linkType'] == "supporting" else 5,
                     pointsToLink[0]['pointCurrentVersion'].title )
+                    
+                logging.info('Inside the point: ' + pointsToLink[0]['pointRoot'].key.urlsafe() )
+                # The user automatically votes 100 relevance on the new link
+                user.addRelevanceVote(
+                  theRoot.key.urlsafe(), 
+                  pointsToLink[0]['pointRoot'].key.urlsafe(), pointsToLink[0]['linkType'], 100)     
             else:
                 Point.addNotificationTask(theRoot.key, user.key, 0) # "edited" notification
 

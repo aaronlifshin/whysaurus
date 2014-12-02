@@ -664,11 +664,11 @@ class Point(ndb.Model):
             for link in links:
                 if link.root == linkRoot.key:
                     raise WhysaurusException(
-                        "That point is already a %s point of %s" % 
+                        "That point root is already a %s point of %s" % 
                             (linkType, self.title))
                 elif link.version == linkCurrentVersion.key:
                     raise WhysaurusException(
-                        "That point is already a %s point of %s" % 
+                        "That point version is already a %s point of %s" % 
                             (linkType, self.title))
                             
             linkRoot.isTop = False

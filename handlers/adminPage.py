@@ -7,11 +7,9 @@ import string
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from google.appengine.ext.webapp import template
-from google.appengine.ext import ndb
 from authhandler import AuthHandler
 from models.whysaurususer import WhysaurusUser
 from models.privateArea import PrivateArea
-from models.areauser import AreaUser
 from models.whysaurusexception import WhysaurusException
 from models.reportEvent import DayEventSummary
 from google.appengine.api import namespace_manager
@@ -187,25 +185,29 @@ class AdminPage(AuthHandler):
                 
     def get_pa(self):
         userNamespace = namespace_manager.get_namespace()        
+        # USERS ARE STORED IN THE DEFAULT NAMESPACE
         namespace_manager.set_namespace('')
-        
+    
         user = self.current_user
         if user is None:
             self.response.out.write('Need to login.')
             return
 
-        userIds = []
-        queryUsrIds = AreaUser.query().filter(AreaUser.privateArea == userNamespace)
-        for userArea in queryUsrIds.iter():
-            userIds.append(ndb.Key(urlsafe=userArea.userKey))
-                        
-        queryUsr = ndb.get_multi(userIds)
+        queryUsr = WhysaurusUser.query().order(-WhysaurusUser.lastLogin)
         users = []
-        i = 0        
-        for yUser in queryUsr:
-            if yUser.admin != True:
-                users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
-                i = i+1
+        i = 0
+        currentPrivateArea = self.session.get('currentArea')
+        
+        logging.info("Private Area Admin: %s", currentPrivateArea)
+        logging.info("User query result: %s", queryUsr.get())
+        
+        for yUser in queryUsr.iter():
+            logging.info("XXX current user privateAreas: %s", yUser.privateAreas)
+            currentUserPrivateAreas = yUser.privateAreas
+            for currUserPA in currentUserPrivateAreas:
+                if (currUserPA == currentPrivateArea):
+                    users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
+                    i = i+1
 
         paginator = Paginator(users, 35) 
         page = self.request.get('page')
@@ -213,17 +215,21 @@ class AdminPage(AuthHandler):
         try:
             paginatedUsers = paginator.page(page)
         except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
             paginatedUsers = paginator.page(1)
         except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
             paginatedUsers = paginator.page(paginator.num_pages)
+                    
                     
         template_values = {
             'user': user,
             'users': paginatedUsers,
-            'currentArea':userNamespace
+            'currentArea':currentPrivateArea
         }
         
         namespace_manager.set_namespace(userNamespace)   
+
         self.response.out.write(
             self.template_render('adminPrivateArea.html', template_values))
                 

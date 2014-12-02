@@ -727,7 +727,8 @@ class Point(ndb.Model):
         
         # CONCURRENCY FIX
         # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
-        possiblyNewCurrent = theRoot.getCurrent()
+        possiblyUpdatedRoot = theRoot.key.get()
+        possiblyNewCurrent = possiblyUpdatedRoot.getCurrent()
         if (possiblyNewCurrent.key != self.key):
             newPoint.version = possiblyNewCurrent.version + 1
             possiblyNewCurrent.current = False

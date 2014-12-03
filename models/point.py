@@ -661,16 +661,13 @@ class Point(ndb.Model):
             if linkRoot is None:
                 raise WhysaurusException(
                     "Trying to add a new %s point but root was not supplied: %s" % (linkType, self.title))
+            addToLinkArray = True
             for link in links:
                 if link.root == linkRoot.key:
-                    raise WhysaurusException(
-                        "That point root is already a %s point of %s. Comparison was: %s to %s." % 
-                            (linkType, self.title, link.root.urlsafe(), linkRoot.key.urlsafe()))
+                    addToLinkArray = False
                 elif link.version == linkCurrentVersion.key:
-                    raise WhysaurusException(
-                        "That point version is already a %s point of %s" % 
-                            (linkType, self.title))
-                            
+                    addToLinkArray = False
+                    
             linkRoot.isTop = False
             linkCurrentVersion.isTop = False
             linkRoot.put()
@@ -684,8 +681,9 @@ class Point(ndb.Model):
                 fRating = fRating
             )
             linkCurrentVersion._linkInfo = newLink
+
             links = links + [newLink] if links else [newLink]      
-            sortArrayByRating(links)                  
+            sortArrayByRating(links)
             self.setStructuredLinkCollection(linkType, links)
 
     def removeLink(self, linkRoot, linkType):
@@ -701,9 +699,9 @@ class Point(ndb.Model):
                     "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
 
     @ndb.transactional(xg=True)
-    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):        
-        self.put() # Save the old version
+    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):
         if pointsToLink:
+            logging.info('COLL: ' + str(self.getStructuredLinkCollection(pointsToLink[0]['linkType'])))
             for pointToLink in pointsToLink:
                 if 'voteCount' in pointToLink:
                     logging.info('Linking the new point. Have: %d, %d' % \
@@ -733,8 +731,9 @@ class Point(ndb.Model):
             newPoint.version = possiblyNewCurrent.version + 1
             possiblyNewCurrent.current = False
             possiblyNewCurrent.put()
-        
-        newPoint.put()       
+
+        self.put() # Save the old version        
+        newPoint.put()  # Save the new version
         
         theRoot.current = newPoint.key
         theRoot.put()
@@ -789,7 +788,7 @@ class Point(ndb.Model):
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)    
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)
 
             # Not sure why this is needed: this should be getting handled by code already in addLink         
             Follow.createFollow(user.key, theRoot.key, "edited")

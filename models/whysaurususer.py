@@ -166,14 +166,18 @@ class WhysaurusUser(auth_models.User):
             raise WhysaurusException('Unable to create user. No password supplied.')
 
         privateAreas = []
-        if handler.session.get('currentArea'):
-            privateAreas = [handler.session.get('currentArea')]
+        existingPrivateArea = handler.session.get('currentArea')
+        if existingPrivateArea:
+            privateAreas = [existingPrivateArea]
 
         result, creationData = WhysaurusUser.create_user(auth_id,
           unique_properties,
           url=url, email=email, name=name, password_raw=password,
           websiteURL=website, areasOfExpertise=areas, currentProfession=profession, 
           bio=bio, verified=False, privateAreas=privateAreas)
+          
+    
+
  
         if not result: #user_data is a tuple
             if 'name' in creationData:
@@ -193,6 +197,11 @@ class WhysaurusUser(auth_models.User):
                 
             else:
                 logging.info('Created a username only user. Name: %s.' % name)
+                
+            if existingPrivateArea:
+                areaUser = AreaUser(userKey=user.key.urlsafe(), privateArea=existingPrivateArea)
+                areaUser.putUnique()
+            
             ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")            
             return user # SUCCESS       
 

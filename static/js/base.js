@@ -527,6 +527,21 @@ function addSource(clickedElement) {
     }   
 }
 
+function addCurrentSource() {
+    var sourceURL = $('#sourceURL_pointDialog').val().trim() || null;
+    var sourceTitle = $('#sourceTitle_pointDialog').val() || null;
+
+    if (sourceURL == "" && sourceTitle != "") {
+        editDialogAlert('URL is required');        
+    } else if (!validateURL(sourceURL)) {        
+        editDialogAlert('The URL you specified doesn\'t look like a URL.');            
+    } else {        
+        sourceTitle = sourceTitle == "" ? sourceURL : sourceTitle;        
+    }   
+    addSourceHTML(sourceURL, sourceTitle, null);  
+}
+
+
 function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
     
     appendAfter = $('#sourcesArea');

@@ -479,6 +479,8 @@ function addPoint(linkType){
         return;
     }
     
+    addCurrentSource($('#submit_pointDialog'))    
+    
 	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;  
     //$('#submit_pointDialog').off('click');

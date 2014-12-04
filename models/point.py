@@ -29,6 +29,7 @@ import logging
 import math
 
 from google.appengine.ext import ndb
+from google.appengine.ext.db import BadRequestError
 from google.appengine.api import search
 from google.appengine.api.taskqueue import Task
 
@@ -365,8 +366,9 @@ class Point(ndb.Model):
     @staticmethod
     def create(title, content, summaryText, user, backlink=None, linktype="",
                imageURL=None, imageAuthor=None, imageDescription=None, 
-               sourceURLs=None, sourceNames=None):
-        newUrl = makeURL(title)
+               sourceURLs=None, sourceNames=None, urlToUse = None):
+        
+        newUrl = urlToUse if urlToUse else makeURL(title) 
         pointRoot = PointRoot()
         pointRoot.url = newUrl
         pointRoot.numCopies = 0
@@ -374,17 +376,24 @@ class Point(ndb.Model):
         pointRoot.viewCount = 1
         isTop = True
         if backlink:
+            logging.info('- - -- -  Creating with a BL')
             isTop = False
             if linktype == 'supporting':
                 pointRoot.pointsSupportedByMe = [backlink]
             elif linktype == 'counter':
                 pointRoot.pointsCounteredByMe = [backlink]
+        else:
+            logging.info('-NO BL FOUND')
                 
         createdPoint, createdPointRoot = Point.transactionalCreate(
                             pointRoot, title, content, summaryText, user,
                             imageURL, imageAuthor, imageDescription, 
                             sourceURLs, sourceNames, isTop = isTop)
-        Follow.createFollow(user.key, createdPointRoot.key, "created")
+
+        # Only do this if we are not inside of a transaction
+        if urlToUse is None:
+            Follow.createFollow(user.key, createdPointRoot.key, "created")
+
         return createdPoint, createdPointRoot
 
     @staticmethod
@@ -587,7 +596,6 @@ class Point(ndb.Model):
         else:
             return None        
     
-    
     @ndb.tasklet
     def getLinkedPoints_async(self, linkType, user):
         linkColl = self.getStructuredLinkCollection(linkType)
@@ -661,13 +669,16 @@ class Point(ndb.Model):
             if linkRoot is None:
                 raise WhysaurusException(
                     "Trying to add a new %s point but root was not supplied: %s" % (linkType, self.title))
-            addToLinkArray = True
             for link in links:
                 if link.root == linkRoot.key:
-                    addToLinkArray = False
+                    raise WhysaurusException(
+                        "That point is already a %s point of %s" % 
+                            (linkType, self.title))
                 elif link.version == linkCurrentVersion.key:
-                    addToLinkArray = False
-                    
+                    raise WhysaurusException(
+                        "That point is already a %s point of %s" % 
+                            (linkType, self.title))
+                            
             linkRoot.isTop = False
             linkCurrentVersion.isTop = False
             linkRoot.put()
@@ -681,9 +692,8 @@ class Point(ndb.Model):
                 fRating = fRating
             )
             linkCurrentVersion._linkInfo = newLink
-
             links = links + [newLink] if links else [newLink]      
-            sortArrayByRating(links)
+            sortArrayByRating(links)                  
             self.setStructuredLinkCollection(linkType, links)
 
     def removeLink(self, linkRoot, linkType):
@@ -699,9 +709,9 @@ class Point(ndb.Model):
                     "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
 
     @ndb.transactional(xg=True)
-    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):
+    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):        
+        self.put() # Save the old version
         if pointsToLink:
-            logging.info('COLL: ' + str(self.getStructuredLinkCollection(pointsToLink[0]['linkType'])))
             for pointToLink in pointsToLink:
                 if 'voteCount' in pointToLink:
                     logging.info('Linking the new point. Have: %d, %d' % \
@@ -722,26 +732,13 @@ class Point(ndb.Model):
                 source.put()
                 sourceKeys = sourceKeys + [source.key]
             newPoint.sources = sourceKeys
-        
-        # CONCURRENCY FIX
-        # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
-        possiblyUpdatedRoot = theRoot.key.get()
-        possiblyNewCurrent = possiblyUpdatedRoot.getCurrent()
-        if (possiblyNewCurrent.key != self.key):            
-            newPoint.version = possiblyNewCurrent.version + 1
-            possiblyNewCurrent.current = False
-            possiblyNewCurrent.put()
-
-        self.put() # Save the old version        
-        newPoint.put()  # Save the new version
-        
+        newPoint.put()       
         theRoot.current = newPoint.key
         theRoot.put()
         theRoot.setTop()
                 
         user.recordEditedPoint(theRoot.key) # Add to the user's edited list    
         return newPoint, theRoot
-
 
     # pointsToLink is a set of links of the new point we want to link
     def update( self, newTitle=None, newContent=None, newSummaryText=None, 
@@ -788,11 +785,14 @@ class Point(ndb.Model):
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)    
 
-            # Not sure why this is needed: this should be getting handled by code already in addLink         
-            Follow.createFollow(user.key, theRoot.key, "edited")
-             
+            # Not sure why this is needed: this should be getting handled by code already in addLink
+            try:
+                Follow.createFollow(user.key, theRoot.key, "edited")
+            # If we are in transaction this is not allowed, but will be handled elsewhere
+            except BadRequestError:
+                pass
             if pointsToLink:
                 # For now we only ever add a single linked point
                 Point.addNotificationTask(
@@ -800,12 +800,6 @@ class Point(ndb.Model):
                     user.key, 
                     4 if pointsToLink[0]['linkType'] == "supporting" else 5,
                     pointsToLink[0]['pointCurrentVersion'].title )
-                    
-                logging.info('Inside the point: ' + pointsToLink[0]['pointRoot'].key.urlsafe() )
-                # The user automatically votes 100 relevance on the new link
-                user.addRelevanceVote(
-                  theRoot.key.urlsafe(), 
-                  pointsToLink[0]['pointRoot'].key.urlsafe(), pointsToLink[0]['linkType'], 100)     
             else:
                 Point.addNotificationTask(theRoot.key, user.key, 0) # "edited" notification
 
@@ -816,6 +810,52 @@ class Point(ndb.Model):
         else:
             return None
 
+    @classmethod
+    @ndb.transactional(xg=True)
+    def transactionalAddSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
+                            linkType, imageURL,imageAuthor,imageDescription,
+                            sourcesURLs, sourcesNames, urlToUse):
+         oldPoint = oldPointRoot.getCurrent()
+         newLinkPoint, newLinkPointRoot = Point.create(
+             title=title,
+             content=content,
+             summaryText=summaryText,
+             user=user,
+             backlink=oldPoint.key.parent(),
+             linktype = linkType,
+             imageURL=imageURL,
+             imageAuthor=imageAuthor,
+             imageDescription=imageDescription,
+             sourceURLs=sourcesURLs,
+             sourceNames=sourcesNames,
+             urlToUse=urlToUse)
+            
+         newLinks = [{'pointRoot':newLinkPointRoot,
+                     'pointCurrentVersion':newLinkPoint,
+                     'linkType':linkType},
+                     ]
+         newPoint = oldPoint.update(
+             pointsToLink=newLinks,                 
+             user=user
+         )            
+         user.addRelevanceVote(
+           oldPointRoot.key.urlsafe(), 
+           newLinkPointRoot.key.urlsafe(), linkType, 100)
+         return newPoint, newLinkPoint, newLinkPointRoot                                      
+
+    @classmethod
+    def addSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
+                            linkType, imageURL,imageAuthor,imageDescription,
+                            sourcesURLs, sourcesNames):                            
+        newURL = makeURL(title) 
+        newPoint, newLinkPoint, newLinkPointRoot = Point.transactionalAddSupportingPoint(
+            oldPointRoot, title, content, summaryText, user,
+            linkType, imageURL,imageAuthor,imageDescription,
+            sourcesURLs, sourcesNames, newURL)            
+        Follow.createFollow(user.key, newLinkPointRoot.key, "created")
+        Follow.createFollow(user.key, oldPointRoot.key, "edited")        
+        return newPoint, newLinkPoint
+    
     # ONLY REMOVES ONE SIDE OF THE LINK. USED BY UNLINK
     def removeLinkedPoint(self, unlinkPointRoot, linkType, user):
         if user:

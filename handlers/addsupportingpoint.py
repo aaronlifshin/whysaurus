@@ -14,31 +14,26 @@ class AddSupportingPoint(AuthHandler):
     def post(self):
         jsonOutput = {'result': False}
         user = self.current_user
-        if user:
-            oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
-            linkType = self.request.get('linkType')
-            sourcesURLs=json.loads(self.request.get('sourcesURLs'))
-            sourcesNames=json.loads(self.request.get('sourcesNames'))
-            newLinkPoint, newLinkPointRoot = Point.create(
-                title=self.request.get('title'),
-                content=self.request.get('content'),
-                summaryText=self.request.get('plainText'),
-                user=user,
-                backlink=oldPoint.key.parent(),
-                linktype = linkType,
-                imageURL=self.request.get('imageURL'),
-                imageAuthor=self.request.get('imageAuthor'),
-                imageDescription=self.request.get('imageDescription'),
-                sourceURLs=sourcesURLs,
-                sourceNames=sourcesNames)
-            try:
-                newLinks = [{'pointRoot':newLinkPointRoot,
-                            'pointCurrentVersion':newLinkPoint,
-                            'linkType':linkType},
-                            ]
-                newPoint = oldPoint.update(
-                    pointsToLink=newLinks,                 
-                    user=user
+        linkType = self.request.get('linkType')
+        sourcesURLs=json.loads(self.request.get('sourcesURLs'))
+        sourcesNames=json.loads(self.request.get('sourcesNames'))
+        
+        if user:   
+            try:       
+                oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
+                newPoint, newLinkPoint = Point.addSupportingPoint(
+                    oldPointRoot=oldPointRoot,
+                    title=self.request.get('title'),
+                    content=self.request.get('content'),
+                    summaryText=self.request.get('plainText'),
+                    user=user,
+                    # backlink=oldPoint.key.parent(),
+                    linkType = linkType,
+                    imageURL=self.request.get('imageURL'),
+                    imageAuthor=self.request.get('imageAuthor'),
+                    imageDescription=self.request.get('imageDescription'),
+                    sourcesURLs=sourcesURLs,
+                    sourcesNames=sourcesNames            
                 )           
             except WhysaurusException as e:
                 jsonOutput = {

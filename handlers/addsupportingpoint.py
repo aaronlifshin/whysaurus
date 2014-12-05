@@ -38,7 +38,7 @@ class AddSupportingPoint(AuthHandler):
             except WhysaurusException as e:
                 jsonOutput = {
                     'result': False,
-                    'err': str(e)
+                    'error': str(e)
                 }
             else:
                 ReportEvent.queueEventRecord(user.key.urlsafe(), newLinkPoint.key.urlsafe(), newPoint.key.urlsafe(), "Create Point") 

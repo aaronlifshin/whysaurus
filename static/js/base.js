@@ -508,22 +508,21 @@ function updateDialogHeight() {
     }
 }
 
-function addSource(clickedElement) {
-    var urlVal = $('#sourceURL_pointDialog').val() || null;
-    if (urlVal) {
-        urlVal = urlVal.trim();
-    }
-    if (urlVal == "") {
+function addSource(clickedElement, isCurrent = false) {
+    var sourceURL = $('#sourceURL_pointDialog').val().trim() || null;
+    var sourceTitle = $('#sourceTitle_pointDialog').val() || null;
+
+    if ((sourceURL == "" && sourceTitle != "" && isCurrent) || 
+    	(sourceURL == "" && !isCurrent))
+    {
         editDialogAlert('URL is required');        
-    } else if (!validateURL(urlVal)) {        
+    } else if (!validateURL(sourceURL)) {        
         editDialogAlert('The URL you specified doesn\'t look like a URL.');            
     } else {        
-        sourceURL = $('#sourceURL_pointDialog').val();
-        sourceTitle = $('#sourceTitle_pointDialog').val() == "" ? 
-            sourceURL :$('#sourceTitle_pointDialog').val();        
+        sourceTitle = sourceTitle == "" ? sourceURL : sourceTitle;        
         addSourceHTML(sourceURL, sourceTitle, null);  
         $('#sourceURL_pointDialog').val("");
-        $('#sourceTitle_pointDialog').val("");
+        $('#sourceTitle_pointDialog').val("");    
     }   
 }
 

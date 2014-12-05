@@ -738,15 +738,15 @@ class Point(ndb.Model):
         possiblyUpdatedRoot = theRoot.key.get()
         possiblyNewCurrent = possiblyUpdatedRoot.getCurrent()
         if (possiblyNewCurrent.key != self.key):
+            logging.warning('Collision on the DB was detected.  Attempting to recover.')
             newPoint.version = possiblyNewCurrent.version + 1
             possiblyNewCurrent.current = False
             possiblyNewCurrent.put()
 
-        newPoint.put()       
+        newPoint.put()
         theRoot.current = newPoint.key
         theRoot.put()
         theRoot.setTop()
-        
                 
         user.recordEditedPoint(theRoot.key) # Add to the user's edited list    
         return newPoint, theRoot

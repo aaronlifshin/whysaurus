@@ -732,10 +732,21 @@ class Point(ndb.Model):
                 source.put()
                 sourceKeys = sourceKeys + [source.key]
             newPoint.sources = sourceKeys
+            
+        # CONCURRENCY FIX
+        # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
+        possiblyUpdatedRoot = theRoot.key.get()
+        possiblyNewCurrent = possiblyUpdatedRoot.getCurrent()
+        if (possiblyNewCurrent.key != self.key):
+            newPoint.version = possiblyNewCurrent.version + 1
+            possiblyNewCurrent.current = False
+            possiblyNewCurrent.put()
+
         newPoint.put()       
         theRoot.current = newPoint.key
         theRoot.put()
         theRoot.setTop()
+        
                 
         user.recordEditedPoint(theRoot.key) # Add to the user's edited list    
         return newPoint, theRoot

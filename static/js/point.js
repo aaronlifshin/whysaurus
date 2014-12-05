@@ -479,7 +479,7 @@ function addPoint(linkType){
         return;
     }
     
-    addSource($('#submit_pointDialog'), true)    
+    addSource($('#submit_pointDialog'), true);   
     
 	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;  

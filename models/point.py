@@ -29,7 +29,7 @@ import logging
 import math
 
 from google.appengine.ext import ndb
-from google.appengine.ext.db import BadRequestError
+from google.appengine.ext.db import BadRequestError, TransactionFailedError
 from google.appengine.api import search
 from google.appengine.api.taskqueue import Task
 
@@ -732,7 +732,18 @@ class Point(ndb.Model):
                 source.put()
                 sourceKeys = sourceKeys + [source.key]
             newPoint.sources = sourceKeys
-        newPoint.put()       
+            
+        # CONCURRENCY FIX
+        # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
+        possiblyUpdatedRoot = theRoot.key.get()
+        possiblyNewCurrent = possiblyUpdatedRoot.getCurrent()
+        if (possiblyNewCurrent.key != self.key):
+            logging.warning('Collision on the DB was detected.  Attempting to recover.')
+            newPoint.version = possiblyNewCurrent.version + 1
+            possiblyNewCurrent.current = False
+            possiblyNewCurrent.put()
+
+        newPoint.put()
         theRoot.current = newPoint.key
         theRoot.put()
         theRoot.setTop()
@@ -848,10 +859,13 @@ class Point(ndb.Model):
                             linkType, imageURL,imageAuthor,imageDescription,
                             sourcesURLs, sourcesNames):                            
         newURL = makeURL(title) 
-        newPoint, newLinkPoint, newLinkPointRoot = Point.transactionalAddSupportingPoint(
-            oldPointRoot, title, content, summaryText, user,
-            linkType, imageURL,imageAuthor,imageDescription,
-            sourcesURLs, sourcesNames, newURL)            
+        try:
+            newPoint, newLinkPoint, newLinkPointRoot = Point.transactionalAddSupportingPoint(
+                oldPointRoot, title, content, summaryText, user,
+                linkType, imageURL,imageAuthor,imageDescription,
+                sourcesURLs, sourcesNames, newURL)            
+        except TransactionFailedError as e:
+            raise WhysaurusException("Could not add supporting point because someone else was editing this point at the same time.  Please try again.")
         Follow.createFollow(user.key, newLinkPointRoot.key, "created")
         Follow.createFollow(user.key, oldPointRoot.key, "edited")        
         return newPoint, newLinkPoint

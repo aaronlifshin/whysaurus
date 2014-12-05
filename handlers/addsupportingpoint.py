@@ -38,12 +38,10 @@ class AddSupportingPoint(AuthHandler):
             except WhysaurusException as e:
                 jsonOutput = {
                     'result': False,
-                    'err': str(e)
+                    'errMessage': str(e)
                 }
             else:
-                ReportEvent.queueEventRecord(user.key.urlsafe(), newLinkPoint.key.urlsafe(), newPoint.key.urlsafe(), "Create Point") 
-                
-                self.response.headers["Content-Type"] = 'application/json; charset=utf-8'                
+                ReportEvent.queueEventRecord(user.key.urlsafe(), newLinkPoint.key.urlsafe(), newPoint.key.urlsafe(), "Create Point")           
                 newLinkPointHTML = self.template_render('linkPoint.html', {
                     'point': newLinkPoint,
                     'linkType': linkType
@@ -57,6 +55,7 @@ class AddSupportingPoint(AuthHandler):
                     'newLinkPoint': newLinkPointHTML,
                     'authorURL': self.current_user.url
                 }
+            self.response.headers["Content-Type"] = 'application/json; charset=utf-8'      
             self.response.out.write(json.dumps(jsonOutput))
         else:
             self.response.out.write('Need to be logged in')

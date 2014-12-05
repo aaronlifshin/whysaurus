@@ -515,9 +515,13 @@ function addPoint(linkType){
     		    $("#pointDialog").modal('hide');
                 resetSubmitButton('#submit_pointDialog');
 			} else {
-				if (obj.error) {
-		    		editDialogAlert(obj.error);
+                errorMessage = obj.errMessage || null;
+                console.log(obj);
+				if (errorMessage) {
+		    		editDialogAlert(errorMessage);
 		    	} else {
+                    console.log('EM' + errorMessage);
+                    console.log('OERRR' + obj.errMessage);
 		    		editDialogAlert("There was an error");
 		    	}
                 stopSpinner();

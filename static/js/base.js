@@ -1205,10 +1205,10 @@ function processNotification(notificationData) {
         // Update the number
         count = parseInt($('#notificationCount').text());
         count = count + 1;
-        if (!isNan(count)) {
+        if (!isNaN(count)) {
             $('#notificationCount').text(count.toString());
             $('#notificationCount').show();                    
-        }        
+        }
     }
   
     // Insert the raised date secs value

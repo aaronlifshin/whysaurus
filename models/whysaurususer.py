@@ -18,6 +18,7 @@ from google.appengine.api import channel
 from models.notification import Notification
 from models.chatUser import ChatUser
 from models.point import getCurrent_async
+from models.areauser import AreaUser
 
 from whysaurusexception import WhysaurusException
 from uservote import UserVote
@@ -327,6 +328,16 @@ class WhysaurusUser(auth_models.User):
             return 0, False                    
 
     def updatePrivateAreas(self, pas):
+        oldPas = AreaUser.query(AreaUser.userKey==self.key.urlsafe()).fetch()
+        
+        for y in oldPas:
+            if y.privateArea not in pas:
+                y.deleteRelationship()
+     
+        for x in pas:
+            areaUser = AreaUser(userKey=self.key.urlsafe(), privateArea=x)
+            areaUser.putUnique()
+
         self.privateAreas = pas
         self.put()
 

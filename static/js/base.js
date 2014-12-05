@@ -259,6 +259,9 @@ function newPoint() {
       editDialogAlert('To create a point you must enter something for the title!');      
       return;
     }
+    
+    if (!addCurrentSource()) { return; }  
+    
 
     disableButtonPrimary('#submit_pointDialog');
     $('#submit_pointDialog').text("Publish to Library...");
@@ -525,6 +528,30 @@ function addSource(clickedElement, isCurrent = false) {
         $('#sourceTitle_pointDialog').val("");    
     }   
 }
+
+
+function addCurrentSource() {
+    var sourceURL = $('#sourceURL_pointDialog').val().trim() || "";
+    var sourceTitle = $('#sourceTitle_pointDialog').val() || "";
+    console.log("sourceURL:" + sourceURL);
+    console.log("sourceTitle: " + sourceTitle);
+    if (sourceURL == "" && sourceTitle == "") { return true; }
+     if (sourceURL == "" && sourceTitle != "") {
+        editDialogAlert('URL is required');
+        return false;
+     } else if (!validateURL(sourceURL)) {        
+        editDialogAlert('The URL you specified doesn\'t look like a URL.');  
+        return false;
+     } else {        
+         sourceTitle = sourceTitle == "" ? sourceURL : sourceTitle;        
+        addSourceHTML(sourceURL, sourceTitle, null); 
+        $('#sourceURL_pointDialog').val("");
+        $('#sourceTitle_pointDialog').val("");
+        return true;
+     }   
+ }
+ 
+
 
 function addSourceHTML(sourceURL, sourceTitle, sourceKey) {
     

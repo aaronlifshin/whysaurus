@@ -71,6 +71,8 @@ function callPointEdit(){
         return;
     }
     
+    if (!addCurrentSource()) { return; }  
+    
 	var ed = tinyMCE.get('editor_pointDialog'); 
     var text = tinyMCE.activeEditor.getBody().textContent;
   
@@ -478,6 +480,8 @@ function addPoint(linkType){
         editDialogAlert('To create a point you must enter something for the title!');      
         return;
     }
+    
+    if (!addCurrentSource()) { return; }  
     
 	var ed = tinyMCE.get('editor_pointDialog');
     var text = tinyMCE.activeEditor.getBody().textContent;  

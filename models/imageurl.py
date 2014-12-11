@@ -13,4 +13,4 @@ class ImageUrl(object):
         if self.HTTP_RE.match(instance.imageURL):
             return instance.imageURL
         else:
-            return constants.CDN + '/' + self.format + '-' + urllib.quote(instance.imageURL)
+            return constants.CDN + '/' + self.format + '-' + urllib.quote(instance.imageURL.encode('utf8'))

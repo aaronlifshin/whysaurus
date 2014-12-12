@@ -396,6 +396,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
+                    if currentArea:
+                        user.updatePrivateAreas([currentArea])
                     user.login()
                     self.current_user = user
                     self.auth.set_session(self.auth.store.user_to_dict(user))

@@ -403,7 +403,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     user.login()
                     self.current_user = user
                     self.auth.set_session(self.auth.store.user_to_dict(user))
-                    ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")                                                              
+                    ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")
+                    user.addToSearchIndex()                                                               
                 else:
                     logging.info('Creation failed: ' + str(ok))
         # Remember auth data during redirect, just for this demo. You wouldn't

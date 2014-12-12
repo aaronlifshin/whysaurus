@@ -7,6 +7,7 @@ import datetime
 import webapp2
 
 from google.appengine.ext import ndb
+from google.appengine.api import search
 import webapp2_extras.appengine.auth.models as auth_models
 from webapp2_extras.appengine.auth.models import Unique
 
@@ -202,7 +203,8 @@ class WhysaurusUser(auth_models.User):
                 areaUser = AreaUser(userKey=user.key.urlsafe(), privateArea=existingPrivateArea)
                 areaUser.putUnique()
             
-            ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")            
+            ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")
+            user.addToSearchIndex()         
             return user # SUCCESS       
 
 
@@ -599,7 +601,10 @@ class WhysaurusUser(auth_models.User):
                     self.get_id(), 
                     newEmail, 
                     "updating your email address")
-                self.email = newEmail if newEmail.strip() != "" else None                
+                self.email = newEmail if newEmail.strip() != "" else None
+                # I should only update index if email is changed, so this is theoretically 
+                # the right place, but what if put later fails?
+                self.addToSearchIndex()            
             else:
                 raise WhysaurusException("The email address %s already exists" % newEmail)                       
         self.put()
@@ -692,5 +697,17 @@ class WhysaurusUser(auth_models.User):
             else:
                 logging.info('User %s has no unread notifications or was emailed recently' % user.name)
 
+    def addToSearchIndex(self):
+        index = search.Index(name='users')
+        fields = [
+            search.TextField(name='email', value=self.email),
+            search.TextField(name='name', value=self.name),         
+        ]
+        d = search.Document(doc_id=self.key.urlsafe(), fields=fields)
+        index.put(d)
 
+    # delete user does not exist yet; plug this in when it does
+    def deleteFromSearchIndex(self):
+        doc_index = search.Index(name="users")
+        doc_index.delete(self.key.urlsafe())
     

@@ -23,6 +23,7 @@ from models.reportEvent import ReportEvent
 from models.point import Point
 from models.reportEvent import ReportEvent
 from models.privateArea import PrivateArea
+from models.areauser import AreaUser
     
 class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     """Inherits from gae-simpleauth (SimpleAuthHandler)
@@ -396,10 +397,14 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
+                    if currentArea:
+                        areaUser = AreaUser(userKey=user.key.urlsafe(), privateArea=currentArea)
+                        areaUser.putUnique()
                     user.login()
                     self.current_user = user
                     self.auth.set_session(self.auth.store.user_to_dict(user))
-                    ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")                                                              
+                    ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")
+                    user.addToSearchIndex()                                                               
                 else:
                     logging.info('Creation failed: ' + str(ok))
         # Remember auth data during redirect, just for this demo. You wouldn't

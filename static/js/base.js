@@ -835,7 +835,7 @@ function getSearchResults() {
 		},
 		error: function(xhr, textStatus, error){
     		showAlert('<strong>Oops!</strong> There was a problem during the search.  Refreshing and searching again might help.');            
-            stopSpinnerOnButton('.searchIcon', createNewUser);            
+            stopSpinnerOnButton('.searchIcon', getSearchResults);            
         }
 	});
 	$.ajax();
@@ -1010,6 +1010,10 @@ function createNewUser() {
     			    clearSignupDialog();            
                     $("#signupDialog").modal('hide');                                           
                     showSuccessAlert('User created successfully. Please check your email for a validation message.');
+                    console.log(obj)
+                    if (obj.redirect != '') {
+                    	window.location.href = obj.redirect;
+                    }
     			} else {
     				if (obj.error) {
     		    		dialogAlert('#signupDialog',obj.error);

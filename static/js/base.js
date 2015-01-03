@@ -1011,8 +1011,11 @@ function createNewUser() {
                     $("#signupDialog").modal('hide');                                           
                     showSuccessAlert('User created successfully. Please check your email for a validation message.');
                     console.log(obj)
-                    if (obj.redirect != '') {
-                    	window.location.href = obj.redirect;
+                    var redirectTarget = obj.redirect || null;
+                    if (redirectTarget) {
+                    	window.location.href = redirectTarget;
+                    } else {
+                        window.location.reload();
                     }
     			} else {
     				if (obj.error) {

@@ -108,6 +108,25 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         try:
             user = WhysaurusUser.signup(self, email, name, password, website, areas, profession, bio)
             results = {'result': True}
+
+            # See if we can log them into a private area
+            if 'postloginaction' in self.session:
+                # need to figure out how to pass this over to AJAX
+                # and what the point creation will look like
+                logging.info("Have post login action when signing up as an email user")
+            elif len(user.privateAreas) == 1:
+                self.setUserArea(user.privateAreas[0])
+                results['redirect'] = "/"
+            
+            # login newly created user
+            auth_id = 'email: %s' %  email
+            u = self.auth.get_user_by_password(auth_id, password, remember=True,
+              save_session=True)
+            user = self.auth.store.user_model.get_by_id(u['user_id'])
+            self.current_user = user
+            user.login()
+            
+
         except WhysaurusException as e:
             results = {'result': False, 'error': str(e)}
 
@@ -417,7 +436,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             self.doPostLoginAction(postLoginAction, self.session)
         else:  
             target = str(self.session['original_url'])
-            if target.find("/login") != -1: # LOGIN page cannot handle it
+            currentArea = self.session.get('currentArea')
+            if target.find("/login") != -1 or currentArea:
                 target = "/"
             logging.info('_ON_SIGNIN: Redirecting to %s' % target)
             self.redirect(target)

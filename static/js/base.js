@@ -1593,7 +1593,8 @@ function activateHeaderAndDialogs() {
         
         $(".removeSource").on('click', function(e) {removeSource(this);});
         $("#areaSwap").on('click', switchArea);
-        $(".areaChoose").on('change', switchArea);
+        $(".areaChoose").on('click', switchArea);
+        $('.dropdown-submenu > a').submenupicker();
         makeNotificationMenuClickable();     
         notificationChannelOpen();
     }

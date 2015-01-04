@@ -124,7 +124,7 @@
                            <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
                     {% else %}
                            <li class="dropdown-submenu"><a id="" data-area="private-area-select">Classrooms</a>
-                           <ul id="" class="dropdown-menu" aria-labelledby="dropdownSubMenu">
+                           <ul id="" class="dropdown-menu" role="menu" aria-labelledby="dropdownSubMenu">
                            {% for area in user.privateAreas %}
                              <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
                            {% endfor %}

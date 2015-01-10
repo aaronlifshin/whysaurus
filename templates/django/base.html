@@ -115,8 +115,26 @@
                             <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
                         </a>
                         <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                {% if user and user.anyPrivateAreas %}
+                    {% if currentArea != '' %}
+                           <li><a class="areaChoose" data-area="public">Public Space</a></li>                
+                    {% endif%}                          
+
+                    {% if not user.manyPrivateAreas %}
+                           <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
+                    {% else %}
+                           <li class="dropdown-submenu"><a id="" data-area="private-area-select">Classrooms</a>
+                           <ul id="" class="dropdown-menu" role="menu" aria-labelledby="dropdownSubMenu">
+                           {% for area in user.privateAreas %}
+                             <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
+                           {% endfor %}
+                           </ul></li>
+                    {% endif %}                              
+                {% endif %}  
+                          
+                          
                           {% if currentArea and currentArea != '' %}
-                            <li><a tabindex="-1" href="/roster">{{currentArea}} roster</a></li>
+                            <li><a tabindex="-1" href="/roster">{{currentArea}} Roster</a></li>
                           {% endif %}
                           {% if user.admin %}
                               <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
@@ -182,29 +200,9 @@
               <div class="row">
                   <div id="areaLine" class="span12" >
                     {% if currentArea != '' %}
-                       You are in the <strong>{{currentArea}}</strong> private area. To enter the <strong>Public Area</strong> 
-                       <a class="clickable" id="areaSwap" data-area="public">click here</a>
-                       {% if user.manyPrivateAreas %}
-                         or
-                         <select class="areaChoose">
-                           <option>Choose an area</option>
-                           {% for area in user.privateAreas %}
-                             <option value="{{area}}" data-area="{{area}}">{{area}}</option>
-                           {% endfor %}
-                         </select>
-                       {% else %}.{% endif %}
+                       <strong>{{currentArea}}</strong>
                     {% else %}
-                       You are in the <strong>Public Area</strong>. To enter the <strong>{{user.privateAreas.0}}</strong> private area
-                       <a class="clickable" id="areaSwap" data-area="{{user.privateAreas.0}}">click here</a>
-                       {% if user.manyPrivateAreas %}
-                         or
-                         <select class="areaChoose">
-                           <option>Choose an area</option>
-                           {% for area in user.privateAreas %}
-                             <option value="{{area}}" data-area="{{area}}">{{area}}</option>
-                           {% endfor %}
-                         </select>
-                       {% else %}.{% endif %}
+                       <strong>Public Area</strong>
                     {% endif %}                              
                   </div>
               </div>

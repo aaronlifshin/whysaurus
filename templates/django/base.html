@@ -129,13 +129,15 @@
                              <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
                            {% endfor %}
                            </ul></li>
-                    {% endif %}                              
+                    {% endif %}
+                    <li class="divider"></li>                     
                 {% endif %}  
                           
                           
                           {% if currentArea and currentArea != '' %}
-                            <li><a tabindex="-1" href="/roster">{{currentArea}} Roster</a></li>
-                          {% endif %}
+                            <li><a tabindex="-1" href="/roster">Roster: {{currentArea}} </a></li>
+                          <li class="divider"></li> 
+                          {% endif %}                          
                           {% if user.admin %}
                               <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                           {% endif %}

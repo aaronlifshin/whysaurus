@@ -16,7 +16,9 @@ class Outliner(AuthHandler):
     def get(self):
         template_values = {
             'user':self.current_user,
-            'currentArea':self.session.get('currentArea')
+            'currentArea':self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
+            
         }
         self.response.out.write(
             self.template_render(

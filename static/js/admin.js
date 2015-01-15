@@ -82,13 +82,15 @@ function createPrivateArea() {
     if (validatePrivateArea()) {
         startSpinnerOnButton('#submit_createPrivateArea');
         var privateAreaName = $("#privateAreaName").val();
+        var privateAreaDisplayName = $("#privateAreaDisplayName").val();
     	$.ajaxSetup({
     		url: "/admin",
     		global: false,
     		type: "POST",
     		data: {
     		    'action': 'createPrivateArea',
-            'privateAreaName': privateAreaName
+            'privateAreaName': privateAreaName,
+            'privateAreaDisplayName': privateAreaDisplayName
     		},
     		success: function(obj){
     			if (obj.result == true) {                    

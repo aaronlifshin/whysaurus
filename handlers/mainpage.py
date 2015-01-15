@@ -78,6 +78,7 @@ class MainPage(AuthHandler):
             'user': user,
             'showManifesto': 1,
             'thresholds': constants.SCORETHRESHOLDS,
-            'currentArea':self.session.get('currentArea')
+            'currentArea':self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }
         self.response.out.write(self.template_render('index.html', template_values))

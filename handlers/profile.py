@@ -26,7 +26,8 @@ class Profile(AuthHandler):
             'viewingOwnPage': viewingOwnPage,
             'createdPoints': profileUser.getCreated(),
             'editedPoints': profileUser.getEdited(),
-            'currentArea': self.session.get('currentArea')
+            'currentArea': self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }
         if viewingOwnPage:
             template_values['recentlyViewed'] = profileUser.getRecentlyViewed()

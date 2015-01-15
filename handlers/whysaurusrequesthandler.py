@@ -3,6 +3,7 @@ import logging
 from webapp2_extras import auth, sessions
 from jinja2 import exceptions
 from google.appengine.api import namespace_manager
+from models.privateArea import PrivateArea
 
 class WhysaurusRequestHandler(webapp2.RequestHandler):
     _user = None
@@ -15,6 +16,8 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
             user = self.current_user
             if user:
                 sessionArea = self.session.get('currentArea')
+                currentAreaDisplayName = self.session.get('currentAreaDisplayName')
+                
                 if sessionArea is None: # Sometimes the session seems to expire
                     if len(user.privateAreas) == 1:
                         sessionArea = self.setUserArea(user.privateAreas[0])
@@ -26,7 +29,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
             # Save all sessions.
             self.session_store.save_sessions(self.response)
 
-    # This has no checks on wheter the user is a part of the area
+    # This has no checks on whether the user is a part of the area
     # in some cases we want to switch the current area
     # even if they're not logged in
     # e.g. to create a user in that area
@@ -45,6 +48,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
             area_name = ''
 
         self.session['currentArea'] = area_name
+        self.session['currentAreaDisplayName'] = PrivateArea.getDisplayName(area_name)
         namespace_manager.set_namespace(area_name)
 
         return area_name

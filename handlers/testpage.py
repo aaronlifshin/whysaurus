@@ -35,7 +35,8 @@ class TestPage(AuthHandler):
         template_values = {
             'user': user,
             'message': message,            
-            'currentArea':self.session.get('currentArea')        
+            'currentArea':self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')    
         }
         self.response.out.write(self.template_render('message.html', template_values))        
         

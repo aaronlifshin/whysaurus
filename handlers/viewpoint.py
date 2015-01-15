@@ -28,7 +28,8 @@ class ViewPoint(AuthHandler):
             templateValues = {
                'user': self.current_user,
                'message': "URL or Key must be supplied.",
-               'currentArea': self.session.get('currentArea')
+               'currentArea': self.session.get('currentArea'),
+               'currentAreaDisplayName': self.session.get('currentAreaDisplayName')
             }            
             
         if not point:
@@ -36,7 +37,8 @@ class ViewPoint(AuthHandler):
                'user': self.current_user,
                'message': "Could not find point. Some points are in private areas and you \
                need to be logged in and authorized to view them.",
-               'currentArea': self.session.get('currentArea')
+               'currentArea': self.session.get('currentArea'),
+               'currentAreaDisplayName': self.session.get('currentAreaDisplayName')               
             }
         else:   # we have a point!
             voteValue = 0
@@ -90,6 +92,7 @@ class ViewPoint(AuthHandler):
                 'voteValue': voteValue,
                 'ribbonValue': ribbonValue,
                 'currentArea':self.session.get('currentArea'),
+                'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
             }
             
             if full:

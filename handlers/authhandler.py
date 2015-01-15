@@ -148,6 +148,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     def setPrivateAreaUser(self, areaName):
         if PrivateArea.exists(areaName):
             self.session['currentArea'] = areaName
+            self.session['currentAreaDisplayName'] = PrivateArea.getDisplayName(areaName)
             user = self.current_user    
             self.response.out.write(
                 self.template_render(
@@ -314,7 +315,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     def passwordChangePage(self):    
         self.response.out.write(self.template_render('resetpassword.html', {
             'user': self.current_user, 
-            'currentArea':self.session.get('currentArea')
+            'currentArea':self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }))
         
     def changePassword(self): 
@@ -324,6 +326,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         template_values = {}
         template_values['message'] = ""
         template_values['currentArea'] = self.session.get('currentArea')
+        template_values['currentAreaDisplayName'] = self.session.get('currentAreaDisplayName')
 
         user = self.current_user 
         if not password or password != self.request.get('password2'):
@@ -411,6 +414,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))  
                 _attrs['url'] = WhysaurusUser.constructURL(_attrs['name'])
                 currentArea = self.session.get('currentArea')
+                currentAreaDisplayName = self.session.get('currentAreaDisplayName')
                 if currentArea:                    
                     _attrs['privateAreas'] = [currentArea]
                 
@@ -437,6 +441,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         else:  
             target = str(self.session['original_url'])
             currentArea = self.session.get('currentArea')
+            currentAreaDisplayName = self.session.get('currentAreaDisplayName')
             if target.find("/login") != -1 or currentArea:
                 target = "/"
             logging.info('_ON_SIGNIN: Redirecting to %s' % target)
@@ -462,6 +467,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     template_values = {
                         'user': user, 
                         'currentArea':self.session.get('currentArea'),
+                        'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                         'pointURL':newPoint.url
                     }
                     html = self.template_render('waitingPage.html', template_values)
@@ -482,6 +488,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
 
     def logout(self):
         self.session['currentArea'] = ''
+        self.session['currentAreaDisplayName'] = ''
         self.auth.unset_session()
         self.redirect('/')
 

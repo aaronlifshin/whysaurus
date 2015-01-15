@@ -6,9 +6,10 @@ import logging
 
 class PrivateArea(ndb.Model):
     name = ndb.StringProperty()
+    displayName = ndb.StringProperty()
     
     @staticmethod
-    def create(newName):
+    def create(newName, newDisplayName):
         namespaceCheck = re.compile('[0-9A-Za-z._-]{0,100}')
         if not namespaceCheck.match(newName): 
             raise WhysaurusException(
@@ -19,7 +20,7 @@ class PrivateArea(ndb.Model):
         elif PrivateArea.exists(newName):
             raise WhysaurusException(
                     "Sorry, PrivateArea %s already exists. Please choose a different name." % newName)
-        newArea = PrivateArea(name=newName, id=newName)
+        newArea = PrivateArea(name=newName, id=newName, displayName=newDisplayName)
         newArea.put()
         
     @staticmethod
@@ -40,4 +41,28 @@ class PrivateArea(ndb.Model):
             return True
         else:
             return False
+    
+    @staticmethod
+    def getDisplayName(areaName):
 
+        previousNamespace = namespace_manager.get_namespace()
+        
+        if previousNamespace and previousNamespace != '':                
+            namespace_manager.set_namespace('') # DEFAULT NAMESPACE
+        
+        query = PrivateArea.query(PrivateArea.name==areaName)
+        logging.info(query)
+        pa = query.get()
+
+        if previousNamespace and previousNamespace != '':                
+            namespace_manager.set_namespace(previousNamespace)
+        
+        logging.info('++++++++++++ getDisplayName' + str(pa) + 'AN: ' + areaName)
+        if pa:
+            if pa.displayName is not None:
+                return pa.displayName
+            else:
+                return areaName
+        else:
+            return ''
+        

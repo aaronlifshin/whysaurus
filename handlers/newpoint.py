@@ -57,7 +57,8 @@ class NewPoint(AuthHandler):
                         'user': user,
                         'voteValue': 0,
                         'ribbonValue': False,
-                        'currentArea':self.session.get('currentArea')
+                        'currentArea':self.session.get('currentArea'),
+                        'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
                     }
                     html = self.template_render('pointContent.html', templateValues)
 

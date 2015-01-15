@@ -18,10 +18,10 @@ from google.appengine.api import namespace_manager
 
 
 class AdminPage(AuthHandler):
-    def createPrivateArea(self, newName):
+    def createPrivateArea(self, newName, newDisplayName):
         results = {'result': False}
         try:
-            PrivateArea.create(newName) 
+            PrivateArea.create(newName, newDisplayName) 
             results = {
                 'result': True,
                 'newNamespace': newName
@@ -60,7 +60,8 @@ class AdminPage(AuthHandler):
         if (action == 'createPrivateArea'):
             # Anyone can create a private area
             newName = self.request.get('privateAreaName')
-            results = self.createPrivateArea(newName)
+            newDisplayName = self.request.get('privateAreaDisplayName')
+            results = self.createPrivateArea(newName, newDisplayName)
         elif (action == 'saveUsers'): 
             if user.admin:
                 users = json.loads(self.request.get('newUserValues'))
@@ -112,7 +113,8 @@ class AdminPage(AuthHandler):
             'user': user,
             'users': paginatedUsers,
             'areas': areas,
-            'currentArea':self.session.get('currentArea')
+            'currentArea':self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }
 
         self.response.out.write(
@@ -130,7 +132,8 @@ class AdminPage(AuthHandler):
 
         template_values = {
             'user': user,
-            'currentArea':self.session.get('currentArea')
+            'currentArea':self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }
         if user and user.admin:                
             self.response.out.write(

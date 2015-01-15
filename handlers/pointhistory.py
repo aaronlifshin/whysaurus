@@ -16,7 +16,8 @@ class PointHistory(AuthHandler):
             'numPoints': len(pointData) if pointData else 0,
             'pointData': pointData,
             'user': self.current_user,
-            'currentArea':self.session.get('currentArea')
+            'currentArea':self.session.get('currentArea'),
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
 
         }
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'

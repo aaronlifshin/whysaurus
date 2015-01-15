@@ -12,7 +12,8 @@ class About(AuthHandler):
             user.getActiveNotifications()
         self.response.out.write(
             self.template_render('about.html', 
-                {'user': user, 
+                {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                  'currentArea':self.session.get('currentArea')}))
 
 
@@ -24,6 +25,7 @@ class Help(AuthHandler):
         self.response.out.write(
             self.template_render('help.html', 
                 {'user': user, 
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
 
 
@@ -35,6 +37,7 @@ class Contact(AuthHandler):
         self.response.out.write(
             self.template_render('contact.html',
                 {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
 
 class Manifesto(AuthHandler):
@@ -45,6 +48,7 @@ class Manifesto(AuthHandler):
         self.response.out.write(
             self.template_render('manifesto.html',
                 {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
                 
 class Education(AuthHandler):
@@ -55,6 +59,7 @@ class Education(AuthHandler):
         self.response.out.write(
             self.template_render('education.html',
                 {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
                 
 class CommonCore(AuthHandler):
@@ -65,6 +70,7 @@ class CommonCore(AuthHandler):
         self.response.out.write(
             self.template_render('commonCore.html',
                 {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
  
 class APUSH(AuthHandler):
@@ -75,6 +81,7 @@ class APUSH(AuthHandler):
         self.response.out.write(
             self.template_render('apushistory.html',
                 {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
 
 class Walkthrough(AuthHandler):
@@ -85,6 +92,7 @@ class Walkthrough(AuthHandler):
         self.response.out.write(
             self.template_render('walkthrough.html',
                 {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
                                
 class ListSignUp(AuthHandler):
@@ -95,4 +103,5 @@ class ListSignUp(AuthHandler):
         self.response.out.write(
             self.template_render('listSignUp.html',
                 {'user': user,
+                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))

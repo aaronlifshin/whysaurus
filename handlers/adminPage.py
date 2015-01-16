@@ -223,7 +223,8 @@ class AdminPage(AuthHandler):
         template_values = {
             'user': user,
             'users': paginatedUsers,
-            'currentArea':userNamespace
+            'currentArea':userNamespace,
+            'currentAreaDisplayName': self.session.get('currentAreaDisplayName')
         }
         
         namespace_manager.set_namespace(userNamespace)   

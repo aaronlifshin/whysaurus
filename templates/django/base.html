@@ -99,7 +99,7 @@
                           <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
                           <li class="divider"></li>                      
                           <li><a href="/contact">Send us Feedback</a></li>                      
-                  </ul>                       
+                  </ul>
                 </span>  
               </div>     
                    
@@ -115,29 +115,29 @@
                             <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
                         </a>
                         <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                {% if user and user.anyPrivateAreas %}
-                    {% if currentArea != '' %}
-                           <li><a class="areaChoose" data-area="public">Public Space</a></li>                
-                    {% endif%}                          
+                        {% if user and user.anyPrivateAreas %}
+                            {% if currentArea != '' %}
+                                   <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>                
+                            {% endif%}                          
 
-                    {% if not user.manyPrivateAreas %}
-                           <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
-                    {% else %}
-                           <li class="dropdown-submenu pull-left"><a id="" data-area="private-area-select">Classrooms</a>
-                           <ul id="" class="dropdown-menu" role="menu" aria-labelledby="dropdownSubMenu">
-                           {% for area in user.privateAreas %}
-                             <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
-                           {% endfor %}
-                           </ul></li>
-                    {% endif %}
-                    <li class="divider"></li>                     
-                {% endif %}  
-                          
-                          
+                            {% if not user.manyPrivateAreas %}
+                                   <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
+                            {% else %}
+                                   <li class="dropdown-submenu pull-left">
+                                       <a data-area="private-area-select">Go to Classroom</a>
+                                       <ul id="classroomSubmenu" class="dropdown-menu" role="menu" aria-labelledby="dropdownSubMenu">
+                                       {% for area in user.privateAreas %}
+                                         <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
+                                       {% endfor %}
+                                       </ul>
+                                   </li>
+                            {% endif %}
+                            <li class="divider"></li>
+                        {% endif %}
                           {% if currentArea and currentArea != '' %}
-                            <li><a tabindex="-1" href="/roster">Roster: {{currentArea}} </a></li>
-                          <li class="divider"></li> 
-                          {% endif %}                          
+                            <li><a tabindex="-1" href="/roster">Classroom Roster</a></li>
+                          <li class="divider"></li>
+                          {% endif %}
                           {% if user.admin %}
                               <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                           {% endif %}

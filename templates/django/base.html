@@ -55,7 +55,7 @@
   </head>
   
   <body>
-    <div id="header" class="navbar navbar-fixed-top grayBackground">
+    <div id="header" class="navbar navbar-fixed-top {% if currentArea and currentArea != '' %}blueBackground {{currentArea}}{% else %}grayBackground{% endif %}">
       <div class="container">
          <div class="row">
           <div class="span2">

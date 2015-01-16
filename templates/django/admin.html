@@ -3,7 +3,7 @@
 {% block mainPageContent %}
   <script type="text/javascript" src="/static/js/admin.js"></script>
 
-  <button id='createPrivateArea'>Create Private Area</button>
+  <button id='createPrivateArea'>Create Classroom</button>
   <button id='saveUsers'>Save Users</button>  
   <a href='uploadUserPage' id='uploadUsers'>Upload Users</a>  
   <a href='/dailyReport' id='dailyReport'>Go to daily report</a>  
@@ -51,24 +51,23 @@
   
   <div class="modal hide fade" data-keyboard="true" id="privateAreaDialog" role="dialog" aria-hidden="true">
      <form id='frm_privateArea' class="form-horizontal" action="/admin" method="POST">          
-        <div class="modal-header"><h3>Create Private Area</h3></div>
-        <div class="row-fluid">The private area name will be displayed to users of that area. <br>
-        It cannot exceed 100 characters.  Alphanumeric characters and . _ - only.</div>                    
+        <div class="modal-header"><h3>Create Classroom</h3></div>
+        <div class="row-fluid">The classroom display name will be displayed to students of that area. <br>
+        The classroom code cannot exceed 100 characters and must use alphanumeric characters and . _ - only.</div>                
         <div class="row-fluid" id="alertArea"></div>    
         <div class="modal-body">       
           <div class="control-group">
-            <label class="control-label" for="privateAreaName">Name of Private Area</label>
+            <label class="control-label" for="privateAreaName">Classroom Code</label>
             <div class="controls">            
                 <input id="privateAreaName" name="privateAreaName"  type="text"></input>
             </div>
             </div>
             <div class="control-group">
             
-            <label class="control-label" for="privateAreaDisplayName">Description of Private Area</label>
+            <label class="control-label" for="privateAreaDisplayName">Classroom Display Name</label>
             <div class="controls">            
                 <input id="privateAreaDisplayName" name="privateAreaDisplayName"  type="text"></input>
-            </div>
-            
+            </div>            
           </div>            
         </div>
         <div class="modal-footer">

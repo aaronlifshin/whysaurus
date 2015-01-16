@@ -54,7 +54,7 @@ function saveUsers() {
     		},
             success: function(obj){
     			if (obj.result == true) { 
-                    showSuccessAlert('Private areas for users have been saved successfully')
+                    showSuccessAlert('Classroom assignments for users have been saved successfully')
                     stopSpinnerOnButton('#saveUsers', saveUsers);                
     			} else {
     				if (obj.error) {
@@ -72,7 +72,7 @@ function saveUsers() {
     	});
     	$.ajax();
     } else {
-        showAlert('No Private Areas to save');
+        showAlert('No Classrooms to save');
     }
 
     
@@ -105,7 +105,7 @@ function createPrivateArea() {
                     $('[name=privateArea]').click(function() {changePrivateAreaValue(this);});
         		    $("#privateAreaDialog").modal('hide');
                 var privateAreaURL= 'https://www.whysaurus.com/area/' + privateAreaName;
-                showSuccessAlert('Private area ' + privateAreaName + ' has been created successfully. Users can go to <a href=\'' + privateAreaURL + '\'>' + privateAreaURL + '</a> to create accounts within this area.' )                
+                showSuccessAlert('Classroom ' + privateAreaName + ' has been created successfully. Users can go to <a href=\'' + privateAreaURL + '\'>' + privateAreaURL + '</a> to create accounts within this classroom.' )                
     			} else {
     				if (obj.error) {
     		    		dialogAlert('#privateAreaDialog',obj.error);

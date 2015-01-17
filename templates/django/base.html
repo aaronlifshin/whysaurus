@@ -117,25 +117,22 @@
                         <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                         {% if user and user.anyPrivateAreas %}
                             {% if currentArea != '' %}
-                                   <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>                
+                                   <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>       
+                                   <li class="divider"></li>                                            
                             {% endif%}                          
 
                             {% if not user.manyPrivateAreas %}
                                    <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
                             {% else %}
-                                   <li class="dropdown-submenu pull-left">
-                                       <a data-area="private-area-select">Go to Classroom</a>
-                                       <ul id="classroomSubmenu" class="dropdown-menu" role="menu" aria-labelledby="dropdownSubMenu">
-                                       {% for area in user.privateAreas %}
-                                         <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
-                                       {% endfor %}
-                                       </ul>
-                                   </li>
+                                   <li class="menuHeading">Change Classroom:</li>
+                                   {% for area in user.privateAreas %}
+                                     <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
+                                   {% endfor %}
                             {% endif %}
                             <li class="divider"></li>
                         {% endif %}
                           {% if currentArea and currentArea != '' %}
-                            <li><a tabindex="-1" href="/roster">Classroom Roster</a></li>
+                            <li><a tabindex="-1" href="/roster">Roster</a></li>
                           <li class="divider"></li>
                           {% endif %}
                           {% if user.admin %}

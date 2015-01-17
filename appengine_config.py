@@ -1,5 +1,5 @@
 remoteapi_CUSTOM_ENVIRONMENT_AUTHENTICATION = (
-    'HTTP_X_APPENGINE_INBOUND_APPID', ['whysaurus-beta'])
+    'HTTP_X_APPENGINE_INBOUND_APPID', ['whysaurustest'])
 
 appstats_CALC_RPC_COSTS = True
 

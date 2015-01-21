@@ -275,22 +275,22 @@ a:visited {
 }
 
 #searchArea{
-    top: -3px;
-	height: 60px;
-	line-height:60px;
+	height: 48px;
+	line-height:48px;
 	position:relative;
 }
 
 #searchBox {
-	width:100%; 
-    color:black;
+  position:relative;
+	top:3px;
+  width:100%; 
+  color:black;
     // use these three CSS3 box-sizing calls to cause the padding to cut
     //  into the box width instead of add to it
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box;  
-    height:30px;
-	margin-top:0px;
+  height:30px;
 	padding-right:40px;
 	border: 1px solid #000000;
 	-webkit-border-radius: 0px;
@@ -301,7 +301,7 @@ a:visited {
    
 #searchArea .searchIcon {
 	position: relative;
-	top: -41px;
+	top: -32px;
 	right: -2px;
 	height: 16px;
 	width:25px;
@@ -473,7 +473,7 @@ a:visited {
     color: black;
     font-size: @fontSizeMediumCond;
     font-weight: bold;
-    margin-top: -5px;
+    position:relative;
 }
 
 .headerLinks {	                                
@@ -537,8 +537,8 @@ a:visited {
 }
  
 .userMenuArea a, #notifications a.dropdown-toggle  {
-	height:60px;
-	line-height:60px;
+	height:48px;
+	line-height:48px;
 }
 
 .userMenuArea .dropdown-menu li a {
@@ -546,9 +546,9 @@ a:visited {
 }
        
 #userMenuSignedIn {
-    min-width: 90px;
-    margin-right: 98px;
+    min-width: 150px;
     margin-top: -1px;
+    right:0px;    
 }
       
 #userMenuSignedOut {
@@ -583,7 +583,6 @@ a:visited {
 #notifications {
     position: relative;	
     right: 18px;
-    top:-8px;
     cursor:pointer;
 }
  

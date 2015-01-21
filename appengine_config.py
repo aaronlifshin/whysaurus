@@ -1,5 +1,5 @@
 remoteapi_CUSTOM_ENVIRONMENT_AUTHENTICATION = (
-    'HTTP_X_APPENGINE_INBOUND_APPID', ['whysaurustest'])
+    'HTTP_X_APPENGINE_INBOUND_APPID', ['whysaurus'])
 
 appstats_CALC_RPC_COSTS = True
 
@@ -15,5 +15,5 @@ def gae_mini_profiler_should_profile_production():
     #return users.is_current_user_admin()
     return False
       
-def gae_mini_profiler_should_profile_development():    
+def gae_mini_profiler_should_profile_development():
     return True

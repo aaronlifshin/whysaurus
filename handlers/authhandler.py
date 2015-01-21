@@ -325,17 +325,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         user_id = self.request.get('user_id')
         template_values = {}
         template_values['message'] = ""
-<<<<<<< Local Changes
-        template_values[ ] = self.session.get('currentArea')
-=======
         template_values['currentArea'] = self.session.get('currentArea')
-<<<<<<< Local Changes
         template_values['currentAreaDisplayName'] = self.session.get('currentAreaDisplayName')
->>>>>>> External Changes
-=======
-        template_values['currentAreaDisplayName'] = self.session.get('currentAreaDisplayName')
->>>>>>> External Changes
-
         user = self.current_user 
         if not password or password != self.request.get('password2'):
             template_values['message']  = "Passwords do not match"

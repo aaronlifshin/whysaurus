@@ -159,7 +159,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                         'headerHideActions':1
                     }))
         else:
-            self.response.out.write('Sorry, the private area %s does not appear \
+            self.response.out.write('Sorry, that classroom %s does not appear \
                 to exist. Click <a href="/">here</a> to go home' % areaName)
             
     def login(self):
@@ -325,8 +325,16 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         user_id = self.request.get('user_id')
         template_values = {}
         template_values['message'] = ""
+<<<<<<< Local Changes
+        template_values[ ] = self.session.get('currentArea')
+=======
         template_values['currentArea'] = self.session.get('currentArea')
+<<<<<<< Local Changes
         template_values['currentAreaDisplayName'] = self.session.get('currentAreaDisplayName')
+>>>>>>> External Changes
+=======
+        template_values['currentAreaDisplayName'] = self.session.get('currentAreaDisplayName')
+>>>>>>> External Changes
 
         user = self.current_user 
         if not password or password != self.request.get('password2'):

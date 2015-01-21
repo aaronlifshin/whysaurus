@@ -35,7 +35,7 @@ class ViewPoint(AuthHandler):
         if not point:
             templateValues = {
                'user': self.current_user,
-               'message': "Could not find point. Some points are in private areas and you \
+               'message': "Could not find point. Some points are in private classrooms and you \
                need to be logged in and authorized to view them.",
                'currentArea': self.session.get('currentArea'),
                'currentAreaDisplayName': self.session.get('currentAreaDisplayName')               

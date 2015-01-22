@@ -55,7 +55,7 @@
   </head>
   
   <body>
-    <div id="header" class="navbar navbar-fixed-top {% if currentArea and currentArea != '' %}blueBackground {{currentArea}}{% else %}grayBackground{% endif %}">
+    <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}grayBackground{% endif %}">
       <div class="container">
          <div class="row">
           <div class="span2">
@@ -116,20 +116,26 @@
                         </a>
                         <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                         {% if user and user.anyPrivateAreas %}
-                            {% if currentArea != '' %}
+                            {% if currentArea %}
                                    <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>       
                                    <li class="divider"></li>                                            
-                            {% endif%}                          
+                            {% endif %}                          
 
                             {% if not user.manyPrivateAreas %}
+                                {% if not currentArea %}
+                                   <li class="menuHeading">Change Classroom:</li>                                
                                    <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
+                                   <li class="divider"></li>                                   
+                                 {% endif %}
                             {% else %}
                                    <li class="menuHeading">Change Classroom:</li>
                                    {% for area in user.privateAreas %}
-                                     <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
+                                       {% if area != currentArea %}
+                                         <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
+                                       {% endif %}
                                    {% endfor %}
+                                   <li class="divider"></li>                                   
                             {% endif %}
-                            <li class="divider"></li>
                         {% endif %}
                           {% if currentArea and currentArea != '' %}
                             <li><a tabindex="-1" href="/roster">Roster</a></li>
@@ -193,15 +199,13 @@
     </div>
 
 
-     {% if user and user.anyPrivateAreas %}
-        <div class="privateAreaHeader {% if currentArea == '' %}publicAreaColor{% endif %}">
+     {% if user and user.anyPrivateAreas and currentArea %}
+        <div class="privateAreaHeader">
           <div class="container">
               <div class="row">
-                {% if currentArea != '' %}
                   <div id="areaLine" class="span12" >
                        <strong>{{currentAreaDisplayName}}</strong>
                   </div>
-                {% endif %}                              
               </div>
           </div>
         </div>

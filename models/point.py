@@ -826,6 +826,7 @@ class Point(ndb.Model):
     def transactionalAddSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
                             linkType, imageURL,imageAuthor,imageDescription,
                             sourcesURLs, sourcesNames, urlToUse):
+         oldPointRoot = oldPointRoot.key.get() # re-get inside transaction for concurrency
          oldPoint = oldPointRoot.getCurrent()
          newLinkPoint, newLinkPointRoot = Point.create(
              title=title,

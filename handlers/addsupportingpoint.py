@@ -20,21 +20,25 @@ class AddSupportingPoint(AuthHandler):
         
         if user:   
             try:       
-                oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('pointUrl'))
-                newPoint, newLinkPoint = Point.addSupportingPoint(
-                    oldPointRoot=oldPointRoot,
-                    title=self.request.get('title'),
-                    content=self.request.get('content'),
-                    summaryText=self.request.get('plainText'),
-                    user=user,
-                    # backlink=oldPoint.key.parent(),
-                    linkType = linkType,
-                    imageURL=self.request.get('imageURL'),
-                    imageAuthor=self.request.get('imageAuthor'),
-                    imageDescription=self.request.get('imageDescription'),
-                    sourcesURLs=sourcesURLs,
-                    sourcesNames=sourcesNames            
-                )           
+                parentPointURL = self.request.get('pointUrl')
+                oldPoint, oldPointRoot = Point.getCurrentByUrl(parentPointURL)
+                if oldPointRoot:
+                    newPoint, newLinkPoint = Point.addSupportingPoint(
+                        oldPointRoot=oldPointRoot,
+                        title=self.request.get('title'),
+                        content=self.request.get('content'),
+                        summaryText=self.request.get('plainText'),
+                        user=user,
+                        # backlink=oldPoint.key.parent(),
+                        linkType = linkType,
+                        imageURL=self.request.get('imageURL'),
+                        imageAuthor=self.request.get('imageAuthor'),
+                        imageDescription=self.request.get('imageDescription'),
+                        sourcesURLs=sourcesURLs,
+                        sourcesNames=sourcesNames            
+                    )
+                else:
+                    raise WhysaurusException('Point with URL %s not found' % parentPointURL)
             except WhysaurusException as e:
                 jsonOutput = {
                     'result': False,

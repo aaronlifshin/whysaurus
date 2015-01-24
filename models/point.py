@@ -253,9 +253,10 @@ class Point(ndb.Model):
     def getCurrentByUrl(url):
         pointRootQuery = PointRoot.gql("WHERE url= :1", url)
         pointRoot = pointRootQuery.get()
-        point = None
+        point = None        
         if pointRoot:
             point = pointRoot.getCurrent()
+                        
         if point:
             return point, pointRoot
         else:
@@ -822,10 +823,10 @@ class Point(ndb.Model):
             return None
 
     @classmethod
-    @ndb.transactional(xg=True)
+    @ndb.transactional(xg=True, retries=5)
     def transactionalAddSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
                             linkType, imageURL,imageAuthor,imageDescription,
-                            sourcesURLs, sourcesNames, urlToUse):
+                            sourcesURLs, sourcesNames, urlToUse):                             
          oldPointRoot = oldPointRoot.key.get() # re-get inside transaction for concurrency
          oldPoint = oldPointRoot.getCurrent()
          newLinkPoint, newLinkPointRoot = Point.create(

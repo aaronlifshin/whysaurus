@@ -349,6 +349,10 @@ function setCharNumText(titleField) {
     }
 }
 
+function clearEditDialogAlert() {
+    $('#pointDialog .alert').remove();
+}
+
 function dialogAlert(dialogID, alertHTML) {
     $(dialogID + ' #alertArea').prepend($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));  
 }

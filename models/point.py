@@ -32,7 +32,7 @@ from google.appengine.ext import ndb
 from google.appengine.ext.db import BadRequestError, TransactionFailedError
 from google.appengine.api import search
 from google.appengine.api.taskqueue import Task
-
+from google.appengine.ext import deferred
 
 from imageurl import ImageUrl
 from whysaurusexception import WhysaurusException
@@ -247,7 +247,7 @@ class Point(ndb.Model):
             taskParams['additionalText'] = additionalText
         t = Task(url='/addNotifications', 
                  params=taskParams)
-        t.add(queue_name="notifications")
+        t.add(queue_name="notifications", transactional=True)
         
     @staticmethod
     def getCurrentByUrl(url):
@@ -666,6 +666,7 @@ class Point(ndb.Model):
         links = self.getStructuredLinkCollection(linkType)        
         if not voteCount:
             voteCount = 0
+            
         if linkCurrentVersion:
             if linkRoot is None:
                 raise WhysaurusException(
@@ -680,9 +681,7 @@ class Point(ndb.Model):
                         "That point is already a %s point of %s" % 
                             (linkType, self.title))
                             
-            linkRoot.isTop = False
             linkCurrentVersion.isTop = False
-            linkRoot.put()
             linkCurrentVersion.put()
             
             logging.info('Linking the new point. Have: %d, %d' % (voteCount, fRating))
@@ -715,7 +714,7 @@ class Point(ndb.Model):
         if pointsToLink:
             for pointToLink in pointsToLink:
                 if 'voteCount' in pointToLink:
-                    logging.info('Linking the new point. Have: %d, %d' % \
+                    logging.info('Linking the new point with Vote Count. Have: %d, %d' % \
                         ( pointToLink['voteCount'], pointToLink['fRating']))
                 # addLink only adds to arrays
                 newPoint.addLink(pointToLink['pointRoot'],
@@ -736,20 +735,21 @@ class Point(ndb.Model):
             
         # CONCURRENCY FIX
         # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
-        possiblyUpdatedRoot = theRoot.key.get()
+        # LET'S TRY WITHOUT THIS
+        """possiblyUpdatedRoot = theRoot.key.get()
         possiblyNewCurrent = possiblyUpdatedRoot.getCurrent()
         if (possiblyNewCurrent.key != self.key):
             logging.warning('Collision on the DB was detected.  Attempting to recover.')
             newPoint.version = possiblyNewCurrent.version + 1
             possiblyNewCurrent.current = False
-            possiblyNewCurrent.put()
+            possiblyNewCurrent.put()"""
 
         newPoint.put()
         theRoot.current = newPoint.key
         theRoot.put()
         theRoot.setTop()
                 
-        user.recordEditedPoint(theRoot.key) # Add to the user's edited list    
+        deferred.defer(user.recordEditedPoint, theRoot.key, _transactional=True) # Add to the user's edited list    
         return newPoint, theRoot
 
     # pointsToLink is a set of links of the new point we want to link
@@ -801,10 +801,11 @@ class Point(ndb.Model):
 
             # Not sure why this is needed: this should be getting handled by code already in addLink
             try:
-                Follow.createFollow(user.key, theRoot.key, "edited")
+                deferred.defer(Follow.createFollow, user.key, theRoot.key, "edited", _transactional=True)
             # If we are in transaction this is not allowed, but will be handled elsewhere
             except BadRequestError:
                 pass
+
             if pointsToLink:
                 # For now we only ever add a single linked point
                 Point.addNotificationTask(
@@ -815,8 +816,8 @@ class Point(ndb.Model):
             else:
                 Point.addNotificationTask(theRoot.key, user.key, 0) # "edited" notification
 
-            # THIS NEEDS TO CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
-            newPoint.addToSearchIndexNew()
+            # THIS COULD CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
+            deferred.defer(newPoint.addToSearchIndexNew, _transactional=True)
 
             return newPoint
         else:
@@ -867,6 +868,7 @@ class Point(ndb.Model):
                 linkType, imageURL,imageAuthor,imageDescription,
                 sourcesURLs, sourcesNames, newURL)            
         except TransactionFailedError as e:
+            # DO NOT edit this error message carelessly, it is checked in (for example) point.js
             raise WhysaurusException("Could not add supporting point because someone else was editing this point at the same time.  Please try again.")
         Follow.createFollow(user.key, newLinkPointRoot.key, "created")
         Follow.createFollow(user.key, oldPointRoot.key, "edited")        
@@ -1207,16 +1209,17 @@ class PointRoot(ndb.Model):
         if linkType == 'supporting':
             if linkPointRootKey not in self.pointsSupportedByMe:
                 self.pointsSupportedByMe = self.pointsSupportedByMe + \
-                [linkPointRootKey]
+                [linkPointRootKey]      
+                self.isTop = False                          
                 self.put()
         elif linkType == 'counter':
             if linkPointRootKey not in self.pointsCounteredByMe:
                 self.pointsCounteredByMe = self.pointsCounteredByMe + \
                 [linkPointRootKey]
+                self.isTop = False                
                 self.put()
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
-
 
     def addViewCount(self):
         if not self.viewCount:

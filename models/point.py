@@ -247,7 +247,7 @@ class Point(ndb.Model):
             taskParams['additionalText'] = additionalText
         t = Task(url='/addNotifications', 
                  params=taskParams)
-        t.add(queue_name="notifications", transactional=True)
+        t.add(queue_name="notifications", transactional=ndb.in_transaction())
         
     @staticmethod
     def getCurrentByUrl(url):
@@ -749,7 +749,7 @@ class Point(ndb.Model):
         theRoot.put()
         theRoot.setTop()
                 
-        deferred.defer(user.recordEditedPoint, theRoot.key, _transactional=True) # Add to the user's edited list    
+        deferred.defer(user.recordEditedPoint, theRoot.key, _transactional=ndb.in_transaction()) # Add to the user's edited list  
         return newPoint, theRoot
 
     # pointsToLink is a set of links of the new point we want to link
@@ -801,7 +801,7 @@ class Point(ndb.Model):
 
             # Not sure why this is needed: this should be getting handled by code already in addLink
             try:
-                deferred.defer(Follow.createFollow, user.key, theRoot.key, "edited", _transactional=True)
+                deferred.defer(Follow.createFollow, user.key, theRoot.key, "edited", _transactional=ndb.in_transaction())
             # If we are in transaction this is not allowed, but will be handled elsewhere
             except BadRequestError:
                 pass
@@ -817,7 +817,7 @@ class Point(ndb.Model):
                 Point.addNotificationTask(theRoot.key, user.key, 0) # "edited" notification
 
             # THIS COULD CHECK WHETHER IT IS NECESSARY TO UPDATE THE INDEX
-            deferred.defer(newPoint.addToSearchIndexNew, _transactional=True)
+            deferred.defer(newPoint.addToSearchIndexNew, _transactional=ndb.in_transaction() )
 
             return newPoint
         else:

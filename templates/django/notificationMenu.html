@@ -29,10 +29,6 @@
               {% endif %} 
               a point you {{notification.followReason}}:
             <em>{{notification.referencePoint.title}}</em>
-            <!-- Removing comments bc they can get quite long, and to keep notifications consistent, until we find a clean way to incorporate them -->
-            <!-- {% if notification.additionalText and notification.additionalText != None %}
-            <div class="notificationCommentText"> {{ notification.additionalText|safe }} </div>
-            {% endif %}-->
           {% endif %}
           </div>
           <div class="Submenu_SmallText notificationTimeStamp">

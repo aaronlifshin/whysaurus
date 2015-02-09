@@ -490,23 +490,25 @@ function addPoint(linkType){
     //$('#submit_pointDialog').after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
     disableButtonPrimary('#submit_pointDialog');
     $('#submit_pointDialog').text("Publish to Library...");
-    $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");      
+    $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");     
+    
+    var ajaxData =  {
+		'content': ed.getContent(),
+        'plainText': text.substring(0,500),
+		'title': $('#title_pointDialog').val(),
+		'linkType':linkType,
+		'pointUrl': $('#pointArea').data('pointurl'),
+		'imageURL':$('#link_pointDialog').val(),
+        'imageAuthor':$('#author_pointDialog').val(),
+        'imageDescription': $('#description_pointDialog').val(),
+        'sourcesURLs': JSON.stringify(getNewSourcesURLs()),
+        'sourcesNames': JSON.stringify(getNewSourcesNames())
+	};
 	$.ajaxSetup({
 		url: "/addSupportingPoint",
 		global: false,
 		type: "POST",
-		data: {
-			'content': ed.getContent(),
-            'plainText': text.substring(0,500),
-			'title': $('#title_pointDialog').val(),
-			'linkType':linkType,
-			'pointUrl': $('#pointArea').data('pointurl'),
-			'imageURL':$('#link_pointDialog').val(),
-            'imageAuthor':$('#author_pointDialog').val(),
-            'imageDescription': $('#description_pointDialog').val(),
-            'sourcesURLs': JSON.stringify(getNewSourcesURLs()),
-            'sourcesNames': JSON.stringify(getNewSourcesNames())
-		},
+		data: ajaxData,
 		success: function(obj){
 			if (obj.result == true) {
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
@@ -518,6 +520,7 @@ function addPoint(linkType){
                 errorMessage = obj.errMessage || null;
                 console.log(obj);
 				if (errorMessage) {
+                    clearEditDialogAlert();
 		    		editDialogAlert(errorMessage);
 		    	} else {
                     console.log('EM' + errorMessage);

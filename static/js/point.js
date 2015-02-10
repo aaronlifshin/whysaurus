@@ -467,6 +467,58 @@ function pointListAppend(linkType, pointHTML, numLinkPoints) {
 }
 
 
+function tryAddSupporting(linkType, ajaxData, retries) {
+	$.ajaxSetup({
+		url: "/addSupportingPoint",
+		global: false,
+		type: "POST",
+		data: ajaxData,
+		success: function(obj){
+			if (obj.result == true) {
+                pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
+  			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  				
+                stopSpinner();                
+    		    $("#pointDialog").modal('hide');
+                enableDialogButtons('#submit_pointDialog');
+			} else {
+                errorMessage = obj.errMessage || null;
+                console.log(obj);
+				if (errorMessage) {
+                    clearEditDialogAlert();
+                    // really this needs to pass back a different code from the back end. I sin again.
+                    if (errorMessage.indexOf('point because someone else was editing this point at the same time.  Please try again.') > -1) {
+                        if (retries < 5) {
+                            var newRetries = retries + 1;
+                            errorMessage = 'Other users are editing the point, your point is taking a bit longer to be added.  Please wait. (Retry ' + newRetries.toString() + ').';
+                            
+                            console.log('Retry error message was: ' + errorMessage);
+        		    		editDialogAlert(errorMessage);                            
+                            setTimeout(function() {tryAddSupporting(linkType, ajaxData, newRetries);}, 1000);
+                        } else {
+                            errorMessage = 'Too many attempts, please wait and hit publish again.';
+        		    		editDialogAlert(errorMessage);
+                            stopSpinner();
+                            enableDialogButtons('#submit_pointDialog');
+                        }
+                    }
+		    	} else {
+                    console.log('EM' + errorMessage);
+                    console.log('OERRR' + obj.errMessage);
+		    		editDialogAlert("There was an error");
+                    stopSpinner();
+                    enableDialogButtons('#submit_pointDialog');
+		    	}
+			}
+		},
+		fail: function(xhr, textStatus, errorThrown){
+            editDialogAlert('The server returned an error: ' + errorThrown + ' You may try again.');
+            stopSpinner();
+            enableDialogButtons('#submit_pointDialog');
+        }
+	});
+	$.ajax();
+}
+
 function addPoint(linkType){
     unlinkVisible = !$("[id^=unlink_" + linkType + "]").hasClass("ui-helper-hidden");
     if (unlinkVisible) toggleUnlink(linkType);
@@ -488,7 +540,8 @@ function addPoint(linkType){
     //$('#submit_pointDialog').off('click');
     //$('#submit_pointDialog').hide();
     //$('#submit_pointDialog').after("<img id=\"spinnerImage\" src=\"/static/img/ajax-loader.gif\"/>");
-    disableButtonPrimary('#submit_pointDialog');
+    disableDialogButtons('#submit_pointDialog');
+    
     $('#submit_pointDialog').text("Publish to Library...");
     $('#submit_pointDialog').after("<img id=\"spinnerImage\" class=\"spinnerPointSubmitButtonPosition\" src=\"/static/img/ajax-loader.gif\"/>");     
     
@@ -504,40 +557,9 @@ function addPoint(linkType){
         'sourcesURLs': JSON.stringify(getNewSourcesURLs()),
         'sourcesNames': JSON.stringify(getNewSourcesNames())
 	};
-	$.ajaxSetup({
-		url: "/addSupportingPoint",
-		global: false,
-		type: "POST",
-		data: ajaxData,
-		success: function(obj){
-			if (obj.result == true) {
-                pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
-  			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  				
-                stopSpinner();                
-    		    $("#pointDialog").modal('hide');
-                resetSubmitButton('#submit_pointDialog');
-			} else {
-                errorMessage = obj.errMessage || null;
-                console.log(obj);
-				if (errorMessage) {
-                    clearEditDialogAlert();
-		    		editDialogAlert(errorMessage);
-		    	} else {
-                    console.log('EM' + errorMessage);
-                    console.log('OERRR' + obj.errMessage);
-		    		editDialogAlert("There was an error");
-		    	}
-                stopSpinner();
-                resetSubmitButton('#submit_pointDialog');
-			}
-		},
-		error: function(xhr, textStatus, error){
-            editDialogAlert('The server returned an error: ' + str(error) + ' You may try again.');
-            stopSpinner();
-            resetSubmitButton('#submit_pointDialog');
-        }
-	});
-	$.ajax();
+    
+    tryAddSupporting(linkType, ajaxData, 0);
+	
 }
 
 function linkPointControlsInitialState() {

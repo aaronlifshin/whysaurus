@@ -1,5 +1,5 @@
-# Set the total storage limit for all queues to 120MB
-total_storage_limit: 500K
+total_storage_limit: 500M
+
 queue:
 - name: dbchecker
   rate: 1/m

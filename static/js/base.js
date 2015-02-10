@@ -44,6 +44,14 @@ function disableButtonPrimary(buttonID) {
    $(buttonID).addClass('primaryButtonDisabled');
 }
 
+function disableDialogButtons(primaryButtonID) {
+    $(primaryButtonID).off('click');
+    $(primaryButtonID).off('.ys'); 
+    $(primaryButtonID).addClass('primaryButtonDisabled');
+    
+    $('#cancel_pointDialog').prop("disabled",true);
+}
+
 // stopSpinner() is re-enabling the button's functionality, 
 //  so we only need a function to remove the disabled styling
 function removeDisableColorButtonPrimary(buttonID) {  
@@ -54,6 +62,11 @@ function removeDisableColorButtonPrimary(buttonID) {
 function resetSubmitButton(buttonID, label) {  
    removeDisableColorButtonPrimary(buttonID);
    $(buttonID).text("Publish to Library"); 
+}
+
+function enableDialogButtons(primaryButtonId) {
+    resetSubmitButton(primaryButtonId);    
+    $('#cancel_pointDialog').prop("disabled", false);    
 }
  
 // remove styling and remove ellipsis
@@ -689,7 +702,7 @@ function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState, r
    	$('#leftColumn').html(pointHTML);   
    	$('#mainContainer').data('contentpath', '/point/' + pointURL);
 	if (typeof(activatePointArea) != 'function') {
-	    $.getScript('/static/js/point.js', function() {activatePointArea});              		
+	    $.getScript('/static/js/point.js?i=1', function() {activatePointArea});              		
 	} else {
 	    activatePointArea();
 	}
@@ -1369,7 +1382,8 @@ function makeNotificationMenuClickable() {
 function showPointDialog(dialogAction, dialogTitle) {    
     $("#submit_pointDialog").data("dialogaction", dialogAction)
     $('div.modal-header h3', $('#pointDialog')).text(dialogTitle);    
-  
+    clearEditDialogAlert();
+    
     $("#pointDialog").modal('show');
     if (!$('#collapsibleTitleArea').hasClass('in')) {
         $('#collapsibleTitleArea').addClass('in'); 

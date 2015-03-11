@@ -1,6 +1,10 @@
-from pageobjects.remotedriver import RemoteDriver
+from pageobjects.webdrivers import RemoteDriver, LocalChromeDriver
 
-remote_driver = RemoteDriver()
+use_sauce = False
+if use_sauce:
+  current_driver = RemoteDriver()
+else:
+  current_driver = LocalChromeDriver()
 
 
 css_locators = {}

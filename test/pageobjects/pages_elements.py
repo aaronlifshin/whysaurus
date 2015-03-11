@@ -1,5 +1,5 @@
 import unittest
-from pageobjects import remote_driver, css_locators, id_locators
+from pageobjects import current_driver, css_locators, id_locators
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class BasePageElement(object):    
   def __get__(self, obj, type=None):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
     if hasattr(self, 'css_selector'):
       return self.driver.find_element_by_css_selector(self.css_selector)  
     elif hasattr(self, 'id_selector'):
@@ -54,7 +54,7 @@ class Username(BasePageElement):
     self.id_selector = id_locators['EmailSignInDialog.username']
     
   def __set__(self, obj, val):
-    self.driver = remote_driver.driver    
+    self.driver = current_driver.driver    
     me = self.driver.find_element_by_id(self.id_selector)
     me.send_keys(val)
   
@@ -63,7 +63,7 @@ class Password(BasePageElement):
     self.id_selector = id_locators['EmailSignInDialog.password']  
   
   def __set__(self, obj, val):
-    self.driver = remote_driver.driver    
+    self.driver = current_driver.driver    
     me = self.driver.find_element_by_id(self.id_selector)
     me.send_keys(val)
 
@@ -79,7 +79,7 @@ class PointTitleInput(BasePageElement):
     self.id_selector = id_locators['PointDialog.titleInput']
     
   def __set__(self, obj, val):
-    self.driver = remote_driver.driver    
+    self.driver = current_driver.driver    
     me = self.driver.find_element_by_id(self.id_selector)
     me.send_keys(val)
     
@@ -96,7 +96,7 @@ class NewPointTitle(BasePageElement):
     self.id_selector = id_locators['HomePage.newPointTitle']
     
   def __set__(self, obj, val):
-    self.driver = remote_driver.driver    
+    self.driver = current_driver.driver    
     me = self.driver.find_element_by_id(self.id_selector)
     me.send_keys(val)
 
@@ -113,7 +113,7 @@ class MainPagePointList(BasePageElement):
     self.css_selector = css_locators['HomePage.pointList']  
     
   def __get__(self, obj, type=None):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
     return self.driver.find_elements_by_css_selector(self.css_selector)
     
 class AreaLine(BasePageElement):
@@ -145,7 +145,7 @@ class AddSupportingPoint(BasePageElement):
     self.id_selector2 = id_locators['PointPage.addSupportWhenNonZero']  
         
   def __get__(self, obj, type=None):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
     try: 
       button = self.driver.find_element_by_id(self.id_selector1)
       self.id_selector = self.id_selector1
@@ -161,7 +161,7 @@ class CreateNewSupportingPoint(BasePageElement):
     
     
   def __get__(self, obj, type=None):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
     
     # One of two menu items is visible
     elements = self.driver.find_elements_by_css_selector(self.css_selector)
@@ -175,7 +175,7 @@ class SupportingPointsList(BasePageElement):
     self.css_selector = css_locators['PointPage.supportingPointList']
   
   def __get__(self, obj, type=None):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
     return self.driver.find_elements_by_css_selector(self.css_selector)
       
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -190,18 +190,18 @@ class EmailSignInDialog(BasePageObject):
   password = Password()
   
   def _init_(self):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
 
     # Check that the sign in dialog is open by looking for its title
     dlgTitle = self.driver.find_element_by_css_selector(css_locators['EmailSignInDialog.title'])
     assert "Sign In" in dlgTitle.text
         
   def submit(self):
-    submitButton = remote_driver.driver.find_element_by_id(id_locators['EmailSignInDialog.submit'])
+    submitButton = current_driver.driver.find_element_by_id(id_locators['EmailSignInDialog.submit'])
     submitButton.click()
 
   def login(self, username, password):   
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
      
     self.username = username
     self.password = password
@@ -209,6 +209,7 @@ class EmailSignInDialog(BasePageObject):
     try:
         WebDriverWait(self.driver, 7).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, css_locators['main_menu.userNameOrSignIn']), username))
     except TimeoutException:
+      print "Timed out after log in"
       assert False
       
 class PointDialog(BasePageObject):
@@ -217,20 +218,16 @@ class PointDialog(BasePageObject):
   submit = PointDialogSubmit()
 
   def _init_(self):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
     
     # Check that Create exists in the title of the dialog, for now
     # This will have to be changed when we start using it for edit    
     assert "Create " in self.title 
     
   def submitDialog(self):
-    self.driver = remote_driver.driver
-    
+    self.driver = current_driver.driver    
     self.submit.click()
-    try:
-        WebDriverWait(self.driver, 7).until(EC.invisibility_of_element_located((By.ID, "pointDialog")))
-    except TimeoutException:
-      assert False
+    WebDriverWait(self.driver, 7).until(EC.invisibility_of_element_located((By.ID, "pointDialog")))  
 
 # This is kind of like a page object but for the main menu
 class PageAreaMainMenu(BasePageObject):
@@ -240,7 +237,7 @@ class PageAreaMainMenu(BasePageObject):
   goToPublicAreaMenu = GoToPublicArea()
   
   def __init__(self):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
             
     # Check that the main menu is available by looking for the home navigation button
     homeText = self.driver.find_element_by_css_selector(css_locators['main_menu.homeButton'])
@@ -249,11 +246,12 @@ class PageAreaMainMenu(BasePageObject):
   def goToPublicSpace(self):
     self.userNameOrSignIn.click()
     self.goToPublicAreaMenu.click()  
-    self.driver.implicitly_wait(3)
-            
+    WebDriverWait(self.driver, 3).until(EC.invisibility_of_element_located((By.ID, id_locators['HomePage.areaLine'])))
+                
   def login(self, username, password='a123123123'):          
     self.userNameOrSignIn.click()
     self.loginWithEmail.click()
+    WebDriverWait(self.driver, 1).until(EC.visibility_of_element_located((By.ID, id_locators['EmailSignInDialog.username'])))
     
     # Passing a harmless method as runTest, because we don't actually want to run a test case here,
     # but EmailSignInDialog inherits from unittest.TestCase in orde to be able to run assert
@@ -272,8 +270,9 @@ class PageAreaMainMenu(BasePageObject):
   
   def logout(self):
     self.userNameOrSignIn.click()
+    WebDriverWait(self.driver, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, css_locators['main_menu.logout'])))
     self.logoutMenu.click()
-    self.driver.implicitly_wait(3) 
+    WebDriverWait(self.driver, 5).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, css_locators['main_menu.userNameOrSignIn']),"SIGN IN"))
     
   @property
   def is_logged_in(self):
@@ -290,7 +289,7 @@ class HomePage(BasePageObject):
   areaLine = AreaLine()
   
   def __init__(self):
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
             
     # Check that we are on the home page by looking for the main Call to Action
     newPointCallText = self.newPointCall.text
@@ -337,7 +336,7 @@ class PointPage(BasePageObject):
   
   def __init__(self, *args, **kwargs):
     unittest.TestCase.__init__(self, *args, **kwargs)    
-    self.driver = remote_driver.driver
+    self.driver = current_driver.driver
             
     # Check that we are on the point page by looking for the agree button
     upVoteButtonText = self.agreeButton.text
@@ -350,7 +349,10 @@ class PointPage(BasePageObject):
     
   def addSupporting(self, title):
     self.addSupportingMenu.click()
+    self.driver.implicitly_wait(1)
+    
     self.createNewSupportingMenu.click()
+    WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located((By.ID, id_locators['PointDialog.titleInput'])))
     
     pd = PointDialog("__str__") # __str__ is passed as a no-op test method
     assert "Create Supporting Point" in pd.title.text
@@ -370,7 +372,7 @@ class PointPage(BasePageObject):
     self.adminMenu.click()
     self.deleteButton.click()
     try:
-        WebDriverWait(self.driver, 3).until(EC.alert_is_present(),
+        WebDriverWait(self.driver, 5).until(EC.alert_is_present(),
                                        'Timed out waiting for PA creation ' +
                                        'confirmation popup to appear.')
 
@@ -378,7 +380,6 @@ class PointPage(BasePageObject):
         alert_text = alert.text
         assert "Deleted point" in alert_text 
         alert.accept()        
-        print "alert accepted"
     except TimeoutException:
         assert False
     

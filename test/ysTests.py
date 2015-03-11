@@ -8,11 +8,12 @@ import unittest
 import sauceclient
 from datetime import datetime
 
-from selenium import webdriver
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 from sauceclient import SauceClient
-from pageobjects import remote_driver, css_locators, id_locators
+from pageobjects import current_driver, use_sauce, css_locators, id_locators
 from pageobjects.pages_elements import PageAreaMainMenu, HomePage, PointPage
 
 browsers = [{"platform": "Mac OS X 10.9",
@@ -48,7 +49,7 @@ class SauceSampleTest(unittest.TestCase):
   def setUp(self):
     self.desired_capabilities['name'] = self.id()
 
-    self.driver = remote_driver.connect(USERNAME, ACCESS_KEY, self.desired_capabilities)    
+    self.driver = current_driver.connect(USERNAME, ACCESS_KEY, self.desired_capabilities)    
     self.driver.get('http://whysaurustest.appspot.com/')
     assert "Whysaurus" in self.driver.title
        
@@ -87,22 +88,30 @@ class SauceSampleTest(unittest.TestCase):
     if self.pointUrlsToDelete:
       mm = PageAreaMainMenu()
       if mm.is_logged_in:       
-        mm.logout()      
+        mm.logout()
       mm.loginToPublic('adminuser')
     
     for url in self.pointUrlsToDelete:
-      print "Trying to delete URL: " + url 
-      self.driver.get(url)      
-      self.driver.implicitly_wait(3)
-      PointPage("__str__").delete()
+      print "Trying to delete URL: " + url
+      try:
+
+        self.driver.get(url)
+        WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.ID, id_locators['PointPage.agreeButton'])))
+        print "POINT PAGE DELETE"
+        
+        PointPage("__str__").delete()
+        print "Finished deleting that one" 
+      except:
+        print "Could not delete that one"
       
-            
-    print("Link to your job: https://saucelabs.com/jobs/%s" % self.driver.session_id)
-    
     try:
+      if use_sauce:
+        print("Link to your job: https://saucelabs.com/jobs/%s" % self.driver.session_id)
+      
         if sys.exc_info() == (None, None, None):
             sauce.jobs.update_job(self.driver.session_id, passed=True)
         else:
             sauce.jobs.update_job(self.driver.session_id, passed=False)
+            
     finally:
         self.driver.quit()

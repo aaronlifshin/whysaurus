@@ -1,5 +1,5 @@
-application: whysarustest
-version: 1
+application: whysaurustest
+version: a
 runtime: python27
 api_version: 1
 threadsafe: true

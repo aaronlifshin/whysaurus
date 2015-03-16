@@ -1,6 +1,6 @@
 var TEST_CONFIG = {
-  appName: 'whysarustest',
-  appVersion: '1'
+  appName: 'whysaurustest',
+  appVersion: 'a'
 };
 
 var STAGING_CONFIG = {
@@ -41,9 +41,35 @@ module.exports = function(grunt) {
         command: 'dev_appserver.py --skip_sdk_update_check --host localhost --port 8081 --admin_host localhost .',
         options: {
           async: true,
-        },
-      },
+        },        
+      }
     },
+    gae: {
+        options: {
+            auth: './gae.auth'
+        },
+        test: {
+            action: 'update',
+            options: {
+                application: 'whysaurustest',
+                version: 'a'
+            }
+        },
+        staging: {
+            action: 'update',
+            options: {
+                application: 'whysaurus',
+                version: 'c'
+            }
+        },
+        live: {
+            action: 'update',
+            options: {
+                application: 'whysaurus',
+                version: 'a'
+            }
+        }
+    }
   });
 
   // load the tasks
@@ -51,18 +77,19 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-preprocess');
   grunt.loadNpmTasks('grunt-shell-spawn');
+  grunt.loadNpmTasks('grunt-gae');
 
   // define the tasks
   grunt.registerTask('local', 'Builds and deploys to the TEST appengine environment.',
                         [ 'clean', 'preprocess:test', 'shell:local' ]);
                    
   grunt.registerTask('test', 'Builds and deploys to the TEST appengine environment.',
-                        [ 'clean', 'preprocess:test' ]);
+                        [ 'gae:test' ]);
                         
   grunt.registerTask('staging', 'Builds and deploys to the STAGING appengine environment.',
-                        [ 'clean', 'preprocess:staging']);
+                        [ 'gae:staging']);
                         
   grunt.registerTask('prod', 'Builds and deploys to the PROD appengine environment.',
-                        [ 'clean', 'preprocess:prod' ]);
+                        [ 'gae:live' ]);
 
 };

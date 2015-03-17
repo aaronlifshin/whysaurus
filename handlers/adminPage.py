@@ -36,7 +36,7 @@ class AdminPage(AuthHandler):
         for user in users:
             u = WhysaurusUser.getByUrl(user['url'])
             if u:
-                u.updatePrivateAreas(user['privateAreas'])
+                u.updateUserSettings(user['privateAreas'], user['role'])
             else:
                 results = {
                     'result': False, 
@@ -161,7 +161,7 @@ class AdminPage(AuthHandler):
                     user = WhysaurusUser.signup(self, email=username, name=username, 
                                                 password=randomPassword, website=None, areas=None, 
                                                 profession=None, bio=None)
-                    user.updatePrivateAreas(['Cannon_Human_Environments'])
+                    user.updateUserSettings(['Cannon_Human_Environments'])
                     bigMessage.append('%s,%s' % ( username, randomPassword))
                 except WhysaurusException as e:
                     bigMessage.append('Could not create user: %s. Error was:%s' % (username, str(e)))

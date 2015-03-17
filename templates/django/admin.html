@@ -17,7 +17,8 @@
         <th>Edited</th>  
         <th>Viewed </th>        
         <th>Last Login </th>                      		                     
-        <th>User Private Area</th> 
+        <th>User Classroom(s)</th>
+        <th>User Role</th>
         <th>Password reset</th>                      
     </tr>
   {% for yUser in users %}
@@ -29,7 +30,7 @@
         <td>{{yUser.u.recentlyViewedRootKeys|length}}</td>           
         <td>{{yUser.u.PSTlastlogin}}</td>                     		                 
         <td>
-          <select data-placeholder="Choose an area..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
+          <select data-placeholder="Choose classroom(s)..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
           {% for area in areas %}
             {% if area.name in yUser.u.privateAreas %}
               <option selected="true" value="{{area.name}}">{{area.name}}</option>
@@ -38,7 +39,14 @@
             {% endif %}
           {% endfor %}
           </select>
-        </td>  
+        </td>
+        <td>
+            <select class="role-chooser">
+                <option {% if not yUser.u.isTeacher and not yUser.u.isAdmin %}selected="true"{% endif %}>User</option>  
+                <option {% if yUser.u.isTeacher %}selected="true"{% endif %}>Teacher</option>
+                <option {% if yUser.u.isAdmin %}selected="true"{% endif %}>Admin</option>
+            </select>
+        </td>
         <td>
             {% if yUser.u.emailUser %}
                 <a  name="resetPassword" data-userurl="{{yUser.u.url}}">Reset password </a>                

@@ -138,8 +138,10 @@
                             {% endif %}
                         {% endif %}
                           {% if currentArea and currentArea != '' %}
-                            <li><a tabindex="-1" href="/roster">Roster</a></li>
-                          <li class="divider"></li>
+                              {% if user.isAdmin or user.isTeacher %}
+                                <li><a tabindex="-1" href="/roster">Roster</a></li>
+                                <li class="divider"></li>
+                              {% endif %}
                           {% endif %}
                           {% if user.admin %}
                               <li><a tabindex="-1" href="/admin"> Admin </a></li>                   

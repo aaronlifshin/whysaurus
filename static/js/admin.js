@@ -32,9 +32,13 @@ function getUsersData() {
         var privateAreas = $u.find('.private-area-chooser option:selected').map(function(){
             return this.value;
         });
+        
+        var roleSelect = $u.find('.role-chooser option:selected');
+        var role = roleSelect[0].value;
 
         return {
             privateAreas: privateAreas.toArray(),
+            role: role,
             url: $u.data('url')
         };
     }).toArray();
@@ -54,7 +58,7 @@ function saveUsers() {
     		},
             success: function(obj){
     			if (obj.result == true) { 
-                    showSuccessAlert('Classroom assignments for users have been saved successfully')
+                    showSuccessAlert('Classroom assignments and roles have been saved successfully')
                     stopSpinnerOnButton('#saveUsers', saveUsers);                
     			} else {
     				if (obj.error) {

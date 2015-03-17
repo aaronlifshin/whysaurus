@@ -35,6 +35,7 @@ class WhysaurusUser(auth_models.User):
     url = ndb.StringProperty(default=None)
     numCopies = ndb.IntegerProperty(default=0)
     admin = ndb.BooleanProperty(default=False)
+    role = ndb.StringProperty(default="")
     recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
     createdPointRootKeys = ndb.KeyProperty(repeated=True)
     editedPointRootKeys = ndb.KeyProperty(repeated=True)
@@ -77,6 +78,14 @@ class WhysaurusUser(auth_models.User):
     @property
     def moreNotificationsExist(self):
         return self._moreNotificationsExist
+        
+    @property
+    def isTeacher(self):
+        return self.role == "Teacher"
+
+    @property
+    def isAdmin(self):
+        return self.admin or (self.role == 'Admin')
        
     def getActiveNotifications(self):
         self._notifications, self._newNotificationCount, \
@@ -176,9 +185,6 @@ class WhysaurusUser(auth_models.User):
           url=url, email=email, name=name, password_raw=password,
           websiteURL=website, areasOfExpertise=areas, currentProfession=profession, 
           bio=bio, verified=False, privateAreas=privateAreas)
-          
-    
-
  
         if not result: #user_data is a tuple
             if 'name' in creationData:
@@ -329,7 +335,7 @@ class WhysaurusUser(auth_models.User):
         else:
             return 0, False                    
 
-    def updatePrivateAreas(self, pas):
+    def updateUserSettings(self, pas, role = None):
         oldPas = AreaUser.query(AreaUser.userKey==self.key.urlsafe()).fetch()
         
         for y in oldPas:
@@ -339,9 +345,12 @@ class WhysaurusUser(auth_models.User):
         for x in pas:
             areaUser = AreaUser(userKey=self.key.urlsafe(), privateArea=x)
             areaUser.putUnique()
+            
+        if role:
+          self.role = role
 
         self.privateAreas = pas
-        self.put()
+        self.put()            
 
     def _getOrCreateVote(self, pointRootKey):
         vote = UserVote.query(             

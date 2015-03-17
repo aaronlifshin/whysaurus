@@ -40,9 +40,9 @@ module.exports = function(grunt) {
       local: {
         command: 'dev_appserver.py --skip_sdk_update_check --host localhost --port 8081 --admin_host localhost .',
         options: {
-          async: true,
+          async: false,
         },        
-      }
+      }      
     },
     gae: {
         options: {

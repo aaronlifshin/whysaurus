@@ -228,6 +228,8 @@ class PointDialog(BasePageObject):
     self.driver = current_driver.driver    
     self.submit.click()
     WebDriverWait(self.driver, 7).until(EC.invisibility_of_element_located((By.ID, "pointDialog")))  
+    WebDriverWait(self.driver, 1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_locators['main_menu.userNameOrSignIn'])))  
+    
 
 # This is kind of like a page object but for the main menu
 class PageAreaMainMenu(BasePageObject):
@@ -349,10 +351,8 @@ class PointPage(BasePageObject):
     
   def addSupporting(self, title):
     self.addSupportingMenu.click()
-    self.driver.implicitly_wait(1)
-    
     self.createNewSupportingMenu.click()
-    WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located((By.ID, id_locators['PointDialog.titleInput'])))
+    WebDriverWait(self.driver, 2).until(EC.element_to_be_clickable((By.ID, id_locators['PointDialog.titleInput'])))
     
     pd = PointDialog("__str__") # __str__ is passed as a no-op test method
     assert "Create Supporting Point" in pd.title.text
@@ -366,6 +366,8 @@ class PointPage(BasePageObject):
     assert title in pointCard.text
     
     pointUrl = pointCard.find_element_by_css_selector('.pointTitle a').get_attribute("href")
+    self.driver.implicitly_wait(2)
+    
     return pointUrl
   
   def delete(self):

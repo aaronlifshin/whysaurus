@@ -145,57 +145,7 @@ class DBIntegrityCheck(AuthHandler):
             errMsg = 'Exception %s when checking %s' % (point.url, str(e))
             return True, messages + [errMsg]                                            
         
-    # OLD DB STRUCTURE
-    """ 
-    def checkPoint(self, point):
-        try:
-            retVal = False
-            messages = []
-            # checkingPointURL = point.key.urlsafe()
-            # bigMessage.append("--------  Checking Point %s: <a href=\"%s%s\">%s</a> "\
-            # % (point.title, constants.ADMIN_DATA_URL, checkingPointURL, point.key))
-            for linkType in ["supporting", "counter"]:
-                linkRoots, linkLastChange = point.getLinkCollections(linkType)
-                links = point.getStructuredLinkCollection(linkType)   
-                
-                if linkLastChange:
-                    for pointKey in linkLastChange:
-                        # Check based on the version array
-                        # 1. Every linked point in the version array 
-                        #    has to have a root in the root array
-                        if not pointKey.parent() in linkRoots: 
-                            messages.append( \
-                            "Point %s. Version %d: Missing corresponding root \
-                            for %s point %s " % (point.url, point.version, linkType, str(pointKey)))
-                            retVal = True
-                        if point.current:
-                            # 2. Every linked point in the link array of a current point 
-                            #    should have backlinks in the root of the linked point
-                            linkRoot = pointKey.parent().get()
-                            backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
-                            if not point.key.parent() in backlinks:
-                                linkedPointURL = linkRoot.key.urlsafe()
-                                messages.append(
-                                "Point %s. Version %d: Has %s link to \
-                                 <a href=\"/point/%s\">%s</a> with no BACKLINK" \
-                                 % (point.url, point.version, linkType, \
-                                     linkRoot.url, linkRoot.url))
-                                retVal = True
-                
-                    if len(linkLastChange) != len(linkRoots):
-                        messages.append(
-                        "Point: <a href=\"/point/%s\">%s</a>. Version %d: \
-                            Length mismatch in %s arrays. \
-                            Version List has: %d. Root Array has: %d " % \
-                            (point.url, point.title, point.version,
-                             linkType, len(linkLastChange), \
-                             len(linkRoots)))
-                        retVal = True    
-            return retVal, messages
-        except Exception as e:
-            errMsg = 'Exception %s when checking %s' % (point.url, str(e))
-            return True, messages + [errMsg]
-    """
+   
     
     def checkRoot(self, pointRoot): 
         try:

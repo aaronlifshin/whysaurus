@@ -71,6 +71,8 @@ class AaronTask(AuthHandler):
             for linkType in ('supporting', 'counter'):  
                 structuredLinkCollection  = []   
                 logging.info('Getting root collections for version %d, link Type: %s' % (point.version, linkType))
+                
+                # THIS FUNCTION HAS NOW BEEN DEPRECATED AND REMOVED FROM THE CODE
                 rootColl, versionColl = point.getLinkCollections(linkType)
                 for rootLink, vLink in zip(rootColl, versionColl):
                     newLink = Link()

@@ -45,7 +45,7 @@
                 </div>
                 <div class="span1">
                     <a name="commentReply" data-parentkey="{{comment.key.urlsafe}}">Reply</a>
-                    {% if user and user.admin and comment.level == 0 %}
+                    {% if user and user.isAdmin and comment.level == 0 %}
                         <a name="commentArchive" data-commentkey="{{comment.key.urlsafe}}">Archive</a>
                     {% endif %}
                 </div>

@@ -143,7 +143,7 @@
                                 <li class="divider"></li>
                               {% endif %}
                           {% endif %}
-                          {% if user.admin %}
+                          {% if user.isAdmin %}
                               <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
                           {% endif %}
                           <li><a tabindex="-1" href="/user/{{user.url}}" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Profile'])"> Profile </a></li>   

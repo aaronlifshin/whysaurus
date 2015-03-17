@@ -356,7 +356,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
     def resetPassword(self): 
         results = {'result': False}
         loggedInUser = self.current_user 
-        if loggedInUser and loggedInUser.admin:                             
+        if loggedInUser and loggedInUser.isAdmin:                             
             targetUserUrl = self.request.get('userurl')
             if targetUserUrl:
                 u = WhysaurusUser.getByUrl(targetUserUrl)

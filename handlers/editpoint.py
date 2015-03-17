@@ -62,7 +62,7 @@ class EditPoint(AuthHandler):
     def changeEditorsPick(self):
         result = {'result': False}
         try:
-            if self.current_user and self.current_user.admin:
+            if self.current_user and self.current_user.isAdmin:
                 point, pointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
                 if not pointRoot:
                     result['error'] = 'Not able to find point by URL'
@@ -82,7 +82,7 @@ class EditPoint(AuthHandler):
     def makeFeatured(self):
         result = {'result': False}
         try:
-            if self.current_user and self.current_user.admin:    
+            if self.current_user and self.current_user.isAdmin:    
                 point, pointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
                 if not pointRoot:
                     result['error'] = 'Not able to find point by URL'
@@ -100,7 +100,7 @@ class EditPoint(AuthHandler):
     def refreshTopStatus(self):
         result = {'result': False}
         try:
-            if self.current_user and self.current_user.admin:    
+            if self.current_user and self.current_user.isAdmin:    
                 point, pointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
                 if not pointRoot:
                     result['error'] = 'Not able to find point by URL'

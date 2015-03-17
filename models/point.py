@@ -1340,7 +1340,7 @@ class PointRoot(ndb.Model):
         return points
         
     def delete(self, user):
-        if not user.admin:
+        if not user.isAdmin:
             return False, 'Not authorized'
 
         # Combine the lists and blow away all reference to me

@@ -8,7 +8,7 @@ class DeletePoint(AuthHandler):
         user = self.current_user
         if not user:
             resultJSON = json.dumps({'result': False, 'error': 'Need to be logged in'})
-        elif not user.admin:
+        elif not user.isAdmin:
             resultJSON = json.dumps({'result': False, 'error': 'Must be admin'})
         else:
             urlToDelete = self.request.get('urlToDelete')

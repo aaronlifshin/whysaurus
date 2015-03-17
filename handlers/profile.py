@@ -74,7 +74,7 @@ class Profile(AuthHandler):
         namespace_manager.set_namespace(userNamespace)
 
         if user:
-            permissionToView = user.admin or profileUser.privateAreas == [] or self.session.get('currentArea') in profileUser.privateAreas
+            permissionToView = user.isAdmin or profileUser.privateAreas == [] or self.session.get('currentArea') in profileUser.privateAreas
         else:
             permissionToView = len(profileUser.privateAreas) == 0
 

@@ -51,7 +51,7 @@ class Comments(AuthHandler):
         parentCommentUrlsafe = self.request.get('parentKey')
         user = self.current_user
         
-        if user and user.admin:
+        if user and user.isAdmin:
             pointRoot = PointRoot.getByUrlsafe(pointRootUrlsafe)
             if pointRoot:
                 try:

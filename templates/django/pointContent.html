@@ -77,7 +77,7 @@
 			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->
 
-        {% if user.admin %}		   
+        {% if user.isAdmin %}		   
             <div class="span2 dropdown responsiveInline responsiveRightMargin iphone5-adminLink">             
                 <a class="dropdown-toggle" id="pointAdminMenu" data-toggle="dropdown">
                 <span class="hidden-phone hidden-xs">Admin</span><img class="" src="/static/img/wrench_icon_blue.png"/>

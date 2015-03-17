@@ -63,7 +63,7 @@ class AdminPage(AuthHandler):
             newDisplayName = self.request.get('privateAreaDisplayName')
             results = self.createPrivateArea(newName, newDisplayName)
         elif (action == 'saveUsers'): 
-            if user.admin:
+            if user.isAdmin:
                 users = json.loads(self.request.get('newUserValues'))
                 results = self.saveUsers(users)
             else:
@@ -84,7 +84,7 @@ class AdminPage(AuthHandler):
             self.response.out.write('Need to login.')
             return
 
-        if not user.admin:
+        if not user.isAdmin:
             self.response.out.write('User not authorized.')
             return
 
@@ -135,7 +135,7 @@ class AdminPage(AuthHandler):
             'currentArea':self.session.get('currentArea'),
             'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }
-        if user and user.admin:                
+        if user and user.isAdmin:                
             self.response.out.write(
                 self.template_render('uploadUsers.html', template_values)) 
         else:
@@ -150,7 +150,7 @@ class AdminPage(AuthHandler):
         namespace_manager.set_namespace('')
         
         loggedInUser = self.current_user
-        if loggedInUser and loggedInUser.admin:                    
+        if loggedInUser and loggedInUser.isAdmin:                    
             userNames=self.request.get('userNames')
             names = string.split(userNames, '\n')
             bigMessage = ['username,password']
@@ -179,7 +179,7 @@ class AdminPage(AuthHandler):
             
     def dailyReport(self):
         user = self.current_user      
-        if user and user.admin:    
+        if user and user.isAdmin:    
             template_values = {
                 'user': user,
                 'dayReportTable': DayEventSummary.getReport()
@@ -206,7 +206,7 @@ class AdminPage(AuthHandler):
         users = []
         i = 0        
         for yUser in queryUsr:
-            if yUser.admin != True:
+            if yUser.isAdmin != True:
                 users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
                 i = i+1
 

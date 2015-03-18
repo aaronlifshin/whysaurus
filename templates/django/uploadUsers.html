@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+<div id="content">
+   <div class="row">Back to  <a href="/admin">admin</a></div>
+        <form id='frm_uploadUsers' class="form-horizontal" action="/uploadUsers" method="POST">   
+            <div class="row">
+                <button class="btn btn-primary" type="submit"> Create Users</button>            
+            </div>
+            <div class="row">                                     
+                User names to create:<textarea name="userNames" rows="40" wrap="physical"></textarea>  
+            </div>                                            
+        </form>            
+</div>
+
+
+{% endblock %}

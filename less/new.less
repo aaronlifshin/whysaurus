@@ -1,0 +1,3284 @@
+@import "variables.less"; // Modify this for custom colors, font-sizes, etc
+
+ 
+ 
+// undo some weird stuff that the bootstrap-glyphicons.css for bootstrap 3 is doing
+// this file is being imported at the top of bootstrap.less, so that it overrides as little as possible
+// it is being used for the arrow icons in the explanatory illustration carousel
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit; 
+} 
+
+         
+// scrollbar always visible to prevent horizontal shifting
+html {overflow-y: scroll;}
+  
+.no-space [class*="span"] { 
+    margin: 0 0 0 0 ;
+}            
+                
+.center { float: none; margin-left: auto; margin-right: auto; }
+
+/* test */  
+body {
+	padding-top: @headerHeight;
+    font-family: ff-meta-web-pro,sans-serif;
+    font-size: @baseFontSize;
+    line-height: @baseLineHeight;
+}
+
+
+
+
+h1 { font-size: @fontSizeLarge;  } // standard main point headings
+h2 { font-size: @fontSizeLarge * 1.9; margin: 48px 0 0px 0; -webkit-text-stroke: 0.5px;} 
+h3 { font-size: @fontSizeLarge * 1.66; }
+h4 { font-size: @fontSizeLargeShave; margin: 28px 0 8px 0; -webkit-text-stroke: 0.2px;}
+h5 { font-size: @fontSizeLarge * 0.66; }
+h6 { font-size: @fontSizeLarge * 0.50; }
+
+
+h1 {
+    line-height: @lineHeightBig;
+}
+       
+a:hover {
+    cursor:pointer;
+}
+
+.hiddenForNow {
+    display: none;
+}
+
+.hiddenAgreeCtrlTillRevealed {
+    opacity:0; // switch this to zero to enable showing disagree/agree only on hover
+}
+
+.hiddenStatTillRevealed {
+    display: none;
+}
+
+.hiddenTillRevealed {
+    display: none;
+}
+
+.showStatOnHover:hover .hiddenStatTillRevealed {
+    display: inline;
+}
+
+.showChildOnHover:hover .hiddenTillRevealed {
+    display: inline;
+}
+
+.pointCard:hover .hiddenAgreeCtrlTillRevealed {
+    opacity:1;
+}
+
+.inlineBlock {
+    display: inline-block;
+}
+  
+.inline {
+    display:inline;
+}  
+  
+/* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
+.hidden-xxs {
+    display: inherit;
+} 
+.visible-xxs {
+    display: none;   
+}
+    
+/* if we want to set a "visited" color for links, uncomment this... 
+a:visited {
+    color: @purple;
+}*/
+
+.title a:visited, .voteArea a:visited {
+	text-decoration: none;
+}
+.title a:hover {
+	text-decoration: inherit;
+	color:inherit;
+}
+
+.voteArea a:hover {
+    text-decoration: none;
+}
+
+.disabled {
+    color:@grayTextLight;
+    cursor:default;
+}
+
+.disabled:hover {
+    color:@grayTextLight !important;
+    cursor:default;
+    text-decoration: none !important;
+}
+
+.opacityZero {
+    opacity:0;
+}
+
+#mainContainer {
+    //margin-top: 8px;
+}
+ 
+.dropdown .caret {
+	margin-left:1px;
+}  
+
+.fullPageText {
+    max-width: 540px;
+    margin-bottom: 120px;
+}
+
+// I don't understand why this is necessary... -JF
+.fixOffset2 {
+    position:relative;
+    left:-17px;
+}
+
+.walkthrough {
+  margin-bottom:120px;
+  img {
+    width: 60%;
+  }
+
+  h2 {
+    margin-bottom:30px;
+  }
+
+  h4 {
+    margin-top:40px;
+    margin-bottom:20px;
+  }
+}
+
+.apushistory {
+  h2 {
+    margin-bottom:30px;
+  }
+}
+
+.noLeftMargin {
+    margin-left:0 !important;
+}
+
+.screenshot {
+    margin-bottom: 36px;
+}
+
+.screenshotCaption {
+    margin-bottom: 8px;
+}
+
+
+
+.position-halfway {
+    position: absolute;
+    left: 50%;
+}
+
+.position-onethird {
+    position: absolute;
+    left: 33%;
+}
+
+.position-twothirds {
+    position: absolute;
+    left: 66%;
+}
+
+
+.borderButton {
+	font-family: @sansCondFontFamily;
+    font-weight: 700;
+    font-size: @fontSizeMediumCond;
+    color: @grayTextMedium;
+    background:none;
+    background-color:#FFFFFF;
+    border: 1px solid @grayOutlinesMid;
+    border-radius: 2px;
+	padding: 9px 15px 4px;
+}
+
+.borderButton:hover {
+    background-color:@blueLight;	
+    text-decoration:none;
+}
+
+//help page
+#basics {
+   margin-top:32px;
+}
+
+#helpHeading {
+    margin-bottom:16px;
+}
+
+#helpContent {
+    margin-top:32px;
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   DROPDOWNS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.dropdown-menu {
+    padding-top:7px;
+    padding-bottom:8px;
+}
+   
+.dropdown-menu>li>a {
+    padding-top:3px;
+    padding-right:20px;
+    padding-bottom: 3px;
+    padding-left:10px;
+}
+
+.iconDropdown {
+    padding-right:3px;
+}
+
+.dropdown-menu .divider {
+    border-bottom-color: @grayOutlinesMid;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   HEADER BAR STUFF(MOSTLY)
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+      
+#header{
+    height:@headerHeight;	
+}
+ 
+#logoImage {
+    margin-top: 2px;	
+}
+ 
+#CreatePoint {
+    margin-left:9px; //nudge this link onto the grid
+}
+ 
+.grayBackground {
+	background:#F0F0F0;
+}
+
+.blueBackground {
+  background:#b7e0fe;
+}
+
+#searchArea{
+	height: 48px;
+	line-height:48px;
+	position:relative;
+}
+
+#searchBox {
+  position:relative;
+	top:3px;
+  width:100%; 
+  color:black;
+    // use these three CSS3 box-sizing calls to cause the padding to cut
+    //  into the box width instead of add to it
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;  
+  height:30px;
+	padding-right:40px;
+	border: 1px solid #000000;
+	-webkit-border-radius: 0px;
+  	-moz-border-radius: 0px;
+  	border-radius: 2px; 
+  	font-size: 16px;
+}  
+   
+#searchArea .searchIcon {
+	position: relative;
+	top: -32px;
+	right: -2px;
+	height: 16px;
+	width:25px;
+	background-image: url("/static/img/icon_magnifyingGlass.png");
+	background-repeat: no-repeat;
+}
+
+.newPointInputRowFieldArea {
+    // use the full width, minus the space needed for the publish button
+    // the ~ and "" is needed to pass the calc command through the less compiler
+    width: -moz-calc(~"100% - 146px");
+    width: -webkit-calc(~"100% - 146px");
+    width: calc(~"100% - 146px");
+    margin-right:8px;
+    display:inline;
+}
+
+.newPointInputRowButtonArea {
+    width:140px;
+    display:inline;
+}
+
+.newPointCharNum {
+    font-size: @fontSizeSmall;
+    color: @grayTextLight;
+}
+
+ 
+.mainPageInput {
+    // use border-box to keep padding from making the element bigger
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	border: 1px solid #000000;
+	-webkit-border-radius: 0px;
+  	-moz-border-radius: 0px;
+  	border-radius: 2px; 
+  	font-size: 16px;   
+    height: 32px;  
+    width: 100%;   
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+}
+
+.newPointInputRow {
+    margin-bottom: 20px;
+    margin-left:0px !important;
+}
+
+.newPointCall {
+    min-height:0px !important;
+    //margin-left: auto;
+    //margin-right: auto;
+    //max-width: 75%;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+       
+}   
+     
+.explanationTitle {
+    font-size: 24px;
+    //text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 8px;
+    line-height: @lineHeightBig;
+    letter-spacing: .65px;
+    text-align: center;
+    
+}   
+  
+.newPointCallTitle {
+    font-size: 37px;
+    //text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 8px;
+    line-height: @lineHeightDefault;
+    letter-spacing: .65px;
+    text-align: center;
+    display: inline-block; // needed so that child spans can inherit this when they toggle on for responsive visibility
+    
+}
+
+.sectionTitle {
+    font-size: 38px;
+    //text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 8px;
+    line-height: @lineHeightBig;
+    letter-spacing: .65px;
+    margin-top:16px;
+    //text-align: center;
+    
+}
+
+
+.mainPageMainStream {
+    min-height:0px !important;
+    //max-width: 75%;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left:0px;
+}
+
+#searchArea .searchIcon:hover  {
+    background-image: url("/static/img/icon_magnifyingGlass.png");
+    background-position: 0 -16px;
+}
+
+#newPointTitle::-webkit-input-placeholder, #searchBox::-webkit-input-placeholder {
+	font-size: 0.9375em;
+	color:#6D6E70;
+	font-style: italic;
+	padding-top: 0.18em;
+}
+
+#newPointTitle::-webkit-input-placeholder, #searchBox:-moz-placeholder { /* Firefox 18- */
+    font-size: 0.9375em;
+    color:#6D6E70;
+    font-style: italic;   
+	padding-top: 0.18em;
+}
+
+#newPointTitle::-webkit-input-placeholder, #searchBox::-moz-placeholder {  /* Firefox 19+ */
+    font-size: 0.9375em;
+    color:#6D6E70;
+    font-style: italic;
+	padding-top: 0.18em;
+}
+
+#newPointTitle::-webkit-input-placeholder, #searchBox:-ms-input-placeholder {  
+    font-size: 0.9375em;
+    font:Georgia, Garamond, serif;
+    color:#6D6E70;
+    font-style: italic;  
+	padding-top: 0.18em;
+}
+
+
+.Heading_White_Caps {
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;
+    font-size:1em;
+}
+
+// DEPRECATED?
+#footerCopyright{
+	font-size: 0.5625em;
+	color:#58595B;
+	line-height: 10px;
+	margin-top: 16px;
+}
+
+.topSpace {
+	height:22px;
+}
+  
+.Heading_Black_Caps {
+	size:0.875em;
+    font-family: "ff-meta-web-pro-condensed", sans-serif;
+    color:black;
+    font-weight: bold;
+}
+   
+.headerUserName {	                                
+    font-family: @sansCondFontFamily;
+    color: black;
+    font-size: @fontSizeMediumCond;
+    font-weight: bold;
+    position:relative;
+}
+
+.headerLinks {	                                
+    margin-top:14px;
+	display:block;
+    font-size: @fontSizeMediumCond;
+    font-weight: bold;
+    line-height: @baseLineHeight;
+}
+
+.headerLinks a:hover, .userMenuArea a:hover {
+    color:#00ADEE;
+    text-decoration:none;
+}
+
+.headerLinks a {
+    padding-right:5%;	
+}
+
+.headerUserName a {	                                
+    color: black;
+}
+ 
+.Heading_Black_Caps a {
+	color:black;
+	cursor:pointer;
+}
+   
+.aboutMenu {
+	position:relative;	
+	width:60px;
+    left: @gridGutterWidth;
+}
+    
+.aboutMenu a {
+    padding-right:0;	
+}
+  
+#aboutDropdown {
+    margin-top:11px;
+}  
+  
+.headerLinkIcon {
+    max-height:22px;
+    padding:0;
+    margin:0;
+    margin-right: 2px;
+    position: relative;
+    top: -1px;
+}
+
+.nudgeLeft {
+    margin-left:-3px;
+}
+   
+.userMenuArea #avatar {
+	margin-left:5px;
+    margin-top: -2px;
+	height:40px;
+	width:40px;
+}
+ 
+.userMenuArea a, #notifications a.dropdown-toggle  {
+	height:48px;
+	line-height:48px;
+}
+
+.userMenuArea .dropdown-menu li a {
+	height:auto;
+}
+       
+#userMenuSignedIn {
+    min-width: 150px;
+    margin-top: -1px;
+    right:0px;    
+}
+      
+#userMenuSignedOut {
+    min-width: 90px;
+    margin-left: -46px;
+    margin-top: -1px;
+}
+    
+// bootstrap default is to set right to 0, but I'm not sure why - it seems to cause only problems - JF
+.pull-right > .dropdown-menu {
+  right: auto;
+}
+
+
+.dropdown-menu {
+  //min-width: initial; // bootstrap default is 160px, but it looks better without this - JF
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 4px;  
+  border-bottom-left-radius: 4px;
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END HEADER BAR STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+      
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   NOTIFICATION DROPDOWN STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#notifications {
+    position: relative;	
+    right: 18px;
+    cursor:pointer;
+}
+ 
+#notificationIcon {
+
+    max-width: 28px;
+}
+ 
+#notificationCount {
+	position: absolute;
+	top: 20%;
+	text-align: center;
+	background-color: #00ADEE;
+	color: white;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 1px;
+    padding-bottom: 0px;
+	left: 77%;
+	font-family: "ff-meta-web-pro-condensed", sans-serif;
+	font-size: 0.75em;
+	font-weight: 700;
+	border-radius:2px;
+}
+  
+   
+.notification-menu {
+    margin-left: -328px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
+	border-radius:0px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -ms-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    height: auto;
+    max-height: 600px;    
+    top:53px;
+    width: 360px; 
+    padding-top: 4px;
+}
+
+.notificationMargin {
+    width: 21px;
+    display: block;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+}
+
+.notificationText {
+    display: block;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+    margin-left: 4px;
+    padding-left: 3px;
+    width: 285px;
+    margin-top: -1px;
+    white-space: normal;   
+}
+
+.vertalignmiddle {
+	vertical-align:middle;
+    padding-bottom: 1px;
+}
+
+.Heading_GreyMid_Caps {
+	font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;    
+    text-transform: uppercase;
+    font-size:0.875em;
+    color:#a9a9a9;
+}
+
+.Submenu_text_main {
+	font-family:"ff-meta-web-pro", sans-serif;
+	font-weight:400;
+    font-size:0.813em;
+    color:#000000;
+}
+
+.Submenu_SmallText{
+	font-family:"ff-meta-web-pro", sans-serif;
+	font-weight:400;
+	font-size:0.75em;
+	color:#bdbdbd;
+	line-height:120%;
+}
+
+.notificationMenuItem, #notificationMenuHeader, #notificationMenuFooter {
+	cursor:pointer;	
+    padding:4px 4px 4px 4px;
+	border-bottom: 1px solid #d7d7d7;
+	width:auto;
+}
+
+
+.notificationAvatar {
+	float:right;
+    margin-top:1px;
+}
+
+.notificationMenuItem:hover, #notificationMenuHeader:hover, #notificationMenuFooter:hover {
+	background-color:@blueLight;
+}
+
+.notificationCleared {
+	background-color:#F0F0F0;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END NOTIFICATION DROPDOWN STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   NOTIFICATION AREA IN PROFILE PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+#notificationsArea li {
+	list-style:none;
+    border-bottom: 1px solid #B9BBBD;	
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END NOTIFICATION AREA IN PROFILE PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.pointCard {
+	border-style:solid;
+	border-width:1px;
+	border-color:@grayBoxOutlines;
+  	word-wrap: break-word;
+	cursor:pointer;
+	padding:@boxPaddingDefault;
+	margin-bottom: @spaceBtPointCards;
+    //margin-top: 4px;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+}
+  
+
+[id$=_nonzeroPoints] .pointCard {
+	position: relative;
+}
+
+/*
+.pointCard:hover, .pointSmall:hover, .pointListPoint:hover {
+    background-color:   @pointCardBackground;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityRO);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityRO);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityRO);
+}
+
+.pointCard:hover .score, .pointSmall:hover .score, .pointListPoint:hover .score {
+	color:white;
+}
+*/
+.pointCard .pointTitle {
+	color: black;
+	font-size: @fontSizeMedium;
+    //font-weight:bold;
+	line-height: @lineHeightBig;	
+	margin-bottom: 8px;	
+    padding-left: 1px;
+    padding-right:4px;
+}
+
+.pointCard a:hover {
+    text-decoration:underline;
+}
+
+.pointCard .stat {
+	//color: @grayTextMedium;
+    /*font-weight: bold;*/
+	font-family: @sansFontFamily;
+	//font-size: @fontSizeSmaller;
+    padding-right:8px;
+    //padding-left:3px;
+}
+
+.pointBoxStatsRow {
+    //margin-bottom:24px;
+    margin-left:2px;
+}
+
+.pointCard .linkStat {
+    height:23px;
+    min-height:0px;   
+    display:block;
+    float:left;    
+}
+
+.pointCard .counterColor {
+	background-color:  @grayTextExtraLight;
+}
+
+.pointCard .supportColor {
+    border-color: @grayTextExtraLight;
+    background-color: @grayLightBG;
+    border-width: 1px;
+    border-style: solid;
+    /* put the border on the inside of the box, in order to not mess up the gauge sizing math */
+   -moz-box-sizing:    border-box;
+   -webkit-box-sizing: border-box;
+    box-sizing:        border-box;
+}
+
+.pointCard .gauge {
+	position:relative;
+	margin-top: 8px;	
+}
+
+.pointCard .gaugeText {
+	top:2px;    	
+	position: absolute;
+    font-size: @fontSizeSmall;
+    letter-spacing: @letterSpacingCond;
+    color: @grayTextMedium;
+    font-family: @sansCondFontFamily;
+    font-weight:700;
+    text-transform:Uppercase;
+    padding: 2px;
+ }
+
+ .pointActionButton {
+    margin-top:0px;
+    margin-bottom:2px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom:5px;
+    font-size: 20px
+ }
+ 
+ .pointActionButtonBorder {
+    padding-top: 3px;
+    padding-bottom:2px;
+} 
+ 
+.pointCard .gaugeCounter {
+	right: 3px;
+}
+
+.pointCard .gaugeSupporting {
+    left: 3px;
+}
+
+.pointCard .pointTitle a:hover, .pointSmall .smallTitle a:hover {
+	//text-decoration:none;
+}
+
+.pointTitle a {
+    color:black;
+    //font-size: @fontSizeLarge;
+    //font-weight: bold;
+    //line-height: @lineHeightBig
+}
+
+.pointTitle a:hover {
+    text-decoration:underline !important;
+}
+
+
+.pointSmall {
+	/* background-color: #f8f8f8; */
+    border-style:solid;
+    border-width:1px;
+    border-color: @grayBoxOutlines;
+    word-wrap: break-word;
+    cursor:pointer;
+    padding:5px;
+	margin-bottom: @spaceBtPointCards;
+    //-webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    //-moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    //box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+}
+
+.pointListPoint {
+    background-color: #f8f8f8;
+    border-bottom:1px solid #d7d7d7;
+    word-wrap: break-word;
+    cursor:pointer;
+}
+
+.pointSmall .smallTitle {
+	color: #6D6E70;
+	font-size: 0.75em;
+	line-height: 1.3125em;	
+	margin-bottom: 8px;	
+}
+
+
+.pointBoxActionLine a {
+    //color: @grayTextLight;
+}
+
+.pointSmall .smallStat {
+	color: @grayTextMedium;
+    /*font-weight: bold;*/
+	font-family: @sansFontFamily;
+	font-size: @fontSizeSmaller;	
+}
+
+.yellow .score {
+	color:#EBC821;
+}
+
+.yellow:hover .title {
+	background-color: #EBC821;
+}
+
+.red .score {
+	color:@red;
+}
+
+.red:hover .title {
+	background-color: @red;
+}
+
+.green .score {
+	color:@green;
+}
+
+.green:hover .title {
+	background-color: @green;
+}
+
+.title a {
+	color: #000;
+}
+
+.greenScore {
+	color:@green;
+}
+.redScore {
+	color:@red !important;
+}
+.yellowScore {
+	color:#EBC821;
+}
+
+.boxedElement {
+	border-style:solid;
+	border-width:1px;
+    border-color: @grayBoxOutlines;
+  	word-wrap: break-word;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+}
+ 
+.boxedElement H5 {
+	padding-left: 5px;
+}
+ 
+.pointSummaryText {
+	padding-left: 5px;
+}
+
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   MANIFESTO, PRIVATE AREA BAR and other HOMEPAGE ROW CONTENT
+   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+   
+.areaChoose {
+    margin-top: 0px;
+    margin-bottom: -4px;
+}   
+   
+   
+.manifestoHeaderArea {
+    //margin-top: -52px;
+    //margin-bottom: @homepageRowVerticalPadding;
+    cursor: pointer;
+}
+
+.manifestoTitle {
+    font-size: @baseFontSize * 1.5;
+    font-weight: bold;
+    line-height: @lineHeightXL;
+    text-align: center;
+    padding-top: @homepageRowVerticalPadding * .65 ;
+    padding-bottom: @homepageRowVerticalPadding  ;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.manifestoTitle a {
+    color: black;
+}
+
+.manifestoTitleBig {
+    font-size: @fontSizeExtraLarge;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.65px;
+    color:black;
+    
+}
+
+.manifestoTitleBig:hover {
+    color:black;
+}
+
+#hideManifesto {
+    font-size: @fontSizeSmall;
+    margin-top: -20px;
+    z-index: 100000; 
+}
+
+.manifestoTextTopHeader {
+    //font-size: @fontSizeXXXL;
+}
+ 
+#manifestoText {
+    color: black;    
+    background-color:white;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+} 
+
+.twitter-share-button {
+    margin-top:16px;
+}
+
+.fb-share-button {
+    bottom: 4px;
+    margin-left: 4px;
+    display:inline !important; // need to override facebook's automated restyling for mobile
+}
+
+.textPageBulletList {
+    margin-top:8px;
+}
+
+.explanationColumn {
+    position:relative;
+    top:2px;
+}
+
+.explanationRow {
+    margin-top:28px;
+    min-height:1px;
+    //margin-bottom:16px;
+    width:800px;
+    margin-left:0;
+    padding-bottom:36px;
+}
+
+#explanationRowHomepage {
+    margin-top:@homepageRowVerticalPadding;
+    margin-left:0;
+    padding-bottom:@homepageRowVerticalPadding * .8;
+    //min-height:1px;
+    //margin-bottom:16px;
+    //width:800px;
+    //margin-left:0;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+#explanationRowHelpPage {
+    margin-top:36px;
+    margin-left:0;
+    margin-bottom:36px;
+    padding-bottom:16px;
+    padding-top: 21px;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-top-color:@grayOutlinesMid;
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+ 
+.explanationsCentered {
+    margin-left:auto;
+    margin-right:auto;
+    //margin-top:6px;
+    width:796px; //need to set width precisely to get the centering via margin:auto to work, afaik -JF
+    //padding-left:14px;
+    min-height:1px;
+}  
+ 
+.explanationBlock {
+    display:block;
+    float:left;
+    margin-left:98px;
+    // for 4 illustrations use this margin:
+    //margin-left:64px;
+    
+} 
+  
+.slideGroup {
+    margin-left:auto;
+    margin-right:auto;
+    max-width: 250px;    
+}
+ 
+.carousel {
+    margin-bottom:4px;
+}
+
+.carousel-control {
+    background:none;
+    top: 37%;
+    left:0;
+}
+
+.left.carousel-control {
+    left:-12px;
+}
+
+.carousel-indicators {
+    top:initial;
+    right:0;
+}
+
+.carousel-indicators li:hover {
+    cursor:pointer;
+    background-color: @grayTextExtraLight;
+}
+
+.carousel-indicators .active {
+    background-color: @grayOutlinesMid;
+}
+
+.glyphGrey {
+    color: @grayTextExtraLight;
+}
+
+.explanationText {
+	color: black;
+	font-size: @fontSizeMedium;
+	line-height: @lineHeightBig;	
+	margin-bottom: 9px;	
+    margin-left:0;
+}  
+
+.explanationTextCentered {
+	color: black;
+	font-size: @baseFontSize;
+	line-height: @lineHeightBig;	
+    text-align:center;
+    //font-weight:bold;
+    max-width: 185px;
+    margin:auto;
+	margin-bottom: 10px;	
+}
+
+.explanationTextCentered.lessWidth {
+        max-width: 150px;
+}
+    
+
+
+.slideGroup > .explanationTextCentered {
+    position: relative;
+    top: -18px;
+}
+
+.slideText {
+    display: inline-block;
+}
+
+.slideImage {
+    display: inline-block
+}
+
+.explanationImage {
+    margin-bottom:24px;
+}
+  
+.explanationImageCentered {
+    display:block;
+    margin:auto;
+    //margin-bottom:36px;
+}
+
+.carousel-indicators li {
+    border-color: @grayOutlinesMid;
+    border-width: 1px;
+    border-style: solid;
+}
+
+
+
+
+ 
+.cheatImageLeft {
+    padding-left:16px;
+}
+
+.homepageCallsToActionFluid {
+    width: 20%;
+    float: left;
+    display:inline-block;
+}
+
+.homepageCallsToAction {
+    margin-left: 0;
+    font-weight:bold;
+	font-size: 31px; 
+	color:@grayOutlinesMid;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    text-transform: uppercase;
+    padding-left: 62px;
+} 
+       
+#homepageCallsToActionMain {
+    margin-left: 16px;
+    margin-top:@homepageRowVerticalPadding
+}
+
+#oneLinePointCreate {
+    margin-top:@homepageRowVerticalPadding;
+    padding-bottom: @homepageRowVerticalPadding * .8;
+    border-bottom-color:@grayOutlinesMid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+} 
+
+.privateAreaHeader {
+	background:@privateAreaStrip;
+	//height: @lineHeightXXXL;
+	line-height: @lineHeightXXXL;
+}
+
+.publicAreaColor {
+    background:@publicAreaStrip;
+}
+
+
+.privateAreaContentOffset {
+	margin-top: 16px;
+}
+
+#areaLine {
+  font-family: @serifFontFamily;
+  font-size: @fontSizeExtraLarge;
+  font-weight: bold;
+  color: @black;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+
+}
+
+
+#areaSwap {
+    cursor:pointer;
+}
+
+
+ 
+ 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   MAIN PAGE COLUMNS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.valueProp {
+	font-weight:bold;    
+	font-size: @fontSizeBitLarge;     
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightBig;    
+}
+
+.columnHeading {
+	font-weight:bold;
+	font-size: @fontSizeMedium; 
+	color:@grayTextDark;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    margin-bottom: 2px;	
+    margin-top:@homepageRowVerticalPadding;
+}
+
+.columnHeadingFeatured {
+	font-weight:bold;
+	font-size: @fontSizeMedium; 
+	color:@grayTextDark;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    margin-bottom: 2px;	
+    margin-top:@homepageRowVerticalPadding + 16px;
+}
+
+
+.columnHeadingBig {
+	font-size: @fontSizeLargeCond; 
+    color: black;
+}
+
+#recentlyViewed {
+    //margin-top:160px;
+}
+
+#userInfoArea {
+    margin-top:21px;    
+}
+
+.bottomBorder {
+	border-bottom: 1px solid #d7d7d7;
+}
+
+#mainPageMainArea {
+	margin-top:36px;
+}
+
+.columnHeading button {
+    display: inline;
+	color:@grayTextExtraLight;
+    border: 0px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 95% 0%;
+    font-style:normal;
+	font-weight:bold;
+	font-size: 1em;   
+    //margin-bottom: 2px;
+}
+
+
+.columnHeading .selectedTab {
+    color: @grayTextDark;
+}
+
+.columnHeading .tab {
+    padding-left: 0;
+    padding-right: .5em;
+}    
+
+.columnHeading button:hover {
+    color: #00ADEE;
+    color: white;
+    background-position: 95% 100%;
+}
+
+#voteLabel {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.marginBottom {
+	margin-bottom:16px;
+}
+.vertSpaced {
+	margin-bottom: 10px;
+}
+
+.dropShadow {
+	-webkit-box-shadow: -1px 1px 8px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow:    -1px 1px 8px rgba(50, 50, 50, 0.5);
+	box-shadow:         -1px 1px 8px rgba(50, 50, 50, 0.5);
+}
+
+.dropShadow:hover {
+	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+
+// DEPRECATED?
+/*
+.hugeScore{
+	font-weight:bold;
+	font-size:4.6250em;
+	font-family:@sansFontFamily;
+	line-height:100px;
+}
+*/
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   SOME OF THE  POINT PAGE STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+.pointAreaActions {
+    font-family: @sansFontFamily;
+	font-size:@fontSizeActions;
+    color:@blue;
+	margin-bottom:10px;
+}
+
+.pointBoxActions {
+	font-size: @fontSizeActions;
+    color: @grayTextLight; //@blue;
+    //font-weight: bold;
+	margin-bottom:2px;
+    margin-right:4px; 
+    display:inline-block;
+    z-index:1000;
+}
+
+.pointBoxStatLine {
+    opacity: .6; //goes to 1 on hover
+    font-weight: bold;
+}
+
+.pointCard:hover .pointBoxStatLine {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.pointCard:hover .pointBoxActions {
+
+}
+
+
+
+.pointCard:hover {
+    background-color: rgb(244, 253, 255);
+}
+
+.blue {
+    color: @blue;
+}
+
+.netAgreeStat {
+    //color: grey;
+}
+
+.fadeStatsWhenZero {
+    //opacity: .8;
+    color: @grayTextExtraLight;
+    //font-weight: normal;
+}
+
+.fadeStatsWhenZero:hover {
+    //opacity: .8;
+    color: @grayTextMedium;
+    //font-weight: bold;
+}
+
+.fadeArrowWhenZero {
+    opacity: .6;
+}
+
+
+.inlineDot {
+    margin:0;
+    padding:0;
+	font-size: @fontSizeActions;
+    color:@blue;
+} 
+
+.noRightMargin {
+    margin-right:0;
+}
+
+.agreeInlineMargin {
+    margin-left: 4px;
+    margin-right: 2px;
+}
+
+.arrowIcon {
+    height: 16px;
+    opacity: .5;
+    position:relative;
+    top: -4px;
+    margin-right: 2px;
+}
+
+.arrowChar {
+	font-size: @fontSizeActions * 1.66;
+    font-weight: bold;
+}
+
+.arrowCharSupporting {
+    color: @grayTextDark;
+}
+
+.arrowCharAgainst {
+    color: rgba(204, 0, 8, 0.7); // equal to @red * opacity .7
+}
+
+
+[name="UpVote"]:hover, [name="DownVote"]:hover {
+    text-decoration:underline;
+}
+       
+.shareIcon {
+    width: 14px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+}
+  
+.needsEvidence { 
+    opacity:0.5;
+} 
+   
+
+
+#scoreAndVotingSection {
+	margin-top: 12px;  
+}  
+
+#scoreAndVotingSection a {
+	cursor:pointer;
+}
+
+#scoreAndVotingSection div {
+	margin-left:0px;
+}
+     
+
+.iconSourcesSmall {
+    padding-right: -10px;
+    padding-left:2px;
+}
+
+
+.iconAgreesSmall {
+    //padding-top: 2px;
+    width: 25px;
+    //opacity: .72;
+    margin-right: 4px;
+    padding-left: 2px;
+    font-weight: bold; //chrome seems to have a bug where this image position changes when its parent is toggled bt bold and not-bold, so just keeping it bold
+    
+}
+
+.iconAgreesSmallMainPoint {
+    padding-top: 1px;
+    padding-left: 6px;
+    padding-right: 2px;
+    opacity:.9;
+}
+
+.shareMenu {
+    display:inline;
+    margin-right: 21px;
+}
+
+.statsMenu {
+    display:inline;
+}
+
+#blueRibbon {
+	padding-left:15px;
+}
+
+#ribbonTotal {
+    width: 10px;
+    height: 15px;
+	padding-left:15px;
+	background-repeat: no-repeat;
+	background-position: 25% 50%;	
+	background-size: 11px 16px;
+	color:#6d6e70;
+}
+
+.notAwarded #ribbonTotal {
+	background-image:url("/static/img/awardsIconSmall.png");	
+}
+
+.awarded #ribbonTotal {
+	background-image:url("/static/img/blueribbon.png");	
+}
+
+#blueRibbon a:hover {
+	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+    box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+    /* background-position:-60px center; */
+}
+
+.radioButtonGrpDefault {
+    //border: 1px solid @grayTextExtraLight;
+    display: inline-block;
+    border-radius: 2px;
+    margin-left:12px;
+}
+
+.radioButtonLabelDefault {
+    display: inline-block;
+    font-size:@fontSizeMediumCond;
+	font-family: @sansCondFontFamily;
+    font-weight: 700;
+    color: @grayTextLight;
+    background:none;
+    background-color:#FFFFFF;
+    //border: 1px solid @grayTextExtraLight;
+    //padding-top:5px;
+    //padding-bottom:3px;
+    margin-right:18px;
+}
+
+.radioButtonDefault:hover {
+   // background-color:@pointCardBackground;
+   //color: @grayTextLight;
+}
+
+/*
+.radioButtonDefault:checked {
+   background-color:@pointCardBackground;
+   color: @grayTextLight;
+}
+*/
+
+.radioButtonActive {
+    background-color:@linkColorHover;
+}
+
+.dropdown-menu {
+    cursor: pointer;
+}
+
+.dropdown-menu > li > a {
+	color:#000000;
+}
+
+#classroomSubmenu {
+  min-width:100%;
+}
+
+.menuHeading {
+  height:auto;
+  padding-top: 3px;
+  padding-right: 20px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+}
+
+.inactiveVote, .inactiveVote a {
+	color:#00adee;
+}
+
+.redVote, .redVote:hover, .redVote:focus {
+	color:@red;
+	font-weight:bold;	
+}
+
+.greenVote, .greenVote:hover, .greenVote:focus {
+	color:@green;
+	font-weight:bold;
+}
+
+.selectedVote, .selectedVote:hover, .selected:focus {
+    color: black;
+	//color:@green;
+	font-weight:bold;
+}
+
+
+.linkBlue {
+	border-top: 4px solid #00adee;
+}
+
+.pointColumnMenuArea {
+	margin-top:@spaceBtPointCards * 2;
+}
+
+.arrowImage {
+    margin-bottom: 2px;
+    margin-left:6px;
+    width:48px;
+    //position:relative;
+    //top:-10px;
+    z-index:10; // put arrows on top of other elements
+    //width:82px; // correct size, but requires arrows to be placed in different spans to work
+    //height:94px; // correct size, but requires arrows to be placed in different spans to work
+}
+
+.arrowImageCurved {
+    margin-bottom: -4px;
+    margin-left:0px;
+    position:relative;
+    top:-1px;
+}
+
+.pointListTitle {
+    font-size: @fontSizeMedium;
+    //font-weight:bold;
+    color: @grayTextMedium;
+    padding-top: 0px;
+    padding-left:12px;
+}
+
+.pointListFooter {
+    padding-left:6px;
+}
+
+.pointListFooterBigPad {
+    padding-left:16px;
+}
+
+
+
+.pointListTitleBorder {
+    //border-top-width: 1px;
+    //border-top-style: solid;
+    //border-top-color: @grayBoxOutlines;
+    //padding-top: 10px;
+}
+
+#supporting_nonzeroPoints, #counter_nonzeroPoints  {
+	margin-bottom: 24px;
+}
+
+#supporting_numberOfPoints, #counter_numberOfPoints {
+	margin-bottom: 8px;
+}
+
+#supporting_zeroPointsText, #counter_zeroPointsText {
+    margin-top: 1em;
+}
+
+#addEvidencePromptText {
+	font-size: 0.8em;
+	margin-top: 1em;
+}
+
+.unlinkbutton {
+    margin-top: 2px;
+}
+
+.unlinkbutton a {
+    cursor: pointer;
+    font-size: @fontSizeSmall;   
+    padding-top:10px;
+    padding-left: 0px;
+    color: #3ccaff;       
+    height: 100%;
+    width: 100%;
+}
+
+.mainPointContent{
+	color:@grayTextLight; //@grayTextMedium;
+	font-family: @sansFontFamily;
+    font-size: @fontSizeSmall;
+    /*width: 362px;*/
+	margin-right: 32px;		
+}
+
+.upstreamLinks{
+	font-family: @sansFontFamily;
+    font-size: @fontSizeActions;	
+}
+
+.upstreamSupporting {
+    padding-left:16px;
+}
+
+.upstreamCountering {
+    padding-right:16px;
+}
+
+ 
+.mainPointContent p {
+    line-height: 140%;
+    margin-bottom:11px;
+}
+
+.showRelevance {
+    cursor: pointer;
+    font-size: @fontSizeActions;
+    //font-weight: bold;
+    margin-top: 0px;
+    margin-bottom:-1px;
+   	color: @blue;
+    //border-style:solid;
+	border-width:1px;
+	border-color:@grayBoxOutlines;
+    padding:@boxPaddingDefault;
+    padding-top: @spaceBtPointCards * 4;
+    padding-bottom:5px;
+    display: inline-block;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color:white;//@widgetBG;
+    position:relative; // needed for z-index
+    z-index: 0;
+    //-webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    //-moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    //box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+}
+
+.showRelevance:first-child {
+    padding-top:2px;
+}
+
+.pointStrength {
+    //cursor: pointer;
+    font-size: @fontSizeActions;
+    //margin-top: 0px;
+    //margin-bottom:-1px;
+   	color: @blue;
+    margin-top: -2px;
+    margin-bottom: 8px;
+}
+ 
+.relevanceTitle {
+    font-size: @fontSizeLarge;
+    font-weight:bold;
+    color: black;
+    margin-top:0px;
+	margin-right: 32px;	
+	line-height:@lineHeightBig;
+}
+
+.relevanceEditIcon {
+    padding-left: 4px;
+    padding-bottom: 0px;
+    height: 15px;
+    position: relative;
+    bottom: 1px;
+}
+
+.relevanceUnlinkIcon {
+    padding-left: 0px;
+    padding-bottom: 0px;
+    height: 15px;
+    position: relative;
+    bottom: 1px; 
+}
+         
+.relevanceVote {
+	border-style:solid;
+	border-width:1px;
+	border-color:@grayBoxOutlines;
+    padding:@boxPaddingDefault;
+    background-color:@widgetBG;
+    margin-bottom:-1px;
+    //display:inline-block;
+    text-align:left;
+    position:relative; // needed for z-index
+    z-index:10;
+    -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);    
+}
+
+.relevanceValGroup{
+    display:inline-block;
+    text-align:center;
+    margin-top: 16px;
+    margin-left:auto;
+    margin-right:auto;
+    
+    label {
+       //display:block;
+       //margin-top: 30px;
+       //margin-left: 20px;       
+   }
+   
+   
+   input[type="radio"] {
+       margin-left: 20px;
+       margin-right: 20px;
+       // hide this in order to re-style the radio buttons
+    } 
+ 
+}
+
+.relevanceRadioLabel {
+    z-index: 10;
+    position: relative;
+    top: -34px;
+    pointer-events:none;
+}
+
+// Using the !important command only because the screwdefaultbuttons.js
+//  plugin is applying style tags directly to the element in the html
+//  and this is th least-worst way to override that
+.styledRadio:hover {
+    background-position: 0px -225px !important;
+//    background-color: red;
+}
+
+.relevanceLikertLine {
+    width: 150px;
+    border-top: 6px solid #000;
+    margin-left: 20px;
+    z-index: -10;
+    margin-top: -50px
+}
+
+.relevanceTextLine {
+    //text-align:left; 
+	font-size: @fontSizeSmaller;
+	color: @grayTextMedium;
+    line-height: @lineHeightDefault; 
+    margin-top: 36px;
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END OF THE POINT PAGE STUFF
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   SOURCE ENTRIES IN MAINPOINTS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.mainPointSourcesHeading{
+    font-size: @fontSizeSmallCaps;
+    color: @grayTextLight; //@grayTextMedium;
+    margin-bottom: 3px;
+}
+
+.mainPointSourceEntry{
+    font-size: @fontSizeSmall;
+    margin-top: -4px;
+    margin-bottom:8px;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END: SOURCE ENTRIES IN MAINPOINTS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
+// DEPRECATED?
+/*
+h4.condensed {
+	line-height: 100%;
+}
+*/
+
+.mainPointTitleText {
+    padding-right:8px;
+    margin-top: 4px;
+    margin-bottom:11px;
+}
+
+h4.mainPointTitleText {
+    font-size: @fontSizeLarge;
+    color: black;
+    margin-top:0px;
+	margin-right: 32px;	
+	line-height:@lineHeightBig;
+}
+
+.arrowText {
+    font-size: @fontSizeMedium;
+    font-weight:bold;
+	line-height:@lineHeightBig;
+    color: black;
+    position:relative;
+    top:-63px;
+    left:18px;
+    margin-bottom:-12px;
+}
+
+
+.pointListTextBig {
+    font-size: @fontSizeLarge;
+    font-weight:bold;
+	line-height:@lineHeightBig;
+    color: black;
+    margin-top:4px;
+    margin-left:4px;
+    margin-bottom:12px;
+}
+
+.pointListTextSmall {
+    font-size: @fontSizeMedium;
+    color: black;
+    margin-top:0px;
+	line-height:@lineHeightDefault;
+}
+
+
+
+
+h4.mission {
+	font-family: "ff-meta-web-pro", sans-serif;
+    font-size: 1.1em;
+    line-height: 100%;
+    color: #6d6e70;
+    font-weight: normal;
+}
+
+#leftColumnPoint {
+    margin-top:16px;
+}
+
+#pointArea {
+	position: relative;
+	margin-left:0px;
+    margin-top:4px;
+	padding-top: 10px;
+}
+
+#timestampAndEditLink {
+	margin-bottom: 12px;
+}
+
+#viewPointHistory {
+	cursor: pointer;
+}
+
+.mainPointLastEdited {
+	font-size: @fontSizeSmall;
+	color: @grayTextLight; //@grayTextMedium;
+    line-height: @lineHeightBig; 
+	float: left;
+    /*text-transform: Uppercase;*/
+    //margin-top: 10px;
+	/*padding-top:10px;*/
+}
+ 
+.contributor {
+    //text-transform: Uppercase;
+	font-size: @fontSizeSmallCaps;
+}
+   
+#pointSummary {
+	margin-bottom: 12px;
+}
+
+.mainPointInfo{font-size:0.8em;font-style:italic;bottom:10px;left:10px;font-weight:bold}
+.mainPointVersion:before{content:"Version: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointAuthor:before{content:"Last Edited By: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointDateEdited:before{content:"Date Edited: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointViewCount:before{content:"ViewCount: ";font-size:inherit;font-style:inherit;font-weight:normal}
+/*.mainPointImageURL:before{content:"Image URL: ";font-size:inherit;font-style:inherit;font-weight:normal}
+.mainPointImageAuthor:before{content:"By: ";font-size:inherit;font-style:inherit;font-weight:normal}*/
+.mainPointImageDescription:before{content:"Image Description: ";font-size:inherit;font-style:inherit;font-weight:normal}
+
+#mainPointImageArea {
+	float: right;
+	margin-left: 0px;
+    margin-bottom: 4px;
+    margin-right:-2px; //patching a bug with positioning, not sure why this is nec but its working -JF
+}
+  
+.imageAreaMaxHeight {
+    max-height: 150px;
+    overflow: hidden;
+}
+    
+.mainPointImageCaption{
+	font-size: @fontSizeSmaller;
+	font-style: italic;
+	text-align: left;
+	color: @grayTextLight;
+    line-height: @lineHeightDefault;
+    margin: 0px;
+    margin-right: 11px;
+    border: 0px;
+    padding: 0px; 
+    padding-top: 4px;
+}
+
+.mainPointImageAuthor{
+	font-size: @fontSizeSmaller;
+	text-align: left;
+	color: @grayTextLight;
+    text-transform: Uppercase;
+    line-height: @lineHeightDefault;
+    padding-top: 4px;
+}
+
+img.pointDisplay{
+	width: 95%;
+    position:relative;
+}
+
+img.listDisplay {
+    float:right;
+}
+
+img.smallDisplay {
+    max-height:40px;
+    max-width:40px;
+}
+
+.mainPointButton {
+	display: inline;
+	color: #B9BBBD;
+	border: 0px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: 95% 0%;
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;
+    font-size:0.875em;
+}
+
+.mainPointButton:hover {
+	text-decoration: none;
+	color: #00ADEE;
+	background-position: 95% 100%;
+}
+
+.tab:hover, .selectedTab {
+	text-decoration: none;
+	background-color: #00ADEE;
+	color: white;
+	background-position: 95% 100%;
+}
+
+.tab {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.rightMainPointButtons {
+	float: right;
+}
+
+//DEPRECATED?
+/*
+.mainPointTitle h4 {
+	margin-top:0px;
+	margin-right: 10px;
+	line-height:120%;
+}
+*/  
+      
+#stats li {
+	padding-left: 5px;
+    color:black;
+}
+
+ 
+.editPointArea {
+    margin-right: 0px;
+}
+
+a#editPoint {
+	//float: right;
+	//background-image: url('/static/img/pencil_icon.png');
+	//background-color: transparent;
+	//background-repeat: no-repeat;
+	//background-position: 100% 100%;
+	//padding-right: 19px;
+	//height: 20px;	
+    width:40px;
+	margin-right: 25px;
+}	
+
+a#editPoint:hover {
+	color: #00ADEE;
+	background-position: 100% 100%;
+}
+
+.editIcon {
+	padding-left:2px;
+}
+
+
+
+button#supporting_addPointWhenNonZero,
+button#counter_addPointWhenNonZero {	
+	margin-left:6px;
+    position:relative;
+    z-index:1;
+}
+
+#supporting_unlinkToggle, #counter_unlinkToggle {
+	margin-left: 5%;
+	height:34px;
+}
+
+#supporting_pointActions, #counter_pointActions, 
+#supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
+{
+	margin-bottom:150px;
+    padding-left:6px;
+}
+#supporting_pointActions, #counter_pointActions, 
+{
+    padding-left:6px;
+}
+#supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
+ {
+    padding-left:16px;
+}
+
+
+#nonzeroSupportingPoints a.navWhy {
+	position: static;
+}
+
+.redBorder {
+	border-color: #FF003F;
+}
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Bootstrap Alerts style refinemenes area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.topSpace .alert {
+	margin-top: 3px;
+}
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   End Bootstrap Alerts style refinemenes area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   History area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+#historyAreaLoadingSpinner {
+	width: 16px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1em;
+}
+
+#historyArea {
+	margin-top:15px;
+}
+
+#historyArea .row{
+	margin-left:0px;
+}
+
+#viewSupportingPoints {
+	cursor:pointer;
+}
+
+.historyLastEdited {	
+    font-size:1.125em;
+    font-style:italic;
+    color: #8c8c8c;
+    float: left;
+    padding-top:10px;
+}
+    
+.blueBack {
+	background-color: #cfe2f3;
+}
+
+.pinkBack {
+	background-color: #fff2cc;	
+}
+
+.blueBack .pointCard, .pinkBack .pointCard {
+    background-color: #FFFFFF;  	
+}
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   End history area
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Login dialog stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#loginDialog {
+    /* new custom width */
+    width: 300px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+    margin-left: -150px;
+}
+
+[id^=signInWith] {
+	height:2em;
+	vertical-align:middle;
+	margin-bottom:5px;
+	margin-top:5px;
+	padding-left:10px;
+	padding-top:5px;
+	cursor:pointer;
+}
+
+[id^=signInWith] a {
+	line-height: 2em;
+}
+
+[id^=signInWith]:hover {
+	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Whysaurus User login dialog stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+#signupDialog {   
+	//height: 525px; // fixing the heigh creates a problem when alerts appear
+	position: absolute;
+}
+   
+#showSignupDialog {
+	margin-top: 15px;
+}
+
+#forgot_emailLoginDialog {
+	//margin-left: 15px;	
+}
+
+#cancel_emailLoginDialog {
+	//margin-right: 15px;
+}
+
+#showSignupDialog {
+    //margin-left: 15px;  	
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Create new User login dialog stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
+#backToLogin    {
+    margin-left: 15px;     
+    margin-bottom: 15px; 
+}
+
+#cancel_signupDialog {
+    margin-right: 5px;
+	margin-left:15px;
+}
+
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Select Supporting Point Page
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+/*
+ No longer used since select supporting point is going away
+#createSupportingPointLink {
+	display:block;
+    width: 231px;
+    height: 52px;
+    background:transparent url('/static/img/arrow_makeANewPoint_grey_231px.png') center top no-repeat;
+    top:12px;
+}
+
+
+#createSupportingPointLink:hover {
+   background-image: url('/static/img/arrow_makeANewPoint_black_231px.png');
+}
+*/
+
+[id^=selectPoint_arrow] {
+    width:46px;
+    height:34px;
+    left: 8px;
+    position: relative;
+    border-style:none;
+    background:transparent url("/static/img/arrow_add_grey_45px.png") center top no-repeat;
+}
+
+[id^=selectPoint_arrow]:hover {
+    background-image: url("/static/img/arrow_add_black_45px.png");
+}
+
+.noRightChannel {
+	right: -3.305785123966942%;
+    position: relative;
+}
+
+
+.pointSmall:hover [id^=selectPoint_arrow], .pointListPoint:hover [id^=selectPoint_arrow]{
+	background-image: url("/static/img/arrow_add_black_45px.png");
+}
+
+#selectSupportingPointSearch {
+	width:90%;
+	margin-top: 10px;
+    height: 24px;
+}
+.pushDown20px {
+	margin-bottom:20px;
+}
+.pushDown18px {
+	margin-bottom:18px;
+}
+
+
+ /* +++++++++++++++++++++++++++++++++++++++++++++++
+   END Select Supporting Point Page stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Search for linked point dialog
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#linkedPointSearchDialog {
+    position:absolute;
+}
+
+#searchResultsArea .pointCard {
+    position: relative;
+}
+
+.searchLinkSelectButton {   
+	position:absolute;
+    top: 0;
+    opacity:0.75;
+    z-index:5000;
+    right: 0;
+    width: 150px;
+    height: 30%;
+}
+
+.searchLinkSelectButton a {
+    padding-top:10px;
+    padding-left: 10px;
+    color:#FFFFFF;  
+    font-size:1.2em;
+    text-transform:uppercase;
+    font-weight:bold;
+    height: 100%;
+    width: 100%;
+}
+          
+.popoutPoint {
+    width:20px;
+    height:20px;
+    display: block;
+    top: 45%;
+    left: -20px;
+    position: absolute;
+    border-style:none;
+    background-image: url("/static/img/addPoint_icon_popout_20pxHi_v12.png");
+}
+ 
+.popoutPoint:hover {
+     background-position: 0 100%;
+}
+
+#searchResultsArea .pointCard:hover {
+    background-color: @pointCardBgSearchResults;	
+}
+ 
+  
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   Edit point dialog stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.pointDialog {
+	/* height: 530px; */ /* not sure why we were specifying height... */
+    position: absolute;
+    width: 640px;
+    margin-left: -325px;
+}
+
+.pointDialogueSubHeading {
+    margin-bottom: -2px;
+}
+
+.pointDialogueSubHeadingTop {
+    margin-top: 10px;
+}
+
+#title_pointDialog {
+	width: 97.6%;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    //height: 36px;
+    font-size: 18px;
+    line-height: 130%;
+    padding:6px;
+    color:@grayTextDark;
+}
+#title_pointDialog::-webkit-input-placeholder { font-style: italic; }
+#title_pointDialog:-moz-placeholder { font-style: italic; }
+#title_pointDialog::-moz-placeholder { font-style: italic; }
+#title_pointDialog:-ms-input-placeholder { font-style: italic; }
+#title_pointDialog::-ms-input-placeholder { font-style: italic; }
+
+.charCount {
+  	font-family: "ff-meta-web-pro", sans-serif;
+  	font-size: @fontSizeMini; 
+  	text-transform: uppercase;
+  	font-weight:400;
+    margin-bottom: 16px;
+    padding-bottom: 0px;
+    position: relative;
+    //top: 12px;
+    color: @grayTextExtraLight;
+}
+
+
+
+
+
+#additionalTextPlaceholderLabel {
+    font-size: @fontSizeSmall;
+    font-weight: normal;
+    color: @grayTextDark !important;
+    top: 141px !important;
+    left: 18px !important; 
+    cursor: text;
+    pointer-events:none;
+    width: 420px;
+    line-height: @lineHeightXL;
+    font-family: ff-meta-web-pro,sans-serif;
+    font-style: italic;
+}
+
+.additionalTextEntryArea {
+    margin-bottom: 8px;
+}
+
+
+//#description_pointDialog {
+.bottomTextField {
+    margin-bottom:0px !important; // remove bottom margin since this is a bottom field
+}
+
+#cancel_pointDialog {
+    //float:right;
+    //margin-right:16px;
+}
+
+#submit_pointDialog {
+   //float:right;
+   //margin-right: 8px;
+}
+
+.twoButtonsCancel {
+	//width:44px;
+    float:right;
+    margin-right:16px;
+}
+  
+.twoButtonsSubmit {
+   float:right;
+   margin-right: 8px;
+}
+
+#buttonBar {
+	margin-top: 0px;
+}
+
+// TO DO: make the spinner position class uniform
+//  we shouldn't need to have three different classes for it 
+.spinnerAddImagePosition {
+   max-width:16px;
+   max-height:16px;
+   padding-left:30px;
+   margin-top:41px;
+}
+
+.spinnerPointSubmitButtonPosition {
+   //margin-top:7px;
+    position: relative;
+    left: 8px;
+    top: 4px;
+   //float:right;
+}
+
+
+
+
+
+.spinnerCreateUserButtonPosition {
+    float: right;
+    position: relative;
+    top: 8px;
+    right: 8px;
+}
+
+.btn {
+    //font-size:@baseFontSize;
+}
+
+.primaryButtonDisabled {
+    //background-color: @btnPrimaryBackgroundDisabled;
+    color:@btnPrimaryTypeDisabled;
+}
+
+
+
+#sourcesAdd {
+	margin-left: 2px;
+    margin-bottom: 8px;
+}
+
+#collapsibleTitleArea {
+    padding-left: 10px;
+    padding-right: 10px;    
+}
+   
+#collapsibleSourcesArea {
+    padding-left: 10px;
+    padding-right: 10px;    
+}
+
+#collapsibleImageArea {
+    padding-left: 10px;
+    padding-right: 10px;    
+}
+  
+[name="source_pointDialog"] {
+	min-height: 20px;
+    margin-top:6px;
+}
+
+[name="source_pointDialog"] [class*="span"] {
+    min-height: 20px;
+}
+.pointDialog .modal-footer {
+	//position:absolute;
+	//bottom: 0px;
+	width:100%;
+	padding: 0px 0px 15px;
+}
+
+.fieldEditImageArea {
+    width:315px;
+}
+
+.removeSource {  /* Dialog and outliner */
+	color:red;
+    position: relative;
+}
+
+#sourcesArea {
+    margin-bottom:-2px;
+}
+ 
+#sourcesArea .sourceLink {
+    text-align: left;
+    position: relative;
+    margin-left: 6px;
+}
+
+.pointDialog .textline {
+	text-align:left;
+	margin-left:15px;
+}
+
+.imageTextFieldsArea {
+    display:inline-block;
+    width:328px;
+}
+
+.imageThumbnailArea {
+    display:inline;
+}
+
+fieldset { padding:0; border:0; margin-top:25px;}
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+.ui-button-text {font-size:13px;}
+.ui-icon-up { background-image: url(/static/img/up-button.png) !important; background-size: 100% Auto; }
+.ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
+
+#editorDiv {
+	margin-left:0;
+}
+#editor_pointDialog {
+    height:60px !important;
+    width:97.5% !important;    
+}
+   
+.mceEditor > table {
+    width:100% !important;	
+    height:60px !important;
+}
+
+/* MCE Placeholder Text: The wrapper of the editor and it's placeholder */
+#editorDiv {
+    //float: left;
+    //width: 604px;
+    //position: relative;
+}
+ 
+/* MCE Placeholder Text: The placeholder */
+#editorDiv label {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    color: #bbbbbb;
+    position: absolute;
+}
+
+  
+#textEdit_tbl {width:100% !important;height:60px !important;}
+#textEdit_ifr {width:100% !important;height:60px !important;}
+
+.titleEdit {
+  width:516px;
+  padding: 2px;
+}
+
+.fieldEdit {
+  float:left;
+  padding: 2px;
+  width:97%;
+}
+
+.dlgLabelName{
+  float:left;
+  width:100px;
+  display:block;
+  height: 100%;
+  padding:0px;
+  margin:0px;
+  }
+.dlgField{
+  margin-top:5px;
+  width:100%;
+  }
+  
+
+  .accordion-group-heading .panel-heading {
+      background-color:#efefef;
+      color:@grayTextLight;
+      font-size:@fontSizeLargeCond;
+      line-height:@lineHeightDefault;
+      padding-top: 8px;
+      padding-bottom: 8px; 
+      padding-left: 10px;
+  }
+
+  .accordion-group-heading:hover .panel-heading {
+      background-color:@blueLight;
+      color:@grayTextLight;
+  }
+  
+  a.accordion-group-heading:hover {
+      text-decoration: none;
+  }
+
+  .panel-heading, .control-group {
+      //padding-left:10px;
+  }
+  
+  .modal h3, .modal button {
+      font-family:"ff-meta-web-pro-condensed", sans-serif;
+  }
+
+  .chooseImageButtonArea {
+      margin-top: 14px;
+      margin-bottom: 10px;
+  }
+  
+  .addSourceButton {
+    margin-top: 2px;
+    margin-bottom: 6px;
+  }
+  
+  
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   END Edit point dialog stuff
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+/* FILEPICKA */
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+ 
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spin {
+  -webkit-animation: rotate 2s linear infinite;
+  -moz-animation: rotate 2s linear infinite;
+  animation: rotate 2s linear infinate;
+}
+
+ 
+
+.filepicker-placeholder {
+  /*width: 64px;
+  height: 64px;
+  margin-left: 7px;
+  */
+    //width: 100px;
+    //height: 100px;
+    width: 88px;
+    height: 99px;
+    margin-left: 6px;
+    position: relative;
+    top: -7px;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+    OUTLINER
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+   
+.outlinerInput {
+	width:100%;
+}
+
+.outlinerRow.highlighted {
+	background-color: @blueLight;
+}
+   
+.outlinerInput.level1 {
+	margin-left: 5%;
+	width:95%;	
+}
+
+.outlinerInput.level2 {
+    margin-left: 10%;
+    width:90%;      
+}
+
+.outlinerInput.level3 {
+    margin-left: 15%;
+    width:85%;  
+ }
+
+.outlinerInput.level4 {
+    margin-left: 20%;
+    width:80%;  
+}
+
+.outlinerInput.level5 {
+    margin-left: 25%;
+    width:75%;  
+}
+
+#outliner_details {
+	margin-left:0px;
+	width:40,83%;
+    background-color: @blueLight;
+}
+
+#outliner_details input {
+	width: 96.5%;
+}
+
+#outliner_details textarea {
+    width:  95%;	
+    resize: none;    
+}
+
+#outliner_details  {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+#outliner_details .repeatTitle {
+    height: 60px;   
+    border: none;
+}
+
+#outliner_details .furtherInfo {
+    height: 80px;	
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+    MODAL DILAOGS
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+.modal input::-webkit-input-placeholder, .modal textarea::-webkit-input-placeholder {
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;    
+    color:#6D6E70;
+}
+
+.modal input:-moz-placeholder, .modal textarea:-moz-placeholder { /* Firefox 18- */
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;        
+    color:#6D6E70;
+}
+
+.modal input::-moz-placeholder, .modal textarea::-moz-placeholder {  /* Firefox 19+ */
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;        
+    color:#6D6E70;
+}
+
+.modal input:-ms-input-placeholder, .modal textarea:-ms-input-placeholder  {  
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-size:0.9375em;
+    font-style: regular;        
+    color:#6D6E70;
+}
+
+.modal textarea {
+    //width:75%;
+    resize:none;
+    //height: 32px;
+}
+
+.modalSubheading {
+    padding-top: 24px;
+    color: @grayTextDark;
+}
+
+.modal label, .accordion-group-heading {
+    font-family:"ff-meta-web-pro-condensed", sans-serif;	
+    font-weight:bold;
+    font-size:0.9375em; /* 15 px */
+    line-height: 200%;
+    color:#bdbdbd;
+}
+
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+    PROFILE PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.profileInfoHeading {
+	font-weight:bold;
+	font-size: @fontSizeMediumCond; 
+	color:@grayTextExtraLight;
+	font-family:@sansCondFontFamily;
+	line-height: @lineHeightDefault;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    margin-top: 18px;	
+}   
+   
+.profileBodyText {
+    font-family: @sansFontFamily;
+    font-size: @fontSizeMedium;
+    font-weight:normal;
+    line-height: @lineHeightDefault;
+    
+}   
+   
+#display_userName {
+    width: 80%; // TEMPORARY: remove this once we have full size profile pics
+    display: inline;
+    margin-right:5px;
+}
+ 
+#display_userEmail {
+    margin-bottom:18px;
+} 
+ 
+.profileEditButton {
+	background-image: url('/static/img/pencil_icon_blue.png');
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: 100% 100%;
+	padding-right: 17px;
+	height: 20px;
+    margin-top: 2px;
+    line-height: 22px;	
+}
+
+.profileEditButton:hover {
+	color: #00ADEE;
+	background-position: 100% 100%;
+    cursor:pointer;
+}
+
+.profilePic {
+	width:80%; // TEMPORARY: remove this once we have full size profile pics
+    margin-top:2px;
+}
+ 
+.userInfoAreaTempWidth {
+	width:80%; // TEMPORARY: remove this class once we have full size profile pics
+}
+.profileStatsArea {
+    margin-bottom:8px;
+}
+
+a[name="profileEdit"] {
+    cursor:pointer
+}
+
+.notificationFrequencyLabel {
+    font-size:0.8em !important;
+    z-index: 10;
+    position: relative;
+    top: -34px;
+    pointer-events:none;
+}
+
+#notificationFrequencyGroupLabel{
+    //margin-right: 20px;
+    //margin-top: 25px;  
+}
+
+.notificationTimeStamp {
+    margin-top: 1px;
+    margin-bottom: 8px;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   COMMENTS AREA OF POINT PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.commentInstruction {
+    font-size: @fontSizeMedium;
+    //font-weight:bold;
+    color: @grayTextMedium;
+    padding: 0px;
+    padding-left: 4px;
+    margin-bottom: 18px;
+}
+
+.commentsHeading {
+    font-size: @fontSizeSmall;
+    font-weight:bold;
+    color: @grayTextLighter;
+    padding: 0px;
+    padding-left: 4px;
+    margin-bottom: 12px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: @grayBoxOutlines;
+}
+ 
+.commentsColumn {
+    position:relative;
+    top: 36px;
+}   
+   
+.commentsButton {
+    margin-bottom:6px;
+}   
+   
+.commentIcon {
+    padding-left:6px;
+    height:18px;
+}
+   
+#commentCount {
+    background-image: url('/static/img/speech_bubble_icon.png');
+    background-repeat: no-repeat;
+    background-size: 28px Auto; 
+	padding-top:5px;
+	padding-left:35px;
+}
+
+#addComment {
+	padding-top: 1px;
+	padding-bottom: 30px;
+}
+
+.commentArea {
+    display: block;
+	margin: 0 0 0 0;
+}
+
+.commentArea .cmmnt { 
+    list-style:none;    
+    border-bottom:1px solid @grayBoxOutlines;    
+    word-wrap: break-word;
+    position: relative;
+}
+
+.commentArea .cmmnt .userlink, .commentArea .cmmnt .pubdate {
+	font-size: @fontSizeMini; 
+    line-height: @lineHeightDefault;
+    //position: relative;
+    //bottom: 4px;
+}
+
+#archivedComments {
+	color:@grayTextLight; //@grayTextMedium;
+	font-size: @fontSizeMini; 
+    line-height: @lineHeightDefault;
+    margin-top: 12px;
+    padding-left: 6px;
+}   
+
+.commentArea .cmmnt .avatar img { 
+  -webkit-border-radius: 3px; 
+  -moz-border-radius: 3px; 
+  border-radius: 3px; 
+  -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  -webkit-transition: all 0.4s linear;
+  -moz-transition: all 0.4s linear;
+  -ms-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+}
+
+.commentArea .cmmnt .avatar a:hover img { 
+    opacity: 0.77; 
+}
+
+.commentArea .cmmnt .cmmnt-content { 
+    padding-left: 6px;
+	padding-top: 4px; 
+	padding-right: 6px; 
+	margin-left:0px; 
+    margin-bottom:4px;
+    font-size: @fontSizeSmaller;
+    line-height: @lineHeightDefault;
+}
+	
+a[name="commentReply"] {
+	cursor: pointer; 
+	float:right;
+	bottom: 2px;
+	right: 5px;
+    position: absolute;
+   	font-size: @fontSizeSmaller; 
+}
+
+a[name="commentArchive"] {
+	cursor: pointer; 
+	float:right;
+	bottom: 2px;
+	right: 45px;
+    position: absolute;
+   	font-size: @fontSizeSmaller; 
+}
+
+#commentViewArchived {
+    cursor: pointer;    
+}
+   
+.cmmnt.level1 {
+    margin-left: 5%;
+    width:95%;  
+}
+
+.cmmnt.level2 {
+    margin-left: 10%;
+    width:90%;      
+}
+
+.cmmnt.level3 {
+    margin-left: 15%;
+    width:85%;  
+ }
+
+.cmmnt.level4 {
+    margin-left: 20%;
+    width:80%;  
+}
+
+.cmmnt.level5 {
+    margin-left: 25%;
+    width:75%;  
+}
+
+.cmmnt.level6 {
+    margin-left: 30%;
+    width:70%;  
+}
+
+.cmmnt.level7 {
+    margin-left: 35%;
+    width:65%;  
+}
+
+.cmmnt.level8 {
+    margin-left: 40%;
+    width:60%;  
+}
+
+
+#chatTextbox {
+	margin-top: 5px;
+    width:  97%;   
+    resize: none;  	
+}
+
+.chatRoom {
+    position     : fixed;
+    top          : 60px;
+    right        : 0px;
+    background   : #EEE;
+    padding      : 20px;
+    border       : solid #000;
+    border-width : 0 0 2px 2px;
+}	
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   AFFIX and EDUCATION NAVIGATION
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+.affix, .affix-top, affix-bottom  {   
+    margin-left:-16px;
+    padding: 0;
+    padding-right: 16px;
+} 
+   
+.affix-top  {
+    margin-top: 54px;
+}
+
+.affix {
+    top: 72px;
+    width:inherit;
+}
+
+#educationInfoNav {
+    list-style-position:outside;
+    margin:0;
+    padding-right:8px;
+}
+
+#educationInfoNav li {
+    font-size: @fontSizeActions;
+    line-height: 175%;
+    list-style-type: none;
+    list-style-position:outside;
+}
+
+#commonCoreLogo {
+    //height: 96px;
+    //margin-top: 54px;
+    //margin-bottom: -36px;
+    padding-top: 27px;
+    width: 89%;
+    margin-left: 3px;
+    max-width: 260px;
+}
+ 
+.edIntroLine {
+    //margin-top:54px;
+    font-style: italic;
+    margin-bottom: 12px;
+}
+
+.edCaption {
+    font-style:italic;
+}
+
+#ccSpecialPlaceOfArgument {
+   //margin-top:24px;
+}
+
+.introQuote {
+    font-size: 14px;
+    margin-top:12px;
+    margin-bottom:8px;
+    font-style: italic;
+    //font-family:@sansCondFontFamily;
+}
+
+blockquote {
+    font-style: italic;
+    font-size: 14px;
+}
+
+
+
+h2.idLinkOffset:before {
+  display: block; 
+  content: " "; 
+  margin-top: -70px; 
+  height: 70px; 
+  visibility: hidden; 
+}
+
+.assignmentBullets {
+  line-height: 133%;
+}
+
+.infoToggle, .infoNonToggle, .superInfoToggle, .subInfoToggle {  
+    margin: 0px;
+    list-style-type: none;
+    list-style-position:outside;
+}
+.infoToggle, .subInfoToggle, .infoNonToggle, li {
+    margin-left:8px;
+}
+
+.infoToggle {
+    //background-color:red;
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   ADMIN PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.adminTable td {
+    border: 1px solid #a9a9a9;
+    padding: 5px 5px;
+    
+}
+
+.adminTable th {
+    border: 1px solid #a9a9a9;
+    background-color: #ffe4b9;
+    padding: 5px 5px;
+}
+
+.belowThreshold {
+  display:none;
+}
+
+.role-chooser {
+  width:100px;
+}
+
+// adjustments to responsive css
+@import "new-responsive-767px-max.less";
+@import "new-responsive-768px-979px.less";
+@import "new-responsive-1200px-min.less";

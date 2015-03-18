@@ -1,0 +1,66 @@
+{% extends "oneColumnLayout.html" %}
+
+{% block headBlock %}  
+
+    <div class="row" id="explanationRowHomepage"> 
+        <div class="span2 homepageCallsToAction">
+            How it Works
+        </div>
+        <div class="span8">
+        <div class="explanationsCentered">
+        <div class="explanationBlock noLeftMargin">
+
+            <div class="explanationTextCentered">
+                <strong>Whysaurus Points</strong> are supported by other points:
+            </div>
+            <img class="explanationImageCentered cheatImageLeft" src="/static/img/homepage_illustration1_center.png"/></a>
+        </div>
+        <div class="explanationBlock">        
+            <div class="explanationTextCentered">
+                Points can be part of multiple explanations:
+            </div>
+            <img class="explanationImageCentered" src="/static/img/homepage_illustration2_center.png"/></a>
+        </div>
+        <div class="explanationBlock">        
+            <div class="explanationTextCentered">
+                Making Points is collaborative:
+            </div>      
+            <img class="explanationImageCentered" src="/static/img/homepage_illustration3_center.png"/></a>            
+        </div>
+        </div>
+        </div>
+    </div>
+    
+    <div id="oneLinePointCreate" class="row-fluid">
+        <div class="span2 homepageCallsToAction">
+            Make Points
+        </div>
+        <div class="span8">
+        <div class="newPointCall">
+            <div class="newPointCallTitle">Make a Statement You Want to Prove</div>        
+            <div class="newPointInputRow">   
+                <div class="newPointInputRowFieldArea pull-left">
+                    <input id="newPointTitle" class="mainPageInput" placeholder="Write your Point here..."/>
+                    <div id="newPointTitle_charNum" class="newPointCharNum pull-right">140</div>
+                </div>
+                <div class="newPointInputRowButtonArea">
+                    <a class="btn btn-primary" id="mainPagePublish">Publish to Library</a>
+                </div>                
+            </div>
+        </div>
+        </div>
+    </div>
+    
+
+
+{% endblock %}
+
+{% block leftColumnContent %}  
+    {% include 'mainPageLeftColumn.html' %}        
+{% endblock %}
+
+<!--
+{% block rightColumnContent %}
+    {% include 'mainPageRightColumn.html' %}       
+{% endblock %}
+-->

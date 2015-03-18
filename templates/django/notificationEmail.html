@@ -1,0 +1,39 @@
+Hi there, {{user.name}},<br>
+Whysaurus has seen activity on points you're interested in:<br>
+<br>
+{% for notification in user.notifications %}
+    
+        <div>
+        <!-- ReasonCode 1 = agree, ReasonCode 2 = ribbon --> 
+        {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
+            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} Someone {% endif %} 
+            {{notification.notificationReasonText}}           
+            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
+            (a point you {{notification.followReason}}).            
+        {% else %}
+            {% if notification.additionalUserCount > 0 %} 
+                {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
+            {% else %}
+                {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
+            {% endif %}           
+            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
+            (a point you {{notification.followReason}}).
+        {% endif %}
+        </div>
+        <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%; margin-top: 4px; margin-bottom: 8px;">
+            {{notification.timeText}}
+        </div>
+
+{% endfor %}
+<br>
+Whysaurus is a work-in-progress. If you have suggestions for how to improve this project, please respond to this email with your thoughts - we'd love to hear them.<br>
+<br>
+<br>
+Warmly,<br>
+Whysaurus<br>
+<br>
+<span style="font-weight:400;	font-size:0.75em;	color:#6D6E70;	line-height:120%;">Follow Whysaurus on <a target="_blank" href="https://twitter.com/Whysaurus">Twitter</a> and <a target="_blank" href="https://www.facebook.com/Whysaurus">Facebook</a></span><br>
+<br>
+<span style="font-weight:400;	font-size:0.75em;	color:#6D6E70;	line-height:120%;">Adjust the frequency of these emails by clicking "Edit Email Settings" on <a target="_blank" href="http://www.whysaurus.com/user/{{user.url}}">your profile page.</a></span>
+<br>
+<br>

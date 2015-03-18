@@ -1,0 +1,57 @@
+application: <!-- @echo appName -->
+version: <!-- @echo appVersion -->
+runtime: python27
+api_version: 1
+threadsafe: true
+
+builtins:
+- remote_api: on
+- appstats: off
+- deferred: on
+
+handlers:
+- url: /favicon\.ico
+  static_files: static/img/triceratops_favicon.ico
+  upload: static/img/triceratops_favicon.ico
+
+- url: /static
+  static_dir: static
+
+- url: /static/css
+  static_dir: static/css
+  
+- url: /static/js
+  static_dir: static/js
+
+- url: /job/.*
+  script: WhySaurus.app
+  login: admin
+  secure: always
+  
+- url: /admin
+  script: WhySaurus.app
+  secure: always
+
+- url: /gae_mini_profiler/static
+  static_dir: gae_mini_profiler/static
+- url: /gae_mini_profiler/.*
+  script: gae_mini_profiler.main.application
+  
+- url: /.*
+  script: WhySaurus.app
+  secure: always
+  
+
+
+libraries:
+- name: django
+  version: latest
+- name: markupsafe
+  version: "0.15"
+- name: setuptools
+  version: "0.6c11"
+- name: jinja2
+  version: "2.6"
+- name: webapp2
+  version: latest
+  

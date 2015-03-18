@@ -1,0 +1,52 @@
+//
+// Responsive: Tablet to desktop
+// --------------------------------------------------
+
+
+@media (min-width: 768px) and (max-width: 979px) {
+
+    // HEADER
+
+    // hide carets
+    #scoreAndVotingSection .caret {
+        border:none;
+    }
+
+    // Make navbar adhere to the grid. Overiding navbar.less, which sets the navbar width to auto, (not sure why) -JF
+    .navbar .container {
+        width: @gridRowWidth768;
+    }
+
+    // The logo gets smaller at the size, so vertical centering needs to be adjusted
+    #logoImage {
+        margin-top: 7px;
+    }
+
+    .columnHeading {
+        //font-size:@fontSizeActions;
+    }
+
+    .pointCard .pointTitle {
+        //font-size:@fontSizeActions;
+    }
+
+    // HOMEPAGE
+
+    .explanationTextCentered {
+        //max-width: 180px;
+        width: 724px;
+    }
+    
+    .explanationTextCentered.lessWidth {
+        //max-width: 150px;
+    }
+    
+    .explanationBlock {
+        margin-left: 61px;
+        // for four images
+        //margin-left: 27px;
+        //margin-right: 9px;
+    }
+
+
+}

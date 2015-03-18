@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+<div id="content">
+   <div class="row">Return <a href="/">home</a></div>
+
+  {% if messages %}
+    {% for message in messages %}  
+      <div class="row boxedElement">    
+       {% autoescape off %}{{message}}{% endautoescape %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>{{message}}
+    </div>
+  {% endif %}
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,4 @@
+cron:
+- description: daily email notification send
+  url: /job/sendNotificationEmails
+  schedule: every day 20:00

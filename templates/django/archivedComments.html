@@ -1,0 +1,9 @@
+{% for comment in archivedComments %}
+    <div class="row-fluid cmmnt level{{comment.level}}">
+        <div class="cmmnt-content span12">
+          {{comment.text|safe}}
+          <a href="/user/{{comment.userUrl}}" class="userlink">{{comment.userName}}</a> 
+            - <span class="pubdate">{{comment.PSTdateText}}</span>
+        </div>
+    </div>
+{% endfor %}

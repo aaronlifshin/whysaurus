@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+
+<div id="content" class="fullPageText span8 offset2">
+    <div class="fixOffset2">
+    {% include "manifestoContent.html" %}
+    
+    <p>
+    <h4>Get started</h4>
+    Get started by rating, creating and editing points <strong><a href="http://whysaurus.com">here</a></strong>. 
+    </p>
+    <br>
+    <br>
+    <br>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+         $('.manifestoHeader').hide();
+    });
+</script>  
+ {% endblock %}
+ 

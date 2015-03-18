@@ -1,0 +1,34 @@
+{% extends "twoColumnLayout.html" %}
+
+{% block headBlock %}  
+
+{% include "explanationIllustrations.html" %}
+
+    <div id="oneLinePointCreate" class="row-fluid">
+        <div class="newPointCall">
+            <div class="newPointCallTitle"><span>Make an Argument</span><span class="hidden-xxs">&nbspYou Want to Prove</span></div>        
+            <div class="newPointInputRow">   
+                <div class="newPointInputRowFieldArea pull-left">
+                    <input id="newPointTitle" class="mainPageInput" placeholder="Start with a single specific claim, &quot;eg Birds evolved from dinosaurs.&quot;"/>
+                    <div id="newPointTitle_charNum" class="newPointCharNum pull-right">140</div>
+                </div>
+                <div class="newPointInputRowButtonArea">
+                    <!-- need the &nbsp; character so that the space doesn't get removed by any clever auto-formatting --> 
+                    <a class="btn btn-primary" id="mainPagePublish">Publish<span class="hidden-xxs">&nbsp;to Library</span></a>
+                </div>                
+            </div>
+
+        </div>
+    </div>
+     
+
+
+{% endblock %}
+
+{% block leftColumnContent %}  
+    {% include 'mainPageLeftColumn.html' %}        
+{% endblock %}
+
+{% block rightColumnContent %}
+    {% include 'mainPageRightColumn.html' %}       
+{% endblock %}

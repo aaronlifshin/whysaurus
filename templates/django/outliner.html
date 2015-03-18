@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+  <script type="text/javascript" src="/static/js/outliner.js"></script>
+
+
+  <div id="content">
+  {% if user %}
+      <div class="row">
+        <div class="span12">      
+          <button id="saveOutline">Save All</button> 
+        </div>    
+      </div>
+      <div class="row">
+        <div class="span7">
+          <div class="row">
+            <div class="span7">
+              Enter: create; Tab: indent; Shift-Tab: unindent; 
+              Delete: remove point (if title deleted)
+            </div>
+          </div>
+          <div class="row outlinerRow highlighted"> <!--  REPEAT ELEMENTS WILL BE CREATED BY JSCRIPT -->
+            <div class="span6">
+              <input id="pointInput_0" class="outlinerInput"  data-level="0" data-ref="0"/>        
+            </div>
+            <div class="span1">
+                <img id="outliner_addBelow_0" src="/static/img/green-plus.png"/>
+                <img id="outliner_left_0" src="/static/img/arrow-left.png"/>
+                <img id="outliner_right_0" src="/static/img/arrow-right.png"/>
+                <img id="outliner_delete_0" src="/static/img/red-x.png"/>            
+            </div>        
+          </div>  
+        </div>
+        <div id="outliner_details" class="span5">        
+          <div id="outliner_detailArea_0" data-ref="0">
+              <div>Add Details To Your Point Here</div>  
+              <div class="pull-right charCount" id="pointInput_0_charNum" data-ref="0">140 characters remaining</div>                                
+              <textarea class="repeatTitle" id="outliner_Title_0" data-ref="0"></textarea>         
+              <div>Additional Text</div>
+              <textarea class="furtherInfo" id="outliner_FurtherInfo_0" data-ref="0"></textarea>
+              <div id="outliner_sources_0" data-ref="0">
+                  Sources
+              </div>
+                  Title: <input id="outliner_SourceTitle_0" data-ref="0"/><br>
+                  URL: <input id="outliner_SourceURL_0" data-ref="0"/><br>
+                  <button class="pull-right" id="outliner_addSource_0" data-ref="0">Add Source</button>                        
+          </div>
+        </div>       
+      </div>
+          
+      
+  {% else %}
+    <div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>You are not logged in. Please log in to use the Outliner</div>
+  
+  {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+    <link href="/static/css/new.css" rel="stylesheet" media="screen">
+    <link href="/static/js/chosen/chosen.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js" ></script>
+    <script type="text/javascript" src="//use.typekit.net/dvk0ttp.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>   
+    <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+    <script type="text/javascript" src="/static/js/jquery.screwdefaultbuttonsV2.min.js"></script>
+    <script type="text/javascript" src="/static/js/chosen/chosen.jquery.js"></script>
+    <script type="text/javascript" src="/static/js/base.js"></script>
+    
+    <script> var appname = window.navigator.appName; </script>
+    
+      {% if point %}
+          <title>{{ point.title }}</title>   
+      {% else %}
+          {% if profileUser %}
+             <title>{{profileUser.name}} on Whysaurus</title>
+          {% else %}
+            <title>Whysaurus: good arguments, online</title>
+            <meta name="description" content="
+            A visually intuitive online platform for arguments, with a design that encourages reasoned deliberation.
+            In Whysaurus, arguments are divided into points. 
+            Each points can be supported or countered by more points, so users can drill down to see the proof behind proof on any idea.
+            Points and links between points can be rated so the flaws in any argument can be quickly and precisely identified. 
+            Points have character limits, so there is little room for flowery rhetoric.
+            Each point can be discussed in their own comment thread, so conversations stay tightly focused.
+            Points can be re-used, so users don't need to start from scratch when building new arguments.
+            Whysaurus will become a reference repository of explanations and convincing arguments for positions.">            
+          {% endif %}              
+      {% endif %}
+      
+      <!-- Analytics -->     
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-42013841-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+        
+        <script> var loggedIn = {% if user %}true{% else %}false{% endif %}; </script>
+  </head>
+  
+  <body>
+    <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}grayBackground{% endif %}">
+      <div class="container">
+         <div class="row">
+          <div class="span2">
+            <a id="logoNav" href="/">
+                <span class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png">
+                    <img class="hidden-xxs" src="/static/img/whysaurus_logo.png"/>
+                    <img class="visible-xxs" src="/static/img/whysaurus_logo_v02_ys_32px.png"/>
+                </span>
+            </a>
+          </div>
+          {% if headerHideActions != 1 %}
+              <div class="span3 headerLinks Heading_Black_Caps">
+                <a id="homeNav" href="/">
+                  <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
+                  <img id="homeIcon" class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
+                  <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>             
+                </a>          
+                <a id="CreatePoint" href='javascript:;' alt="Make a Point">
+                  <img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/>
+                  <span class="hidden-xs hidden-phone">MAKE A POINT</span>
+                </a> 
+              </div>       
+              <div id="searchArea" class="span3">
+                  <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
+                  <div class="searchIcon pull-right"></div>
+              </div>
+              <div class="headerLinks Heading_Black_Caps pull-left">
+                <span class="aboutMenu">
+                  <a class="userControls dropdown-toggle" data-toggle="dropdown">
+                    <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
+                    <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
+                    <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
+                  </a>
+                  <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                          <li><a id="help1" href="/manifesto" >Manifesto </a></li>                                  
+                          <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>                  
+                          <li><a id="help3" href="/education" >Education</a></li>  
+                          <li class="divider"></li>   
+                          <li><a href="/team">Team</a></li>
+                          <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
+                          <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
+                          <li class="divider"></li>                      
+                          <li><a href="/contact">Send us Feedback</a></li>                      
+                  </ul>
+                </span>  
+              </div>     
+                   
+        	  {% if user %}              
+                <div class="userMenuArea headerUserName pull-right">
+                        <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
+                            <span class="responsiveLabel">
+                                <!--{{ user.name|escape }}-->                        
+                                <!--{{ user.name|slice:"12" }}{% if user.name|length > 12 %}...{% endif %} --> 
+                                {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}                       
+                            </span> 
+                            <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
+                        </a>
+                        <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        {% if user and user.anyPrivateAreas %}
+                            {% if currentArea %}
+                                   <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>       
+                                   <li class="divider"></li>                                            
+                            {% endif %}                          
+
+                            {% if not user.manyPrivateAreas %}
+                                {% if not currentArea %}
+                                   <li class="menuHeading">Go to Classroom:</li>                                
+                                   <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
+                                   <li class="divider"></li>                                   
+                                 {% endif %}
+                            {% else %}
+                                   <li class="menuHeading">Change Classroom:</li>
+                                   {% for area in user.privateAreas %}
+                                       {% if area != currentArea %}
+                                         <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
+                                       {% endif %}
+                                   {% endfor %}
+                                   <li class="divider"></li>                                   
+                            {% endif %}
+                        {% endif %}
+                          {% if currentArea and currentArea != '' %}
+                              {% if user.isAdmin or user.isTeacher %}
+                                <li><a tabindex="-1" href="/roster">Roster</a></li>
+                                <li class="divider"></li>
+                              {% endif %}
+                          {% endif %}
+                          {% if user.isAdmin %}
+                              <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
+                          {% endif %}
+                          <li><a tabindex="-1" href="/user/{{user.url}}" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Profile'])"> Profile </a></li>   
+                          {% if user.emailUser %}
+                              <li><a tabindex="-1" href="/changePassword" onclick="_gaq.push(['_trackEvent', 'UserMenu', 'Change Password'])">Change Password</a></li>
+                          {% endif %}                 
+                          <li><a tabindex="-1" href="/logout"> Logout </a></li>
+                        </ul>
+                </div>                      
+                <div id="notifications" class="pull-right">                    
+                            <a class="dropdown-toggle" data-toggle="dropdown">                      
+                                <img id="notificationIcon" src="/static/img/notificationIcon.png"/>  
+                            </a>                                                                         
+                            <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                       
+                                {{ user.newNotificationCount }} 
+                            </div>
+                          <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
+                             <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
+                            {% if user.notifications %} 
+                                data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"                                                                         
+                                {% if user.notifications|length == 11 %}                            
+                                    data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"                            
+                                {% endif %}                                                                                                                    
+                            {% endif %}                            
+                                >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
+                            
+                            {% if user.notifications %}                      
+                             {% for notification in user.notifications %}
+                                    {% include 'notificationMenu.html' %} 
+                             {% endfor %} 
+                           {% endif %}
+                       
+                           {% if user.moreNotificationsExist  %}
+    	                        <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
+    	                            More notifications... Click here to view all
+    	                        </li>  
+                            {% endif %}                                     
+                          </ul> 
+                </div>          
+                                                                                                                                          
+        	  {% else %}
+                <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
+                      <a class="dropdown-toggle" data-toggle="dropdown">SIGN IN </a>
+                      <ul id="userMenuSignedOut" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
+                        <li><a tabindex="-1" href="/auth/google"> Google </a></li>
+                        <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
+                        <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
+                      </ul>
+                </div>
+        	  {% endif %}
+    	  {% endif %} <!-- headerhideactions -->
+        </div>
+      </div>
+    </div>
+
+
+     {% if user and user.anyPrivateAreas and currentArea %}
+        <div class="privateAreaHeader">
+          <div class="container">
+              <div class="row">
+                  <div id="areaLine" class="span12" >
+                       <strong>{{currentAreaDisplayName}}</strong>
+                  </div>
+              </div>
+          </div>
+        </div>
+     {% endif %}
+        
+    {% if showManifesto == 1 %}        
+    <div class="row-fluid manifestoHeader" style="display:none;">
+        <div class="container manifestoHeaderArea">
+            <div class="manifestoTitle">
+                <a target="_blank" href="/education">How to use Whysaurus in classrooms</a>
+            </div>            
+            <div class="pull-right" id="hideManifesto">
+                Hide this
+            </div>
+        </div>
+    </div>
+   {% endif %}
+    
+    
+
+    {% if user %}
+        <script> 
+            var loggedIn = true; 
+            var channelToken = '{{user.token}}';                     
+            var userURL = '/user/{{user.url}}';
+        </script>
+        {% include 'pointDialog.html' %}
+        {% include 'selectSupportingPointsSearch.html' %}
+    {% else %}
+      <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
+         <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">          
+            <div class="modal-header"><h3>Sign In</h3></div>
+                
+            <div class="row-fluid" id="alertArea"></div>    
+            <div class="modal-body">    
+              <div class="control-group">            
+                <label class="control-label" for="login_userEmail">Email or Username</label>
+                <div class="controls">            
+                    <input id="login_userEmail" name="login_userEmail" type="text"></input>
+                </div>
+              </div>      
+              <div class="control-group">            
+                <label class="control-label" for="login_userPassword">Password</label>
+                <div class="controls">            
+                    <input id="login_userPassword" name="login_userPassword" type="password"></input>
+                </div>
+              </div>
+              <input id="login_userPointText" name="login_userPointText" type="hidden"></input>   
+              <input id="login_userAction" name="login_userAction" type="hidden"></input>                                       
+            </div>
+            <div class="modal-footer">
+                <div class="row-fluid">
+                  <a  id="forgot_emailLoginDialog" class="btn pull-left">Forgot Password</a>  
+                  <a  id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>                                        
+                  <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right" onclick="_gaq.push(['_trackEvent', 'Login', 'Sign in Whysaurus User'])">Sign In</a>            
+                </div>
+                <div class="row-fluid">                
+                    <a  id="showSignupDialog" class="btn btn-cancel">New to Whysaurus? Click here to sign up.</a>                                                    
+                </div>
+            </div> 
+          </form>
+      </div>
+              
+      <div class="modal hide fade" data-keyboard="true" id="signupDialog" role="dialog" aria-hidden="true">
+         <form id='frm_signupDialog' class="form-horizontal" action="" method="POST">          
+            <div class="modal-header"><h3>Sign Up</h3></div>    
+            <a  id="backToLogin" class="btn">Already a User? Click here to sign in.</a>                                                    
+            
+            <div class="row-fluid" id="alertArea"></div>    
+            <div class="modal-body">       
+              <div class="control-group">
+                <label class="control-label" for="signup_userName">Username</label>
+                <div class="controls">            
+                    <input id="signup_userName" name="signup_userName"  type="text"
+                    placeholder=""></input>
+                </div>
+              </div>   
+              <div class="control-group">            
+                <label class="control-label" for="signup_userEmail">Email Address</label>
+                <div class="controls">            
+                    <input id="signup_userEmail" name="signup_userEmail" type="text"
+                    placeholder="For logging in and receiving Whysaurus notifications..."></input>
+                </div>
+              </div>  
+              <div class="control-group">            
+                <label class="control-label" for="signup_password1">Password</label>
+                <div class="controls">            
+                    <input id="signup_password1" name="signup_password1" type="password"
+                    placeholder="At least 8 characters long, with both a letter and a number..."></input>
+                </div>
+              </div>
+              <div class="control-group">            
+                <label class="control-label" for="signup_password2">Confirm Password</label>
+                <div class="controls">            
+                    <input id="signup_password2" name="signup_password2" type="password"
+                    placeholder=""></input>
+                </div>
+              </div>       
+              <h5 class="modalSubheading">Optional: Tell the community more about yourself </h5>
+              <div class="control-group">            
+                <label class="control-label" for="signup_userWebsite">Website URL</label>
+                <div class="controls">            
+                    <input id="signup_userWebsite" name="signup_userWebsite" type="text" value=""
+                    placeholder="Link to your website..."></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="signup_userAreas">Expertise</label>                            
+                <div class="controls">            
+                    <input id="signup_userAreas" name="signup_userAreas" type="text" value=""
+                    placeholder="Subjects you know about..."></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label  class="control-label" for="signup_userProfession">Profession</label>                                      
+                <div class="controls">            
+                    <input id="signup_userProfession" name="signup_userProfession" type="text" value=""
+                    placeholder="Your current profession..."></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label  class="control-label" for="signup_userBio">Short Biography </label>                                                
+                <div class="controls">            
+                    <textarea id="signup_userBio" name="signup_userBio" type="text" rows="3"
+                    placeholder="Anything else about yourself that you'd like to share..."></textarea>   
+                </div>
+              </div>        
+            </div>    
+            <div class="modal-footer">
+                <a  id="cancel_signupDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>            
+                <a  id="submit_signupDialog" class="btn btn-primary pull-right" onclick="_gaq.push(['_trackEvent', 'Login', 'Create Whysaurus User'])">Create User</a>            
+            </div> 
+          </form>
+      </div>
+      
+      <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
+        <div class="modal-header">
+          <h3>Sign In</h3>
+        </div>
+        <div class="modal-body">
+          It's Easy
+          <div id="signInWithFacebook_Dlg" class="boxedElement"  onclick="loginWith(event, 'Facebook')"><a tabindex="1" href="javascript:;" > Sign in with Facebook </a></div>
+          <div id="signInWithGoogle_Dlg" class="boxedElement" onclick="loginWith(event, 'Google')"><a tabindex="2" href="javascript:;"> Sign in with Google </a></div>
+          <div id="signInWithTwitter_Dlg" class="boxedElement" onclick="loginWith(event, 'Twitter')"><a tabindex="3" href="javascript:;"> Sign in with Twitter </a></div>
+          <div id="signInWithEmail_Dlg" class="boxedElement" onclick="_gaq.push(['_trackEvent', 'Login', 'With Whysaurus', 'Dialog'])"><a tabindex="4" > Sign in with Whysaurus </a> </div>
+          
+        </div>
+        <div class="modal-footer">
+          <a  tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
+        </div>
+      </div>
+    {% endif %}
+    <div id="fb-root"></div>
+    <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : 144595249045851,
+        status     : true,
+        xfbml      : true
+      });
+
+    };
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/all.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+
+
+  </script>
+  
+    <div class="container" id="mainContainer">
+	  <!--<div class="chatRoom">ChatroomContent</div>-->
+
+    {% block mainPageContent %} 
+    {% endblock %}
+  </div>     
+    {% profiler_includes %}    
+  </body> 
+</html>

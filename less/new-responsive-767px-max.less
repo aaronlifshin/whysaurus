@@ -1,0 +1,618 @@
+//
+// Responsive: Landscape phone to desktop/tablet
+// --------------------------------------------------
+
+
+@media (max-width: 767px) {
+
+  .navbar-fixed-top,
+  .navbar-fixed-bottom,
+  .navbar-static-top {
+    margin-left: 0px;   // Bootstrap default is -20px, not sure why that is -JF
+  }
+  
+  // for elements that we want to display inline, even when the grid system is abandoned for small screens
+  .responsiveInline {
+    display:inline !important;
+  }
+
+  .responsiveRightMargin {
+    margin-right: 20px !important;
+  }
+  
+  .responsiveUnfloat {
+    float: none !important;
+    display: inline !important;
+  }
+  
+  // HEADER
+  
+  .responsiveLabel {
+    display:none;
+  }
+  
+  // keep logo at the same scale and position as the 768-979 responsive setup
+  #logoImage {
+    margin-top: 7px;
+    margin-left: 4px;
+    max-width: 112px;
+    float:left;
+  }
+
+  .headerLinks {
+    float:left;
+    width: initial;
+    margin-right: 6px; // for some reason this doesn't always load up correctly
+  }  
+  
+  .headerLinks a {
+    padding-right: 4%;
+  }
+    
+  #homeNav {
+    margin-left:8px;
+  }
+  
+  #CreatePoint {
+    margin-left:0px; //no longer on the grid
+  }
+  
+  #searchArea {
+    float: left;
+    //width: 154px;
+    width: -moz-calc(~"100% - 335px");
+    width: -webkit-calc(~"100% - 335px");
+    width: calc(~"100% - 335px");
+  }
+  
+  .headerUserName {
+    position: relative;
+    right: 24px;
+  }
+
+  .aboutMenu {
+    left:8px;
+  }
+  
+  #aboutDropdown {
+    min-width:120px;
+    left: -16px;
+  }
+  
+  #notifications {
+    width: 28px;
+    position:relative;
+    right:28px;
+  }
+
+  #notificationIcon {
+    width: 28px;
+    margin-right: 0;
+  }
+  
+  #notificationCount {
+    left: 37%;
+  }
+  
+  .notificationAvatar {
+    max-width: 22px;
+    //float: left;
+  }
+  
+  .notificationText {
+    //float: left;
+  }
+  
+  #userMenuSignedIn {
+    margin-left: -46px;
+  }
+  
+  #userMenuSignedOut {
+    margin-top: -8px;
+  }
+  
+  .privateAreaHeader {
+    position: relative;
+    // undo padding from body added in responsive-767px-max.less
+    left: -20px;
+    width: -moz-calc(~"100% + 40px");
+    width: -webkit-calc(~"100% + 40px");
+    width: calc(~"100% + 40px");
+  }
+  
+  #areaLine {
+    padding-left: 20px; // redo padding from body added in responsive-767px-max.less 
+    padding-right: 20px;
+    }
+  
+  // AFFIX
+  
+  .affix, .affix-top {
+    margin-left: -14px;
+  }
+  
+  .affix {
+    position:relative;
+    top:36px;
+    margin-bottom:54px
+  }
+  
+  #edOverview {
+    margin-top:21px;
+  }
+  
+  
+  
+  // PROFILE PAGE
+  
+  .profilePic {
+    max-width: 64px;
+  }
+  /*
+  .profileEditButton {
+    float:none;
+    margin-left:4px;
+  }*/
+  
+  .profileAreaColumn {
+    margin-bottom:18px;
+  }
+  
+  // DIALOGS 
+  
+  #loginDialog {
+    margin-left: 0; 
+  }
+  
+  input, textarea, .uneditable-input {
+    width: 63%;
+  }
+  
+  #title_pointDialog {
+    width: 97.5%;   
+  }
+  
+  .imageTextFieldsArea {
+    width:70%;
+  }
+  
+  #sourceTitle_pointDialog {
+    with:70%;
+  }
+  
+  .filepicker-placeholder {
+    //width: 64px;
+    //height: 64px;
+    //margin-left: 18px; 
+    //top: 0;
+    //left: 0; 
+  } 
+  
+  // TOP POINT
+  .upstreamLinks {
+    position: relative;
+    bottom: 4px;
+  }
+  
+  #pointArea {
+    padding-left: @boxPaddingFull;
+    padding-right: @boxPaddingFull;  
+    top: 19px;
+  }
+  
+  #pointSummary {
+    position:relative;
+    top: -8px;
+    margin-bottom: 0px;
+  }
+  
+  .mainPointTitleText {
+    margin-top:10px;
+    padding-right:0;
+  }
+  
+  .mainPointContent {
+    margin-right:16px;
+  }
+  
+  #timestampAndEditLink {
+    display:inline-block;
+  }
+  
+  #mainPointImageArea {
+    margin-bottom: 16px;
+  }
+  
+  img.pointDisplay {
+    width: inherit;
+  }
+  
+  .imageAreaMaxHeight {
+    max-height: 240px;
+  }
+  
+  .mainPointImageCaption {
+    /*  will become unnecessary as more images are saved with a width of 720px 
+    and there are fewer images with the original 310px width */
+    max-width: 310px; 
+  }
+  
+  #scoreAndVotingSection {    
+  }
+
+  .pointAreaActions {
+    padding-right: 6px;
+    margin-bottom: 12px;
+  }
+
+  .pointAreaActions.showRelevance {
+    margin-bottom: -1px;
+  }
+  
+  
+  
+  .topPointVotingArea {
+    display:inline !important;
+  } 
+  
+  .editPointArea {
+    margin-right: -10px;
+  }
+  
+  a#editPoint {
+    margin-right:0;
+    float:none;
+  }
+  
+  // SUPPORTING AND COUNTER POINTS
+
+  .responsivePointBoxTitleWithImage {
+    float: left !important;
+    max-width: 75%;
+  }
+  
+  .responsivePointBoxImage {
+    max-width: 20%;
+    float: right !important; 
+  }
+  
+  
+  .pointColumnMenuArea {
+    margin-top:-20px;
+  }
+  
+  #supportingPointsArea {
+    margin-top:18px;
+  }
+  
+  #supporting_pointActions, #counter_pointActions, 
+  #supporting_pointActionsWhenZero, 
+  #counter_pointActionsWhenZero {
+    margin-bottom:48px;
+  }
+  
+  .pointListFooterBigPad {
+    padding-left:0;
+  }
+  
+  #supporting_pointActionsWhenZero, 
+  #counter_pointActionsWhenZero {
+    padding-left:0; 
+  }
+  
+  // COMMENTS
+  
+  .commentsColumn {
+    top:12px;
+    margin-bottom: 64px;
+  }
+  
+  .commentsButton {
+    margin-bottom:12px;
+  }
+
+  
+  // INDEX PAGE
+  
+  .explanationTextCentered {
+        max-width: 200px;
+  }
+  
+  .explanationTextCentered.lessWidth {
+        max-width: 155px;
+  }
+  
+  .newPointCallTitle {
+    //font-size:4.85vw;
+    font-size:28px;
+    //text-align:left;
+  }
+  
+  // FULL TEXT PAGES
+  .fullPageText {
+    padding-left: 4px;
+  }
+  
+  // DIALOGS
+  .pointDialog {
+    width: auto;
+    margin-left: auto;
+  }
+  
+}
+  
+// SPECIAL CASE FOR Explanatory Illustrations
+// ---------------------
+@media (max-width: 540px) {
+
+  .newPointCallTitle {
+    font-size:24px;
+    //text-align:left;
+  }
+
+  // Explanation Illustrations
+  .explanationRow {
+    width: 200px;
+  }
+  
+  .explanationBlock {
+    margin-left:0px;
+  }
+  
+  .explanationImageCentered {
+    //margin-bottom:28px;
+  }
+
+}
+
+// UP TO LANDSCAPE PHONE
+// ---------------------
+
+@media (max-width: 480px) {
+
+  .newPointCallTitle {
+    font-size: 20px;
+  }
+  
+  .responsiveRightMargin {
+    margin-right: 8px !important;
+  } 
+
+  #homeNav {
+    display:none;
+  }
+  
+  #makePointIcon {
+    margin-left:8px;
+  }
+  
+  #searchArea {
+    width: -moz-calc(~"100% - 295px");
+    width: -webkit-calc(~"100% - 295px");
+    width: calc(~"100% - 295px");
+  }
+  
+  #aboutDropdown {
+    left: -34px;
+  }
+  
+  
+  #notifications {
+    width: 24px;
+    position:relative;
+    right:39px;
+  }
+  
+  #notificationIcon {
+    width: 24px;
+  }
+  
+  #notificationCount {
+    top: 25%;
+    left: 29%;
+    line-height: @lineHeightBig;
+  }
+  
+  .headerUserName {
+    position: relative;
+    right: 34px;
+  }
+  
+  .userMenuArea #avatar {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .notification-menu {
+    width: 340px;
+    margin-left: -312px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
+  }
+  
+  .notificationText {
+    width: 290px;
+  }
+  
+  #userMenuSignedIn {
+    margin-left: -55px;
+    margin-top: -8px;
+  }
+
+  // DIALOGS
+  
+  .imageTextFieldsArea {
+    width:100%;
+  }
+     
+  .filepicker-placeholder {
+    width: 33px;
+    height: 33px;
+    margin-left: 0; 
+    position: absolute;
+    top: 24px;
+    left: 132px; 
+  }  
+
+  .modal-body {
+    padding-top:0px;
+  }
+  
+  .form-horizontal .control-label { 
+    display: inline-block;
+    margin-top: 9px;
+    padding-top: 7px;
+    padding-right: 12px;
+    margin-bottom:0px;
+  }   
+  
+  input, textarea, .uneditable-input {
+    min-width: auto;
+    width:98%;
+  }
+  
+  // POINT AREA
+  #scoreAndVotingSection {
+    line-height: @lineHeightXXL;
+  }
+  
+  // hide carets
+  #scoreAndVotingSection .caret {
+    border:none;
+  }
+    
+}
+
+// NEXUS 4 (and phones with a screen 768 wide, scaled by 2 = 384 and up)
+// ---------------------
+
+@media (max-width: 420px) {
+
+  .hidden-xxs {
+    display: none !important;
+  }
+  .visible-xxs {
+    display: inherit;   
+  }
+  
+  .responsiveRightMargin {
+    margin-right: 14px !important;
+  }
+  
+  #searchArea {
+    //width:182px;
+    width: -moz-calc(~"100% - 215px");
+    width: -webkit-calc(~"100% - 215px");
+    width: calc(~"100% - 215px");
+  } 
+  
+  .notification-menu {
+    margin-left: -282px;
+  }
+  
+  // DIALOGS
+  
+  .fieldEdit {
+    width:96%;
+  }    
+  
+  // POINT AREA
+  .topPointVotingArea {
+    //display:block !important;
+    margin-right: 30px;
+  }
+
+  .iconAgreesSmallMainPoint {
+    padding-left:4px;
+  }
+  
+  .shareIcon {
+    width: 20px; // make it bigger when the label goes away
+    padding-left:0;
+  }
+  
+    // INDEX PAGE
+  
+  .newPointInputRowFieldArea {
+    width: -moz-calc(~"100% - 75px");
+    width: -webkit-calc(~"100% - 75px");
+    width: calc(~"100% - 75px");
+  }
+  
+  #mainPagePublish {
+    padding-left:10px;
+    padding-right: 10px;
+  }
+  
+  // INDEX PAGE
+  
+  .newPointCallTitle {
+    font-size: 32px;
+  }
+
+}
+
+
+// IPHONES 3GS - 5
+// ---------------------
+
+@media (max-width: 383px) {
+
+  .responsiveRightMargin {
+    margin-right: 9px !important;
+  }
+
+  #makePointIcon {
+    margin-left: 6px;
+  }
+  
+  #aboutDropdown {
+    left: -30px;
+  }
+  
+  .notification-menu {
+    margin-left: -242px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
+    width: 305px;
+  }
+  
+  .notificationText {
+    width:254px;
+  }
+  
+  #userMenuSignedOut {
+    margin-left: -45px;
+    margin-top: -8px;
+  }
+  
+  // DIALOGS
+  
+  // TOP POINT
+  
+  .pointAreaActions {
+    padding-right: 6px;
+    margin-bottom: 10px;
+  }
+     
+  .iphone5-adminLink {
+    //position: absolute; 
+    //bottom: -34px;
+    //padding-left: 58px;
+  }
+  
+  // INDEX PAGE
+  
+  .manifestoTitle {
+    padding-bottom: 27px;
+  }
+  
+}
+
+
+// SMALLER PHONES
+// ---------------------
+
+@media (max-width: 319px) {
+
+  .hidden-xxxs {
+    display: none !important;
+  }
+
+}

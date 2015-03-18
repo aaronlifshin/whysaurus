@@ -1,0 +1,114 @@
+<div class="modal hide fade pointDialog" data-keyboard="false" id="pointDialog"
+    role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <h3>
+            Default Dialog Title
+        </h3>
+    </div>
+    <div class="row-fluid" id="alertArea"></div>
+    <div class="modal-body">
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default accordion-group">
+                <a class="accordion-group-heading" data-toggle="collapse" data-parent="#accordion" href="#collapsibleTitleArea">
+                    <div class="panel-heading">
+                        Add Text
+                    </div>
+                </a>
+                <div id="collapsibleTitleArea" class="panel-collapse collapse in">
+                    <!--<label>
+                         <div class="pull-left pointDialogueSubHeading pointDialogueSubHeadingTop">Point Title</div> 
+                    </label>-->
+                    <div class="dlgField">      
+                        <!-- <input id="title_pointDialog" type="text" class="titleEdit" placeholder="eg &quot;Birds evolved from dinosaurs.&quot;"> -->
+                        <textarea id="title_pointDialog" rows="3" class="titleEdit" placeholder="Make a single specific claim, eg &quot;Birds evolved from dinosaurs&quot;... Every point can then be supported by more points." ></textarea>                        
+                    </div>
+                    <div id="title_pointDialog_charNum" class="pull-right clearfix charCount">
+                         140 characters left
+                    </div>
+                    <!-- hiding for now, using the class "hiddenForNow", to avoid re-writing the javascript etc that is expecting the additional text field 
+                     if we decide to keep this hidden we can go back and hide it the right way -->
+                    <label>
+                        <div class="pull-left pointDialogueSubHeading hiddenForNow">Additional Text</div>      
+                    </label>      
+                    <div id="editorDiv" class="dlgField row additionalTextEntryArea hiddenForNow">                               
+                        <label for="mceEditor" id="additionalTextPlaceholderLabel">Optional: add some context.<br>Note that "Additional Text" isn't displayed in "thumbnail" view.<br><br>Be sure to put the evidence for this claim in Supporting Points.</label>             
+                        <textarea id="editor_pointDialog" class="mceEditor textEdit span12 " placeholder="Add the description here...">
+                        </textarea>
+                    </div>  
+                    <!-- end of the bits hidden the janky way -->
+                </div>
+            </div>
+            <div class="panel accordion-group">
+                <a class="accordion-group-heading" data-toggle="collapse" data-parent="#accordion" href="#collapsibleSourcesArea" id="sourcesPanelTitle">
+                    <div class="panel-heading">                    
+                        Add Sources
+                    </div>
+                </a>
+                
+                <div id="collapsibleSourcesArea" class="panel-collapse collapse ">                    
+                    <div class="row-fluid" id="sourcesArea" class="responsiveInline"></div>         
+                    <div class="control-group">
+                        <label class="control-label pointDialogueSubHeading pointDialogueSubHeadingTop" for="sourceTitle_pointDialog">Title</label>
+                        <div class="controls">
+                            <input id="sourceTitle_pointDialog" type="text" class="fieldEdit" name="sourceTitle" placeholder="Add the source's title...">
+                        </div>   
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label pointDialogueSubHeading" for="sourceURL_pointDialog">URL</label>        
+                        <div class="controls">
+                            <input id="sourceURL_pointDialog" type="text" class=" fieldEdit" name="sourceURL" placeholder="Paste the URL of a source here...">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <button id="sourcesAdd"  class="btn addSourceButton" type="button">Add Source</button> 
+                    </div>                                                        
+                </div>
+            </div>
+            <div class="panel accordion-group">
+                <a class="accordion-group-heading" data-toggle="collapse" data-parent="#accordion" href="#collapsibleImageArea" id="imagePanelTitle">                
+                    <div class="panel-heading">
+                        Add an Image                
+                    </div>    
+                </a>
+                <div id="collapsibleImageArea" class="panel-collapse collapse ">                                        
+                    <div class="control-group chooseImageButtonArea">
+                        <div class="controls">
+                            <input id="link_pointDialog" type="hidden" name="imageURL">
+                            <button class="btn filepicker" type="button">Choose Image</button>
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+                        <div class="row-fluid">
+                            <div class="imageTextFieldsArea">
+                                <div class="row-fluid">
+                                    <label class="control-label pointDialogueSubHeading" for="author_pointDialog">Image Credit</label>
+                                    <div class="controls">
+                                        <input id="author_pointDialog" type="text" class="fieldEdit fieldEditImageArea" name="imageAuthor" placeholder="Credit the photographer, illustrator, etc...">
+                                    </div>
+                                </div>
+                                <div class="row-fluid">            
+                                    <label class="control-label pointDialogueSubHeading" for="description_pointDialog">Description</label>
+                                    <div class="controls">
+                                        <input id="description_pointDialog" type="text" class="fieldEdit fieldEditImageArea bottomTextField" name="imageDescription" placeholder="Add a descriptive caption...">
+                                    </div>
+                                </div>  
+                            </div>                      
+                            <div class="imageThumbnailArea">
+                                <img class="filepicker-placeholder" src="/static/img/placeholder_white_50x50.gif">            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row-fluid" id="buttonBar">
+            <div class="span7 offset5">     
+                <a id="cancel_pointDialog" class="btn btn-cancel twoButtonsCancel" data-dismiss="modal">Cancel</a>
+                <a id="submit_pointDialog" class="btn btn-primary twoButtonsSubmit">Publish to Library</a>            
+            </div>
+        </div>
+    </div>
+</div>

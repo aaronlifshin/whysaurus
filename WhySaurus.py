@@ -19,7 +19,8 @@ from handlers import MainPage, About, Help, Contact, Manifesto, ListSignUp, \
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
-    NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage
+    NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage, \
+    AssignmentHandler
 
 # Map URLs to handlers
 routes = [
@@ -126,6 +127,8 @@ routes = [
     Route('/switchArea/<area_name>', handler='WhySaurus.Profile:setArea', name='switchArea'),
     Route('/createArea', handler='WhySaurus.CreatePrivateAreaPage', name='createPrivateAreaPage'),
     Route('/area/<areaName>', handler='WhySaurus.AuthHandler:setPrivateAreaUser', name='setPrivateAreaUser'),
+
+    Route('/newassignment', handler='WhySaurus.AssignmentHandler:newAssignmentPage', name='newAssignmentPage'),
 
     Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),
     Route('/archiveComments', handler='WhySaurus.Comments:archiveComments', name='archiveComments'),

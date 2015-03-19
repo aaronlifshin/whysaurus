@@ -1,1 +1,1 @@
-# __all__= ['imageurl', 'point', 'pointroot', 'uservote', 'whysaurusexception', 'whysaurususer','sources','privateArea', 'comment', 'timezones','follow','notification','chatUser', 'reportEvent', 'dayEventSummary']
+# __all__= ['imageurl', 'point', 'pointroot', 'uservote', 'whysaurusexception', 'whysaurususer','sources','privateArea', 'comment', 'timezones','follow','notification','chatUser', 'reportEvent', 'dayEventSummary', 'assigment', 'document']

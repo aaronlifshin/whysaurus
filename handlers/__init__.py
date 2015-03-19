@@ -32,7 +32,8 @@ __all__ = [
 	'AddNotifications',
 	'Chat',
     'EventRecorder',
-    'CreatePrivateAreaPage'
+    'CreatePrivateAreaPage',
+    'AssignmentHandler'
 ]
 
 from mainpage import MainPage
@@ -67,6 +68,8 @@ from notificationHandler import NotificationHandler
 from chat import Chat
 from eventRecorder import EventRecorder
 from createPrivateAreaPage import CreatePrivateAreaPage
+from assignmenthandler import AssignmentHandler
+
 
 
 

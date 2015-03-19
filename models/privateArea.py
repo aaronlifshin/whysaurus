@@ -1,6 +1,8 @@
 from google.appengine.api import namespace_manager
 from google.appengine.ext import ndb
 from models.whysaurusexception import WhysaurusException
+from models.assignment import Assignment
+from models.document import Document
 import re
 import logging
 
@@ -65,4 +67,14 @@ class PrivateArea(ndb.Model):
                 return areaName
         else:
             return ''
+    
+    def addAssignment(self, title, summary, directions, documents):
+        a = Assignment(parent=self, title=title, summary=summary, directions=directions)
+        a.put()
+        
+        for document in documents:
+            d = Document(parent=a, title=document.title, content=document.content)
+            d.put()
+
+    
         

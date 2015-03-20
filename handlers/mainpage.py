@@ -52,8 +52,6 @@ class MainPage(AuthHandler):
         }) 
         self.response.out.write(resultJSON) 
         
-        
-        
     @ndb.toplevel    
     def get(self):
         user = None

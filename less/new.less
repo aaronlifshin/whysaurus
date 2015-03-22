@@ -1247,27 +1247,93 @@ a:visited {
 #areaSwap {
     cursor:pointer;
 }
+
 /* NEW ASSIGNMENT FORM */
-.form-header{
+div.form-header{
 	font-size: 14px;
     float: left;
     padding-right: 5px;
+    line-height: 120%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+div#doc-header {
+    float: left;
+    padding-right: 5px;
+	font-size: 20px;
     line-height: 120%;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
-#doc-header {
-    float: left;
-    width: @horizontalComponentOffset; // width: @horizontalComponentOffset - 20;
-    padding-right: 5px;
-	font-size: 20px;
-    line-height: 120%;
-    padding-top: 7px;
+#doc-number {
+    padding-top: 5px;
     padding-bottom: 5px;
+	font-size: 14px;
+	font-weight: bold;
 }
 
+div#submitButtons {
+	margin-top: 50px;
+}
 
+button#addAnotherDocument {
+	background-color: white;
+	text-decoration: underline;
+	border-style: none;
+	font-size: 14px;
+    line-height: 120%;
+    padding-top: 10px;
+    padding-bottom: 20px;
+	margin-left: 12px;
+}
+
+/*button#addAnotherDocument:visited{
+	outline-style: none;
+	outline-color:orange;
+}
+
+button#addAnotherDocument:active{
+	outline-style: none;
+	outline-color:orange;
+}
+*/
+button#deleteAssignment{
+	background-color: white;
+	color: red;
+	text-decoration: underline;
+	border-style: none;
+	font-size: 14px;
+    line-height: 120%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+	margin-left: 12px;
+}
+/*
+button#deleteAssignment:visited{
+	outline-style: none;
+}
+
+button#deleteAssignment:active{
+	outline-style: none;
+}
+*/
+button#createAssignment{
+	-webkit-border-radius: 2;
+	  -moz-border-radius: 2;
+	  border-radius: 2px;
+	background-color: #C1FDCD;
+	text-decoration: none;
+	border-style: none;
+	font-size: 20px;
+    line-height: 120%;
+    padding-top: 15px;
+	padding-right: 20px;
+    padding-bottom: 15px;
+	padding-left: 20px;
+	margin-left: 30px;
+}
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

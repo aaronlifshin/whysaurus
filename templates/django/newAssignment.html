@@ -10,47 +10,57 @@
         <div class="control-group">
             <label class="control-label">Title</label>
             <div class="controls">            
-                <input id="title" name="title"  type="text"/>
+                <input class="input-xxlarge" id="title" name="title"  type="text"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" >Summary</label>
             <div class="controls">            
-                <textarea id="summary" name="summary" rows="3" type="text"></textarea>
+                <textarea class="input-xxlarge" id="summary" name="summary" rows="3" type="text"></textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" >Directions</label>
             <div class="controls">            
-                <textarea id="directions" name="directions" rows="5" type="text"></textarea>
+                <textarea class="input-xxlarge" id="directions" name="directions" rows="5" type="text"></textarea>
             </div>
         </div>
-        <div id="doc-header">Documents</div>
+		<div class="row">
+        	<div class="span12" id="doc-header">Documents</div>
+		</div>
         <div class="row" name="documentControls" data-documentNumber="1">
-            <div class="span1" name="documentNumber">
+            <div class="span1" id="doc-number" name="documentNumber">
                 1
             </div>
-            <div class="span11" >
+            <div class="span11">
                 <div class="control-group">
                     <label class="doc-control-label" >Title</label>
                     <div class="controls">            
-                        <input name="documentTitle" type="text"/>
+                        <input class="input-xxlarge" name="documentTitle" type="text"/>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="doc-control-label" >Content</label>
                     <div class="controls">            
-                        <textarea name="documentContent" rows="5" type="text"></textarea>
+                        <textarea class="input-xxlarge" name="documentContent" rows="5" type="text"></textarea>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <button id="addAnotherDocument">+ Add Another Document</button>
+			<div class="span2">
+			</div>
+			<div class="span10">
+            	<button id="addAnotherDocument">+ Add Another Document</button>
+			</div>
         </div>
         <div class="row">
-            <button id="deleteAssignment">Delete Assigment</button>
-            <button id="createAssignment">Create Assignment</button>
+			<div class="span2">
+			</div>
+			<div class="span10" id="submitButtons">
+            	<button id="deleteAssignment">Delete Assigment</button>
+            	<button id="createAssignment">Create Assignment</button>
+			</div>
         </div>
       </form>
 </div> <!--class="container"-->          

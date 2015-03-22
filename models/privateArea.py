@@ -46,7 +46,6 @@ class PrivateArea(ndb.Model):
     
     @staticmethod
     def getDisplayName(areaName):
-
         previousNamespace = namespace_manager.get_namespace()
         
         if previousNamespace and previousNamespace != '':                
@@ -67,13 +66,29 @@ class PrivateArea(ndb.Model):
                 return areaName
         else:
             return ''
+            
+    @staticmethod
+    def getAreaByName(areaName):
+        previousNamespace = namespace_manager.get_namespace()
+    
+        if previousNamespace and previousNamespace != '':                
+            namespace_manager.set_namespace('') # DEFAULT NAMESPACE
+    
+        query = PrivateArea.query(PrivateArea.name==areaName)
+        logging.info(query)
+        pa = query.get()
+
+        if previousNamespace and previousNamespace != '':                
+            namespace_manager.set_namespace(previousNamespace)
+    
+        return pa
     
     def addAssignment(self, title, summary, directions, documents):
-        a = Assignment(parent=self, title=title, summary=summary, directions=directions)
+        a = Assignment(parent=self.key, title=title, summary=summary, directions=directions)
         a.put()
         
         for document in documents:
-            d = Document(parent=a, title=document.title, content=document.content)
+            d = Document(parent=a.key, title=document['title'], content=document['content'])
             d.put()
 
     

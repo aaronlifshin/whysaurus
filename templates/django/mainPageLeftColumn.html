@@ -1,56 +1,80 @@
-
+{% if currentAssignment %}
+<div class="row-fluid">        
+{% else %}
 <div class="row">        
+{% endif %}
 	<!--<div class="span8 offset2">-->
     <!--<div id="homepageCallsToActionMain" class="span2 homepageCallsToAction">
         Find Points
     </div>-->
     <div class="span12">
-	<div class="mainPageMainStream">
-        <!--<div class="sectionTitle">Find Points:</div>  -->
-        {% if featuredPoint %}
-			<div class="columnHeadingFeatured">
-				FEATURED POINT
-			</div>
-			{% with featuredPoint as point %}
-				{% include 'pointBox.html' %}            
-			{% endwith %}
-		{% endif %}
-		<div id='mainPageMainArea' class="columnHeading ">
-		      <button class="tab selectedTab" id="recentActivity">
-		          TOP ACTIVE
-		      </button>
-		      <button class="tab" id="recentActivityAll">
-		          ALL ACTIVE
-		      </button>
-		      <button class="tab" id="editorsPicks">
-		          EDITORS PICKS
-		      </button>
-		      <button class="tab" id="mostAgrees">
-		          MOST AGREES
-		      </button>
-		      <button class="tab" id="mostViews">
-		          MOST VIEWS
-		      </button>
-              {% if user %}
-                <button class="tab" id="recentlyViewedTab">
-		          RECENTLY VIEWED
-                </button>
-              {% endif %}              
-		</div>
-		<div id="recentActivityArea" class="tabbedArea">
-			{% for point in recentlyActive %}
-			   {% include 'pointBox.html' %}            
-			{% endfor %}               
-		</div>
-        <div id="recentlyViewedArea" class="tabbedArea">
-			{% for point in recentlyViewed %}
-			   {% include 'pointBox.html' %}            
-			{% endfor %}               
-		</div>
-		<div id="recentActivityAllArea" class="tabbedArea"></div>
-		<div id="editorsPicksArea" class="tabbedArea"></div>
-		<div id="mostAgreesArea" class="tabbedArea"></div>
-		<div id="mostViewsArea" class="tabbedArea"></div>
-	</div>
+        {% include "explanationIllustrations.html" %}
+
+            <div id="oneLinePointCreate" class="row-fluid">
+                <div class="newPointCall">
+                    <div class="newPointCallTitle"><span>Make an Argument</span><span class="hidden-xxs">&nbspYou Want to Prove</span></div>        
+                    <div class="newPointInputRow">   
+                        <div class="newPointInputRowFieldArea pull-left">
+                            <input id="newPointTitle" class="mainPageInput" placeholder="Start with a single specific claim, e.g. &quot;Birds evolved from dinosaurs.&quot;"/>
+                            <div id="newPointTitle_charNum" class="newPointCharNum pull-right">140</div>
+                        </div>
+                        <div class="newPointInputRowButtonArea">
+                            <!-- need the &nbsp; character so that the space doesn't get removed by any clever auto-formatting --> 
+                            <a class="btn btn-primary" id="mainPagePublish">Publish<span class="hidden-xxs">&nbsp;to Library</span></a>
+                        </div>                
+                    </div>
+
+                </div>
+            </div>
+            
+    	<div class="mainPageMainStream">
+            <!--<div class="sectionTitle">Find Points:</div>  -->
+            {% if featuredPoint %}
+    			<div class="columnHeadingFeatured">
+    				FEATURED POINT
+    			</div>
+    			{% with featuredPoint as point %}
+    				{% include 'pointBox.html' %}            
+    			{% endwith %}
+    		{% endif %}
+    		<div id='mainPageMainArea' class="columnHeading ">
+    		      <button class="tab selectedTab" id="recentActivity">
+    		          TOP ACTIVE
+    		      </button>
+    		      <button class="tab" id="recentActivityAll">
+    		          ALL ACTIVE
+    		      </button>
+    		      <button class="tab" id="editorsPicks">
+    		          EDITORS PICKS
+    		      </button>
+    		      <button class="tab" id="mostAgrees">
+    		          MOST AGREES
+    		      </button>
+    		      <button class="tab" id="mostViews">
+    		          MOST VIEWS
+    		      </button>
+                  {% if user %}
+                    {% if not currentAssignment and currentAssignment != '' %}
+                        <button class="tab" id="recentlyViewedTab">
+        		          RECENTLY VIEWED
+                        </button>
+                    {% endif %}
+                  {% endif %}                                
+    		</div>
+    		<div id="recentActivityArea" class="tabbedArea">
+    			{% for point in recentlyActive %}
+    			   {% include 'pointBox.html' %}            
+    			{% endfor %}               
+    		</div>
+            <div id="recentlyViewedArea" class="tabbedArea">
+    			{% for point in recentlyViewed %}
+    			   {% include 'pointBox.html' %}            
+    			{% endfor %}               
+    		</div>
+    		<div id="recentActivityAllArea" class="tabbedArea"></div>
+    		<div id="editorsPicksArea" class="tabbedArea"></div>
+    		<div id="mostAgreesArea" class="tabbedArea"></div>
+    		<div id="mostViewsArea" class="tabbedArea"></div>
+    	</div>
 	</div>
 </div>

@@ -18,6 +18,7 @@ class LinkPoint(AuthHandler):
         oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('parentPointURL'))
         user = self.current_user
         linkType = self.request.get('linkType')
+        sessionAssignmentKey = self.getCurrentAssignmentKey()       
 
         if user:
             try:     
@@ -35,7 +36,8 @@ class LinkPoint(AuthHandler):
                             ]
                 newVersion = oldPoint.update(
                     pointsToLink=newLink,
-                    user=user
+                    user=user,
+                    sessionAssignmentKey=sessionAssignmentKey
                 )
                 user.addRelevanceVote(
                   oldPointRoot.key.urlsafe(), 

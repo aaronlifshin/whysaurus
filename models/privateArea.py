@@ -83,13 +83,4 @@ class PrivateArea(ndb.Model):
     
         return pa
     
-    def addAssignment(self, title, summary, directions, documents):
-        a = Assignment(parent=self.key, title=title, summary=summary, directions=directions)
-        a.put()
-        
-        for document in documents:
-            d = Document(parent=a.key, title=document['title'], content=document['content'])
-            d.put()
 
-    
-        

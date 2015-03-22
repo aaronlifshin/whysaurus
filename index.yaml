@@ -51,6 +51,28 @@ indexes:
 
 - kind: Point
   properties:
+  - name: assignments
+  - name: current
+  - name: dateEdited
+    direction: desc
+
+- kind: Point
+  properties:
+  - name: assignments
+  - name: current
+  - name: isTop
+  - name: dateEdited
+    direction: desc
+
+- kind: Point
+  properties:
+  - name: assignments
+  - name: current
+  - name: voteTotal
+    direction: desc
+
+- kind: Point
+  properties:
   - name: current
   - name: dateEdited
     direction: desc
@@ -83,6 +105,18 @@ indexes:
   ancestor: yes
   properties:
   - name: version
+    direction: desc
+
+- kind: PointRoot
+  properties:
+  - name: assignments
+  - name: editorsPick
+  - name: editorsPickSort
+
+- kind: PointRoot
+  properties:
+  - name: assignments
+  - name: viewCount
     direction: desc
 
 - kind: PointRoot

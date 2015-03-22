@@ -1,9 +1,12 @@
 import webapp2
 import logging
 from webapp2_extras import auth, sessions
+from google.appengine.ext import ndb
+
 from jinja2 import exceptions
 from google.appengine.api import namespace_manager
 from models.privateArea import PrivateArea
+from models.document import Document
 
 class WhysaurusRequestHandler(webapp2.RequestHandler):
     _user = None
@@ -29,6 +32,25 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
             # Save all sessions.
             self.session_store.save_sessions(self.response)
 
+    def getCurrentAssignmentKey(self):
+        sessionAssignmentKey = None       
+        currentArea = self.session.get('currentArea')
+        
+        if currentArea and currentArea != '':
+            sessionAssignmentUrlSafeKey = self.session.get('currentAssignment')
+            sessionAssignmentKey = ndb.Key(urlsafe=sessionAssignmentUrlSafeKey)
+        return sessionAssignmentKey
+    
+    def getCurrentAssignment(self):
+        currentAssignment = None
+        documents = None
+        
+        sessionAssignmentKey = self.getCurrentAssignmentKey()
+        if sessionAssignmentKey:            
+            currentAssignment = sessionAssignmentKey.get()
+            documents = Document.getAllForAssignment(currentAssignment)
+        return currentAssignment, documents
+        
     # This has no checks on whether the user is a part of the area
     # in some cases we want to switch the current area
     # even if they're not logged in

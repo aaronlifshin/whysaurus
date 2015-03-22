@@ -14,7 +14,8 @@ class GetPointsList(AuthHandler):
     def post(self):      
         points = None
         user = None
-
+        sessionAssignmentKey = self.getCurrentAssignmentKey()       
+        
         if self.logged_in:
             user = self.current_user
             
@@ -24,13 +25,13 @@ class GetPointsList(AuthHandler):
         # if listType == 'topAwards':
         #    points = PointRoot.getTopAwardPoints(user)
         if listType == 'recentActivityAll':
-            points = yield PointRoot.getRecentActivityAll_async(user)
+            points = yield PointRoot.getRecentActivityAll_async(user, sessionAssignmentKey)
         if listType == 'topViewed':            
-            points = yield PointRoot.getTopViewedPoints_async(user)
+            points = yield PointRoot.getTopViewedPoints_async(user, sessionAssignmentKey)
         elif listType == 'topRated':
-            points = yield PointRoot.getTopRatedPoints_async(user)
+            points = yield PointRoot.getTopRatedPoints_async(user, sessionAssignmentKey)
         elif listType == 'editorsPics':
-            points = yield PointRoot.getEditorsPicks_async(user)
+            points = yield PointRoot.getEditorsPicks_async(user, sessionAssignmentKey)
 
         template_values = {
             'points':points

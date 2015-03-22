@@ -11,6 +11,7 @@ class NewPoint(AuthHandler):
     @ndb.toplevel
     def newPoint(self):        
         user = self.current_user
+        sessionAssignmentKey = self.getCurrentAssignmentKey()
         resultJSON = json.dumps({'result': False, 'error': 'Not authorized'})
         secretKey = self.request.get('secret')
         
@@ -36,7 +37,8 @@ class NewPoint(AuthHandler):
                     imageAuthor=self.request.get('imageAuthor'),
                     imageDescription=self.request.get('imageDescription'),
                     sourceURLs=sourcesURLs,
-                    sourceNames=sourcesNames)
+                    sourceNames=sourcesNames,
+                    sessionAssignmentKey=sessionAssignmentKey)
                        
                 if newPoint:                    
                     recentlyViewed, sources = yield user.getRecentlyViewed_async( \
@@ -44,7 +46,9 @@ class NewPoint(AuthHandler):
                                 newPoint.getLinkedPointsRootKeys("supporting") + \
                                 newPoint.getLinkedPointsRootKeys("counter")), \
                             newPoint.getSources_async()
-                            
+                    
+                    currentAssignment, documents = self.getCurrentAssignment()
+                    
                     templateValues = {
                         'point': newPoint,
                         'pointRoot': newPointRoot,
@@ -57,22 +61,29 @@ class NewPoint(AuthHandler):
                         'user': user,
                         'voteValue': 0,
                         'ribbonValue': False,
-                        'currentArea':self.session.get('currentArea'),
+                        'currentAssignment': currentAssignment,
+                        'documents': documents,
+                        'currentArea': self.session.get('currentArea'),
                         'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
                     }
                     html = self.template_render('pointContent.html', templateValues)
-
-                    templateValues = {
-                        'user': self.current_user,                
-                        'pointRoot': newPointRoot,
-                        'comments': None
-                    }        
-                    commentHTML = self.template_render('pointComments.html', templateValues)
+                    
+                    rightColumnHTML = ""
+                    if currentAssignment:
+                        rightColumnHTML = self.template_render('assignment.html', templateValues)                        
+                    else:
+                        templateValues = {
+                            'user': self.current_user,                
+                            'pointRoot': newPointRoot,
+                            'comments': None
+                        }
+                        rightColumnHTML = self.template_render('pointComments.html', templateValues)
+                        
                     resultJSON = json.dumps({'result': True, 
                                      'pointURL': newPoint.url,
                                      'title':newPoint.title,
                                      'html': html,
-                                     'commentHTML': commentHTML,
+                                     'commentHTML': rightColumnHTML,
                                      'rootKey': newPointRoot.key.urlsafe()
                                  })
                     ReportEvent.queueEventRecord(user.key.urlsafe(), newPoint.key.urlsafe(), None, "Create Point") 

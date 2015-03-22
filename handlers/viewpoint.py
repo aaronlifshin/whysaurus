@@ -78,6 +78,7 @@ class ViewPoint(AuthHandler):
                 voteValue = vote.value if vote else 0
                 ribbonValue = vote.ribbon if vote else False
                 
+            currentAssignment, documents = self.getCurrentAssignment()
             # viewCountFuture.get_result()
             templateValues = {
                 'point': point,
@@ -91,6 +92,8 @@ class ViewPoint(AuthHandler):
                 'user': user,
                 'voteValue': voteValue,
                 'ribbonValue': ribbonValue,
+                'currentAssignment': currentAssignment,
+                'documents': documents,
                 'currentArea':self.session.get('currentArea'),
                 'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
             }

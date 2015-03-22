@@ -47,7 +47,7 @@ class AssignmentHandler(AuthHandler):
             pa = PrivateArea.getAreaByName(userNamespace)
             if pa:
                 logging.info(str(assignmentData))
-                pa.addAssignment(
+                Assignment.addAssignment(
                     assignmentData['title'], 
                     assignmentData['summary'], 
                     assignmentData['directions'], 

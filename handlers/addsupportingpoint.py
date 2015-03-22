@@ -17,6 +17,7 @@ class AddSupportingPoint(AuthHandler):
         linkType = self.request.get('linkType')
         sourcesURLs=json.loads(self.request.get('sourcesURLs'))
         sourcesNames=json.loads(self.request.get('sourcesNames'))
+        sessionAssignmentKey = self.getCurrentAssignmentKey()
         
         if user:   
             try:       
@@ -35,8 +36,8 @@ class AddSupportingPoint(AuthHandler):
                         imageAuthor=self.request.get('imageAuthor'),
                         imageDescription=self.request.get('imageDescription'),
                         sourcesURLs=sourcesURLs,
-                        sourcesNames=sourcesNames            
-                    )
+                        sourcesNames=sourcesNames,
+                        sessionAssignmentKey=sessionAssignmentKey)
                 else:
                     raise WhysaurusException('Point with URL %s not found' % parentPointURL)
             except WhysaurusException as e:

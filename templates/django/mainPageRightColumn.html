@@ -1,13 +1,3 @@
-
-{% if user %}
-  <div class="row" style="display:none;">
-    <div id="recentlyViewed" class="span3">
-        <div class="columnHeading" >
-        YOUR RECENTLY VIEWED
-        </div>
-        {% for point in recentlyViewed %}
-            {% include 'smallPointBox.html' %}
-        {% endfor %}
-     </div>   
-   </div>
-{% endif %} 
+{% if currentAssignment %}
+    {% include 'assignment.html' %}
+{% endif %}

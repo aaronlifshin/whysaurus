@@ -51,7 +51,10 @@
         })();
       </script>
         
-        <script> var loggedIn = {% if user %}true{% else %}false{% endif %}; </script>
+        <script> 
+            var loggedIn = {% if user %}true{% else %}false{% endif %}; 
+            var haveAssignment = {% if currentAssignment %}true{% else %}false{% endif %}; 
+        </script>
   </head>
   
   <body>
@@ -143,6 +146,12 @@
                                 <li><a tabindex="-1" href="/newassignment">New Assignment</a></li>
                                 <li class="divider"></li>
                               {% endif %}
+                              {% if assignments %}
+                                  {% for a in assignments %}
+                                      <li><a tabindex="-1" href="/?setAssignment={{a.urlSafe}}">{{a.title}}</a></li>
+                                  {% endfor %}
+                                  <li class="divider"></li>                            
+                              {% endif %}
                           {% endif %}
                           {% if user.isAdmin %}
                               <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
@@ -207,7 +216,10 @@
           <div class="container">
               <div class="row">
                   <div id="areaLine" class="span12" >
-                       <strong>{{currentAreaDisplayName}}</strong>
+                       <strong>{{currentAreaDisplayName}}</strong> 
+                       {% if currentAssignment %}
+                           ( {{currentAssignment.title}} )
+                       {% endif %}
                   </div>
               </div>
           </div>

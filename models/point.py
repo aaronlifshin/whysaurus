@@ -156,7 +156,7 @@ class Point(ndb.Model):
     _relevanceVote = None
     _linkInfo = None
     isTop = ndb.BooleanProperty(default=True)
-    
+    assignments = ndb.KeyProperty(repeated=True)     
 
     @property
     def numSupporting(self):
@@ -336,6 +336,7 @@ class Point(ndb.Model):
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
         point.isTop = isTop
+        point.assignments = pointRoot.assignments
         point.put() 
         sources = None
         if sourceURLs and sourceNames:
@@ -362,7 +363,8 @@ class Point(ndb.Model):
     @staticmethod
     def create(title, content, summaryText, user, backlink=None, linktype="",
                imageURL=None, imageAuthor=None, imageDescription=None, 
-               sourceURLs=None, sourceNames=None, urlToUse = None):
+               sourceURLs=None, sourceNames=None, urlToUse = None, 
+               sessionAssignmentKey=None):
         
         newUrl = urlToUse if urlToUse else makeURL(title) 
         pointRoot = PointRoot()
@@ -370,6 +372,9 @@ class Point(ndb.Model):
         pointRoot.numCopies = 0
         pointRoot.editorsPick = False
         pointRoot.viewCount = 1
+        if sessionAssignmentKey:
+            pointRoot.assignments = [sessionAssignmentKey]
+        
         isTop = True
         if backlink:
             logging.info('- - -- -  Creating with a BL')
@@ -641,9 +646,14 @@ class Point(ndb.Model):
         else:
             raise WhysaurusException(
                     "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
+                    
+    @ndb.transactional(xg=True)
+    def addAssignment(self, sessionAssignmentKey):
+        self.assignments = set(self.assignments + [sessionAssignmentKey])
+        self.put()
 
     @ndb.transactional(xg=True)
-    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):        
+    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink, sessionAssignmentKey=None):        
         self.put() # Save the old version
         if pointsToLink:
             for pointToLink in pointsToLink:
@@ -658,7 +668,10 @@ class Point(ndb.Model):
                                  pointToLink['fRating'] if 'fRating' in pointToLink else 0)
                 # addLinkedPoint will add the backlink to the pointRoot and put
                 pointToLink['pointRoot'].addLinkedPoint(newPoint.key.parent(),
-                                                        pointToLink['linkType'])
+                                                        pointToLink['linkType'],
+                                                        sessionAssignmentKey)
+                if sessionAssignmentKey:
+                    pointToLink['pointCurrentVersion'].addAssignment(sessionAssignmentKey)
 
         if sources:
             sourceKeys = newPoint.sources
@@ -689,7 +702,8 @@ class Point(ndb.Model):
     # pointsToLink is a set of links of the new point we want to link
     def update( self, newTitle=None, newContent=None, newSummaryText=None, 
                 pointsToLink=None, user=None, imageURL=None, imageAuthor=None,
-                imageDescription=None, sourcesToAdd=None, sourceKeysToRemove=None):
+                imageDescription=None, sourcesToAdd=None, sourceKeysToRemove=None, 
+                sessionAssignmentKey=None):
         if user:
             theRoot = self.key.parent().get()
             newPoint = Point(parent=self.key.parent())  # All versions ancestors of the PointRoot
@@ -727,11 +741,13 @@ class Point(ndb.Model):
                 newPoint.url = theRoot.updateURL(newPoint.title)
             else:
                 newPoint.url = self.url
+            newPoint.assignments = self.assignments
             newPoint.current = True
+
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)    
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink, sessionAssignmentKey)    
 
             # Not sure why this is needed: this should be getting handled by code already in addLink
             try:
@@ -761,7 +777,7 @@ class Point(ndb.Model):
     @ndb.transactional(xg=True, retries=5)
     def transactionalAddSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
                             linkType, imageURL,imageAuthor,imageDescription,
-                            sourcesURLs, sourcesNames, urlToUse):                             
+                            sourcesURLs, sourcesNames, urlToUse, sessionAssignmentKey=None):                             
          oldPointRoot = oldPointRoot.key.get() # re-get inside transaction for concurrency
          oldPoint = oldPointRoot.getCurrent()
          newLinkPoint, newLinkPointRoot = Point.create(
@@ -776,7 +792,8 @@ class Point(ndb.Model):
              imageDescription=imageDescription,
              sourceURLs=sourcesURLs,
              sourceNames=sourcesNames,
-             urlToUse=urlToUse)
+             urlToUse=urlToUse,
+             sessionAssignmentKey=sessionAssignmentKey)
             
          newLinks = [{'pointRoot':newLinkPointRoot,
                      'pointCurrentVersion':newLinkPoint,
@@ -794,13 +811,13 @@ class Point(ndb.Model):
     @classmethod
     def addSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
                             linkType, imageURL,imageAuthor,imageDescription,
-                            sourcesURLs, sourcesNames):                            
+                            sourcesURLs, sourcesNames, sessionAssignmentKey=None):                            
         newURL = makeURL(title) 
         try:
             newPoint, newLinkPoint, newLinkPointRoot = Point.transactionalAddSupportingPoint(
                 oldPointRoot, title, content, summaryText, user,
                 linkType, imageURL,imageAuthor,imageDescription,
-                sourcesURLs, sourcesNames, newURL)            
+                sourcesURLs, sourcesNames, newURL, sessionAssignmentKey)            
         except TransactionFailedError as e:
             # DO NOT edit this error message carelessly, it is checked in (for example) point.js
             raise WhysaurusException("Could not add supporting point because someone else was editing this point at the same time.  Please try again.")
@@ -992,12 +1009,11 @@ class PointRoot(ndb.Model):
     supportedCount = ndb.ComputedProperty(lambda e: len(e.pointsSupportedByMe))
     # A top point is not used as a support for other points, aka the root of an argument tree
     isTop = ndb.BooleanProperty(default=True)
-    
+    assignments = ndb.KeyProperty(repeated=True)
     
     @classmethod
     def getByUrlsafe(cls, pointRootUrlSafe):
         return ndb.Key(urlsafe=pointRootUrlSafe).get()        
-
 
     @property
     def numComments(self):
@@ -1130,7 +1146,10 @@ class PointRoot(ndb.Model):
         self.setTop()
 
 
-    def addLinkedPoint(self, linkPointRootKey, linkType):
+    def addLinkedPoint(self, linkPointRootKey, linkType, sessionAssignmentKey=None):
+        if sessionAssignmentKey:
+            self.assignments = set(self.assignments + [sessionAssignmentKey])
+            
         if linkType == 'supporting':
             if linkPointRootKey not in self.pointsSupportedByMe:
                 self.pointsSupportedByMe = self.pointsSupportedByMe + \
@@ -1167,8 +1186,10 @@ class PointRoot(ndb.Model):
         
     @staticmethod
     @ndb.tasklet
-    def getEditorsPicks_async(user):
-        rootsQuery = PointRoot.gql("WHERE editorsPick = TRUE ORDER BY editorsPickSort ASC")
+    def getEditorsPicks_async(user, sessionAssignmentKey=None):
+        rootsQuery = PointRoot.query(PointRoot.editorsPick==True).order(PointRoot.editorsPickSort)
+        if sessionAssignmentKey:
+            rootsQuery = rootsQuery.filter(PointRoot.assignments==sessionAssignmentKey)
         resultPoints = yield map(lambda x: x.current.get_async(), (yield rootsQuery.fetch_async(50)))
         if user:
             resultPoints = yield map(
@@ -1179,9 +1200,10 @@ class PointRoot(ndb.Model):
 
     @staticmethod
     @ndb.tasklet
-    def getRecentActivityAll_async(user):
-        pointsQuery = Point.gql(
-            "WHERE current = TRUE ORDER BY dateEdited DESC")
+    def getRecentActivityAll_async(user, sessionAssignmentKey=None):
+        pointsQuery = Point.query(Point.current==True).order(-Point.dateEdited) 
+        if sessionAssignmentKey:
+            pointsQuery = pointsQuery.filter(Point.assignments==sessionAssignmentKey)            
         resultPoints = None
         if user:
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
@@ -1191,9 +1213,12 @@ class PointRoot(ndb.Model):
 
     @staticmethod
     @ndb.tasklet
-    def getRecentCurrentPoints_async(user):
-        pointsQuery = Point.gql(
-            "WHERE current = TRUE AND isTop = TRUE ORDER BY dateEdited DESC")
+    def getRecentCurrentPoints_async(user, assignment=None):
+
+        pointsQuery = Point.query(Point.current==True, Point.isTop==True).order(-Point.dateEdited)
+        if assignment:
+            pointsQuery = pointsQuery.filter(Point.assignments==assignment.key)
+        # "WHERE current = TRUE AND isTop = TRUE ORDER BY dateEdited DESC")
         resultPoints = None
         if user:
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
@@ -1226,8 +1251,10 @@ class PointRoot(ndb.Model):
   
     @staticmethod
     @ndb.tasklet        
-    def getTopRatedPoints_async(user):
-        pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
+    def getTopRatedPoints_async(user, sessionAssignmentKey=None):
+        pointsQuery = Point.query(Point.current==True).order(-Point.voteTotal)
+        if sessionAssignmentKey:
+            pointsQuery = pointsQuery.filter(Point.assignments==sessionAssignmentKey)
         resultPoints = None
         if user:
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
@@ -1245,9 +1272,10 @@ class PointRoot(ndb.Model):
         
     @staticmethod
     @ndb.tasklet    
-    def getTopViewedPoints_async(user):
-        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC") 
-            
+    def getTopViewedPoints_async(user, sessionAssignmentKey=None):
+        rootsQuery = PointRoot.query().order(-PointRoot.viewCount) 
+        if sessionAssignmentKey:
+            rootsQuery = rootsQuery.filter(PointRoot.assignments==sessionAssignmentKey)
         resultPoints = yield map(lambda x: x.current.get_async(), (yield rootsQuery.fetch_async(50)))
         if user:
             resultPoints = yield map(

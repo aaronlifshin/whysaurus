@@ -7,7 +7,11 @@ from google.appengine.ext.webapp import template
 
 from authhandler import AuthHandler
 from models.point import PointRoot, FeaturedPoint
+from models.assignment import Assignment
+from models.document import Document
 from google.appengine.ext import ndb
+
+from webapp2_extras import sessions
 
 class MainPage(AuthHandler):
     
@@ -55,12 +59,26 @@ class MainPage(AuthHandler):
     @ndb.toplevel    
     def get(self):
         user = None
+        currentAssignment = None
+        documents = None
+        showManifesto = 1
+    
+        currentArea = self.session.get('currentArea')
+        if currentArea and currentArea != '':
+            showManifesto = 0
+            
+            assignmentToSet = self.request.get('setAssignment')
+            if assignmentToSet:
+                self.session['currentAssignment'] = assignmentToSet
 
+            currentAssignment, documents = self.getCurrentAssignment()
+            
         if self.logged_in:
             user = self.current_user
-            
-        newPoints = yield PointRoot.getRecentCurrentPoints_async(user)        
+
+        newPoints = yield PointRoot.getRecentCurrentPoints_async(user, currentAssignment)
         featuredPoint = FeaturedPoint.getFeaturedPoint()
+        assignments = Assignment.getAll()
         
         # GET RECENTLY VIEWED
         if user:
@@ -68,15 +86,20 @@ class MainPage(AuthHandler):
             user.getActiveNotifications()
         else:
             recentlyViewedPoints = []
-        
+
+
+
         template_values = {
             'recentlyActive': newPoints,
             'recentlyViewed': recentlyViewedPoints,
             'featuredPoint': featuredPoint,
             'user': user,
-            'showManifesto': 1,
+            'assignments': assignments,
+            'showManifesto': showManifesto,
             'thresholds': constants.SCORETHRESHOLDS,
-            'currentArea':self.session.get('currentArea'),
+            'currentArea': currentArea,
+            'currentAssignment': currentAssignment,
+            'documents': documents,
             'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }
         self.response.out.write(self.template_render('index.html', template_values))

@@ -1,0 +1,30 @@
+<div class="row-fluid" >
+    <div class="assignmentHeading" >
+        Assignment
+    </div>
+    <div id = "assignmentTitle" >
+        {{currentAssignment.title}}
+    </div>
+    <div id = "assignmentSummary" >
+        {{currentAssignment.summary}}        
+    </div>        
+    <div id = "assignmentSummary" >
+        {{currentAssignment.directions}}        
+    </div>
+    
+    {% if documents %}
+        <div class="assignmentHeading" >
+            Documents
+        </div>
+        {% for document in documents %}
+            <div class = "assignmentDoc" >
+                <div class="assignmentDocTitle" >
+                    DOCUMENT {{forloop.counter}}: {{document.title}}        
+                </div>
+                <div class="assignmentDocContent" >
+                    {{document.content}}        
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

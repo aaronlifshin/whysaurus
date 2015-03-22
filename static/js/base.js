@@ -626,8 +626,10 @@ function navigateHistory(event) {
 function loadPoint(url, addToHistory, replaceHistory) {    
     $("#explanationRowHomepage").hide();
     $("#oneLinePointCreate").hide();
-	loadPointContent(url, addToHistory, replaceHistory);    
-	loadPointComments(url);  
+	loadPointContent(url, addToHistory, replaceHistory);   
+    if ( !window.haveAssignment ) {
+    	loadPointComments(url);        
+    }
     /*$('#rightColumn').show();    
     $('#leftColumn').removeClass('span12').addClass('span8');*/
 }

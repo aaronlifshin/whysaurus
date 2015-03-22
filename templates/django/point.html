@@ -10,6 +10,10 @@
 {% endblock %}
 
 {% block rightColumnContent %}
-    {% include 'pointComments.html' %}      
+    {% if currentAssignment %}
+        {% include 'assignment.html' %}      
+    {% else %}
+        {% include 'pointComments.html' %}      
+    {% endif %}
 {% endblock %}
 

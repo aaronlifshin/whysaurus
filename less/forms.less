@@ -664,15 +664,31 @@ legend + .control-group {
   // Float the labels left
   .control-label {
     float: left;
-    width: @horizontalComponentOffset; // width: @horizontalComponentOffset - 20;
+    width: @horizontalComponentOffset + 20; // width: @horizontalComponentOffset - 20;
     padding-right: 5px;
-    padding-left:5px;
-    background-color: @grayLight;
-    color:#979797;
+    //padding-left:5px;
+    //background-color: @grayLight;
+    //color:#979797;
+	font-size: 20px;
     line-height: 120%;
     padding-top: 7px;
     padding-bottom: 5px;
   }
+  
+  // Special Formatting for Document upload labels
+  .doc-control-label {
+    float: left;
+    width: @horizontalComponentOffset + 20; // width: @horizontalComponentOffset - 20;
+    padding-right: 5px;
+    //padding-left:5px;
+    //background-color: @grayLight;
+    //color:#979797;
+	font-size: 14px;
+    line-height: 120%;
+    padding-top: 7px;
+    padding-bottom: 5px;
+  }
+  
   // Move over all input controls and content
   .controls {
     // Super jank IE7 fix to ensure the inputs in .input-append and input-prepend

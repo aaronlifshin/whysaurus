@@ -5,10 +5,10 @@
 
 <div class="container">  
      <form id='frm_newAssignment' class="form-horizontal" action="javascript:;" method="POST">          
-        <h3>Create New Assginment</h3>
+        <div class="form-header">Create New Assignment</div>
         <div class="row-fluid" id="alertArea"></div>            
         <div class="control-group">
-            <label class="control-label" >Title</label>
+            <label class="control-label">Title</label>
             <div class="controls">            
                 <input id="title" name="title"  type="text"/>
             </div>
@@ -25,20 +25,20 @@
                 <textarea id="directions" name="directions" rows="5" type="text"></textarea>
             </div>
         </div>
-        <h5>Documents</h5>
+        <div id="doc-header">Documents</div>
         <div class="row" name="documentControls" data-documentNumber="1">
             <div class="span1" name="documentNumber">
                 1
             </div>
             <div class="span11" >
                 <div class="control-group">
-                    <label class="control-label" >Title</label>
+                    <label class="doc-control-label" >Title</label>
                     <div class="controls">            
                         <input name="documentTitle" type="text"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" >Content</label>
+                    <label class="doc-control-label" >Content</label>
                     <div class="controls">            
                         <textarea name="documentContent" rows="5" type="text"></textarea>
                     </div>

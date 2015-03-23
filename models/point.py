@@ -33,6 +33,8 @@ from google.appengine.ext.db import BadRequestError, TransactionFailedError
 from google.appengine.api import search
 from google.appengine.api.taskqueue import Task
 from google.appengine.ext import deferred
+from google.appengine.api import namespace_manager
+
 
 from imageurl import ImageUrl
 from whysaurusexception import WhysaurusException
@@ -43,7 +45,35 @@ from follow import Follow
 from uservote import RelevanceVote
 from comment import Comment 
 
+def clone_entity(e, skip_auto_now=False, skip_auto_now_add=False, **extra_args):
+  """Clones an entity, adding or overriding constructor attributes.
 
+  The cloned entity will have exactly the same property values as the original
+  entity, except where overridden. By default it will have no parent entity or
+  key name, unless supplied.
+
+  Args:
+    e: The entity to clone
+    skip_auto_now: If True then all DateTimeProperty propertes will be skipped which have the 'auto_now' flag set to True
+    skip_auto_now_add: If True then all DateTimeProperty propertes will be skipped which have the 'auto_now_add' flag set to True
+    extra_args: Keyword arguments to override from the cloned entity and pass
+      to the constructor.
+  Returns:
+    A cloned, possibly modified, copy of entity e.
+  """
+
+  klass = e.__class__
+  props = {}
+  for k, v in klass._properties.iteritems():
+    if not (type(v) == ndb.DateTimeProperty and ((skip_auto_now and getattr(v, 'auto_now')) or (skip_auto_now_add and getattr(v, 'auto_now_add')))):
+      if type(v) == ndb.KeyProperty:
+        value = getattr(klass, k).get()
+      else:
+        value = v.__get__(e, klass)
+      props[k] = value
+  props.update(extra_args)
+  return klass(**props)
+  
 def convertListToKeys(urlsafeList):
     if urlsafeList:
         outList = []
@@ -1415,6 +1445,24 @@ class PointRoot(ndb.Model):
         self.put()
         return True
     
+    def copy(self, currentPoint, areaName):
+        userNamespace = namespace_manager.get_namespace()  
+        namespace_manager.set_namespace(areaName)  
+        
+        newPointRoot = clone_entity(self)
+        newPointRoot.put()
+        
+        newPoint = clone_entity(point)
+        newPoint.parent = newPointRoot.key        
+        newPoint.put()
+        
+        newPointRoot.current = newPoint.key
+        newPointRoot.put()
+        
+        namespace_manager.set_namespace(userNamespace)  
+        return
+        
+        
 # A dummy class to create an entity group
 # For large groups this will cause issues with sharding them across datastore nodes
 # Eventually a BG task should be written to copy these out of the OutlineRoot

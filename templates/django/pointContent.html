@@ -97,7 +97,12 @@
                     </a>
                     </li>       
                     <li><a id='makeFeaturedPick'>Make Featured</a></li>
-                    <li><a id='refreshTopStatus'>Refresh Top Status</a></li>                       
+                    <li><a id='refreshTopStatus'>Refresh Top Status</a></li>  
+                    {% for area in user.privateAreas %}
+                       {% if area != currentArea %}
+                         <li><a class="copyToArea" data-area="{{area}}">Copy this to {{area}}</a></li>
+                       {% endif %}
+                    {% endfor %}
                 </ul>
             </div>	
             {% include 'changeEditorsPick.html' %}             			

@@ -569,6 +569,28 @@ function linkPointControlsInitialState() {
     $( ".ui-helper-hidden" ).hide();
 }
 
+function copyPointToArea(areaName) {
+    var ajaxData =  {
+		'pointUrl': $('#pointArea').data('pointurl'),
+        'areaName': areaName
+    }
+    $.ajax({
+		url: "/copyPoint",
+		global: false,
+		type: "POST",
+		data: ajaxData,
+		success: function(obj){
+			if (obj.result == true) {
+                showAlert('Successfully copied');
+            } else {
+                showErrorAlert('Server returned an error: ' + obj.error);
+            }          
+        },      
+        fail: function(obj){
+            showErrorAlert('Unknown Error');         
+        }  
+    });    
+}
 
 
 function setUpMenuAreas() {
@@ -628,6 +650,10 @@ function setUpMenuAreas() {
         $("#changeEditorsPick .modal-header h4").text(title);
         $("#changeEditorsPick").modal('show');
     }); 
+    
+    $(".copyToArea").off('.ys').on('click.ys', function() {
+        copyPointToArea($(this).data('area'));
+    });
     
     $('#submitChangeEditorsPick').off('.ys').on('click.ys', changeEditorsPick);     
     

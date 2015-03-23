@@ -33,7 +33,8 @@ __all__ = [
 	'Chat',
     'EventRecorder',
     'CreatePrivateAreaPage',
-    'AssignmentHandler'
+    'AssignmentHandler',
+    'CopyPoint'
 ]
 
 from mainpage import MainPage
@@ -69,6 +70,7 @@ from chat import Chat
 from eventRecorder import EventRecorder
 from createPrivateAreaPage import CreatePrivateAreaPage
 from assignmenthandler import AssignmentHandler
+from copypoint import CopyPoint
 
 
 

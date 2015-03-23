@@ -20,7 +20,7 @@ from handlers import MainPage, About, Help, Contact, Manifesto, ListSignUp, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
     NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage, \
-    AssignmentHandler
+    AssignmentHandler, CopyPoint
 
 # Map URLs to handlers
 routes = [
@@ -60,6 +60,7 @@ routes = [
     Route('/user/<userURL>', Profile),
     Route('/addSupportingPoint', AddSupportingPoint),
     Route('/linkPoint', LinkPoint),
+    Route('/copyPoint', CopyPoint),    
     Route('/vote', Vote),
     Route('/relVote', handler='WhySaurus.Vote:relevanceVote', name='relevanceVote'),    
     Route('/setribbon', SetRibbon),

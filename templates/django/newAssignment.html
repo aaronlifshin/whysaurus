@@ -10,7 +10,7 @@
             <div class="form-header span12">Create New Assignment</div>
         </div>
         <div class="row">
-            <div class="span12 offset1">
+            <div class="span12">
                 <div class="control-group">
                     <label class="control-label">Title</label>
                     <div class="controls">            
@@ -35,12 +35,9 @@
         	<div class="span12" id="doc-header">Documents</div>
 		</div>
         <div class="row" name="documentControls" data-documentNumber="1">
-            <div class="span1" id="doc-number" name="documentNumber">
-                1
-            </div>
-            <div class="span11">
+            <div class="span12">
                 <div class="control-group">
-                    <label class="doc-control-label" >Title</label>
+                    <label class="doc-control-label" ><span id="doc-number" name="documentNumber">1</span> Title</label>
                     <div class="controls">            
                         <input class="input-xxlarge" name="documentTitle" type="text"/>
                     </div>
@@ -54,18 +51,20 @@
             </div>
         </div>
         <div class="row">
-			<div class="span2">
-			</div>
-			<div class="span10">
-            	<button id="addAnotherDocument">+ Add Another Document</button>
+			<div class="span12">
+				<label class="doc-control-label"></label>
+            	<div class="control-group">
+					<button id="addAnotherDocument">+ Add Another Document</button>
+				</div>
 			</div>
         </div>
         <div class="row">
-			<div class="span2">
-			</div>
-			<div class="span10" id="submitButtons">
-            	<button id="deleteAssignment">Delete Assigment</button>
-            	<button id="createAssignment">Create Assignment</button>
+			<div class="span12" id="submitButtons">
+				<label class="doc-control-label"></label>
+				<div class="control-group">
+            		<button id="deleteAssignment">Delete Assigment</button>
+            		<button id="createAssignment">Create Assignment</button>
+				</div>
 			</div>
         </div>
       </form>

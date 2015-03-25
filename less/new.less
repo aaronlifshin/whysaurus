@@ -1248,7 +1248,10 @@ a:visited {
     cursor:pointer;
 }
 
-/* NEW ASSIGNMENT FORM */
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   NEW ASSIGNMENT FORM
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
 div.form-header{
 	font-size: 14px;
     float: left;
@@ -1256,6 +1259,25 @@ div.form-header{
     line-height: 120%;
     padding-top: 30px;
     padding-bottom: 30px;
+}
+
+/* Style form labels */
+form#frm_newAssignment .control-group {
+  margin-left: 0px;
+  margin-bottom: 20px;
+}
+
+form#frm_newAssignment .control-label {
+  	float: left;
+  	width: @horizontalComponentOffset + 20; 
+  	padding-right: 5px;
+  	padding-left: 0px;
+  	background-color: white; 
+  	color: black;
+	font-size: 20px;
+  	line-height: 120%;
+  	padding-top: 5px;
+  	padding-bottom: 0px;
 }
 
 div#doc-header {
@@ -1272,6 +1294,21 @@ div#doc-header {
     padding-bottom: 5px;
 	font-size: 14px;
 	font-weight: bold;
+}
+
+// Special Formatting for Document upload labels
+.doc-control-label {
+	float: left;
+	text-align: right;
+  	width: @horizontalComponentOffset - 58; // width: @horizontalComponentOffset - 20;
+  	padding-right: 20px;
+  	//padding-left:5px;
+  	//background-color: @grayLight;
+  	//color:#979797;
+	font-size: 14px;
+  	//line-height: 120%;
+  	padding-top: 5px;
+  	//padding-bottom: 5px;
 }
 
 div#submitButtons {

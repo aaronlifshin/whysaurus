@@ -49,7 +49,8 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
         sessionAssignmentKey = self.getCurrentAssignmentKey()
         if sessionAssignmentKey:            
             currentAssignment = sessionAssignmentKey.get()
-            documents = Document.getAllForAssignment(currentAssignment)
+            if currentAssignment and currentAssignment != '':
+                documents = Document.getAllForAssignment(currentAssignment)
         return currentAssignment, documents
         
     # This has no checks on whether the user is a part of the area

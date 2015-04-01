@@ -3,8 +3,8 @@ from document import Document
 
 class Assignment(ndb.Model):
     title = ndb.StringProperty(required=True)
-    summary = ndb.StringProperty(required=True)    
-    directions = ndb.StringProperty(required=True)
+    summary = ndb.TextProperty(required=True)    
+    directions = ndb.TextProperty(required=True)
     created = ndb.DateTimeProperty(auto_now_add=True)
         
     @staticmethod

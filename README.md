@@ -21,7 +21,7 @@ Detailed Setup Instructions:
 1. Make a github account: https://github.com/
 
 2. Get Directory:
-Go to: https://github.com/aaronlifshin/whysaurus
+Go to: https://github.com/aaronlifshin/whysaurus\s\s
 Download the directory folder zip from the right column
 Get constants.py from a collaborator and put it in the directory folder
 

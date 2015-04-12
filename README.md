@@ -20,39 +20,39 @@ Detailed Setup Instructions:
 
 1. Make a github account: https://github.com/
 
-2. Get Directory:
+2. Get Directory:<br />
 Go to: https://github.com/aaronlifshin/whysaurus<br />
-Download the directory folder zip from the right column
-Get constants.py from a collaborator and put it in the directory folder
+Download the directory folder zip from the right column<br />
+Get constants.py from a collaborator and put it in the directory folder<br />
 
-3. Google App Engine:
-Go to: https://cloud.google.com/appengine/downloads
-Download and Install App Engine SDK for Python
-Open GoogleAppEngineLauncher
-File > Add existing application
-Browse for directory folder
-Admin port can be any number
-Port needs to be 8081
-Select row for your directory and click “run”
-When you click “browse” you should be able to see the unstyled Whysaurus site in your Browser
+3. Google App Engine:<br />
+Go to: https://cloud.google.com/appengine/downloads<br />
+Download and Install App Engine SDK for Python<br />
+Open GoogleAppEngineLauncher<br />
+File > Add existing application<br />
+Browse for directory folder<br />
+Admin port can be any number<br />
+Port needs to be 8081<br />
+Select row for your directory and click “run”<br />
+When you click “browse” you should be able to see the unstyled Whysaurus site in your Browser<br />
 
-4. SimpLESS:
-Download and install SimpLESS: http://wearekiss.com/simpless
-Open SimpLESS
-In your directory folder, find less folder
-From that folder drag and drop bootstrap.less, new.less and responsive.less into SimpLESS
-For all three files, click on the fielder icon to change the path to static > css. Also change the responsive css file name to bootstrap-responsive.css
-Click the refresh icons
-You may need to apply this patch: https://gist.github.com/hlop/4951717/ (download gist, close SimpLESS, right-click SimpLESS in your applications folder and select show package contents, copy the downloaded less.js to SimpLESS\Resources\app\3p and overwrite the existing file
-If you refresh your locally hosted Whysaurus page, it should now have the correct styling
+4. SimpLESS:<br />
+Download and install SimpLESS: http://wearekiss.com/simpless<br />
+Open SimpLESS<br />
+In your directory folder, find less folder<br />
+From that folder drag and drop bootstrap.less, new.less and responsive.less into SimpLESS<br />
+For all three files, click on the fielder icon to change the path to static > css. Also change the responsive css file name to bootstrap-responsive.css<br />
+Click the refresh icons<br />
+You may need to apply this patch: https://gist.github.com/hlop/4951717/ (download gist, close SimpLESS, right-click SimpLESS in your applications folder and select show package contents, copy the downloaded less.js to SimpLESS\Resources\app\3p and overwrite the existing file<br />
+If you refresh your locally hosted Whysaurus page, it should now have the correct styling<br />
 
 5. Create a Whysaurus account
 
-6. Make your Whysaurus account an admin
-In GoogleAppEngineLauncher, click SDK Console
-Select Datastore Viewer from the left menu
-Select WhysaurusUser from the Entity Kind drop-down menu and click list entries
-Click on the key of your new Whysaurus account
-Change Admin to true
-Scroll down to click save
-Click Flush Memcache
+6. Make your Whysaurus account an admin<br />
+In GoogleAppEngineLauncher, click SDK Console<br />
+Select Datastore Viewer from the left menu<br />
+Select WhysaurusUser from the Entity Kind drop-down menu and click list entries<br />
+Click on the key of your new Whysaurus account<br />
+Change Admin to true<br />
+Scroll down to click save<br />
+Click Flush Memcache<br />

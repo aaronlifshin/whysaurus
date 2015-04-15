@@ -278,25 +278,28 @@ a:visited {
 	height: 48px;
 	line-height:48px;
 	position:relative;
+	margin-top:0px;
 }
 
 #searchBox {
-  position:relative;
+    position:relative;
 	top:3px;
-  width:100%; 
-  color:black;
+    width:100%; 
+    color:black;
     // use these three CSS3 box-sizing calls to cause the padding to cut
     //  into the box width instead of add to it
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box;  
-  height:30px;
+    height:30px;
 	padding-right:40px;
 	border: 1px solid #000000;
 	-webkit-border-radius: 0px;
   	-moz-border-radius: 0px;
   	border-radius: 2px; 
   	font-size: 16px;
+	font-family: ff-meta-web-pro, sans-serif;
+	margin-bottom:7px;
 }  
    
 #searchArea .searchIcon {
@@ -484,7 +487,24 @@ a:visited {
     line-height: @baseLineHeight;
 }
 
+.navbar .nav > li > a {	                                
+    margin-top:14px;
+	padding: 0 5px 0 0;
+	display:block;
+    font-size: @fontSizeMediumCond;
+    font-weight: bold;
+    line-height: @baseLineHeight;
+	size:0.875em;
+    font-family: "ff-meta-web-pro-condensed", sans-serif;
+    color:black;
+}
+
 .headerLinks a:hover, .userMenuArea a:hover {
+    color:#00ADEE;
+    text-decoration:none;
+}
+
+.navbar .nav > li > a:hover {
     color:#00ADEE;
     text-decoration:none;
 }
@@ -492,6 +512,7 @@ a:visited {
 .headerLinks a {
     padding-right:5%;	
 }
+
 
 .headerUserName a {	                                
     color: black;
@@ -501,20 +522,31 @@ a:visited {
 	color:black;
 	cursor:pointer;
 }
-   
+
+  
 .aboutMenu {
-	position:relative;	
-	width:60px;
-    left: @gridGutterWidth;
+	position:relative;
+	//width:60px;
+    //left: @gridGutterWidth;
 }
-    
+
+ 
+/* 
 .aboutMenu a {
     padding-right:0;	
 }
+*/
   
 #aboutDropdown {
     margin-top:11px;
 }  
+
+.navbar .nav .dropdown-toggle .caret {
+	margin-top:0px;
+	border-top-color: black;
+	border-bottom-color: black;
+}
+
   
 .headerLinkIcon {
     max-height:22px;

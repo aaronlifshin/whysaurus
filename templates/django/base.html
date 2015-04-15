@@ -57,54 +57,63 @@
         </script>
   </head>
   
-  <body>
+  <body>  
     <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}grayBackground{% endif %}">
-      <div class="container">
-         <div class="row">
-          <div class="span2">
+	  <div class="container">	
             <a id="logoNav" href="/">
                 <span class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png">
                     <img class="hidden-xxs" src="/static/img/whysaurus_logo.png"/>
                     <img class="visible-xxs" src="/static/img/whysaurus_logo_v02_ys_32px.png"/>
                 </span>
             </a>
-          </div>
           {% if headerHideActions != 1 %}
-              <div class="span3 headerLinks Heading_Black_Caps">
-                <a id="homeNav" href="/">
+              <ul class="nav headerLinks Heading_Black_Caps">
                   <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
-                  <img id="homeIcon" class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
-                  <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>             
-                </a>          
-                <a id="CreatePoint" href='javascript:;' alt="Make a Point">
-                  <img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/>
-                  <span class="hidden-xs hidden-phone">MAKE A POINT</span>
-                </a> 
-              </div>       
-              <div id="searchArea" class="span3">
-                  <input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
-                  <div class="searchIcon pull-right"></div>
-              </div>
-              <div class="headerLinks Heading_Black_Caps pull-left">
-                <span class="aboutMenu">
-                  <a class="userControls dropdown-toggle" data-toggle="dropdown">
-                    <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
-                    <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
-                    <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
+                <li>  
+					<a id="CreatePoint" href='javascript:;' alt="Make a Point">
+                    	<img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/>
+                    	<span class="hidden-xs hidden-phone">MAKE A POINT</span>
+                  	</a>
+				</li>
+				<li>
+				  <a href="/education">
+                    <img class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
+                  	<span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">EDUCATION</span>             
                   </a>
-                  <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                          <li><a id="help1" href="/manifesto" >Manifesto </a></li>                                  
-                          <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>                  
-                          <li><a id="help3" href="/education" >Education</a></li>  
-                          <li class="divider"></li>   
-                          <li><a href="/team">Team</a></li>
-                          <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
-                          <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
-                          <li class="divider"></li>                      
-                          <li><a href="/contact">Send us Feedback</a></li>                      
-                  </ul>
-                </span>  
-              </div>     
+				</li>
+				<li>
+				  <a href="/manifesto">
+                    <img class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
+                  	<span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">MANIFESTO</span>             
+                  </a>
+				</li>
+				<li class="aboutMenu">
+	                  <a class="userControls dropdown-toggle" data-toggle="dropdown">
+	                    <img id="aboutIcon" class="headerLinkIcon" src="/static/img/icon_about_32px.png"/> 
+	                    <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">ABOUT</span>             
+	                    <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span> 
+	                  </a>
+	                  <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+	                          <li><a id="help1" href="/manifesto" >Manifesto </a></li>                                  
+	                          <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>                  
+	                          <li><a id="help3" href="/education" >Education</a></li>  
+	                          <li class="divider"></li>   
+	                          <li><a href="/team">Team</a></li>
+	                          <li><a href="https://twitter.com/Whysaurus" target="_blank">Our Twitter</a></li>
+	                          <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Our Facebook</a></li>
+	                          <li class="divider"></li>                      
+	                          <li><a href="/contact">Send us Feedback</a></li>		                       
+	                  </ul>
+				</li>
+				<li>
+	  			  <form id="searchArea" class="navbar-search pull-left">
+                	<input id="searchBox" type="text" name="searchTerms" placeholder="Find Points..." results="0" />
+                	<div class="searchIcon pull-right"></div>
+	  		  	  </form>
+				</li>	          
+			  </ul>       
+			  
+              
                    
         	  {% if user %}              
                 <div class="userMenuArea headerUserName pull-right">
@@ -207,7 +216,8 @@
         	  {% endif %}
     	  {% endif %} <!-- headerhideactions -->
         </div>
-      </div>
+      
+  	</div>
     </div>
 
 
@@ -399,7 +409,7 @@
 
     {% block mainPageContent %} 
     {% endblock %}
-  </div>     
+    </div>     
     {% profiler_includes %}    
   </body> 
 </html>

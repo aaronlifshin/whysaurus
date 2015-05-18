@@ -225,12 +225,20 @@
         <div class="privateAreaHeader">
           <div class="container">
               <div class="row">
+                  {% if currentAssignment %}
+                    <div class="span2" >
+                        <a href="/assignments">&lt; All Assignments</a>
+                    </div>
+                      <div id="areaLine" class="span10" >
+                           <strong>{{currentAreaDisplayName}}</strong> 
+                               ( {{currentAssignment.title}} )
+                      </div>
+                  {% else %}
                   <div id="areaLine" class="span12" >
                        <strong>{{currentAreaDisplayName}}</strong> 
-                       {% if currentAssignment %}
-                           ( {{currentAssignment.title}} )
-                       {% endif %}
                   </div>
+                  {% endif %}
+                  
               </div>
           </div>
         </div>
@@ -405,11 +413,9 @@
   </script>
   
     <div class="container" id="mainContainer">
-	  <!--<div class="chatRoom">ChatroomContent</div>-->
-
-    {% block mainPageContent %} 
-    {% endblock %}
+        {% block mainPageContent %} 
+        {% endblock %}
     </div>     
-    {% profiler_includes %}    
-  </body> 
+    {% profiler_includes %}
+  </body>
 </html>

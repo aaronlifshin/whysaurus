@@ -25,7 +25,7 @@ class AssignmentHandler(AuthHandler):
             return
             
         if ((not userNamespace) or (userNamespace == '')):
-            self.response.out.write('Need to be in a private area.')
+            self.response.out.write('Need to be in a classroom.')
             return
                                      
         template_values = {
@@ -56,6 +56,33 @@ class AssignmentHandler(AuthHandler):
             else:
                 results['error'] = "Could not find classroom."                
         return results
+        
+    def assignmentList(self):
+        if 'currentAssignment' in self.session: del self.session['currentAssignment']
+
+        user = self.current_user
+        userNamespace = namespace_manager.get_namespace()        
+        
+        if user is None:
+            self.response.out.write('Need to login.')
+            return
+            
+        if ((not userNamespace) or (userNamespace == '')):
+            self.response.out.write('Need to be in a classroom.')
+            return
+                           
+        assignments = Assignment.getAll()
+        logging.info(str(assignments))
+        
+        template_values = {
+            'user': user,
+            'currentArea':userNamespace,
+            'assignments': assignments,            
+            'currentAreaDisplayName': self.session.get('currentAreaDisplayName')
+        }
+        
+        self.response.out.write(
+            self.template_render('assignmentList.html', template_values))
 
     def post(self):        
         userNamespace = namespace_manager.get_namespace()                

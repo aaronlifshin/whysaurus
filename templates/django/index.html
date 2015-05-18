@@ -1,13 +1,5 @@
-{% extends "twoColumnLayout.html" %}
+{% extends layout %}
 
-{% block headBlock %}  
-
-{% endblock %}
-
-{% block leftColumnContent %}  
-    {% include 'mainPageLeftColumn.html' %}        
-{% endblock %}
-
-{% block rightColumnContent %}
-    {% include 'mainPageRightColumn.html' %}       
+{% block content %}  
+    {% include 'pointListContent.html' %}        
 {% endblock %}

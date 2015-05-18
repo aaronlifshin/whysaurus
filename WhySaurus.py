@@ -130,6 +130,8 @@ routes = [
     Route('/area/<areaName>', handler='WhySaurus.AuthHandler:setPrivateAreaUser', name='setPrivateAreaUser'),
 
     Route('/newassignment', handler='WhySaurus.AssignmentHandler:newAssignmentPage', name='newAssignmentPage'),
+    Route('/assignments', handler='WhySaurus.AssignmentHandler:assignmentList', name='assignmentList'),
+        
     Route('/assignment', AssignmentHandler),
 
     Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),

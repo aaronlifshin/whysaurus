@@ -56,6 +56,24 @@ class MainPage(AuthHandler):
         }) 
         self.response.out.write(resultJSON) 
         
+    def shouldRedirectToAssignments(self, assignments, currentAssignment):
+        if assignments is None:
+            return False
+            
+        if len(assignments) == 0:
+            return False
+            
+        if currentAssignment is not None:
+            return False
+            
+        if 'currentAssignment' not in self.session:
+            return True
+            
+        if self.session['currentAssignment'] == "browseWithoutAssignment":
+            return False
+            
+        return True
+        
     @ndb.toplevel    
     def get(self):
         user = None
@@ -67,7 +85,9 @@ class MainPage(AuthHandler):
         if currentArea and currentArea != '':
             showManifesto = 0
             
+            # "browseWithoutAssignment"
             assignmentToSet = self.request.get('setAssignment')
+            
             if assignmentToSet:
                 self.session['currentAssignment'] = assignmentToSet
 
@@ -80,6 +100,17 @@ class MainPage(AuthHandler):
         featuredPoint = FeaturedPoint.getFeaturedPoint()
         assignments = Assignment.getAll()
         
+        # Normal user
+        # Case 1: List of points
+        # Classroom user
+        # Case 1: List of points (but in classroom area, no assignment exists)
+        # Case 2: List of assignments (at least one assignment exists and they haven't chosen one or null)
+        # Case 3: List of points (assignment on the side, they chose an assignment)
+        # Case 4: List of points (chose null assignment)
+        
+        if self.shouldRedirectToAssignments(assignments, currentAssignment):
+            self.redirect('/assignments')
+        
         # GET RECENTLY VIEWED
         if user:
             recentlyViewedPoints = user.getRecentlyViewed()
@@ -87,7 +118,9 @@ class MainPage(AuthHandler):
         else:
             recentlyViewedPoints = []
 
-
+        layout = 'layout_twoColumns_84.html'
+        if currentAssignment:
+            layout = 'layout_withAssignment.html'        
 
         template_values = {
             'recentlyActive': newPoints,
@@ -100,6 +133,7 @@ class MainPage(AuthHandler):
             'currentArea': currentArea,
             'currentAssignment': currentAssignment,
             'documents': documents,
-            'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
+            'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
+            'layout': layout
         }
         self.response.out.write(self.template_render('index.html', template_values))

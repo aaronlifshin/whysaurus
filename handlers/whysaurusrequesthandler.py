@@ -38,7 +38,7 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
         
         if currentArea and currentArea != '':
             sessionAssignmentUrlSafeKey = self.session.get('currentAssignment')
-            if sessionAssignmentUrlSafeKey:
+            if sessionAssignmentUrlSafeKey and sessionAssignmentUrlSafeKey != "browseWithoutAssignment":
                 sessionAssignmentKey = ndb.Key(urlsafe=sessionAssignmentUrlSafeKey)
         return sessionAssignmentKey
     

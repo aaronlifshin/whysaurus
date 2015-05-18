@@ -903,8 +903,8 @@ function changeEditorsPick() {
 function viewPointHistory() {
     $('#viewPointHistory').parent().after("<img id=\"historyAreaLoadingSpinner\" src=\"/static/img/ajax-loader.gif\"/>");
     
-	$('#leftColumn .tabbedArea').hide();
-	$('#leftColumn #historyArea').show();
+	$('#content .tabbedArea').hide();
+	$('#content #historyArea').show();
 	$.ajax({
 		url: '/pointHistory',
 		type: 'GET',
@@ -914,8 +914,8 @@ function viewPointHistory() {
 			$('#historyArea').html(obj.historyHTML);
 			makePointsCardsClickable();	
 		    $('#viewSupportingPoints').off('.ys').on('click.ys', function() {
-				$('#leftColumn #supportingPointsArea').show();
-				$('#leftColumn #historyArea').hide();			
+				$('#content #supportingPointsArea').show();
+				$('#content #historyArea').hide();			
 		    });    
 		},
 		error: function(data) {
@@ -1089,7 +1089,7 @@ function activatePointArea() {
     });
 
     // Hide the history area and show the supporting points area
-    $('#leftColumn .tabbedArea').hide(); $('#supportingPointsArea').show();
+    $('#content .tabbedArea').hide(); $('#supportingPointsArea').show();
 
 }
 

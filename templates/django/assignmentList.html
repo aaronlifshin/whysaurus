@@ -1,0 +1,15 @@
+{% extends 'layout_twoColumns_84.html' %}
+
+{% block content %}  
+    <div id="assignmentList" >
+        <div>
+            <a tabindex="-1" href="/?setAssignment=browseWithoutAssignment">Browse All Points</a>
+        </div>
+        {% for a in assignments %}
+            <div>
+                <a tabindex="-1" href="/?setAssignment={{a.urlSafe}}">{{a.title}}</a>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

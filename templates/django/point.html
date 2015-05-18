@@ -1,19 +1,10 @@
-{% extends "twoColumnLayout.html" %}
+{% extends layout %}
 
 {% block headBlock %}  
   <script type="text/javascript" src="/static/js/point.js"></script>  
   <script type="text/javascript" src="/static/js/jquery.screwdefaultbuttonsV2.min.js"></script>
 {% endblock %}
 
-{% block leftColumnContent %}    
+{% block content %}
     {% include 'pointContent.html' %}
 {% endblock %}
-
-{% block rightColumnContent %}
-    {% if currentAssignment %}
-        {% include 'assignment.html' %}      
-    {% else %}
-        {% include 'pointComments.html' %}      
-    {% endif %}
-{% endblock %}
-

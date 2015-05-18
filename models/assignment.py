@@ -18,7 +18,10 @@ class Assignment(ndb.Model):
             
     @staticmethod
     def getAll():
-        return Assignment.query()
+        allAssignments = []
+        for a in Assignment.query():
+            allAssignments.append(a) 
+        return allAssignments
 
     @staticmethod
     def getByURLSafe(urlsafe):

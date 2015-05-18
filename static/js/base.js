@@ -242,8 +242,8 @@ function newPointAjax(ajaxData, errorAlertFunction, buttonSelector, finallyCall)
         data: ajaxData,
         success: function(obj) {
             if ( obj.result === true ) {
-               	$("#rightColumn").empty();
-          		$("#rightColumn").html(obj.commentHTML);
+               	$("#sidebar").empty();
+          		$("#sidebar").html(obj.commentHTML);
                 replacePointContent(obj.html, obj.pointURL, obj.title, true);                
                 stopSpinnerOnButton(buttonSelector);
 				$('#pointArea').data('pointurl', obj.pointURL);    
@@ -601,7 +601,7 @@ function navigateHistory(event) {
     // We usually only handle state that we have added
     if (state != null && state.whysaurus) {
         // We can dynamically load our page, but only into the two-column layout 
-        if ($('#leftColumn').length) {
+        if ($('#content').length) {
             newLoc = document.location.pathname;
             if (newLoc.indexOf('/point/') == 0) {
                 loadPoint(newLoc.substring(7), false)
@@ -630,16 +630,16 @@ function loadPoint(url, addToHistory, replaceHistory) {
     if ( !window.haveAssignment ) {
     	loadPointComments(url);        
     }
-    /*$('#rightColumn').show();    
-    $('#leftColumn').removeClass('span12').addClass('span8');*/
+    /*$('#sidebar').show();    
+    $('#content').removeClass('span12').addClass('span8');*/
 }
 
 function loadHomePage(shouldPushState) {
 	loadMainPageLeftColumn(shouldPushState);    
     loadMainPageRightColumn();
     
-    /*$('#rightColumn').hide();
-    $('#leftColumn').removeClass('span8').addClass('span12');*/
+    /*$('#sidebar').hide();
+    $('#content').removeClass('span8').addClass('span12');*/
 }
 
 function makePointsCardsClickable() {
@@ -648,7 +648,7 @@ function makePointsCardsClickable() {
             return;
         } else if (ev.which == 2) { // Middle mouse button
             return;
-        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+        } else if ($('#content').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             return;
         } else {
             loadPoint($(this).data('pointurl'), true);
@@ -690,7 +690,7 @@ function makeHomeNavsClickable() {
     $('#logoNav, #homeNav').click( function(ev) {
         if (ev.metaKey || ev.ctrlKey) {  // Modified clicks pass through to anchor
             return;
-        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+        } else if ($('#content').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             return;
         } else {
             loadHomePage(true);
@@ -700,8 +700,8 @@ function makeHomeNavsClickable() {
 }
 
 function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState, replaceState) {
-   	$('#leftColumn').empty();
-   	$('#leftColumn').html(pointHTML);   
+   	$('#content').empty();
+   	$('#content').html(pointHTML);   
    	$('#mainContainer').data('contentpath', '/point/' + pointURL);
 	if (typeof(activatePointArea) != 'function') {
 	    $.getScript('/static/js/point.js?i=1', function() {activatePointArea});              		
@@ -724,7 +724,7 @@ function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState, r
 // On a successful load onSuccess is called with the shouldPushState as a parameter
 function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, shouldPushState ) {
     $(columnSelector).empty();
-   	if (columnSelector == '#leftColumn') {
+   	if (columnSelector == '#content') {
    	    $(columnSelector).html('<div class="row-fluid ">\
    	        <img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
    	}
@@ -745,14 +745,14 @@ function loadColumn(columnSelector, ajaxURL, postData, errorMessage, onSuccess, 
       	    }
       	},
       	error: function(data) {
-      		$('#leftColumn').empty();
+      		$('#content').empty();
       		showAlert('<strong>Oops! AJAX error.</strong> '  + errorMessage);
       	},
       });
 }
 
 function loadMainPageLeftColumn(shouldPushState) {
-    loadColumn('#leftColumn', '/getMainPageLeft', {}, 
+    loadColumn('#content', '/getMainPageLeft', {}, 
         'There was a problem loading the main page content.', 
         function(shouldPushState) {
             $('#mainContainer').data('contentpath', '/');                        
@@ -767,18 +767,18 @@ function loadMainPageLeftColumn(shouldPushState) {
 }
 
 function loadMainPageRightColumn() {
-    loadColumn('#rightColumn', '/getMainPageRight', {}, 
+    loadColumn('#sidebar', '/getMainPageRight', {}, 
         'There was a problem loading the recently viewed points.', activateMainPageRightColumn, false);
 }
 
 function loadPointComments(pointurl) {
-    loadColumn('#rightColumn', '/getPointComments', { 'url': pointurl }, 
+    loadColumn('#sidebar', '/getPointComments', { 'url': pointurl }, 
         'There was a problem loading the comments.', null, false)
 }
 
 function loadPointContent(pointurl, shouldPushState, replaceState) {
-    $('#leftColumn').empty();
-    $('#leftColumn').html('<div class="row-fluid "> \
+    $('#content').empty();
+    $('#content').html('<div class="row-fluid "> \
         <img src="/static/img/ajax-loader.gif" /><h1>Loading</h1></div>');
     $.ajax({
       	url: '/getPointContent',
@@ -788,12 +788,12 @@ function loadPointContent(pointurl, shouldPushState, replaceState) {
       	    if (obj.result) {
                 replacePointContent(obj.html, obj.url, obj.title, shouldPushState, replaceState );          		
       	    } else {
-                $('#leftColumn').empty();
+                $('#content').empty();
                 showAlert('<strong>Oops!</strong> There was a problem loading the point. Refreshing the page may help.');
       	    }
       	},
       	error: function(data) {
-      		$('#leftColumn').empty();
+      		$('#content').empty();
       		showAlert('<strong>Oops!</strong> There was a problem loading the point. Refreshing the page may help.');
       	},
       });      
@@ -801,7 +801,7 @@ function loadPointContent(pointurl, shouldPushState, replaceState) {
 
 function loadPointList(listType, areaToLoad, selectedTab) {
     $(areaToLoad).html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
-    toggleTabbedArea('#leftColumn', selectedTab, areaToLoad);
+    toggleTabbedArea('#content', selectedTab, areaToLoad);
     _gaq.push(['_trackEvent', 'Main Page', 'Filter', listType]);
     
     $.ajax({
@@ -1357,7 +1357,7 @@ function activateNotificationMenuItems() {
             return;
         } else if (ev.which == 2) { // Middle mouse button
             return;
-        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+        } else if ($('#content').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             return;
         } else {
             $(this).addClass("notificationCleared");            
@@ -1635,11 +1635,11 @@ function activateMainPageLeftColumn() {
 	makePointsCardsClickable(); 
 
     // Beginning state for the TABBED AREAS
-    $('#leftColumn .tabbedArea').hide(); 
+    $('#content .tabbedArea').hide(); 
     $('#recentActivityArea').show();
 
     $('#recentActivity').click(function() {
-        toggleTabbedArea("#leftColumn", this, "#recentActivityArea");        
+        toggleTabbedArea("#content", this, "#recentActivityArea");        
     });
 
     $('#recentActivityAll').click(function() {
@@ -1659,7 +1659,7 @@ function activateMainPageLeftColumn() {
     });
     
     $('#recentlyViewedTab').click(function() {
-        toggleTabbedArea("#leftColumn", this, "#recentlyViewedArea"); 
+        toggleTabbedArea("#content", this, "#recentlyViewedArea"); 
     });
     
     $("#newPointTitle").on('keyup', function(e) {setCharNum(e.target, "#newPointTitle_charNum");});
@@ -1675,7 +1675,7 @@ function activateMainPageRightColumn() {
     $( "#recentlyViewed .pointSmall" ).click( function(ev) {
         if (ev.metaKey || ev.ctrlKey) { // Pass modified clicks to the browser to handle
             return;                
-        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+        } else if ($('#content').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             return;
         } else {
             // Dynamically load the point content

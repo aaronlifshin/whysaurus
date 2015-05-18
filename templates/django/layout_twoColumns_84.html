@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+    {% block headBlock %} 
+    {% endblock %}             
+   
+    <div class="row">
+        <div id="content" class="span8">
+            {% block content %} {% endblock %}             
+        </div>
+        <div id="sidebar" class="span4">
+            {% block sidebar %} {% endblock %}                
+        </div>
+    </div>
+         
+{% endblock %}

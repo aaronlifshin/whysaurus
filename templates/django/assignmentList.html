@@ -1,14 +1,41 @@
-{% extends 'layout_twoColumns_84.html' %}
+{% extends 'layout_oneColumn.html' %}
 
 {% block content %}  
     <div id="assignmentList" >
+        <div id="assignmentListHeader" class="row-fluid">
+            <div class="span3">
+                Title
+            </div>
+            <div class="span3">
+                Summary
+            </div>
+            <div class="span3">
+                Teacher Instructions
+            </div> 
+            <div class="span3">
+                
+            </div>
+        </div>
         <div>
             <a tabindex="-1" href="/?setAssignment=browseWithoutAssignment">Browse All Points</a>
-        </div>
+        </div>        
         {% for a in assignments %}
-            <div>
+        <div name="assignmentRow" class="row-fluid" data-assignmentKey={{a.urlSafe}}>           
+            <div class="span3">
                 <a tabindex="-1" href="/?setAssignment={{a.urlSafe}}">{{a.title}}</a>
             </div>
+            <div class="span3">
+                {{a.summary}}
+            </div>
+            <div class="span3">
+                {{a.teacherInstructions}}
+            </div>      
+            <div class="span3">
+                {% if user.isAdmin or user.isTeacher %}
+                    <a name="assignmentEditButton" href='/assignmentForm?editKey={{a.urlSafe}}'>Edit</a>
+                {% endif %}
+            </div>
+        </div>
         {% endfor %}
     </div>
     

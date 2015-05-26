@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+    {% block headBlock %} 
+    {% endblock %}             
+   
+    <div class="row">
+        <div id="content" class="span12">
+            {% block content %} {% endblock %}             
+        </div>
+    </div>
+{% endblock %}

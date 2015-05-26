@@ -10,13 +10,14 @@ from authhandler import AuthHandler
 from models.whysaurususer import WhysaurusUser
 from models.privateArea import PrivateArea
 from models.assignment import Assignment
+from models.document import Document
 from models.whysaurusexception import WhysaurusException
 from models.reportEvent import DayEventSummary
 from google.appengine.api import namespace_manager
 
 
 class AssignmentHandler(AuthHandler):
-    def newAssignmentPage(self):        
+    def assignmentForm(self):        
         user = self.current_user
         userNamespace = namespace_manager.get_namespace()        
         
@@ -27,15 +28,29 @@ class AssignmentHandler(AuthHandler):
         if ((not userNamespace) or (userNamespace == '')):
             self.response.out.write('Need to be in a classroom.')
             return
-                                     
+            
+        if (not (user.isAdmin or user.isTeacher)):
+            self.response.out.write('Need to be an admin or a teacher.')
+            return
+        
+        existingAssignmentKey = self.request.get('editKey')
+        assignmentToEdit = documents = None
+                
+        if existingAssignmentKey:
+            assignmentToEdit = Assignment.getByURLSafe(existingAssignmentKey)
+            documents = Document.getAllForAssignment(assignmentToEdit)
+                                                         
         template_values = {
             'user': user,
             'currentArea':userNamespace,
-            'currentAreaDisplayName': self.session.get('currentAreaDisplayName')
+            'showAllAssignmentsLink': True,
+            'currentAreaDisplayName': self.session.get('currentAreaDisplayName'),
+            'assignmentToEdit': assignmentToEdit,
+            'documents': documents
         }
         
         self.response.out.write(
-            self.template_render('newAssignment.html', template_values))
+            self.template_render('assignmentForm.html', template_values))
 
     def saveAssignment(self, assignmentData):
         userNamespace = namespace_manager.get_namespace()   
@@ -47,11 +62,24 @@ class AssignmentHandler(AuthHandler):
             pa = PrivateArea.getAreaByName(userNamespace)
             if pa:
                 logging.info(str(assignmentData))
-                Assignment.addAssignment(
-                    assignmentData['title'], 
-                    assignmentData['summary'], 
-                    assignmentData['directions'], 
-                    assignmentData['documents'])
+                if 'editKey' in assignmentData:
+                    a = Assignment.getByURLSafe(assignmentData['editKey'])
+                    if a:
+                        a.edit(
+                            assignmentData['title'], 
+                            assignmentData['summary'], 
+                            assignmentData['directions'], 
+                            assignmentData['teacherInstructions'],                     
+                            assignmentData['documents'])
+                    else:
+                        results['error'] = "Unable to find this assignment."                        
+                else:
+                    Assignment.addAssignment(
+                        assignmentData['title'], 
+                        assignmentData['summary'], 
+                        assignmentData['directions'], 
+                        assignmentData['teacherInstructions'],                     
+                        assignmentData['documents'])
                 results = {'result': True}
             else:
                 results['error'] = "Could not find classroom."                

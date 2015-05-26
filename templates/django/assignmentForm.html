@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block mainPageContent %}
+<script type="text/javascript" src="/static/js/assignment.js"></script>
+
+<div class="container">  
+     <form id='frm_assignment' class="form-horizontal" action="javascript:;" method="POST">          
+        <div class="row-fluid" id="alertArea"></div>
+        <div class="row">
+            {% if assignmentToEdit %}
+                <div class="form-header span12">Edit Assignment</div>
+            {% else %}    
+                <div class="form-header span12">Create New Assignment</div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="span12">
+                <div class="control-group">
+                    <label class="control-label">Title</label>
+                    <div class="controls">            
+                        <input class="input-xxlarge" id="title" name="title"  type="text" {% if assignmentToEdit %}value="{{assignmentToEdit.title}}"{% endif %}/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >Summary</label>
+                    <div class="controls">            
+                        <textarea class="input-xxlarge" id="summary" name="summary" rows="3" type="text">{% if assignmentToEdit %}{{assignmentToEdit.summary}}{% endif %}</textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >Teacher Instructions</label>
+                    <div class="controls">            
+                        <textarea class="input-xxlarge" id="teacherInstructions" name="teacherInstructions" rows="5" type="text">{% if assignmentToEdit %}{{assignmentToEdit.teacherInstructions}}{% endif %}</textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >Student Instructions</label>
+                    <div class="controls">            
+                        <textarea class="input-xxlarge" id="directions" name="directions" rows="5" type="text">{% if assignmentToEdit %}{{assignmentToEdit.directions}}{% endif %}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="row">
+        	<div class="span12" id="doc-header">Documents</div>
+		</div>
+        {% if assignmentToEdit %}
+            {% for assignmentDocument in documents %}
+                {% include 'assignmentDocumentForm.html' %}
+            {% endfor %}
+        {% else %}
+            {% include 'assignmentDocumentForm.html' %}
+        {% endif %}
+        <div class="row">
+			<div class="span12">
+				<label class="doc-control-label"></label>
+            	<div class="control-group">
+					<button id="addAnotherDocument">+ Add Another Document</button>
+				</div>
+			</div>
+        </div>
+        <div class="row">
+            {% if assignmentToEdit %}
+                <input id="editKey" name="title"  type="hidden" value='{{assignmentToEdit.key.urlsafe}}'/>
+            {% endif %}
+			<div class="span12" id="submitButtons">
+				<label class="doc-control-label"></label>
+				<div class="control-group">
+            		<button id="deleteAssignment">Delete Assigment</button>
+            		<button id="saveAssignment">Save Assignment</button>
+				</div>
+			</div>
+        </div>
+      </form>
+</div> <!--class="container"-->          
+
+{% endblock %}

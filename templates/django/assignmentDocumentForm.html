@@ -1,0 +1,16 @@
+<div class="row" name="documentControls" data-documentNumber="1">
+    <div class="span12">
+        <div class="control-group">
+            <label class="doc-control-label" ><span id="doc-number" name="documentNumber">1</span> Title</label>
+            <div class="controls">            
+                <input class="input-xxlarge" name="documentTitle" type="text" {% if assignmentDocument %}value='{{assignmentDocument.title}}'{% endif %}/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="doc-control-label" >Content</label>
+            <div class="controls">            
+                <textarea class="input-xxlarge" name="documentContent" rows="5" type="text">{% if assignmentDocument %}{{assignmentDocument.content}}{% endif %}</textarea>
+            </div>
+        </div>
+    </div>
+</div>

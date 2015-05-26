@@ -90,7 +90,6 @@ class MainPage(AuthHandler):
             
             if assignmentToSet:
                 self.session['currentAssignment'] = assignmentToSet
-
             currentAssignment, documents = self.getCurrentAssignment()
             
         if self.logged_in:
@@ -108,8 +107,7 @@ class MainPage(AuthHandler):
         # Case 3: List of points (assignment on the side, they chose an assignment)
         # Case 4: List of points (chose null assignment)
         
-        if self.shouldRedirectToAssignments(assignments, currentAssignment):
-            self.redirect('/assignments')
+        if self.shouldRedirectToAssignments(assignments, currentAssignment):self.redirect('/assignments')
         
         # GET RECENTLY VIEWED
         if user:

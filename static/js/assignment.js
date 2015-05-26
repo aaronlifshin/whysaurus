@@ -23,18 +23,20 @@ function getAssignmentData() {
         title : $('#title').val(),
         summary: $('#summary').val(),
         directions: $('#directions').val(),
+        teacherInstructions: $('#teacherInstructions').val(), 
+        editKey:$('#editKey').val(),       
         documents: docArray
-    };    
+    };
     
     return aData;
 }
 
-function createAssignment() {
+function saveAssignment() {
     if (!validateAssignment()) {
         return;
     } else {
         var aData = getAssignmentData();
-        startSpinnerOnButton('#createAssignment');        
+        startSpinnerOnButton('#saveAssignment');        
     	$.ajaxSetup({
     		url: "/assignment",
     		global: false,
@@ -46,19 +48,19 @@ function createAssignment() {
             success: function(obj){
     			if (obj.result == true) { 
                     showSuccessAlert('Assignment Saved Successfully')
-                    stopSpinnerOnButton('#saveUsers', createAssignment);                
+                    stopSpinnerOnButton('#saveUsers', saveAssignment);                
     			} else {
     				if (obj.error) {
     		    		showAlert(obj.error);
     		    	} else {
     		    		showAlert("There was an error");
     		    	}
-                    stopSpinnerOnButton('#createAssignment', createAssignment);
+                    stopSpinnerOnButton('#saveAssignment', saveAssignment);
     			}
     		},
     		error: function(xhr, textStatus, error){
                 showAlert('The server returned an error. You may try again. ' + error);
-                stopSpinnerOnButton('#createAssignment', createAssignment);
+                stopSpinnerOnButton('#saveAssignment', saveAssignment);
             }
     	});
     	$.ajax();
@@ -75,5 +77,5 @@ $(document).ready(function() {
         $(newDocumentRow).data('documentnumber', rowNumber);
         
     });
-    $('#createAssignment').click(createAssignment);
+    $('#saveAssignment').click(saveAssignment);
 });

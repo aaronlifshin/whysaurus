@@ -152,7 +152,7 @@
                           {% if currentArea and currentArea != '' %}
                               {% if user.isAdmin or user.isTeacher %}
                                 <li><a tabindex="-1" href="/roster">Roster</a></li>
-                                <li><a tabindex="-1" href="/newassignment">New Assignment</a></li>
+                                <li><a tabindex="-1" href="/assignmentForm">New Assignment</a></li>
                                 <li class="divider"></li>
                               {% endif %}
                               {% if assignments %}
@@ -225,7 +225,7 @@
         <div class="privateAreaHeader">
           <div class="container">
               <div class="row">
-                  {% if currentAssignment %}
+                  {% if currentAssignment or showAllAssignmentsLink %}
                     <div class="span2" >
                         <a href="/assignments">&lt; All Assignments</a>
                     </div>

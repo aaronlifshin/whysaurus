@@ -9,8 +9,15 @@
 		    </div>
 		    <div id = "assignmentSummary" >
 		        {{currentAssignment.summary}}        
-		    </div>        
+		    </div>                   
+            {% if user.isAdmin or user.isTeacher %}            
+    		    <div id = "teacherInstructions" >
+                    <strong>TEACHER INSTRUCTIONS:</strong>
+    		        {{currentAssignment.teacherInstructions}}        
+        		</div> 
+            {% endif %}
 		    <div id = "assignmentDirections" >
+                <strong>STUDENT INSTRUCTIONS:</strong>
 		        {{currentAssignment.directions}}        
     		</div>
 		</div>

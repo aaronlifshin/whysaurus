@@ -1398,7 +1398,6 @@ function showPointDialog(dialogAction, dialogTitle) {
     
 }
 
-
 function toggleManifesto() {
     var area = $('#manifestoText');
     if (area.is(":visible")) {

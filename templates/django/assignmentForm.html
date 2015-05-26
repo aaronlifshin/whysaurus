@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% block pageJS %}
+    <script type="text/javascript" src="/static/js/assignment.js"></script>
+{% endblock %}
 
 {% block mainPageContent %}
-<script type="text/javascript" src="/static/js/assignment.js"></script>
 
 <div class="container">  
      <form id='frm_assignment' class="form-horizontal" action="javascript:;" method="POST">          

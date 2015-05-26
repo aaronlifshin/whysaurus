@@ -1742,12 +1742,20 @@ function ifMobileShowHovers() {
     } catch(e){ console.log("Error in isMobile"); return false; }
 }
 
+function activateAssignmentList() {
+    $('[name=assignmentEditButton]').toggle();
+    $("[name=assignmentRow]").hover(function () {
+       $(this).toggleClass("assignmentRowHover");
+       $('[name=assignmentEditButton]', $(this)).toggle(); 
+    });
+}
 
 $(document).ready(function() {
     preloadImages();
     activateHeaderAndDialogs();
     activateMainPageRightColumn();
     activateMainPageLeftColumn();
+    activateAssignmentList();
     activateInfoToggles();
     ifMobileShowHovers();
 });

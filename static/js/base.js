@@ -1720,20 +1720,14 @@ function activateInfoToggles() {
     }); 
 }
 
-
-        //$(this).next().toggle();
-   /* $('.superInfoToggle').click(function () {
-        //("li:first", this).toggle();
-        //$(this).next().toggle();
-    }); */
-    /*$('.subInfoToggle:not(.infoToggle)').click(function () {
-         $("li:first", this).toggle();
-    });   */
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(navigator.userAgent);
+}
 
 // if we're on mobile, show vital actions that are usually only revealed on hover
 function ifMobileShowHovers() {
     try {
-        if(/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(navigator.userAgent)) {
+        if(isMobile()) {
             $("<style type='text/css'> .hiddenAgreeCtrlTillRevealed { opacity:1; } </style>").appendTo("head");
             //alert('mobile!');
             return true; };

@@ -6,7 +6,7 @@
 {% block content %}  
     <div id="assignmentList" >
         <div class="row-fluid">
-            <div class="offset9 span3" class="newAssignmentLink">
+            <div class="offset9 span3 newAssignmentLink">
                 <a href='/assignmentForm'>New Assignment</a>
             </div>
         </div>
@@ -24,23 +24,23 @@
                 
             </div>
         </div>
-        <div>
+        <div class="browseAll">
             <a tabindex="-1" href="/?setAssignment=browseWithoutAssignment">Browse All Points</a>
         </div>        
         {% for a in assignments %}
         <div name="assignmentRow" class="row-fluid" data-assignmentKey={{a.urlSafe}}>           
-            <div class="span3">
+            <div class="span3 assignmentDetails">
                 <a tabindex="-1" name='assignmentLink' href="/?setAssignment={{a.urlSafe}}">{{a.title}}</a>
             </div>
-            <div class="span3">
+            <div class="span3 assignmentDetails">
                 {{a.summary}}
             </div>
-            <div class="span3">
+            <div class="span3 assignmentDetails">
                 {{a.teacherInstructions}}
             </div>      
-            <div class="span3">
+            <div class="span3 assignmentDetails">
                 {% if user.isAdmin or user.isTeacher %}
-                    <a name="assignmentEditButton" href='/assignmentForm?editKey={{a.urlSafe}}'>Edit</a>
+                    	<a name="assignmentEditButton" href='/assignmentForm?editKey={{a.urlSafe}}'>Edit</a>
                 {% endif %}
             </div>
         </div>

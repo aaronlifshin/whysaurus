@@ -1275,6 +1275,10 @@ a:visited {
 
 }
 
+.privateAreaHeader #areaLine {
+	font-family:@sansCondFontFamily;
+}
+
 
 #areaSwap {
     cursor:pointer;
@@ -1444,14 +1448,25 @@ button#saveAssignment{
 	font-size: 14px;
 }
 
-.assignmentRowHover {
-  background-color: gray;  
-  cursor: pointer;
-}
-
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    ASSIGNMENT LIST
    +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.newAssignmentLink {
+	-webkit-border-radius: 2;
+	  -moz-border-radius: 2;
+	  border-radius: 2px;
+	background-color: #C2FCA4;
+	text-decoration: none;
+	border-style: none;
+	font-size: 16px;
+	color: black;
+    line-height: 120%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+	text-align: center;
+	margin: 10px 0px 5px 0px;
+}
 
 div#assignmentListHeader{
 	font-weight:bold;
@@ -1461,20 +1476,19 @@ div#assignmentListHeader{
 	padding-left: 1px;
 }
 
-#newAssignmentLink{
-	-webkit-border-radius: 2;
-	  -moz-border-radius: 2;
-	  border-radius: 2px;
-	background-color: #C1FDCD;
-	text-decoration: none;
-	border-style: none;
-	font-size: 20px;
-    line-height: 120%;
-    padding-top: 15px;
-	padding-right: 20px;
-    padding-bottom: 15px;
-	padding-left: 20px;
-	margin-left: 30px;
+.assignmentDetails {
+	padding: 15px 0px 15px 0px;
+	font-size: 14px;
+}
+
+.browseAll {
+	font-size: 14px;
+	padding-top: 5px;
+}
+
+.assignmentRowHover {
+  background-color: #F8F1E7;  
+  cursor: pointer;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++

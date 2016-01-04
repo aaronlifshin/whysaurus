@@ -127,11 +127,12 @@ class AdminPage(AuthHandler):
         userNamespace = namespace_manager.get_namespace()        
         namespace_manager.set_namespace('')
 
-        
+        areas = PrivateArea.query()        
         user = self.current_user
 
         template_values = {
             'user': user,
+            'areas':areas,
             'currentArea':self.session.get('currentArea'),
             'currentAreaDisplayName':self.session.get('currentAreaDisplayName')
         }
@@ -152,17 +153,29 @@ class AdminPage(AuthHandler):
         loggedInUser = self.current_user
         if loggedInUser and loggedInUser.isAdmin:                    
             userNames=self.request.get('userNames')
-            names = string.split(userNames, '\n')
-            bigMessage = ['username,password']
-            for name in names:
-                username = name.strip()      
+            privateArea = self.request.get('areaToAdd')
+            userLines = string.split(userNames, '\n')
+            
+            bigMessage = []
+            if privateArea:
+              bigMessage.append('Creating users in classroom %s' % privateArea)
+            bigMessage.append('username,password')
+            for userLine in userLines:
+                userFields = string.split(userLine, ',')
+                numFields = len(userFields)
+                username = userFields[0].strip()
                 try:
-                    randomPassword = WhysaurusUser.random_password(8)
-                    user = WhysaurusUser.signup(self, email=username, name=username, 
-                                                password=randomPassword, website=None, areas=None, 
-                                                profession=None, bio=None)
-                    user.updateUserSettings(['Cannon_Human_Environments'])
-                    bigMessage.append('%s,%s' % ( username, randomPassword))
+                    newPassword = ''
+                    if numFields == 1:                      
+                      newPassword = WhysaurusUser.random_password(8)
+                    else:
+                      newPassword = userFields[1].strip()
+                    if username != '':
+                      user = WhysaurusUser.signup(self, email=username, name=username, 
+                                                  password=newPassword, website=None, areas=None, 
+                                                  profession=None, bio=None)
+                      user.updateUserSettings([privateArea])
+                      bigMessage.append('%s,%s' % ( username, newPassword))
                 except WhysaurusException as e:
                     bigMessage.append('Could not create user: %s. Error was:%s' % (username, str(e)))
                 
@@ -175,7 +188,7 @@ class AdminPage(AuthHandler):
         else:
             self.response.out.write('User not authorized. ')
 
-        namespace_manager.set_namespace(userNamespace)               
+        namespace_manager.set_namespace(userNamespace)
             
     def dailyReport(self):
         user = self.current_user      

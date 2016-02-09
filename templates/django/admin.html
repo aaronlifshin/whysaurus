@@ -28,7 +28,7 @@
         <td>{{yUser.u.createdCount}}</td>       
         <td>{{yUser.u.editedCount}}</td>  
         <td>{{yUser.u.recentlyViewedRootKeys|length}}</td>           
-        <td>{{yUser.u.PSTlastlogin}}</td>                     		                 
+        <td>{{yUser.u.PSTlastlogin}}</td>
         <td>
           <select data-placeholder="Choose classroom(s)..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
           {% for area in areas %}
@@ -42,7 +42,8 @@
         </td>
         <td>
             <select class="role-chooser">
-                <option {% if not yUser.u.isTeacher and not yUser.u.isAdmin %}selected="true"{% endif %}>User</option>  
+                <option {% if yUser.u.isLimited %}selected="true"{% endif %}>Limited</option>                
+                <option {% if not yUser.u.isTeacher and not yUser.u.isAdmin and not yUser.u.isLimited %}selected="true"{% endif %}>User</option>                  
                 <option {% if yUser.u.isTeacher %}selected="true"{% endif %}>Teacher</option>
                 <option {% if yUser.u.isAdmin %}selected="true"{% endif %}>Admin</option>
             </select>

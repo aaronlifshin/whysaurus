@@ -48,7 +48,7 @@ class WhysaurusUser(auth_models.User):
     privateAreas = ndb.StringProperty(repeated=True)
     password = ndb.StringProperty()
     token = ndb.StringProperty()  
-    tokenExpires = ndb.DateTimeProperty()  
+    tokenExpires = ndb.DateTimeProperty()
     lastLogin = ndb.DateTimeProperty()
     notificationFrequency = ndb.StringProperty(default="Weekly")
     lastEmailSent = ndb.DateTimeProperty()
@@ -82,6 +82,10 @@ class WhysaurusUser(auth_models.User):
     @property
     def isTeacher(self):
         return self.role == "Teacher"
+        
+    @property
+    def isLimited(self):
+        return self.role == "Limited"
 
     @property
     def isAdmin(self):

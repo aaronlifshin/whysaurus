@@ -10,7 +10,8 @@ from models.reportEvent import ReportEvent
 class EditPoint(AuthHandler):
     def post(self):
         user = self.current_user
-        if user:        
+        if user:      
+
             resultJSON = json.dumps({'result': False})
             oldPoint, oldPointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
             sourcesURLs=json.loads(self.request.get('sourcesURLs')) \
@@ -22,6 +23,8 @@ class EditPoint(AuthHandler):
             if oldPoint == None:
                 resultJSON = json.dumps({'result': False, 
                     'error': 'Unable to edit point. Please refresh the page and try again.'})
+            elif user.isLimited:
+                resultJSON = json.dumps({'result': False, 'error': 'This account cannot edit points.'})
             else:
                 sources = Source.constructFromArrays(sourcesURLs, sourcesNames, oldPoint.key)
                 newVersion = oldPoint.update(

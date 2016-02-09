@@ -9,7 +9,9 @@ class UnlinkPoint(AuthHandler):
         resultJSON = json.dumps({'result': False})
         
         if self.current_user:
-            if self.request.get('mainPointURL'):
+            if self.current_user.isLimited:
+              resultJSON = json.dumps({'result': False, 'error': 'This account cannot unlink points.'})              
+            elif self.request.get('mainPointURL'):
                 mainPoint, pointRoot = Point.getCurrentByUrl(self.request.get('mainPointURL'))
                 if self.request.get('supportingPointURL'):
                     supportingPointURL = self.request.get('supportingPointURL')

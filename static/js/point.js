@@ -97,26 +97,31 @@ function callPointEdit(){
             'sourcesToRemove': JSON.stringify($('#pointDialog').data('sourcesToRemove'))
 			},
 			success: function(obj){
-				var ed = tinyMCE.get('editor_pointDialog');
-				$('.mainPointContent').html(ed.getContent());
-				$('.mainPointTitle h1').html($('#title_pointDialog').val());
+                if (obj.result) {
+    				var ed = tinyMCE.get('editor_pointDialog');
+    				$('.mainPointContent').html(ed.getContent());
+    				$('.mainPointTitle h1').html($('#title_pointDialog').val());
 
-                // this refreshes the old header (time stamp, most recent contributor)
-				//updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
+                    // this refreshes the old header (time stamp, most recent contributor)
+    				//updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
 				    
-                if (obj.imageURL) {
-					insertImage(obj.imageURL, obj.imageAuthor, obj.imageDescription);
-				}
+                    if (obj.imageURL) {
+    					insertImage(obj.imageURL, obj.imageAuthor, obj.imageDescription);
+    				}
 
-				$('#mainPointSources').remove();
-				$('[name=mainPointSource]').remove();				
-				$('.mainPointContent').after(obj.sourcesHTML);
-				$('#viewPointHistory').click(viewPointHistory);
-				                
-            	stopSpinner();
-				$("#pointDialog").modal('hide');
-                resetSubmitButton('#submit_pointDialog');
-				$('#pointArea').data('pointurl', obj.pointURL);
+    				$('#mainPointSources').remove();
+    				$('[name=mainPointSource]').remove();				
+    				$('.mainPointContent').after(obj.sourcesHTML);
+    				$('#viewPointHistory').click(viewPointHistory);	
+                	stopSpinner();
+    				$("#pointDialog").modal('hide');
+                    resetSubmitButton('#submit_pointDialog');
+    				$('#pointArea').data('pointurl', obj.pointURL);			                
+                } else {
+                    editDialogAlert(obj.error);
+                	stopSpinner();
+                    resetSubmitButton('#submit_pointDialog');
+                }
 			},
      		error: function(xhr, textStatus, error){
                 alert('The server returned an error. You may try again.');

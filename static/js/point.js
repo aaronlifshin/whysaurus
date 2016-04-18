@@ -62,7 +62,7 @@ function updateVersionHeader(authorURL, author, dateEdited) {
 
 function callPointEdit(){
     if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
-        editDialogAlert('Please do not exceed 140 characters for the title.');
+        editDialogAlert('Please do not exceed 200 characters for the title.');
         return;
     }
     
@@ -529,7 +529,7 @@ function addPoint(linkType){
     if (unlinkVisible) toggleUnlink(linkType);
 
     if ($('#title_pointDialog').val().length > MAX_TITLE_CHARS) {
-        editDialogAlert('Please do not exceed 140 characters for the title.');
+        editDialogAlert('Please do not exceed 200 characters for the title.');
         return;
     }
     

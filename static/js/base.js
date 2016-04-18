@@ -1,5 +1,5 @@
 var CONST_EDITOR_DEFAULT_TEXT = 'Add the description here...';
-var MAX_TITLE_CHARS = 140;
+var MAX_TITLE_CHARS = 200;
 
 function showAlert(alertHTML) {
     $('#mainContainer').prepend($('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + alertHTML + '</div>'));
@@ -201,7 +201,7 @@ function createPointFromMainPage() {
     _gaq.push(['_trackEvent', 'Main Page Action', 'Make a Point']);
     
     if ($('#newPointTitle').val().length > MAX_TITLE_CHARS) {
-        showAlert('Please do not exceed 140 characters for the title.');
+        showAlert('Please do not exceed ' + MAX_TITLE_CHARS + ' characters for the title.');
         return;
     }
     if ($('#newPointTitle').val().length == "") {

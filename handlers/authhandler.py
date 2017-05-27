@@ -510,3 +510,12 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             attr = (v, data.get(k)) if isinstance(v, str) else v(data.get(k))
             user_attrs.setdefault(*attr)
         return user_attrs
+
+    def LetsEncryptHandler(self, challenge):
+        self.response.headers['Content-Type'] = 'text/plain'
+        responses = {
+                    'bLAP0scnQVL7mDmgON63gnYS97LCLmZHxB-isJs32iw': 'bLAP0scnQVL7mDmgON63gnYS97LCLmZHxB-isJs32iw.BJK2jYfaSfQa6tzdjMsTmjOdcxj9r1aUCbuaTe2DiYM',
+                    '[challenge 2]': '[response 2]'
+                }
+        self.response.write(responses.get(challenge, ''))
+        

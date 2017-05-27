@@ -126,7 +126,6 @@ routes = [
     Route('/switchArea/<area_name>', handler='WhySaurus.Profile:setArea', name='switchArea'),
     Route('/createArea', handler='WhySaurus.CreatePrivateAreaPage', name='createPrivateAreaPage'),
     Route('/area/<areaName>', handler='WhySaurus.AuthHandler:setPrivateAreaUser', name='setPrivateAreaUser'),
-
     Route('/saveComment', handler='WhySaurus.Comments:saveComment', name='saveComment'),
     Route('/archiveComments', handler='WhySaurus.Comments:archiveComments', name='archiveComments'),
     Route('/getArchivedComments', handler='WhySaurus.Comments:getArchivedComments', name='getArchivedComments'),    
@@ -140,7 +139,9 @@ routes = [
     Route('/<type:v|p>/<user_id:\d+>-<signup_token:.+>',
                   handler='WhySaurus.AuthHandler:verify', name='verification'),
     Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),
-    Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler:_auth_callback', name='auth_callback')
+    Route('/auth/<provider>/callback', handler='WhySaurus.AuthHandler:_auth_callback', name='auth_callback'),
+    
+    Route('/.well-known/acme-challenge/<challenge>', handler='WhySaurus.AuthHandler:LetsEncryptHandler', name='letsEnrypt')
 ]
 
 # webapp2 config

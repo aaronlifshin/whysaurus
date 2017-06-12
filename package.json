@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-gae": "^0.2.4"
+    "grunt-gae": "^0.2.4",
+    "grunt-shell-spawn": "^0.3.10"
   },
   "dependencies": {
     "grunt": "0.4.x",
@@ -18,7 +19,7 @@
     "grunt-preprocess": "^4.0.0",
     "grunt-rename": "^0.1.3",
     "grunt-shell": "0.3.x",
-    "grint-gae":"0.2.x"
+    "grunt-gae": "0.2.x"
   },
   "scripts": {
     "start": "grunt local"

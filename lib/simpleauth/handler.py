@@ -85,7 +85,7 @@ class SimpleAuthHandler(object):
       'https://login.live.com/oauth20_authorize.srf?{0}',
       'https://login.live.com/oauth20_token.srf'),
     'facebook'    : ('oauth2',
-      'https://www.facebook.com/dialog/oauth?{0}',
+      'https://www.facebook.com/v2.9/dialog/oauth?{0}',
       'https://graph.facebook.com/oauth/access_token'),
     'linkedin'    : ('oauth1', {
       'request': 'https://api.linkedin.com/uas/oauth/requestToken', 
@@ -102,7 +102,7 @@ class SimpleAuthHandler(object):
   TOKEN_RESPONSE_PARSERS = {
     'google'      : '_json_parser',
     'windows_live': '_json_parser',
-    'facebook'    : '_query_string_parser',
+    'facebook'    : '_json_parser',
     'linkedin'    : '_query_string_parser',
     'twitter'     : '_query_string_parser'
   }

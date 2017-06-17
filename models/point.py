@@ -84,6 +84,7 @@ def makeURL(sourceStr):
   
 def sortArrayByRating(links):
     links.sort(key=lambda x: x.sortValue, reverse=True)
+    return links
     
 @ndb.tasklet
 def getCurrent_async(pointRoot):
@@ -98,7 +99,7 @@ class Link(ndb.Model):
     root = ndb.KeyProperty(indexed=False)
     # rating = ndb.IntegerProperty(indexed=False)
     voteCount = ndb.IntegerProperty(indexed=False)
-    fRating = ndb.FloatProperty(indexed=False)
+    fRating = ndb.FloatProperty(indexed=False) # relevancy score
     
     @property
     def rating(self):
@@ -511,6 +512,10 @@ class Point(ndb.Model):
     #   INTO THE STRUCTURES OF THE POINTS
     def getLinkedPoints(self, linkType, user):
         linkColl = self.getStructuredLinkCollection(linkType)
+        return self.getLinkedPointsForLinks(linkColl)
+
+
+    def getLinkedPointsForLinks(self, linkColl)
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl if link.root]
             roots = ndb.get_multi(rootKeys)
@@ -627,8 +632,32 @@ class Point(ndb.Model):
             )
             linkCurrentVersion._linkInfo = newLink
             links = links + [newLink] if links else [newLink]      
-            sortArrayByRating(links)                  
+            # links = sortArrayByRating(links) # just by relevance
+            links = self.sortLinksRecursively(links)
             self.setStructuredLinkCollection(linkType, links)
+
+    def getRecursivePointRating(self):
+        """
+        Not actually fully recursive (yet?) but looks one level
+        down to get supporting and counter votes as influence.
+        Bayesian in-spirit.
+        TODO: add (top) Point's relevance score in somehow
+        """
+        supportingPoints = self.getLinkedPoints('supporting', None) or []
+        counterPoints = self.getLinkedPoints('counter', None) or []
+        return (self.upVotes - self.downVotes
+                + sum([sp.upVotes * sp._linkInfo.fRating
+                       for sp in supportingPoints])
+                - abs(sum([cp.upVotes * cp._linkInfo.fRating
+                           for cp in counterPoints])))
+
+    def sortLinksRecursively(self, links):
+        linkPoints = self.getLinkedPointsForLinks(links)
+        # will sort on first item in tuple
+        sortingList = sorted([(lp.getRecursivePointRating(), lp._linkInfo)
+                              for lp in linkPoints],
+                             reverse=True)
+        return [p[1] for p in sortingList]
 
     def removeLink(self, linkRoot, linkType):
         links = self.getStructuredLinkCollection(linkType)
@@ -717,8 +746,8 @@ class Point(ndb.Model):
                             newPoint.sources.remove(oldKey)
 
             newPoint.version = self.version + 1
-            newPoint.upVotes = self.upVotes
-            newPoint.downVotes = self.downVotes
+            newPoint.upVotes = self.upVotes # number of agrees
+            newPoint.downVotes = self.downVotes # number of disagrees
             newPoint.voteTotal = self.voteTotal
             newPoint.imageURL = self.imageURL if imageURL is None else imageURL
             newPoint.imageDescription = self.imageDescription if imageDescription is None else imageDescription
@@ -941,7 +970,7 @@ class Point(ndb.Model):
                     break
             if ourLink:
                 ourLink.updateRelevanceData(oldRelVote, newRelVote) 
-                sortArrayByRating(links)                               
+                sortArrayByRating(links) # FIXME? this doesn't seem to do anything
                 self.put()
                 retVal = True, ourLink.rating, ourLink.voteCount
         return retVal        

@@ -289,7 +289,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 token = self.auth.store.user_model.create_signup_token(user_id)    
                 verification_url = self.uri_for('verification', type='p', user_id=user_id,
                                                 signup_token=token, _full=True)                        
-                mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
+                mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
                     to=user.email,
                     subject='Whysaurus password reset',
                     html="A password reset request has been received for your account. <br> \
@@ -299,7 +299,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     body="A password reset request has been received for your account. \n \
                         Please reset your password by visiting this URL:  \
                         %s. \n\nAaron Lifshin \n CTO" % verification_url,
-                    reply_to="aaron@whysaurus.com"
+                    reply_to="community@whysaurus.com"
                 )
                 results = {'result': True}
             else:

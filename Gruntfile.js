@@ -38,11 +38,12 @@ module.exports = function(grunt) {
 
     shell: {
       local: {
-        command: 'dev_appserver.py --skip_sdk_update_check --host localhost --port 8081 --admin_host localhost .',
+        //just for TEST_CONFIG.  if not, then -A needs to depend on appName
+        command: 'dev_appserver.py -A whysaurustest --skip_sdk_update_check --host localhost --port 8081 --admin_host localhost .',
         options: {
           async: false,
         },        
-      }      
+      }
     },
     gae: {
         options: {

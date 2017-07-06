@@ -2,8 +2,11 @@ import constants
 import os
 import jinja2
 
-from google.appengine.ext import ndb
+from google.appengine.ext import ndb, vendor
 from google.appengine.ext.webapp import template
+
+# needs to be above django import and django must be in lib dir
+vendor.add('lib')
 from django.template import Library
 from google.appengine.ext import webapp
 

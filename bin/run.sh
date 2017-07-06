@@ -11,4 +11,4 @@ if [ -z "${GAE_ROOT}" ]; then
 	exit 1
 fi
 
-$GAE_ROOT/dev_appserver.py --log_level debug --dev_appserver_log_level debug --port 8081 app.yaml
+$GAE_ROOT/dev_appserver.py --log_level debug --dev_appserver_log_level debug --port 8081 app.yaml $*

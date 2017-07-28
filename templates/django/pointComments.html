@@ -1,13 +1,11 @@
-<div id="rightColumnContent" class="row-fluid commentsColumn">
-    <div class="row-fluid">
+<div id="commentsContent" class="row-fluid">
+    <div>
         <div class="commentInstruction">
             <!-- header is obscuring id links so I'm being hacky and linking to the previous id -->
-            Discuss how to make this point <a id="commentHintLink">stronger</a> - <br>
-            <span id="commentHint" class="hide"><br>Is the point unclear?<br>Should it be more specific?<br>Does it need evidence?<br><br></span>
-            <a id="showAddComment">Add a Comment.</a> 
-        </div> 
-        
-        <!--<button id="showAddComment" class="borderButton commentsButton">New Comment<img class="commentIcon" src="/static/img/speech_bubble_icon_grey.png"/></button>  -->    
+            <a id="showAddComment">Add a Comment.</a>
+        </div>
+
+        <!--<button id="showAddComment" class="borderButton commentsButton">New Comment<img class="commentIcon" src="/static/img/speech_bubble_icon_grey.png"/></button>  -->
 
 
         <!-- old comments heading:
@@ -15,11 +13,11 @@
             {{Comments|length}} Comment{% if comments|length != 1 %}s{%endif%}
         </div>
         <div class="span6">
-            <button id="showAddComment" class="borderButton pull-right">New Comment </button>                
+            <button id="showAddComment" class="borderButton pull-right">New Comment </button>
         </div> -->
     </div>
-  
-    <div class="row-fluid">              
+
+    <div class="row">
         <div id="addComment" class="hide">
               <textarea id="commentText" width="100%"
                class="mceEditor textEdit" rows="3"                       
@@ -33,6 +31,12 @@
     
     {% if comments|length > 0 %}
     <div class="commentsHeading">Comments:</div>
+    {% else %}
+    <div>
+        <!-- header is obscuring id links so I'm being hacky and linking to the previous id -->
+        Discuss how to make this point <a id="commentHintLink">stronger</a> - <br>
+        <span id="commentHint" class="hide"><br>Is the point unclear?<br>Should it be more specific?<br>Does it need evidence?<br><br></span>
+    </div>
     {% endif %} 
     
     <div id="comments" class="commentArea">     

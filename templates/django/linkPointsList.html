@@ -1,19 +1,21 @@
-<div class="row-fluid">
+<div class="">
+	<div>
         <img class="arrowImageCurved" src="/static/img/arrow_open_blank.png"/>
         <p class="arrowText">
         {% if linkType == 'supporting' %}
             Why it's TRUE
-        {% else %}   
+        {% else %}
             Why it's FALSE
         {% endif %}
-        </p>        
+        </p>
+	</div>
 </div>
-  
+
 <div class="{% if linkedPoints %} {% else %} hide {% endif %}" id="{{linkType}}_nonzeroPoints">
-	{% if linkedPoints %}            
+	{% if linkedPoints %}
 		{% for point in linkedPoints %}
             {% with linkType as linkType %}
-                {% include 'linkPoint.html' %} 
+                {% include 'linkPoint.html' %}
             {% endwith %}
 		{% endfor %}
 	{% endif %}

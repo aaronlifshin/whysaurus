@@ -412,6 +412,130 @@ function removeSource(clickedElement) {
 }
 
 
+function expandPointInline(elem, isSupporting=true) {
+    var pointCard = $(elem).closest('.pointCard');
+    var pointURL = pointCard.data('pointurl');
+
+    _gaq.push(['_trackEvent', 'ExpandPointInline', pointURL]);
+
+    var expandArea = pointCard.children('.areaPointExpand');
+    var targetArea = expandArea;
+
+    if (targetArea.hasClass('isExpanded')) {
+        targetArea.removeClass('isExpanded');
+        targetArea.empty();
+        return;
+    } else {
+        targetArea.addClass('isExpanded');
+    }
+
+    targetArea.html("<img id=\"pointExpandAreaLoadingSpinner\" src=\"/static/img/ajax-loader.gif\"/>");
+
+    $.ajax({
+		url: '/getPointSubContent',
+		type: 'GET',
+		data: { 'pointUrl': pointURL, 'url': pointURL, 'isSupporting':isSupporting },
+		success: function(obj) {
+			$('#pointExpandAreaLoadingSpinner').remove();
+			targetArea.html(obj.html);
+			makePointsCardsClickable();
+		},
+		error: function(data) {
+			//targetArea.empty();
+			showAlert('<strong>Oops!</strong> There was a problem expanding the point.  Please try again later.');
+		},
+	});
+}
+
+
+function expandPointComments(elem) {
+    var pointCard = $(elem).closest('.pointCard');
+    var pointURL = pointCard.data('pointurl');
+
+    _gaq.push(['_trackEvent', 'ExpandPointCommentsInline', pointURL]);
+
+    var expandArea = pointCard.children('.areaCommentsExpand');
+    var targetArea = expandArea;
+
+    if (targetArea.hasClass('isExpanded')) {
+        targetArea.removeClass('isExpanded');
+        targetArea.empty();
+        return;
+    } else {
+        targetArea.addClass('isExpanded');
+    }
+
+    targetArea.html("<img id=\"pointExpandAreaLoadingSpinner\" src=\"/static/img/ajax-loader.gif\"/>");
+
+    $.ajax({
+		url: '/getPointComments',
+		type: 'GET',
+		data: { 'pointUrl': pointURL, 'url': pointURL },
+		success: function(obj) {
+			$('#pointExpandAreaLoadingSpinner').remove();
+			targetArea.html(obj.html);
+			makePointsCardsClickable();
+			setupComments();
+		},
+		error: function(data) {
+			//targetArea.empty();
+			showAlert('<strong>Oops!</strong> There was a problem expanding the point.  Please try again later.');
+		},
+	});
+}
+
+function setupComments() {
+    var addComment = $('#showAddComment');
+
+    addComment.click(function() {
+        tinyMCE.execCommand('mceRemoveControl', false, 'commentText');
+        $("#addComment").insertAfter($(event.target).parent());
+        initTinyMCE();
+        $('#addComment').removeClass('hide');
+        $('#showAddComment').parent().addClass('hide');
+        $('#addComment').data('parentkey', '');
+        $('body, html').animate({ scrollTop: $("#addComment table").offset().top - 100 }, 500);
+    });
+
+    $('#saveCommentSubmit').off('.ys').on('click.ys', saveComment);
+}
+
+
+function saveComment(event) {
+    var ed = tinyMCE.get('commentText');
+    commentText = ed.getContent();
+    if (commentText.trim() == '') return;
+
+    startSpinnerOnButton('#saveCommentSubmit');
+    $.ajaxSetup({
+		url: "/saveComment",
+		global: false,
+		type: "POST",
+		data: {
+		    'commentText': ed.getContent(),
+        	'p':$('#rootUrlSafe').val(),
+        	'parentKey': $('#addComment').data('parentkey')
+		},
+		success: function(obj){
+			if (obj.result == true) {
+                insertComment(obj);
+                ed.setContent('');
+                stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+                $('#addComment').addClass('hide');
+                $('#addComment').data('parentkey', '');
+			} else {
+			    showAlertAfter(obj.error ? obj.error: "There was an error", "#addComment");
+                stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+			}
+		},
+		error: function(xhr, textStatus, error){
+            showAlertAfter('The server returned an error. You may try again.', "#addComment");
+            stopSpinnerOnButton('#saveCommentSubmit', saveComment);
+        }
+	});
+	$.ajax();
+}
+
 function votePointCard(elem, voteType) {
     var pointCard = $(elem).closest('.pointCard');
     var pointURL = pointCard.data('pointurl');  
@@ -640,7 +764,7 @@ function loadPoint(url, addToHistory, replaceHistory) {
     $("#explanationRowHomepage").hide();
     $("#oneLinePointCreate").hide();
 	loadPointContent(url, addToHistory, replaceHistory);    
-	loadPointComments(url);  
+	//loadPointComments(url);
     /*$('#rightColumn').show();    
     $('#leftColumn').removeClass('span12').addClass('span8');*/
 }
@@ -654,7 +778,21 @@ function loadHomePage(shouldPushState) {
 }
 
 function makePointsCardsClickable() {
-    $( ".pointCard" ).click( function(ev) {
+    // .pointTitle perhaps instead of .pointCard?
+    // $( ".pointCard" ).click( function(ev) {
+    //     if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
+    //         return;
+    //     } else if (ev.which == 2) { // Middle mouse button
+    //         return;
+    //     } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+    //         return;
+    //     } else {
+    //         loadPoint($(this).data('pointurl'), true);
+    //         ev.preventDefault();
+    //     }
+    // });
+
+    $( ".pointTitle" ).click( function(ev) {
         if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
             return;
         } else if (ev.which == 2) { // Middle mouse button
@@ -662,7 +800,8 @@ function makePointsCardsClickable() {
         } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
             return;
         } else {
-            loadPoint($(this).data('pointurl'), true);
+            url = $(this).data('pointurl');
+            loadPoint(url, true);
             ev.preventDefault();
         }
     });
@@ -695,6 +834,34 @@ function makePointsCardsClickable() {
             return false;    
         }); 
     }
+
+    $('[name=supportingPointsSpan]').off('.ys').on('click.ys', function(e) {
+        var event = e || window.event;
+        expandPointInline(this, true);
+        e.stopPropagation();
+        return false;
+    });
+
+    $('[name=opposingPointsSpan]').off('.ys').on('click.ys', function(e) {
+        var event = e || window.event;
+        expandPointInline(this, false);
+        e.stopPropagation();
+        return false;
+    });
+
+    $('[name=noEvidenceSpan]').off('.ys').on('click.ys', function(e) {
+        var event = e || window.event;
+        expandPointInline(this);
+        e.stopPropagation();
+        return false;
+    });
+
+    $('[name=showCommentsSpan]').off('.ys').on('click.ys', function(e) {
+        var event = e || window.event;
+        expandPointComments(this);
+        e.stopPropagation();
+        return false;
+    });
 }
 
 function makeHomeNavsClickable() {

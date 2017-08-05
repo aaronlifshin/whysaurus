@@ -326,6 +326,42 @@ function changeRibbon() {
     $.ajax();
 }
 
+function showPointComments(elem) {
+    var pointURL = $('#pointArea').data('pointurl');
+
+    _gaq.push(['_trackEvent', 'ShowPointComments', pointURL]);
+
+    // var expandArea = $('#pointArea').closest('.areaCommentsExpand');
+    var expandArea = $('#areaPointCommentsExpand');
+    var targetArea = expandArea;
+
+    if (targetArea.hasClass('isExpanded')) {
+        targetArea.removeClass('isExpanded');
+        targetArea.empty();
+        return;
+    } else {
+        targetArea.addClass('isExpanded');
+    }
+
+    targetArea.html("<img id=\"pointExpandAreaLoadingSpinner\" src=\"/static/img/ajax-loader.gif\"/>");
+
+    $.ajax({
+		url: '/getPointComments',
+		type: 'GET',
+		data: { 'pointUrl': pointURL, 'url': pointURL },
+		success: function(obj) {
+			$('#pointExpandAreaLoadingSpinner').remove();
+			targetArea.html(obj.html);
+			makePointsCardsClickable();
+			setupComments();
+		},
+		error: function(data) {
+			//targetArea.empty();
+			showAlert('<strong>Oops!</strong> There was a problem expanding the point.  Please try again later.');
+		},
+	});
+}
+
 function updateRibbon(newRibbonValue, ribbonTotal) {
     $("#blueRibbon").data("ribbonvalue", newRibbonValue);
     if (newRibbonValue) {
@@ -1030,7 +1066,9 @@ function activatePointArea() {
         makeRelevanceControlsClickable();      	        
         // $('[name^=relevanceRadio]:checked').screwDefaultButtons('check');
     }    
-	
+
+    $( "#showPointComments" ).click(function() {showPointComments();	});
+
     activateCommentHint();
     
 	// if low relevance SPs exist, show the toggle
@@ -1053,7 +1091,7 @@ function activatePointArea() {
            
     $('#tweet').click(sharePointOnTwitter);
     $('#postOnFacebook').click(postOnFacebook);
-    
+
     makePointsCardsClickable();	    
 
     // Menus going up the tree

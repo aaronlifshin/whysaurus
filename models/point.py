@@ -89,6 +89,8 @@ def sortArrayByRating(links):
 def getCurrent_async(pointRoot):
     if pointRoot:
         current = yield pointRoot.current.get_async()
+        # Gene: Needs to be centralized - why is this call separate from PointRoot.getCurrent?
+        pointRoot.applyPointRootToPoint(current)
         raise ndb.Return(current)
     else:
         raise ndb.Return(None)
@@ -155,6 +157,7 @@ class Point(ndb.Model):
     _vote = None
     _relevanceVote = None
     _linkInfo = None
+    _commentsCount = None
     isTop = ndb.BooleanProperty(default=True)
     
 
@@ -179,7 +182,11 @@ class Point(ndb.Model):
         else:
             rat1 = sup/float(sup + cou)
             return math.floor(rat1*100) # Django widthratio requires integers
- 
+
+    @property
+    def numComments(self):
+        return self._commentsCount
+
     @property
     def dateEditedText(self):
         return self.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')
@@ -988,12 +995,12 @@ class PointRoot(ndb.Model):
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
     comments = ndb.KeyProperty(repeated=True, indexed=False)
+    commentsCount = ndb.IntegerProperty(indexed=False)
     archivedComments = ndb.KeyProperty(repeated=True, indexed=False)    
     supportedCount = ndb.ComputedProperty(lambda e: len(e.pointsSupportedByMe))
     # A top point is not used as a support for other points, aka the root of an argument tree
     isTop = ndb.BooleanProperty(default=True)
-    
-    
+
     @classmethod
     def getByUrlsafe(cls, pointRootUrlSafe):
         return ndb.Key(urlsafe=pointRootUrlSafe).get()        
@@ -1001,20 +1008,29 @@ class PointRoot(ndb.Model):
 
     @property
     def numComments(self):
+        if self.commentsCount is not None:
+            return self.commentsCount
+        if self.comments is None:
+            return None
         return len(self.comments) if self.comments else 0
         
     @property
     def numArchivedComments(self):
         return len(self.archivedComments) if self.archivedComments else 0
-        
+
+    def applyPointRootToPoint(self, point):
+        point._commentsCount = self.commentsCount
+
     def getCurrent(self):
         # if self.current:
         #     logging.info("RETURNING CURRENT point: %s" % self.current.urlsafe())
-        return self.current.get()
+        x = self.current.get()
+        self.applyPointRootToPoint(x)
+        return x
         # else:
         #     logging.info("CURRENT UNAVAILABLE in %s" % self.url)
-        # return Point.query(Point.current == True, ancestor=self.key).get()    
-        
+        # return Point.query(Point.current == True, ancestor=self.key).get()
+
     def getBacklinkCollections(self, linkType):
         if linkType == 'supporting':
             return self.pointsSupportedByMe, self.supportedArchiveForDelete
@@ -1097,7 +1113,12 @@ class PointRoot(ndb.Model):
                 current.put()         
 
     def getComments(self):
-        return ndb.get_multi(self.comments)
+        x = ndb.get_multi(self.comments)
+        # Gene: Deferred commentsCount in some instances?
+        #if self.commentsCount is None:
+        #    self.commentsCount = len(x)
+        #    self.put()
+        return x
 
     def getArchivedComments(self):
         return ndb.get_multi(self.archivedComments)
@@ -1342,6 +1363,7 @@ class PointRoot(ndb.Model):
                 self.comments = [comment.key] + self.comments
         else:
             self.comments = [comment.key]
+        self.commentsCount = len(self.comments)
         self.put()
         
     # shift this comment and all its childern into the archived array
@@ -1362,6 +1384,7 @@ class PointRoot(ndb.Model):
                     commentsArchived = commentsArchived + 1
 
             if commentsArchived > 0:
+                self.commentsCount = len(self.comments)
                 self.put()
                 
             return commentsArchived

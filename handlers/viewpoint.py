@@ -160,6 +160,29 @@ class ViewPoint(AuthHandler):
             
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
+
+    def getPointSubContent(self):
+        resultJSON = json.dumps({'result': False})
+
+        url = self.request.get('url')
+        vals = self.createTemplateValues(url, full=False)
+
+        # Gene: Do we have a better automatic conversion?
+        vals['isSupporting'] = False if self.request.get('isSupporting') == "false" else True
+
+        if 'point' in vals:
+            html = self.template_render('pointSubContent.html', vals)
+
+            resultJSON = json.dumps({
+                'result': True,
+                'title': vals['point'].title,
+                'url': vals['point'].url,
+                'myVote': vals['voteValue'],
+                'html': html,
+            })
+
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
+        self.response.out.write(resultJSON)
                                 
     def get(self, pointURL):        
         template_values = self.createTemplateValues(pointURL) 

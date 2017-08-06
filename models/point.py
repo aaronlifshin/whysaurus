@@ -1,4 +1,4 @@
-""" Main database entities 
+""" Main database entities
 
 A summary of how the main database entities work is below:
 
@@ -6,7 +6,7 @@ POINTS AND POINT ROOTS:
 Point class represents a single version of a point, to be displayed on the point page
 PointRoot class represents an ancestor of all the versions of a single point
 Other points can reference the pointRoot key as a stable reference for the point
-The current version of the point is kept in two places, the .current of the point class 
+The current version of the point is kept in two places, the .current of the point class
 A key reference to the current point in the PointRoot
 The URL is a unique way to get a pointRoot (but if it changes, a redirect is created)
 
@@ -16,7 +16,7 @@ When a point links to another, the link is recorded in three(!) ways
  2. In the linking point, a link to the version current at that time is recorded in the [linkType]PointsLastChange array
  3. In the linked point, a backlink to the root is recorded
 
-When a link is removed, the backlink is placed into an archive, so that when points are deleted, 
+When a link is removed, the backlink is placed into an archive, so that when points are deleted,
 we know where roots were
 
 The backlinks are in the pointRoot and reflect the current version
@@ -41,7 +41,7 @@ from source import Source
 from timezones import PST
 from follow import Follow
 from uservote import RelevanceVote
-from comment import Comment 
+from comment import Comment
 
 
 def convertListToKeys(urlsafeList):
@@ -49,13 +49,13 @@ def convertListToKeys(urlsafeList):
         outList = []
         for u in urlsafeList:
             outList = outList + [ndb.Key(urlsafe=u)]
-        return outList 
+        return outList
     else:
         return None
-        
+
 """
 Every point must have a unique URL
-If it already exists, add a number, and store how many times this URL existed, 
+If it already exists, add a number, and store how many times this URL existed,
   so number can be added next time
 Also check redirects
 (Redirects are created when a URL of a point changes)
@@ -67,7 +67,7 @@ def makeURL(sourceStr):
     # Check if it already exists
     pointRootQuery = PointRoot.gql("WHERE url= :1", newUrl)
     pointRoot = pointRootQuery.get()
-    
+
     if pointRoot:
         # Existing URL notes how many URLs+number exist for that URL
         pointRoot.numCopies = pointRoot.numCopies + 1
@@ -79,12 +79,12 @@ def makeURL(sourceStr):
         if redirectURL:
             redirectURL.numCopies = redirectURL.numCopies + 1
             newUrl = newUrl + str(redirectURL.numCopies)
-            redirectURL.put()        
+            redirectURL.put()
     return newUrl
-  
+
 def sortArrayByRating(links):
     links.sort(key=lambda x: x.sortValue, reverse=True)
-    
+
 @ndb.tasklet
 def getCurrent_async(pointRoot):
     if pointRoot:
@@ -92,18 +92,18 @@ def getCurrent_async(pointRoot):
         raise ndb.Return(current)
     else:
         raise ndb.Return(None)
-            
+
 class Link(ndb.Model):
     version = ndb.KeyProperty(indexed=False)
     root = ndb.KeyProperty(indexed=False)
     # rating = ndb.IntegerProperty(indexed=False)
     voteCount = ndb.IntegerProperty(indexed=False)
     fRating = ndb.FloatProperty(indexed=False)
-    
+
     @property
     def rating(self):
         return int(round(self.fRating, 0)) if self.fRating else 0
-        
+
     @property
     def sortValue(self):
         if self.voteCount == 0:
@@ -112,18 +112,18 @@ class Link(ndb.Model):
             return 50
         else:
             return self.fRating
-        
+
     def updateRelevanceData(self, oldRelVote, newRelVote):
         startingRating = self.fRating if self.fRating else 0
         if oldRelVote:
             # this user has already voted
             newSum = startingRating * self.voteCount - oldRelVote.value + newRelVote.value
-            self.fRating = newSum/self.voteCount                    
+            self.fRating = newSum/self.voteCount
         else:
             newSum = startingRating * self.voteCount + newRelVote.value
             self.voteCount = self.voteCount + 1
             self.fRating = newSum/self.voteCount
-        
+
 
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
@@ -135,10 +135,11 @@ class Point(ndb.Model):
     dateEdited = ndb.DateTimeProperty(auto_now_add=True) # Order by used
     version = ndb.IntegerProperty(default=1) # Order by used
     # supportingPoints = ndb.KeyProperty(repeated=True) # DEPRECATED
-    
-    supportingLinks = ndb.StructuredProperty(Link, repeated=True)    
-    counterLinks = ndb.StructuredProperty(Link, repeated=True)    
-        
+
+    supportingLinks = ndb.StructuredProperty(Link, repeated=True)
+    counterLinks = ndb.StructuredProperty(Link, repeated=True)
+    usersContributed = ndb.StringProperty(repeated=True)
+
     sources = ndb.KeyProperty(repeated=True, indexed=False)
     current = ndb.BooleanProperty() # used in filter queries
     url = ndb.StringProperty(indexed=False)
@@ -156,12 +157,12 @@ class Point(ndb.Model):
     _relevanceVote = None
     _linkInfo = None
     isTop = ndb.BooleanProperty(default=True)
-    
+
 
     @property
     def numSupporting(self):
         return len(self.supportingLinks) if self.supportingLinks else 0
-        
+
     @property
     def numCounter(self):
         return len(self.counterLinks) if self.counterLinks else 0
@@ -179,52 +180,62 @@ class Point(ndb.Model):
         else:
             rat1 = sup/float(sup + cou)
             return math.floor(rat1*100) # Django widthratio requires integers
- 
+
+    @property
+    def numUsersContributed(self):
+        if self.usersContributed is None or len(self.usersContributed) == 0:
+            return None
+        return len(self.usersContributed)
+
+    @property
+    def numComments(self):
+        return self._commentsCount
+
     @property
     def dateEditedText(self):
         return self.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')
-        
+
     @property
     def PSTdateEdited(self):
         return PST.convert(self.dateEdited)
-    
+
     @property
     def reverseLinksRatio(self):
         return 100 - self.linksRatio
-        
+
     @property
     def rootURLsafe(self):
         return self.key.parent().urlsafe();
-        
+
     @property
     def relevancePercent(self):
         if self._linkInfo is None or self._linkInfo.voteCount == 0:
-            return 'Please Set' 
+            return 'Please Set'
         else:
             return str(self._linkInfo.rating) + '%'
-            
+
     @property
     def belowRelevanceThreshold(self):
         if self._linkInfo is None or self._linkInfo.voteCount == 0:
-            return False 
+            return False
         else:
             return self._linkInfo.rating < 33
-    
+
     @property
     def relevanceVoteCount(self):
         return 0 if self._linkInfo is None else self._linkInfo.voteCount
-        
+
     @property
     def vote(self):
         return 0 if self._vote is None else self._vote
-        
+
     @property
     def myVoteValue(self):
         if self._relevanceVote is None:
             return None
         else:
             return self._relevanceVote.value
-        
+
     @classmethod
     def getByKey(cls, pointKey):
         return ndb.Key('Point', pointKey).get()
@@ -240,23 +251,23 @@ class Point(ndb.Model):
                          'notifyReasonCode': notifyReasonCode }
         if additionalText:
             taskParams['additionalText'] = additionalText
-        t = Task(url='/addNotifications', 
+        t = Task(url='/addNotifications',
                  params=taskParams)
         t.add(queue_name="notifications", transactional=ndb.in_transaction())
-        
+
     @staticmethod
     def getCurrentByUrl(url):
         pointRootQuery = PointRoot.gql("WHERE url= :1", url)
         pointRoot = pointRootQuery.get()
-        point = None        
+        point = None
         if pointRoot:
             point = pointRoot.getCurrent()
-                        
+
         if point:
             return point, pointRoot
         else:
             return (None, None)
-    
+
     # This method will check redirects and yield
     @staticmethod
     @ndb.tasklet
@@ -264,8 +275,8 @@ class Point(ndb.Model):
         q = PointRoot.query(PointRoot.url == url)
         pointRoot = yield q.get_async()
         if pointRoot:
-            point = yield getCurrent_async(pointRoot)            
-            raise ndb.Return(point, pointRoot)            
+            point = yield getCurrent_async(pointRoot)
+            raise ndb.Return(point, pointRoot)
         else:
             # Try to find a redirector
             newRedirectURL = yield RedirectURL.getByFromURL_asynch(url)
@@ -273,12 +284,12 @@ class Point(ndb.Model):
                 q = PointRoot.query(PointRoot.url == newRedirectURL.toURL)
                 pointRoot = yield q.get_async()
                 if pointRoot:
-                    point = yield getCurrent_async(pointRoot)                
+                    point = yield getCurrent_async(pointRoot)
                     raise ndb.Return(point, pointRoot)
                 else:
-                    raise ndb.Return(None, None)                            
+                    raise ndb.Return(None, None)
             else:
-                raise ndb.Return(None, None)                            
+                raise ndb.Return(None, None)
 
     @staticmethod
     def getCurrentByRootKey(rootKey):
@@ -312,11 +323,11 @@ class Point(ndb.Model):
             return retVal
         else:
             return None
-            
+
     @staticmethod
     @ndb.transactional(xg=True)
     def transactionalCreate(pointRoot, title, content, summaryText, user,
-                            imageURL=None, imageAuthor=None, 
+                            imageURL=None, imageAuthor=None,
                             imageDescription=None, sourceURLs=None, sourceNames=None, isTop=False):
         pointRoot.put()
         point = Point(parent=pointRoot.key)
@@ -336,7 +347,7 @@ class Point(ndb.Model):
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
         point.isTop = isTop
-        point.put() 
+        point.put()
         sources = None
         if sourceURLs and sourceNames:
             sources = Source.constructFromArrays(sourceURLs, sourceNames, point.key)
@@ -356,15 +367,15 @@ class Point(ndb.Model):
         # No automatic agreement
         # user.addVote(point, voteValue=1, updatePoint=False)
         user.recordCreatedPoint(pointRoot.key)
-        
+
         return point, pointRoot
 
     @staticmethod
     def create(title, content, summaryText, user, backlink=None, linktype="",
-               imageURL=None, imageAuthor=None, imageDescription=None, 
+               imageURL=None, imageAuthor=None, imageDescription=None,
                sourceURLs=None, sourceNames=None, urlToUse = None):
-        
-        newUrl = urlToUse if urlToUse else makeURL(title) 
+
+        newUrl = urlToUse if urlToUse else makeURL(title)
         pointRoot = PointRoot()
         pointRoot.url = newUrl
         pointRoot.numCopies = 0
@@ -380,10 +391,10 @@ class Point(ndb.Model):
                 pointRoot.pointsCounteredByMe = [backlink]
         else:
             logging.info('-NO BL FOUND')
-                
+
         createdPoint, createdPointRoot = Point.transactionalCreate(
                             pointRoot, title, content, summaryText, user,
-                            imageURL, imageAuthor, imageDescription, 
+                            imageURL, imageAuthor, imageDescription,
                             sourceURLs, sourceNames, isTop = isTop)
 
         # Only do this if we are not inside of a transaction
@@ -401,7 +412,7 @@ class Point(ndb.Model):
         if newPointRoot:
             for p in dataForPointTree:
                 Follow.createFollow(user.key, p['pointRoot'].key, "created")
-        return newPoint, newPointRoot 
+        return newPoint, newPointRoot
 
     @staticmethod
     @ndb.transactional(xg=True)
@@ -431,29 +442,29 @@ class Point(ndb.Model):
             user.addVote(point, voteValue=1, updatePoint=False)
             user.recordCreatedPoint(pointRoot.key)
             p['point'] = point
-            p['pointRoot'].current = p['point'].key            
+            p['pointRoot'].current = p['point'].key
             pointRoot.put()
             point.addToSearchIndexNew()
-                    
+
         # ITERATE THE SECOND TIME ADD SUPPORTING POINTS
         for p in dataForPointTree:
             if 'parentIndex' in p:
                 linkP = dataForPointTree[p['parentIndex']]['point']
-                newLink = Link( 
+                newLink = Link(
                     version = p['point'].key,
                     root = p['pointRoot'].key,
                     voteCount = 0
                 )
                 linkP.supportingLinks = linkP.supportingLinks + [newLink] if \
                     linkP.supportingPointsRoots else [newLink]
-                    
+
                 # OLD STORAGE SYSTEM
                 linkP.supportingPointsRoots = linkP.supportingPointsRoots + [p['pointRoot'].key] \
                     if linkP.supportingPointsRoots else [p['pointRoot'].key]
                 linkP.supportingPointsLastChange = linkP.supportingPointsLastChange + [p['point'].key] \
                     if linkP.supportingPointsRoots else [p['point'].key]
 
-        # ITERATE THE THIRD TIME AND WRITE POINTS WITH ALL SUPPORTING POINTS AND SOURCE KEYS 
+        # ITERATE THE THIRD TIME AND WRITE POINTS WITH ALL SUPPORTING POINTS AND SOURCE KEYS
         for p in dataForPointTree:
             if p['sources']:
                 sourceKeys = []
@@ -465,10 +476,10 @@ class Point(ndb.Model):
                     sourceKeys = sourceKeys + [source.key]
                 p['point'].sources = sourceKeys
             p['point'].put()
-        
+
         return dataForPointTree[0]['point'], dataForPointTree[0]['pointRoot']
 
-                        
+
 
     def shortJSON(self):
         return {"title":self.title,
@@ -477,7 +488,7 @@ class Point(ndb.Model):
                 "imageURL":self.imageURL,
                 "summaryMediumImage":self.summaryMediumImage
                 }
-                
+
 
     def linkCount(self, linkType):
         linkCol = self.getStructuredLinkCollection(linkType)
@@ -485,12 +496,12 @@ class Point(ndb.Model):
 
     def getStructuredLinkCollection(self, linkType):
         if linkType == 'supporting':
-            return self.supportingLinks            
+            return self.supportingLinks
         elif linkType == 'counter':
-            return self.counterLinks            
+            return self.counterLinks
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
-            
+
     # SET THE STRUCTURE LINK COLLECTION BY LINK TYPE
     def setStructuredLinkCollection(self, linkType, linkCollection):
         if linkType == 'supporting':
@@ -500,7 +511,7 @@ class Point(ndb.Model):
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
 
-    # RETURN ROOT LINK COLLECTION ONLY FOR SUPPLIED LINK TYPE          
+    # RETURN ROOT LINK COLLECTION ONLY FOR SUPPLIED LINK TYPE
     def getLinkedPointsRootKeys(self, linkType):
         linkColl = self.getStructuredLinkCollection(linkType)
         return [link.root for link in linkColl]
@@ -514,8 +525,8 @@ class Point(ndb.Model):
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl if link.root]
             roots = ndb.get_multi(rootKeys)
-            linkedPoints = []            
-                            
+            linkedPoints = []
+
             for pointRoot in roots:
                 if pointRoot:
                     linkedPoints = linkedPoints + [pointRoot.getCurrent()]
@@ -523,69 +534,69 @@ class Point(ndb.Model):
                     logging.info('WARNING: Supporting point array for ' +
                                  self.url + ' contains pointer to missing root')
 
-            # logging.info('ZPL' + str(zip(points, linkColl)))            
+            # logging.info('ZPL' + str(zip(points, linkColl)))
             for point, link in zip(linkedPoints, linkColl):
                 point._linkInfo = link
-                            
+
             return linkedPoints
         else:
-            return None        
-    
+            return None
+
     @ndb.tasklet
     def getLinkedPoints_async(self, linkType, user):
         linkColl = self.getStructuredLinkCollection(linkType)
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl if link.root]
-            
-            linkedPoints = yield map(lambda x: getCurrent_async(x), 
-                         (yield ndb.get_multi_async(rootKeys)))                        
-            
+
+            linkedPoints = yield map(lambda x: getCurrent_async(x),
+                         (yield ndb.get_multi_async(rootKeys)))
+
             if user:
-                linkedPoints = yield map(lambda x: x.addVote_async(user),linkedPoints) 
-                                
+                linkedPoints = yield map(lambda x: x.addVote_async(user),linkedPoints)
+
             i = 0
             # this let met skip over link entries that do not have a root or do not match for some reason
             for point in linkedPoints:
-                if linkColl[i].root == point.key.parent():                   
+                if linkColl[i].root == point.key.parent():
                     point._linkInfo = linkColl[i]
                 i = i+1
-                    
+
             raise ndb.Return(linkedPoints)
         else:
             raise ndb.Return(None)
-        
-         
+
+
     # gets both supporting and counter points, with their relevance
     def getAllLinkedPoints(self, user):
         supportingPoints = self.getLinkedPoints("supporting", user)
         counterPoints = self.getLinkedPoints("counter", user)
-        
+
         if user: # add this user's relevance votes to the points
             # get all relevance votes with this as the parent point
             relevanceVotes = user.getRelevanceVotes(self)
             if relevanceVotes:
-                self.addRelevanceVotes(relevanceVotes, supportingPoints, counterPoints)                
+                self.addRelevanceVotes(relevanceVotes, supportingPoints, counterPoints)
         return supportingPoints, counterPoints
-        
-    
+
+
     def addRelevanceVotes(self, relevanceVotes, supportingPoints, counterPoints):
         if relevanceVotes:
-            relevanceVoteDict = dict((rVote.childPointRootKey, rVote) 
+            relevanceVoteDict = dict((rVote.childPointRootKey, rVote)
                 for rVote in relevanceVotes)
 
             if supportingPoints:
-                for p in supportingPoints:     
+                for p in supportingPoints:
                     if p.key.parent() in relevanceVoteDict:
-                        p._relevanceVote =relevanceVoteDict[p.key.parent()]                    
-            if counterPoints:                
+                        p._relevanceVote =relevanceVoteDict[p.key.parent()]
+            if counterPoints:
                 for p in counterPoints:
                     if p.key.parent() in relevanceVoteDict:
                         p._relevanceVote =relevanceVoteDict[p.key.parent()]
-    
+
         return supportingPoints, counterPoints
-    
+
     # DATASTORE GET OF THE LAST CHANGE LINK POINTS BY LINK TYPE
-    # THIS WILL GET THE VERSION OF THE LINKED POINTS AT THE TIME 
+    # THIS WILL GET THE VERSION OF THE LINKED POINTS AT THE TIME
     #   THE LINK WAS CREATED
     def getLinkedPointsLastChange(self, linkType):
         linkColl = self.getStructuredLinkCollection(linkType)
@@ -594,13 +605,13 @@ class Point(ndb.Model):
             points = ndb.get_multi(pointKeys)
             return points
         else:
-            return None   
+            return None
 
     def addLink(self, linkRoot, linkCurrentVersion, linkType, voteCount, fRating):
-        links = self.getStructuredLinkCollection(linkType)        
+        links = self.getStructuredLinkCollection(linkType)
         if not voteCount:
             voteCount = 0
-            
+
         if linkCurrentVersion:
             if linkRoot is None:
                 raise WhysaurusException(
@@ -608,16 +619,16 @@ class Point(ndb.Model):
             for link in links:
                 if link.root == linkRoot.key:
                     raise WhysaurusException(
-                        "That point is already a %s point of %s" % 
+                        "That point is already a %s point of %s" %
                             (linkType, self.title))
                 elif link.version == linkCurrentVersion.key:
                     raise WhysaurusException(
-                        "That point is already a %s point of %s" % 
+                        "That point is already a %s point of %s" %
                             (linkType, self.title))
-                            
+
             linkCurrentVersion.isTop = False
             linkCurrentVersion.put()
-            
+
             logging.info('Linking the new point. Have: %d, %d' % (voteCount, fRating))
             newLink = Link(
                 root = linkRoot.key,
@@ -626,8 +637,16 @@ class Point(ndb.Model):
                 fRating = fRating
             )
             linkCurrentVersion._linkInfo = newLink
-            links = links + [newLink] if links else [newLink]      
-            sortArrayByRating(links)                  
+            links = links + [newLink] if links else [newLink]
+            sortArrayByRating(links)
+            # Gene: Really, this needs to operate with the user that adds the link no?
+            # (But right now that's updated as author already - if we change that we'll need to pass it.)
+            root_user = linkCurrentVersion.authorURL
+            if root_user:
+                logging.info('Adding contributing user: %s' % root_user)
+                self.addContributingUser(root_user)
+                self.put()
+
             self.setStructuredLinkCollection(linkType, links)
 
     def removeLink(self, linkRoot, linkType):
@@ -643,7 +662,7 @@ class Point(ndb.Model):
                     "Trying to remove a %s point but root was not supplied: %s" % linkName, self.title)
 
     @ndb.transactional(xg=True)
-    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):        
+    def transactionalUpdate(self, newPoint, theRoot, sources, user, pointsToLink):
         self.put() # Save the old version
         if pointsToLink:
             for pointToLink in pointsToLink:
@@ -666,7 +685,7 @@ class Point(ndb.Model):
                 source.put()
                 sourceKeys = sourceKeys + [source.key]
             newPoint.sources = sourceKeys
-            
+
         # CONCURRENCY FIX
         # IN CASE A NEW CURRENT POINT HAS BEEN CREATED
         # LET'S TRY WITHOUT THIS
@@ -682,12 +701,12 @@ class Point(ndb.Model):
         theRoot.current = newPoint.key
         theRoot.put()
         theRoot.setTop()
-                
-        deferred.defer(user.recordEditedPoint, theRoot.key, _transactional=ndb.in_transaction()) # Add to the user's edited list  
+
+        deferred.defer(user.recordEditedPoint, theRoot.key, _transactional=ndb.in_transaction()) # Add to the user's edited list
         return newPoint, theRoot
 
     # pointsToLink is a set of links of the new point we want to link
-    def update( self, newTitle=None, newContent=None, newSummaryText=None, 
+    def update( self, newTitle=None, newContent=None, newSummaryText=None,
                 pointsToLink=None, user=None, imageURL=None, imageAuthor=None,
                 imageDescription=None, sourcesToAdd=None, sourceKeysToRemove=None):
         if user:
@@ -703,11 +722,11 @@ class Point(ndb.Model):
             else:
                 newPoint.summaryText = self.summaryText
 
-            newPoint.authorName = user.name            
-            newPoint.authorURL = user.url                        
+            newPoint.authorName = user.name
+            newPoint.authorURL = user.url
             newPoint.supportingLinks = list(self.supportingLinks)
             newPoint.counterLinks = list(self.counterLinks)
-                    
+
             newPoint.sources = self.sources
             keysToRemove = convertListToKeys(sourceKeysToRemove)
             if keysToRemove:
@@ -731,7 +750,7 @@ class Point(ndb.Model):
 
             self.current = False
 
-            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)    
+            newPoint, theRoot = self.transactionalUpdate(newPoint, theRoot, sourcesToAdd, user, pointsToLink)
 
             # Not sure why this is needed: this should be getting handled by code already in addLink
             try:
@@ -743,8 +762,8 @@ class Point(ndb.Model):
             if pointsToLink:
                 # For now we only ever add a single linked point
                 Point.addNotificationTask(
-                    theRoot.key, 
-                    user.key, 
+                    theRoot.key,
+                    user.key,
                     4 if pointsToLink[0]['linkType'] == "supporting" else 5,
                     pointsToLink[0]['pointCurrentVersion'].title )
             else:
@@ -761,7 +780,7 @@ class Point(ndb.Model):
     @ndb.transactional(xg=True, retries=5)
     def transactionalAddSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
                             linkType, imageURL,imageAuthor,imageDescription,
-                            sourcesURLs, sourcesNames, urlToUse):                             
+                            sourcesURLs, sourcesNames, urlToUse):
          oldPointRoot = oldPointRoot.key.get() # re-get inside transaction for concurrency
          oldPoint = oldPointRoot.getCurrent()
          newLinkPoint, newLinkPointRoot = Point.create(
@@ -777,37 +796,37 @@ class Point(ndb.Model):
              sourceURLs=sourcesURLs,
              sourceNames=sourcesNames,
              urlToUse=urlToUse)
-            
+
          newLinks = [{'pointRoot':newLinkPointRoot,
                      'pointCurrentVersion':newLinkPoint,
                      'linkType':linkType},
                      ]
          newPoint = oldPoint.update(
-             pointsToLink=newLinks,                 
+             pointsToLink=newLinks,
              user=user
-         )            
+         )
          user.addRelevanceVote(
-           oldPointRoot.key.urlsafe(), 
+           oldPointRoot.key.urlsafe(),
            newLinkPointRoot.key.urlsafe(), linkType, 100)
-         return newPoint, newLinkPoint, newLinkPointRoot                                      
+         return newPoint, newLinkPoint, newLinkPointRoot
 
     @classmethod
     def addSupportingPoint(cls, oldPointRoot, title, content, summaryText, user,
                             linkType, imageURL,imageAuthor,imageDescription,
-                            sourcesURLs, sourcesNames):                            
-        newURL = makeURL(title) 
+                            sourcesURLs, sourcesNames):
+        newURL = makeURL(title)
         try:
             newPoint, newLinkPoint, newLinkPointRoot = Point.transactionalAddSupportingPoint(
                 oldPointRoot, title, content, summaryText, user,
                 linkType, imageURL,imageAuthor,imageDescription,
-                sourcesURLs, sourcesNames, newURL)            
+                sourcesURLs, sourcesNames, newURL)
         except TransactionFailedError as e:
             # DO NOT edit this error message carelessly, it is checked in (for example) point.js
             raise WhysaurusException("Could not add supporting point because someone else was editing this point at the same time.  Please try again.")
         Follow.createFollow(user.key, newLinkPointRoot.key, "created")
-        Follow.createFollow(user.key, oldPointRoot.key, "edited")        
+        Follow.createFollow(user.key, oldPointRoot.key, "edited")
         return newPoint, newLinkPoint
-    
+
     # ONLY REMOVES ONE SIDE OF THE LINK. USED BY UNLINK
     def removeLinkedPoint(self, unlinkPointRoot, linkType, user):
         if user:
@@ -818,7 +837,7 @@ class Point(ndb.Model):
 
             newPoint.supportingLinks = list(self.supportingLinks)
             newPoint.counterLinks = list(self.counterLinks)
-            
+
             newPoint.sources = list(self.sources)
 
             try:
@@ -832,7 +851,7 @@ class Point(ndb.Model):
             newPoint.version = self.version + 1
             newPoint.upVotes = self.upVotes
             newPoint.downVotes = self.downVotes
-            newPoint.voteTotal = self.voteTotal  
+            newPoint.voteTotal = self.voteTotal
             newPoint.ribbonTotal = self.ribbonTotal
             newPoint.imageURL = self.imageURL
             newPoint.imageDescription = self.imageDescription
@@ -845,22 +864,34 @@ class Point(ndb.Model):
             newPoint.put()
             theRoot.current = newPoint.key
             theRoot.put()
-            
+
             Follow.createFollow(user.key, theRoot.key, "edited")
-            
+
             Point.addNotificationTask(theRoot.key, user.key, 7 if linkType == "supporting" else 6)
-            
+
             return newPoint
         else:
             return None
-    
+
+    def addContributingUser(self, userUrlContributed):
+        if not userUrlContributed or userUrlContributed == self.authorURL:
+            return
+
+        # Gene: Incrementally building for now - should switch to an error state once populated
+        if self.usersContributed is None:
+            self.usersContributed = []
+
+        if userUrlContributed not in self.usersContributed:
+            self.usersContributed = self.usersContributed + [userUrlContributed]
+            self.put()
+
     def getSources(self):
         if len(self.sources) > 0:
             sources = ndb.get_multi(self.sources)
             return sources
         else:
             return None
-    
+
     @ndb.tasklet
     def getSources_async(self):
         if len(self.sources) > 0:
@@ -884,7 +915,7 @@ class Point(ndb.Model):
             index = search.Index('points')
             results = []
             searchResultDocs = index.search(searchTerms)
-            
+
             if searchResultDocs:
                 docIds = [resDoc.doc_id for resDoc in searchResultDocs]
                 excludeList = []
@@ -897,37 +928,37 @@ class Point(ndb.Model):
                         if linkedPointRootKeys:
                             for rootKey in linkedPointRootKeys:
                                 excludeList = excludeList + [rootKey.urlsafe()]
-                        
+
                         linkedPointRootKeys = excludePoint.getLinkedPointsRootKeys("counter")
                         if linkedPointRootKeys:
                             for rootKey in linkedPointRootKeys:
                                 excludeList = excludeList + [rootKey.urlsafe()]
-                                
+
                 for key in excludeList:
                     try:
                         docIds.remove(key)
                     except ValueError:
-                        pass 
+                        pass
                 searchKeys = [ndb.Key(urlsafe=rootKey) for rootKey in docIds]
-                logging.info("Search Keys %s" % str(searchKeys))          
+                logging.info("Search Keys %s" % str(searchKeys))
                 resultPoints = yield map(lambda x: getCurrent_async(x), (yield ndb.get_multi_async(searchKeys)))
                 if user:
-                    resultPoints = yield map(lambda x: x.addVote_async(user), resultPoints)                    
+                    resultPoints = yield map(lambda x: x.addVote_async(user), resultPoints)
             else:
-                resultPoints = None                
+                resultPoints = None
             raise ndb.Return(resultPoints)
         else:
             raise ndb.Return(None)
-        
+
     def addToSearchIndexNew(self):
         index = search.Index(name='points')
         fields = [
             search.TextField(name='title', value=self.title),
-            search.TextField(name='content', value=self.content),         
+            search.TextField(name='content', value=self.content),
         ]
         d = search.Document(doc_id=self.key.parent().urlsafe(), fields=fields)
         index.put(d)
-        
+
     # If old rel vote exists, replace its value, otherwise add a new value
     # into the value total
     def addRelevanceVote(self, oldRelVote, newRelVote):
@@ -940,37 +971,37 @@ class Point(ndb.Model):
                     ourLink = link
                     break
             if ourLink:
-                ourLink.updateRelevanceData(oldRelVote, newRelVote) 
-                sortArrayByRating(links)                               
+                ourLink.updateRelevanceData(oldRelVote, newRelVote)
+                sortArrayByRating(links)
                 self.put()
                 retVal = True, ourLink.rating, ourLink.voteCount
-        return retVal        
-        
+        return retVal
+
     # This is used to fix database problems
     def addMissingBacklinks(self):
         if self.current == False:
             raise WhysaurusException('Add missing backlinks can only be invoked on current point')
-        
+
         addedRoots = 0
         for linkType in ["supporting", "counter"]:
-            links = self.getStructuredLinkCollection(linkType)            
+            links = self.getStructuredLinkCollection(linkType)
             if links:
                 for link in links:
-                    # Every linked point in the link array of a current point 
-                    #   should have backlinks in its root 
-                    linkRoot = link.version.parent().get() # Get the root (parent) of the linked point                  
+                    # Every linked point in the link array of a current point
+                    #   should have backlinks in its root
+                    linkRoot = link.version.parent().get() # Get the root (parent) of the linked point
                     backlinks, archiveBacklinks = linkRoot.getBacklinkCollections(linkType)
                     if not self.key.parent() in backlinks:
                         linkRoot.addLinkedPoint(self.key.parent(), linkType)
                         addedRoots = addedRoots + 1
         return addedRoots
-        
+
     @ndb.tasklet
     def addVote_async(self, user):
         if user:
             self._vote = yield user.getVoteValue_async(self.key.parent())
         raise ndb.Return(self)
-        
+
     def addVote(self, user):
         if user:
             self._vote = user.getVoteValue(self.key.parent())
@@ -988,33 +1019,33 @@ class PointRoot(ndb.Model):
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
     comments = ndb.KeyProperty(repeated=True, indexed=False)
-    archivedComments = ndb.KeyProperty(repeated=True, indexed=False)    
+    archivedComments = ndb.KeyProperty(repeated=True, indexed=False)
     supportedCount = ndb.ComputedProperty(lambda e: len(e.pointsSupportedByMe))
     # A top point is not used as a support for other points, aka the root of an argument tree
     isTop = ndb.BooleanProperty(default=True)
-    
-    
+
+
     @classmethod
     def getByUrlsafe(cls, pointRootUrlSafe):
-        return ndb.Key(urlsafe=pointRootUrlSafe).get()        
+        return ndb.Key(urlsafe=pointRootUrlSafe).get()
 
 
     @property
     def numComments(self):
         return len(self.comments) if self.comments else 0
-        
+
     @property
     def numArchivedComments(self):
         return len(self.archivedComments) if self.archivedComments else 0
-        
+
     def getCurrent(self):
         # if self.current:
         #     logging.info("RETURNING CURRENT point: %s" % self.current.urlsafe())
         return self.current.get()
         # else:
         #     logging.info("CURRENT UNAVAILABLE in %s" % self.url)
-        # return Point.query(Point.current == True, ancestor=self.key).get()    
-        
+        # return Point.query(Point.current == True, ancestor=self.key).get()
+
     def getBacklinkCollections(self, linkType):
         if linkType == 'supporting':
             return self.pointsSupportedByMe, self.supportedArchiveForDelete
@@ -1022,8 +1053,8 @@ class PointRoot(ndb.Model):
             return self.pointsCounteredByMe, self.counteredArchiveForDelete
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
-        
-    
+
+
     def getBacklinkPoints(self, linkType):
         backlinkRootKeys, backlinksArchiveKeys = self.getBacklinkCollections(linkType)
         backlinkRoots = ndb.get_multi(backlinkRootKeys)
@@ -1032,10 +1063,10 @@ class PointRoot(ndb.Model):
             if root:
                 currentKeys = currentKeys + [root.current]
             else:
-                logging.error("Bad link detected in Root: %s. " % self.url)                    
+                logging.error("Bad link detected in Root: %s. " % self.url)
         currentPoints = ndb.get_multi(currentKeys)
         return currentPoints
-    
+
     # This is used to fix database problems
     def cleanEmptyLinks(self):
         numCleaned = 0
@@ -1047,12 +1078,12 @@ class PointRoot(ndb.Model):
                 cleanLinks = [l for l in links if l.version is not None and l.root is not None]
                 numCleaned = numCleaned + len(links) - len(cleanLinks)
                 if len(links) != len(cleanLinks):
-                    cleaned = True                
+                    cleaned = True
                     point.setStructuredLinkCollection(linkType, cleanLinks)
-            if cleaned: 
-                point.put()                
-        return numCleaned, len(allVersions)        
-        
+            if cleaned:
+                point.put()
+        return numCleaned, len(allVersions)
+
     # This is used to fix database problems
     def removeDeadBacklinks(self):
         removedRoots = 0
@@ -1069,7 +1100,7 @@ class PointRoot(ndb.Model):
         if removedRoots > 0:
             self.put()
         return removedRoots
-            
+
     # This is used to fix database problems
     def removeBacklinkRaw(self, linkType, linkPointRootKey):
         if linkType == 'supporting':
@@ -1077,7 +1108,7 @@ class PointRoot(ndb.Model):
         elif linkType == 'counter':
             self.pointsCounteredByMe.remove(linkPointRootKey)
         else:
-            raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)  
+            raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
         self.setTop()
 
     def setTop(self):
@@ -1094,14 +1125,14 @@ class PointRoot(ndb.Model):
             current = self.getCurrent()
             if current:
                 current.isTop = False
-                current.put()         
+                current.put()
 
     def getComments(self):
         return ndb.get_multi(self.comments)
 
     def getArchivedComments(self):
         return ndb.get_multi(self.archivedComments)
-        
+
     def removeLinkedPoint(self, linkPointRootKey, linkType, archive=True):
         if linkType == 'supporting':
             try:
@@ -1109,12 +1140,12 @@ class PointRoot(ndb.Model):
             except ValueError:
                 logging.error('Could not remove %s backlink in point %s' % \
                               (linkType, self.url))
-                
+
             if archive and linkPointRootKey not in self.supportedArchiveForDelete:
                 self.supportedArchiveForDelete = self.supportedArchiveForDelete + \
                 [linkPointRootKey]
             self.put()
-            
+
         elif linkType == 'counter':
             try:
                 self.pointsCounteredByMe.remove(linkPointRootKey)
@@ -1134,14 +1165,14 @@ class PointRoot(ndb.Model):
         if linkType == 'supporting':
             if linkPointRootKey not in self.pointsSupportedByMe:
                 self.pointsSupportedByMe = self.pointsSupportedByMe + \
-                [linkPointRootKey]      
-                self.isTop = False                          
+                [linkPointRootKey]
+                self.isTop = False
                 self.put()
         elif linkType == 'counter':
             if linkPointRootKey not in self.pointsCounteredByMe:
                 self.pointsCounteredByMe = self.pointsCounteredByMe + \
                 [linkPointRootKey]
-                self.isTop = False                
+                self.isTop = False
                 self.put()
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
@@ -1164,7 +1195,7 @@ class PointRoot(ndb.Model):
         for pointRoot in pointRoots:
             editorsPicks = editorsPicks + [pointRoot.getCurrent()]
         return editorsPicks
-        
+
     @staticmethod
     @ndb.tasklet
     def getEditorsPicks_async(user):
@@ -1172,7 +1203,7 @@ class PointRoot(ndb.Model):
         resultPoints = yield map(lambda x: x.current.get_async(), (yield rootsQuery.fetch_async(50)))
         if user:
             resultPoints = yield map(
-                lambda x: x.addVote_async(user), 
+                lambda x: x.addVote_async(user),
                 resultPoints
             )
         raise ndb.Return(resultPoints)
@@ -1200,7 +1231,7 @@ class PointRoot(ndb.Model):
         else:
             resultPoints = yield pointsQuery.fetch_async(50)
         raise ndb.Return(resultPoints)
-                
+
     @staticmethod
     def getRecentCurrentPoints(user):
         pointsQuery = Point.gql(
@@ -1212,7 +1243,7 @@ class PointRoot(ndb.Model):
         else:
             resultPoints =  pointsQuery.fetch(50)
         return resultPoints
-        
+
     @staticmethod
     def getTopRatedPoints(filterList = None):
         pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
@@ -1222,48 +1253,48 @@ class PointRoot(ndb.Model):
             for point in topPointsRaw:
                 if not point in filterList:
                     topPoints = topPoints + [point]
-        return topPoints    
-  
+        return topPoints
+
     @staticmethod
-    @ndb.tasklet        
+    @ndb.tasklet
     def getTopRatedPoints_async(user):
         pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
         resultPoints = None
         if user:
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
         else:
-            resultPoints = yield pointsQuery.fetch_async(50)            
+            resultPoints = yield pointsQuery.fetch_async(50)
         raise ndb.Return(resultPoints)
-    
-    
+
+
     @staticmethod
     def getTopViewedPoints(user):
-        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC")        
+        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC")
         roots = rootsQuery.fetch(50)
         currentKeys = [root.current for root in roots]
         return ndb.get_multi(currentKeys)
-        
+
     @staticmethod
-    @ndb.tasklet    
+    @ndb.tasklet
     def getTopViewedPoints_async(user):
-        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC") 
-            
+        rootsQuery = PointRoot.gql("ORDER BY viewCount DESC")
+
         resultPoints = yield map(lambda x: x.current.get_async(), (yield rootsQuery.fetch_async(50)))
         if user:
             resultPoints = yield map(
-                lambda x: x.addVote_async(user), 
+                lambda x: x.addVote_async(user),
                 resultPoints
             )
         raise ndb.Return(resultPoints)
 
     # NOT USED CURRENTLY
     @staticmethod
-    def getTopAwardPoints(user):       
+    def getTopAwardPoints(user):
         pointsQuery = Point.gql("WHERE current = TRUE ORDER BY ribbonTotal DESC")
         points =  pointsQuery.fetch(50)
         logging.info("GTAP Got %d points" % len(points))
         return points
-        
+
     def delete(self, user):
         if not user.isAdmin:
             return False, 'Not authorized'
@@ -1285,9 +1316,9 @@ class PointRoot(ndb.Model):
                         for link in links:
                             if link.root == self.key:
                                 links.remove(link)
-                                linkedPointVersion.setStructuredLinkCollection(linkType, links)                                
+                                linkedPointVersion.setStructuredLinkCollection(linkType, links)
                             writeVersion = True
-                            
+
                         if writeVersion: linkedPointVersion.put()
 
 
@@ -1297,7 +1328,7 @@ class PointRoot(ndb.Model):
             # if img:
             #  img.key.delete()
             point.key.delete()
-            
+
         for comment in self.comments:
             comment.delete()
 
@@ -1311,7 +1342,7 @@ class PointRoot(ndb.Model):
 
         return True, ''
 
-        
+
     def deleteFromSearchIndex(self):
         doc_index = search.Index(name="points")
         doc_index.delete(self.key.urlsafe())
@@ -1329,8 +1360,8 @@ class PointRoot(ndb.Model):
         # If there is already a redirector object going to this URL, update it
         RedirectURL.updateRedirects(oldURL, newURL)
         return newURL
-    
-    def addComment(self, comment):        
+
+    def addComment(self, comment):
         if self.comments:
             if comment.parentComment:
                 i = self.comments.index(comment.parentComment)
@@ -1343,7 +1374,13 @@ class PointRoot(ndb.Model):
         else:
             self.comments = [comment.key]
         self.put()
-        
+
+        cur = self.current.get()
+        if cur:
+            root_user = comment.userUrl
+            if root_user:
+                cur.addContributingUser(root_user)
+
     # shift this comment and all its childern into the archived array
     # return the number of comments archived
     def archiveComments(self, commentKeyUrlsafe):
@@ -1354,23 +1391,23 @@ class PointRoot(ndb.Model):
                 commentsArchived = 1
             else:
                 raise WhysaurusException('Comment requested for archiving was not found in this point')
-                
+
             # Archive his whole thread if it exists
             qry = Comment.query(ancestor=mainCommentKey)
-            for key in qry.iter(keys_only=True):  
-                if self._archiveCommentKey(key):              
+            for key in qry.iter(keys_only=True):
+                if self._archiveCommentKey(key):
                     commentsArchived = commentsArchived + 1
 
             if commentsArchived > 0:
                 self.put()
-                
+
             return commentsArchived
-            
+
         else:
             raise WhysaurusException('No comments found in this point. Archive request should not have been sent')
-        
+
     # shift one key between arrays. True if shifted
-    def _archiveCommentKey(self, commentKey):       
+    def _archiveCommentKey(self, commentKey):
         if commentKey in self.comments:
             idx = self.comments.index(commentKey)
             del self.comments[idx]
@@ -1379,14 +1416,14 @@ class PointRoot(ndb.Model):
             self.archivedComments.append(commentKey)
             return True
         else:
-            return False            
-        
+            return False
+
     def updateEditorsPick(self, editorsPick, editorsPickSort):
         self.editorsPick = editorsPick
         self.editorsPickSort = editorsPickSort
         self.put()
         return True
-    
+
 # A dummy class to create an entity group
 # For large groups this will cause issues with sharding them across datastore nodes
 # Eventually a BG task should be written to copy these out of the OutlineRoot
@@ -1397,12 +1434,12 @@ class OutlineRoot(ndb.Model):
 # A reference to a single global featured point, which can be changed
 class FeaturedPoint(ndb.Model):
     featuredPoint = ndb.KeyProperty() # A Point Root key
-    
+
     @staticmethod
     def getFeatured():
         fpList = FeaturedPoint.query().fetch(1)
         return fpList[0] if fpList else None
-    
+
     @staticmethod
     def setFeatured(featuredKey):
         currentFP = FeaturedPoint.getFeatured()
@@ -1413,11 +1450,11 @@ class FeaturedPoint(ndb.Model):
             newFP = FeaturedPoint(featuredPoint = featuredKey)
             newFP.put()
         return True
-  
+
     @staticmethod
     def getFeaturedPoint():
         fp = FeaturedPoint.getFeatured()
-        point = None  
+        point = None
         if fp:
             pointRoot = fp.featuredPoint.get()
             point = pointRoot.getCurrent() if pointRoot else None

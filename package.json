@@ -2,10 +2,16 @@
   "name": "whysaurus",
   "version": "0.1.0",
   "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "grunt": "~0.4.2",
-    "grunt-gae": "^0.2.4"
+    "grunt-gae": "^0.2.4",
+    "webpack-bundle-tracker": "^0.2.0"
   },
   "dependencies": {
+    "grint-gae": "0.2.x",
     "grunt": "0.4.x",
     "grunt-autoprefixer": "0.2.x",
     "grunt-cli": "~0.1.13",
@@ -18,9 +24,13 @@
     "grunt-preprocess": "^4.0.0",
     "grunt-rename": "^0.1.3",
     "grunt-shell": "0.3.x",
-    "grint-gae":"0.2.x"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "webpack": "^3.5.1"
   },
   "scripts": {
+    "bundle": "webpack --config webpack.config.js",
+    "prestart": "npm run bundle",
     "start": "grunt local"
   }
 }

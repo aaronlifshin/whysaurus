@@ -2,17 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-function Byline(){
-  return <span>@fixme and N others</span>
+function Byline(props){
+  return <span><a href={props.point.creatorURL}>@{props.point.creatorName}</a> and {props.point.numUsersContributed} others</span>
 }
 
-function CommentCount(){
-  return <span>[]3</span>
+function CommentCount(props){
+  return <span><i className="fa fa-comment-o"></i>{props.point.numComments}</span>
 }
 
-function SupportingCount(){
-  return <span>^4</span>
-  
+function ShareIcon(props){
+  return <i className="fa fa-share-alt"></i>
+}
+
+function SupportingCount(props){
+  return <span><i className="fa fa-level-up"></i>{props.point.supportedCount}</span>
 }
 
 function Point(props){
@@ -20,10 +23,13 @@ function Point(props){
   return <span>{props.point.title}<b>{score > 0 && "+"}{score}</b></span>
 }
 
-function EvidenceLink(){
-  return <span>See Evidence</span>
+function EvidenceLink(props){
+  if (props.point.numSupporting > 0 || props.point.numCounter > 0) {
+    return <span>See Evidence</span>
+  } else {
+    return <span>No Evidence</span>
+  }
 }
-
 
 class AgreeDisagree extends React.Component {
   constructor(props) {
@@ -43,8 +49,8 @@ class AgreeDisagree extends React.Component {
 
   render(){
     return <span>
-      <button onClick={this.handleClickAgree}>Agree</button>
-      <button onClick={this.handleClickDisagree}>Disagree</button>
+      <a onClick={this.handleClickAgree}>Agree</a>
+      <a onClick={this.handleClickDisagree}>Disagree</a>
     </span>
     }
 
@@ -62,6 +68,7 @@ function PointCard(props){
         <div className="span9">
           <Byline point={point}/>
           <CommentCount point={point}/>
+          <ShareIcon point={point}/>
           <SupportingCount point={point}/>
         </div>
       </div>
@@ -95,7 +102,27 @@ class PointList extends React.Component {
         downVotes: 6,
         sources: [],
         supportingPoints: [],
-        counterPoints: []
+        counterPoints: [],
+	      creatorName: "Trav",
+        creatorURL: "http://trav.com",
+        numUsersContributed: 3,
+        numComments: 4
+      },
+      {
+        key: 2,
+        title: "Bacon is the greatest",
+        numSupporting: 0,
+        numCounter: 0,
+        upVotes: 450,
+        downVotes: 30,
+        sources: [],
+        supportingPoints: [],
+        counterPoints: [],
+        creatorName: "Bakedude",
+        creatorURL: "http://bake.com",
+        numUsersContributed: 2,
+        numComments: 4,
+        numSupported: 2
       }
     ]}
   }

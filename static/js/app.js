@@ -15,51 +15,105 @@ function SupportingCount(){
   
 }
 
-function Point(){
-  return <span>I am the very model of a modern major general - I understand dynamics and my movement is perpetual <b>+42</b></span>
+function Point(props){
+  const score = (props.point.upVotes || 0) - (props.point.downVotes || 0)
+  return <span>{props.point.title}<b>{score > 0 && "+"}{score}</b></span>
 }
 
 function EvidenceLink(){
   return <span>See Evidence</span>
 }
 
-function AgreeDisagree(){
-  return <span>Agree Disagree</span>
+
+class AgreeDisagree extends React.Component {
+  constructor(props) {
+    super(props);
+    // This binding is necessary to make `this` work in the callback
+    this.handleClickAgree = this.handleClickAgree.bind(this);
+    this.handleClickDisagree = this.handleClickDisagree.bind(this);
+  }
+
+  handleClickAgree() {
+    console.log("agree");
+  }
+
+  handleClickDisagree() {
+    console.log("disagree");
+  }
+
+  render(){
+    return <span>
+      <button onClick={this.handleClickAgree}>Agree</button>
+      <button onClick={this.handleClickDisagree}>Disagree</button>
+    </span>
+    }
+
 }
 
 function More(){
   return <span>More</span>
 }
 
-function PointCard(){
+function PointCard(props){
+  const point = props.point
   return <div className="row">
     <div className="span9">
       <div className="row">
         <div className="span9">
-          <Byline/>
-          <CommentCount/>
-          <SupportingCount/>
+          <Byline point={point}/>
+          <CommentCount point={point}/>
+          <SupportingCount point={point}/>
         </div>
       </div>
       <div className="row">
         <div className="span9">
-          <Point/>
+          <Point point={point}/>
         </div>
       </div>
       <div className="row">
         <div className="span9">
-          <EvidenceLink/>
-          <AgreeDisagree/>
-          <More/>
+          <EvidenceLink point={point}/>
+          <AgreeDisagree point={point}/>
+          <More point={point}/>
         </div>
       </div>
     </div>
     <div className="span3">img</div>
   </div>
 }
-const card = <PointCard/>
+
+class PointList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {points: [
+      {
+        key: 1,
+        title: "I am the very model of a modern major general - I understand dynamics and my movement is perpetual",
+        numSupporting: 10,
+        numCounter: 5,
+        upVotes: 48,
+        downVotes: 6,
+        sources: [],
+        supportingPoints: [],
+        counterPoints: []
+      }
+    ]}
+  }
+
+  render(){
+    return <div className="row">
+      <div className="span12">
+      {this.state.points.map((point) =>
+        <PointCard point={point} key={point.key}/>
+      )}
+      </div>
+    </div>
+  }
+}
+
+const cards = <PointList/>
 
 ReactDOM.render(
-  card,
+  cards,
   document.getElementById('root')
 );

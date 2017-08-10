@@ -40,6 +40,13 @@
 			{% endif %}
         </span>
 
+        <span name="pointByline">
+            <span> &#183;  </span><!-- &#183; = small dot -->
+            <a target="_blank" href="../user/{{point.authorURL}}">{{point.creatorOrAuthorName}}</a>
+            {% if point.numUsersContributed > 0 %}
+                <span name="pointBylineOtherUsers"> & {{point.numUsersContributed}} others </span>
+            {% endif %}
+        </span>
 
 		<span class="hiddenAgreeCtrlTillRevealed">
 			<!--{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}

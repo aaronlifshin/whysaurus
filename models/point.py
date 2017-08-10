@@ -129,6 +129,9 @@ class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
     authorName = ndb.StringProperty(indexed=False)
     authorURL = ndb.StringProperty(indexed=False)
+    # creator is the original author - whereas author can be updated with subsequent links
+    creatorURL = ndb.StringProperty(indexed=False)
+    creatorName = ndb.StringProperty(indexed=False)
     content = ndb.TextProperty(indexed=False)
     summaryText = ndb.TextProperty(indexed=False)  # This is Text not String because I do not want it indexed
     title = ndb.StringProperty(indexed=False)
@@ -138,6 +141,7 @@ class Point(ndb.Model):
     
     supportingLinks = ndb.StructuredProperty(Link, repeated=True)    
     counterLinks = ndb.StructuredProperty(Link, repeated=True)    
+    usersContributed = ndb.StringProperty(repeated=True)
         
     sources = ndb.KeyProperty(repeated=True, indexed=False)
     current = ndb.BooleanProperty() # used in filter queries
@@ -179,7 +183,27 @@ class Point(ndb.Model):
         else:
             rat1 = sup/float(sup + cou)
             return math.floor(rat1*100) # Django widthratio requires integers
- 
+
+    @property
+    def numUsersContributed(self):
+        if self.usersContributed is None or len(self.usersContributed) == 0:
+            return None
+        return len(self.usersContributed)
+
+    # Gene: Temporary until we script the creatorName population
+    @property
+    def creatorOrAuthorName(self):
+        if self.creatorName is None or len(self.creatorName) == 0:
+            return self.authorName
+        return self.creatorName
+
+    # Gene: Temporary until we script the creatorName population
+    @property
+    def creatorOrAuthorURL(self):
+        if self.creatorURL is None or len(self.creatorURL) == 0:
+            return self.authorURL
+        return self.creatorURL
+
     @property
     def dateEditedText(self):
         return self.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')
@@ -327,6 +351,8 @@ class Point(ndb.Model):
             summaryText) != 250) else summaryText + '...'
         point.authorName = user.name
         point.authorURL = user.url
+        point.creatorName = user.name
+        point.creatorURL = user.url
         point.version = 1
         point.current = True
         point.upVotes = 0
@@ -427,6 +453,8 @@ class Point(ndb.Model):
             point.current = True
             point.authorName = user.name
             point.authorURL = user.url
+            point.creatorName = user.name
+            point.creatorURL = user.url
             point.put()
             user.addVote(point, voteValue=1, updatePoint=False)
             user.recordCreatedPoint(pointRoot.key)
@@ -627,7 +655,15 @@ class Point(ndb.Model):
             )
             linkCurrentVersion._linkInfo = newLink
             links = links + [newLink] if links else [newLink]      
-            sortArrayByRating(links)                  
+            sortArrayByRating(links)
+
+            # Gene: Really, this needs to operate with the user that adds the link no?
+            # (But right now that's updated as author already - if we change that we'll need to pass it.)
+            root_user = linkCurrentVersion.authorURL
+            if root_user:
+                logging.info('Adding contributing user: %s' % root_user)
+                self.addContributingUser(root_user)
+                self.put()
             self.setStructuredLinkCollection(linkType, links)
 
     def removeLink(self, linkRoot, linkType):
@@ -853,7 +889,19 @@ class Point(ndb.Model):
             return newPoint
         else:
             return None
-    
+
+    def addContributingUser(self, userUrlContributed):
+        if not userUrlContributed or userUrlContributed == self.authorURL:
+            return
+
+        # Gene: Incrementally building for now - should switch to an error state once populated
+        if self.usersContributed is None:
+            self.usersContributed = []
+
+        if userUrlContributed not in self.usersContributed:
+            self.usersContributed = self.usersContributed + [userUrlContributed]
+            self.put()
+
     def getSources(self):
         if len(self.sources) > 0:
             sources = ndb.get_multi(self.sources)
@@ -1343,6 +1391,12 @@ class PointRoot(ndb.Model):
         else:
             self.comments = [comment.key]
         self.put()
+
+        cur = self.current.get()
+        if cur:
+            root_user = comment.userUrl
+            if root_user:
+                cur.addContributingUser(root_user)
         
     # shift this comment and all its childern into the archived array
     # return the number of comments archived

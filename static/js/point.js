@@ -961,7 +961,7 @@ function setPointCreator() {
 		data: { 'pointURL': pointURL },
     	success: function(obj) {
     			if (obj.result == true) {                    
-                    $('#pointCreator').html('Begun by: <a target="_blank" href="../user/'+ obj.creatorURL +'">'+ obj.creatorName +'</a>, ');
+                    $('#pointCreator').html('Begun by: <a target="_blank" href="../user/'+ obj.creatorURL +'">'+ obj.creatorName +'</a> ');
 
                     /* Code for listing number of contributors
                     if (obj.numAuthors > 1) { 
@@ -1006,7 +1006,7 @@ function activatePointArea() {
 
         setUpMenuAreas();
         
-        setPointCreator();
+        //setPointCreator();
         
         $('#showAddComment').click(function() {
             tinyMCE.execCommand('mceRemoveControl', false, 'commentText');

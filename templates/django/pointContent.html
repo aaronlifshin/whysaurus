@@ -44,11 +44,17 @@
 			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
 	          {% include 'sources.html' %}
               <div id="timestampAndEditLink" >			  
-                <div class="mainPointLastEdited">
-                    <!--<span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br>-->
-                    <span id="pointCreator" class="contributor"></span><!-- creator inserted via javascript, for now -->
-                    <!--<br>Last Edited {{point.PSTdateEdited}} -->
-                    <a id="viewPointHistory">View History</a>
+                    <div class="mainPointLastEdited">
+                        <!--<span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br>-->
+                        <span id="pointCreator" class="contributor">
+                            Begun by: <a target="_blank" href="../user/{{point.creatorOrAuthorURL}}">{{point.creatorOrAuthorName}}</a>
+                        </span><!-- creator inserted via javascript, for now -->
+                        {% if point.numUsersContributed > 0 %}
+                            <span id="otherUsers"> & {{point.numUsersContributed}} others </span>
+                        {% endif %}
+                        <!--<br>Last Edited {{point.PSTdateEdited}} -->
+                        <span> &#183;  </span><!-- &#183; = small dot -->
+                        <a id="viewPointHistory">View History</a>
                 </div>
               </div>
 	          <!-- Hacky way to get imageurl into the edit dialog. :/ -->

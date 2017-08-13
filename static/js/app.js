@@ -102,7 +102,7 @@ class PointCard extends React.Component {
 
   render(){
     const point = this.state.point
-    return <div className="row">
+    return <div className="row-fluid" style={{border: '1px gray solid'}}>
       <div className="span9">
         <div className="row">
           <div className="span9">
@@ -139,8 +139,50 @@ const dummyPoints = [
     upVotes: 48,
     downVotes: 6,
     sources: [],
-    supportingPoints: [],
-    counterPoints: [],
+    supportingPoints: [{
+      key: 3,
+      title: "I am in fact a general",
+      numSupporting: 1,
+      numCounter: 1,
+      upVotes: 14,
+      downVotes: 3,
+      sources: [],
+      supportingPoints: [],
+      counterPoints: [{
+        key: 5,
+        title: "I do general stuff",
+        numSupporting: 0,
+        numCounter: 0,
+        upVotes: 14,
+        downVotes: 3,
+        sources: [],
+        supportingPoints: [],
+        counterPoints: [],
+        creatorName: "Trav",
+        creatorURL: "http://trav.com",
+        numUsersContributed: 12,
+        numComments: 2
+      }],
+      creatorName: "Trav",
+      creatorURL: "http://trav.com",
+      numUsersContributed: 12,
+      numComments: 2
+    }],
+    counterPoints: [{
+      key: 4,
+      title: "You aren't a great model",
+      numSupporting: 0,
+      numCounter: 0,
+      upVotes: 40,
+      downVotes: 100,
+      sources: [],
+      supportingPoints: [],
+      counterPoints: [],
+      creatorName: "Trav",
+      creatorURL: "http://trav.com",
+      numUsersContributed: 1,
+      numComments: 1
+    }],
     creatorName: "Trav",
     creatorURL: "http://trav.com",
     numUsersContributed: 3,
@@ -169,10 +211,15 @@ class PointList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {points: dummyPoints, expandedIndex: {}}
+    this.isPointExpanded = this.isPointExpanded.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.renderPointCard = this.renderPointCard.bind(this);
+    this.renderPointRow = this.renderPointRow.bind(this);
+  }
 
+  isPointExpanded(point) {
+    return this.state.expandedIndex[point.key]
   }
 
   handleSeeEvidence(point) {
@@ -189,16 +236,66 @@ class PointList extends React.Component {
     console.log("hide evidence for ", point.key)
   }
 
-  renderPointCard(point) {
-    return <PointCard point={point} key={point.key} 
-                      handleSeeEvidence={this.handleSeeEvidence} handleHideEvidence={this.handleHideEvidence}
-                      expanded={this.state.expandedIndex[point.key]}/>
+  renderPointCard(point, index, offset = 0) {
+    let classes = "span5" //+ (offset > 0 ? ` offset${offset * 0.25}` : "")
+    if (point) {
+      return <div className={classes} key={point.key}>
+        <PointCard point={point}
+                   handleSeeEvidence={this.handleSeeEvidence} handleHideEvidence={this.handleHideEvidence}
+                   expanded={this.state.expandedIndex[point.key]}/>
+    </div>
+    } else {
+      return <div className={classes} key={index}></div>
+    }
+  }
+
+  renderPointRow(row, rowIndex) {
+    return <div className="row-fluid" key={rowIndex} style={{marginLeft: `${row.depth}em`}}>
+      {this.renderPointCard(row.points[0], 0, row.depth)}
+      {row.points.slice(1).map(this.renderPointCard)}
+    </div>
+  }
+
+  * zipEvidence(supportingPoints, counterPoints) {
+    // zip together the lists leaving nils in place when the lists are different lengths  
+    let l = Math.max(supportingPoints.length, counterPoints.length)
+    for (var i = 0; i < l; i++) {
+      yield [supportingPoints[i], counterPoints[i]]
+    }
+  }
+
+  // pointsRows takes a list of points that should appear in the same row and
+  // returns a list of row rendering objects containing the given points and
+  // their expanded subpoints.
+  // Each row rendering object contains depth context information and a list of
+  // points that should be rendered in the same row.
+  * pointsRows(rowCoresidentPoints, depth = 0) {
+    yield {depth: depth, points: rowCoresidentPoints}
+    for (let point of rowCoresidentPoints) {
+      if (point && this.isPointExpanded(point)) {
+        for (let points of this.zipEvidence(point.supportingPoints, point.counterPoints)){
+          for (let row of this.pointsRows(points, depth + 1)) {
+            yield row
+          }
+        }
+      }
+    }
+  }
+
+  // return row rendering objects containing lists of Points and depth context information
+  // each row will become a row in the grid system
+  * pointsByRowAndColumn() {
+    for (let row of this.pointsRows([this.state.points[0]])){
+      yield row
+    }
+    yield {points: [this.state.points[1]]}
   }
 
   render(){
     return <div className="row">
       <div className="span12">
-      {this.state.points.map(this.renderPointCard)}
+
+      {[...this.pointsByRowAndColumn()].map(this.renderPointRow)}
       </div>
     </div>
   }

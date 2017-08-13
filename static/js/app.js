@@ -235,6 +235,7 @@ class PointList extends React.Component {
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.renderPointCard = this.renderPointCard.bind(this);
     this.renderPointRow = this.renderPointRow.bind(this);
+    this.loadCurrentPagePoint = this.loadCurrentPagePoint.bind(this);
   }
 
   isPointExpanded(point) {
@@ -265,7 +266,7 @@ class PointList extends React.Component {
                    expanded={this.state.expandedIndex[point.key]}/>
     </div>
     } else {
-      return <div className={classes} key={index}></div>
+      return <div className="span5" key={index}></div>
     }
   }
 
@@ -317,12 +318,31 @@ class PointList extends React.Component {
                             point: this.state.points[1]}]}
   }
 
+  loadCurrentPagePoint(e){
+    let pointList = this;
+    console.log("load")
+    let pointurl = "HAm_is_gr8"
+    $.ajax({
+      	url: `/api/point/${pointurl}`,
+      	data: { 'url': pointurl },
+      	success: function(obj) {
+            console.log("success!!")
+            console.log(obj)
+            pointList.setState({points: [obj]})
+      	},
+      	error: function(data) {
+          console.log("error!!!!")
+      	},
+      });
+  }
+
   render(){
     return <div className="row">
       <div className="span12">
 
       {[...this.pointsByRowAndColumn()].map(this.renderPointRow)}
       </div>
+      <button onClick={this.loadCurrentPagePoint}>Load current page point data</button>
     </div>
   }
 }

@@ -172,4 +172,27 @@ class PointCard(AuthHandler):
     def get(self, pointURL):        
         template_values = self.createTemplateValues(pointURL) 
         self.outputTemplateValues(template_values)
-           
+
+    def apiPointGET(self, pointURL):
+        resultJSON = json.dumps({'result': False})
+        point, pointRoot = Point.getCurrentByUrl(pointURL)
+        resultJSON = json.dumps(
+{
+'title': point.title,
+'numSupporting': point.numSupporting,
+'numCounter': point.numCounter,
+'upVotes': point.upVotes,
+'downVotes': point.downVotes,
+'sources': [],
+'supportingPoints': [],
+'counterPoints': [],
+'creatorName': "Bakedude",
+'creatorURL': "http://bake.com",
+'numUsersContributed': 42,
+'numComments': 42,
+'numSupported': 42,
+'imageURL': point.imageURL
+})
+
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
+        self.response.out.write(resultJSON)

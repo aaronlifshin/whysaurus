@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const EvidenceType = Object.freeze({
+    ROOT: Symbol("root"),
+    SUPPORT:  Symbol("support"),
+    OPPOSE: Symbol("oppose")
+});
 
 function Byline(props){
   return <span><a href={props.point.creatorURL}>@{props.point.creatorName}</a> and {props.point.numUsersContributed} others</span>
@@ -100,25 +105,39 @@ class PointCard extends React.Component {
     this.props.handleHideEvidence && this.props.handleHideEvidence(this.props.point)
   }
 
+  evidenceTypeClass() {
+    switch (this.props.evidenceType){
+      case EvidenceType.ROOT:
+        return "root"
+      case EvidenceType.SUPPORT:
+        return "support"
+      case EvidenceType.OPPOSE:
+        return "oppose"
+      default:
+        return ""
+    }
+  }
+
   render(){
     const point = this.state.point
-    return <div className="row-fluid" style={{border: '1px gray solid'}}>
+    let classes = `point-card row-fluid ${this.evidenceTypeClass()}`
+    return <div className={classes}>
       <div className="span9">
-        <div className="row">
-          <div className="span9">
+        <div className="row-fluid">
+          <div className="span12">
             <Byline point={point}/>
             <CommentCount point={point}/>
             <ShareIcon point={point}/>
             <SupportingCount point={point}/>
           </div>
         </div>
-        <div className="row">
-          <div className="span9">
+        <div className="row-fluid">
+          <div className="span12">
             <Point point={point}/>
           </div>
         </div>
-        <div className="row">
-          <div className="span9">
+        <div className="row-fluid">
+          <div className="span12">
             <EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.props.expanded}/>
             <AgreeDisagree point={point}/>
             <More point={point}/>
@@ -134,8 +153,8 @@ const dummyPoints = [
   {
     key: 1,
     title: "I am the very model of a modern major general - I understand dynamics and my movement is perpetual",
-    numSupporting: 10,
-    numCounter: 5,
+    numSupporting: 1,
+    numCounter: 0,
     upVotes: 48,
     downVotes: 6,
     sources: [],
@@ -236,11 +255,12 @@ class PointList extends React.Component {
     console.log("hide evidence for ", point.key)
   }
 
-  renderPointCard(point, index, offset = 0) {
-    let classes = "span5" //+ (offset > 0 ? ` offset${offset * 0.25}` : "")
+  renderPointCard(pointContext, index) {
+    let point = pointContext.point
     if (point) {
-      return <div className={classes} key={point.key}>
+      return <div className="span5" key={point.key}>
         <PointCard point={point}
+                   evidenceType={pointContext.evidenceType}
                    handleSeeEvidence={this.handleSeeEvidence} handleHideEvidence={this.handleHideEvidence}
                    expanded={this.state.expandedIndex[point.key]}/>
     </div>
@@ -251,8 +271,8 @@ class PointList extends React.Component {
 
   renderPointRow(row, rowIndex) {
     return <div className="row-fluid" key={rowIndex} style={{marginLeft: `${row.depth}em`}}>
-      {this.renderPointCard(row.points[0], 0, row.depth)}
-      {row.points.slice(1).map(this.renderPointCard)}
+      {this.renderPointCard(row.pointContexts[0], 0)}
+      {row.pointContexts.slice(1).map(this.renderPointCard)}
     </div>
   }
 
@@ -260,21 +280,25 @@ class PointList extends React.Component {
     // zip together the lists leaving nils in place when the lists are different lengths  
     let l = Math.max(supportingPoints.length, counterPoints.length)
     for (var i = 0; i < l; i++) {
-      yield [supportingPoints[i], counterPoints[i]]
+      yield [{evidenceType: EvidenceType.SUPPORT, point: supportingPoints[i]},
+             {evidenceType: EvidenceType.OPPOSE, point: counterPoints[i]}]
     }
   }
 
-  // pointsRows takes a list of points that should appear in the same row and
-  // returns a list of row rendering objects containing the given points and
+  // pointsRows takes a list of point contexts that should appear in the same row and
+  // returns a list of row rendering objects containing the given point contexts and
   // their expanded subpoints.
   // Each row rendering object contains depth context information and a list of
   // points that should be rendered in the same row.
-  * pointsRows(rowCoresidentPoints, depth = 0) {
-    yield {depth: depth, points: rowCoresidentPoints}
-    for (let point of rowCoresidentPoints) {
+  // Each point context contains the point and information like whether it appears in a
+  // supporting or opposing list
+  * pointsRows(rowCoresidentPointContexts, depth = 0) {
+    yield {depth: depth, pointContexts: rowCoresidentPointContexts}
+    for (let pointContext of rowCoresidentPointContexts) {
+      let point = pointContext.point
       if (point && this.isPointExpanded(point)) {
-        for (let points of this.zipEvidence(point.supportingPoints, point.counterPoints)){
-          for (let row of this.pointsRows(points, depth + 1)) {
+        for (let pointContexts of this.zipEvidence(point.supportingPoints, point.counterPoints)){
+          for (let row of this.pointsRows(pointContexts, depth + 1)) {
             yield row
           }
         }
@@ -285,10 +309,12 @@ class PointList extends React.Component {
   // return row rendering objects containing lists of Points and depth context information
   // each row will become a row in the grid system
   * pointsByRowAndColumn() {
-    for (let row of this.pointsRows([this.state.points[0]])){
+    for (let row of this.pointsRows([{evidenceType: EvidenceType.ROOT,
+                                      point: this.state.points[0]}])){
       yield row
     }
-    yield {points: [this.state.points[1]]}
+    yield {pointContexts: [{evidenceType: EvidenceType.ROOT,
+                            point: this.state.points[1]}]}
   }
 
   render(){

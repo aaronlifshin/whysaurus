@@ -19,3 +19,11 @@ The prototype uses https://facebook.github.io/react/ to build a fast, clean, rec
 # Developing
 
 1. While developing, you should use `npm run webpack-watch` to run webpack automatically when source code changes.
+
+# FAQ
+
+**Q:** I made changes in app.js that aren't showing up in the browser
+**A:** Verify webpack is running - if there isn't already a terminal running `npm run webpack-watch` in the root directory of this project, go run that.
+
+**Q:** I made changes in the CSS that aren't showing up in the browser
+**A:** Go run `bin/compilelessc.sh` *[ed: I don't think we have a standard way of running this in an auto-compile way, but webpack might already be able to compile LESS so we should investigate that and eliminate this problem entirely]*

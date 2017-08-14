@@ -30,6 +30,7 @@
   },
   "scripts": {
     "bundle": "webpack --config webpack.config.js",
+    "webpack-watch": "webpack --config webpack.config.js --progress --colors --watch",
     "prestart": "npm run bundle",
     "start": "grunt local"
   }

@@ -247,6 +247,15 @@ class PointList extends React.Component {
     i[point.key] = true
     this.setState({expandedIndex: i})
     console.log("see evidence for ", point.key)
+    let pointList = this
+    this.loadPoint({url: point.url}, true, function(loadedPoint) {
+        // TODO: the following code relies on the fact that `point` is
+        // literally the same instance of Point that is in pointList.state.points
+        // This is a dangerous assumption! We need proper state management...
+        point.supportingPoints = loadedPoint.supportingPoints
+        point.counterPoints = loadedPoint.counterPoints
+        pointList.setState({points: pointList.state.points})
+    })
   }
 
   handleHideEvidence(point) {
@@ -321,15 +330,17 @@ class PointList extends React.Component {
   loadCurrentPagePoint(e){
     let pointList = this;
     console.log("load")
-    let pointurl = "HAm_is_gr8"
+    // TODO: templateData is a global - that should change!
+    this.loadPoint({url: templateData.url}, false, function(point) {
+        pointList.setState({points: [point]})
+    })
+  }
+
+  loadPoint(point, loadEvidence, onSuccess){
     $.ajax({
-      	url: `/api/point/${pointurl}`,
-      	data: { 'url': pointurl },
-      	success: function(obj) {
-            console.log("success!!")
-            console.log(obj)
-            pointList.setState({points: [obj]})
-      	},
+      	url: `/api/point/${point.url}`,
+      	data: {evidence: loadEvidence},
+      	success: onSuccess,
       	error: function(data) {
           console.log("error!!!!")
       	},
@@ -349,6 +360,7 @@ class PointList extends React.Component {
 
 const cards = <PointList/>
 
+let templateData = document.getElementById('config').dataset
 ReactDOM.render(
   cards,
   document.getElementById('root')

@@ -173,26 +173,42 @@ class PointCard(AuthHandler):
         template_values = self.createTemplateValues(pointURL) 
         self.outputTemplateValues(template_values)
 
-    def apiPointGET(self, pointURL):
-        resultJSON = json.dumps({'result': False})
-        point, pointRoot = Point.getCurrentByUrl(pointURL)
-        resultJSON = json.dumps(
-{
+    def jsonify_evidence(self, points):
+        if points:
+            return [self.pointJSON(p, [], []) for p in points]
+        else:
+            return []
+
+    def pointJSON(self, point, supportingPoints, counterPoints):
+        return {
+'url': point.url,
+'key': point.url,
 'title': point.title,
 'numSupporting': point.numSupporting,
 'numCounter': point.numCounter,
 'upVotes': point.upVotes,
 'downVotes': point.downVotes,
 'sources': [],
-'supportingPoints': [],
-'counterPoints': [],
+'supportingPoints': self.jsonify_evidence(supportingPoints),
+'counterPoints': self.jsonify_evidence(counterPoints),
 'creatorName': "Bakedude",
 'creatorURL': "http://bake.com",
 'numUsersContributed': 42,
 'numComments': 42,
 'numSupported': 42,
 'imageURL': point.imageURL
-})
+}
+
+    @ndb.toplevel
+    def apiPointGET(self, pointURL):
+        resultJSON = json.dumps({'result': False})
+        point, pointRoot = yield Point.findCurrent_async(pointURL)
+        if self.request.get("evidence") == "true":
+            supportingPoints, counterPoints = yield point.getLinkedPoints_async("supporting", None), \
+                point.getLinkedPoints_async("counter", None)
+        else:
+            supportingPoints, counterPoints = [], []
+        resultJSON = json.dumps(self.pointJSON(point, supportingPoints, counterPoints))
 
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

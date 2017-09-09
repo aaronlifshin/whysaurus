@@ -10,7 +10,7 @@ class ContactSend(AuthHandler):
     def post(self):
         mail.send_mail(
             sender='aaron@whysaurus.com',
-            to='aaronlifshin@gmail.com',
+            to='community@whysaurus.com',
             subject='WHYSAURUS CONTACT RE: ' + self.request.get('subject'),
             body='From: ' + self.request.get('name') + '\n' + self.request.get('message'),
             reply_to=self.request.get('email')

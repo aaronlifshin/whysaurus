@@ -1,19 +1,13 @@
-<div class="pointCard {% if point.belowRelevanceThreshold %} belowThreshold{% endif %}" data-pointurl='{{point.url}}'>
+<div class="pointCard toggleChildVisOnHover {% if point.belowRelevanceThreshold %} belowThreshold{% endif %}" data-pointurl='{{point.url}}'>
    <div class="row-fluid">
-       <!-- an experiment
-       <div class="pointStrength">
-          Strength: <span name="voteTotalArea"><img class="iconAgreesSmall" src="/static/img/agreesIconSmall_blue.png"/><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}</span></span>
-       </div>
-       -->
        <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %} {% if point.imageURL and point.imageURL.strip %}responsivePointBoxTitleWithImage{% endif %}">
           <div class="pointTitle">
               <a href="/point/{{ point.url }}" style="text-decoration:none">                  
-                  {{ point.title|escape }}
-              </a>
-              <span class="hiddenAgreeCtrlTillRevealed">
-                <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin">Agree</div>
-                <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}">Disagree</div>
-              </span>
+                  <span>{{ point.title|escape }}</span>
+              <span class="ux2ScoreInLine">
+				<span id="ux2ScoreInLinePlus" class="{% if point.voteTotal < 1 %}hidden{% endif %}">+</span><span name="voteTotalArea" class="{% if point.voteTotal < 0 %}redScore{% endif %}"><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}</span></span>
+			  </span>
+			  </a>
           </div>
        </div>     
     {% if point.imageURL and point.imageURL.strip %}                        
@@ -24,14 +18,40 @@
    </div>
   
       <div class="pointBoxActions pointBoxStatLine row-fluid" name="pointBoxActionLine">
-         <!-- old
-        {% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
-            <div class="pointBoxActions seeEvidence"><a href="/point/{{ point.url }}">See Evidence</a></div>  
-        {% else %} 
-            <div class="pointBoxActions needsEvidence"><a href="/point/{{ point.url }}">No Evidence - Add some</a></div>
-        {% endif %}
-        -->              
-        	
+	
+        <span class="stat">
+			{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
+				<!--<span><a class="pointBoxActions seeEvidence" href="/point/{{ point.url }}">See Evidence</a></span>  -->
+				{% if point.numSupporting > 0 %}
+					<img class="arrowIcon" src="/static/img/arrowBent_small_black.png"/>
+				{% endif %}
+				{% if point.numCounter > 0 %}
+					<img class="arrowIcon" src="/static/img/arrowBent_small_red.png"/>
+				{% endif %}
+				{% if point.sources|length > 0 %}
+					<span class="stat showStatOnHover">
+					<img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><!--{{ point.sources|length }}-->
+					</span>
+				{% endif %}
+			{% else %} 
+				<!--<span ><a class="pointBoxActions needsEvidence " href="/point/{{ point.url }}">No Evidence, add some</a></span>-->
+				<span ><a class="pointBoxActions needsEvidence" href="/point/{{ point.url }}"><span class="shownStatTillHidden">No </span><span class="hiddenStatTillRevealed">Add </span>Evidence</a></span>
+				
+			{% endif %}
+        </span>
+
+
+		<span class="hiddenAgreeCtrlTillRevealed">
+			<!--{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
+				<span ><a class="pointBoxActions" href="/point/{{ point.url }}">See Evidence</a></span>
+			{% endif %}-->
+			<span> &#183;  </span><!-- &#183; = small dot -->
+            <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin">Agree</div>
+            <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}"> Disagree</div>
+        </span>  
+
+
+        <!-- arrow icons old	
         <span class="stat showStatOnHover">
             <img class="arrowIcon" src="/static/img/arrowBent_small_black.png"/><span>{{ point.numSupporting }}</span><span class="hiddenStatTillRevealed"> Supporting Point{% if point.numSupporting != 1 %}s{% endif %}</span>
         </span>		
@@ -39,17 +59,13 @@
         <span class="stat showStatOnHover">
             <img class="arrowIcon" src="/static/img/arrowBent_small_red.png"/><span>{{ point.numCounter }}</span><span class="hiddenStatTillRevealed"> Counter Point{% if point.numCounter != 1 %}s{% endif %}</span>
         </span>
+		--> 
         
+		<!-- Old: handshake icon with score
         <span name="voteTotalArea" class="stat showStatOnHover {% if point.voteTotal == 0 %}hiddenForNow{% endif %} {% if point.voteTotal < 0 %}redScore{% endif %}  ">
             <img class="iconAgreesSmall" src="/static/img/agreesIconSmall_{% if point.voteTotal >= 0 %}grey{% else %}red{% endif %}.png"/><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}<span class="hiddenStatTillRevealed" name="netagreestext"> Net Agrees</span></span>
-        </span>       
- 		  
-        {% if point.sources|length > 0 %}
-		<span class="stat showStatOnHover">
-            <img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/>              
-            {{ point.sources|length }}<span class="hiddenStatTillRevealed"> Source{% if point.sources|length != 1 %}s{% endif %}</span>
         </span>
-        {% endif %} 
+		-->
 		
       </div>           
 </div>

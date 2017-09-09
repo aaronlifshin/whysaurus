@@ -225,7 +225,7 @@ class WhysaurusUser(auth_models.User):
         verification_url = handler.uri_for('verification', type='v', user_id=user_id,
                                            signup_token=token, _full=True)
 
-        mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
+        mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
             to=email,
             subject='Whysaurus Email Verification',
             body="Thank you for %s. \n\
@@ -235,7 +235,7 @@ class WhysaurusUser(auth_models.User):
                 Please verify your email address by clicking on \
                 <a href=\"%s\">this link</a>.<br><br>Aaron Lifshin <br> \
                 CTO" % (reason, verification_url),                
-            reply_to="aaron@whysaurus.com"
+            reply_to="community@whysaurus.com"
         )            
         logging.info('Sending verification email for %s. Email: %s. Verification URL was: %s' % \
             (reason, email, verification_url))
@@ -698,12 +698,12 @@ class WhysaurusUser(auth_models.User):
                         {'user':user, 'pointTitles':points}
                     )
                                   
-                    mail.send_mail(sender='Whysaurus Admin <aaron@whysaurus.com>',
+                    mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
                         to = user.email,
                         subject= user.name + ', People are reacting to your views on Whysaurus!',
                         body = text, 
                         html = html,                
-                        reply_to="aaron@whysaurus.com"
+                        reply_to="community@whysaurus.com"
                     )
 
                     logging.info('Sent mail to user %s' % user.name)

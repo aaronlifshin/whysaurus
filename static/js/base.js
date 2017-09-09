@@ -417,13 +417,15 @@ function votePointCard(elem, voteType) {
     var pointURL = pointCard.data('pointurl');  
     var oldVoteObj = $('[name=voteTotal]', pointCard);
     var oldVote = oldVoteObj.data('myvote');
+	//console.log("votePointCard oldVote "+ oldVote);
     var newVote = null;
     if (voteType == "up") {
         newVote = oldVote == 1 ? 0 : 1;    
     } else if (voteType == "down") {
         newVote = oldVote == -1 ? 0 : -1;    
     }
-    
+	//console.log("votePointCard newVote "+ newVote);    
+
     _gaq.push(['_trackEvent', 'Vote', 'MainPage ' + voteType, pointURL, newVote]);
     
     $.ajaxSetup({
@@ -442,34 +444,40 @@ function votePointCard(elem, voteType) {
                     $('[name=UpVote]', pointCard), 
                     $('[name=DownVote]', pointCard)
                 );
+				console.log("votePointCard voteTotal "+ voteTotal);  
                 if (voteTotal < 0) {
-                    $('[name=voteTotalArea]', pointCard).show();                    
-                    $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                
+                    //$('[name=voteTotalArea]', pointCard).show();                    
+                    //$('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                
                     $('[name=voteTotalArea]', pointCard).addClass('redScore');
-                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_red.png');
+					$('[id=ux2ScoreInLinePlus]', pointCard).addClass('hidden');
+                    //$('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_red.png');
                     // I'm not sure why this code is necessary: for some reason this span isn't being added when vote goes from zero to non-zero - JF                    
-                    if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {
-                        $('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
-                    }
+                    //if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {
+                       // $('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
+                    //}
                 } else if (voteTotal == 0) {                   
                     $('[name=voteTotalArea]', pointCard).removeClass('redScore');
-                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   
+					$('[id=ux2ScoreInLinePlus]', pointCard).addClass('hidden');
+                    //$('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');                   
                 } else {
-                    $('[name=voteTotalArea]', pointCard).show();                
-                    $('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                 
+                    //$('[name=voteTotalArea]', pointCard).show();                
+                    //$('[name=voteTotalArea]', pointCard).removeClass('fadeStatsWhenZero');                 
                     $('[name=voteTotalArea]', pointCard).removeClass('redScore'); 
-                    $('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');
+					$('[id=ux2ScoreInLinePlus]', pointCard).removeClass('hidden');
+                    //$('[name=voteTotalArea]', pointCard).children('img').attr('src', '/static/img/agreesIconSmall_grey.png');
                     // I'm not sure why this code is necessary: for some reason this span isn't being added when vote goes from zero to non-zero - JF
-                    if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {                 
-                        $('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
-                    }
+                    //if ( ! ( $('[name=netagreestext]', pointCard) in $('[name=voteTotalArea]', pointCard).children() ) ) {                 
+                        //$('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
+                    //}
                 }
+				console.log("votePointCard done\n");
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
             }
         }
     });
     $.ajax();
+	
 }
 
 
@@ -485,7 +493,11 @@ function voteToggle(turnOn, voteLabel, classWhenOn) {
 
 function updateVoteTotal(newVote, voteTotalObj, upVote, downVote) {
     var voteTotal = parseInt(voteTotalObj.text());
+	//console.log("updateVoteTotal voteTotalObj.text() "+ voteTotalObj.text());
+	//console.log("updateVoteTotal voteTotalObj.data('myvote') "+ voteTotalObj.data('myvote'));
+	//console.log("updateVoteTotal voteTotal "+ voteTotal);
     myVote = voteTotalObj.data('myvote');
+
     var newVoteTotal = voteTotal;
     
     if (myVote == 0 && newVote == 1) {// UPVOTE
@@ -515,6 +527,7 @@ function updateVoteTotal(newVote, voteTotalObj, upVote, downVote) {
         voteToggle(false, upVote, "greenVote");
         voteToggle(true, downVote, "redVote");
     }
+	//console.log("updateVoteTotal newVoteTotal "+ newVoteTotal);
     voteTotalObj.data('myvote', newVote);
     return newVoteTotal;
 }

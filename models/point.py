@@ -154,7 +154,6 @@ class Point(ndb.Model):
     def numCounter(self):
         return len(self.counterLinks) if self.counterLinks else 0
 
-    @property
     def pointValue(self):
         """
         Scalar [0-100ish] property that weighs how 'good' the point is,
@@ -515,7 +514,7 @@ class Point(ndb.Model):
         return self.getLinkedPointsForLinks(linkColl)
 
 
-    def getLinkedPointsForLinks(self, linkColl)
+    def getLinkedPointsForLinks(self, linkColl):
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl if link.root]
             roots = ndb.get_multi(rootKeys)
@@ -632,8 +631,7 @@ class Point(ndb.Model):
             )
             linkCurrentVersion._linkInfo = newLink
             links = links + [newLink] if links else [newLink]      
-            links = self.sortLinks(links)
-            self.setStructuredLinkCollection(linkType, links)
+            links = self.sortLinks(linkType, links)
 
     def getChildrenPointRating(self):
         """
@@ -656,27 +654,51 @@ class Point(ndb.Model):
         """
         supportingPoints = self.getLinkedPoints('supporting', None) or []
         counterPoints = self.getLinkedPoints('counter', None) or []
-        return int(round((sum([((sp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating() / 100.0)
+        return int(round((sum([((sp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating / 100.0)
                                for sp in supportingPoints
                                if sp.upVotes >= sp.downVotes])
-                          - abs(sum([((cp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating() / 100.0)
+                          - abs(sum([((cp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating / 100.0)
                                      for cp in counterPoints
                                      if cp.upVotes >= cp.downVotes])))))
 
-    def sortLinks(self, links):
+    def sortLinks(self, linkType=None, linksSeed=None):
         """
         Sorts links for supporting/counter link columns base on:
         * relevance -- anything less relevant should be lower. Even with high agrees
           the same people that clicked "agree" may have also voted it less relevant
         * Link's pointValue based on agrees and robustness
+
+        With no arguments, it sorts both sides with the same list
         """
-        linkPoints = self.getLinkedPointsForLinks(links)
-        # will sort on first item in tuple, then second...
-        # adding lp._linkInfo at the end so it can be returned
-        sortingList = sorted([(lp._linkInfo.rating(), lp.pointValue(), lp._linkInfo)
-                              for lp in linkPoints],
-                             reverse=True)
-        return [p[2] for p in sortingList]
+        sortedLinks = None
+        linkTypes = [linkType]
+        if linkType is None:
+            linkTypes = ["counter", "supporting"]
+            linksSeed = None
+        for linkType in linkTypes:
+            links = linksSeed or self.getStructuredLinkCollection(linkType)
+            linkPoints = self.getLinkedPointsForLinks(links)
+            # will sort on first item in tuple, then second...
+            # adding lp._linkInfo at the end so it can be returned
+            sortingList = sorted([(lp._linkInfo.rating, lp.pointValue(), lp._linkInfo)
+                                  for lp in linkPoints],
+                                 reverse=True)
+            sortedLinks = [p[2] for p in sortingList]
+            self.setStructuredLinkCollection(linkType, sortedLinks)
+        return sortedLinks
+
+    @ndb.tasklet
+    def updateBacklinkedSorts(self, pointRoot, recurseUp=True):
+        linkTypes = ["counter", "supporting"]
+        for linkType in linkTypes:
+            pointsAndRoots = pointRoot.getBacklinkPointRootPairs(linkType)
+            for point,root in pointsAndRoots:
+                point.sortLinks(linkType)
+                point.put()
+                if recurseUp:
+                    # only go up one level, because further *sorting* is unaffected
+                    # WARNING: if we DO recurse up, then must watch out for cycles!!
+                    point.updateBacklinkedSorts(root, recurseUp=False)
 
     def removeLink(self, linkRoot, linkType):
         links = self.getStructuredLinkCollection(linkType)
@@ -989,7 +1011,7 @@ class Point(ndb.Model):
                     break
             if ourLink:
                 ourLink.updateRelevanceData(oldRelVote, newRelVote) 
-                sortArrayByRating(links) # FIXME? this doesn't seem to do anything
+                self.sortLinks(newRelVote.linkType, links)
                 self.put()
                 retVal = True, ourLink.rating, ourLink.voteCount
         return retVal        
@@ -1001,7 +1023,7 @@ class Point(ndb.Model):
         
         addedRoots = 0
         for linkType in ["supporting", "counter"]:
-            links = self.getStructuredLinkCollection(linkType)            
+            links = self.getStructuredLinkCollection(linkType)
             if links:
                 for link in links:
                     # Every linked point in the link array of a current point 
@@ -1071,8 +1093,8 @@ class PointRoot(ndb.Model):
         else:
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
         
-    
-    def getBacklinkPoints(self, linkType):
+
+    def getBacklinkPointRootPairs(self, linkType):
         backlinkRootKeys, backlinksArchiveKeys = self.getBacklinkCollections(linkType)
         backlinkRoots = ndb.get_multi(backlinkRootKeys)
         currentKeys = []
@@ -1082,7 +1104,10 @@ class PointRoot(ndb.Model):
             else:
                 logging.error("Bad link detected in Root: %s. " % self.url)                    
         currentPoints = ndb.get_multi(currentKeys)
-        return currentPoints
+        return zip(currentPoints, backlinkRoots)
+
+    def getBacklinkPoints(self, linkType):
+        return [a[0] for a in self.getBacklinkPointRootPairs(linkType)]
     
     # This is used to fix database problems
     def cleanEmptyLinks(self):

@@ -81,11 +81,7 @@ def makeURL(sourceStr):
             newUrl = newUrl + str(redirectURL.numCopies)
             redirectURL.put()        
     return newUrl
-  
-def sortArrayByRating(links):
-    links.sort(key=lambda x: x.sortValue, reverse=True)
-    return links
-    
+
 @ndb.tasklet
 def getCurrent_async(pointRoot):
     if pointRoot:
@@ -104,15 +100,6 @@ class Link(ndb.Model):
     @property
     def rating(self):
         return int(round(self.fRating, 0)) if self.fRating else 0
-        
-    @property
-    def sortValue(self):
-        if self.voteCount == 0:
-            return 50
-        elif self.fRating is None:
-            return 50
-        else:
-            return self.fRating
         
     def updateRelevanceData(self, oldRelVote, newRelVote):
         startingRating = self.fRating if self.fRating else 0
@@ -166,6 +153,19 @@ class Point(ndb.Model):
     @property
     def numCounter(self):
         return len(self.counterLinks) if self.counterLinks else 0
+
+    @property
+    def pointValue(self):
+        """
+        Scalar [0-100ish] property that weighs how 'good' the point is,
+        incorporating:
+        +1 for including a source
+        + having agrees >= disagrees
+        + having sub-arguments weighed in its favor
+        """
+        return (max(1, len(self.sources))
+                + self.upVotes - self.downVotes
+                + self.getChildrenPointRating())
 
     @property
     def linksRatio(self):
@@ -632,32 +632,51 @@ class Point(ndb.Model):
             )
             linkCurrentVersion._linkInfo = newLink
             links = links + [newLink] if links else [newLink]      
-            # links = sortArrayByRating(links) # just by relevance
-            links = self.sortLinksRecursively(links)
+            links = self.sortLinks(links)
             self.setStructuredLinkCollection(linkType, links)
 
-    def getRecursivePointRating(self):
+    def getChildrenPointRating(self):
         """
-        Not actually fully recursive (yet?) but looks one level
-        down to get supporting and counter votes as influence.
-        Bayesian in-spirit.
-        TODO: add (top) Point's relevance score in somehow
+        Looks one level down to get supporting and counter votes
+        as influence.
+
+        We disregard points with disagrees > agrees
+        because stupid people adding bad arguments to the bottom
+        shouldn't count against you.  If you have zero of both,
+        we still give you +1 (times relevance) for that.
+
+        We don't recurse below one level because the relevance
+        of those arguments to the weighting one are uncertain.
+        If arguments for a lower point are relevant to the top
+        level, then they should be marshalled and added directly.
+
+        WARNING: if you are ever tempted to add recursive weighting
+        make sure you exclude cycles (a sub point linking to the same point
+        higher up) to avoid infinite loop calculations
         """
         supportingPoints = self.getLinkedPoints('supporting', None) or []
         counterPoints = self.getLinkedPoints('counter', None) or []
-        return (self.upVotes - self.downVotes
-                + sum([sp.upVotes * sp._linkInfo.fRating
-                       for sp in supportingPoints])
-                - abs(sum([cp.upVotes * cp._linkInfo.fRating
-                           for cp in counterPoints])))
+        return int(round((sum([((sp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating() / 100.0)
+                               for sp in supportingPoints
+                               if sp.upVotes >= sp.downVotes])
+                          - abs(sum([((cp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating() / 100.0)
+                                     for cp in counterPoints
+                                     if cp.upVotes >= cp.downVotes])))))
 
-    def sortLinksRecursively(self, links):
+    def sortLinks(self, links):
+        """
+        Sorts links for supporting/counter link columns base on:
+        * relevance -- anything less relevant should be lower. Even with high agrees
+          the same people that clicked "agree" may have also voted it less relevant
+        * Link's pointValue based on agrees and robustness
+        """
         linkPoints = self.getLinkedPointsForLinks(links)
-        # will sort on first item in tuple
-        sortingList = sorted([(lp.getRecursivePointRating(), lp._linkInfo)
+        # will sort on first item in tuple, then second...
+        # adding lp._linkInfo at the end so it can be returned
+        sortingList = sorted([(lp._linkInfo.rating(), lp.pointValue(), lp._linkInfo)
                               for lp in linkPoints],
                              reverse=True)
-        return [p[1] for p in sortingList]
+        return [p[2] for p in sortingList]
 
     def removeLink(self, linkRoot, linkType):
         links = self.getStructuredLinkCollection(linkType)

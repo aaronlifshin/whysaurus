@@ -162,7 +162,7 @@ class Point(ndb.Model):
         + having agrees >= disagrees
         + having sub-arguments weighed in its favor
         """
-        return (max(1, len(self.sources))
+        return (min(1, len(self.sources))
                 + self.upVotes - self.downVotes
                 + self.getChildrenPointRating())
 

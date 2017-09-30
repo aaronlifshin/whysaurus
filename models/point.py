@@ -657,7 +657,7 @@ class Point(ndb.Model):
         return int(round((sum([((sp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating / 100.0)
                                for sp in supportingPoints
                                if sp.upVotes >= sp.downVotes])
-                          - abs(sum([((cp.upVotes - sp.downVotes) or 1) * (sp._linkInfo.rating / 100.0)
+                          - abs(sum([((cp.upVotes - cp.downVotes) or 1) * (cp._linkInfo.rating / 100.0)
                                      for cp in counterPoints
                                      if cp.upVotes >= cp.downVotes])))))
 

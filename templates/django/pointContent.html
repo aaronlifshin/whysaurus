@@ -40,21 +40,22 @@
     
 <div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}" data-rootus="{{point.rootURLsafe}}">
 	<div id="pointSummary" class = "span5">
-	          <div class="mainPointTitle editable">
-                  <h1 class="mainPointTitleText">{{ point.title|escape }}
-                  <span class="ux2ScoreInLine {% if point.pointValue == 0 %}hidden{% endif %}">
-                      {% if point.pointValue > 0 %}
-                      <span name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
-                      {% endif %}
-                      {% if point.pointValue < 0 %}
-                      <span name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
-                      {% endif %}
-                  </span>
-                      </h1>
-              </div>
+        <div class="mainPointTitleAndScore">
+	          <div class="mainPointTitle editable"><h1 class="mainPointTitleText">{{ point.title|escape }}</h1></div>
+              <span class="mainPointScore {% if point.pointValue == 0 %}hidden{% endif %}">
+                  <h1>
+                  {% if point.pointValue > 0 %}
+                  <span name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                  {% endif %}
+                  {% if point.pointValue < 0 %}
+                  <span name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
+                  {% endif %}
+                  </h1>
+              </span>
+        </div>
 			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
 	          {% include 'sources.html' %}
-              <div id="timestampAndEditLink" >			  
+              <div id="timestampAndEditLink" >
                 <div class="mainPointLastEdited">
                     <!--<span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br>-->
                     <span id="pointCreator" class="contributor"></span><!-- creator inserted via javascript, for now -->

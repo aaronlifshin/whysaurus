@@ -274,6 +274,7 @@ function upVote() {
        success: function(obj){
             if (obj.result == true) {
                 updateVoteTotal(obj.newVote, $('#voteTotal'), $( "#upVote") , $( "#downVote"));
+                updatePointScore(obj.newScore, $('#pointScoreSpan'));
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
             }
@@ -297,6 +298,7 @@ function downVote() {
         success: function(obj){
             if (obj.result == true) {
                 updateVoteTotal(obj.newVote, $('#voteTotal'), $( "#upVote"), $( "#downVote"));
+                updatePointScore(obj.newScore, $('#pointScoreSpan'));
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
             }

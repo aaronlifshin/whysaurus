@@ -418,6 +418,10 @@ function votePointCard(elem, voteType) {
     var oldVoteObj = $('[name=voteTotal]', pointCard);
     var oldVote = oldVoteObj.data('myvote');
 	//console.log("votePointCard oldVote "+ oldVote);
+
+    var scoreSpan = $('[name=pointValueArea]', pointCard);
+    var oldScore = scoreSpan.data('myvalue');
+
     var newVote = null;
     if (voteType == "up") {
         newVote = oldVote == 1 ? 0 : 1;    
@@ -470,6 +474,11 @@ function votePointCard(elem, voteType) {
                         //$('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
                     //}
                 }
+
+                var score = obj.newScore;
+
+                updatePointScore(score, scoreSpan);
+
 				console.log("votePointCard done\n");
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
@@ -530,6 +539,26 @@ function updateVoteTotal(newVote, voteTotalObj, upVote, downVote) {
 	//console.log("updateVoteTotal newVoteTotal "+ newVoteTotal);
     voteTotalObj.data('myvote', newVote);
     return newVoteTotal;
+}
+
+
+function updatePointScore(newScore, pointScoreSpan) {
+    curScore = pointScoreSpan.data('myvalue')
+
+    if (newScore == curScore)
+        return;
+
+    // TODO: Better null/error checking
+    if (newScore > 0) {
+        pointScoreSpan.text('+' + newScore)
+    }
+    else if (newScore < 0) {
+        pointScoreSpan.text(newScore)
+    }
+    else {
+        // Some reasonable default?
+    }
+    pointScoreSpan.data('myvalue', newScore);
 }
 
 function updateDialogHeight() {

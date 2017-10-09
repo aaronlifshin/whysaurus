@@ -12,7 +12,9 @@ class Vote(AuthHandler):
         if point and user:
             if user.addVote(point, int(self.request.get('vote'))):
                 point.updateBacklinkedSorts(pointRoot)
-                resultJSON = json.dumps({'result': True, 'newVote': self.request.get('vote')})
+                resultJSON = json.dumps({'result': True,
+                                         'newVote': self.request.get('vote'),
+                                         'newScore': point.pointValue()})
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
 

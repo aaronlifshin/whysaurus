@@ -699,7 +699,7 @@ class WhysaurusUser(auth_models.User):
                     )
                                   
                     mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
-                        to = user.email,
+                        to = [ user.email , 'notification.copies@whysaurus.com' ]
                         subject= user.name + ', People are reacting to your views on Whysaurus!',
                         body = text, 
                         html = html,                

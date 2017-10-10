@@ -11,7 +11,7 @@
     "webpack-bundle-tracker": "^0.2.0"
   },
   "dependencies": {
-    "grint-gae": "0.2.x",
+    "grunt-gae": "0.2.x",
     "grunt": "0.4.x",
     "grunt-autoprefixer": "0.2.x",
     "grunt-cli": "~0.1.13",

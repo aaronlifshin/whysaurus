@@ -9,7 +9,8 @@ The prototype uses https://facebook.github.io/react/ to build a fast, clean, rec
 
 1. Follow the normal Whysaurus installation instructions. You may want to use the instructions here https://github.com/aaronlifshin/whysaurus/pull/17/files until that PR gets merged to master
 2. Make sure you have `npm` installed. If you use `homebrew` on a Mac, you can do `brew install npm`. If you're on another platform, see the instructions here to get started: https://docs.npmjs.com/getting-started/installing-node
-3. Run `npm run bundle`
+3. Run `npm install`
+4. Run `npm run bundle`
 
 # Running
 

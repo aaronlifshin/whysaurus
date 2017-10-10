@@ -100,7 +100,7 @@ function callPointEdit(){
                 if (obj.result) {
     				var ed = tinyMCE.get('editor_pointDialog');
     				$('.mainPointContent').html(ed.getContent());
-    				$('.mainPointTitle h1').html($('#title_pointDialog').val());
+    				$('#mainPointTitle').html($('#title_pointDialog').val());
 
                     // this refreshes the old header (time stamp, most recent contributor)
     				//updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
@@ -371,7 +371,7 @@ function populateEditFields() {
 
     $('div.modal-header h3', $('#pointDialog')).text("Edit Point");
 
-    $('#title_pointDialog').val($('#pointSummary div.mainPointTitle').text());
+    $('#title_pointDialog').val($('#mainPointTitle').text());
     setCharNumText($('#title_pointDialog')[0]);
     if (ed) {
         ed.setContent($('#pointSummary .mainPointContent').html() );
@@ -623,7 +623,7 @@ function setUpMenuAreas() {
         linktype = $(this).data('linktype');
         $("#selectLinkedPointSearch").data("linkType", linktype);
         $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');  
-        $("#linkedPointSearchDialog .modal-header h1").text($('#pointSummary div.mainPointTitle').text());                      
+        $("#linkedPointSearchDialog .modal-header h1").text($('#mainPointTitle').text());                      
         $("#linkedPointSearchDialog").modal('show');
         $('body, html').animate({ scrollTop: 0}, 500);        
     });
@@ -631,7 +631,7 @@ function setUpMenuAreas() {
   
     // These elements are admin only, but jquery degrades gracefully, so not checking for their presence
     $('#changeEditorsPickTrigger').off('.ys').on('click.ys', function() {
-        title = $('#pointSummary div.mainPointTitle').text();
+        title = $('#mainPointTitle').text();
         $("#changeEditorsPick .modal-header h4").text(title);
         $("#changeEditorsPick").modal('show');
     }); 
@@ -919,7 +919,7 @@ function makeRelevanceControlsClickable() {
 
 function sharePointOnTwitter() {
     var url = $('#pointArea').data('pointurl');
-    var pointTitle = $('#pointSummary div.mainPointTitle').text();
+    var pointTitle = $('#mainPointTitle').text();
     var len = pointTitle.length;
     var text = "";
     if (len > 115) {
@@ -933,7 +933,7 @@ function sharePointOnTwitter() {
 
 function postOnFacebook() {
     var url = $('#pointArea').data('pointurl');
-    var pointTitle = $('#pointSummary div.mainPointTitle').text();
+    var pointTitle = $('#mainPointTitle').text();
     var dialogParams = {
         app_id: 144595249045851,
         method: 'feed',

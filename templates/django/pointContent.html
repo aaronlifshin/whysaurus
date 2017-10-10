@@ -40,8 +40,9 @@
     
 <div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}" data-rootus="{{point.rootURLsafe}}">
 	<div id="pointSummary" class = "span5">
-        <div class="mainPointTitleAndScore">
-	          <div class="mainPointTitle editable"><h1 class="mainPointTitleText">{{ point.title|escape }}
+
+        <div class="mainPointTitleAndScore">            
+	          <span id="mainPointTitle" class="editable"><span class="mainPointTitleText">{{ point.title|escape }}</span></span>
               <span class="mainPointScore {% if point.pointValue == 0 %}hidden{% endif %}">
                   {% if point.pointValue > 0 %}
                   <span id="pointScoreSpan" name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
@@ -50,20 +51,19 @@
                   <span id="pointScoreSpan" name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
                   {% endif %}
               </span>
-              </h1></div>
         </div>
-			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
-	          {% include 'sources.html' %}
-              <div id="timestampAndEditLink" >
+		<div class="mainPointContent editable">{{ point.content|safe }}</div>
+	    {% include 'sources.html' %}
+        <div id="timestampAndEditLink" >
                 <div class="mainPointLastEdited">
                     <!--<span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br>-->
                     <span id="pointCreator" class="contributor"></span><!-- creator inserted via javascript, for now -->
                     <!--<br>Last Edited {{point.PSTdateEdited}} -->
                     <a id="viewPointHistory">View History</a>
                 </div>
-              </div>
-	          <!-- Hacky way to get imageurl into the edit dialog. :/ -->
-	          <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
+        </div>
+	    <!-- Hacky way to get imageurl into the edit dialog. :/ -->
+	    <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
 	</div>    
 	{% if point.imageURL and point.imageURL.strip %}	
 	<!-- update insertImage in point.js if editing this HTML -->		  
@@ -83,8 +83,10 @@
                 <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > Agree</a>
                 &#183;<!-- &#183; = small dot -->
                 <a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >Disagree</a>
-                <img class="iconAgreesSmall iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall_blue.png"/>
-                <span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
+                <!-- old vote total and icon
+                    <img class="iconAgreesSmall iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall_blue.png"/>
+                    <span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
+                -->                
             </div>		   
 			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->

@@ -7,7 +7,7 @@ import jinja2
 import time
 import gae_mini_profiler.profiler
 
-from lib.simpleauth import SimpleAuthHandler
+from simpleauth import SimpleAuthHandler
 from whysaurusrequesthandler import WhysaurusRequestHandler
 from models.whysaurususer import WhysaurusUser
 from models.whysaurusexception import WhysaurusException

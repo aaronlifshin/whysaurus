@@ -139,7 +139,7 @@ class Point(ndb.Model):
     supportingLinks = ndb.StructuredProperty(Link, repeated=True)    
     counterLinks = ndb.StructuredProperty(Link, repeated=True)    
         
-    sources = ndb.KeyProperty(repeated=True, indexed=False)
+    sources = ndb.KeyProperty(repeated=True, indexed=False, kind=Source)
     current = ndb.BooleanProperty() # used in filter queries
     url = ndb.StringProperty(indexed=False)
     upVotes = ndb.IntegerProperty(default=1, indexed=False)

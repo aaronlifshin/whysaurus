@@ -20,10 +20,13 @@ from handlers import MainPage, About, Help, Contact, Manifesto, ListSignUp, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
     NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage, PointCard
+from graphene_gae.webapp2 import GraphQLHandler
+import schema
 
 # Map URLs to handlers
 routes = [
     Route('/', MainPage),
+    Route('/graphql', GraphQLHandler),
     Route('/getMainPageLeft', 
           handler='WhySaurus.MainPage:getMainPageLeft', 
           name='getMainPageLeft'),
@@ -157,7 +160,8 @@ app_config = {
     'webapp2_extras.auth': {
         'user_attributes': [],
         'user_model': WhysaurusUser
-    }
+    },
+    'graphql_schema' : schema.schema
 }
 
 

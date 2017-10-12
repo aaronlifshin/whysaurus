@@ -676,7 +676,7 @@ class WhysaurusUser(auth_models.User):
         
             if user.notificationFrequency == "Daily" and daysDiff >= 1:
                 shouldEmail = True
-            elif user.notificationFrequency == "Daily" and daysDiff >= 7:
+            elif user.notificationFrequency == "Weekly" and daysDiff >= 7:
                 shouldEmail = True
         
             if shouldEmail:

@@ -21,8 +21,8 @@ class Vote(AuthHandler):
                     parentNewScore = parentPoint.pointValue()
                 resultJSON = json.dumps({'result': True,
                                          'newVote': self.request.get('vote'),
-                                         'newScore': point.pointValue()
-                                         ,'parentNewScore': parentNewScore})
+                                         'newScore': point.pointValue(),
+                                         'parentNewScore': parentNewScore})
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
 

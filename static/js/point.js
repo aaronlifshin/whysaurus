@@ -483,7 +483,10 @@ function tryAddSupporting(linkType, ajaxData, retries) {
 		success: function(obj){
 			if (obj.result == true) {
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
-  			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  				
+  			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
+  			  	if (obj.parentNewScore != null) {
+  			  	    updatePointScore(obj.parentNewScore, $('#pointScoreSpan'))
+                }
                 stopSpinner();                
     		    $("#pointDialog").modal('hide');
                 enableDialogButtons('#submit_pointDialog');

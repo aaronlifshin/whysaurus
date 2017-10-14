@@ -414,12 +414,14 @@ function removeSource(clickedElement) {
 
 function votePointCard(elem, voteType) {
     var pointCard = $(elem).closest('.pointCard');
-    var pointURL = pointCard.data('pointurl');  
+    var pointURL = pointCard.data('pointurl');
+    var parentPointURL = $('#pointArea').data('pointurl');
     var oldVoteObj = $('[name=voteTotal]', pointCard);
     var oldVote = oldVoteObj.data('myvote');
 	//console.log("votePointCard oldVote "+ oldVote);
 
     var scoreSpan = $('[name=pointValueArea]', pointCard);
+    var parentScoreSpan = $('#pointScoreSpan');
     var oldScore = scoreSpan.data('myvalue');
 
     var newVote = null;
@@ -438,7 +440,8 @@ function votePointCard(elem, voteType) {
        type: "POST",
        data: {
     		'vote': newVote,
-    		'pointURL': pointURL
+    		'pointURL': pointURL,
+            'parentPointURL': parentPointURL
     		},
        success: function(obj){
             if (obj.result == true) {
@@ -478,6 +481,10 @@ function votePointCard(elem, voteType) {
                 var score = obj.newScore;
 
                 updatePointScore(score, scoreSpan);
+
+                if (obj.parentNewScore != null) {
+                    updatePointScore(obj.parentNewScore, parentScoreSpan);
+                }
 
 				console.log("votePointCard done\n");
             } else {
@@ -549,14 +556,27 @@ function updatePointScore(newScore, pointScoreSpan) {
         return;
 
     // TODO: Better null/error checking
-    if (newScore > 0) {
-        pointScoreSpan.text('+' + newScore)
+    if (newScore == 0) {
+        pointScoreSpan.text('+0');
+        pointScoreSpan.addClass("noScore");
+        pointScoreSpan.removeClass("greenScore");
+        pointScoreSpan.removeClass("redScore");
+    }
+    else if (newScore > 0) {
+        pointScoreSpan.text('+' + newScore);
+        pointScoreSpan.addClass("greenScore");
+        pointScoreSpan.removeClass("redScore");
+        pointScoreSpan.removeClass("noScore");
     }
     else if (newScore < 0) {
-        pointScoreSpan.text(newScore)
+        pointScoreSpan.text(newScore);
+        pointScoreSpan.addClass("redScore");
+        pointScoreSpan.removeClass("greenScore");
+        pointScoreSpan.removeClass("noScore");
     }
     else {
         // Some reasonable default?
+        pointScoreSpan.text('');
     }
     pointScoreSpan.data('myvalue', newScore);
 }

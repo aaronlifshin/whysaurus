@@ -9,12 +9,15 @@
               <span class="ux2ScoreInLine hidden">
                   <span id="ux2ScoreInLinePlus" class="{% if point.voteTotal < 1 %}hidden{% endif %}">+</span><span name="voteTotalArea" class="{% if point.voteTotal < 0 %}redScore{% endif %}"><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}</span></span>
               </span>
-               <span class="ux2ScoreInLine {% if point.pointValue == 0 %}hidden{% endif %}">
+               <span class="ux2ScoreInLine">
                    {% if point.pointValue > 0 %}
                    <span name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
                    {% endif %}
                    {% if point.pointValue < 0 %}
                    <span name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
+                   {% endif %}
+                   {% if point.pointValue == 0 %}
+                   <span name="pointValueArea" class="noScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
                    {% endif %}
                </span>
           </div>

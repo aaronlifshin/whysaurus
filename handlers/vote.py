@@ -8,13 +8,21 @@ class Vote(AuthHandler):
     def post(self):
         resultJSON = json.dumps({'result': False})
         point, pointRoot = Point.getCurrentByUrl(self.request.get('pointURL'))
+        parentPointURL = self.request.get('parentPointURL')
+        parentPoint = None
+        if parentPointURL:
+            parentPoint, parentPointRoot = Point.getCurrentByUrl(parentPointURL)
         user = self.current_user
         if point and user:
             if user.addVote(point, int(self.request.get('vote'))):
                 point.updateBacklinkedSorts(pointRoot)
+                parentNewScore = None
+                if parentPoint:
+                    parentNewScore = parentPoint.pointValue()
                 resultJSON = json.dumps({'result': True,
                                          'newVote': self.request.get('vote'),
-                                         'newScore': point.pointValue()})
+                                         'newScore': point.pointValue()
+                                         ,'parentNewScore': parentNewScore})
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
 

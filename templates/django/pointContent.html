@@ -42,12 +42,16 @@
 	<div id="pointSummary" class = "span5">
         <div class="mainPointTitleAndScore">
 	          <div class="mainPointTitle editable"><h1 class="mainPointTitleText">{{ point.title|escape }}
-              <span class="mainPointScore {% if point.pointValue == 0 %}hidden{% endif %}">
+              <span class="mainPointScore">
+                  <!--Elif not working?-->
                   {% if point.pointValue > 0 %}
                   <span id="pointScoreSpan" name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
                   {% endif %}
                   {% if point.pointValue < 0 %}
                   <span id="pointScoreSpan" name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
+                  {% endif %}
+                  {% if point.pointValue == 0 %}
+                  <span id="pointScoreSpan" name="pointValueArea" class="noScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
                   {% endif %}
               </span>
               </h1></div>

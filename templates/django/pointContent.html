@@ -46,7 +46,7 @@
               <span class="mainPointScore">
                   <!--Elif not working?-->
                   {% if point.pointValue > 0 %}
-                  <span id="pointScoreSpan" name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                  <span id="pointScoreSpan" name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
                   {% endif %}
                   {% if point.pointValue < 0 %}
                   <span id="pointScoreSpan" name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>

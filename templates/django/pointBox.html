@@ -11,7 +11,7 @@
               </span>
                <span class="ux2ScoreInLine">
                    {% if point.pointValue > 0 %}
-                   <span name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                   <span name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
                    {% endif %}
                    {% if point.pointValue < 0 %}
                    <span name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>

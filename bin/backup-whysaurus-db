@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PROJECT_ID=whysaurus
+gcloud config set project ${PROJECT_ID}
+gcloud auth login
+BUCKET="com-whysaurus-datastore-backups"
+
+gcloud beta datastore export --namespaces="(default)" gs://${BUCKET}
+
+

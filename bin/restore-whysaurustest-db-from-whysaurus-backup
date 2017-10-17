@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [[ $1 -eq 0 ]] ; then
+    echo 'Please supply the backup name as an argument, for example, "2017-10-17T19:31:44_80592". You can find backups here: https://console.cloud.google.com/storage/browser/com-whysaurus-datastore-backups/?project=whysaurus'
+    exit 1
+fi
+
+PROJECT_ID="whysaurustest"
+gcloud config set project ${PROJECT_ID}
+gcloud auth login
+BUCKET="com-whysaurus-datastore-backups"
+
+gcloud beta datastore import gs://${BUCKET}/$1/$1.overall_export_metadata
+

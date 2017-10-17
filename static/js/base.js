@@ -581,10 +581,10 @@ function updatePointScore(newScore, pointScoreSpan) {
     // This might be better if rebuilt to trigger CSS animations, which might also lets us remove the "anim" spans from the html.
     // For now I'm assuming the parent element is at 100% by default -JF
     var pointScoreSpanParent =  pointScoreSpan.parent();
-    pointScoreSpanParent.animate( {fontSize: "95%"}, 5);
-    pointScoreSpanParent.animate( {fontSize: "115%"}, 25);
-    pointScoreSpanParent.delay(250);
-    pointScoreSpanParent.animate( {fontSize: "100%"}, 25); 
+    //pointScoreSpanParent.animate( {fontSize: "95%"}, 5);
+    pointScoreSpanParent.animate( {fontSize: "112%"}, 35);
+    pointScoreSpanParent.delay(200);
+    pointScoreSpanParent.animate( {fontSize: "100%"}, 15); 
     pointScoreSpan.data('myvalue', newScore); 
 }
 

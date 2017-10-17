@@ -7,6 +7,8 @@ fi
 
 PROJECT_ID="whysaurustest"
 gcloud config set project ${PROJECT_ID}
+# this line will open a browser and force the user to manually authenticate. this
+# will not work in an automated environment.
 gcloud auth login
 BUCKET="com-whysaurus-datastore-backups"
 

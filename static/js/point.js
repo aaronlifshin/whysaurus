@@ -725,6 +725,9 @@ function sendRelevanceVote(event) {
                     .text(
                         obj.newVoteCount + " User" + ( obj.newVoteCount > 1 ? "s":"") +
                         " Voting.   Curent Average: " + obj.newRelevance);
+  			  	if (obj.parentNewScore != null) {
+  			  	    updatePointScore(obj.parentNewScore, $('#pointScoreSpan'))
+                }
             } else {
 			    showAlertAfter('Not able to save vote. Try to refresh the page.', 
                     selectedRadioButton.closest('[name=areaRelevanceRadio]'));

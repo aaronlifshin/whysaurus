@@ -17,6 +17,7 @@ class AddSupportingPoint(AuthHandler):
         linkType = self.request.get('linkType')
         sourcesURLs=json.loads(self.request.get('sourcesURLs'))
         sourcesNames=json.loads(self.request.get('sourcesNames'))
+        parentNewScore = None
         
         if user:   
             try:       
@@ -37,6 +38,11 @@ class AddSupportingPoint(AuthHandler):
                         sourcesURLs=sourcesURLs,
                         sourcesNames=sourcesNames            
                     )
+
+                    # TODO: Gene: Probably have a more efficient retrieval here no?
+                    oldPoint, oldPointRoot = Point.getCurrentByUrl(parentPointURL)
+                    if oldPoint:
+                        parentNewScore = oldPoint.pointValue()
                 else:
                     raise WhysaurusException('Point with URL %s not found' % parentPointURL)
             except WhysaurusException as e:
@@ -57,7 +63,8 @@ class AddSupportingPoint(AuthHandler):
                     'dateEdited': newPoint.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p'),
                     'numLinkPoints': newPoint.linkCount(linkType),
                     'newLinkPoint': newLinkPointHTML,
-                    'authorURL': self.current_user.url
+                    'authorURL': self.current_user.url,
+                    'parentNewScore': parentNewScore
                 }
             self.response.headers["Content-Type"] = 'application/json; charset=utf-8'      
             self.response.out.write(json.dumps(jsonOutput))

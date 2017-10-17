@@ -949,12 +949,26 @@ a:visited {
 .greenScore {
 	color:@green;
 }
+
+
 .redScore {
 	color:@red !important;
+    font-size:1.05em;
 }
+
 .yellowScore {
 	color:#EBC821;
 }
+.noScore {
+	color:#b9bbbd;
+}
+
+.positiveScore {
+	color:black;
+    font-size:1.05em;
+}
+
+
 
 .boxedElement {
 	border-style:solid;
@@ -1401,6 +1415,12 @@ a:visited {
 	font-weight: bold;
 	padding-left: 4px;
 }
+
+// used to create space for font size animation
+// (Reset fontSize) = 1/(Max fontSize) 
+.scoreAnimContainerMax { font-size: 125%; }
+.scoreAnimContainerReset { font-size: 80%; } 
+
    
 .pointAreaActions {
     font-family: @sansFontFamily;
@@ -1517,6 +1537,13 @@ a:visited {
 	color:@blue; 	/* @red !important; */
 } 
    
+.scaleDownOnClick {
+    display: inline-block;
+}
+ 
+.scaleDownOnClick:active {
+    transform: scale(0.92);
+}
 
 
 #scoreAndVotingSection {
@@ -1944,10 +1971,21 @@ h4.condensed {
 }
 */
 
+.mainPointTitleAndScore {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 4px;
+    margin-bottom: 0.75em;
+}
+
 .mainPointTitleText {
     padding-right:8px;
     margin-top: 4px;
     margin-bottom:11px;
+}
+
+#mainPointTitle {
+    //color: purple;
 }
 
 h4.mainPointTitleText {
@@ -2034,6 +2072,7 @@ h4.mission {
    
 #pointSummary {
 	margin-bottom: 12px;
+    display: inline-block;
 }
 
 .mainPointInfo{font-size:0.8em;font-style:italic;bottom:10px;left:10px;font-weight:bold}

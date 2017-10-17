@@ -1415,6 +1415,12 @@ a:visited {
 	font-weight: bold;
 	padding-left: 4px;
 }
+
+// used to create space for font size animation
+// (Reset fontSize) = 1/(Max fontSize) 
+.scoreAnimContainerMax { font-size: 125%; }
+.scoreAnimContainerReset { font-size: 80%; } 
+
    
 .pointAreaActions {
     font-family: @sansFontFamily;
@@ -1531,6 +1537,13 @@ a:visited {
 	color:@blue; 	/* @red !important; */
 } 
    
+.scaleDownOnClick {
+    display: inline-block;
+}
+ 
+.scaleDownOnClick:active {
+    transform: scale(0.92);
+}
 
 
 #scoreAndVotingSection {

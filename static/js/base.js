@@ -479,13 +479,12 @@ function votePointCard(elem, voteType) {
                 }
 
                 var score = obj.newScore;
-
-                updatePointScore(score, scoreSpan);
-
+                updatePointScore(score, scoreSpan);                
+                    
                 if (obj.parentNewScore != null) {
-                    updatePointScore(obj.parentNewScore, parentScoreSpan);
+                    // putting a subtle delay on the parent update, so the user's eye is guided from child to parent
+                    setTimeout(function () { updatePointScore(obj.parentNewScore, parentScoreSpan)} , 235);
                 }
-
 				console.log("votePointCard done\n");
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
@@ -495,7 +494,6 @@ function votePointCard(elem, voteType) {
     $.ajax();
 	
 }
-
 
 function voteToggle(turnOn, voteLabel, classWhenOn) {
     if (turnOn) {
@@ -559,26 +557,35 @@ function updatePointScore(newScore, pointScoreSpan) {
     if (newScore == 0) {
         pointScoreSpan.text('+0');
         pointScoreSpan.addClass("noScore");
-        pointScoreSpan.removeClass("greenScore");
+        pointScoreSpan.removeClass("positiveScore");
         pointScoreSpan.removeClass("redScore");
     }
     else if (newScore > 0) {
         pointScoreSpan.text('+' + newScore);
-        pointScoreSpan.addClass("greenScore");
+        pointScoreSpan.addClass("positiveScore");
         pointScoreSpan.removeClass("redScore");
         pointScoreSpan.removeClass("noScore");
     }
     else if (newScore < 0) {
         pointScoreSpan.text(newScore);
         pointScoreSpan.addClass("redScore");
-        pointScoreSpan.removeClass("greenScore");
+        pointScoreSpan.removeClass("positiveScore");
         pointScoreSpan.removeClass("noScore");
     }
     else {
         // Some reasonable default?
         pointScoreSpan.text('');
     }
-    pointScoreSpan.data('myvalue', newScore);
+   
+    // Animation:
+    // This might be better if rebuilt to trigger CSS animations, which might also lets us remove the "anim" spans from the html.
+    // For now I'm assuming the parent element is at 100% by default -JF
+    var pointScoreSpanParent =  pointScoreSpan.parent();
+    pointScoreSpanParent.animate( {fontSize: "95%"}, 5);
+    pointScoreSpanParent.animate( {fontSize: "115%"}, 25);
+    pointScoreSpanParent.delay(250);
+    pointScoreSpanParent.animate( {fontSize: "100%"}, 25); 
+    pointScoreSpan.data('myvalue', newScore); 
 }
 
 function updateDialogHeight() {

@@ -6,19 +6,25 @@
                   <span>{{ point.title|escape }}</span>
 			  </a>
               <!--<span class="ux2ScoreInLine {% if point.voteTotal == 0 %}hidden{% endif %}">-->
-              <span class="ux2ScoreInLine hidden">
-                  <span id="ux2ScoreInLinePlus" class="{% if point.voteTotal < 1 %}hidden{% endif %}">+</span><span name="voteTotalArea" class="{% if point.voteTotal < 0 %}redScore{% endif %}"><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}</span></span>
-              </span>
-               <span class="ux2ScoreInLine">
-                   {% if point.pointValue > 0 %}
-                   <span name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
-                   {% endif %}
-                   {% if point.pointValue < 0 %}
-                   <span name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
-                   {% endif %}
-                   {% if point.pointValue == 0 %}
-                   <span name="pointValueArea" class="noScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
-                   {% endif %}
+
+              <!-- create space for font-size animation with scoreAnimContainers -->
+              <span class="scoreAnimContainerMax">
+                <span class="scoreAnimContainerReset">
+                    <span class="ux2ScoreInLine hidden">
+                        <span id="ux2ScoreInLinePlus" class="{% if point.voteTotal < 1 %}hidden{% endif %}">+</span><span name="voteTotalArea" class="{% if point.voteTotal < 0 %}redScore{% endif %}"><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}</span></span>
+                    </span>
+                    <span class="ux2ScoreInLine">
+                        {% if point.pointValue > 0 %}
+                        <span name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                        {% endif %}
+                        {% if point.pointValue < 0 %}
+                        <span name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
+                        {% endif %}
+                        {% if point.pointValue == 0 %}
+                        <span name="pointValueArea" class="noScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                        {% endif %}
+                    </span>
+                </span>
                </span>
           </div>
        </div>     
@@ -52,14 +58,13 @@
 			{% endif %}
         </span>
 
-
 		<span class="hiddenAgreeCtrlTillRevealed">
 			<!--{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
 				<span ><a class="pointBoxActions" href="/point/{{ point.url }}">See Evidence</a></span>
 			{% endif %}-->
 			<span> &#183;  </span><!-- &#183; = small dot -->
-            <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin">Agree</div>
-            <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}"> Disagree</div>
+            <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin"><span class="scaleDownOnClick">Agree</span></div>
+            <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}"> <span class="scaleDownOnClick">Disagree</span></div>
         </span>  
 
 

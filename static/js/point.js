@@ -503,7 +503,7 @@ function tryAddSupporting(linkType, ajaxData, retries) {
                             
                             console.log('Retry error message was: ' + errorMessage);
         		    		editDialogAlert(errorMessage);                            
-                            setTimeout(function() {tryAddSupporting(linkType, ajaxData, newRetries);}, 1000);
+                            setTimeout(function() {tryAddSupporting(linkType, ajaxData, newRetries);}, 900);
                         } else {
                             errorMessage = 'Too many attempts, please wait and hit publish again.';
         		    		editDialogAlert(errorMessage);

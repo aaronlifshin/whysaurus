@@ -46,7 +46,7 @@
               <span class="mainPointScore">
                   <!--Elif not working?-->
                   {% if point.pointValue > 0 %}
-                  <span id="pointScoreSpan" name="pointValueArea" class="greenScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                  <span id="pointScoreSpan" name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
                   {% endif %}
                   {% if point.pointValue < 0 %}
                   <span id="pointScoreSpan" name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
@@ -87,10 +87,10 @@
                 <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > Agree</a>
                 &#183;<!-- &#183; = small dot -->
                 <a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >Disagree</a>
-                <!-- old vote total and icon
-                    <img class="iconAgreesSmall iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall_blue.png"/>
-                    <span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
-                -->                
+                <!-- old handshake icon: 
+                    <img class="iconAgreesSmall iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall_blue.png"/> -->
+                <!-- this id is used by the js that controls styling on the agree/disagree buttons, functionality which could be combined with the mainPointScore above -->
+                <span id="voteTotal" class="hidden" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>                               
             </div>		   
 			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->

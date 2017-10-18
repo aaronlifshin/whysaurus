@@ -147,7 +147,7 @@ class GraphQLObjectType(GraphQLType):
             'street': GraphQLField(GraphQLString),
             'number': GraphQLField(GraphQLInt),
             'formatted': GraphQLField(GraphQLString,
-                resolver=lambda obj, args, context, info: obj.number + ' ' + obj.street),
+                resolver=lambda obj, info, **args: obj.number + ' ' + obj.street),
         })
 
     When two types need to refer to each other, or a type needs to refer to
@@ -506,12 +506,18 @@ class GraphQLInputObjectType(GraphQLType):
                     default_value=0)
             }
     """
-    def __init__(self, name, fields, description=None):
+    def __init__(self, name, fields, description=None, container_type=None):
         assert name, 'Type must be named.'
         self.name = name
         self.description = description
-
+        if container_type is None:
+            container_type = dict
+        assert callable(container_type), "container_type must be callable"
+        self.container_type = container_type
         self._fields = fields
+
+    def create_container(self, data):
+        return self.container_type(data)
 
     @cached_property
     def fields(self):

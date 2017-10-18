@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import sys
+
 from ..error import GraphQLError
 from ..language import ast
 from ..pyutils.default_ordered_dict import DefaultOrderedDict
@@ -8,8 +10,6 @@ from ..type.introspection import (SchemaMetaFieldDef, TypeMetaFieldDef,
                                   TypeNameMetaFieldDef)
 from ..utils.type_from_ast import type_from_ast
 from .values import get_argument_values, get_variable_values
-
-Undefined = object()
 
 
 class ExecutionContext(object):
@@ -75,12 +75,15 @@ class ExecutionContext(object):
     def get_argument_values(self, field_def, field_ast):
         k = field_def, field_ast
         result = self.argument_values_cache.get(k)
-
         if not result:
             result = self.argument_values_cache[k] = get_argument_values(field_def.args, field_ast.arguments,
                                                                          self.variable_values)
 
         return result
+
+    def report_error(self, error, traceback=None):
+        sys.excepthook(type(error), error, getattr(error, 'stack', None) or traceback)
+        self.errors.append(error)
 
     def get_sub_fields(self, return_type, field_asts):
         k = return_type, tuple(field_asts)
@@ -269,10 +272,10 @@ def get_field_entry_key(node):
 
 class ResolveInfo(object):
     __slots__ = ('field_name', 'field_asts', 'return_type', 'parent_type',
-                 'schema', 'fragments', 'root_value', 'operation', 'variable_values')
+                 'schema', 'fragments', 'root_value', 'operation', 'variable_values', 'context')
 
     def __init__(self, field_name, field_asts, return_type, parent_type,
-                 schema, fragments, root_value, operation, variable_values):
+                 schema, fragments, root_value, operation, variable_values, context):
         self.field_name = field_name
         self.field_asts = field_asts
         self.return_type = return_type
@@ -282,9 +285,10 @@ class ResolveInfo(object):
         self.root_value = root_value
         self.operation = operation
         self.variable_values = variable_values
+        self.context = context
 
 
-def default_resolve_fn(source, args, context, info):
+def default_resolve_fn(source, info, **args):
     """If a resolve function is not given, then a default resolve behavior is used which takes the property of the source object
     of the same name as the field and returns it as the result, or if it's a function, returns the result of calling that function."""
     name = info.field_name

@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { gql, graphql, ApolloClient, ApolloProvider } from 'react-apollo';
+
 const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
     SUPPORT:  Symbol("support"),
@@ -360,8 +362,40 @@ class PointList extends React.Component {
 
 const cards = <PointList/>
 
+function PostList({data: {loading, points}}) {
+  if (loading) {
+    return <div>Loading</div>;
+  } else {
+    return (
+      <div>
+        <ul>
+          {points.map(point =>
+            <li key={point.title}>
+              {point.title}
+              ({point.upVotes} votes)
+            </li>
+          )}
+        </ul>
+      </div>
+    );
+  }
+}
+
+const getPoints = gql`{
+  points {
+    title
+    upVotes
+  }
+}
+`;
+
+const PointListWithPoints = graphql(getPoints)(PostList);
+
+
+const client = new ApolloClient({});
+
 let templateData = document.getElementById('config').dataset
 ReactDOM.render(
-  cards,
+  <ApolloProvider client={client}><PointListWithPoints/></ApolloProvider>,
   document.getElementById('root')
 );

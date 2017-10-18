@@ -50,6 +50,9 @@ libraries:
   version: "0.6c11"
 - name: jinja2
   version: "2.6"
+# manually require webob 1.2.3 so that request.json_body works - see https://github.com/graphql-python/graphene-gae/issues/24
+- name: webob
+  version: 1.2.3
 - name: webapp2
   version: latest
   

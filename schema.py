@@ -9,13 +9,31 @@ from models.point import Point as PointModel
 class Point(NdbObjectType):
     class Meta:
         model = PointModel
-#        interfaces = (relay.Node,)
+        interfaces = (relay.Node,)
+
+    supportingPoints = relay.ConnectionField(lambda: SubPointConnection)
+    def resolve_supportingPoints(self, info, **args):
+        points = self.getLinkedPoints("supporting", None)
+        return points or []
+
+    counterPoints = relay.ConnectionField(lambda: SubPointConnection)
+    def resolve_counterPoints(self, info, **args):
+        points = self.getLinkedPoints("counter", None)
+        return points or []
+
+class SubPointConnection(relay.Connection):
+    class Meta:
+        node = Point
+
+    class Edge:
+        relevance = graphene.Float()
+        def resolve_relevance(self, info, **args):
+            return self.node._linkInfo.rating
 
 class Query(graphene.ObjectType):
-    points = graphene.List(Point)
+    points = NdbConnectionField(Point)
 
-    @graphene.resolve_only_args
-    def resolve_points(self):
+    def resolve_points(self, info, **args):
         return PointModel.query()
 
 # class Mutation(graphene.ObjectType):
@@ -25,3 +43,10 @@ class Query(graphene.ObjectType):
 schema = graphene.Schema(query=Query)
 #, mutation=Mutation)
 
+
+# test with:
+# curl localhost:8081/graphql -d 'query GetPoints {
+#   points {
+#     title, upVotes, supportingPoints
+#   }
+# }'

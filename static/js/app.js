@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+const { Map, List, Seq } = require('immutable');
+const prettyI = require("pretty-immutable");
+
 
 import { gql, graphql, ApolloClient, ApolloProvider } from 'react-apollo';
 
@@ -268,7 +271,7 @@ class PointList extends React.Component {
   }
 
   renderPointCard(pointContext, index) {
-    let point = pointContext.point
+    let point = pointContext.point.node
     if (point) {
       return <div className="span5" key={point.key}>
         <PointCard point={point}
@@ -292,8 +295,8 @@ class PointList extends React.Component {
     // zip together the lists leaving nils in place when the lists are different lengths  
     let l = Math.max(supportingPoints.length, counterPoints.length)
     for (var i = 0; i < l; i++) {
-      yield [{evidenceType: EvidenceType.SUPPORT, point: supportingPoints[i]},
-             {evidenceType: EvidenceType.OPPOSE, point: counterPoints[i]}]
+      yield [{evidenceType: EvidenceType.SUPPORT, point: supportingPoints[i].node},
+             {evidenceType: EvidenceType.OPPOSE, point: counterPoints[i].node}]
     }
   }
 
@@ -304,12 +307,23 @@ class PointList extends React.Component {
   // points that should be rendered in the same row.
   // Each point context contains the point and information like whether it appears in a
   // supporting or opposing list
+
+
+  // TODO: rewrite points rows to deal directly with nodes and edges. I think we can drop pointContexts entirely?
+
+
+  
   * pointsRows(rowCoresidentPointContexts, depth = 0) {
     yield {depth: depth, pointContexts: rowCoresidentPointContexts}
     for (let pointContext of rowCoresidentPointContexts) {
-      let point = pointContext.point
-      if (point && this.isPointExpanded(point)) {
-        for (let pointContexts of this.zipEvidence(point.supportingPoints, point.counterPoints)){
+      if (pointContext.point && pointContext.point.node) {
+	let point = pointContext.point.node
+	console.log(point)
+	let support = point.supportingPoints ? point.supportingPoints.edges : []
+	let counter = point.counterPoints ? point.counterPoints.edges : []
+	console.log(support)
+	console.log(counter)
+        for (let pointContexts of this.zipEvidence(support, counter)){
           for (let row of this.pointsRows(pointContexts, depth + 1)) {
             yield row
           }
@@ -322,11 +336,50 @@ class PointList extends React.Component {
   // each row will become a row in the grid system
   * pointsByRowAndColumn() {
     for (let row of this.pointsRows([{evidenceType: EvidenceType.ROOT,
-                                      point: this.state.points[0]}])){
+                                      point: this.props.data.points.edges[0]}])){
       yield row
     }
-    yield {pointContexts: [{evidenceType: EvidenceType.ROOT,
-                            point: this.state.points[1]}]}
+    // yield {pointContexts: [{evidenceType: EvidenceType.ROOT,
+    //                         point: this.state.points[1]}]}
+  }
+
+  * evidenceEdges(edges) {
+    for (let edge of edges) {
+      if (edge) {
+	yield List(edge.node.supportingPoints ? edge.node.supportingPoints.edges : [])
+	yield List(edge.node.counterPoints ? edge.node.counterPoints.edges : [])
+      }
+    }
+  }
+
+  evidenceRows(edges) {
+    console.log("ev rows")
+    console.log(prettyI(List(this.evidenceEdges(edges))))
+    let evidenceEdges = List(this.evidenceEdges(edges))
+    console.log("TURNS INTO")
+    console.log(prettyI(evidenceEdges.first().zipAll(...evidenceEdges.rest())))
+    console.log("fuz bang")
+    return evidenceEdges.first().zipAll(...evidenceEdges.rest())
+  }
+
+  * edgeRows(row, depth = 0) {
+    if (row && !row.isEmpty()) {
+      yield row.map(edge => List([Map(edge).set('depth': depth)]))
+      for (let r of this.evidenceRows(row)) {
+	for (let s of this.edgeRows(List(r), depth + 1)) {
+	  yield s
+	}
+      }
+    }
+  }
+  
+  * edgesByRowAndColumn() {
+    console.log("bacon")
+    for (let row of this.edgeRows(List(this.props.data.points.edges))) {
+      console.log("fish")
+      console.log(prettyI(row))
+      yield row
+    }
   }
 
   loadCurrentPagePoint(e){
@@ -349,16 +402,26 @@ class PointList extends React.Component {
       });
   }
 
-  render(){
-    return <div className="row">
-      <div className="span12">
+  // TODO:) WHY IS THIS RETURNING LISTS OF LISTS?!?!
 
-      {[...this.pointsByRowAndColumn()].map(this.renderPointRow)}
+  render(){
+    if (this.props.loading) {
+      return <div>Loading!</div>
+    } else if (!this.props.data.points) {
+      return <div>Loading points...</div>
+    } else {
+      console.log(this.props.data.points)
+      // return <div>{JSON.stringify(this.props.data.points.edges)}</div>
+      return <div className="row">
+        <div className="span12">
+        {JSON.stringify([...this.edgesByRowAndColumn()])}
+        </div>
       </div>
-      <button onClick={this.loadCurrentPagePoint}>Load current page point data</button>
-    </div>
+    }
   }
 }
+      // .map(this.renderPointRow)
+//        <button onClick={this.loadCurrentPagePoint}>Load current page point data</button>
 
 const cards = <PointList/>
 
@@ -382,19 +445,24 @@ function PostList({data: {loading, points}}) {
 }
 
 const getPoints = gql`{
-  points {
-    title
-    upVotes
+  points(first: 1) {
+    edges {
+      node {
+        title,
+        upVotes,
+        supportingPoints { edges { node { title, upVotes }, relevance } },
+        counterPoints { edges { node { title, upVotes }, relevance } }
+      }
+    }
   }
-}
-`;
+}`;
 
-const PointListWithPoints = graphql(getPoints)(PostList);
+const PointListWithPoints = graphql(getPoints)(PointList);
 
 
 const client = new ApolloClient({});
 
-let templateData = document.getElementById('config').dataset
+let templateData = document.getElementById('config') ? document.getElementById('config').dataset : {}
 ReactDOM.render(
   <ApolloProvider client={client}><PointListWithPoints/></ApolloProvider>,
   document.getElementById('root')

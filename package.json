@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "devDependencies": {
     "babel-core": "^6.25.0",
+    "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "grunt": "~0.4.2",
     "grunt-gae": "^0.2.4",
+    "jest": "^21.2.1",
+    "react-test-renderer": "^16.0.0",
     "webpack-bundle-tracker": "^0.2.0"
   },
   "dependencies": {
@@ -24,6 +27,8 @@
     "grunt-preprocess": "^4.0.0",
     "grunt-rename": "^0.1.3",
     "grunt-shell": "0.3.x",
+    "immutable": "^4.0.0-rc.9",
+    "pretty-immutable": "^1.0.1",
     "react": "^15.6.1",
     "react-apollo": "^1.4.16",
     "react-dom": "^15.6.1",
@@ -33,6 +38,7 @@
     "bundle": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --config webpack.config.js --progress --colors --watch",
     "prestart": "npm run bundle",
-    "start": "grunt local"
+    "start": "grunt local",
+    "test": "jest"
   }
 }

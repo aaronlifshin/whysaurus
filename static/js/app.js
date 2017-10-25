@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PointListWithPoints from './ys/point_list';
+import {PostListWithPoints, PointListWithPoints} from './ys/point_list';
 
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
@@ -88,46 +88,7 @@ const dummyPoints = [
 
 const client = new ApolloClient({});
 
-export function PostList({data: {loading, points}}) {
-  console.log("BAR")
-  console.log(loading)
-  console.log(points)
-  if (loading) {
-    return <div>Loading</div>;
-  } else {
-    return (
-      <div>
-        <ul>
-          {points.map(point =>
-            <li key={point.title}>
-              {point.title}
-              ({point.upVotes} votes)
-            </li>
-          )}
-        </ul>
-      </div>
-    );
-  }
-}
-export const getPoints = gql`{
-  points(first: 1) {
-    edges {
-      node {
-        title,
-        upVotes,
-        supportingPoints { edges { node { title, upVotes }, relevance } },
-        counterPoints { edges { node { title, upVotes }, relevance } }
-      }
-    }
-  }
-}`;
-export const PostListWithPoints = graphql(getPoints)(PostList);
-
 let templateData = document.getElementById('config').dataset
-// ReactDOM.render(
-//   <ApolloProvider client={client}><PostListWithPoints/></ApolloProvider>,
-//   document.getElementById('root')
-// );
 ReactDOM.render(
   <ApolloProvider client={client}><PointListWithPoints/></ApolloProvider>,
   document.getElementById('root')

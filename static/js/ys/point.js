@@ -87,12 +87,11 @@ function More(){
   return <span>More</span>
 }
 
-export class PointCard extends React.Component {
+class PointCard extends React.Component {
   constructor(props) {
     super(props)
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
-    this.state = {point: props.point}
   }
 
   get point() {
@@ -123,7 +122,7 @@ export class PointCard extends React.Component {
   }
 
   render(){
-    const point = this.state.point
+    const point = this.props.point
     let classes = `point-card row-fluid ${this.evidenceTypeClass()}`
     return <div className={classes}>
       <div className="span9">
@@ -152,3 +151,5 @@ export class PointCard extends React.Component {
     </div>
   }
 }
+
+export {PointCard};

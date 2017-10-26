@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {PointCard, Byline} from './point';
+import {EvidenceType, PointCard, Byline} from './point';
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import { gql, graphql } from 'react-apollo';
@@ -52,7 +52,8 @@ class PointList extends React.Component {
   renderPointCard(pointEdge, index) {
     let point = pointEdge.get("node")
     if (point) {
-      return <div className="span5" key={point.key}>
+      // TODO: use a different key for the div, probably
+      return <div className="span5" key={point.title}>
         <PointCard point={point}
                    evidenceType={pointEdge.evidenceType}
                    handleSeeEvidence={this.handleSeeEvidence}
@@ -91,9 +92,6 @@ class PointList extends React.Component {
 }
 
 function PostList({data: {loading, points}}) {
-  console.log("BAR")
-  console.log(loading)
-  console.log(points)
   if (loading) {
     return <div>Loading</div>;
   } else {
@@ -112,14 +110,31 @@ function PostList({data: {loading, points}}) {
   }
 }
 
-const getPoints = gql`{
+const pointFieldsFragment = gql`
+fragment pointFields on Point {
+  title,
+  authorName,
+  authorURL,
+  imageURL,
+  upVotes,
+  downVotes,
+  numSupporting,
+  numCounter,
+  numComments,
+  supportedCount
+}
+`
+
+const getPoints = gql`
+${pointFieldsFragment}
+query Points {
   points(first: 1) {
     edges {
       node {
-        title,
-        upVotes,
-        supportingPoints { edges { node { title, upVotes }, relevance } },
-        counterPoints { edges { node { title, upVotes }, relevance } }
+        ...pointFields
+
+        supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
+        counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
       }
     }
   }

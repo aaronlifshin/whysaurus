@@ -11,15 +11,39 @@ class Point(NdbObjectType):
         model = PointModel
         interfaces = (relay.Node,)
 
+    numSupporting = graphene.Int()
+    def resolve_numSupporting(self, info):
+        return self.numSupporting
+
+    numCounter = graphene.Int()
+    def resolve_numCounter(self, info):
+        return self.numCounter
+
+    numComments = graphene.Int()
+    def resolve_numComments(self, info):
+        # TODO: need to get a link to the point root and then get numComments from that
+        return 42
+
+    supportedCount = graphene.Int()
+    def resolve_supportedCount(self, info):
+        # TODO: need to get a link to the point root and then get supportedCount from that
+        return 42
+
     supportingPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_supportingPoints(self, info, **args):
         points = self.getLinkedPoints("supporting", None)
-        return points or []
+        if points:
+            for point in points:
+                point.link_type = 'supporting'
+            return points or []
 
     counterPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_counterPoints(self, info, **args):
         points = self.getLinkedPoints("counter", None)
-        return points or []
+        if points:
+            for point in points:
+                point.link_type = 'counter'
+            return points or []
 
 class SubPointConnection(relay.Connection):
     class Meta:
@@ -29,6 +53,11 @@ class SubPointConnection(relay.Connection):
         relevance = graphene.Float()
         def resolve_relevance(self, info, **args):
             return self.node._linkInfo.rating
+
+        type = graphene.String()
+        def resolve_type(self, info, **args):
+            # this assumes link_type has been set in the Point.resolve_xxxPoints methods, above
+            return self.node.link_type
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)

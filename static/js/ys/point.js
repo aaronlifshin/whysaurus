@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-const EvidenceType = Object.freeze({
+export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
     SUPPORT:  Symbol("support"),
-    OPPOSE: Symbol("oppose")
+    COUNTER: Symbol("counter")
 });
 
 function Byline(props){
-  return <span><a href={props.point.creatorURL}>@{props.point.creatorName}</a> and {props.point.numUsersContributed} others</span>
+  return <span><a href={props.point.authorURL}>@{props.point.authorName}</a></span>
 }
 
 function CommentCount(props){
@@ -36,6 +36,18 @@ class EvidenceLink extends React.Component {
     this.handleClickHide = this.handleClickHide.bind(this);
   }
 
+  get point() {
+    return this.props.point;
+  }
+
+  hasEvidence() {
+    return this.point.numSupporting > 0 || this.point.numCounter > 0;
+  }
+
+  hasExpandedEvidence() {
+    return this.point.supportingPoints.edges.length > 0 || this.point.counterPoints.edges.length > 0
+  }
+
   handleClickSee(e) {
     console.log("see");
     this.props.onSee && this.props.onSee()
@@ -47,8 +59,8 @@ class EvidenceLink extends React.Component {
   }
 
   render(){
-    if (this.props.point.numSupporting > 0 || this.props.point.numCounter > 0) {
-      if (this.props.expanded) {
+    if (this.hasEvidence()) {
+      if (this.props) {
         return <a onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
         return <a onClick={this.handleClickSee}>See Evidence</a>
@@ -95,34 +107,38 @@ class PointCard extends React.Component {
   }
 
   get point() {
-    return this.props.point || this.edge.node;
+    return this.props.point || this.props.edge.node;
+  }
+
+  get evidenceType() {
+    return this.props.edge ? this.props.edge.evidenceType : null
   }
 
   handleSeeEvidence() {
     console.log("see evidence");
-    this.props.handleSeeEvidence && this.props.handleSeeEvidence(this.props.point)
+    this.props.handleSeeEvidence && this.props.handleSeeEvidence(this.point)
   }
 
   handleHideEvidence() {
     console.log("hide evidence");
-    this.props.handleHideEvidence && this.props.handleHideEvidence(this.props.point)
+    this.props.handleHideEvidence && this.props.handleHideEvidence(this.point)
   }
 
   evidenceTypeClass() {
-    switch (this.props.evidenceType){
+    switch (this.evidenceType){
       case EvidenceType.ROOT:
         return "root"
       case EvidenceType.SUPPORT:
         return "support"
-      case EvidenceType.OPPOSE:
-        return "oppose"
+      case EvidenceType.COUNTER:
+        return "counter"
       default:
         return ""
     }
   }
 
   render(){
-    const point = this.props.point
+    const point = this.point
     let classes = `point-card row-fluid ${this.evidenceTypeClass()}`
     return <div className={classes}>
       <div className="span9">
@@ -147,7 +163,7 @@ class PointCard extends React.Component {
           </div>
         </div>
       </div>
-      <div className="span3">img</div>
+      <div className="span3"><img src={point.imageURL} alt="an image"></img></div>
     </div>
   }
 }

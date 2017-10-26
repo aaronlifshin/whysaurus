@@ -680,6 +680,10 @@ class WhysaurusUser(auth_models.User):
                 shouldEmail = True
         
             if shouldEmail:
+                if not user.email:
+                    logging.info('User %s has unread notifications but no email' % user.name)
+                    continue
+
                 logging.info('Checking for active notifications for user %s' % user.name)            
                 notifications = user.getUnreadNotificationsAfter(lastSentTime)
                 if notifications:

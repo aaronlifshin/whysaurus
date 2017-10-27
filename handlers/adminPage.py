@@ -127,7 +127,7 @@ class AdminPage(AuthHandler):
 
         if user.canSendUserEmail():
             logging.info('Sending Admin Test Email: %s' % user.name)
-            user.sendUserEmail("Test Email!", "Top O' The Morning From Ys!", None)
+            user.sendUserNotificationEmailTest()
         else:
             logging.info('Unable To Send User Email For Admin Test: %s' % user.name)
 

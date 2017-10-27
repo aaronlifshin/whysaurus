@@ -36,7 +36,10 @@ class Notification(ndb.Model):
 
     @webapp2.cached_property
     def referencePoint(self):
-        return self.pointRootFull.getCurrent()
+        if self.pointRootFull:
+            return self.pointRootFull.getCurrent();
+        else:
+            return None
     
     def additionalUserCount(self):
         return len(self.additionalUserKeys)

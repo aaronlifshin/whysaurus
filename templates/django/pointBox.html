@@ -1,5 +1,13 @@
-<div class="pointCard toggleChildVisOnHover {% if point.belowRelevanceThreshold %} belowThreshold{% endif %}" data-pointurl='{{point.url}}'>
-   <div class="row-fluid">
+<div class="pointCardArea toggleChildVisOnHover {% if point.belowRelevanceThreshold %} belowThreshold{% endif %}" data-pointurl='{{point.url}}'>
+
+    <div class="pointCardChild {% if point.numSupportingPlusCounter > 2 %}pointCardDrawn{% else %}pointCardHidden{% endif %} 
+                               {% if point.linksRatio <= 75 %}pointCardRed{% else %}pointCardGrey{% endif %}">
+        <div class="pointCardChild {% if point.numSupportingPlusCounter > 1 %}pointCardDrawn{% else %}pointCardHidden{% endif %} 
+                                   {% if point.linksRatio <= 50 %}pointCardRed{% else %}pointCardGrey{% endif %}">                        
+            <div class="pointCardChild {% if point.numSupportingPlusCounter > 0 %}pointCardDrawn{% else %}pointCardHidden{% endif %} 
+                                       {% if point.linksRatio <= 20 %}pointCardRed{% else %}pointCardGrey{% endif %}">             
+                <div class="pointCardTop pointCardChild pointCardDrawn pointCardGrey">  
+                    <div class="row-fluid">
        <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %} {% if point.imageURL and point.imageURL.strip %}responsivePointBoxTitleWithImage{% endif %}">
           <div class="pointTitle">
               <a href="/point/{{ point.url }}" style="text-decoration:none">                  
@@ -34,8 +42,7 @@
       </div>
     {% endif %}                      
    </div>
-  
-      <div class="pointBoxActions pointBoxStatLine row-fluid" name="pointBoxActionLine">
+                    <div class="pointBoxActions pointBoxStatLine row-fluid" name="pointBoxActionLine">
 	
         <span class="stat">
 			{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
@@ -85,4 +92,8 @@
 		-->
 		
       </div>           
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

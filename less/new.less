@@ -741,21 +741,22 @@ a:visited {
    END NOTIFICATION AREA IN PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
+   /*
 .pointCardArea {   
 	margin-bottom: @spaceBtPointCards;
     position: relative;
     top: 8px;
     left: -5px;
-}
+}*/
 
 /* This .pointCard class is referred to somehow in the JSON that displays comments.
 When I was building the cardstack, placing this class on multiple cards gave me a 
 JSON error related to displaying comments. But when I don't use this class, the error goes away... -JF */
 .pointCard {
-    position: relative;    
-    background-color: white;
-    left: 3px;
-    top: -3px;
+	margin-bottom: @spaceBtPointCards;
+    position: relative;
+    top: 8px;
+    left: -5px;
 }
 
 .pointCardChild {
@@ -765,7 +766,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
     top: -3px;
 }
 
-.pointCardArea:hover .pointCardChild {
+.pointCard:hover .pointCardChild {
     background-color: rgb(244, 253, 255);
 }
 

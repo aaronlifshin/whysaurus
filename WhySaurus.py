@@ -82,6 +82,7 @@ routes = [
           name='clearNotifications'),
     Route('/uploadUsers', handler='WhySaurus.AdminPage:uploadUsers', name='uploadUsers'),
     Route('/uploadUserPage', handler='WhySaurus.AdminPage:uploadUserPage', name='uploadUserPage'),
+    Route('/adminTest', handler='WhySaurus.AdminPage:adminTest', name='adminTest'),
     Route('/job/testPage', TestPage),    
     Route('/job/setEditorPickSort', SetEditorPickSort),
     Route('/job/updateSupportingPointsSchema', UpdateSupportingPointsSchema),

@@ -659,6 +659,28 @@ class WhysaurusUser(auth_models.User):
         self.lastEmailSent = None
         self.put()
 
+    def canSendUserEmail(self):
+        # TODO: Should we check that we haven't sent to many emails to the user, etc?
+        return hasattr(self, 'email') and self.email
+
+    def sendUserEmail(self, subject, body, html):
+        if not self.canSendUserEmail():
+            raise RuntimeError('User.canSendUserEmail failed for sent request')
+
+        message = mail.EmailMessage(
+            sender='Whysaurus <community@whysaurus.com>',
+            to=self.email,
+            bcc='notification.copies@whysaurus.com',
+            subject=subject,
+            body=body,
+            reply_to="community@whysaurus.com"
+        )
+
+        if html:
+            message.html = html
+
+        message.send()
+
     @classmethod
     def sendNotificationEmails(cls, handler):
         # retrieve and iterate all users where the frequency is daily or weekly
@@ -680,8 +702,8 @@ class WhysaurusUser(auth_models.User):
                 shouldEmail = True
         
             if shouldEmail:
-                if not user.email:
-                    logging.info('User %s has unread notifications but no email' % user.name)
+                if not user.canSendUserEmail():
+                    logging.info('User %s has unread notifications but email unavailable' % user.name)
                     continue
 
                 logging.info('Checking for active notifications for user %s' % user.name)            

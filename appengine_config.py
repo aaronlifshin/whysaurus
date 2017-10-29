@@ -1,7 +1,12 @@
+# appengine_config.py
+from google.appengine.ext import vendor
+
 remoteapi_CUSTOM_ENVIRONMENT_AUTHENTICATION = (
     'HTTP_X_APPENGINE_INBOUND_APPID', ['whysaurus'])
 
 appstats_CALC_RPC_COSTS = True
+
+vendor.add('lib')
 
 def webapp_add_wsgi_middleware(app):
   from google.appengine.ext.appstats import recording

@@ -378,6 +378,10 @@ class WhysaurusUser(auth_models.User):
         # We only send notifications for agrees at the moment
         if voteValue == 1:
             point.addNotificationTask(pointRootKey, self.key, 1)
+        elif voteValue == -1:
+            point.addNotificationTask(pointRootKey, self.key, 8)
+        else:
+            logging.warning('Unexpected Vote Value For Notification: %d' % voteValue)
 
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
@@ -673,31 +677,31 @@ class WhysaurusUser(auth_models.User):
             daysDiff = timeDelta.days
         
             shouldEmail = False
-        
+
             if user.notificationFrequency == "Daily" and daysDiff >= 1:
                 shouldEmail = True
             elif user.notificationFrequency == "Weekly" and daysDiff >= 7:
                 shouldEmail = True
-        
+
             if shouldEmail:
-                logging.info('Checking for active notifications for user %s' % user.name)            
+                logging.info('Checking for active notifications for user %s' % user.name)
                 notifications = user.getUnreadNotificationsAfter(lastSentTime)
                 if notifications:
-                    logging.info('Sending %d notifications to user %s' % (len(notifications), user.name))  
-                    
+                    logging.info('Sending %d notifications to user %s' % (len(notifications), user.name))
+
                     # generate the email body from the notifications
-                    html = handler.template_render(                
-                        'notificationEmail.html', 
+                    html = handler.template_render(
+                        'notificationEmail.html',
                         {'user':user, 'notifications':notifications}
                     )
-               
+
                     points = [n.referencePoint.title + '\n' for n in notifications]
-                    points = list(set(points))                    
-                    text = handler.template_render(                
-                        'notificationEmailText.html', 
+                    points = list(set(points))
+                    text = handler.template_render(
+                        'notificationEmailText.html',
                         {'user':user, 'pointTitles':points}
                     )
-                                  
+
                     mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
                         to=[user.email, 'notification.copies@whysaurus.com'],
                         subject=user.name + ', People are reacting to your views on Whysaurus!',
@@ -710,7 +714,7 @@ class WhysaurusUser(auth_models.User):
                     # write the time the last notification was sent
                     user.lastEmailSent = datetime.datetime.now()
                     user.put()
-                                
+
             else:
                 logging.info('User %s has no unread notifications or was emailed recently' % user.name)
 

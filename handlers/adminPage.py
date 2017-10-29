@@ -120,7 +120,16 @@ class AdminPage(AuthHandler):
         self.response.out.write(
             self.template_render('admin.html', template_values))
 
-        namespace_manager.set_namespace(userNamespace)  
+        namespace_manager.set_namespace(userNamespace)
+
+    def adminTest(self):
+        user = self.current_user
+
+        if user.canSendUserEmail():
+            logging.info('Sending Admin Test Email: %s' % user.name)
+            user.sendUserNotificationEmailTest()
+        else:
+            logging.info('Unable To Send User Email For Admin Test: %s' % user.name)
 
     def uploadUserPage(self):
 

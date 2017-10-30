@@ -798,13 +798,28 @@ class WhysaurusUser(auth_models.User):
                         {'user':user, 'pointTitles':points}
                     )
 
-                    mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
-                        to=[user.email, 'notification.copies@whysaurus.com'],
-                        subject=user.name + ', People are reacting to your views on Whysaurus!',
+                    # old version, delete once the new version is working:
+                    # mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
+                    #    to=[user.email, 'notification.copies@whysaurus.com'],
+                    #    subject=user.name + ', People are reacting to your views on Whysaurus!',
+                    #    body=text,
+                    #    html=html,
+                    #    reply_to="community@whysaurus.com"
+                    # )
+                    
+                    # new version:
+                    message = mail.EmailMessage(
+                        sender='Whysaurus <community@whysaurus.com>',
+                        to=user.email,
+                        bcc='notification.copies@whysaurus.com',
+                        subject=user.name + ' people are reacting to your arguments on Whysaurus!',
                         body=text,
-                        html=html,
                         reply_to="community@whysaurus.com"
-                    )
+                    )                    
+                    if html:
+                        message.html = html
+                    message.send()
+                    # (end of new version)                                    
 
                     logging.info('Sent mail to user %s' % user.name)
                     # write the time the last notification was sent

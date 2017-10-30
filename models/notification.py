@@ -70,7 +70,7 @@ class Notification(ndb.Model):
         elif c == 7:
             return "unlinked supporting points from" if plural else "unlinked a supporting point from"
         else:
-            return "changed" # could raise exception here instead?
+            return "contributed to" # could raise exception here instead?
         
     @property
     def raisedDateSecs(self):

@@ -1,5 +1,14 @@
-Hi there, {{user.name}},<br>
-Whysaurus has seen activity on points you're interested in:<br>
+Hi {{user.name}},<br>
+Your arguments have stimulated activity in the community:<br>
+
+<!-- other ideas, could be fun to randomize this 
+There's been activity in your arguments you've shown interest in:<br>
+People are contributing to your arguments:<br>
+Your arguments are on fire, (in a good way):<br>
+Users have been jumping into your arguments:<br>
+The community has been jumping into your arguments:<br>
+-->
+
 <br>
 {% for notification in user.notifications %}
     
@@ -26,7 +35,7 @@ Whysaurus has seen activity on points you're interested in:<br>
 
 {% endfor %}
 <br>
-Whysaurus is a work-in-progress. If you have suggestions for how to improve this project, please respond to this email with your thoughts - we'd love to hear them.<br>
+Whysaurus is a work-in-progress. If you have suggestions, please respond with your thoughts - we'd love to hear them.<br>
 <br>
 <br>
 Warmly,<br>

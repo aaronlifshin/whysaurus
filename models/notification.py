@@ -12,7 +12,8 @@ from google.appengine.api import channel
 from google.appengine.ext.webapp import template
 from oauth2client.client import GoogleCredentials
 
-FIREBASE_URL = "https://whysaurustest.firebaseio.com"
+FIREBASE_URL = "https://whysaurus.firebaseio.com"
+# FIREBASE_URL = "https://whysaurustest.firebaseio.com"
 FIREBASE_SCOPES = [
     'https://www.googleapis.com/auth/firebase.database',
     'https://www.googleapis.com/auth/userinfo.email']

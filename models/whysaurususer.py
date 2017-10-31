@@ -378,10 +378,10 @@ class WhysaurusUser(auth_models.User):
         # We only send notifications for agrees at the moment
         if voteValue == 1:
             point.addNotificationTask(pointRootKey, self.key, 1)
-        elif voteValue == -1:
-            point.addNotificationTask(pointRootKey, self.key, 8)
-        else:
-            logging.warning('Unexpected Vote Value For Notification: %d' % voteValue)
+        # elif voteValue == -1:
+        #     point.addNotificationTask(pointRootKey, self.key, 8)
+        # else:
+        #     logging.warning('Unexpected Vote Value For Notification: %d' % voteValue)
 
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE

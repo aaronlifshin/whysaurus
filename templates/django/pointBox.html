@@ -46,18 +46,24 @@
 	
         <span class="stat">
 			{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
-				<!--<span><a class="pointBoxActions seeEvidence" href="/point/{{ point.url }}">See Evidence</a></span>  -->
+				<span><a class="pointBoxActions seeEvidence" href="/point/{{ point.url }}">See Evidence</a></span>
+                
+                <!-- arrow icons
 				{% if point.numSupporting > 0 %}
 					<img class="arrowIcon" src="/static/img/arrowBent_small_black.png"/>
 				{% endif %}
 				{% if point.numCounter > 0 %}
 					<img class="arrowIcon" src="/static/img/arrowBent_small_red.png"/>
 				{% endif %}
+                --> 
+                
 				{% if point.sources|length > 0 %}
 					<span class="stat showStatOnHover">
 					<img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><!--{{ point.sources|length }}-->
 					</span>
 				{% endif %}
+              
+                
 			{% else %} 
 				<!--<span ><a class="pointBoxActions needsEvidence " href="/point/{{ point.url }}">No Evidence, add some</a></span>-->
 				<span ><a class="pointBoxActions needsEvidence" href="/point/{{ point.url }}"><span class="shownStatTillHidden">No </span><span class="hiddenStatTillRevealed">Add </span>Evidence</a></span>
@@ -65,10 +71,7 @@
 			{% endif %}
         </span>
 
-		<span class="hiddenAgreeCtrlTillRevealed">
-			<!--{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
-				<span ><a class="pointBoxActions" href="/point/{{ point.url }}">See Evidence</a></span>
-			{% endif %}-->
+		<span class="">
 			<span> &#183;  </span><!-- &#183; = small dot -->
             <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin"><span class="scaleDownOnClick">Agree</span></div>
             <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}"> <span class="scaleDownOnClick">Disagree</span></div>

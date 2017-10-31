@@ -379,6 +379,10 @@ class WhysaurusUser(auth_models.User):
         # We only send notifications for agrees at the moment
         if voteValue == 1:
             point.addNotificationTask(pointRootKey, self.key, 1)
+        # elif voteValue == -1:
+        #     point.addNotificationTask(pointRootKey, self.key, 8)
+        # else:
+        #     logging.warning('Unexpected Vote Value For Notification: %d' % voteValue)
 
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
@@ -757,17 +761,17 @@ class WhysaurusUser(auth_models.User):
         cntErrors = 0
         cntErrorsConsecutive = 0
         qry = cls.query(WhysaurusUser.notificationFrequency.IN(['Daily', 'Weekly']))
-        for user in qry.iter():
+        for user in qry.iter():        
             # TODO: Renable exception handling once comfortable with reporting
             # try:
 
             lastSentTime = user.lastEmailSent if user.lastEmailSent else datetime.datetime(2000,1,1)
-            now = datetime.datetime.now()
+            now = datetime.datetime.now() 
             today = datetime.datetime(now.year, now.month, now.day)
-            lastDaySent = datetime.datetime(lastSentTime.year, lastSentTime.month, lastSentTime.day)
-            timeDelta = today - lastDaySent
+            lastDaySent = datetime.datetime(lastSentTime.year, lastSentTime.month, lastSentTime.day)            
+            timeDelta = today - lastDaySent            
             daysDiff = timeDelta.days
-
+        
             shouldEmail = False
 
             if user.notificationFrequency == "Daily" and daysDiff >= 1:

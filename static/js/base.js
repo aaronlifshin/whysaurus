@@ -1287,14 +1287,14 @@ function sendChatMessage(message) {
     });
 }
    
-function processMessage(messageObj) {
-    var dataObj = JSON.parse(messageObj.data);
-    if (dataObj.type == 'notification') {
-        processNotification(dataObj);
-    } else if (dataObj.type == 'chat') {
-        processChat(dataObj);
-    }
-}
+// function processMessage(messageObj) {
+//     var dataObj = JSON.parse(messageObj.data);
+//     if (dataObj.type == 'notification') {
+//         processNotification(dataObj);
+//     } else if (dataObj.type == 'chat') {
+//         processChat(dataObj);
+//     }
+// }
 
 function existingNotification(notificationData) {
 
@@ -1337,53 +1337,75 @@ function processNotification(notificationData) {
           
 }
 
-function processChat(dataObj) {
-    // If the chat is shown, add this to the chat
-    if ($('#chatContent').is(':visible')) {
-        $('#chatContent').after('<div>' + dataObj.userName + ':' + dataObj.message + '</div>');   		
-    }
-}
+// function processChat(dataObj) {
+//     // If the chat is shown, add this to the chat
+//     if ($('#chatContent').is(':visible')) {
+//         $('#chatContent').after('<div>' + dataObj.userName + ':' + dataObj.message + '</div>');
+//     }
+// }
 
-function reconnectChannel(errorObj) {
-    if (channelErrors > 2) {
-         showAlert('Cannot receive notifications. Error was: ' + errorObj.description + ' Code: ' + errorObj.code);        
-     } else {
-         try {
-             channelErrors = channelErrors + 1;            
-         } catch (err) {
-             alert(err.message);
-         }
-         try {
-             $.ajaxSetup({
-            		url: "/newNotificationChannel",
-            		global: false,
-            		type: "POST",           		
-                 success: function(obj) {
-            			if (obj.result == true) { 
-            			    channelToken = obj.token;
-            			    notificationChannelOpen();
-            			} else {
-            			    showAlert("Could not request notification channel.  Cannot receive notifications.");
-            			}
-            		},
-            		error: function(xhr, textStatus, error){
-            		    showAlert("Error connecting to notification channel: " + textStatus);       
-                 },
-            	}); 
-         } catch (err) {
-             alert("2" + err.message);            
-         }
-         $.ajax();        
-     }    
+// function reconnectChannel(errorObj) {
+//     if (channelErrors > 2) {
+//          showAlert('Cannot receive notifications. Error was: ' + errorObj.description + ' Code: ' + errorObj.code);
+//      } else {
+//          try {
+//              channelErrors = channelErrors + 1;
+//          } catch (err) {
+//              alert(err.message);
+//          }
+//          try {
+//              $.ajaxSetup({
+//             		url: "/newNotificationChannel",
+//             		global: false,
+//             		type: "POST",
+//                  success: function(obj) {
+//             			if (obj.result == true) {
+//             			    channelToken = obj.token;
+//             			    notificationChannelOpen();
+//             			} else {
+//             			    showAlert("Could not request notification channel.  Cannot receive notifications.");
+//             			}
+//             		},
+//             		error: function(xhr, textStatus, error){
+//             		    showAlert("Error connecting to notification channel: " + textStatus);
+//                  },
+//             	});
+//          } catch (err) {
+//              alert("2" + err.message);
+//          }
+//          $.ajax();
+//      }
+// }
+
+function processMessageFirebase(dataObj) {
+    if (dataObj == null) {
+        console.log('NULL Firebase Message Received! ');
+        return;
+    }
+
+    console.log('Firebase Message Received: ' + dataObj.type);
+    if (dataObj.type == 'notification') {
+        processNotification(dataObj);
+    } else if (dataObj.type == 'chat') {
+        processChat(dataObj);
+    }
 }
 
 function notificationChannelOpen() {
     if (typeof(channelToken) != "undefined") {
-        lastNotiSecs = $("#notificationMenuHeader").data('latest');
-        channel = new goog.appengine.Channel(channelToken);
-        socket = channel.open();
-        socket.onmessage = processMessage;
-        socket.onclose = reconnectChannel;
+        // lastNotiSecs = $("#notificationMenuHeader").data('latest');
+        // channel = new goog.appengine.Channel(channelToken);
+        // socket = channel.open();
+        // socket.onmessage = processMessage;
+        // socket.onclose = reconnectChannel;
+
+        // setup a database reference at path /channels/channelId
+        fbChannel = firebase.database().ref('channels/' + channelToken);
+        // add a listener to the path that fires any time the value of the data changes
+        fbChannel.on('value', function(data) {
+          processMessageFirebase(data.val());
+        });
+        // TODO: Replace Close Notification
     }
   
 }

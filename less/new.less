@@ -822,7 +822,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 */
 .pointCard .pointTitle {
 	color: black;
-	font-size: @fontSizeMedium;
+	font-size: @fontSizeMedium; // @fontSizeBitLarge;
     //font-weight:bold;
 	line-height: @lineHeightBig;	
 	margin-bottom: 12px; 
@@ -1469,6 +1469,13 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .scoreAnimContainerMax { font-size: 125%; }
 .scoreAnimContainerReset { font-size: 80%; } 
 
+.pointBoxSourcesArea {
+    margin-top: 6px;
+}
+
+.pointBoxBelowTitle {
+    margin-left: 2px;
+}
    
 .pointAreaActions {
     font-family: @sansFontFamily;
@@ -1479,13 +1486,18 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .pointBoxActions {
 	font-size: @fontSizeActions;
-    color: @blue;  /*@grayTextLight;*/
+    color: @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
 	margin-bottom:2px;
-    margin-right:2px; 
+    margin-right:4px; 
     margin-top:4px;
     display:inline-block;
     z-index:1000;
+    font-weight: bold
+}
+
+.pointBoxActions:hover {
+    text-decoration: underline;   
 }
 
 .pointBoxStatLine {
@@ -1499,7 +1511,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCard:hover .pointBoxActions {
-
+    color: @blue;
 }
 
 .blue {
@@ -1540,7 +1552,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .agreeInlineMargin {
     margin-left: 6px;
-    margin-right: 2px;
+    margin-right: 16px;
 }
 
 .arrowIcon {
@@ -1603,7 +1615,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
      
 
 .iconSourcesSmall {
-    margin-right: 3px;
+    margin-right: 4px;
     padding-left:2px;
 }
 
@@ -2002,10 +2014,11 @@ JSON error related to displaying comments. But when I don't use this class, the 
     font-size: @fontSizeSmall;
     margin-top: -4px;
     margin-bottom:8px;
+    font-style: italic;
 }
 
 .mainPointSourceEntry a {
-    color: @grayTextLight;
+    color: @grayTextLighter;
 }
 
 

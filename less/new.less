@@ -1603,7 +1603,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
      
 
 .iconSourcesSmall {
-    padding-right: -10px;
+    margin-right: 3px;
     padding-left:2px;
 }
 
@@ -1994,14 +1994,21 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .mainPointSourcesHeading{
     font-size: @fontSizeSmallCaps;
     color: @grayTextLight; //@grayTextMedium;
-    margin-bottom: 3px;
+    margin-bottom: 6px;
+    margin-top: 16px;
 }
 
-.mainPointSourceEntry{
+.mainPointSourceEntry {
     font-size: @fontSizeSmall;
     margin-top: -4px;
     margin-bottom:8px;
 }
+
+.mainPointSourceEntry a {
+    color: @grayTextLight;
+}
+
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END: SOURCE ENTRIES IN MAINPOINTS
@@ -2092,6 +2099,7 @@ h4.mission {
 
 #timestampAndEditLink {
 	margin-bottom: 12px;
+    margin-top: 15px;
 }
 
 #viewPointHistory {

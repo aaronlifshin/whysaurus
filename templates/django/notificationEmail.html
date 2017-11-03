@@ -1,5 +1,14 @@
-Hi there, {{user.name}},<br>
-Whysaurus has seen activity on points you're interested in:<br>
+Hi {{user.name}},<br>
+Your arguments have stimulated activity:<br>
+
+<!-- other ideas, could be fun to randomize this 
+There's been activity in your arguments you've shown interest in:<br>
+People are contributing to your arguments:<br>
+Your arguments are on fire, (in a good way):<br>
+Users have been jumping into your arguments:<br>
+The community has been jumping into your arguments:<br>
+-->
+
 <br>
 {% for notification in user.notifications %}
     
@@ -26,14 +35,15 @@ Whysaurus has seen activity on points you're interested in:<br>
 
 {% endfor %}
 <br>
-Whysaurus is a work-in-progress. If you have suggestions for how to improve this project, please respond to this email with your thoughts - we'd love to hear them.<br>
+Whysaurus is a work-in-progress. If you have suggestions, please respond with your thoughts - we'd love to hear them.<br>
 <br>
 <br>
 Warmly,<br>
 Whysaurus<br>
 <br>
-<span style="font-weight:400;	font-size:0.75em;	color:#6D6E70;	line-height:120%;">Follow Whysaurus on <a target="_blank" href="https://twitter.com/Whysaurus">Twitter</a> and <a target="_blank" href="https://www.facebook.com/Whysaurus">Facebook</a></span><br>
-<br>
-<span style="font-weight:400;	font-size:0.75em;	color:#6D6E70;	line-height:120%;">Adjust the frequency of these emails by clicking "Edit Email Settings" on <a target="_blank" href="http://www.whysaurus.com/user/{{user.url}}">your profile page.</a></span>
+<span style="font-weight:400;	font-size:0.75em;	color:#6D6E70;	line-height:120%;">
+You can adjust the frequency of these emails by clicking "Edit Email Settings" on <a target="_blank" href="http://www.whysaurus.com/user/{{user.url}}">your profile page.</a><br>
+Follow Whysaurus on <a target="_blank" href="https://twitter.com/Whysaurus">Twitter</a> and <a target="_blank" href="https://www.facebook.com/Whysaurus">Facebook</a>
+</span>
 <br>
 <br>

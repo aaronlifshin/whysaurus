@@ -100,7 +100,7 @@ function callPointEdit(){
                 if (obj.result) {
     				var ed = tinyMCE.get('editor_pointDialog');
     				$('.mainPointContent').html(ed.getContent());
-    				$('.mainPointTitle h1').html($('#title_pointDialog').val());
+    				$('#mainPointTitle').html($('#title_pointDialog').val());
 
                     // this refreshes the old header (time stamp, most recent contributor)
     				//updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
@@ -274,6 +274,7 @@ function upVote() {
        success: function(obj){
             if (obj.result == true) {
                 updateVoteTotal(obj.newVote, $('#voteTotal'), $( "#upVote") , $( "#downVote"));
+                updatePointScore(obj.newScore, $('#pointScoreSpan'));
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
             }
@@ -297,6 +298,7 @@ function downVote() {
         success: function(obj){
             if (obj.result == true) {
                 updateVoteTotal(obj.newVote, $('#voteTotal'), $( "#upVote"), $( "#downVote"));
+                updatePointScore(obj.newScore, $('#pointScoreSpan'));
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
             }
@@ -369,7 +371,7 @@ function populateEditFields() {
 
     $('div.modal-header h3', $('#pointDialog')).text("Edit Point");
 
-    $('#title_pointDialog').val($('#pointSummary div.mainPointTitle').text());
+    $('#title_pointDialog').val($('#mainPointTitle').text());
     setCharNumText($('#title_pointDialog')[0]);
     if (ed) {
         ed.setContent($('#pointSummary .mainPointContent').html() );
@@ -481,7 +483,10 @@ function tryAddSupporting(linkType, ajaxData, retries) {
 		success: function(obj){
 			if (obj.result == true) {
                 pointListAppend(linkType, obj.newLinkPoint, obj.numLinkPoints);
-  			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);		  				
+  			  	updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
+  			  	if (obj.parentNewScore != null) {
+  			  	    updatePointScore(obj.parentNewScore, $('#pointScoreSpan'))
+                }
                 stopSpinner();                
     		    $("#pointDialog").modal('hide');
                 enableDialogButtons('#submit_pointDialog');
@@ -498,7 +503,7 @@ function tryAddSupporting(linkType, ajaxData, retries) {
                             
                             console.log('Retry error message was: ' + errorMessage);
         		    		editDialogAlert(errorMessage);                            
-                            setTimeout(function() {tryAddSupporting(linkType, ajaxData, newRetries);}, 1000);
+                            setTimeout(function() {tryAddSupporting(linkType, ajaxData, newRetries);}, 900);
                         } else {
                             errorMessage = 'Too many attempts, please wait and hit publish again.';
         		    		editDialogAlert(errorMessage);
@@ -621,7 +626,7 @@ function setUpMenuAreas() {
         linktype = $(this).data('linktype');
         $("#selectLinkedPointSearch").data("linkType", linktype);
         $("#linkedPointSearchDialog .modal-header h3").text('Search for ' + linktype + ' points for:');  
-        $("#linkedPointSearchDialog .modal-header h1").text($('#pointSummary div.mainPointTitle').text());                      
+        $("#linkedPointSearchDialog .modal-header h1").text($('#mainPointTitle').text());                      
         $("#linkedPointSearchDialog").modal('show');
         $('body, html').animate({ scrollTop: 0}, 500);        
     });
@@ -629,7 +634,7 @@ function setUpMenuAreas() {
   
     // These elements are admin only, but jquery degrades gracefully, so not checking for their presence
     $('#changeEditorsPickTrigger').off('.ys').on('click.ys', function() {
-        title = $('#pointSummary div.mainPointTitle').text();
+        title = $('#mainPointTitle').text();
         $("#changeEditorsPick .modal-header h4").text(title);
         $("#changeEditorsPick").modal('show');
     }); 
@@ -720,6 +725,9 @@ function sendRelevanceVote(event) {
                     .text(
                         obj.newVoteCount + " User" + ( obj.newVoteCount > 1 ? "s":"") +
                         " Voting.   Curent Average: " + obj.newRelevance);
+  			  	if (obj.parentNewScore != null) {
+  			  	    updatePointScore(obj.parentNewScore, $('#pointScoreSpan'))
+                }
             } else {
 			    showAlertAfter('Not able to save vote. Try to refresh the page.', 
                     selectedRadioButton.closest('[name=areaRelevanceRadio]'));
@@ -917,7 +925,7 @@ function makeRelevanceControlsClickable() {
 
 function sharePointOnTwitter() {
     var url = $('#pointArea').data('pointurl');
-    var pointTitle = $('#pointSummary div.mainPointTitle').text();
+    var pointTitle = $('#mainPointTitle').text();
     var len = pointTitle.length;
     var text = "";
     if (len > 115) {
@@ -931,7 +939,7 @@ function sharePointOnTwitter() {
 
 function postOnFacebook() {
     var url = $('#pointArea').data('pointurl');
-    var pointTitle = $('#pointSummary div.mainPointTitle').text();
+    var pointTitle = $('#mainPointTitle').text();
     var dialogParams = {
         app_id: 144595249045851,
         method: 'feed',

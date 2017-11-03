@@ -124,9 +124,17 @@ Dinosaurs are awesome.
 
 <h2 id="nutsAndBolts">Nuts and Bolts</h2>
 
-<h4>How is a point's score calculated?</h4>
-<p>A point's score equals the number of its agrees minus the number of its disagrees. 
-In the future the scores of supporting points may have an affect on this algorithm as well.</p>
+<h4 id="scoringAlgorithm">How is a point's score calculated?</h4>
+<p>The factors that influence the score of a point are:
+<ul> 
+<li>Agrees</li>
+<li>Disagrees</li>
+<li>Sources</li>
+<li>Relevance of Supporting/Counter points</li>
+<li>Scores of Supporting/Counter points</li>
+</ul>
+The scoring algorithm is a work-in-progress. Currently the algorithm only “looks” one level down. In the future, it may be possible to defend a point’s score by attacking its counter points.
+</p>
 
 <h4>Why is there a Relevance rating in addition to the Agree/Disagree rating?</h4>
 The relevance score allows us to find the most important ideas quickly and easy.

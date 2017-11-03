@@ -1,6 +1,7 @@
 import json
 import logging
 from google.appengine.ext import ndb
+from google.appengine.api import app_identity
 
 from authhandler import AuthHandler
 from models.whysaurususer import WhysaurusUser 
@@ -62,6 +63,12 @@ class NotificationHandler(AuthHandler):
     # this one is protected by login:admin and called from the cron job
     # so it doesn't check user inside the handler
     def sendNotificationEmails(self):
+        appId = app_identity.get_application_id()
+        logging.info('GAE App Id: %s' % appId)
+        if appId != 'whysaurus':
+            logging.warning('Bypassing email notifications outside primary app. App Id: %s' % appId)
+            self.response.out.write('Bypass!')
+            return
         WhysaurusUser.sendNotificationEmails(self)
         self.response.out.write('') # succeed!
         

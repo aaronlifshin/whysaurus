@@ -40,7 +40,28 @@
     
 <div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}" data-rootus="{{point.rootURLsafe}}">
 	<div id="pointSummary" class = "span5">
-	          <div class="mainPointTitle editable"><h1 class="mainPointTitleText">{{ point.title|escape }}</h1></div>
+
+        <div class="mainPointTitleAndScore">            
+	          <span id="mainPointTitle" class="editable"><span class="mainPointTitleText">{{ point.title|escape }}</span></span>
+              <span class="mainPointScore">
+                  <span class="scoreAnimContainerMax">
+                    <span class="scoreAnimContainerReset">
+                        <span class="scoreAnimContainerAnim">
+                        <!--Elif not working?-->
+                        {% if point.pointValue > 0 %}
+                        <span id="pointScoreSpan" name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                        {% endif %}
+                        {% if point.pointValue < 0 %}
+                        <span id="pointScoreSpan" name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
+                        {% endif %}
+                        {% if point.pointValue == 0 %}
+                        <span id="pointScoreSpan" name="pointValueArea" class="noScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                        {% endif %}
+                        </span>
+                    </span>
+                  </span>
+              </span>
+        </div>
 			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
 	          {% include 'sources.html' %}
               <div id="timestampAndEditLink" >			  
@@ -75,10 +96,13 @@
 	<div id="scoreAndVotingSection" class="pointAreaActions span8">
 		<div class="span5 responsiveInline">
             <div class="span3 responsiveRightMargin topPointVotingArea">        
-                <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > Agree</a>
+                <a id="upVote" alt="Agree" class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}" > <span class="scaleDownOnClick">Agree</span></a>
                 &#183;<!-- &#183; = small dot -->
-                <a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" >
-                Disagree</a><img class="iconAgreesSmall iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall_blue.png"/><span id="voteTotal" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
+                <a id="downVote" alt="Disagree" class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}" ><span  class="scaleDownOnClick">Disagree</span></a>
+                <!-- old handshake icon: 
+                    <img class="iconAgreesSmall iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall_blue.png"/> -->
+                <!-- this id is used by the js that controls styling on the agree/disagree buttons, functionality which could be combined with the mainPointScore above -->
+                <span id="voteTotal" class="hidden" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>                               
             </div>		   
 			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->
@@ -130,6 +154,7 @@
                     <li>Agreed: <span id='upVoteStat'>{{ point.upVotes }}</span> </li>
                     <li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
                     <li>Viewed: {{ pointRoot.viewCount }}</li>
+                    <li>Score: {{point.pointValue}}</li>
                 </ul>  
             </div>
          </div>  

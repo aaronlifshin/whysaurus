@@ -414,10 +414,16 @@ function removeSource(clickedElement) {
 
 function votePointCard(elem, voteType) {
     var pointCard = $(elem).closest('.pointCard');
-    var pointURL = pointCard.data('pointurl');  
+    var pointURL = pointCard.data('pointurl');
+    var parentPointURL = $('#pointArea').data('pointurl');
     var oldVoteObj = $('[name=voteTotal]', pointCard);
     var oldVote = oldVoteObj.data('myvote');
 	//console.log("votePointCard oldVote "+ oldVote);
+
+    var scoreSpan = $('[name=pointValueArea]', pointCard);
+    var parentScoreSpan = $('#pointScoreSpan');
+    var oldScore = scoreSpan.data('myvalue');
+
     var newVote = null;
     if (voteType == "up") {
         newVote = oldVote == 1 ? 0 : 1;    
@@ -434,7 +440,8 @@ function votePointCard(elem, voteType) {
        type: "POST",
        data: {
     		'vote': newVote,
-    		'pointURL': pointURL
+    		'pointURL': pointURL,
+            'parentPointURL': parentPointURL
     		},
        success: function(obj){
             if (obj.result == true) {
@@ -470,6 +477,14 @@ function votePointCard(elem, voteType) {
                         //$('[name=voteTotal]', pointCard).append('<span class="hiddenStatTillRevealed name="netagreestext"> Net Agrees</span>');
                     //}
                 }
+
+                var score = obj.newScore;
+                updatePointScore(score, scoreSpan);                
+                    
+                if (obj.parentNewScore != null) {
+                    // putting a subtle delay on the parent update, so the user's eye is guided from child to parent
+                    setTimeout(function () { updatePointScore(obj.parentNewScore, parentScoreSpan)} , 235);
+                }
 				console.log("votePointCard done\n");
             } else {
                 alert('An error happened and your vote may not have counted. Try a page refresh?');
@@ -479,7 +494,6 @@ function votePointCard(elem, voteType) {
     $.ajax();
 	
 }
-
 
 function voteToggle(turnOn, voteLabel, classWhenOn) {
     if (turnOn) {
@@ -530,6 +544,48 @@ function updateVoteTotal(newVote, voteTotalObj, upVote, downVote) {
 	//console.log("updateVoteTotal newVoteTotal "+ newVoteTotal);
     voteTotalObj.data('myvote', newVote);
     return newVoteTotal;
+}
+
+
+function updatePointScore(newScore, pointScoreSpan) {
+    curScore = pointScoreSpan.data('myvalue')
+
+    if (newScore == curScore)
+        return;
+
+    // TODO: Better null/error checking
+    if (newScore == 0) {
+        pointScoreSpan.text('+0');
+        pointScoreSpan.addClass("noScore");
+        pointScoreSpan.removeClass("positiveScore");
+        pointScoreSpan.removeClass("redScore");
+    }
+    else if (newScore > 0) {
+        pointScoreSpan.text('+' + newScore);
+        pointScoreSpan.addClass("positiveScore");
+        pointScoreSpan.removeClass("redScore");
+        pointScoreSpan.removeClass("noScore");
+    }
+    else if (newScore < 0) {
+        pointScoreSpan.text(newScore);
+        pointScoreSpan.addClass("redScore");
+        pointScoreSpan.removeClass("positiveScore");
+        pointScoreSpan.removeClass("noScore");
+    }
+    else {
+        // Some reasonable default?
+        pointScoreSpan.text('');
+    }
+   
+    // Animation:
+    // This might be better if rebuilt to trigger CSS animations, which might also lets us remove the "anim" spans from the html.
+    // For now I'm assuming the parent element is at 100% by default -JF
+    var pointScoreSpanParent =  pointScoreSpan.parent();
+    //pointScoreSpanParent.animate( {fontSize: "95%"}, 5);
+    pointScoreSpanParent.animate( {fontSize: "112%"}, 35);
+    pointScoreSpanParent.delay(200);
+    pointScoreSpanParent.animate( {fontSize: "100%"}, 15); 
+    pointScoreSpan.data('myvalue', newScore); 
 }
 
 function updateDialogHeight() {
@@ -1231,14 +1287,14 @@ function sendChatMessage(message) {
     });
 }
    
-function processMessage(messageObj) {
-    var dataObj = JSON.parse(messageObj.data);
-    if (dataObj.type == 'notification') {
-        processNotification(dataObj);
-    } else if (dataObj.type == 'chat') {
-        processChat(dataObj);
-    }
-}
+// function processMessage(messageObj) {
+//     var dataObj = JSON.parse(messageObj.data);
+//     if (dataObj.type == 'notification') {
+//         processNotification(dataObj);
+//     } else if (dataObj.type == 'chat') {
+//         processChat(dataObj);
+//     }
+// }
 
 function existingNotification(notificationData) {
 
@@ -1281,53 +1337,75 @@ function processNotification(notificationData) {
           
 }
 
-function processChat(dataObj) {
-    // If the chat is shown, add this to the chat
-    if ($('#chatContent').is(':visible')) {
-        $('#chatContent').after('<div>' + dataObj.userName + ':' + dataObj.message + '</div>');   		
-    }
-}
+// function processChat(dataObj) {
+//     // If the chat is shown, add this to the chat
+//     if ($('#chatContent').is(':visible')) {
+//         $('#chatContent').after('<div>' + dataObj.userName + ':' + dataObj.message + '</div>');
+//     }
+// }
 
-function reconnectChannel(errorObj) {
-    if (channelErrors > 2) {
-         showAlert('Cannot receive notifications. Error was: ' + errorObj.description + ' Code: ' + errorObj.code);        
-     } else {
-         try {
-             channelErrors = channelErrors + 1;            
-         } catch (err) {
-             alert(err.message);
-         }
-         try {
-             $.ajaxSetup({
-            		url: "/newNotificationChannel",
-            		global: false,
-            		type: "POST",           		
-                 success: function(obj) {
-            			if (obj.result == true) { 
-            			    channelToken = obj.token;
-            			    notificationChannelOpen();
-            			} else {
-            			    showAlert("Could not request notification channel.  Cannot receive notifications.");
-            			}
-            		},
-            		error: function(xhr, textStatus, error){
-            		    showAlert("Error connecting to notification channel: " + textStatus);       
-                 },
-            	}); 
-         } catch (err) {
-             alert("2" + err.message);            
-         }
-         $.ajax();        
-     }    
+// function reconnectChannel(errorObj) {
+//     if (channelErrors > 2) {
+//          showAlert('Cannot receive notifications. Error was: ' + errorObj.description + ' Code: ' + errorObj.code);
+//      } else {
+//          try {
+//              channelErrors = channelErrors + 1;
+//          } catch (err) {
+//              alert(err.message);
+//          }
+//          try {
+//              $.ajaxSetup({
+//             		url: "/newNotificationChannel",
+//             		global: false,
+//             		type: "POST",
+//                  success: function(obj) {
+//             			if (obj.result == true) {
+//             			    channelToken = obj.token;
+//             			    notificationChannelOpen();
+//             			} else {
+//             			    showAlert("Could not request notification channel.  Cannot receive notifications.");
+//             			}
+//             		},
+//             		error: function(xhr, textStatus, error){
+//             		    showAlert("Error connecting to notification channel: " + textStatus);
+//                  },
+//             	});
+//          } catch (err) {
+//              alert("2" + err.message);
+//          }
+//          $.ajax();
+//      }
+// }
+
+function processMessageFirebase(dataObj) {
+    if (dataObj == null) {
+        console.log('NULL Firebase Message Received! ');
+        return;
+    }
+
+    console.log('Firebase Message Received: ' + dataObj.type);
+    if (dataObj.type == 'notification') {
+        processNotification(dataObj);
+    } else if (dataObj.type == 'chat') {
+        processChat(dataObj);
+    }
 }
 
 function notificationChannelOpen() {
     if (typeof(channelToken) != "undefined") {
-        lastNotiSecs = $("#notificationMenuHeader").data('latest');
-        channel = new goog.appengine.Channel(channelToken);
-        socket = channel.open();
-        socket.onmessage = processMessage;
-        socket.onclose = reconnectChannel;
+        // lastNotiSecs = $("#notificationMenuHeader").data('latest');
+        // channel = new goog.appengine.Channel(channelToken);
+        // socket = channel.open();
+        // socket.onmessage = processMessage;
+        // socket.onclose = reconnectChannel;
+
+        // setup a database reference at path /channels/channelId
+        fbChannel = firebase.database().ref('channels/' + channelToken);
+        // add a listener to the path that fires any time the value of the data changes
+        fbChannel.on('value', function(data) {
+          processMessageFirebase(data.val());
+        });
+        // TODO: Replace Close Notification
     }
   
 }

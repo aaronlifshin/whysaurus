@@ -59,7 +59,7 @@
                             </div>
                             -->                                                                       
                         {% endif %}
-                        <div class="pointBoxActions pointBoxStatLine row-fluid" name="pointBoxActionLine">	
+                        <div class="pointBoxStatLine row-fluid" name="pointBoxActionLine">	
                         <span class="stat">
                             {% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
                                 <span><a class="pointBoxActions seeEvidence" href="/point/{{ point.url }}">See Evidence</a></span>
@@ -79,8 +79,12 @@
                         </span>
                         <span class="">
                             <!--<span> &#183;  </span> --><!-- that's a small dot -->
-                            <div name="UpVote" class="pointBoxActions {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin"><span class="scaleDownOnClick">Agree</span></div>
-                            <div name="DownVote" class="pointBoxActions noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}"> <span class="scaleDownOnClick">Disagree</span></div>
+                            <div class="pointBoxActions {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin">
+                                <span name="UpVote" class="scaleDownOnClick">Agree</span>
+                            </div>
+                            <div class="pointBoxActions noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}">
+                                <span name="DownVote" class="scaleDownOnClick">Disagree</span>
+                            </div>
                         </span>  
 
                         <!-- arrow icons old	

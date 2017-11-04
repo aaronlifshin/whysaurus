@@ -665,7 +665,7 @@ class Point(ndb.Model):
             # (But right now that's updated as author already - if we change that we'll need to pass it.)
             root_user = linkCurrentVersion.authorURL
             if root_user:
-                logging.info('Adding contributing user: %s' % root_user)
+                logging.info('Adding contributing user: %s -> %s' % (root_user, self.url))
                 self.addContributingUser(root_user)
                 self.put()
 
@@ -813,7 +813,9 @@ class Point(ndb.Model):
                 newPoint.summaryText = self.summaryText
 
             newPoint.authorName = user.name            
-            newPoint.authorURL = user.url                        
+            newPoint.authorURL = user.url
+            newPoint.creatorName = self.creatorName
+            newPoint.creatorURL = self.creatorURL
             newPoint.supportingLinks = list(self.supportingLinks)
             newPoint.counterLinks = list(self.counterLinks)
                     
@@ -964,7 +966,11 @@ class Point(ndb.Model):
             return None
 
     def addContributingUser(self, userUrlContributed):
-        if not userUrlContributed or userUrlContributed == self.authorURL:
+        if not userUrlContributed:
+            logging.warning('addContributingUser: Invalid Contributing User!')
+            return
+        if userUrlContributed == self.creatorURL:
+            logging.info('addContributingUser: Bypass For Author: %s' % userUrlContributed)
             return
 
         # Gene: Incrementally building for now - should switch to an error state once populated
@@ -974,6 +980,7 @@ class Point(ndb.Model):
         if userUrlContributed not in self.usersContributed:
             self.usersContributed = self.usersContributed + [userUrlContributed]
             self.put()
+            logging.info('addContributingUser: %s -> %s' % (userUrlContributed, self.url))
 
     def getSources(self):
         if len(self.sources) > 0:

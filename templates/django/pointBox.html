@@ -58,22 +58,24 @@
 			{% endif %}
         </span>
 
-        <span name="pointByline">
-            <span> &#183;  </span><!-- &#183; = small dot -->
-            <a target="_blank" href="../user/{{point.authorURL}}">{{point.creatorOrAuthorName}}</a>
-            {% if point.numUsersContributed > 0 %}
-                <span name="pointBylineOtherUsers"> & {{point.numUsersContributed}} others </span>
-            {% endif %}
-        </span>
-
-		<span class="hiddenAgreeCtrlTillRevealed">
+		<!--<span class="hiddenAgreeCtrlTillRevealed">-->
+        <span>
 			<!--{% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
 				<span ><a class="pointBoxActions" href="/point/{{ point.url }}">See Evidence</a></span>
 			{% endif %}-->
 			<span> &#183;  </span><!-- &#183; = small dot -->
             <div name="UpVote" class="pointBoxActions blue {% if point.vote %}{% if point.vote == 1 %} greenVote {% else %} inactiveVote {% endif %}{% endif %} noRightMargin agreeInlineMargin"><span class="scaleDownOnClick">Agree</span></div>
             <div name="DownVote" class="pointBoxActions blue noRightMargin {% if point.vote %}{% if point.vote == -1 %} redVote {% else %} inactiveVote {% endif %}{% endif %}"> <span class="scaleDownOnClick">Disagree</span></div>
-        </span>  
+        </span>
+
+        <span name="pointByline">
+            <span> &#183;  </span><!-- &#183; = small dot -->
+            <!-- <a target="_blank" href="../user/{{point.authorURL}}">{{point.creatorOrAuthorName}}</a> -->
+            <span>{{point.creatorOrAuthorName}}</span>
+            {% if point.numUsersContributed > 0 %}
+                <span name="pointBylineOtherUsers"> & {{point.numUsersContributed}} others </span>
+            {% endif %}
+        </span>
 
 
         <!-- arrow icons old	

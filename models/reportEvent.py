@@ -16,7 +16,7 @@ class DayEventSummary(ndb.Model):
         q = q.order(-DayEventSummary.day)
         days = {}
 
-        defaultDay = {'New User' : 0, 'Login': 0, 'Create Point': 0, 'Edit Point': 0}
+        defaultDay = {'New User': 0, 'Login': 0, 'Create Point': 0, 'Edit Point': 0}
         defaultDay = OrderedDict(sorted(defaultDay.items(), key=lambda t: t[0]))
         
         for day in q.iter():            
@@ -27,7 +27,7 @@ class DayEventSummary(ndb.Model):
                 days[str(day.day)][day.name] = day.count
                 
         logging.info(str(days))
-        return days
+        return OrderedDict(sorted(days.items(), key=lambda v: v, reverse=True))
     
 class ReportEvent(ndb.Model):
     user = ndb.KeyProperty()

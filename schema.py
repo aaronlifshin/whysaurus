@@ -35,7 +35,7 @@ class Point(NdbObjectType):
         if points:
             for point in points:
                 point.link_type = 'supporting'
-            return points or []
+        return points or []
 
     counterPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_counterPoints(self, info, **args):
@@ -43,7 +43,7 @@ class Point(NdbObjectType):
         if points:
             for point in points:
                 point.link_type = 'counter'
-            return points or []
+        return points or []
 
 class SubPointConnection(relay.Connection):
     class Meta:

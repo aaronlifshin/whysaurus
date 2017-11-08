@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {EvidenceType, PointCard, Byline} from './point';
+import {GetPoint, EvidenceType, PointCard, ExpandedPointCard, Byline, newPointCard, expandedPointFieldsFragment} from './point';
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import { gql, graphql } from 'react-apollo';
@@ -35,112 +35,119 @@ export function* edgeRows(rowOfEdges, depth = 0) {
 class PointList extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {expandedIndex: {}}
+    this.isPointExpanded = this.isPointExpanded.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.renderPointCard = this.renderPointCard.bind(this);
     this.renderPointRow = this.renderPointRow.bind(this);
   }
 
+  isPointExpanded(point) {
+    return this.state.expandedIndex[point.url]
+  }
+
   handleSeeEvidence(point) {
-    console.log("see evidence for ", point.key)
+    const i = this.state.expandedIndex
+    i[point.url] = true
+    this.setState({expandedIndex: i})
+    console.log("see evidence for ", point.url)
   }
 
   handleHideEvidence(point) {
-    console.log("hide evidence for ", point.key)
+    const i = this.state.expandedIndex
+    i[point.url] = false
+    this.setState({expandedIndex: i})
+    console.log("hide evidence for ", point.url)
   }
 
   renderPointCard(pointEdge, index) {
-    let point = pointEdge.get("node")
-    if (point) {
-      // TODO: use a different key for the div, probably
-      return <div className="span5" key={point.title}>
-        <PointCard point={point}
-                   evidenceType={pointEdge.evidenceType}
-                   handleSeeEvidence={this.handleSeeEvidence}
-                   handleHideEvidence={this.handleHideEvidence}/>
-	</div>
+    return newPointCard(pointEdge,
+                        {index: index,
+                         expandedIndex: this.state.expandedIndex,
+                         handleSeeEvidence: this.handleSeeEvidence,
+                         handleHideEvidence:this.handleHideEvidence});
+  }
+
+  renderPointCards(data) {
+    if (data.point) {
+      return this.renderPointCard({node: data.point})
+    } else if (data.points) {
+      return this.renderPointCard(data.points.edges[0])
     } else {
-      return <div className="span5" key={index}></div>
-    }
-  }
-
-  renderPointRow(row, rowIndex) {
-    return <div className="row-fluid" key={rowIndex} style={{marginLeft: `${row.depth}em`}}>
-      {row.map(this.renderPointCard)}
-    </div>
-  }
-
-  * edgesByRowAndColumn() {
-    for (let row of edgeRows(List(this.props.data.points.edges))) {
-      yield row
+        return <div>Could not find data.point or data.points, please check your query.</div>
     }
   }
 
   render(){
+    console.log("render")
     if (this.props.loading) {
       return <div>Loading!</div>
-    } else if (!this.props.data.points) {
+    } else if (!(this.props.data.points || this.props.data.point)) {
       return <div>Loading points...</div>
     } else {
       return <div className="row">
         <div className="span12">
-	{Seq(this.edgesByRowAndColumn()).map(this.renderPointRow)}
+	{this.renderPointCards(this.props.data)}
+
         </div>
       </div>
     }
   }
 }
 
+function Post({edge, data}){
+  let point = (data && !data.loading)? data.point : edge
+  return <li key={point.title}>{point.title}({point.upVotes} votes)</li>
+}
+
 function PostList({data: {loading, points}}) {
   if (loading) {
     return <div>Loading</div>;
   } else {
-    return (
+  return (
       <div>
         <ul>
-          {points.map(point =>
-            <li key={point.title}>
-              {point.title}
-              ({point.upVotes} votes)
-            </li>
+          {points.edges.map(edge =>
+           <Post edge={edge} key={edge.node.title}/>
           )}
         </ul>
       </div>
-    );
+  );
   }
 }
 
-const pointFieldsFragment = gql`
-fragment pointFields on Point {
-  title,
-  authorName,
-  authorURL,
-  imageURL,
-  upVotes,
-  downVotes,
-  numSupporting,
-  numCounter,
-  numComments,
-  supportedCount
-}
-`
-
-const getPoints = gql`
-${pointFieldsFragment}
-query Points {
+const GetPoints = gql`
+${expandedPointFieldsFragment}
+query GetPoints {
   points(first: 1) {
     edges {
       node {
         ...pointFields
-
-        supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
-        counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
+        ...evidenceFields
       }
     }
   }
 }`;
+//${pointFieldsFragment}
 
-export const PointListWithPoints = graphql(getPoints)(PointList);
-export const PostListWithPoints = graphql(getPoints)(PostList);
+// return the "whysaurus url" for this page
+function url(){
+  let parts = window.location.pathname.split("/");
+  return parts.pop() || parts.pop(); // the || accounts for a trailing slash
+}
+export const PointListWithPoints = graphql(GetPoints)(PointList);
+export const PointListWithPoint = graphql(GetPoint, {options: {variables: {url: url()}}})(PointList);
+export const PostListWithPoints = graphql(GetPoints)(PostList);
 
+
+
+/*
+
+    ...pointFields
+
+    supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
+    counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
+
+*/
 

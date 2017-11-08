@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {PostListWithPoints, PointListWithPoints} from './ys/point_list';
+import {PostListWithPoints, PointListWithPoints, PointListWithPoint} from './ys/point_list';
 
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
@@ -90,6 +90,6 @@ const client = new ApolloClient({});
 
 let templateData = document.getElementById('config').dataset
 ReactDOM.render(
-  <ApolloProvider client={client}><PointListWithPoints/></ApolloProvider>,
+  <ApolloProvider client={client}><PointListWithPoint/></ApolloProvider>,
   document.getElementById('root')
 );

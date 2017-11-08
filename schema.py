@@ -11,6 +11,10 @@ class Point(NdbObjectType):
         model = PointModel
         interfaces = (relay.Node,)
 
+    id = graphene.NonNull(graphene.ID)
+    def resolve_id(self, info):
+        return self.url
+
     numSupporting = graphene.Int()
     def resolve_numSupporting(self, info):
         return self.numSupporting
@@ -59,18 +63,33 @@ class SubPointConnection(relay.Connection):
             # this assumes link_type has been set in the Point.resolve_xxxPoints methods, above
             return self.node.link_type
 
+class ExpandPoint(graphene.Mutation):
+    class Arguments:
+        url = graphene.String(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, url):
+        point, pointRoot = PointModel.getCurrentByUrl(url)
+        return ExpandPoint(point=point)
+
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
 
     def resolve_points(self, info, **args):
         return PointModel.query()
 
-# class Mutation(graphene.ObjectType):
-#     introduce_ship = IntroduceShip.Field()
+    point = graphene.Field(Point, url=graphene.String())
+
+    def resolve_point(self, info, **args):
+        point, pointRoot = PointModel.getCurrentByUrl(args['url'])
+        return point
+
+class Mutation(graphene.ObjectType):
+    expand_point = ExpandPoint.Field()
 
 
-schema = graphene.Schema(query=Query)
-#, mutation=Mutation)
+schema = graphene.Schema(query=Query, mutation=Mutation)
 
 
 # test with:

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { gql, graphql, compose } from 'react-apollo';
 
 
 export const EvidenceType = Object.freeze({
@@ -17,7 +18,7 @@ function CommentCount(props){
 }
 
 function ShareIcon(props){
-  return <i className="fa fa-share-alt"></i>
+  return <i className="fa fa-share-alt"></i>;
 }
 
 function SupportingCount(props){
@@ -44,10 +45,6 @@ class EvidenceLink extends React.Component {
     return this.point.numSupporting > 0 || this.point.numCounter > 0;
   }
 
-  hasExpandedEvidence() {
-    return this.point.supportingPoints.edges.length > 0 || this.point.counterPoints.edges.length > 0
-  }
-
   handleClickSee(e) {
     console.log("see");
     this.props.onSee && this.props.onSee()
@@ -60,7 +57,7 @@ class EvidenceLink extends React.Component {
 
   render(){
     if (this.hasEvidence()) {
-      if (this.props) {
+      if (this.props.expanded) {
         return <a onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
         return <a onClick={this.handleClickSee}>See Evidence</a>
@@ -91,7 +88,7 @@ class AgreeDisagree extends React.Component {
     return <span>
       <a onClick={this.handleClickAgree}>Agree</a>
       <a onClick={this.handleClickDisagree}>Disagree</a>
-    </span>
+      </span>
     }
 }
 
@@ -101,9 +98,11 @@ function More(){
 
 class PointCard extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {expandedIndex: {}}
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
+    this.renderSubPointCard = this.renderSubPointCard.bind(this);
   }
 
   get point() {
@@ -111,61 +110,180 @@ class PointCard extends React.Component {
   }
 
   get evidenceType() {
-    return this.props.edge ? this.props.edge.evidenceType : null
+    return this.props.edge ? this.props.edge.evidenceType : null;
   }
 
-  handleSeeEvidence() {
-    console.log("see evidence");
-    this.props.handleSeeEvidence && this.props.handleSeeEvidence(this.point)
+  handleSeeEvidence(point=this.point) {
+    const i = this.state.expandedIndex
+    i[point.url] = true
+    this.setState({expandedIndex: i})
+    console.log("see pc evidence for " + point.url);
+    // this.props.mutate({
+    //   variables: { url: point.url }
+    // })
+    //   .then(({ data }) => {
+    //     console.log('got data', data);
+    //   }).catch((error) => {
+    //     console.log('there was an error sending the query', error);
+    //   });
+    this.props.handleSeeEvidence && this.props.handleSeeEvidence(point);
   }
 
-  handleHideEvidence() {
-    console.log("hide evidence");
-    this.props.handleHideEvidence && this.props.handleHideEvidence(this.point)
+  handleHideEvidence(point=this.point) {
+    const i = this.state.expandedIndex
+    i[point.url] = false
+    this.setState({expandedIndex: i})
+    console.log("hide pc evidence for " + point.url);
+    this.props.handleHideEvidence && this.props.handleHideEvidence(point);
+  }
+
+  expanded() {
+    return this.state.expandedIndex[this.point.url]
   }
 
   evidenceTypeClass() {
     switch (this.evidenceType){
       case EvidenceType.ROOT:
-        return "root"
+        return "root";
       case EvidenceType.SUPPORT:
-        return "support"
+        return "support";
       case EvidenceType.COUNTER:
-        return "counter"
+        return "counter";
       default:
-        return ""
+        return "";
     }
   }
 
+  renderSubPointCard(pointEdge, index){
+    return newPointCard(pointEdge,
+                        {index: index,
+                         expandedIndex: this.state.expandedIndex,
+                         handleSeeEvidence: this.handleSeeEvidence,
+                         handleHideEvidence:this.handleHideEvidence});
+  }
+
   render(){
-    const point = this.point
-    let classes = `point-card row-fluid ${this.evidenceTypeClass()}`
-    return <div className={classes}>
-      <div className="span9">
-        <div className="row-fluid">
-          <div className="span12">
-            <Byline point={point}/>
-            <CommentCount point={point}/>
-            <ShareIcon point={point}/>
-            <SupportingCount point={point}/>
+    const point = this.point;
+    console.log("rendering " + point.url)
+    let classes = `point-card row-fluid ${this.evidenceTypeClass()}`;
+    return <div>
+      <div className={classes}>
+        <div className="span9">
+          <div className="row-fluid">
+            <div className="span12">
+              <Byline point={point}/>
+              <CommentCount point={point}/>t
+              <ShareIcon point={point}/>
+              <SupportingCount point={point}/>
+            </div>
+          </div>
+          <div className="row-fluid">
+            <div className="span12">
+              <Point point={point}/>
+            </div>
+          </div>
+          <div className="row-fluid">
+            <div className="span12">
+              <EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/>
+              <AgreeDisagree point={point}/>
+              <More point={point}/>
+            </div>
           </div>
         </div>
-        <div className="row-fluid">
-          <div className="span12">
-            <Point point={point}/>
-          </div>
-        </div>
-        <div className="row-fluid">
-          <div className="span12">
-            <EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.props.expanded}/>
-            <AgreeDisagree point={point}/>
-            <More point={point}/>
-          </div>
-        </div>
+        <div className="span3"><img src={point.imageURL} alt="an image"></img></div>
       </div>
-      <div className="span3"><img src={point.imageURL} alt="an image"></img></div>
+      <div className="row-fluid">
+      <div className="support span6">
+      {this.expanded() && this.point.supportingPoints &&
+       this.point.supportingPoints.edges.map(this.renderSubPointCard)}
+      </div>
+      <div className="counter span6">
+      {this.expanded() && this.point.counterPoints &&
+       this.point.counterPoints.edges.map(this.renderSubPointCard)}
     </div>
+      </div>
+    </div>;
   }
 }
 
+export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence}) {
+  let point = pointEdge.node;
+  if (point) {
+    if (!expandedIndex[point.url]) {
+      console.log("point card for " + point.url);
+      console.log(expandedIndex)
+      return <div className="span5" key={point.url}>
+        <CollapsedPointCard point={point}
+          expandedIndex={expandedIndex}
+          expanded={false}
+          evidenceType={pointEdge.evidenceType}
+          handleSeeEvidence={handleSeeEvidence}
+          handleHideEvidence={handleHideEvidence}/>
+        </div>
+    } else {
+      console.log("expanded point card for " + point.url);
+      console.log(expandedIndex)
+      return <div className="span5" key={point.url}>
+        <ExpandedPointCard point={point}
+            url={point.url}
+            expandedIndex={expandedIndex}
+            expanded={true}
+            evidenceType={pointEdge.evidenceType}
+            handleSeeEvidence={handleSeeEvidence}
+            handleHideEvidence={handleHideEvidence}/>
+        </div>;
+    }
+  } else {
+    return <div className="span5" key={index}></div>;
+  }
+}
+
+export const pointFieldsFragment = gql`
+fragment pointFields on Point {
+  id,
+  url,
+  title,
+  authorName,
+  authorURL,
+  imageURL,
+  upVotes,
+  downVotes,
+  numSupporting,
+  numCounter,
+  numComments,
+  supportedCount
+}
+fragment evidenceFields on Point {
+ supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
+ counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
+}`
+
+export const expandedPointFieldsFragment = gql`
+${pointFieldsFragment}
+fragment evidenceFields on Point {
+ supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
+ counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
+}`
+
+export const GetPoint = gql`
+${expandedPointFieldsFragment}
+query Point($url: String) {
+  point(url: $url) {
+    ...pointFields,
+    ...evidenceFields
+ }
+}`
+
+export const ExpandPoint = gql`
+${expandedPointFieldsFragment}
+mutation ExpandPoint($url: String!) {
+  expandPoint(url: $url) {
+    point {
+      id,
+      ...evidenceFields
+    }
+  }
+}`
 export {PointCard};
+export const ExpandedPointCard =   graphql(GetPoint)(PointCard)
+export const CollapsedPointCard =   graphql(ExpandPoint)(PointCard)

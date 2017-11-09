@@ -106,7 +106,7 @@ class PointCard extends React.Component {
   }
 
   get point() {
-    return this.props.point || this.props.edge.node;
+    return this.props.data.point ? this.props.data.point : this.props.point
   }
 
   get evidenceType() {
@@ -117,15 +117,6 @@ class PointCard extends React.Component {
     const i = this.state.expandedIndex
     i[point.url] = true
     this.setState({expandedIndex: i})
-    console.log("see pc evidence for " + point.url);
-    // this.props.mutate({
-    //   variables: { url: point.url }
-    // })
-    //   .then(({ data }) => {
-    //     console.log('got data', data);
-    //   }).catch((error) => {
-    //     console.log('there was an error sending the query', error);
-    //   });
     this.props.handleSeeEvidence && this.props.handleSeeEvidence(point);
   }
 
@@ -133,7 +124,6 @@ class PointCard extends React.Component {
     const i = this.state.expandedIndex
     i[point.url] = false
     this.setState({expandedIndex: i})
-    console.log("hide pc evidence for " + point.url);
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
   }
 
@@ -209,30 +199,41 @@ class PointCard extends React.Component {
 export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence}) {
   let point = pointEdge.node;
   if (point) {
-    if (!expandedIndex[point.url]) {
-      console.log("point card for " + point.url);
-      console.log(expandedIndex)
-      return <div className="span5" key={point.url}>
-        <CollapsedPointCard point={point}
-          expandedIndex={expandedIndex}
-          expanded={false}
-          evidenceType={pointEdge.evidenceType}
-          handleSeeEvidence={handleSeeEvidence}
-          handleHideEvidence={handleHideEvidence}/>
-        </div>
-    } else {
-      console.log("expanded point card for " + point.url);
-      console.log(expandedIndex)
-      return <div className="span5" key={point.url}>
-        <ExpandedPointCard point={point}
-            url={point.url}
-            expandedIndex={expandedIndex}
-            expanded={true}
-            evidenceType={pointEdge.evidenceType}
-            handleSeeEvidence={handleSeeEvidence}
-            handleHideEvidence={handleHideEvidence}/>
-        </div>;
-    }
+    return <div className="span5" key={point.url}>
+      <ExpandedPointCard point={point}
+    url={point.url}
+    expandedIndex={expandedIndex}
+    expanded={true}
+    evidenceType={pointEdge.evidenceType}
+    handleSeeEvidence={handleSeeEvidence}
+    handleHideEvidence={handleHideEvidence}/>
+      </div>;
+    // TODO: figure out how to render regular point cards pre-expansion.
+    //       currently failing to expand on the first click for unknown reasons.
+    // if (!expandedIndex[point.url]) {
+    //   console.log("point card for " + point.url);
+    //   console.log(expandedIndex)
+    //   return <div className="span5" key={point.url}>
+    //     <PointCard point={point}
+    //       expandedIndex={expandedIndex}
+    //       expanded={false}
+    //       evidenceType={pointEdge.evidenceType}
+    //       handleSeeEvidence={handleSeeEvidence}
+    //       handleHideEvidence={handleHideEvidence}/>
+    //     </div>
+    // } else {
+    //   console.log("expanded point card for " + point.url);
+    //   console.log(expandedIndex)
+    //   return <div className="span5" key={point.url}>
+    //     <ExpandedPointCard point={point}
+    //         url={point.url}
+    //         expandedIndex={expandedIndex}
+    //         expanded={true}
+    //         evidenceType={pointEdge.evidenceType}
+    //         handleSeeEvidence={handleSeeEvidence}
+    //         handleHideEvidence={handleHideEvidence}/>
+    //     </div>;
+    // }
   } else {
     return <div className="span5" key={index}></div>;
   }
@@ -274,16 +275,18 @@ query Point($url: String) {
  }
 }`
 
-export const ExpandPoint = gql`
-${expandedPointFieldsFragment}
-mutation ExpandPoint($url: String!) {
-  expandPoint(url: $url) {
-    point {
-      id,
-      ...evidenceFields
-    }
-  }
-}`
 export {PointCard};
-export const ExpandedPointCard =   graphql(GetPoint)(PointCard)
-export const CollapsedPointCard =   graphql(ExpandPoint)(PointCard)
+export const ExpandedPointCard = graphql(GetPoint)(PointCard)
+
+// TODO: explore a mutation-based point loading model
+// export const ExpandPoint = gql`
+// ${expandedPointFieldsFragment}
+// mutation ExpandPoint($url: String!) {
+//   expandPoint(url: $url) {
+//     point {
+//       id,
+//       ...evidenceFields
+//     }
+//   }
+// }`
+// export const CollapsedPointCard = graphql(ExpandPoint)(PointCard)

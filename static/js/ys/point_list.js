@@ -39,8 +39,6 @@ class PointList extends React.Component {
     this.isPointExpanded = this.isPointExpanded.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
-    this.renderPointCard = this.renderPointCard.bind(this);
-    this.renderPointRow = this.renderPointRow.bind(this);
   }
 
   isPointExpanded(point) {

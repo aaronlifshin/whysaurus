@@ -5,6 +5,7 @@ from graphene import relay
 from graphene_gae import NdbObjectType, NdbConnectionField
 
 from models.point import Point as PointModel
+from models.whysaurususer import WhysaurusUser
 
 class Point(NdbObjectType):
     class Meta:
@@ -62,7 +63,6 @@ class SubPointConnection(relay.Connection):
         def resolve_type(self, info, **args):
             # this assumes link_type has been set in the Point.resolve_xxxPoints methods, above
             return self.node.link_type
-
 class ExpandPoint(graphene.Mutation):
     class Arguments:
         url = graphene.String(required=True)
@@ -72,6 +72,38 @@ class ExpandPoint(graphene.Mutation):
     def mutate(self, info, url):
         point, pointRoot = PointModel.getCurrentByUrl(url)
         return ExpandPoint(point=point)
+
+
+class PointInput(graphene.InputObjectType):
+    title = graphene.String(required=True)
+    content = graphene.String()
+    summaryText = graphene.String()
+    imageURL = graphene.String()
+    imageAuthor = graphene.String()
+    imageDescription = graphene.String()
+    sourceURLs = graphene.List(graphene.String)
+    sourceNames = graphene.List(graphene.String)
+
+class AddEvidence(graphene.Mutation):
+    class Arguments:
+        point_data = PointInput(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, point_data):
+        newPoint, newPointRoot = PointModel.create(
+            title=point_data.title,
+            content=point_data.content,
+            summaryText=point_data.summaryText,
+            user=WhysaurusUser.getByUrl("Travis_Vachon")#, # TODO: FIX THIS
+            # imageURL=point_data.imageURL,
+            # imageAuthor=point_data.imageAuthor,
+            # imageDescription=point_data.imageDescription,
+            # sourceURLs=point_data.sourceURLs,
+            # sourceNames=point_data.sourceNames
+        )
+
+        return AddEvidence(point=newPoint)
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
@@ -87,6 +119,7 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     expand_point = ExpandPoint.Field()
+    add_evidence = AddEvidence.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
@@ -98,3 +131,12 @@ schema = graphene.Schema(query=Query, mutation=Mutation)
 #     title, upVotes, supportingPoints
 #   }
 # }'
+
+
+# mutation AddEvidence {
+#   addEvidence(pointData: {title: "bacon is fly", content: "bacon is fly", summaryText: "bacon is the flyest"}) {
+#     point {
+#       title
+#     }
+#   }
+#}

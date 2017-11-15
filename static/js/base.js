@@ -497,11 +497,11 @@ function votePointCard(elem, voteType) {
 
 function voteToggle(turnOn, voteLabel, classWhenOn) {
     if (turnOn) {
-        voteLabel.removeClass("inactiveVote");
-        voteLabel.addClass(classWhenOn);
+        voteLabel.parent().removeClass("inactiveVote");
+        voteLabel.parent().addClass(classWhenOn);
     } else {
-        voteLabel.removeClass(classWhenOn);
-        voteLabel.addClass("inactiveVote");
+        voteLabel.parent().removeClass(classWhenOn);
+        voteLabel.parent().addClass("inactiveVote");
     }
 }
 

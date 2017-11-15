@@ -17,6 +17,8 @@
     <script type="text/javascript" src="/static/js/chosen/chosen.jquery.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>
     
+    <link rel="shortcut icon" href="/static/img/triceratops_favicon.ico" type="image/x-icon">
+    
     <script> var appname = window.navigator.appName; </script>
     
       {% if point %}
@@ -25,16 +27,8 @@
           {% if profileUser %}
              <title>{{profileUser.name}} on Whysaurus</title>
           {% else %}
-            <title>Whysaurus: good arguments, online</title>
-            <meta name="description" content="
-            A visually intuitive online platform for arguments, with a design that encourages reasoned deliberation.
-            In Whysaurus, arguments are divided into points. 
-            Each points can be supported or countered by more points, so users can drill down to see the proof behind proof on any idea.
-            Points and links between points can be rated so the flaws in any argument can be quickly and precisely identified. 
-            Points have character limits, so there is little room for flowery rhetoric.
-            Each point can be discussed in their own comment thread, so conversations stay tightly focused.
-            Points can be re-used, so users don't need to start from scratch when building new arguments.
-            Whysaurus will become a reference repository of explanations and convincing arguments for positions.">            
+            <title>Whysaurus</title>
+            <meta name="description" content="Making online argument collaborative, productive and fun.">            
           {% endif %}              
       {% endif %}
       

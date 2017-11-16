@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 import {GetPoint, EvidenceType, PointCard, ExpandedPointCard, Byline, newPointCard, expandedPointFieldsFragment} from './point';
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
-import { gql, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 function* evidenceEdges(edges) {
   for (let edge of edges) {

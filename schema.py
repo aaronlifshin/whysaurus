@@ -95,7 +95,7 @@ class AddEvidence(graphene.Mutation):
             title=point_data.title,
             content=point_data.content,
             summaryText=point_data.summaryText,
-            user=WhysaurusUser.getByUrl("Travis_Vachon")#, # TODO: FIX THIS
+            user=info.context.current_user
             # imageURL=point_data.imageURL,
             # imageAuthor=point_data.imageAuthor,
             # imageDescription=point_data.imageDescription,

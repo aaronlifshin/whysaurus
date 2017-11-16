@@ -153,7 +153,10 @@ class Point(ndb.Model):
     @property
     def numCounter(self):
         return len(self.counterLinks) if self.counterLinks else 0
-
+ 
+    def numSupportingPlusCounter(self):
+        return self.numSupporting + self.numCounter  
+        
     def pointValue(self):
         """
         Scalar [0-100ish] property that weighs how 'good' the point is,
@@ -173,9 +176,9 @@ class Point(ndb.Model):
         if sup == 0 and cou == 0:
             return 50
         elif cou == 0:
-            return 80
+            return 80 # I think this ceiling is a vestige of the "gauge" UI element we built once that no longer exists - JF
         elif sup == 0:
-            return 20
+            return 20 # I think this floor is a vestige of the "gauge" UI element we built once that no longer exists - JF
         else:
             rat1 = sup/float(sup + cou)
             return math.floor(rat1*100) # Django widthratio requires integers

@@ -339,9 +339,9 @@ a:visited {
 .newPointInputRowFieldArea {
     // use the full width, minus the space needed for the publish button
     // the ~ and "" is needed to pass the calc command through the less compiler
-    width: -moz-calc(~"100% - 146px");
-    width: -webkit-calc(~"100% - 146px");
-    width: calc(~"100% - 146px");
+    width: -moz-calc(~"100% - 150px");
+    width: -webkit-calc(~"100% - 150px");
+    width: calc(~"100% - 150px");
     margin-right:8px;
     display:inline;
 }
@@ -429,7 +429,7 @@ a:visited {
 .mainPageMainStream {
     min-height:0px !important;
     //max-width: 75%;
-    max-width: 640px;
+    max-width: 635px;
     margin-left: auto;
     margin-right: auto;
     padding-left:0px;
@@ -741,20 +741,68 @@ a:visited {
    END NOTIFICATION AREA IN PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
-.pointCard {
-	border-style:solid;
-	border-width:1px;
-	border-color:@grayBoxOutlines;
-  	word-wrap: break-word;
-	cursor:pointer;
-	padding:@boxPaddingDefault;
+   /*
+.pointCardArea {   
 	margin-bottom: @spaceBtPointCards;
-    //margin-top: 4px;
+    position: relative;
+    top: 8px;
+    left: -5px;
+}*/
+
+/* This .pointCard class is referred to somehow in the JSON that displays comments.
+When I was building the cardstack, placing this class on multiple cards gave me a 
+JSON error related to displaying comments. But when I don't use this class, the error goes away... -JF */
+.pointCard {
+	margin-bottom: @spaceBtPointCards;
+    position: relative;
+    top: 8px;
+    left: -5px;
+}
+
+.pointCardChild {
+    position: relative;    
+    background-color: white;
+    left: 3px;
+    top: -3px;
+}
+
+.pointCard:hover .pointCardDrawn {
+    background-color: rgb(244, 253, 255);
+}
+
+.pointCardHidden {
+	top:-2px;
+}
+
+.pointCardTop {
+	word-wrap: break-word;
+	cursor:pointer;
+    padding:@boxPaddingDefault;
+}  
+  
+.pointCardDrawn  {
+	border-width:1px;
+    border-style: solid;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
-  
+
+.pointCardGrey {
+	border-color:@grayPointBoxOutlines;
+}
+
+.pointCardRed {
+	border-color:rgba(236, 19, 26, 0.35);
+}
+
+
+
+
+
+
+
+
 
 [id$=_nonzeroPoints] .pointCard {
 	position: relative;
@@ -774,10 +822,11 @@ a:visited {
 */
 .pointCard .pointTitle {
 	color: black;
-	font-size: @fontSizeMedium;
+	font-size: @fontSizeMedium; // @fontSizeBitLarge;
     //font-weight:bold;
-	line-height: @lineHeightBig;	
-	margin-bottom: 18px; /* test */
+	line-height: @lineHeightBigger;
+    letter-spacing: @letterSpacingSubtle;	
+	margin-bottom: 12px; 
     padding-left: 1px;
     padding-right:4px;
 }
@@ -1253,6 +1302,7 @@ a:visited {
 #oneLinePointCreate {
     margin-top:@homepageRowVerticalPadding;
     padding-bottom: @homepageRowVerticalPadding * .8;
+    padding-left: 9px;
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -1309,7 +1359,7 @@ a:visited {
 	color:@grayTextDark;
 	font-family:@sansCondFontFamily;
 	line-height: @lineHeightDefault;
-    margin-bottom: 2px;	
+    margin-bottom: 10px;	
     margin-top:@homepageRowVerticalPadding;
 }
 
@@ -1319,8 +1369,9 @@ a:visited {
 	color:@grayTextDark;
 	font-family:@sansCondFontFamily;
 	line-height: @lineHeightDefault;
-    margin-bottom: 2px;	
+    margin-bottom: 8px;	
     margin-top:@homepageRowVerticalPadding + 16px;
+    padding-left: 10px;
 }
 
 
@@ -1342,7 +1393,8 @@ a:visited {
 }
 
 #mainPageMainArea {
-	margin-top:36px;
+	margin-top:44px;
+    padding-left: 10px;
 }
 
 .columnHeading button {
@@ -1418,9 +1470,16 @@ a:visited {
 
 // used to create space for font size animation
 // (Reset fontSize) = 1/(Max fontSize) 
-.scoreAnimContainerMax { font-size: 125%; }
+.scoreAnimContainerMax { font-size: 125%; line-height: 0; }
 .scoreAnimContainerReset { font-size: 80%; } 
 
+.pointBoxSourcesArea {
+    margin-top: 6px;
+}
+
+.pointBoxBelowTitle {
+    margin-left: 2px;
+}
    
 .pointAreaActions {
     font-family: @sansFontFamily;
@@ -1431,13 +1490,25 @@ a:visited {
 
 .pointBoxActions {
 	font-size: @fontSizeActions;
-    color: @blue;  /*@grayTextLight;*/
+    color: @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
 	margin-bottom:2px;
-    margin-right:2px; 
+    margin-right:4px; 
+    margin-top:4px;
     display:inline-block;
     z-index:1000;
+    font-weight: bold
 }
+
+.pointBoxActions:hover {
+    text-decoration: underline;   
+}
+
+.seeEvidenceContainer {
+    display: inline-block;
+    width:95px;
+}
+
 
 .pointBoxStatLine {
     /*opacity: .8; */ /*goes to 1 on hover*/
@@ -1450,14 +1521,17 @@ a:visited {
 }
 
 .pointCard:hover .pointBoxActions {
-
+    color: @blue;
 }
 
-
-
-.pointCard:hover {
-    background-color: rgb(244, 253, 255);
+.pointCard:hover .redVote {
+    color: @red;
 }
+
+.pointCard:hover .greenVote {
+    color: @green;
+}
+
 
 .blue {
     color: @blue;
@@ -1497,7 +1571,7 @@ a:visited {
 
 .agreeInlineMargin {
     margin-left: 6px;
-    margin-right: 2px;
+    margin-right: 14px;
 }
 
 .arrowIcon {
@@ -1532,15 +1606,20 @@ a:visited {
     padding-left: 3px;
 }
   
-.pointBoxActions .needsEvidence { 
+.needsEvidence { 
     /*opacity:0.5;*/
-	color:@blue; 	/* @red !important; */
+	//color:@blue; 	
+    //color: @red; / !important;
 } 
    
 .scaleDownOnClick {
     display: inline-block;
 }
  
+.pointBoxActions .scaleDownOnClick:hover {
+    text-decoration:underline;
+}
+
 .scaleDownOnClick:active {
     transform: scale(0.92);
 }
@@ -1560,8 +1639,8 @@ a:visited {
      
 
 .iconSourcesSmall {
-    padding-right: -10px;
-    padding-left:2px;
+    margin-right: 4px;
+    //padding-left: 2px;
 }
 
 
@@ -1677,9 +1756,15 @@ a:visited {
   padding-left: 10px;
 }
 
+
+// comes into play when agree/disagree buttons get toggled
 .inactiveVote, .inactiveVote a {
-	color:#00adee;
+    color: @grayTextLighter 
 }
+.inactiveVote:hover, .inactiveVote:hover a {
+    color: @blue 
+}
+
 
 .redVote, .redVote:hover, .redVote:focus {
 	color:@red;
@@ -1818,7 +1903,7 @@ a:visited {
 	border-width:1px;
 	border-color:@grayBoxOutlines;
     padding:@boxPaddingDefault;
-    padding-top: @spaceBtPointCards * 4;
+    padding-top: 0;
     padding-bottom:5px;
     display: inline-block;
     border-top-left-radius: 5px;
@@ -1951,14 +2036,22 @@ a:visited {
 .mainPointSourcesHeading{
     font-size: @fontSizeSmallCaps;
     color: @grayTextLight; //@grayTextMedium;
-    margin-bottom: 3px;
+    margin-bottom: 6px;
+    margin-top: 16px;
 }
 
-.mainPointSourceEntry{
+.mainPointSourceEntry {
     font-size: @fontSizeSmall;
     margin-top: -4px;
-    margin-bottom:8px;
+    margin-bottom:12px;
+    font-style: italic;
 }
+
+.mainPointSourceEntry a {
+    color: @grayTextLighter;
+}
+
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END: SOURCE ENTRIES IN MAINPOINTS
@@ -2049,6 +2142,7 @@ h4.mission {
 
 #timestampAndEditLink {
 	margin-bottom: 12px;
+    margin-top: 15px;
 }
 
 #viewPointHistory {

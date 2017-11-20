@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { gql, graphql, compose } from 'react-apollo';
-
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),

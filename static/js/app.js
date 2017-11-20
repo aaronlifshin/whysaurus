@@ -6,7 +6,11 @@ const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 
 
-import { gql, graphql, ApolloClient, ApolloProvider } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
+import { gql } from 'graphql-tag';
+import { ApolloProvider, graphql } from 'react-apollo';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 
 const dummyPoints = [
@@ -86,7 +90,10 @@ const dummyPoints = [
   }
 ]
 
-const client = new ApolloClient({});
+const client = new ApolloClient({
+  link: new HttpLink({ uri: '/graphql', credentials: 'same-origin' }),
+  cache: new InMemoryCache()
+});
 
 let templateData = document.getElementById('config').dataset
 ReactDOM.render(

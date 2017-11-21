@@ -1,9 +1,20 @@
-{% if sources %}
-    
+{% if sources %}   
+
+    <!-- previous version
     <div id="mainPointSources" class="mainPointSourcesHeading"><img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/> SOURCES: </div>
     {% for source in sources %}
          <div name="mainPointSource" class="mainPointSourceEntry">                     
             <a data-sourceKey={{source.key.urlsafe}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
          </div>                   
     {% endfor %}
+    -->
+    
+    <div id="mainPointSources" class="mainPointSourcesHeading">SOURCES: </div>
+    {% for source in point.getSources %}
+        <div name="mainPointSource" class="mainPointSourceEntry">                     
+            <img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a data-sourceKey={{source.key.urlsafe}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
+        </div>                   
+    {% endfor %}
+    
+    
 {% endif %}

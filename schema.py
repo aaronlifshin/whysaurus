@@ -76,6 +76,8 @@ class ExpandPoint(graphene.Mutation):
 
 class PointInput(graphene.InputObjectType):
     title = graphene.String(required=True)
+    parentURL = graphene.String()
+    linkType = graphene.String()
     content = graphene.String()
     summaryText = graphene.String()
     imageURL = graphene.String()
@@ -91,19 +93,22 @@ class AddEvidence(graphene.Mutation):
     point = graphene.Field(Point)
 
     def mutate(self, info, point_data):
-        newPoint, newPointRoot = PointModel.create(
+        oldPoint, oldPointRoot = PointModel.getCurrentByUrl(point_data.parentURL)
+        newPoint, newLinkPoint = PointModel.addSupportingPoint(
+            oldPointRoot=oldPointRoot,
             title=point_data.title,
             content=point_data.content,
             summaryText=point_data.summaryText,
-            user=info.context.current_user
-            # imageURL=point_data.imageURL,
-            # imageAuthor=point_data.imageAuthor,
-            # imageDescription=point_data.imageDescription,
-            # sourceURLs=point_data.sourceURLs,
-            # sourceNames=point_data.sourceNames
+            user=info.context.current_user,
+            linkType=point_data.linkType,
+            imageURL=point_data.imageURL,
+            imageAuthor=point_data.imageAuthor,
+            imageDescription=point_data.imageDescription,
+            sourcesURLs=point_data.sourceURLs,
+            sourcesNames=point_data.sourceNames
         )
 
-        return AddEvidence(point=newPoint)
+        return AddEvidence(point=newLinkPoint)
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)

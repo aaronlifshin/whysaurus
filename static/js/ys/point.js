@@ -6,7 +6,7 @@ import { Form, Text } from 'react-form';
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
-    SUPPORT:  Symbol("support"),
+    SUPPORT:  Symbol("supporting"),
     COUNTER: Symbol("counter")
 });
 
@@ -105,6 +105,8 @@ class AddEvidenceCard extends React.Component {
 
   handleClickSave(values, e, formApi) {
     console.log("saving evidence")
+    values.parentURL = this.point.url
+    values.linkType = this.linkType
     this.props.mutate({ 
       variables: values
     })
@@ -114,14 +116,19 @@ class AddEvidenceCard extends React.Component {
     this.setState({adding: false})
   }
 
-  addEvidenceCard(){
-    return <div>
-      <AddEvidenceForm onSubmit={this.handleClickSave}/>
-    </div>
-  }
-
   get evidenceType(){
     return this.props.type
+  }
+
+  get linkType(){
+    switch (this.evidenceType) {
+      case EvidenceType.SUPPORT:
+        return "supporting"
+      case EvidenceType.COUNTER:
+        return "counter"
+      default:
+        return null
+    }
   }
 
   get addText(){
@@ -138,16 +145,19 @@ class AddEvidenceCard extends React.Component {
   }
 
   render(){
-    return <div>
-      {this.state.adding && this.addEvidenceCard()}
-      <a onClick={this.handleClickAddEvidence}>{this.addText}</a>
-    </div>
+    if (this.state.adding) {
+      return <div>
+        <AddEvidenceForm onSubmit={this.handleClickSave}/>
+      </div>
+    } else {
+      return <a onClick={this.handleClickAddEvidence}>{this.addText}</a>
+    }
   }
 }
 
 export const AddEvidenceQuery = gql`
-mutation AddEvidence($title: String!) {
-  addEvidence(pointData: {title: $title, content: $title, summaryText: $title}) {
+mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
+  addEvidence(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames, linkType: $linkType, parentURL: $parentURL}) {
     point {
       title
     }

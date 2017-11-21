@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Form, Text } from 'react-form';
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -63,10 +64,97 @@ class EvidenceLink extends React.Component {
         return <a onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <span>No Evidence</span>
+      return <div>
+        <span>No Evidence</span>
+      </div>
     }
   }
 }
+
+const AddEvidenceForm = ( props ) => {
+  return (
+      <Form onSubmit={props.onSubmit}>
+      { formApi => (
+          <form onSubmit={formApi.submitForm} id="form1">
+          <label htmlFor="title">Title</label>
+          <Text field="title" id="title" />
+          <button type="submit">Add</button>
+          </form>
+      )}
+    </Form>
+  );
+}
+
+
+class AddEvidenceCard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {adding: false}
+    this.handleClickAddEvidence = this.handleClickAddEvidence.bind(this)
+    this.handleClickSave = this.handleClickSave.bind(this)
+  }
+
+  get point() {
+    return this.props.point;
+  }
+
+  handleClickAddEvidence(e) {
+    this.setState({adding: true})
+    console.log("add evidence")
+  }
+
+  handleClickSave(values, e, formApi) {
+    console.log("saving evidence")
+    this.props.mutate({ 
+      variables: values
+    })
+      .then( res => {
+        console.log(res)
+      });
+    this.setState({adding: false})
+  }
+
+  addEvidenceCard(){
+    return <div>
+      <AddEvidenceForm onSubmit={this.handleClickSave}/>
+    </div>
+  }
+
+  get evidenceType(){
+    return this.props.type
+  }
+
+  get addText(){
+    switch (this.evidenceType){
+      case EvidenceType.ROOT:
+        return "Add Point"
+      case EvidenceType.SUPPORT:
+        return "Add Support"
+      case EvidenceType.COUNTER:
+        return "Add Counterpoint";
+      default:
+        return "Add Evidence"
+    }
+  }
+
+  render(){
+    return <div>
+      {this.state.adding && this.addEvidenceCard()}
+      <a onClick={this.handleClickAddEvidence}>{this.addText}</a>
+    </div>
+  }
+}
+
+export const AddEvidenceQuery = gql`
+mutation AddEvidence($title: String!) {
+  addEvidence(pointData: {title: $title, content: $title, summaryText: $title}) {
+    point {
+      title
+    }
+  }
+}
+`
+const AddEvidence = graphql(AddEvidenceQuery)(AddEvidenceCard)
 
 class AgreeDisagree extends React.Component {
   constructor(props) {
@@ -186,10 +274,12 @@ class PointCard extends React.Component {
       <div className="support span6">
       {this.expanded() && this.point.supportingPoints &&
        this.point.supportingPoints.edges.map(this.renderSubPointCard)}
+      <AddEvidence point={point} type={EvidenceType.SUPPORT}/>
       </div>
       <div className="counter span6">
       {this.expanded() && this.point.counterPoints &&
        this.point.counterPoints.edges.map(this.renderSubPointCard)}
+      <AddEvidence point={point} type={EvidenceType.COUNTER}/>
     </div>
       </div>
     </div>;
@@ -290,3 +380,4 @@ export const ExpandedPointCard = graphql(GetPoint)(PointCard)
 //   }
 // }`
 // export const CollapsedPointCard = graphql(ExpandPoint)(PointCard)
+

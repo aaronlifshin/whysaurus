@@ -28,7 +28,10 @@ function SupportingCount(props){
 
 function Point(props){
   const score = (props.point.upVotes || 0) - (props.point.downVotes || 0)
-  return <span>{props.point.title}<b>{score > 0 && "+"}{score}</b></span>
+  return <span>
+    <a href={props.point.url}>{props.point.title}</a>
+      <b>{score > 0 && "+"}{score}</b>
+    </span>
 }
 
 class EvidenceLink extends React.Component {

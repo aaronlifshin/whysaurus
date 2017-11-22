@@ -4,6 +4,33 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 
+export const pointFieldsFragment = gql`
+fragment pointFields on Point {
+  id,
+  url,
+  title,
+  authorName,
+  authorURL,
+  imageURL,
+  upVotes,
+  downVotes,
+  numSupporting,
+  numCounter,
+  numComments,
+  supportedCount
+}
+fragment evidenceFields on Point {
+ supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
+ counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
+}`
+
+export const expandedPointFieldsFragment = gql`
+${pointFieldsFragment}
+fragment evidenceFields on Point {
+ supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
+ counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
+}`
+
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
     SUPPORT:  Symbol("supporting"),
@@ -159,10 +186,12 @@ class AddEvidenceCard extends React.Component {
 }
 
 export const AddEvidenceQuery = gql`
+${expandedPointFieldsFragment}
 mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
   addEvidence(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames, linkType: $linkType, parentURL: $parentURL}) {
     point {
-      title
+    ...pointFields,
+    ...evidenceFields
     }
   }
 }
@@ -342,32 +371,6 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
   }
 }
 
-export const pointFieldsFragment = gql`
-fragment pointFields on Point {
-  id,
-  url,
-  title,
-  authorName,
-  authorURL,
-  imageURL,
-  upVotes,
-  downVotes,
-  numSupporting,
-  numCounter,
-  numComments,
-  supportedCount
-}
-fragment evidenceFields on Point {
- supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
- counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
-}`
-
-export const expandedPointFieldsFragment = gql`
-${pointFieldsFragment}
-fragment evidenceFields on Point {
- supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
- counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
-}`
 
 export const GetPoint = gql`
 ${expandedPointFieldsFragment}

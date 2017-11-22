@@ -108,7 +108,7 @@ class AddEvidence(graphene.Mutation):
             sourcesNames=point_data.sourceNames
         )
 
-        return AddEvidence(point=newLinkPoint)
+        return AddEvidence(point=newPoint)
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)

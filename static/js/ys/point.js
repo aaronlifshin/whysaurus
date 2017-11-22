@@ -53,14 +53,33 @@ function SupportingCount(props){
   return <span><i className="fa fa-level-up"></i>{props.point.supportedCount}</span>
 }
 
+
+// thanks, https://stackoverflow.com/questions/29981236/how-do-you-hover-in-reactjs-onmouseleave-not-registered-during-fast-hover-ove
+const Hover = ({ onHover, children }) => (
+    <span className="hover">
+      <span className="hover__no-hover">{children}</span>
+      <span className="hover__hover">{onHover}</span>
+    </span>
+)
+
+const VoteStats = ({point}) => (
+    <div className="vote-stats">
+      <p>Agreed: {point.upVotes}</p>
+      <p>Disagreed: {point.downVotes}</p>
+    </div>
+)
+
+
+
 function Point(props){
   const score = (props.point.upVotes || 0) - (props.point.downVotes || 0)
   return <span>
     <a href={props.point.url}>{props.point.title}</a>
+    <Hover onHover={<VoteStats point={props.point}/>}>
       <b>{score > 0 && "+"}{score}</b>
+    </Hover>
     </span>
 }
-
 class EvidenceLink extends React.Component {
   constructor(props) {
     super(props)

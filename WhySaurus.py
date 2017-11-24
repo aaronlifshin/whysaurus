@@ -95,6 +95,7 @@ routes = [
     Route('/job/AaronTask', AaronTask),
     Route('/job/QueueTask', handler='WhySaurus.AaronTask:QueueTask', name='queueTask'),
     Route('/job/CalculateTopPoints', handler='WhySaurus.AaronTask:CalculateTopPoints'),
+    Route('/job/PopulateCreators', handler='WhySaurus.AaronTask:PopulateCreators'),
     Route('/job/RebuildSearchIndex', RebuildSearchIndex),
     Route('/job/DBIntegrityCheck', DBIntegrityCheck),
     Route('/job/addDBTask', 'WhySaurus.DBIntegrityCheck:addDBTask', name='addDBTask'),

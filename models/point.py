@@ -1526,7 +1526,36 @@ class PointRoot(ndb.Model):
         self.editorsPickSort = editorsPickSort
         self.put()
         return True
-    
+
+    def populateCreatorUrl(self):
+        pointCurrent = self.getCurrent()
+        if pointCurrent is None:
+            logging.warning('Bypassing Root With No Current Point: %s' % self.url)
+            return False
+
+        if pointCurrent.creatorURL is not None:
+            # logging.info('Point Creator Already Populated: %s' % self.url)
+            return False
+
+        versionsOfThisPoint = Point.query(ancestor=self.key).order(Point.version)
+        firstVersion = versionsOfThisPoint.get()
+
+        pointCurrent.creatorURL = firstVersion.authorURL
+        pointCurrent.creatorName = firstVersion.authorName
+
+        logging.info('Populating Point Creator: %s -> %s' % (firstVersion.authorURL, self.url))
+
+        authors = []
+        # code for listing number of contributors
+        for point in versionsOfThisPoint:
+            thisAuthor = {"authorName": point.authorName, "authorURL": point.authorURL }
+            if thisAuthor not in authors:
+                authors.append(thisAuthor)
+                pointCurrent.addContributingUser(point.authorURL)
+
+        pointCurrent.put()
+        return True
+
 # A dummy class to create an entity group
 # For large groups this will cause issues with sharding them across datastore nodes
 # Eventually a BG task should be written to copy these out of the OutlineRoot

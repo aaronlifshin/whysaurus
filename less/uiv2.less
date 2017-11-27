@@ -1,3 +1,41 @@
+// Grid setup
+@cardWidth: 360px;
+@indent: 15px;
+
+@cardListWidth: @cardWidth + @indent;
+
+
+.point-card {
+	//background-color: red;
+	display: inline-block;
+	width: @cardWidth;
+	border-width: 1px;
+    border-color: grey;
+    border-style: solid;
+}
+
+
+.support, .counter {
+	display: inline-block;
+	float: left;
+	width: @cardListWidth;
+	margin-left: @indent;
+}
+
+.support .point-card {
+	background-color: #00ff1f14;
+}
+
+.counter .point-card {
+	background-color: #ff001814;
+}
+
+
+.vote-stats {
+    background: white;
+    border: 1px black solid;
+}
+
 .hover {
     position: relative;
 
@@ -18,25 +56,4 @@
     &__no-hover {
         opacity: 1;
     }
-}
-
-.point-card {
-	//background-color: red;
-	display: inline-block;
-	width: 800px;
-}
-
-.support {
-	background-color: #00ff1f14;
-}
-
-.counter {
-	background-color: #ff001814;
-}
-
-
-
-.vote-stats {
-    background: white;
-    border: 1px black solid;
 }

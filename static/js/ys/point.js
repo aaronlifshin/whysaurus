@@ -38,7 +38,7 @@ export const EvidenceType = Object.freeze({
 });
 
 function Byline(props){
-  return <span><a href={props.point.authorURL}>@{props.point.authorName}</a></span>
+  return <span><a className="byline" href={props.point.authorURL}>@{props.point.authorName}</a></span>
 }
 
 function CommentCount(props){
@@ -332,12 +332,12 @@ class PointCard extends React.Component {
         <div className="span3"><img src={point.imageURL} alt="an image"></img></div>
       </div>
       <div className="row-fluid">
-      <div className="support span6">
+      <div className="support"> 
       {this.expanded() && this.point.supportingPoints &&
        this.point.supportingPoints.edges.map(this.renderSubPointCard)}
       <AddEvidence point={point} type={EvidenceType.SUPPORT}/>
       </div>
-      <div className="counter span6">
+      <div className="counter">
       {this.expanded() && this.point.counterPoints &&
        this.point.counterPoints.edges.map(this.renderSubPointCard)}
       <AddEvidence point={point} type={EvidenceType.COUNTER}/>
@@ -350,7 +350,7 @@ class PointCard extends React.Component {
 export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence}) {
   let point = pointEdge.node;
   if (point) {
-    return <div className="span5" key={point.url}>
+    return <div className="pointCardGroup" key={point.url}>
       <ExpandedPointCard point={point}
     url={point.url}
     expandedIndex={expandedIndex}
@@ -386,7 +386,7 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
     //     </div>;
     // }
   } else {
-    return <div className="span5" key={index}></div>;
+    return <div className="pointCardGroup" key={index}></div>;
   }
 }
 

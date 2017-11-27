@@ -113,9 +113,7 @@ class EvidenceLink extends React.Component {
         return <a onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <div>
-        <span>No Evidence</span>
-      </div>
+      return <span>No Evidence</span>
     }
   }
 }
@@ -317,7 +315,7 @@ class PointCard extends React.Component {
             </div>
           </div>
           <div className="row-fluid">
-            <div className="span12">
+            <div className="pointText span12">
               <Point point={point}/>
             </div>
           </div>

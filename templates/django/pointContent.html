@@ -68,13 +68,13 @@
                     <div class="mainPointLastEdited">
                         <!--<span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br>-->
                         <span id="pointCreator" class="contributor">
-                            Created by: <a target="_blank" href="../user/{{point.creatorURL}}">{{point.creatorName}}</a>
-                        </span><!-- creator inserted via javascript, for now -->
+							By <a target="_blank" href="../user/{{point.creatorOrAuthorURL}}">{{point.creatorOrAuthorName}}</a>
+                        </span>
                         {% if point.numUsersContributed > 0 %}
                             <span id="otherUsers"> & {{point.numUsersContributed}} others </span>
-                        {% endif %}
-                        <!--<br>Last Edited {{point.PSTdateEdited}} -->
-                        <span> &#183;  </span><!-- &#183; = small dot -->
+                        {% endif %}                       
+						<!--<br>Last Edited {{point.PSTdateEdited}} -->                        
+						<span> &#183;  </span><!-- &#183; = small dot -->
                         <a id="viewPointHistory">View History</a>
                 </div>
               </div>

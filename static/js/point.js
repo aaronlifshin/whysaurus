@@ -54,7 +54,7 @@ function insertImage(imageURL, author, description) {
 }
 
 function updateVersionHeader(authorURL, author, dateEdited) {
-	$('.mainPointLastEdited').html('<span class="contributor">Most Recent Contributor: </span>' + 
+	$('.byline').html('<span class="contributor">Most Recent Contributor: </span>' + 
 	    '<a href=\'/user/' + authorURL +'\'>'+ author + '</a><br>Last Edited ' + dateEdited + 
 	    '. <a id="viewPointHistory">View History</a>');
     $('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);	        

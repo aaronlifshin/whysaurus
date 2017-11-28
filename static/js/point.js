@@ -53,11 +53,18 @@ function insertImage(imageURL, author, description) {
 	}
 }
 
+// updates the byline
 function updateVersionHeader(authorURL, author, dateEdited) {
-	$('.byline').html('<span class="contributor">Most Recent Contributor: </span>' + 
-	    '<a href=\'/user/' + authorURL +'\'>'+ author + '</a><br>Last Edited ' + dateEdited + 
-	    '. <a id="viewPointHistory">View History</a>');
-    $('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);	        
+	
+	// TO DO: insert code here to update the number of contributors in the byline
+	
+	// Old version:
+	//$('.byline').html('<span class="contributor">Most Recent Contributor: </span>' + 
+	//    '<a href=\'/user/' + authorURL +'\'>'+ author + '</a><br>Last Edited ' + dateEdited + 
+	//    '. <a id="viewPointHistory">View History</a>');
+    //$('#viewPointHistory').off('.ys').on('click.ys',viewPointHistory);
+	
+	console.log('ran updateVersionHeader ');	
 }
 
 function callPointEdit(){
@@ -179,7 +186,7 @@ function pointUnlink(elem, linkType) {
                     //else {
 						//setPointListHeader(linkType);
 					//}
-					updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
+					//updateVersionHeader(obj.authorURL, obj.author, obj.dateEdited);
 				} else {
 					showErrorAlert('There was an error during unlinking: ' + obj.error); 
 				}

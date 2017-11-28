@@ -115,11 +115,14 @@ class Link(ndb.Model):
 
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
-    authorName = ndb.StringProperty(indexed=False)
-    authorURL = ndb.StringProperty(indexed=False)
-    # creator is the original author - whereas author can be updated with subsequent links
+    # creator is the creator of the first version of this Point (perhaps this should be stored on pointRoot? -JF)
     creatorURL = ndb.StringProperty(indexed=False)
     creatorName = ndb.StringProperty(indexed=False)
+
+	# author is the creator of *this version* of this Point 
+    authorName = ndb.StringProperty(indexed=False)
+    authorURL = ndb.StringProperty(indexed=False)
+	
     content = ndb.TextProperty(indexed=False)
     summaryText = ndb.TextProperty(indexed=False)  # This is Text not String because I do not want it indexed
     title = ndb.StringProperty(indexed=False)

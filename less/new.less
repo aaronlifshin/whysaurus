@@ -778,6 +778,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 	word-wrap: break-word;
 	cursor:pointer;
     padding:@boxPaddingDefault;
+	padding-top: 10px;
 }  
   
 .pointCardDrawn  {
@@ -2151,13 +2152,20 @@ h4.mission {
 
 .byline {
 	font-size: @fontSizeSmall;
-	color: @grayTextLight; //@grayTextMedium;
+	color: @grayTextLighter; //@grayTextMedium;
     line-height: @lineHeightBig; 
 	float: left;
+	margin-bottom: 12px;
+	width: 100%;
     /*text-transform: Uppercase;*/
     //margin-top: 10px;
 	/*padding-top:10px;*/
 }
+
+.pointCardTop .byline a {
+	color: @grayTextLighter;
+}
+
  
 .contributor {
     //text-transform: Uppercase;

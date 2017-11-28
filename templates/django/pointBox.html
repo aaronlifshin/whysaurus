@@ -9,7 +9,19 @@
                 <div class="pointCardTop pointCardChild pointCardDrawn pointCardGrey">  
    <div class="row-fluid">
        <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %} {% if point.imageURL and point.imageURL.strip %}responsivePointBoxTitleWithImage{% endif %}">
-          <div class="pointTitle">
+			<div name="pointByline" class="byline">
+            <!-- <a target="_blank" href="../user/{{point.authorURL}}">{{point.creatorOrAuthorName}}</a> -->
+			{% if point.creatorURL %}
+				By <a target="_blank" href="../user/{{point.creatorURL}}">{{point.creatorName}}</a>			
+			{% else %} 
+				Most recent contributor: <a target="_blank" href="../user/{{point.authorURL}}">{{point.authorName}}</a>
+			{% endif %}			
+            {% if point.numUsersContributed > 0 %}
+                <span name="pointBylineOtherUsers"> & {{point.numUsersContributed}} others </span>
+            {% endif %}
+			</div>
+
+		  <div class="pointTitle">
               <a href="/point/{{ point.url }}" style="text-decoration:none">                  
                   <span>{{ point.title|escape }}</span>
 			  </a>
@@ -87,14 +99,6 @@
                             </div>
         </span>
 
-        <span name="pointByline" class="byline">
-            <span> &#183;  </span><!-- &#183; = small dot -->
-            <!-- <a target="_blank" href="../user/{{point.authorURL}}">{{point.creatorOrAuthorName}}</a> -->
-            <span>{{point.creatorOrAuthorName}}</span>
-            {% if point.numUsersContributed > 0 %}
-                <span name="pointBylineOtherUsers"> & {{point.numUsersContributed}} others </span>
-            {% endif %}
-        </span>
 
 
         <!-- arrow icons old	

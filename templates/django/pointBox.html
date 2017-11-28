@@ -17,7 +17,7 @@
 				Most recent contributor: <a target="_blank" href="../user/{{point.authorURL}}">{{point.authorName}}</a>
 			{% endif %}			
             {% if point.numUsersContributed > 0 %}
-                <span name="pointBylineOtherUsers"> & {{point.numUsersContributed}} others </span>
+                <span name="pointBylineOtherUsers"> &  {{point.numUsersContributed}} other{% if point.numUsersContributed > 1 %}s{% endif %} </span>
             {% endif %}
 			</div>
 

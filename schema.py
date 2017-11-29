@@ -110,6 +110,28 @@ class AddEvidence(graphene.Mutation):
 
         return AddEvidence(point=newPoint)
 
+class Vote(graphene.Mutation):
+    class Arguments:
+        url = graphene.String(required=True)
+        vote = graphene.Int(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, url, vote):
+        user = info.context.current_user
+        point, pointRoot = PointModel.getCurrentByUrl(url)
+        if point:
+            if user:
+                vote = user.addVote(point, vote)
+                if vote:
+                    return Vote(point=point)
+                else:
+                    raise Exception(str('vote failed: ' + str(vote)))
+            else:
+                raise Exception(str('user not defined ' +  str(user)))
+        else:
+            raise Exception(str('point not defined ' +  str(point)))
+
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
 
@@ -125,6 +147,7 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     expand_point = ExpandPoint.Field()
     add_evidence = AddEvidence.Field()
+    vote = Vote.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

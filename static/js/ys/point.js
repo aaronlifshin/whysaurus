@@ -217,7 +217,19 @@ mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $im
 `
 const AddEvidence = graphql(AddEvidenceQuery)(AddEvidenceCard)
 
-class AgreeDisagree extends React.Component {
+export const VoteQuery = gql`
+mutation Vote($url: String!, $vote: Int!) {
+  vote(url: $url, vote: $vote) {
+    point {
+      id
+      upVotes
+      downVotes
+    }
+  }
+}
+`
+
+class AgreeDisagreeComponent extends React.Component {
   constructor(props) {
     super(props);
     // This binding is necessary to make `this` work in the callback
@@ -227,10 +239,20 @@ class AgreeDisagree extends React.Component {
 
   handleClickAgree() {
     console.log("agree");
+    this.props.mutate({
+      variables: {url: this.props.point.url, vote: 1}
+    }).then( res => {
+      console.log(res)
+    });
   }
 
   handleClickDisagree() {
     console.log("disagree");
+    this.props.mutate({
+      variables: {url: this.props.point.url, vote: -1}
+    }).then( res => {
+      console.log(res)
+    });
   }
 
   render(){
@@ -240,6 +262,8 @@ class AgreeDisagree extends React.Component {
       </span>
     }
 }
+
+const AgreeDisagree = graphql(VoteQuery)(AgreeDisagreeComponent)
 
 function More(){
   return <span>More</span>

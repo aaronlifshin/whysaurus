@@ -38,6 +38,7 @@ class WhysaurusUser(auth_models.User):
     admin = ndb.BooleanProperty(default=False)
     role = ndb.StringProperty(default="")
     recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
+    viewCount = ndb.IntegerProperty(default=0)
     createdPointRootKeys = ndb.KeyProperty(repeated=True)
     editedPointRootKeys = ndb.KeyProperty(repeated=True)
     websiteURL =  ndb.StringProperty()
@@ -308,8 +309,14 @@ class WhysaurusUser(auth_models.User):
         return len(self.createdPointRootKeys)
  
     @property
-    def editedCount(self): 
+    def editedCount(self):
         return len(self.editedPointRootKeys)
+
+    @property
+    def viewedCount(self):
+        if self.viewCount and self.viewCount > len(self.recentlyViewedRootKeys):
+            return self.viewCount
+        return len(self.recentlyViewedRootKeys)
 
     def getVoteFuture(self, pointRootKey):
         return UserVote.query(            
@@ -513,6 +520,12 @@ class WhysaurusUser(auth_models.User):
 
         if len(self.recentlyViewedRootKeys) > 10:
             self.recentlyViewedRootKeys.pop()
+
+        if not self.viewCount:
+            self.viewCount = len(self.recentlyViewedRootKeys)
+        else:
+            self.viewCount += 1
+        # We won't put here as each call here is responsible to put afterward
         
         return addedToList
 

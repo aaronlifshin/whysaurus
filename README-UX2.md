@@ -14,6 +14,10 @@ Windows 7 gave us trouble but Windows 10 seems to work fine.
 4. On windows run `npm install webpack -g`
 5. Run `npm run bundle`
 
+Every time package.json is updated
+1. Re-run npm install
+2. Re-run npm run bundle
+
 # Running
 
 1. Run Whysaurus as usual (we recommend `bin/run.sh`)

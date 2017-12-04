@@ -17,18 +17,16 @@ fragment pointFields on Point {
   numSupporting,
   numCounter,
   numComments,
-  supportedCount
+  supportedCount,
+  rootURLsafe
 }
-fragment evidenceFields on Point {
- supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
- counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
-}`
+`
 
 export const expandedPointFieldsFragment = gql`
 ${pointFieldsFragment}
 fragment evidenceFields on Point {
- supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
- counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
+ supportingPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} },
+ counterPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} }
 }`
 
 export const EvidenceType = Object.freeze({
@@ -265,6 +263,90 @@ class AgreeDisagreeComponent extends React.Component {
 
 const AgreeDisagree = graphql(VoteQuery)(AgreeDisagreeComponent)
 
+export const RelevanceVoteQuery = gql`
+mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURLsafe: String!, $url: String!, $vote: Int!) {
+  relevanceVote(linkType: $linkType, rootURLsafe: $rootURLsafe, parentRootURLsafe: $parentRootURLsafe, url: $url, vote: $vote) {
+    point {
+      id
+    }
+
+    link {
+      id,
+      type,
+      relevance,
+      parentURLsafe,
+      childURLsafe
+    }
+  }
+}
+`
+
+class RelevanceComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick0 = this.handleClick0.bind(this);
+    this.handleClick33 = this.handleClick33.bind(this);
+    this.handleClick66 = this.handleClick66.bind(this);
+    this.handleClick100 = this.handleClick100.bind(this);
+  }
+
+  get rootURLsafe() {
+    return this.props.point.rootURLsafe
+  }
+
+  get parentRootURLsafe() {
+    return this.props.parentPoint.rootURLsafe
+  }
+
+  handleClick0() {
+    console.log("0");
+    this.props.mutate({
+      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 0}
+    }).then( res => {
+      console.log(res)
+    });
+  }
+
+  handleClick33() {
+    console.log("33");
+    this.props.mutate({
+      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 33}
+    }).then( res => {
+      console.log(res)
+    });
+  }
+
+  handleClick66() {
+    console.log("66");
+    this.props.mutate({
+      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 66}
+    }).then( res => {
+      console.log(res)
+    });
+  }
+
+  handleClick100() {
+    console.log("100");
+    this.props.mutate({
+      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
+    }).then( res => {
+      console.log(res)
+    });
+  }
+
+  render(){
+    return <span>
+      <a onClick={this.handleClick0}>0</a>
+      <a onClick={this.handleClick33}>33</a>
+      <a onClick={this.handleClick66}>66</a>
+      <a onClick={this.handleClick100}>100</a>
+      </span>
+    }
+}
+
+const RelevanceVote = graphql(RelevanceVoteQuery)(RelevanceComponent)
+
 function More(){
   return <span>More</span>
 }
@@ -283,7 +365,11 @@ class PointCard extends React.Component {
   }
 
   get evidenceType() {
-    return this.props.edge ? this.props.edge.evidenceType : null;
+    return this.props.link && this.props.link.type
+  }
+
+  get relevance() {
+    return this.props.link && this.props.link.relevance
   }
 
   handleSeeEvidence(point=this.point) {
@@ -317,12 +403,23 @@ class PointCard extends React.Component {
     }
   }
 
-  renderSubPointCard(pointEdge, index){
+  renderSubPointCard(parentPoint, pointEdge, index){
     return newPointCard(pointEdge,
                         {index: index,
+                         parentPoint: parentPoint,
                          expandedIndex: this.state.expandedIndex,
                          handleSeeEvidence: this.handleSeeEvidence,
                          handleHideEvidence:this.handleHideEvidence});
+  }
+
+  relevanceUI() {
+    if (this.props.parentPoint) {
+      return <Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
+               <b>rel: {this.relevance}</b>
+             </Hover>
+        
+      return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
+    }
   }
 
   render(){
@@ -330,6 +427,7 @@ class PointCard extends React.Component {
     console.log("rendering " + point.url)
     let classes = `point-card row-fluid ${this.evidenceTypeClass()}`;
     return <div>
+    { this.relevanceUI() }
       <div className={classes}>
         <div className="span9">
           <div className="row-fluid">
@@ -358,12 +456,12 @@ class PointCard extends React.Component {
       <div className="row-fluid">
       <div className="support span6">
       {this.expanded() && this.point.supportingPoints &&
-       this.point.supportingPoints.edges.map(this.renderSubPointCard)}
+       this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
       <AddEvidence point={point} type={EvidenceType.SUPPORT}/>
       </div>
       <div className="counter span6">
       {this.expanded() && this.point.counterPoints &&
-       this.point.counterPoints.edges.map(this.renderSubPointCard)}
+       this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
       <AddEvidence point={point} type={EvidenceType.COUNTER}/>
     </div>
       </div>
@@ -371,7 +469,7 @@ class PointCard extends React.Component {
   }
 }
 
-export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence}) {
+export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence, parentPoint}) {
   let point = pointEdge.node;
   if (point) {
     return <div className="span5" key={point.url}>
@@ -379,9 +477,10 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
     url={point.url}
     expandedIndex={expandedIndex}
     expanded={true}
-    evidenceType={pointEdge.evidenceType}
+    link={pointEdge.link}
     handleSeeEvidence={handleSeeEvidence}
-    handleHideEvidence={handleHideEvidence}/>
+    handleHideEvidence={handleHideEvidence}
+    parentPoint={parentPoint}/>
       </div>;
     // TODO: figure out how to render regular point cards pre-expansion.
     //       currently failing to expand on the first click for unknown reasons.

@@ -34,11 +34,16 @@ class Point(NdbObjectType):
         # TODO: need to get a link to the point root and then get supportedCount from that
         return 42
 
+    rootURLsafe = graphene.String()
+    def resolve_rootURLsafe(self, info):
+        return self.rootURLsafe
+
     supportingPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_supportingPoints(self, info, **args):
         points = self.getLinkedPoints("supporting", None)
         if points:
             for point in points:
+                point.parent = self
                 point.link_type = 'supporting'
         return points or []
 
@@ -47,22 +52,45 @@ class Point(NdbObjectType):
         points = self.getLinkedPoints("counter", None)
         if points:
             for point in points:
+                point.parent = self
                 point.link_type = 'counter'
         return points or []
+
+
+class Link(graphene.ObjectType):
+    voteCount = graphene.Int()
+    type = graphene.String()
+    relevance = graphene.Float()
+    parentURLsafe = graphene.String()
+    childURLsafe = graphene.String()
+
+    id = graphene.NonNull(graphene.ID)
+    # make id synthetic to support generating it from either SubPointConnection or RelevanceVote
+    def resolve_id(self, info):
+        return str(self.childURLsafe + self.type + self.parentURLsafe)
 
 class SubPointConnection(relay.Connection):
     class Meta:
         node = Point
 
     class Edge:
+        link = graphene.Field(Link)
+        def resolve_link(self, info):
+            return Link(type=self.node.link_type, relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe)
+
         relevance = graphene.Float()
         def resolve_relevance(self, info, **args):
             return self.node._linkInfo.rating
+
+        relevanceVoteCount = graphene.Int()
+        def resolve_relevanceVoteCount(self, info):
+            return self.node.relevanceVoteCount
 
         type = graphene.String()
         def resolve_type(self, info, **args):
             # this assumes link_type has been set in the Point.resolve_xxxPoints methods, above
             return self.node.link_type
+
 class ExpandPoint(graphene.Mutation):
     class Arguments:
         url = graphene.String(required=True)
@@ -132,6 +160,32 @@ class Vote(graphene.Mutation):
         else:
             raise Exception(str('point not defined ' +  str(point)))
 
+class RelevanceVote(graphene.Mutation):
+    class Arguments:
+        linkType = graphene.String(required=True)
+        url = graphene.String(required=True)
+        parentRootURLsafe = graphene.String(required=True)
+        rootURLsafe = graphene.String(required=True)
+        vote = graphene.Int(required=True)
+
+    point = graphene.Field(Point)
+    link = graphene.Field(Link)
+
+    def mutate(self, info, linkType, url, parentRootURLsafe, rootURLsafe, vote):
+        user = info.context.current_user
+        point, pointRoot = PointModel.getCurrentByUrl(url)
+        if point:
+            if user:
+                result, newRelevance, newVoteCount = user.addRelevanceVote(parentRootURLsafe, rootURLsafe, linkType, vote)
+                if result:
+                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
+                else:
+                    raise Exception(str('vote failed: ' + str(vote)))
+            else:
+                raise Exception(str('user not defined ' +  str(user)))
+        else:
+            raise Exception(str('point not defined ' +  str(point)))
+
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
 
@@ -148,6 +202,7 @@ class Mutation(graphene.ObjectType):
     expand_point = ExpandPoint.Field()
     add_evidence = AddEvidence.Field()
     vote = Vote.Field()
+    relevanceVote = RelevanceVote.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -1,3 +1,4 @@
+import logging
 from google.appengine.ext import ndb
 
 import graphene
@@ -14,7 +15,7 @@ class Point(NdbObjectType):
 
     id = graphene.NonNull(graphene.ID)
     def resolve_id(self, info):
-        return self.url
+        return self.rootURLsafe
 
     numSupporting = graphene.Int()
     def resolve_numSupporting(self, info):
@@ -138,6 +139,23 @@ class AddEvidence(graphene.Mutation):
 
         return AddEvidence(point=newPoint)
 
+class EditPointInput(graphene.InputObjectType):
+    url = graphene.String(required=True)
+    title = graphene.String()
+
+class EditPoint(graphene.Mutation):
+    class Arguments:
+        point_data = EditPointInput(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, point_data):
+        point, pointRoot = PointModel.getCurrentByUrl(point_data.url)
+        newPointVersion = point.update(user=info.context.current_user, newTitle=point_data.title)
+        logging.info("FOO")
+        logging.info(newPointVersion)
+        return EditPoint(point=newPointVersion)
+
 class Vote(graphene.Mutation):
     class Arguments:
         url = graphene.String(required=True)
@@ -201,6 +219,7 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     expand_point = ExpandPoint.Field()
     add_evidence = AddEvidence.Field()
+    edit_point = EditPoint.Field()
     vote = Vote.Field()
     relevanceVote = RelevanceVote.Field()
 

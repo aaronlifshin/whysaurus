@@ -67,17 +67,87 @@ const VoteStats = ({point}) => (
     </div>
 )
 
-
-
-function Point(props){
-  const score = (props.point.upVotes || 0) - (props.point.downVotes || 0)
-  return <span>
-    <a href={props.point.url}>{props.point.title}</a>
-    <Hover onHover={<VoteStats point={props.point}/>}>
-      <b>{score > 0 && "+"}{score}</b>
-    </Hover>
-    </span>
+export const EditPointQuery = gql`
+mutation EditPoint($url: String!, $title: String) {
+  editPoint(pointData: {url: $url, title: $title}) {
+    point {
+      id,
+      title,
+      url
+    }
+  }
 }
+`
+const EditTitleForm = ( props ) => {
+  return (
+      <Form onSubmit={props.onSubmit}>
+      { formApi => (
+          <form onSubmit={formApi.submitForm} id="form1">
+          <Text field="title" id="title" />
+          <button type="submit">Save</button>
+          </form>
+      )}
+    </Form>
+  );
+}
+
+class PointComponent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {editing: false}
+    this.handleClickEdit = this.handleClickEdit.bind(this);
+    this.handleClickSave = this.handleClickSave.bind(this);
+  }
+
+  get point() {
+    return this.props.point;
+  }
+
+  handleClickEdit(e) {
+    console.log("edit");
+    this.setState({editing: true})
+  }
+
+  handleClickSave(values, e, formApi) {
+    console.log("saving edits")
+    values.url = this.point.url
+    this.props.mutate({
+      variables: values
+    })
+      .then( res => {
+        console.log(res)
+      });
+    this.setState({editing: false})
+  }
+
+
+  titleUI() {
+    if (this.state.editing) {
+      return <div>
+        <EditTitleForm onSubmit={this.handleClickSave}/>
+        </div>
+      return <b>editing</b>
+    } else {
+      return <div>
+        <a href={this.point.url}>{this.point.title}</a>
+        <a onClick={this.handleClickEdit}>edit</a>
+        </div>
+    }
+  }
+
+  render(){
+    const score = (this.point.upVotes || 0) - (this.point.downVotes || 0)
+    return <span>
+      {this.titleUI()}
+      <Hover onHover={<VoteStats point={this.point}/>}>
+      <b>{score > 0 && "+"}{score}</b>
+      </Hover>
+      </span>
+  }
+}
+
+const Point = graphql(EditPointQuery)(PointComponent)
+
 class EvidenceLink extends React.Component {
   constructor(props) {
     super(props)
@@ -372,20 +442,20 @@ class PointCard extends React.Component {
 
   handleSeeEvidence(point=this.point) {
     const i = this.state.expandedIndex
-    i[point.url] = true
+    i[point.id] = true
     this.setState({expandedIndex: i})
     this.props.handleSeeEvidence && this.props.handleSeeEvidence(point);
   }
 
   handleHideEvidence(point=this.point) {
     const i = this.state.expandedIndex
-    i[point.url] = false
+    i[point.id] = false
     this.setState({expandedIndex: i})
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
   }
 
   expanded() {
-    return this.state.expandedIndex[this.point.url]
+    return this.state.expandedIndex[this.point.id]
   }
 
   evidenceTypeClass() {

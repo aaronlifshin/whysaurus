@@ -18,6 +18,7 @@ fragment pointFields on Point {
   numCounter,
   numComments,
   supportedCount,
+  sources {url, name},
   rootURLsafe
 }
 `
@@ -147,6 +148,46 @@ class PointComponent extends React.Component {
 }
 
 const Point = graphql(EditPointQuery)(PointComponent)
+
+class Sources extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {editing: false}
+    this.handleClickEdit = this.handleClickEdit.bind(this);
+    this.handleClickSave = this.handleClickSave.bind(this);
+  }
+
+  get point() {
+    return this.props.point;
+  }
+
+  handleClickEdit(e) {
+    // TODO: not working, make work
+    console.log("edit");
+    this.setState({editing: true})
+  }
+
+  handleClickSave(values, e, formApi) {
+    // TODO: not working, make work
+    console.log("saving edits")
+    values.url = this.point.url
+    this.props.mutate({
+      variables: values
+    })
+      .then( res => {
+        console.log(res)
+      });
+    this.setState({editing: false})
+  }
+
+  render(){
+    return <ul>
+      {this.point.sources && this.point.sources.map(({name, url}, i) =>
+        <li key={i}><a href={url}>{name}</a></li>
+      )}
+    </ul>
+  }
+}
 
 class EvidenceLink extends React.Component {
   constructor(props) {
@@ -508,6 +549,16 @@ class PointCard extends React.Component {
     }
   }
 
+  sources(){
+    if (this.point.sources){
+      return <div className="row-fluid">
+        <div className="pointText span12">
+          <Sources point={point}/>
+        </div>
+      </div>
+    }
+  }
+
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
@@ -529,6 +580,7 @@ class PointCard extends React.Component {
               <Point point={point}/>
             </div>
           </div>
+          {this.sources()}
           <div className="row-fluid">
             <div className="span12">
               <EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/>

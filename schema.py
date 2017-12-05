@@ -6,7 +6,12 @@ from graphene import relay
 from graphene_gae import NdbObjectType, NdbConnectionField
 
 from models.point import Point as PointModel
+from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
+
+class Source(NdbObjectType):
+    class Meta:
+        model = SourceModel
 
 class Point(NdbObjectType):
     class Meta:
@@ -24,6 +29,10 @@ class Point(NdbObjectType):
     numCounter = graphene.Int()
     def resolve_numCounter(self, info):
         return self.numCounter
+
+    sources = graphene.List(Source)
+    def resolve_sources(self, info):
+        return self.getSources()
 
     numComments = graphene.Int()
     def resolve_numComments(self, info):
@@ -152,8 +161,6 @@ class EditPoint(graphene.Mutation):
     def mutate(self, info, point_data):
         point, pointRoot = PointModel.getCurrentByUrl(point_data.url)
         newPointVersion = point.update(user=info.context.current_user, newTitle=point_data.title)
-        logging.info("FOO")
-        logging.info(newPointVersion)
         return EditPoint(point=newPointVersion)
 
 class Vote(graphene.Mutation):

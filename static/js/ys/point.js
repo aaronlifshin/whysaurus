@@ -490,6 +490,24 @@ class PointCard extends React.Component {
     }
   }
 
+  supportingPoints(){
+    if (this.expanded() && this.point.supportingPoints) {
+      return <div className="support">
+        {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
+        <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+      </div>
+    }
+  }
+
+  counterPoints(){
+    if (this.expanded() && this.point.counterPoints){
+      return <div className="counter">
+        {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
+        <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
+      </div>
+    }
+  }
+
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
@@ -522,16 +540,8 @@ class PointCard extends React.Component {
         <div className="span3"><img src={point.imageURL} alt="an image"></img></div>
       </div>
       <div className="row-fluid">
-      <div className="support"> 
-      {this.expanded() && this.point.supportingPoints &&
-       this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
-      <AddEvidence point={point} type={EvidenceType.SUPPORT}/>
-      </div>
-      <div className="counter">
-      {this.expanded() && this.point.counterPoints &&
-       this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
-      <AddEvidence point={point} type={EvidenceType.COUNTER}/>
-    </div>
+        {this.supportingPoints()}
+        {this.counterPoints()}
       </div>
     </div>;
   }

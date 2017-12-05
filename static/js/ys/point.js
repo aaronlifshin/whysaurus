@@ -553,7 +553,7 @@ class PointCard extends React.Component {
     if (this.point.sources){
       return <div className="row-fluid">
         <div className="pointText span12">
-          <Sources point={point}/>
+          <Sources point={this.point}/>
         </div>
       </div>
     }

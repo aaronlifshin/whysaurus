@@ -8,13 +8,14 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import ndb
+from google.appengine.api import namespace_manager
+from google.appengine.api import app_identity
 from authhandler import AuthHandler
 from models.whysaurususer import WhysaurusUser
 from models.privateArea import PrivateArea
 from models.areauser import AreaUser
 from models.whysaurusexception import WhysaurusException
 from models.reportEvent import DayEventSummary
-from google.appengine.api import namespace_manager
 
 
 class AdminPage(AuthHandler):
@@ -120,7 +121,19 @@ class AdminPage(AuthHandler):
         self.response.out.write(
             self.template_render('admin.html', template_values))
 
-        namespace_manager.set_namespace(userNamespace)  
+        namespace_manager.set_namespace(userNamespace)
+
+    def adminTest(self):
+        appId = app_identity.get_application_id()
+        logging.info('GAE App Id: %s' % appId)
+
+        user = self.current_user
+
+        if user.canSendUserEmail():
+            logging.info('Sending Admin Test Email: %s' % user.name)
+            user.sendUserNotificationEmailTest()
+        else:
+            logging.info('Unable To Send User Email For Admin Test: %s' % user.name)
 
     def uploadUserPage(self):
 

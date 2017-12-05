@@ -8,10 +8,21 @@ class Vote(AuthHandler):
     def post(self):
         resultJSON = json.dumps({'result': False})
         point, pointRoot = Point.getCurrentByUrl(self.request.get('pointURL'))
+        parentPointURL = self.request.get('parentPointURL')
+        parentPoint = None
+        if parentPointURL:
+            parentPoint, parentPointRoot = Point.getCurrentByUrl(parentPointURL)
         user = self.current_user
         if point and user:
             if user.addVote(point, int(self.request.get('vote'))):
-                resultJSON = json.dumps({'result': True, 'newVote': self.request.get('vote')})
+                point.updateBacklinkedSorts(pointRoot)
+                parentNewScore = None
+                if parentPoint:
+                    parentNewScore = parentPoint.pointValue()
+                resultJSON = json.dumps({'result': True,
+                                         'newVote': self.request.get('vote'),
+                                         'newScore': point.pointValue(),
+                                         'parentNewScore': parentNewScore})
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
 
@@ -31,11 +42,19 @@ class Vote(AuthHandler):
             result, newRelevance, newVoteCount = user.addRelevanceVote(
                 parentRootURLsafe, childRootURLsafe, linkType, int(vote))
             if result:
+                # Hacky, parent score retrieval could be pushed into addRelevanceVote
+                parentNewScore = None
+                parentPoint, parentPointRoot = Point.getCurrentByRootKey(parentRootURLsafe)
+                if parentPoint:
+                    parentNewScore = parentPoint.pointValue()
+                else:
+                    parentNewScore = 17
                 resultJSON = json.dumps({
                     'result': True, 
                     'newVote': vote,
                     'newRelevance': str(newRelevance) + '%',
-                    'newVoteCount': newVoteCount
+                    'newVoteCount': newVoteCount,
+                    'parentNewScore': parentNewScore
                 })
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)       

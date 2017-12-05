@@ -82,9 +82,6 @@ def makeURL(sourceStr):
             redirectURL.put()        
     return newUrl
   
-def sortArrayByRating(links):
-    links.sort(key=lambda x: x.sortValue, reverse=True)
-    
 @ndb.tasklet
 def getCurrent_async(pointRoot):
     if pointRoot:
@@ -98,20 +95,11 @@ class Link(ndb.Model):
     root = ndb.KeyProperty(indexed=False)
     # rating = ndb.IntegerProperty(indexed=False)
     voteCount = ndb.IntegerProperty(indexed=False)
-    fRating = ndb.FloatProperty(indexed=False)
+    fRating = ndb.FloatProperty(indexed=False) # relevancy score
     
     @property
     def rating(self):
         return int(round(self.fRating, 0)) if self.fRating else 0
-        
-    @property
-    def sortValue(self):
-        if self.voteCount == 0:
-            return 50
-        elif self.fRating is None:
-            return 50
-        else:
-            return self.fRating
         
     def updateRelevanceData(self, oldRelVote, newRelVote):
         startingRating = self.fRating if self.fRating else 0
@@ -127,8 +115,14 @@ class Link(ndb.Model):
 
 class Point(ndb.Model):
     """Models an individual Point with an author, content, date and version."""
+    # creator is the creator of the first version of this Point (perhaps this should be stored on pointRoot? -JF)
+    creatorURL = ndb.StringProperty(indexed=False)
+    creatorName = ndb.StringProperty(indexed=False)
+
+	# author is the creator of *this version* of this Point 
     authorName = ndb.StringProperty(indexed=False)
     authorURL = ndb.StringProperty(indexed=False)
+	
     content = ndb.TextProperty(indexed=False)
     summaryText = ndb.TextProperty(indexed=False)  # This is Text not String because I do not want it indexed
     title = ndb.StringProperty(indexed=False)
@@ -138,6 +132,7 @@ class Point(ndb.Model):
     
     supportingLinks = ndb.StructuredProperty(Link, repeated=True)    
     counterLinks = ndb.StructuredProperty(Link, repeated=True)    
+    usersContributed = ndb.StringProperty(repeated=True)
         
     sources = ndb.KeyProperty(repeated=True, indexed=False, kind=Source)
     current = ndb.BooleanProperty() # used in filter queries
@@ -165,6 +160,21 @@ class Point(ndb.Model):
     @property
     def numCounter(self):
         return len(self.counterLinks) if self.counterLinks else 0
+ 
+    def numSupportingPlusCounter(self):
+        return self.numSupporting + self.numCounter  
+        
+    def pointValue(self):
+        """
+        Scalar [0-100ish] property that weighs how 'good' the point is,
+        incorporating:
+        +1 for including a source
+        + having agrees >= disagrees
+        + having sub-arguments weighed in its favor
+        """
+        return (min(1, len(self.sources))
+                + self.upVotes - self.downVotes
+                + self.getChildrenPointRating())
 
     @property
     def linksRatio(self):
@@ -173,13 +183,33 @@ class Point(ndb.Model):
         if sup == 0 and cou == 0:
             return 50
         elif cou == 0:
-            return 80
+            return 80 # I think this ceiling is a vestige of the "gauge" UI element we built once that no longer exists - JF
         elif sup == 0:
-            return 20
+            return 20 # I think this floor is a vestige of the "gauge" UI element we built once that no longer exists - JF
         else:
             rat1 = sup/float(sup + cou)
             return math.floor(rat1*100) # Django widthratio requires integers
- 
+
+    @property
+    def numUsersContributed(self):
+        if self.usersContributed is None or len(self.usersContributed) == 0:
+            return None
+        return len(self.usersContributed)
+
+    # Gene: Temporary until we script the creatorName population
+    @property
+    def creatorOrAuthorName(self):
+        if self.creatorName is None or len(self.creatorName) == 0:
+            return self.authorName
+        return self.creatorName
+
+    # Gene: Temporary until we script the creatorName population
+    @property
+    def creatorOrAuthorURL(self):
+        if self.creatorURL is None or len(self.creatorURL) == 0:
+            return self.authorURL
+        return self.creatorURL
+
     @property
     def dateEditedText(self):
         return self.PSTdateEdited.strftime('%b. %d, %Y, %I:%M %p')
@@ -327,6 +357,8 @@ class Point(ndb.Model):
             summaryText) != 250) else summaryText + '...'
         point.authorName = user.name
         point.authorURL = user.url
+        point.creatorName = user.name
+        point.creatorURL = user.url
         point.version = 1
         point.current = True
         point.upVotes = 0
@@ -427,6 +459,8 @@ class Point(ndb.Model):
             point.current = True
             point.authorName = user.name
             point.authorURL = user.url
+            point.creatorName = user.name
+            point.creatorURL = user.url
             point.put()
             user.addVote(point, voteValue=1, updatePoint=False)
             user.recordCreatedPoint(pointRoot.key)
@@ -511,6 +545,10 @@ class Point(ndb.Model):
     #   INTO THE STRUCTURES OF THE POINTS
     def getLinkedPoints(self, linkType, user):
         linkColl = self.getStructuredLinkCollection(linkType)
+        return self.getLinkedPointsForLinks(linkColl)
+
+
+    def getLinkedPointsForLinks(self, linkColl):
         if len(linkColl) > 0:
             rootKeys = [link.root for link in linkColl if link.root]
             roots = ndb.get_multi(rootKeys)
@@ -627,8 +665,85 @@ class Point(ndb.Model):
             )
             linkCurrentVersion._linkInfo = newLink
             links = links + [newLink] if links else [newLink]      
-            sortArrayByRating(links)                  
-            self.setStructuredLinkCollection(linkType, links)
+            links = self.sortLinks(linkType, links)
+
+            # Gene: Really, this needs to operate with the user that adds the link no?
+            # (But right now that's updated as author already - if we change that we'll need to pass it.)
+            root_user = linkCurrentVersion.authorURL
+            if root_user:
+                logging.info('Adding contributing user: %s -> %s' % (root_user, self.url))
+                self.addContributingUser(root_user)
+                self.put()
+
+    def getChildPointRating(self, sp):
+        return max(0, sp.upVotes - sp.downVotes + 1) * (sp._linkInfo.rating / 100.0)
+
+    def getChildrenPointRating(self):
+        """
+        Looks one level down to get supporting and counter votes
+        as influence.
+
+        We disregard points with disagrees > agrees
+        because stupid people adding bad arguments to the bottom
+        shouldn't count against you.  If you have zero of both,
+        we still give you +1 (times relevance) for that.
+
+        We don't recurse below one level because the relevance
+        of those arguments to the weighting one are uncertain.
+        If arguments for a lower point are relevant to the top
+        level, then they should be marshalled and added directly.
+
+        WARNING: if you are ever tempted to add recursive weighting
+        make sure you exclude cycles (a sub point linking to the same point
+        higher up) to avoid infinite loop calculations
+        """
+        supportingPoints = self.getLinkedPoints('supporting', None) or []
+        counterPoints = self.getLinkedPoints('counter', None) or []
+        return int(round((sum([self.getChildPointRating(sp)
+                               for sp in supportingPoints
+                               if sp.upVotes >= sp.downVotes])
+                          - (sum([self.getChildPointRating(cp)
+                                  for cp in counterPoints
+                                  if cp.upVotes >= cp.downVotes])))))
+
+    def sortLinks(self, linkType=None, linksSeed=None):
+        """
+        Sorts links for supporting/counter link columns base on:
+        * relevance -- anything less relevant should be lower. Even with high agrees
+          the same people that clicked "agree" may have also voted it less relevant
+        * Link's pointValue based on agrees and robustness
+
+        With no arguments, it sorts both sides with the same list
+        """
+        sortedLinks = None
+        linkTypes = [linkType]
+        if linkType is None:
+            linkTypes = ["counter", "supporting"]
+            linksSeed = None
+        for linkType in linkTypes:
+            links = linksSeed or self.getStructuredLinkCollection(linkType)
+            linkPoints = self.getLinkedPointsForLinks(links)
+            # will sort on first item in tuple, then second...
+            # adding lp._linkInfo at the end so it can be returned
+            sortingList = sorted([(lp._linkInfo.rating, lp.pointValue(), lp._linkInfo)
+                                  for lp in linkPoints],
+                                 reverse=True)
+            sortedLinks = [p[2] for p in sortingList]
+            self.setStructuredLinkCollection(linkType, sortedLinks)
+        return sortedLinks
+
+    @ndb.tasklet
+    def updateBacklinkedSorts(self, pointRoot, recurseUp=True):
+        linkTypes = ["counter", "supporting"]
+        for linkType in linkTypes:
+            pointsAndRoots = pointRoot.getBacklinkPointRootPairs(linkType)
+            for point,root in pointsAndRoots:
+                point.sortLinks(linkType)
+                point.put()
+                if recurseUp:
+                    # only go up one level, because further *sorting* is unaffected
+                    # WARNING: if we DO recurse up, then must watch out for cycles!!
+                    point.updateBacklinkedSorts(root, recurseUp=False)
 
     def removeLink(self, linkRoot, linkType):
         links = self.getStructuredLinkCollection(linkType)
@@ -704,7 +819,9 @@ class Point(ndb.Model):
                 newPoint.summaryText = self.summaryText
 
             newPoint.authorName = user.name            
-            newPoint.authorURL = user.url                        
+            newPoint.authorURL = user.url
+            newPoint.creatorName = self.creatorName
+            newPoint.creatorURL = self.creatorURL
             newPoint.supportingLinks = list(self.supportingLinks)
             newPoint.counterLinks = list(self.counterLinks)
                     
@@ -717,8 +834,8 @@ class Point(ndb.Model):
                             newPoint.sources.remove(oldKey)
 
             newPoint.version = self.version + 1
-            newPoint.upVotes = self.upVotes
-            newPoint.downVotes = self.downVotes
+            newPoint.upVotes = self.upVotes # number of agrees
+            newPoint.downVotes = self.downVotes # number of disagrees
             newPoint.voteTotal = self.voteTotal
             newPoint.imageURL = self.imageURL if imageURL is None else imageURL
             newPoint.imageDescription = self.imageDescription if imageDescription is None else imageDescription
@@ -853,7 +970,24 @@ class Point(ndb.Model):
             return newPoint
         else:
             return None
-    
+
+    def addContributingUser(self, userUrlContributed):
+        if not userUrlContributed:
+            logging.warning('addContributingUser: Invalid Contributing User!')
+            return
+        if userUrlContributed == self.creatorURL:
+            logging.info('addContributingUser: Bypass For Author: %s' % userUrlContributed)
+            return
+
+        # Gene: Incrementally building for now - should switch to an error state once populated
+        if self.usersContributed is None:
+            self.usersContributed = []
+
+        if userUrlContributed not in self.usersContributed:
+            self.usersContributed = self.usersContributed + [userUrlContributed]
+            self.put()
+            logging.info('addContributingUser: %s -> %s' % (userUrlContributed, self.url))
+
     def getSources(self):
         if len(self.sources) > 0:
             sources = ndb.get_multi(self.sources)
@@ -941,7 +1075,7 @@ class Point(ndb.Model):
                     break
             if ourLink:
                 ourLink.updateRelevanceData(oldRelVote, newRelVote) 
-                sortArrayByRating(links)                               
+                self.sortLinks(newRelVote.linkType, links)
                 self.put()
                 retVal = True, ourLink.rating, ourLink.voteCount
         return retVal        
@@ -1024,7 +1158,7 @@ class PointRoot(ndb.Model):
             raise WhysaurusException( "Unknown link type: \"%s\"" % linkType)
         
     
-    def getBacklinkPoints(self, linkType):
+    def getBacklinkPointRootPairs(self, linkType):
         backlinkRootKeys, backlinksArchiveKeys = self.getBacklinkCollections(linkType)
         backlinkRoots = ndb.get_multi(backlinkRootKeys)
         currentKeys = []
@@ -1034,8 +1168,11 @@ class PointRoot(ndb.Model):
             else:
                 logging.error("Bad link detected in Root: %s. " % self.url)                    
         currentPoints = ndb.get_multi(currentKeys)
-        return currentPoints
+        return zip(currentPoints, backlinkRoots)
     
+    def getBacklinkPoints(self, linkType):
+        return [a[0] for a in self.getBacklinkPointRootPairs(linkType)]
+
     # This is used to fix database problems
     def cleanEmptyLinks(self):
         numCleaned = 0
@@ -1343,6 +1480,12 @@ class PointRoot(ndb.Model):
         else:
             self.comments = [comment.key]
         self.put()
+
+        cur = self.current.get()
+        if cur:
+            root_user = comment.userUrl
+            if root_user:
+                cur.addContributingUser(root_user)
         
     # shift this comment and all its childern into the archived array
     # return the number of comments archived
@@ -1386,7 +1529,36 @@ class PointRoot(ndb.Model):
         self.editorsPickSort = editorsPickSort
         self.put()
         return True
-    
+
+    def populateCreatorUrl(self):
+        pointCurrent = self.getCurrent()
+        if pointCurrent is None:
+            logging.warning('Bypassing Root With No Current Point: %s' % self.url)
+            return False
+
+        if pointCurrent.creatorURL is not None:
+            # logging.info('Point Creator Already Populated: %s' % self.url)
+            return False
+
+        versionsOfThisPoint = Point.query(ancestor=self.key).order(Point.version)
+        firstVersion = versionsOfThisPoint.get()
+
+        pointCurrent.creatorURL = firstVersion.authorURL
+        pointCurrent.creatorName = firstVersion.authorName
+
+        logging.info('Populating Point Creator: %s -> %s' % (firstVersion.authorURL, self.url))
+
+        authors = []
+        # code for listing number of contributors
+        for point in versionsOfThisPoint:
+            thisAuthor = {"authorName": point.authorName, "authorURL": point.authorURL }
+            if thisAuthor not in authors:
+                authors.append(thisAuthor)
+                pointCurrent.addContributingUser(point.authorURL)
+
+        pointCurrent.put()
+        return True
+
 # A dummy class to create an entity group
 # For large groups this will cause issues with sharding them across datastore nodes
 # Eventually a BG task should be written to copy these out of the OutlineRoot

@@ -228,6 +228,23 @@ class AaronTask(AuthHandler):
             t.add(queue_name="notifications")
             logging.info('Requeing MakeFollows task to start at url %s ' % nextURL)
         
+    def PopulateCreators(self):
+        prs = PointRoot.query()
+        cnt = 0
+        bypassed = 0;
+        for pr in prs.iter():
+            updated = pr.populateCreatorUrl()
+            if updated:
+                # Just run one for now..
+                cnt += 1
+                if cnt > 250:
+                    logging.warn('Populate Update Stop - Updated: %d Bypassed: %d' % (cnt, bypassed))
+                    return
+            else:
+                bypassed += 1
+
+        logging.warn('Populate Update Complete! - Updated: %d Bypassed: %d' % (cnt, bypassed))
+
     def get(self):
 
         """

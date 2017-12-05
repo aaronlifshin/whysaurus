@@ -1,4 +1,6 @@
-<div name="showRelevance" class="pointAreaActions showRelevance showChildOnHover defaultShadow{% if point.belowRelevanceThreshold %} belowThreshold{% endif %}"><a></span>Relevance: {{point.relevancePercent}}<span class="hiddenTillRevealed"> &#151; Vote</span><img class="relevanceEditIcon" src="/static/img/pencil_icon_blue.png"/></a></div>
+<div name="showRelevance" class="pointAreaActions showRelevance showChildOnHover defaultShadow{% if point.belowRelevanceThreshold %} belowThreshold{% endif %}"><a></span>Relevance: {{point.relevancePercent}}<span class="hiddenTillRevealed"> &#151; Vote</span><img class="relevanceEditIcon" src="/static/img/pencil_icon_blue.png"/></a>
+<!--Score: {{point.pointValue}}-->
+</div>
 
 <div name="areaRelevanceRadio" class="relevanceVote hide defaultShadow" data-childurlsafe='{{point.rootURLsafe}}' data-linktype='{{linkType}}'>
     <div class="relevanceTitle">How Relevant is this Point?</div>
@@ -30,4 +32,4 @@
         <a href='javascript:;' onclick='javascript:pointUnlink(this, "{{linkType}}")' alt='Unlink " + linkType + " Point'>Unlink this Point</a>
     </div>
 </div>
-{% include 'pointBox.html' %} 
+{% include 'pointBox.html' %}

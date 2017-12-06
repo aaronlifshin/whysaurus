@@ -9,6 +9,10 @@ from models.point import Point as PointModel
 from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
 
+# ideally we could use NdbObjectType here too, but I was running into funny errors.
+class User(graphene.ObjectType):
+    url = graphene.String()
+
 class Source(NdbObjectType):
     class Meta:
         model = SourceModel
@@ -213,15 +217,19 @@ class RelevanceVote(graphene.Mutation):
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
-
     def resolve_points(self, info, **args):
         return PointModel.query()
 
     point = graphene.Field(Point, url=graphene.String())
-
     def resolve_point(self, info, **args):
         point, pointRoot = PointModel.getCurrentByUrl(args['url'])
         return point
+
+    currentUser = graphene.Field(User)
+    def resolve_currentUser(self, info):
+        user = info.context.current_user
+        if (user):
+            return User(url=user.url)
 
 class Mutation(graphene.ObjectType):
     expand_point = ExpandPoint.Field()

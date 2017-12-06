@@ -4,6 +4,11 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 
+const CurrentUserQuery = gql`
+query CurrentUser {
+  currentUser { url }
+}`
+
 export const pointFieldsFragment = gql`
 fragment pointFields on Point {
   id,
@@ -346,20 +351,28 @@ class AgreeDisagreeComponent extends React.Component {
 
   handleClickAgree() {
     console.log("agree");
-    this.props.mutate({
-      variables: {url: this.props.point.url, vote: 1}
-    }).then( res => {
-      console.log(res)
-    });
+    if (this.props.data.currentUser){
+      this.props.mutate({
+        variables: {url: this.props.point.url, vote: 1}
+      }).then( res => {
+        console.log(res)
+      });
+    } else {
+      $("#loginDialog").modal("show");
+    }
   }
 
   handleClickDisagree() {
     console.log("disagree");
-    this.props.mutate({
-      variables: {url: this.props.point.url, vote: -1}
-    }).then( res => {
-      console.log(res)
-    });
+    if (this.props.data.currentUser){
+      this.props.mutate({
+        variables: {url: this.props.point.url, vote: -1}
+      }).then( res => {
+        console.log(res)
+      });
+    } else {
+      $("#loginDialog").modal("show");
+    }
   }
 
   render(){
@@ -370,7 +383,10 @@ class AgreeDisagreeComponent extends React.Component {
     }
 }
 
-const AgreeDisagree = graphql(VoteQuery)(AgreeDisagreeComponent)
+const AgreeDisagree = compose(
+  graphql(VoteQuery),
+  graphql(CurrentUserQuery),
+)(AgreeDisagreeComponent)
 
 export const RelevanceVoteQuery = gql`
 mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURLsafe: String!, $url: String!, $vote: Int!) {

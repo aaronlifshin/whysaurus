@@ -535,7 +535,16 @@ class PointCard extends React.Component {
   }
 
   get evidenceType() {
-    return this.props.link && this.props.link.type
+    if (this.props.link){
+      switch (this.props.link.type) {
+        case "supporting":
+          return EvidenceType.SUPPORT
+        case "counter":
+          return EvidenceType.COUNTER
+        default:
+          return null
+      }
+    }
   }
 
   get relevance() {

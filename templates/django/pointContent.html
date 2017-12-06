@@ -74,9 +74,8 @@
 								Most recent contributor: <a target="_blank" href="../user/{{point.authorURL}}">{{point.authorName}}</a>
 							{% endif %}
                         </span>
-		                {% if point.numUsersContributed == 1 %}
-                            <span id="otherUsers"> & 1 other </span>
-
+                        {% if point.numUsersContributed > 0 %}
+                            <span id="otherUsers"> &  {{point.numUsersContributed}} other{% if point.numUsersContributed > 1 %}s{% endif %} </span>
                         {% endif %}
                         <!--<br>Last Edited {{point.PSTdateEdited}} -->
                         <span> &#183;  </span><!-- &#183; = small dot -->

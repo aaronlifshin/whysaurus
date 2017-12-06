@@ -822,6 +822,7 @@ class Point(ndb.Model):
             newPoint.authorURL = user.url
             newPoint.creatorName = self.creatorName
             newPoint.creatorURL = self.creatorURL
+            newPoint.usersContributed = list(self.usersContributed)
             newPoint.supportingLinks = list(self.supportingLinks)
             newPoint.counterLinks = list(self.counterLinks)
                     
@@ -943,6 +944,8 @@ class Point(ndb.Model):
             except Exception as e:
                 logging.info(
                     'Could not remove supporting point from list: ' + str(e))
+
+            # TODO: This is all repeated in update (and the original create) - please centralize!
             newPoint.title = self.title
             newPoint.content = self.content
             newPoint.summaryText = self.summaryText
@@ -956,6 +959,9 @@ class Point(ndb.Model):
             newPoint.imageAuthor = self.imageAuthor
             newPoint.url = self.url
             newPoint.isTop = self.isTop
+            newPoint.creatorName = self.creatorName
+            newPoint.creatorURL = self.creatorURL
+            newPoint.usersContributed = list(self.usersContributed)
             self.current = False
             newPoint.current = True
             self.put()

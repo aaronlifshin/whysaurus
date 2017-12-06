@@ -710,19 +710,7 @@ function loadHomePage(shouldPushState) {
 }
 
 function makePointsCardsClickable() {
-    $( ".pointCard" ).click( function(ev) {
-        if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
-            return;
-        } else if (ev.which == 2) { // Middle mouse button
-            return;
-        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
-            return;
-        } else {
-            loadPoint($(this).data('pointurl'), true);
-            ev.preventDefault();
-        }
-    });
-    
+
     if (loggedIn) {    
         $('[name=UpVote]').off('.ys').on('click.ys', function(e) {
             var event = e || window.event;
@@ -751,6 +739,26 @@ function makePointsCardsClickable() {
             return false;    
         }); 
     }
+
+    
+    $( ".pointCard" ).click( function(ev) {
+    //$( ".pointTitleContainer" ).click( function(ev) {
+    //$( ".pointTitle" ).click( function(ev) {
+        var target = (ev.target ? ev.target : ev.srcElement);
+        if (target.tagName.toLowerCase() == 'a') {
+            return;
+        }
+        if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
+            return;
+        } else if (ev.which == 2) { // Middle mouse button
+            return;
+        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+            return;
+        } else {
+            loadPoint($(this).data('pointurl'), true);
+            ev.preventDefault();
+        }
+    });
 }
 
 function makeHomeNavsClickable() {

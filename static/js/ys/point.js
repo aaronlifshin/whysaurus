@@ -295,6 +295,7 @@ class AddEvidenceCard extends React.Component {
     }
   }
 
+  // TODO: Should this function be renamed to be specific/descriptive, like addEvidenceLabel? -JF
   get addText(){
     switch (this.evidenceType){
       case EvidenceType.ROOT:
@@ -314,7 +315,7 @@ class AddEvidenceCard extends React.Component {
         <AddEvidenceForm onSubmit={this.handleClickSave}/>
       </div>
     } else {
-      return <a onClick={this.handleClickAddEvidence}>{this.addText}</a>
+      return <div className="addEvidenceButton"><a  onClick={this.handleClickAddEvidence}>{this.addText}</a></div>
     }
   }
 }
@@ -568,25 +569,27 @@ class PointCard extends React.Component {
   relevanceUI() {
     if (this.props.parentPoint) {
       return <Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
-               <b>rel: {this.relevance}</b>
+               <span className="relevanceDisplay">rel: {this.relevance}</span>
              </Hover>
         
       return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
     }
   }
-
+  
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
-      return <div className="support">
+      return <div className="support">		 
+	    {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}	  
         {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
       </div>
     }
   }
-
+  
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
       return <div className="counter">
+	    {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
         {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
       </div>

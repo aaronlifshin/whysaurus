@@ -2,8 +2,13 @@
 @cardWidth: 360px;
 @indent: 15px;
 
+@marginVerticalStandard: 12px;
+
 @cardListWidth: @cardWidth + @indent;
 
+
+.pointCardGroup {
+}
 
 .point-card {
 	//background-color: red;
@@ -12,8 +17,12 @@
 	border-width: 1px;
     border-color: grey;
     border-style: solid;
+	margin-bottom: @marginVerticalStandard;
 }
 
+.supportHeading, .counterHeading {
+	margin-bottom: 8px;
+}
 
 .support, .counter {
 	display: inline-block;
@@ -30,8 +39,17 @@
 	background-color: #ff001814;
 }
 
+.addEvidenceButton {
+	margin-bottom: @marginVerticalStandard;
+}
+
+.relevanceDisplay {
+	position: relative;
+}
+
+
 .pointText {
-	margin-bottom: 8px;
+	margin-bottom: @marginVerticalStandard * .6666;
 }
 
 .vote-stats {
@@ -47,6 +65,9 @@
 	padding: 4px;
 	margin-bottom:4px;
 }
+
+
+
 
 
 .hover {

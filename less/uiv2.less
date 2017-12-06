@@ -1,4 +1,4 @@
-// Grid setup
+// Positioning Grid setup
 @cardWidth: 360px;
 @indent: 15px;
 
@@ -6,6 +6,17 @@
 
 @cardListWidth: @cardWidth + @indent;
 
+// BG Pattern
+@bgColor: #F3FCFF;
+@bgGridColor: #E1F6FF;
+@bgGridWidth: 5px;
+@bgGridStroke: 1.5px;
+body {
+	background-color: @bgColor;
+	background-size: @bgGridWidth @bgGridWidth;
+    background-image: linear-gradient(to right, @bgGridColor @bgGridStroke, transparent @bgGridStroke), 
+	                  linear-gradient(to bottom, @bgGridColor @bgGridStroke, transparent @bgGridStroke);
+}
 
 .pointStream {
 	margin-top: 2 * @marginVerticalStandard;
@@ -23,6 +34,7 @@
     border-color: grey;
     border-style: solid;
 	margin-bottom: @marginVerticalStandard;
+	background-color: white;
 }
 
 .supportHeading, .counterHeading {
@@ -32,21 +44,12 @@
 .evidenceList {
 	display: inline-block;
 	float: left;
-}
-
-.support, .counter {
-	display: inline-block;
-	float: left;
 	width: @cardListWidth;
 	margin-left: @indent;
 }
 
-.support .point-card {
-	background-color: #00ff1f14;
-}
-
-.counter .point-card {
-	background-color: #ff001814;
+.point-card.counter {
+	border-color: #ff5c5c;
 }
 
 .addEvidenceButton {

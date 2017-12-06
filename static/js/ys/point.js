@@ -604,7 +604,7 @@ class PointCard extends React.Component {
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceList">
-        <div className="support">
+        <div className="">
           {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}	  
           {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         </div>
@@ -616,7 +616,7 @@ class PointCard extends React.Component {
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
       return <div className="evidenceList">
-        <div className="counter">
+        <div className="">
 	  {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         </div>

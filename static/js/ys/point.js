@@ -136,7 +136,9 @@ class PointComponent extends React.Component {
     } else {
       return <div>
         <a href={this.point.url}>{this.point.title}</a>
-        <a onClick={this.handleClickEdit}>edit</a>
+        {this.props.data.currentUser &&
+         this.props.data.currentUser.url == this.point.authorURL &&
+         <a onClick={this.handleClickEdit}>edit</a>}
         </div>
     }
   }
@@ -152,7 +154,10 @@ class PointComponent extends React.Component {
   }
 }
 
-const Point = graphql(EditPointQuery)(PointComponent)
+const Point = compose(
+  graphql(EditPointQuery),
+  graphql(CurrentUserQuery),
+)(PointComponent)
 
 class Sources extends React.Component {
   constructor(props) {

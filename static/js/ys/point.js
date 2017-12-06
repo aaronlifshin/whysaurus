@@ -37,7 +37,7 @@ export const EvidenceType = Object.freeze({
 });
 
 function Byline(props){
-  return <span><a className="byline" href={props.point.authorURL}>@{props.point.authorName}</a></span>
+  return <span><a className="byline" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
 }
 
 function CommentCount(props){

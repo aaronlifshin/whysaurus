@@ -24,7 +24,8 @@ fragment pointFields on Point {
   numComments,
   supportedCount,
   sources {url, name},
-  rootURLsafe
+  rootURLsafe,
+  currentUserVote
 }
 `
 
@@ -135,7 +136,9 @@ class PointComponent extends React.Component {
     } else {
       return <div>
         <a href={this.point.url}>{this.point.title}</a>
-        <a onClick={this.handleClickEdit}>edit</a>
+        {this.props.data.currentUser &&
+         this.props.data.currentUser.url == this.point.authorURL &&
+         <a onClick={this.handleClickEdit}>edit</a>}
         </div>
     }
   }
@@ -151,7 +154,10 @@ class PointComponent extends React.Component {
   }
 }
 
-const Point = graphql(EditPointQuery)(PointComponent)
+const Point = compose(
+  graphql(EditPointQuery),
+  graphql(CurrentUserQuery),
+)(PointComponent)
 
 class Sources extends React.Component {
   constructor(props) {
@@ -344,6 +350,7 @@ mutation Vote($url: String!, $vote: Int!) {
       id
       upVotes
       downVotes
+      currentUserVote
     }
   }
 }
@@ -383,10 +390,18 @@ class AgreeDisagreeComponent extends React.Component {
     }
   }
 
+  agreeClass(){
+    return "agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
+  }
+
+  disagreeClass(){
+    return "disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
+  }
+
   render(){
     return <span>
-      <a onClick={this.handleClickAgree}>Agree</a>
-      <a onClick={this.handleClickDisagree}>Disagree</a>
+      <a className={this.agreeClass()} onClick={this.handleClickAgree}>Agree</a>
+      <a className={this.disagreeClass()} onClick={this.handleClickDisagree}>Disagree</a>
       </span>
     }
 }

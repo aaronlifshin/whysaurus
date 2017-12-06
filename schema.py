@@ -52,6 +52,10 @@ class Point(NdbObjectType):
     def resolve_rootURLsafe(self, info):
         return self.rootURLsafe
 
+    currentUserVote = graphene.Int()
+    def resolve_currentUserVote(self, info):
+        return info.context.current_user.getVoteValue(self.key.parent())
+
     supportingPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_supportingPoints(self, info, **args):
         points = self.getLinkedPoints("supporting", None)

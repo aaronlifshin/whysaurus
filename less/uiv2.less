@@ -6,17 +6,34 @@
 
 @cardListWidth: @cardWidth + @indent;
 
+////////////////////////////
 // BG Pattern
+
+// BLUE version
+/*
 @bgColor: #F3FCFF;
 @bgGridColor: #E1F6FF;
-@bgGridWidth: 5px;
-@bgGridStroke: 1.5px;
+@bgGridWidth: 4px;
+@bgGridStroke: 2px;
+#header {
+	background-color: #cff1fc;
+}
+*/
+
+// B/W version
+@bgColor: white;
+@bgGridColor: #f7f7f7;
+@bgGridWidth: 6px;
+@bgGridStroke: 2px;
 body {
 	background-color: @bgColor;
 	background-size: @bgGridWidth @bgGridWidth;
     background-image: linear-gradient(to right, @bgGridColor @bgGridStroke, transparent @bgGridStroke), 
 	                  linear-gradient(to bottom, @bgGridColor @bgGridStroke, transparent @bgGridStroke);
 }
+
+//////////////////////////////////
+
 
 .pointStream {
 	margin-top: 2 * @marginVerticalStandard;

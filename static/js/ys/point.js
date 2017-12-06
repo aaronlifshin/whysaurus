@@ -658,10 +658,10 @@ class PointCard extends React.Component {
           </div>
           {this.sources()}
           <div className="row-fluid">
-            <div className="span12">
-              <EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/>
-              <AgreeDisagree point={point}/>
-              <More point={point}/>
+            <div >
+              <span className="pointcardBottomRowAction"><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
+              <span className="pointcardBottomRowAction"><AgreeDisagree point={point}/></span>
+              <span className="pointcardBottomRowAction"><More point={point}/></span>
             </div>
           </div>
         </div>

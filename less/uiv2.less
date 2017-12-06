@@ -2,8 +2,13 @@
 @cardWidth: 360px;
 @indent: 15px;
 
+@marginVerticalStandard: 12px;
+
 @cardListWidth: @cardWidth + @indent;
 
+
+.pointCardGroup {
+}
 
 .point-card {
 	//background-color: red;
@@ -12,8 +17,12 @@
 	border-width: 1px;
     border-color: grey;
     border-style: solid;
+	margin-bottom: @marginVerticalStandard;
 }
 
+.supportHeading, .counterHeading {
+	margin-bottom: 8px;
+}
 
 .support, .counter {
 	display: inline-block;
@@ -30,30 +39,55 @@
 	background-color: #ff001814;
 }
 
+.addEvidenceButton {
+	margin-bottom: @marginVerticalStandard;
+}
+
+.relevanceDisplay {
+	position: relative;
+}
+
+
 .pointText {
-	margin-bottom: 8px;
+	margin-bottom: @marginVerticalStandard * .6666;
 }
 
 .vote-stats {
     background: white;
     border: 1px black solid;
+	width: 120px;
+    position: relative;
+    left: -6px;
+    top: 24px;
 }
+
+.vote-stats p{
+	padding: 4px;
+	margin-bottom:4px;
+}
+
+
+
+
 
 .hover {
     position: relative;
 
     &:hover &__no-hover {
-        opacity: 0;
+        //opacity: 0;
+		text-decoration:underline;
     }
 
     &:hover &__hover {
         opacity: 1;
+		transform: scale(1); // undos the scale(0) in &__hover below
     }
 
     &__hover {
         position: absolute;
         top: 0;
         opacity: 0;
+		transform: scale(0); // this prevents hover being activated by mousing over the invisible menu, there might be a more official way to do this? -JF
     }
 
     &__no-hover {

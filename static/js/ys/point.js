@@ -24,7 +24,8 @@ fragment pointFields on Point {
   numComments,
   supportedCount,
   sources {url, name},
-  rootURLsafe
+  rootURLsafe,
+  currentUserVote
 }
 `
 
@@ -349,6 +350,7 @@ mutation Vote($url: String!, $vote: Int!) {
       id
       upVotes
       downVotes
+      currentUserVote
     }
   }
 }
@@ -388,10 +390,18 @@ class AgreeDisagreeComponent extends React.Component {
     }
   }
 
+  agreeClass(){
+    return "agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
+  }
+
+  disagreeClass(){
+    return "disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
+  }
+
   render(){
     return <span>
-      <a onClick={this.handleClickAgree}>Agree</a>
-      <a onClick={this.handleClickDisagree}>Disagree</a>
+      <a className={this.agreeClass()} onClick={this.handleClickAgree}>Agree</a>
+      <a className={this.disagreeClass()} onClick={this.handleClickDisagree}>Disagree</a>
       </span>
     }
 }

@@ -34,6 +34,10 @@ class Point(NdbObjectType):
     def resolve_numCounter(self, info):
         return self.numCounter
 
+    fullPointImage = graphene.String()
+    def resolve_fullPointImage(self, info):
+        return self.fullPointImage
+
     sources = graphene.List(Source)
     def resolve_sources(self, info):
         return self.getSources()

@@ -17,6 +17,7 @@ fragment pointFields on Point {
   authorName,
   authorURL,
   imageURL,
+  fullPointImage,
   upVotes,
   downVotes,
   numSupporting,
@@ -649,7 +650,7 @@ class PointCard extends React.Component {
             </div>
           </div>
         </div>
-        <div className="span3"><img src={point.imageURL} alt="an image"></img></div>
+        <div className="span3"><img src={point.fullPointImage} alt="an image"></img></div>
       </div>
       <div className="row-fluid">
         {this.supportingPoints()}

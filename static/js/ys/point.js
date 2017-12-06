@@ -426,38 +426,55 @@ class RelevanceComponent extends React.Component {
 
   handleClick0() {
     console.log("0");
-    this.props.mutate({
-      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 0}
-    }).then( res => {
-      console.log(res)
-    });
+    if (this.props.data.currentUser){
+      this.props.mutate({
+        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 0}
+      }).then( res => {
+        console.log(res)
+      });
+    } else {
+      $("#loginDialog").modal("show");
+    }
   }
 
   handleClick33() {
     console.log("33");
-    this.props.mutate({
-      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 33}
-    }).then( res => {
-      console.log(res)
-    });
+    if (this.props.data.currentUser){
+      this.props.mutate({
+        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 33}
+      }).then( res => {
+        console.log(res)
+      });
+    } else {
+      $("#loginDialog").modal("show");
+    }
   }
 
   handleClick66() {
     console.log("66");
-    this.props.mutate({
-      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 66}
-    }).then( res => {
-      console.log(res)
-    });
+    if (this.props.data.currentUser){
+      this.props.mutate({
+        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 66}
+      }).then( res => {
+        console.log(res)
+      });
+    } else {
+      $("#loginDialog").modal("show");
+    }
   }
 
   handleClick100() {
     console.log("100");
-    this.props.mutate({
-      variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
-    }).then( res => {
-      console.log(res)
-    });
+    if (this.props.data.currentUser){
+      
+      this.props.mutate({
+        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
+      }).then( res => {
+        console.log(res)
+      });
+    } else {
+      $("#loginDialog").modal("show");
+    }
   }
 
   render(){
@@ -470,7 +487,11 @@ class RelevanceComponent extends React.Component {
     }
 }
 
-const RelevanceVote = graphql(RelevanceVoteQuery)(RelevanceComponent)
+const RelevanceVote = compose(
+  graphql(RelevanceVoteQuery),
+  graphql(CurrentUserQuery),
+)(RelevanceComponent)
+
 
 function More(){
   return <span>More</span>

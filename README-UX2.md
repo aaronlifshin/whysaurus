@@ -34,3 +34,4 @@ Every time package.json is updated
 
 **Q:** I made changes in the CSS that aren't showing up in the browser
 **A:** Go run `bin/compilelessc.sh` *[ed: I don't think we have a standard way of running this in an auto-compile way, but webpack might already be able to compile LESS so we should investigate that and eliminate this problem entirely]*
+-- fwiw I am running WinLess, which auto-compiles less to css everytime it detects a change to a specified less file. I believe there is a mac equivalent. -JF

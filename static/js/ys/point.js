@@ -68,8 +68,7 @@ const Hover = ({ onHover, children }) => (
 
 const VoteStats = ({point}) => (
     <div className="vote-stats">
-      <p>Agreed: {point.upVotes}</p>
-      <p>Disagreed: {point.downVotes}</p>
+      <p>Agreed: {point.upVotes} <br/> Disagreed: {point.downVotes}</p>
     </div>
 )
 

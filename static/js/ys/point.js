@@ -260,8 +260,12 @@ class AddEvidenceCard extends React.Component {
   }
 
   handleClickAddEvidence(e) {
-    this.setState({adding: true})
     console.log("add evidence")
+    if (this.props.data.currentUser){
+      this.setState({adding: true})
+    } else {
+      $("#loginDialog").modal("show");
+    }
   }
 
   handleClickSave(values, e, formApi) {
@@ -327,7 +331,11 @@ mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $im
   }
 }
 `
-const AddEvidence = graphql(AddEvidenceQuery)(AddEvidenceCard)
+
+const AddEvidence = compose(
+  graphql(AddEvidenceQuery),
+  graphql(CurrentUserQuery),
+)(AddEvidenceCard)
 
 export const VoteQuery = gql`
 mutation Vote($url: String!, $vote: Int!) {

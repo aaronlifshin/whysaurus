@@ -130,28 +130,28 @@ class PointComponent extends React.Component {
 
   titleUI() {
     if (this.state.editing) {
-      return <div>
+      return <span>
         <EditTitleForm onSubmit={this.handleClickSave}/>
-        </div>
+        </span>
       return <b>editing</b>
     } else {
-      return <div>
+      return <span >
         <a href={this.point.url}>{this.point.title}</a>
         {this.props.data.currentUser &&
-         this.props.data.currentUser.url == this.point.authorURL &&
-         <a onClick={this.handleClickEdit}>edit</a>}
-        </div>
+        this.props.data.currentUser.url == this.point.authorURL &&
+        <a onClick={this.handleClickEdit}>edit</a>}
+        </span>
     }
   }
 
   render(){
     const score = (this.point.upVotes || 0) - (this.point.downVotes || 0)
-    return <span>
+    return <div className="pointTitle">
       {this.titleUI()}
       <Hover onHover={<VoteStats point={this.point}/>}>
-      <b>{score > 0 && "+"}{score}</b>
+      <span className="ux2ScoreInLine"><span className="positiveScore">{score > 0 && "+"}{score}</span></span>
       </Hover>
-      </span>
+      </div>
   }
 }
 

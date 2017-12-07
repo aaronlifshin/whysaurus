@@ -1,6 +1,7 @@
 // Positioning Grid setup
 @cardWidth: 360px;
 @indent: 15px;
+@cardPadding: 6px;
 
 @marginVerticalStandard: 12px;
 
@@ -52,11 +53,11 @@ body {
     border-style: solid;
 	margin-bottom: @marginVerticalStandard;
 	background-color: white;
-	padding: 6px;
+	padding: @cardPadding;
 }
 
 .supportHeading, .counterHeading {
-	margin-bottom: 8px;
+	margin-bottom: 12px;
 }
 
 
@@ -94,8 +95,21 @@ body {
 
 .relevanceDisplay {
 	position: relative;
+	margin-left: @cardPadding;
+	margin-bottom: 2px;
 }
 
+.relVoteGroup {
+	position: relative;
+    top: 2px; // not sure why this is nec
+	margin-bottom: 0px;
+	margin-left: 12px;
+	padding: 0px
+}
+
+.relVoteLink {
+	margin-left: 8px;
+}
 
 .pointText {
 	margin-bottom: @marginVerticalStandard * .6666;
@@ -121,6 +135,7 @@ body {
 
 .hover {
     position: relative;
+	cursor:pointer;
 
     &:hover &__no-hover {
         //opacity: 0;

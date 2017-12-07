@@ -502,11 +502,12 @@ class RelevanceComponent extends React.Component {
   }
 
   render(){
-    return <span>
-      <a onClick={this.handleClick0}>0</a>
-      <a onClick={this.handleClick33}>33</a>
-      <a onClick={this.handleClick66}>66</a>
-      <a onClick={this.handleClick100}>100</a>
+    return <span className="relVoteGroup" >
+	  vote: 
+      <a className="relVoteLink" onClick={this.handleClick0}>0%</a>
+      <a className="relVoteLink" onClick={this.handleClick33}>33%</a>
+      <a className="relVoteLink" onClick={this.handleClick66}>66%</a>
+      <a className="relVoteLink" onClick={this.handleClick100}>100%</a>
       </span>
     }
 }
@@ -593,9 +594,9 @@ class PointCard extends React.Component {
 
   relevanceUI() {
     if (this.props.parentPoint) {
-      return <Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
-               <span className="relevanceDisplay">rel: {this.relevance}</span>
-             </Hover>
+      return <div className="relevanceDisplay"><Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
+               <span >Relevance {this.relevance}%</span>
+             </Hover></div>
         
       return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
     }
@@ -639,6 +640,7 @@ class PointCard extends React.Component {
     const point = this.point;
     console.log("rendering " + point.url)
     let classes = `point-card row-fluid ${this.evidenceTypeClass()}`;
+	// TODO: there's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF
     return <div>
     { this.relevanceUI() }
       <div className={classes}>

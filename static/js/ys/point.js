@@ -44,19 +44,18 @@ export const EvidenceType = Object.freeze({
 });
 
 function Byline(props){
-  return <span><a className="byline" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
+  return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
 }
 
+// TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
 function CommentCount(props){
-  return <span><i className="fa fa-comment-o"></i>{props.point.numComments}</span>
+  return <span className="cardTopRowItem"><span className="cardTopRowIconWithStat fa fa-comment-o"></span>{props.point.numComments}</span>
 }
-
 function ShareIcon(props){
-  return <i className="fa fa-share-alt"></i>;
+  return <span className="cardTopRowItem"><span className="fa fa-share-alt"></span></span>
 }
-
 function SupportingCount(props){
-  return <span><i className="fa fa-level-up"></i>{props.point.supportedCount}</span>
+  return <span className="cardTopRowItem"><span className="cardTopRowIconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
 }
 
 
@@ -148,9 +147,13 @@ class PointComponent extends React.Component {
     const score = (this.point.upVotes || 0) - (this.point.downVotes || 0)
     return <div className="pointTitle">
       {this.titleUI()}
+	  <span className="scoreAnimContainerMax">
+	  <span className="scoreAnimContainerReset">
       <Hover onHover={<VoteStats point={this.point}/>}>
       <span className="ux2ScoreInLine"><span className="positiveScore">{score > 0 && "+"}{score}</span></span>
       </Hover>
+	  </span>
+	  </span>
       </div>
   }
 }
@@ -372,7 +375,7 @@ class AgreeDisagreeComponent extends React.Component {
         variables: {url: this.props.point.url, vote: 1}
       }).then( res => {
         console.log(res)
-      });
+      });	  	  
     } else {
       $("#loginDialog").modal("show");
     }
@@ -646,9 +649,9 @@ class PointCard extends React.Component {
       <div className={classes}>
         <div className="span9">
           <div className="row-fluid">
-            <div className="span12">
+            <div className="cardTopRow span12">
               <Byline point={point}/>
-              <CommentCount point={point}/>t
+              <CommentCount point={point}/>
               <ShareIcon point={point}/>
               <SupportingCount point={point}/>
             </div>

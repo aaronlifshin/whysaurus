@@ -1,11 +1,20 @@
+@import "variables.less"; // Modify this for custom colors, font-sizes, etc
+
 // Positioning Grid setup
 @cardWidth: 360px;
 @indent: 15px;
-@cardPadding: 6px;
+@cardPadding: 8px;
 
-@marginVerticalStandard: 12px;
+@marginVerticalStandard: 16px;
+@marginVerticalSmall: 12px;
 
 @cardListWidth: @cardWidth + @indent;
+
+
+.row-fluid [class*=span] {
+	min-height: auto;
+}
+
 
 ////////////////////////////
 // BG Pattern
@@ -54,22 +63,68 @@ body {
 	margin-bottom: @marginVerticalStandard;
 	background-color: white;
 	padding: @cardPadding;
+	padding-top: @cardPadding * .75;
 }
 
-.supportHeading, .counterHeading {
-	margin-bottom: 12px;
+.relevanceDisplay {
+	position: relative;
+	margin-left: @cardPadding;
+	margin-bottom: 3px;
 }
 
+.relVoteGroup {
+	position: relative;
+    top: 2px; // not sure why this is nec
+	margin-bottom: 0px;
+	margin-left: 12px;
+	padding: 0px
+}
 
-.bylineActions {
+.relVoteLink {
+	margin-left: 8px;
+}
+
+.cardTopRow {
     font-size: 12px;
     color: #a9a9a9;
-    line-height: 125%;
-    float: left;
-    margin-bottom: 7px;
-    width: 100%;
+	margin-bottom: @marginVerticalSmall;
 }
 
+.cardTopRowItem {
+	margin-right: 10px;
+}
+
+.cardTopRowIconWithStat {
+	margin-right: 1px;
+}
+
+.byline {
+	width: inherit;
+	float: none;
+}
+
+.byline:hover {
+	color: @grayTextLighter;
+}
+
+
+.pointText {
+	margin-bottom: @marginVerticalSmall;
+}
+
+.vote-stats {
+    background: white;
+    border: 1px black solid;
+	width: 120px;
+    position: relative;
+    left: -6px;
+    top: 24px;
+}
+
+.vote-stats p{
+	padding: 4px;
+	margin-bottom:4px;
+}
 
 .pointcardBottomRowAction {
 	margin-right: 12px;
@@ -77,6 +132,12 @@ body {
 .agree {
 	margin-right: 6px;
 }
+
+
+.supportHeading, .counterHeading {
+	margin-bottom: 12px;
+}
+
 
 .evidenceList {
 	display: inline-block;
@@ -93,41 +154,6 @@ body {
 	margin-bottom: @marginVerticalStandard;
 }
 
-.relevanceDisplay {
-	position: relative;
-	margin-left: @cardPadding;
-	margin-bottom: 2px;
-}
-
-.relVoteGroup {
-	position: relative;
-    top: 2px; // not sure why this is nec
-	margin-bottom: 0px;
-	margin-left: 12px;
-	padding: 0px
-}
-
-.relVoteLink {
-	margin-left: 8px;
-}
-
-.pointText {
-	margin-bottom: @marginVerticalStandard * .6666;
-}
-
-.vote-stats {
-    background: white;
-    border: 1px black solid;
-	width: 120px;
-    position: relative;
-    left: -6px;
-    top: 24px;
-}
-
-.vote-stats p{
-	padding: 4px;
-	margin-bottom:4px;
-}
 
 
 

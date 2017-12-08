@@ -34,6 +34,10 @@ class Point(NdbObjectType):
     def resolve_numCounter(self, info):
         return self.numCounter
 
+    pointValue = graphene.Int()
+    def resolve_pointValue(self, info):
+        return self.pointValue()
+
     fullPointImage = graphene.String()
     def resolve_fullPointImage(self, info):
         return self.fullPointImage
@@ -179,17 +183,23 @@ class Vote(graphene.Mutation):
     class Arguments:
         url = graphene.String(required=True)
         vote = graphene.Int(required=True)
+        parentURL = graphene.String()
 
     point = graphene.Field(Point)
+    parentPoint = graphene.Field(Point)
 
-    def mutate(self, info, url, vote):
+    def mutate(self, info, url, vote, parentURL=None):
         user = info.context.current_user
         point, pointRoot = PointModel.getCurrentByUrl(url)
         if point:
             if user:
-                vote = user.addVote(point, vote)
-                if vote:
-                    return Vote(point=point)
+                voteResult = user.addVote(point, vote)
+                if voteResult:
+                    if parentURL:
+                        pp, ppr = PointModel.getCurrentByUrl(parentURL)
+                        return Vote(point=point, parentPoint=pp)
+                    else:
+                        return Vote(point=point, parentPoint=None)
                 else:
                     raise Exception(str('vote failed: ' + str(vote)))
             else:

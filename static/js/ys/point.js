@@ -20,6 +20,7 @@ fragment pointFields on Point {
   fullPointImage,
   upVotes,
   downVotes,
+  pointValue,
   numSupporting,
   numCounter,
   numComments,
@@ -145,7 +146,7 @@ class PointComponent extends React.Component {
   }
 
   render(){
-    const score = (this.point.upVotes || 0) - (this.point.downVotes || 0)
+    const score = this.point.pointValue
     return <span>
       {this.titleUI()}
       <Hover onHover={<VoteStats point={this.point}/>}>
@@ -345,13 +346,18 @@ const AddEvidence = compose(
 )(AddEvidenceCard)
 
 export const VoteQuery = gql`
-mutation Vote($url: String!, $vote: Int!) {
-  vote(url: $url, vote: $vote) {
+mutation Vote($url: String!, $vote: Int!, $parentURL: String) {
+  vote(url: $url, vote: $vote, parentURL: $parentURL) {
     point {
       id
+      pointValue
       upVotes
       downVotes
       currentUserVote
+    }
+    parentPoint {
+      id
+      pointValue
     }
   }
 }
@@ -369,7 +375,9 @@ class AgreeDisagreeComponent extends React.Component {
     console.log("agree");
     if (this.props.data.currentUser){
       this.props.mutate({
-        variables: {url: this.props.point.url, vote: 1}
+        variables: {url: this.props.point.url,
+                    vote: 1,
+                    parentURL: this.props.parentPoint && this.props.parentPoint.url}
       }).then( res => {
         console.log(res)
       });
@@ -382,7 +390,9 @@ class AgreeDisagreeComponent extends React.Component {
     console.log("disagree");
     if (this.props.data.currentUser){
       this.props.mutate({
-        variables: {url: this.props.point.url, vote: -1}
+        variables: {url: this.props.point.url,
+                    vote: -1,
+                    parentURL: this.props.parentPoint && this.props.parentPoint.url}
       }).then( res => {
         console.log(res)
       });
@@ -660,7 +670,7 @@ class PointCard extends React.Component {
           <div className="row-fluid">
             <div className="span12">
               <EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/>
-              <AgreeDisagree point={point}/>
+              <AgreeDisagree point={point} parentPoint={this.props.parentPoint}/>
               <More point={point}/>
             </div>
           </div>

@@ -85,7 +85,7 @@ class PointList extends React.Component {
     } else if (!(this.props.data.points || this.props.data.point)) {
       return <div>Loading points...</div>
     } else {
-      return <div className="row">
+      return <div className="row pointStream">
         <div className="span12">
 	{this.renderPointCards(this.props.data)}
 

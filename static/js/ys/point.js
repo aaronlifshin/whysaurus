@@ -45,19 +45,18 @@ export const EvidenceType = Object.freeze({
 });
 
 function Byline(props){
-  return <span><a className="byline" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
+  return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
 }
 
+// TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
 function CommentCount(props){
-  return <span><i className="fa fa-comment-o"></i>{props.point.numComments}</span>
+  return <span className="cardTopRowItem"><span className="cardTopRowIconWithStat fa fa-comment-o"></span>{props.point.numComments}</span>
 }
-
 function ShareIcon(props){
-  return <i className="fa fa-share-alt"></i>;
+  return <span className="cardTopRowItem"><span className="fa fa-share-alt"></span></span>
 }
-
 function SupportingCount(props){
-  return <span><i className="fa fa-level-up"></i>{props.point.supportedCount}</span>
+  return <span className="cardTopRowItem"><span className="cardTopRowIconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
 }
 
 
@@ -131,28 +130,32 @@ class PointComponent extends React.Component {
 
   titleUI() {
     if (this.state.editing) {
-      return <div>
+      return <span>
         <EditTitleForm onSubmit={this.handleClickSave}/>
-        </div>
+        </span>
       return <b>editing</b>
     } else {
-      return <div>
+      return <span >
         <a href={this.point.url}>{this.point.title}</a>
         {this.props.data.currentUser &&
-         this.props.data.currentUser.url == this.point.authorURL &&
-         <a onClick={this.handleClickEdit}>edit</a>}
-        </div>
+        this.props.data.currentUser.url == this.point.authorURL &&
+        <a onClick={this.handleClickEdit}>edit</a>}
+        </span>
     }
   }
 
   render(){
     const score = this.point.pointValue
-    return <span>
+    return <div className="pointTitle">
       {this.titleUI()}
+	  <span className="scoreAnimContainerMax">
+	  <span className="scoreAnimContainerReset">
       <Hover onHover={<VoteStats point={this.point}/>}>
-      <b>{score > 0 && "+"}{score}</b>
+      <span className="ux2ScoreInLine"><span className="positiveScore">{score > 0 && "+"}{score}</span></span>
       </Hover>
-      </span>
+	  </span>
+	  </span>
+      </div>
   }
 }
 
@@ -380,7 +383,7 @@ class AgreeDisagreeComponent extends React.Component {
                     parentURL: this.props.parentPoint && this.props.parentPoint.url}
       }).then( res => {
         console.log(res)
-      });
+      });	  	  
     } else {
       $("#loginDialog").modal("show");
     }
@@ -512,11 +515,12 @@ class RelevanceComponent extends React.Component {
   }
 
   render(){
-    return <span>
-      <a onClick={this.handleClick0}>0</a>
-      <a onClick={this.handleClick33}>33</a>
-      <a onClick={this.handleClick66}>66</a>
-      <a onClick={this.handleClick100}>100</a>
+    return <span className="relVoteGroup" >
+	  vote: 
+      <a className="relVoteLink" onClick={this.handleClick0}>0%</a>
+      <a className="relVoteLink" onClick={this.handleClick33}>33%</a>
+      <a className="relVoteLink" onClick={this.handleClick66}>66%</a>
+      <a className="relVoteLink" onClick={this.handleClick100}>100%</a>
       </span>
     }
 }
@@ -603,9 +607,9 @@ class PointCard extends React.Component {
 
   relevanceUI() {
     if (this.props.parentPoint) {
-      return <Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
-               <span className="relevanceDisplay">rel: {this.relevance}</span>
-             </Hover>
+      return <div className="relevanceDisplay"><Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
+               <span >Relevance {this.relevance}%</span>
+             </Hover></div>
         
       return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
     }
@@ -614,7 +618,7 @@ class PointCard extends React.Component {
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceList">
-        <div className="support">
+        <div className="">
           {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}	  
           {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         </div>
@@ -626,7 +630,7 @@ class PointCard extends React.Component {
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
       return <div className="evidenceList">
-        <div className="counter">
+        <div className="">
 	  {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         </div>
@@ -649,14 +653,15 @@ class PointCard extends React.Component {
     const point = this.point;
     console.log("rendering " + point.url)
     let classes = `point-card row-fluid ${this.evidenceTypeClass()}`;
+	// TODO: there's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF
     return <div>
     { this.relevanceUI() }
       <div className={classes}>
         <div className="span9">
           <div className="row-fluid">
-            <div className="span12">
+            <div className="cardTopRow span12">
               <Byline point={point}/>
-              <CommentCount point={point}/>t
+              <CommentCount point={point}/>
               <ShareIcon point={point}/>
               <SupportingCount point={point}/>
             </div>
@@ -668,10 +673,10 @@ class PointCard extends React.Component {
           </div>
           {this.sources()}
           <div className="row-fluid">
-            <div className="span12">
-              <EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/>
-              <AgreeDisagree point={point} parentPoint={this.props.parentPoint}/>
-              <More point={point}/>
+            <div >
+              <span className="pointcardBottomRowAction"><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
+      <span className="pointcardBottomRowAction"><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+              <span className="pointcardBottomRowAction"><More point={point}/></span>
             </div>
           </div>
         </div>

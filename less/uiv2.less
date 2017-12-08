@@ -1,11 +1,54 @@
-// Grid setup
+@import "variables.less"; // Modify this for custom colors, font-sizes, etc
+
+// Positioning Grid setup
 @cardWidth: 360px;
 @indent: 15px;
+@cardPadding: 8px;
 
-@marginVerticalStandard: 12px;
+@marginVerticalStandard: 16px;
+@marginVerticalSmall: 12px;
 
 @cardListWidth: @cardWidth + @indent;
 
+
+.row-fluid [class*=span] {
+	min-height: auto;
+}
+
+
+////////////////////////////
+// BG Pattern
+
+// BLUE version
+/*
+@bgColor: #F3FCFF;
+@bgGridColor: #E1F6FF;
+@bgGridWidth: 4px;
+@bgGridStroke: 2px;
+#header {
+	background-color: #cff1fc;
+}
+*/
+
+// B/W version
+@bgColor: white;
+@bgGridColor: #f7f7f7;
+@bgGridWidth: 6px;
+@bgGridStroke: 2px;
+body {
+	background-color: @bgColor;
+	background-size: @bgGridWidth @bgGridWidth;
+    background-image: linear-gradient(to right, @bgGridColor @bgGridStroke, transparent @bgGridStroke), 
+	                  linear-gradient(to bottom, @bgGridColor @bgGridStroke, transparent @bgGridStroke);
+}
+
+//////////////////////////////////
+
+
+.pointStream {
+	margin-top: 2 * @marginVerticalStandard;
+	margin-left: 0;
+}
 
 .pointCardGroup {
 }
@@ -18,43 +61,55 @@
     border-color: grey;
     border-style: solid;
 	margin-bottom: @marginVerticalStandard;
-}
-
-.supportHeading, .counterHeading {
-	margin-bottom: 8px;
-}
-
-.evidenceList {
-	display: inline-block;
-	float: left;
-}
-
-.support, .counter {
-	display: inline-block;
-	float: left;
-	width: @cardListWidth;
-	margin-left: @indent;
-}
-
-.support .point-card {
-	background-color: #00ff1f14;
-}
-
-.counter .point-card {
-	background-color: #ff001814;
-}
-
-.addEvidenceButton {
-	margin-bottom: @marginVerticalStandard;
+	background-color: white;
+	padding: @cardPadding;
+	padding-top: @cardPadding * .75;
 }
 
 .relevanceDisplay {
 	position: relative;
+	margin-left: @cardPadding;
+	margin-bottom: 3px;
+}
+
+.relVoteGroup {
+	position: relative;
+    top: 2px; // not sure why this is nec
+	margin-bottom: 0px;
+	margin-left: 12px;
+	padding: 0px
+}
+
+.relVoteLink {
+	margin-left: 8px;
+}
+
+.cardTopRow {
+    font-size: 12px;
+    color: #a9a9a9;
+	margin-bottom: @marginVerticalSmall;
+}
+
+.cardTopRowItem {
+	margin-right: 10px;
+}
+
+.cardTopRowIconWithStat {
+	margin-right: 1px;
+}
+
+.byline {
+	width: inherit;
+	float: none;
+}
+
+.byline:hover {
+	color: @grayTextLighter;
 }
 
 
 .pointText {
-	margin-bottom: @marginVerticalStandard * .6666;
+	margin-bottom: @marginVerticalSmall;
 }
 
 .vote-stats {
@@ -71,12 +126,42 @@
 	margin-bottom:4px;
 }
 
+.pointcardBottomRowAction {
+	margin-right: 12px;
+}
+.agree {
+	margin-right: 6px;
+}
+
+
+.supportHeading, .counterHeading {
+	margin-bottom: 12px;
+}
+
+
+.evidenceList {
+	display: inline-block;
+	float: left;
+	width: @cardListWidth;
+	margin-left: @indent;
+}
+
+.point-card.counter {
+	border-color: #ff5c5c;
+}
+
+.addEvidenceButton {
+	margin-bottom: @marginVerticalStandard;
+}
+
+
 
 
 
 
 .hover {
     position: relative;
+	cursor:pointer;
 
     &:hover &__no-hover {
         //opacity: 0;

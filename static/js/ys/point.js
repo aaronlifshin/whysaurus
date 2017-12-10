@@ -461,11 +461,22 @@ class RelevanceComponent extends React.Component {
     return this.props.parentPoint.rootURLsafe
   }
 
+  get linkType(){
+    switch (this.props.linkType) {
+      case EvidenceType.SUPPORT:
+        return "supporting"
+      case EvidenceType.COUNTER:
+        return "counter"
+      default:
+        return null
+    }
+  }
+
   handleClick0() {
     console.log("0");
     if (this.props.data.currentUser){
       this.props.mutate({
-        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 0}
+        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 0}
       }).then( res => {
         console.log(res)
       });
@@ -478,7 +489,7 @@ class RelevanceComponent extends React.Component {
     console.log("33");
     if (this.props.data.currentUser){
       this.props.mutate({
-        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 33}
+        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 33}
       }).then( res => {
         console.log(res)
       });
@@ -491,7 +502,7 @@ class RelevanceComponent extends React.Component {
     console.log("66");
     if (this.props.data.currentUser){
       this.props.mutate({
-        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 66}
+        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 66}
       }).then( res => {
         console.log(res)
       });
@@ -505,7 +516,7 @@ class RelevanceComponent extends React.Component {
     if (this.props.data.currentUser){
       
       this.props.mutate({
-        variables: {linkType: this.props.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
+        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
       }).then( res => {
         console.log(res)
       });

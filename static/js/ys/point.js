@@ -118,22 +118,23 @@ class PointComponent extends React.Component {
   handleClickSave(values, e, formApi) {
     console.log("saving edits")
     values.url = this.point.url
+    this.setState({saving: true})
     this.props.mutate({
       variables: values
     })
-      .then( res => {
-        console.log(res)
-      });
-    this.setState({editing: false})
+    // this component will be replaced after save, so we don't need to update state
   }
 
 
   titleUI() {
     if (this.state.editing) {
-      return <span>
-        <EditTitleForm onSubmit={this.handleClickSave}/>
-        </span>
-      return <b>editing</b>
+      if (this.state.saving) {
+        return <span>Saving...</span>
+      } else {
+        return <span>
+            <EditTitleForm onSubmit={this.handleClickSave}/>
+          </span>
+      }
     } else {
       return <span >
         <a href={this.point.url}>{this.point.title}</a>

@@ -69,18 +69,18 @@ class PointList extends React.Component {
   }
 }
 
-const GetPoints = gql`
-${expandedPointFieldsFragment}
-query GetPoints {
-  points(first: 1) {
-    edges {
-      node {
-        ...pointFields
-        ...evidenceFields
-      }
-    }
-  }
-}`;
+// const GetPoints = gql`
+// ${expandedPointFieldsFragment}
+// query GetPoints {
+//   points(first: 1) {
+//     edges {
+//       node {
+//         ...pointFields
+//         ...evidenceFields
+//       }
+//     }
+//   }
+// }`;
 
 
 // return the "whysaurus url" for this page

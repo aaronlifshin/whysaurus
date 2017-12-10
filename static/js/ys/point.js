@@ -282,13 +282,15 @@ class AddEvidenceCard extends React.Component {
     console.log("saving evidence")
     values.parentURL = this.point.url
     values.linkType = this.linkType
+    this.setState({saving: true})
     this.props.mutate({ 
       variables: values
     })
       .then( res => {
+        this.setState({saving: false,
+                       adding: false})
         console.log(res)
       });
-    this.setState({adding: false})
   }
 
   get evidenceType(){
@@ -322,9 +324,15 @@ class AddEvidenceCard extends React.Component {
 
   render(){
     if (this.state.adding) {
-      return <div>
-        <AddEvidenceForm onSubmit={this.handleClickSave}/>
-      </div>
+      if (this.state.saving) {
+        return <div>
+          Saving...
+          </div>
+      } else {
+        return <div>
+          <AddEvidenceForm onSubmit={this.handleClickSave}/>
+          </div>
+      }
     } else {
       return <div className="addEvidenceButton"><a  onClick={this.handleClickAddEvidence}>{this.addText}</a></div>
     }

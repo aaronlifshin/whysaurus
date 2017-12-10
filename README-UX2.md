@@ -26,6 +26,36 @@ Every time package.json is updated
 # Developing
 
 1. While developing, you should use `npm run webpack-watch` to run webpack automatically when source code changes.
+2. It may be useful to use `curl` to test changes to `schema.py`, for example like:
+
+```
+curl -v localhost:8081/graphql -d '{ point(url: "birds_are_fine") { title, upVotes }}'
+```
+
+or
+
+```
+curl localhost:8081/graphql -d 'mutation Vote {
+  vote(url: "fish_are_ok", vote: -1) {
+    point {
+      title
+      upVotes
+      downVotes
+    }
+  }
+}
+'
+```
+
+# Code organization
+
+The code for the V2 UX lives in two places.
+
+The backend logic, implemented using [Graphene GAE](https://github.com/graphql-python/graphene-gae), a derivative of the [Graphene](https://github.com/graphql-python/graphene) GraphQL schema library, lives in [schema.py](./schema.py).
+
+The frontend logic, implemented using [React](https://reactjs.org/), a UI framework and [Apollo](https://www.apollographql.com/), a JavaScript GraphQL framework, starts in [static/js/app.js](./static/js/app.js), which loads files in the [static/js/ys](./static/js/ys) directory. Most new functionality will be added to [static/js/ys/point.js](./static/js/ys/point.js).
+
+New functionality will typically require a developer to A) add logic to `schema.py` to get or mutate data from the database, returning a result using standard GraphQL/Graphene techniques and B) add logic to `static/js/ys/point.js` to implement new UI or new UX affordances for manipulating data. https://github.com/aaronlifshin/whysaurus/commit/a69c57be66c44ff8f175a2762368e995becbe379 is a good example of a change that adds new data to the UI. https://github.com/aaronlifshin/whysaurus/commit/d676774662dbd163999ce55e80b68b7f8fc5d8a7 is a good example of a change that adds new data mutate capabilities (ie, title editing).
 
 # FAQ
 

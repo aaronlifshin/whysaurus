@@ -269,12 +269,3 @@ schema = graphene.Schema(query=Query, mutation=Mutation)
 #     title, upVotes, supportingPoints
 #   }
 # }'
-
-
-# mutation AddEvidence {
-#   addEvidence(pointData: {title: "bacon is fly", content: "bacon is fly", summaryText: "bacon is the flyest"}) {
-#     point {
-#       title
-#     }
-#   }
-#}

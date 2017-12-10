@@ -703,32 +703,6 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
     handleHideEvidence={handleHideEvidence}
     parentPoint={parentPoint}/>
       </div>;
-    // TODO: figure out how to render regular point cards pre-expansion.
-    //       currently failing to expand on the first click for unknown reasons.
-    // if (!expandedIndex[point.url]) {
-    //   console.log("point card for " + point.url);
-    //   console.log(expandedIndex)
-    //   return <div className="span5" key={point.url}>
-    //     <PointCard point={point}
-    //       expandedIndex={expandedIndex}
-    //       expanded={false}
-    //       evidenceType={pointEdge.evidenceType}
-    //       handleSeeEvidence={handleSeeEvidence}
-    //       handleHideEvidence={handleHideEvidence}/>
-    //     </div>
-    // } else {
-    //   console.log("expanded point card for " + point.url);
-    //   console.log(expandedIndex)
-    //   return <div className="span5" key={point.url}>
-    //     <ExpandedPointCard point={point}
-    //         url={point.url}
-    //         expandedIndex={expandedIndex}
-    //         expanded={true}
-    //         evidenceType={pointEdge.evidenceType}
-    //         handleSeeEvidence={handleSeeEvidence}
-    //         handleHideEvidence={handleHideEvidence}/>
-    //     </div>;
-    // }
   } else {
     return <div className="pointCardGroup" key={index}></div>;
   }

@@ -7,32 +7,6 @@ const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-function* evidenceEdges(edges) {
-  for (let edge of edges) {
-    if (edge) {
-      yield List(edge.node.supportingPoints ? edge.node.supportingPoints.edges : [])
-      yield List(edge.node.counterPoints ? edge.node.counterPoints.edges : [])
-    }
-  }
-}
-
-export function evidenceRows(rowOfEdges) {
-  let edges = List(evidenceEdges(rowOfEdges))
-  return edges.first().zipAll(...edges.rest())
-}
-
-export function* edgeRows(rowOfEdges, depth = 0) {
-  let row = List(rowOfEdges);
-  if (row && !row.isEmpty()) {
-    yield row.map(edge => Map(edge).set('depth', depth))
-    for (let r of evidenceRows(row)) {
-      for (let s of edgeRows(List(r), depth + 1)) {
-	yield s
-      }
-    }
-  }
-}
-
 class PointList extends React.Component {
   constructor(props) {
     super(props);
@@ -95,27 +69,6 @@ class PointList extends React.Component {
   }
 }
 
-function Post({edge, data}){
-  let point = (data && !data.loading)? data.point : edge
-  return <li key={point.title}>{point.title}({point.upVotes} votes)</li>
-}
-
-function PostList({data: {loading, points}}) {
-  if (loading) {
-    return <div>Loading</div>;
-  } else {
-  return (
-      <div>
-        <ul>
-          {points.edges.map(edge =>
-           <Post edge={edge} key={edge.node.title}/>
-          )}
-        </ul>
-      </div>
-  );
-  }
-}
-
 const GetPoints = gql`
 ${expandedPointFieldsFragment}
 query GetPoints {
@@ -128,25 +81,15 @@ query GetPoints {
     }
   }
 }`;
-//${pointFieldsFragment}
+
 
 // return the "whysaurus url" for this page
 function url(){
   let parts = window.location.pathname.split("/");
   return parts.pop() || parts.pop(); // the || accounts for a trailing slash
 }
-export const PointListWithPoints = graphql(GetPoints)(PointList);
+
+// TODO: this doesn't work, but will need to for, eg, front page point lists
+// export const PointListWithPoints = graphql(GetPoints)(PointList);
+
 export const PointListWithPoint = graphql(GetPoint, {options: {variables: {url: url()}}})(PointList);
-export const PostListWithPoints = graphql(GetPoints)(PostList);
-
-
-
-/*
-
-    ...pointFields
-
-    supportingPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } },
-    counterPoints { edges { node { title, upVotes, ...pointFields }, relevance, type } }
-
-*/
-

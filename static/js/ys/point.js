@@ -136,18 +136,18 @@ class PointComponent extends React.Component {
           </span>
       }
     } else {
-      return <span >
+      return <span className="pointTitle">
         <a href={this.point.url}>{this.point.title}</a>
-        {this.props.data.currentUser &&
+		{this.props.data.currentUser &&
         this.props.data.currentUser.url == this.point.authorURL &&
-        <a onClick={this.handleClickEdit}>edit</a>}
+        <a onClick={this.handleClickEdit} className="editLink" >edit</a>}
         </span>
     }
   }
 
   render(){
     const score = this.point.pointValue
-    return <div className="pointTitle">
+    return <div>
       {this.titleUI()}
 	  <span className="scoreAnimContainerMax">
 	  <span className="scoreAnimContainerReset">

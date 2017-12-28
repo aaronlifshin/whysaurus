@@ -10,26 +10,18 @@
 
 @cardListWidth: @cardWidth + @indent;
 
+@smallGreyLinkColor: #a9a9a9;
+@smallGreyLinkSize: 12px;
+
 
 .row-fluid [class*=span] {
 	min-height: auto;
 }
 
 
-////////////////////////////
+
 // BG Pattern
-
-// BLUE version
-/*
-@bgColor: #F3FCFF;
-@bgGridColor: #E1F6FF;
-@bgGridWidth: 4px;
-@bgGridStroke: 2px;
-#header {
-	background-color: #cff1fc;
-}
-*/
-
+//
 // B/W version
 @bgColor: white;
 @bgGridColor: #f7f7f7;
@@ -41,7 +33,16 @@ body {
     background-image: linear-gradient(to right, @bgGridColor @bgGridStroke, transparent @bgGridStroke), 
 	                  linear-gradient(to bottom, @bgGridColor @bgGridStroke, transparent @bgGridStroke);
 }
-
+// BLUE version
+/*
+@bgColor: #F3FCFF;
+@bgGridColor: #E1F6FF;
+@bgGridWidth: 4px;
+@bgGridStroke: 2px;
+#header {
+	background-color: #cff1fc;
+}
+*/
 //////////////////////////////////
 
 
@@ -85,8 +86,8 @@ body {
 }
 
 .cardTopRow {
-    font-size: 12px;
-    color: #a9a9a9;
+    font-size: @smallGreyLinkSize;
+    color: @smallGreyLinkColor;
 	margin-bottom: @marginVerticalSmall;
 }
 
@@ -109,7 +110,28 @@ body {
 
 
 .pointText {
-	margin-bottom: @marginVerticalSmall;
+	margin-bottom: @marginVerticalSmall + 2px;
+}
+
+.pointTitle {
+	color: black;
+	//font-size: @fontSizeMedium; // @fontSizeBitLarge;
+    font-weight:500; // using the "Book" weight of Meta, from TypeKit
+	line-height: @lineHeightBigger;
+    letter-spacing: @letterSpacingSubtle;	
+	//margin-bottom: 17px; 
+    //padding-left: 1px;
+    //padding-right:4px;
+}
+
+
+
+.editLink {
+	padding-left: 4px;
+	padding-right: 4px;
+	font-size: @smallGreyLinkSize;
+    color: @smallGreyLinkColor !important;
+	//font-style: italic;
 }
 
 .vote-stats {

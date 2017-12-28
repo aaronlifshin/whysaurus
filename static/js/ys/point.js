@@ -635,6 +635,20 @@ class PointCard extends React.Component {
     }
   }
   
+  contentWidth() {
+	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here?
+	if (this.point.imageURL)
+	  return "span9"
+	else	
+	  return "span12 fullWidthContent"
+  }
+  
+  image() {
+	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here?
+	if (this.point.imageURL)
+		return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
+  }
+  
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceList">
@@ -677,7 +691,7 @@ class PointCard extends React.Component {
     return <div>
     { this.relevanceUI() }
       <div className={classes}>
-        <div className="span9">
+        <div className={ this.contentWidth() }>
           <div className="row-fluid">
             <div className="cardTopRow span12">
               <Byline point={point}/>
@@ -695,12 +709,12 @@ class PointCard extends React.Component {
           <div className="row-fluid">
             <div >
               <span className="pointcardBottomRowAction"><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
-      <span className="pointcardBottomRowAction"><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+              <span className="pointcardBottomRowAction"><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
               <span className="pointcardBottomRowAction"><More point={point}/></span>
             </div>
           </div>
         </div>
-        <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={point.fullPointImage} alt="an image"></img></div>
+		{this.image()}
       </div>
       <div className="row-fluid">
         {this.supportingPoints()}

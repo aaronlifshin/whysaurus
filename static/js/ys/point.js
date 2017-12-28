@@ -700,7 +700,7 @@ class PointCard extends React.Component {
             </div>
           </div>
         </div>
-        <div className="span3"><img src={point.fullPointImage} alt="an image"></img></div>
+        <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={point.fullPointImage} alt="an image"></img></div>
       </div>
       <div className="row-fluid">
         {this.supportingPoints()}

@@ -5,7 +5,7 @@
 @indent: 15px;
 @cardListWidth: @cardWidth + ( 4 * @indent);
 
-@cardPadding: 8px;
+@cardPadding: 12px;
 @cardPaddingTop: @cardPadding * .75;
 
 @marginVerticalStandard: 16px;
@@ -73,12 +73,26 @@ body {
     //-ms-flex: 1;
 	width: @cardWidth;
 	border-width: 1px;
-    border-color: #929497;
+    border-color: #b9bbbd;
     border-style: solid;
 	margin-bottom: @marginVerticalStandard;
 	background-color: white;
 	padding: @cardPadding;
 	padding-top: @cardPaddingTop;
+	padding-bottom: @cardPaddingTop;
+
+}
+
+.point-card {
+  &.support {
+    //border: 1px gray solid;
+  }
+  &.oppose {
+    border: 1px red solid;
+  }
+  &.root {
+    border: 1px black solid;
+  }
 }
 
 .point-card:hover {

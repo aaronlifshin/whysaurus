@@ -566,7 +566,7 @@ class RelevanceComponent extends React.Component {
 
   render(){
     return <span className="relVoteGroup" >
-	  vote: 
+	  vote on relevance: 
       <a className="relVoteLink" onClick={this.handleClick0}>0%</a>
       <a className="relVoteLink" onClick={this.handleClick33}>33%</a>
       <a className="relVoteLink" onClick={this.handleClick66}>66%</a>
@@ -654,7 +654,7 @@ class PointCard extends React.Component {
   relevanceUI() {
     if (this.props.parentPoint) {
       return <div className="relevanceDisplay"><Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
-               <span >Relevance {this.relevance}%</span>
+               <span >{this.relevance}%</span>
              </Hover></div>
         
       return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
@@ -677,8 +677,8 @@ class PointCard extends React.Component {
   
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
-      return <div className="evidenceList">
-        <div className="">
+      return <div className="evidenceBlock">
+        <div className="evidenceList">
           {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}	  
           {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         </div>
@@ -689,8 +689,8 @@ class PointCard extends React.Component {
   
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
-      return <div className="evidenceList">
-        <div className="">
+      return <div className="evidenceBlock">
+        <div className="evidenceList">
 	  {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
         </div>

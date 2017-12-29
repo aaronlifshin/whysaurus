@@ -1,15 +1,16 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
 // Positioning Grid setup
-@cardWidth: 360px;
+@cardWidth: 400px;
 @indent: 15px;
+@cardListWidth: @cardWidth + ( 4 * @indent);
+
 @cardPadding: 8px;
 @cardPaddingTop: @cardPadding * .75;
 
 @marginVerticalStandard: 16px;
 @marginVerticalSmall: 12px;
 
-@cardListWidth: @cardWidth + @indent;
 
 @smallGreyLinkColor: #a9a9a9;
 @smallGreyLinkSize: 12px;
@@ -59,6 +60,7 @@ body {
 .pointStream {
 	margin-top: 2 * @marginVerticalStandard;
 	margin-left: 0;
+	margin-bottom: 60px;
 }
 
 .pointCardGroup {
@@ -80,17 +82,20 @@ body {
 }
 
 .point-card:hover {
-    background-color: rgb(244, 253, 255);
+    background-color: #f6fdff; //rgb(244, 253, 255);
 }
 
 .relevanceDisplay {
 	position: relative;
 	margin-left: @cardPadding;
 	margin-bottom: 3px;
+	width: 100%;
 }
 
 .relVoteGroup {
 	position: relative;
+	display: block;
+	width: @cardWidth - 30px;
     top: 2px; // not sure why this is nec
 	margin-bottom: 0px;
 	margin-left: 12px;
@@ -102,7 +107,7 @@ body {
 }
 
 .fullWidthContent {
-	padding-right: 12px;
+	//padding-right: 12px;
 }
 
 .cardTopRow {
@@ -139,6 +144,7 @@ body {
 
 .pointText {
 	margin-bottom: @marginVerticalSmall + 2px;
+	padding-right: 2%;
 }
 
 .pointTitle {
@@ -236,15 +242,19 @@ body {
 
 .supportHeading, .counterHeading {
 	margin-bottom: 12px;
+	margin-left: 8px;
 }
 
 
-.evidenceList {
+.evidenceBlock {
 	display: inline-block;
 	float: left;
 	width: @cardListWidth;
+}
+.evidenceList {
 	margin-left: @indent;
 }
+
 
 .point-card.counter {
 	border-color: #ff5c5c;
@@ -252,12 +262,12 @@ body {
 
 .addEvidenceButton {
 	margin-bottom: @marginVerticalStandard;
+	margin-top: 6px;
 }
 
-
-
-
-
+.fullWidth {
+	width: 100%;
+}
 
 .hover {
     position: relative;

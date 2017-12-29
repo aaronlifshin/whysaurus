@@ -238,12 +238,12 @@ class EvidenceLink extends React.Component {
         return <a className="pointcardBottomRowAction" onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <span className="pointcardBottomRowAction">No Evidence</span>
+      return <span className="pointcardBottomRowAction"><span className="shownStatTillHidden">No </span><span className="hiddenStatTillRevealed">Add </span>Evidence</span>
     }  
   }
 
   render(){
-	return <span class="seeEvidenceContainer">{this.whichEvidenceButton()}</span>
+	return <span className="seeEvidenceContainer">{this.whichEvidenceButton()}</span>
   }
 }
 
@@ -690,7 +690,7 @@ class PointCard extends React.Component {
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
-    let classes = `point-card row-fluid ${this.evidenceTypeClass()}`;
+    let classes = `point-card row-fluid ${this.evidenceTypeClass()} toggleChildVisOnHover`;
 	// TODO: there's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF
     return <div>
     { this.relevanceUI() }

@@ -62,12 +62,16 @@ body {
     //-ms-flex: 1;
 	width: @cardWidth;
 	border-width: 1px;
-    border-color: grey;
+    border-color: #929497;
     border-style: solid;
 	margin-bottom: @marginVerticalStandard;
 	background-color: white;
 	padding: @cardPadding;
 	padding-top: @cardPaddingTop;
+}
+
+.point-card:hover {
+    background-color: rgb(244, 253, 255);
 }
 
 .relevanceDisplay {
@@ -194,6 +198,11 @@ body {
     font-weight: bold
 }
 
+.point-card:hover .pointcardBottomRowAction {
+    color: @blue ;
+
+}
+
 .seeEvidenceContainer {
     display: inline-block;
     width: 98px;
@@ -201,6 +210,10 @@ body {
 
 .agree {
 	//margin-right: 6px;
+}
+
+.disagree {
+	margin-right: 24px;
 }
 
 

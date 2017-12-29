@@ -229,17 +229,21 @@ class EvidenceLink extends React.Component {
     console.log("hide");
     this.props.onHide && this.props.onHide()
   }
-
-  render(){
-    if (this.hasEvidence()) {
+  
+  whichEvidenceButton() {
+	if (this.hasEvidence()) {
       if (this.props.expanded) {
-        return <a onClick={this.handleClickHide}>Hide Evidence</a>
+        return <a className="pointcardBottomRowAction" onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
-        return <a onClick={this.handleClickSee}>See Evidence</a>
+        return <a className="pointcardBottomRowAction" onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <span>No Evidence</span>
-    }
+      return <span className="pointcardBottomRowAction">No Evidence</span>
+    }  
+  }
+
+  render(){
+	return <span class="seeEvidenceContainer">{this.whichEvidenceButton()}</span>
   }
 }
 
@@ -414,11 +418,11 @@ class AgreeDisagreeComponent extends React.Component {
   }
 
   agreeClass(){
-    return "agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
+    return "pointcardBottomRowAction agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
   }
 
   disagreeClass(){
-    return "disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
+    return "pointcardBottomRowAction disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
   }
 
   render(){
@@ -707,9 +711,9 @@ class PointCard extends React.Component {
           </div>
           {this.sources()}
           <div className="row-fluid">
-            <div >
-              <span className="pointcardBottomRowAction"><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
-              <span className="pointcardBottomRowAction"><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+            <div className="" >
+              <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
+              <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
               <span className="pointcardBottomRowAction"><More point={point}/></span>
             </div>
           </div>

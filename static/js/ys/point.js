@@ -50,14 +50,37 @@ function Byline(props){
 
 // TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
 function CommentCount(props){
-  return <span className="cardTopRowItem"><span className="cardTopRowIconWithStat fa fa-comment-o"></span>{props.point.numComments}</span>
+  return <span className="cardTopRowItem"><span className="iconWithStat fa fa-comment-o"></span>{props.point.numComments}</span>
 }
 function ShareIcon(props){
   return <span className="cardTopRowItem"><span className="fa fa-share-alt"></span></span>
 }
 function SupportingCount(props){
-  return <span className="cardTopRowItem"><span className="cardTopRowIconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
+  return <span className="cardTopRowItem"><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
 }
+
+function MoreMenu(props) {
+	return <span className="cardTopRowItem dropdown">
+			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+			 <ul id="stats" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li>More Actions</li>
+                <li className="divider"></li> 
+				<li>
+					<span className=""><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount} Upstream Points</span>
+				</li>
+				 <li className="divider"></li> 
+                <li>
+					<a onClick={props.point.handleClickEdit} className="" >Edit</a>
+				</li>
+            </ul> 
+		</span>	
+}
+/*
+				Code to check if current user is the point Author
+					{this.props.data.currentUser &&
+					this.props.data.currentUser.url == this.point.authorURL &&
+					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
+*/
 
 
 // thanks, https://stackoverflow.com/questions/29981236/how-do-you-hover-in-reactjs-onmouseleave-not-registered-during-fast-hover-ove
@@ -138,10 +161,13 @@ class PointComponent extends React.Component {
     } else {
       return <span className="pointTitle">
         <a href={this.point.url}>{this.point.title}</a>
+        </span>
+      /*return <span className="pointTitle">
+        <a href={this.point.url}>{this.point.title}</a>
 		{this.props.data.currentUser &&
         this.props.data.currentUser.url == this.point.authorURL &&
         <a onClick={this.handleClickEdit} className="editLink" >edit</a>}
-        </span>
+        </span>	*/			
     }
   }
 
@@ -555,10 +581,6 @@ const RelevanceVote = compose(
 )(RelevanceComponent)
 
 
-function More(){
-  return <span>More</span>
-}
-
 class PointCard extends React.Component {
   constructor(props) {
     super(props);
@@ -687,11 +709,36 @@ class PointCard extends React.Component {
     }
   }
 
+  moreMenu() {
+	return <span className="cardTopRowItem dropdown">
+			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+			 <ul id="stats" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li>More Actions</li>
+                <li className="divider"></li> 
+				<li>
+					<span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span>
+				</li>
+				 <li className="divider"></li> 
+                <li>
+					<a onClick={this.point.handleClickEdit} className="" >Edit</a>
+				</li>
+            </ul> 
+		</span>
+  }
+/*
+				Code to check if current user is the point Author
+					{this.props.data.currentUser &&
+					this.props.data.currentUser.url == this.point.authorURL &&
+					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
+*/
+  
+  
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
     let classes = `point-card row-fluid ${this.evidenceTypeClass()} toggleChildVisOnHover`;
-	// TODO: there's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF
+	// TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code 
+	// TODO: There's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF
     return <div>
     { this.relevanceUI() }
       <div className={classes}>
@@ -701,8 +748,8 @@ class PointCard extends React.Component {
               <Byline point={point}/>
               <CommentCount point={point}/>
               <ShareIcon point={point}/>
-              <SupportingCount point={point}/>
-            </div>
+              { this.moreMenu() } 
+			</div>
           </div>
           <div className="row-fluid">
             <div className="pointText span12">
@@ -714,7 +761,6 @@ class PointCard extends React.Component {
             <div className="" >
               <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
               <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-              <span className="pointcardBottomRowAction"><More point={point}/></span>
             </div>
           </div>
         </div>

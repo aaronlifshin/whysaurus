@@ -19,7 +19,16 @@
 	min-height: auto;
 }
 
+a:hover {
+    color: @blue ;
+}
 
+.dropdown-menu>li>a {
+    padding-top:3px;
+    padding-right:20px;
+    padding-bottom: 3px;
+    padding-left:3px;
+}
 
 // BG Pattern
 //
@@ -106,8 +115,8 @@ body {
 	margin-right: 10px;
 }
 
-.cardTopRowIconWithStat {
-	margin-right: 1px;
+.iconWithStat {
+	margin-right: 2px;
 }
 
 .byline {
@@ -116,7 +125,15 @@ body {
 }
 
 .byline:hover {
+	//color: @grayTextLighter;
+}
+
+.moreMenu {
 	color: @grayTextLighter;
+	font-weight: bold;
+}
+.moreMenu:hover {
+	text-decoration:none;
 }
 
 
@@ -205,7 +222,7 @@ body {
 
 .seeEvidenceContainer {
     display: inline-block;
-    width: 98px;
+    width: 97px;
 }
 
 .agree {

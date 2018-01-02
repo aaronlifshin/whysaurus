@@ -757,7 +757,7 @@ class PointCard extends React.Component {
 	// Alt approach to animation, currently unused - JF
     //let classes = `point-card row-fluid ${this.evidenceTypeClass()} ${this.animClass()} toggleChildVisOnHover`;
 
-	let classes = `point-card row-fluid toggleChildVisOnHover`;
+	let classes = `point-card ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
 	
 	// TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
 	// TODO: There's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF

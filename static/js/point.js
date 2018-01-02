@@ -149,7 +149,8 @@ function pointUnlink(elem, linkType) {
     
     supportingPointURL = pointCard.data('pointurl');
     pointURL = $('#pointArea').data('pointurl');
-    _gaq.push(['_trackEvent', 'Link Manipulation', 'Unlink ' + linkType , supportingPointURL + ' from ' + pointURL]);            
+    //_gaq.push(['_trackEvent', 'Link Manipulation', 'Unlink ' + linkType , supportingPointURL + ' from ' + pointURL]);
+    ga('send', 'event', 'Link Manipulation', 'Unlink ' + linkType, supportingPointURL + ' from ' + pointURL);
     
 	$.ajaxSetup({
 	   url: "/unlinkPoint",
@@ -268,7 +269,8 @@ function updateVoteButtonLabelsOld(newVote){
 function upVote() {    
     pointURL = $('#pointArea').data('pointurl');
     vote = $('#voteTotal').data('myvote') == 1 ? 0 : 1;
-    _gaq.push(['_trackEvent', 'Vote', 'Up', pointURL, vote]);
+    //_gaq.push(['_trackEvent', 'Vote', 'Up', pointURL, vote]);
+    ga('send', 'event', 'Vote', 'Up', pointURL, vote);
     
     $.ajaxSetup({
        url: "/vote",
@@ -293,7 +295,8 @@ function upVote() {
 function downVote() {
     pointURL = $('#pointArea').data('pointurl');
     vote = $('#voteTotal').data('myvote') == -1 ? 0 : -1;
-    _gaq.push(['_trackEvent', 'Vote', 'Down', pointURL, vote]);
+    //_gaq.push(['_trackEvent', 'Vote', 'Down', pointURL, vote]);
+    ga('send', 'event', 'Vote', 'Down', pointURL, vote);
     $.ajaxSetup({
         url: "/vote",
         global: false,
@@ -596,9 +599,12 @@ function setUpMenuAreas() {
         var linkPointURL = theLink.data('pointurl');
         var parentPointURL = $('#pointArea').data('pointurl');
         var linkType =  theLink.data('linktype');
-        _gaq.push(['_trackEvent', 'Link Manipulation', 
-            'Added ' + linkType + ' from recently viewed', 
-            linkPointURL + ' to ' + parentPointURL]);                        
+        // _gaq.push(['_trackEvent', 'Link Manipulation',
+        //     'Added ' + linkType + ' from recently viewed',
+        //     linkPointURL + ' to ' + parentPointURL]);
+        ga('send', 'event', 'Link Manipulation',
+            'Added ' + linkType + ' from recently viewed',
+            linkPointURL + ' to ' + parentPointURL);
         selectPoint(linkPointURL, parentPointURL, linkType);
         $("[name^=selectPoint_menu_]").filter("*[data-pointurl=\""+ linkPointURL + "\"]").remove();
     });
@@ -706,7 +712,8 @@ function sendRelevanceVote(event) {
     $('.styledRadio').off('.ys');        
     voteValue = selectedRadioButton.val();	
     linkType = relBase.data('linktype');
-    _gaq.push(['_trackEvent', 'Vote', 'Relevance of ' + linkType , voteValue]);
+    //_gaq.push(['_trackEvent', 'Vote', 'Relevance of ' + linkType , voteValue]);
+    ga('send', 'event', 'Vote', 'Relevance of ' + linkType, voteValue);
                         
     $.ajaxSetup({
 		url: "/relVote",

@@ -168,7 +168,7 @@ function make_this_show_login_dlg(button, populateDialogFields) {
         if (typeof populateDialogFields == 'function' ) {
             populateDialogFields();
         }
-        _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+        ga('send', 'event', 'Required login ',  event.target.id);
         console.log('Required login ' +  event.target.id);
     });
 }
@@ -198,7 +198,7 @@ function getNewSourcesNames() {
 }
 
 function createPointFromMainPage() {
-    _gaq.push(['_trackEvent', 'Main Page Action', 'Make a Point']);
+    ga('send', 'event', 'Main Page Action', 'Make a Point');
     
     if ($('#newPointTitle').val().length > MAX_TITLE_CHARS) {
         showAlert('Please do not exceed ' + MAX_TITLE_CHARS + ' characters for the title.');
@@ -385,14 +385,14 @@ function stopSpinner() {
 function submitPointDialog(clickedElement) {
     var dialogAction = $(clickedElement).data('dialogaction');
     if (dialogAction == "new") {
-        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'New']);
+        ga('send', 'event', 'Point Dialog', 'Publish to Library', 'New');
         newPoint();
     } else if (dialogAction == "edit") {
-        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'Edit']);        
+        ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Edit');
         callPointEdit();
     } else if (dialogAction == "createLinked") {
         var linkType = $(clickedElement).data('linktype');
-        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'Add ' + linkType + ' point']);                
+        ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Add ' + linkType + ' point');
         addPoint(linkType);
     }
 }
@@ -432,7 +432,7 @@ function votePointCard(elem, voteType) {
     }
 	//console.log("votePointCard newVote "+ newVote);    
 
-    _gaq.push(['_trackEvent', 'Vote', 'MainPage ' + voteType, pointURL, newVote]);
+    ga('send', 'event', 'Vote', 'MainPage ' + voteType, pointURL, newVote);
     
     $.ajaxSetup({
        url: "/vote",
@@ -727,13 +727,13 @@ function makePointsCardsClickable() {
         });
     } else {
         $('[name=UpVote]').off('.ys').on('click.ys', function(event) {
-            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            ga('send', 'event', 'Required login ',  event.target.id);
             $("#loginDialog").modal('show');
             event.stopPropagation();  
             return false;    
         });
         $('[name=DownVote]').off('.ys').on('click.ys', function(event) {
-            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            ga('send', 'event', 'Required login ',  event.target.id);
             $("#loginDialog").modal('show');
             event.stopPropagation();  
             return false;    
@@ -791,7 +791,7 @@ function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState, r
     	    history.pushState({whysaurus: true, }, pointTitle, newURL);                
         }        
 	}          	
-     _gaq.push(['_trackPageview', newURL ]);      		          		              		
+	ga('send', 'pageview', newURL);
 	document.title = pointTitle;    
 }
 
@@ -833,7 +833,7 @@ function loadMainPageLeftColumn(shouldPushState) {
             $('#mainContainer').data('contentpath', '/');                        
             if (shouldPushState) {
       		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');   
-                _gaq.push(['_trackPageview', "/" ]);      		          		              		                       		          		              		
+                ga('send', 'pageview', "/");
       		}
 			activateMainPageLeftColumn();
       		document.title = 'Whysaurus - A better way to explain ideas';      		
@@ -877,7 +877,7 @@ function loadPointContent(pointurl, shouldPushState, replaceState) {
 function loadPointList(listType, areaToLoad, selectedTab) {
     $(areaToLoad).html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
     toggleTabbedArea('#leftColumn', selectedTab, areaToLoad);
-    _gaq.push(['_trackEvent', 'Main Page', 'Filter', listType]);
+    ga('send', 'event', 'Main Page', 'Filter', listType);
     
     $.ajax({
     	url: '/getPointsList',
@@ -978,7 +978,7 @@ function selectSearchLinkPoint(elem, linkType) {
     startSpinnerOnButton('#pointSelectText');   
     linkPointURL =  $(elem).data('pointurl');
     parentPointURL =  $('#pointArea').data('pointurl');
-     _gaq.push(['_trackEvent', 'Link Manipulation', 'Added ' + linkType + ' from search' , linkPointURL + ' to ' + parentPointURL]);                
+    ga('send', 'event', 'Link Manipulation', 'Added ' + linkType + ' from search' , linkPointURL + ' to ' + parentPointURL);
     selectPoint(linkPointURL, parentPointURL, linkType);  
 }
 
@@ -1617,7 +1617,7 @@ function activateHeaderAndDialogs() {
         $("#CreatePoint").attr('href', "#loginDialog");
         $("#CreatePoint").attr('data-toggle', "modal");
         $("#CreatePoint").off(".ys").on("click.ys", function(event) {
-            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            ga('send', 'event', 'Required login ',  event.target.id);
             console.log('Required login ' +  event.target.id);
         });
                 
@@ -1655,7 +1655,7 @@ function activateHeaderAndDialogs() {
                     
     } else {
         $( "#CreatePoint" ).on('click', function() {
-            _gaq.push(['_trackEvent', 'Header Menu', 'Make a Point']);
+            ga('send', 'event', 'Header Menu', 'Make a Point');
             showPointDialog("new", "New Point");
         });
 
@@ -1788,7 +1788,7 @@ function preloadImages() {
 }
 
 function loginWith(ev, provider) {
-    _gaq.push(['_trackEvent', 'Login', 'With ' + provider, 'Dialog']);
+    ga('send', 'event', 'Login', 'With ' + provider, 'Dialog');
     var url = "/auth/" + provider.toLowerCase();
     var action = $('#loginDialog').data('postloginaction') || null;
     if (action == 'createFromMain') {

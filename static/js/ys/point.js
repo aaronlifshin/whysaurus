@@ -58,7 +58,6 @@ function ShareIcon(props){
 function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
 }
-
 function MoreMenu(props) {
 	return <span className="cardTopRowItem dropdown">
 			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
@@ -147,7 +146,6 @@ class PointComponent extends React.Component {
     })
     // this component will be replaced after save, so we don't need to update state
   }
-
 
   titleUI() {
     if (this.state.editing) {
@@ -245,9 +243,9 @@ class EvidenceLink extends React.Component {
   hasEvidence() {
     return this.point.numSupporting > 0 || this.point.numCounter > 0;
   }
-
+  
   handleClickSee(e) {
-    console.log("see");
+	console.log("see");
     this.props.onSee && this.props.onSee()
   }
 
@@ -259,9 +257,9 @@ class EvidenceLink extends React.Component {
   whichEvidenceButton() {
 	if (this.hasEvidence()) {
       if (this.props.expanded) {
-        return <a className="pointcardBottomRowAction" onClick={this.handleClickHide}>Hide Evidence</a>
+        return <a className="pointcardBottomRowAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
-        return <a className="pointcardBottomRowAction" onClick={this.handleClickSee}>See Evidence</a>
+        return <a className="pointcardBottomRowAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
       return <span className="pointcardBottomRowAction"><span className="shownStatTillHidden">No </span><span className="hiddenStatTillRevealed">Add </span>Evidence</span>
@@ -621,7 +619,7 @@ class PointCard extends React.Component {
   handleHideEvidence(point=this.point) {
     const i = this.state.expandedIndex
     i[point.id] = false
-    this.setState({expandedIndex: i})
+    this.setState({expandedIndex: i})	
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
   }
 
@@ -641,6 +639,16 @@ class PointCard extends React.Component {
         return "";
     }
   }
+  
+  // Alt approach to animation, currently unused - JF
+  animClass() {
+	console.log(' animClass() ');
+	if (this.expanded()) 
+		return "animateSiblingsDown";
+	else 
+		return "noAnim";
+  }
+    
 
   renderSubPointCard(parentPoint, pointEdge, index){
     return newPointCard(pointEdge,
@@ -662,7 +670,7 @@ class PointCard extends React.Component {
   }
   
   contentWidth() {
-	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here?
+	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
 	if (this.point.imageURL)
 	  return "span9"
 	else	
@@ -670,14 +678,23 @@ class PointCard extends React.Component {
   }
   
   image() {
-	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here?
+	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
 	if (this.point.imageURL)
 		return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
   
+  evidence() {
+    if (this.expanded() ) {
+      return <div className="evidenceBlock">
+	    {this.supportingPoints()}
+        {this.counterPoints()}
+	  </div>		
+	}
+  }
+		
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
-      return <div className="evidenceBlock">
+      return <div className="evidenceBlockSupport">
         <div className="evidenceList">
           {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}	  
           {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
@@ -689,7 +706,7 @@ class PointCard extends React.Component {
   
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
-      return <div className="evidenceBlock">
+      return <div className="evidenceBlockCounter">
         <div className="evidenceList">
 	  {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
@@ -731,18 +748,23 @@ class PointCard extends React.Component {
 					this.props.data.currentUser.url == this.point.authorURL &&
 					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
 */
-  
-  
+   
+   
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
-    let classes = `point-card row-fluid ${this.evidenceTypeClass()} toggleChildVisOnHover`;
-	// TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code 
+	
+	// Alt approach to animation, currently unused - JF
+    //let classes = `point-card row-fluid ${this.evidenceTypeClass()} ${this.animClass()} toggleChildVisOnHover`;
+
+	let classes = `point-card row-fluid toggleChildVisOnHover`;
+	
+	// TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
 	// TODO: There's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF
     return <div>
     { this.relevanceUI() }
       <div className={classes}>
-        <div className={ this.contentWidth() }>
+        <div className={ this.contentWidth()  }>
           <div className="row-fluid">
             <div className="cardTopRow span12">
               <Byline point={point}/>
@@ -767,8 +789,7 @@ class PointCard extends React.Component {
 		{this.image()}
       </div>
       <div className="row-fluid">
-        {this.supportingPoints()}
-        {this.counterPoints()}
+	    {this.evidence()} 
       </div>
     </div>;
   }
@@ -776,8 +797,13 @@ class PointCard extends React.Component {
 
 export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence, parentPoint}) {
   let point = pointEdge.node;
+  
+  //Alt approach to animation, abandoned for now -JF
+  //let classes = `pointCardGroup ${(expandedIndex===true) ? "animPink" : "noAnim"}`;
+  
+  let classes = `pointCardGroup`;  
   if (point) {
-    return <div className="pointCardGroup" key={point.url}>
+  return <div className={classes} key={point.url}>
       <ExpandedPointCard point={point}
     url={point.url}
     expandedIndex={expandedIndex}

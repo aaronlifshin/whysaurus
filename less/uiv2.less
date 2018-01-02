@@ -222,7 +222,7 @@ body {
 }
 
 
-.pointcardBottomRowAction {
+.cardBottomAction {
 	font-size: @fontSizeActions;
     color: @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
@@ -235,14 +235,31 @@ body {
     font-weight: bold
 }
 
-.point-card:hover .pointcardBottomRowAction {
+.point-card:hover .cardBottomAction {
     color: @blue ;
-
 }
 
-.seeEvidenceContainer {
-    display: inline-block;
-    width: 97px;
+.cardBottomActionRow {
+	margin-top: 5px;
+  -o-transition:.08s;
+  -ms-transition:.08s;
+  -moz-transition:.08s;
+  -webkit-transition:.08s;
+  /* ...and now for the proper property */
+  transition:.08s;
+  transform-origin: bottom left;
+}
+
+
+.point-card:hover .cardBottomActionRow {
+    transform: scale(1.085) ;
+}
+
+
+.evidenceContainer {
+    display: inline-block;	
+	// fixed width for roll-over method of switching from No Evidence to Add Evidence, but unnecessary with the scaling approach
+    //width: 97px;
 }
 
 .agree {

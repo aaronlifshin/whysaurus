@@ -257,17 +257,17 @@ class EvidenceLink extends React.Component {
   whichEvidenceButton() {
 	if (this.hasEvidence()) {
       if (this.props.expanded) {
-        return <a className="pointcardBottomRowAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
+        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
-        return <a className="pointcardBottomRowAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
+        return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <span className="pointcardBottomRowAction"><span className="shownStatTillHidden">No </span><span className="hiddenStatTillRevealed">Add </span>Evidence</span>
+      return <span className="cardBottomAction"><span className="shownStatTillHidden">No </span><span className="hiddenStatTillRevealed">Add </span>Evidence</span>
     }  
   }
 
   render(){
-	return <span className="seeEvidenceContainer">{this.whichEvidenceButton()}</span>
+	return <span className="evidenceContainer">{this.whichEvidenceButton()}</span>
   }
 }
 
@@ -343,9 +343,9 @@ class AddEvidenceCard extends React.Component {
       case EvidenceType.ROOT:
         return "Add Point"
       case EvidenceType.SUPPORT:
-        return "Add Support"
+        return "Add a Supporting Claim"
       case EvidenceType.COUNTER:
-        return "Add Counterpoint";
+        return "Add a Counter Claim";
       default:
         return "Add Evidence"
     }
@@ -442,11 +442,11 @@ class AgreeDisagreeComponent extends React.Component {
   }
 
   agreeClass(){
-    return "pointcardBottomRowAction agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
+    return "cardBottomAction agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
   }
 
   disagreeClass(){
-    return "pointcardBottomRowAction disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
+    return "cardBottomAction disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
   }
 
   render(){
@@ -780,7 +780,7 @@ class PointCard extends React.Component {
           </div>
           {this.sources()}
           <div className="row-fluid">
-            <div className="" >
+            <div className="cardBottomActionRow" >
               <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
               <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
             </div>

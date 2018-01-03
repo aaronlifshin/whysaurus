@@ -727,20 +727,19 @@ class PointCard extends React.Component {
       </div>
     }
   }
-
+  
+  // TODO: make Edit Claim work
   moreMenu() {
 	return <span className="cardTopRowItem dropdown">
 			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
 			 <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                 <li>More Actions</li>
                 <li className="divider"></li> 
-				<li>
-					<span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span>
-				</li>
-				 <li className="divider"></li> 
-                <li>
-					<a onClick={this.point.handleClickEdit} className="" >Edit</a>
-				</li>
+				<li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
+				<li className="divider"></li> 
+                <li><a onClick={this.point.handleClickEdit} className="" >Edit Claim</a></li> 
+				<li className="divider"></li> 
+				<li><a target="_blank" href={this.point.url}>Open in a new tab</a></li>
             </ul> 
 		</span>
   }

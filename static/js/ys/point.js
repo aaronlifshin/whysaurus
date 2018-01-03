@@ -58,10 +58,12 @@ function ShareIcon(props){
 function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
 }
+
+// Currently unused; moreMenu currently being generated via a local function within PointCard()
 function MoreMenu(props) {
 	return <span className="cardTopRowItem dropdown">
 			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-			 <ul id="stats" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+			 <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                 <li>More Actions</li>
                 <li className="divider"></li> 
 				<li>
@@ -84,7 +86,7 @@ function MoreMenu(props) {
 
 // thanks, https://stackoverflow.com/questions/29981236/how-do-you-hover-in-reactjs-onmouseleave-not-registered-during-fast-hover-ove
 const Hover = ({ onHover, children }) => (
-    <span className="hover">
+    <span className="hover bringToFront">
       <span className="hover__no-hover">{children}</span>
       <span className="hover__hover">{onHover}</span>
     </span>
@@ -729,7 +731,7 @@ class PointCard extends React.Component {
   moreMenu() {
 	return <span className="cardTopRowItem dropdown">
 			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-			 <ul id="stats" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+			 <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                 <li>More Actions</li>
                 <li className="divider"></li> 
 				<li>

@@ -464,6 +464,7 @@ const AgreeDisagree = compose(
   graphql(CurrentUserQuery),
 )(AgreeDisagreeComponent)
 
+
 export const RelevanceVoteQuery = gql`
 mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURLsafe: String!, $url: String!, $vote: Int!) {
   relevanceVote(linkType: $linkType, rootURLsafe: $rootURLsafe, parentRootURLsafe: $parentRootURLsafe, url: $url, vote: $vote) {
@@ -581,6 +582,56 @@ const RelevanceVote = compose(
 )(RelevanceComponent)
 
 
+class RelevanceLink extends React.Component {
+  constructor(props) {
+    super(props)
+	this.state = {
+      buttonClicked: false
+    }	
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e) {
+	console.log("toggle relevance ui");
+	if (this.state.buttonClicked)
+		this.setState({ buttonClicked: false })
+	else
+		this.setState({ buttonClicked: true })
+  }
+  
+  get evidenceType() {
+    if (this.props.link){
+      switch (this.props.link.type) {
+        case "supporting":
+          return EvidenceType.SUPPORT
+        case "counter":
+          return EvidenceType.COUNTER
+        default:
+          return null
+      }
+    }
+  }
+
+  get relevance() {
+    return this.props.link && this.props.link.relevance
+  }
+  
+  // TODO : make relevance voting controls work again
+  // TODO : layout
+  render(){   
+    if (this.props.parentPoint) {
+		return <span>
+		<a className="relevanceDisplay" onClick={this.handleClick}>{this.relevance}%</a>	
+		{ this.state.buttonClicked ? 
+			<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			
+			: <span></span> }	
+		</span> 
+	}
+	else return null
+  }
+}
+
+
 class PointCard extends React.Component {
   constructor(props) {
     super(props);
@@ -641,16 +692,6 @@ class PointCard extends React.Component {
         return "";
     }
   }
-  
-  // Alt approach to animation, currently unused - JF
-  animClass() {
-	console.log(' animClass() ');
-	if (this.expanded()) 
-		return "animateSiblingsDown";
-	else 
-		return "noAnim";
-  }
-    
 
   renderSubPointCard(parentPoint, pointEdge, index){
     return newPointCard(pointEdge,
@@ -663,12 +704,12 @@ class PointCard extends React.Component {
 
   relevanceUI() {
     if (this.props.parentPoint) {
-      return <div className="relevanceDisplay"><Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
+	  return <div className="relevanceDisplay"><Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
                <span >{this.relevance}%</span>
              </Hover></div>
-        
-      return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
-    }
+	  return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>	 
+	  }
+	else return <span>relevanceUI no parent</span>
   }
   
   contentWidth() {
@@ -750,20 +791,15 @@ class PointCard extends React.Component {
 					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
 */
    
-   
+  // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
-	
-	// Alt approach to animation, currently unused - JF
-    //let classes = `point-card row-fluid ${this.evidenceTypeClass()} ${this.animClass()} toggleChildVisOnHover`;
-
 	let classes = `point-card ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
 	
-	// TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
-	// TODO: There's empty div that's wrapping everything here which isn't doing anything, but seems to be required for the return statement to work. Can/should we remove it? -JF
+	// old: { this.relevanceUI() }
     return <div>
-    { this.relevanceUI() }
+	  <RelevanceLink point={point} parentPoint={this.props.parentPoint} link={this.props.link}/>
       <div className={classes}>
         <div className={ this.contentWidth()  }>
           <div className="row-fluid">

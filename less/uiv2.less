@@ -2,7 +2,7 @@
 
 // Positioning Grid setup
 @cardWidth: 400px;
-@indent: 15px;
+@indent: 35px;
 @cardListWidth: @cardWidth + ( 4 * @indent);
 
 @cardPadding: 12px;
@@ -72,6 +72,7 @@ body {
 
 .point-card {
 	//background-color: red;
+	//display: inline-flex;
 	display: flex; 
 	//-webkit-flex: 1; /* Safari 6.1+ */
     //-ms-flex: 1;
@@ -79,17 +80,16 @@ body {
 	border-width: 1px;
     border-color: #b9bbbd;
     border-style: solid;
-	margin-bottom: @marginVerticalStandard;
+	margin-bottom: 0;
 	background-color: white;
 	padding: @cardPadding;
 	padding-top: @cardPaddingTop;
 	padding-bottom: @cardPaddingTop;
-
 }
 
 .point-card {
   &.support {
-    //border: 1px gray solid;
+    top:9px;
   }
   &.oppose {
     border: 1px red solid;
@@ -111,19 +111,28 @@ body {
 	background-color: #fff7fb ;
 }
 
+.relevanceArea {
+	display: inline-block;
+	position: relative;
+	left: (-1.2 * @indent);
+    top: 27px;
+}
 
 .relevanceDisplay {
 	position: relative;
-	margin-left: @cardPadding;
+	//margin-left: @cardPadding;
 	margin-bottom: 3px;
 	width: 100%;
+	font-size: 14px;
 }
 
 .relVoteGroup {
 	position: relative;
 	display: block;
 	width: @cardWidth - 30px;
-    top: 2px; // not sure why this is nec
+    top: -17px; 
+	left: 1.2 * @indent;
+	height: 34px;
 	margin-bottom: 0px;
 	margin-left: 12px;
 	padding: 0px
@@ -328,7 +337,7 @@ body {
 }
 
 .supportHeading, .counterHeading {
-	margin-bottom: 12px;
+	margin-top: 20px;
 	margin-left: 8px;
 }
 
@@ -336,7 +345,7 @@ body {
 .evidenceBlockCounter, .evidenceBlockSupport {
 	display: inline-block;
 	float: left;
-	width: @cardListWidth;
+	//width: @cardListWidth;
 }
 
 

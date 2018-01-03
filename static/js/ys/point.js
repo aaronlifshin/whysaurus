@@ -567,7 +567,7 @@ class RelevanceComponent extends React.Component {
 
   render(){
     return <span className="relVoteGroup" >
-	  vote on relevance: 
+	  How Relevant is this claim? 
       <a className="relVoteLink" onClick={this.handleClick0}>0%</a>
       <a className="relVoteLink" onClick={this.handleClick33}>33%</a>
       <a className="relVoteLink" onClick={this.handleClick66}>66%</a>
@@ -620,12 +620,12 @@ class RelevanceLink extends React.Component {
   // TODO : layout
   render(){   
     if (this.props.parentPoint) {
-		return <span>
+		return <div className="relevanceArea">
 		<a className="relevanceDisplay" onClick={this.handleClick}>{this.relevance}%</a>	
 		{ this.state.buttonClicked ? 
 			<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			
 			: <span></span> }	
-		</span> 
+		</div> 
 	}
 	else return null
   }
@@ -833,11 +833,7 @@ class PointCard extends React.Component {
 }
 
 export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence, parentPoint}) {
-  let point = pointEdge.node;
-  
-  //Alt approach to animation, abandoned for now -JF
-  //let classes = `pointCardGroup ${(expandedIndex===true) ? "animPink" : "noAnim"}`;
-  
+  let point = pointEdge.node; 
   let classes = `pointCardGroup`;  
   if (point) {
   return <div className={classes} key={point.url}>

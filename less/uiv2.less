@@ -106,8 +106,8 @@ body {
 }
 
 .evidenceList {
-	//margin-left: @indent; // Handled by relevanceLinkArea
-	margin-top: 12px
+	margin-left: @indent; // Handled by relevanceLinkArea
+	margin-top: @marginVerticalStandard;
 }
 
 
@@ -134,13 +134,18 @@ body {
 // CARD PLACEMENT AND RELEVANCE
 
 
-.linkedClaimGroup {
+.listedClaimGroup {
 	//margin-top: 1px;
 }
-.linkedClaim {
+.listedClaim {
 	padding-left: 3px;
 	padding-right: @cardPadding * .75;;
 	//padding-top: @cardPaddingTop;
+}
+
+.firstLevelOffset {
+	position:relative;
+	left: -1 * @indent; 
 }
 
 .relGroupHilite {
@@ -423,8 +428,8 @@ a:hover .perctSignSmall {
 }
 
 .addEvidenceButton {
-	margin-bottom: @marginVerticalStandard;
-	margin-top: 6px;
+	margin-bottom: @marginVerticalStandard *2;
+	margin-top: @marginVerticalStandard;
 }
 
 .fullWidth {

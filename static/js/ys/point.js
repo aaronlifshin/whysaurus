@@ -601,7 +601,7 @@ class PointCard extends React.Component {
   get point() {
     return this.props.data.point ? this.props.data.point : this.props.point
   }
-
+  
   get evidenceType() {
     if (this.props.link){
       switch (this.props.link.type) {
@@ -614,7 +614,21 @@ class PointCard extends React.Component {
       }
     }
   }
-
+  
+  // TODO: the "root" case doesn't seem to be working -JF
+  evidenceTypeClass() {
+    switch (this.evidenceType){
+      case EvidenceType.ROOT:
+        return "root";
+      case EvidenceType.SUPPORT:
+        return "support";
+      case EvidenceType.COUNTER:
+        return "counter";
+      default:
+        return "";
+    }
+  }
+  
   get relevance() {
     return this.props.link && this.props.link.relevance
   }
@@ -670,19 +684,6 @@ class PointCard extends React.Component {
     return this.state.expandedIndex[this.point.id]
   }
 
-  evidenceTypeClass() {
-    switch (this.evidenceType){
-      case EvidenceType.ROOT:
-        return "root";
-      case EvidenceType.SUPPORT:
-        return "support";
-      case EvidenceType.COUNTER:
-        return "counter";
-      default:
-        return "";
-    }
-  }
-
   renderSubPointCard(parentPoint, pointEdge, index){
     return newPointCard(pointEdge,
                         {index: index,
@@ -708,7 +709,11 @@ class PointCard extends React.Component {
   
   evidence() {
     if (this.expanded() ) {
-      return <div className="evidenceBlock">
+		var classes = "evidenceBlock" 
+		// If this is the first level down, remove an indent bc the Relevance widget will yield one when it appears for the first time
+		if (!this.props.parentPoint) 
+			classes = "evidenceBlock firstLevelOffset"	// concat() didn't seem to work? -JF			
+		return <div className={classes}>
 	    {this.supportingPoints()}
         {this.counterPoints()}
 	  </div>		
@@ -721,8 +726,8 @@ class PointCard extends React.Component {
         <div className="evidenceList">
           {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}	  
           {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
-        </div>
-        <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+		  <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+		</div>
       </div>
     }
   }
@@ -731,10 +736,10 @@ class PointCard extends React.Component {
     if (this.expanded() && this.point.counterPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-	  {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
+	      {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
-        </div>
-        <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
+          <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
+		</div>
       </div>
     }
   }
@@ -779,8 +784,8 @@ class PointCard extends React.Component {
     const point = this.point;
     console.log("rendering " + point.url)
 	let classesPointCard = `point-card ${this.evidenceTypeClass()} ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"} row-fluid toggleChildVisOnHover`;
-	let classeslinkedClaim = `linkedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"}`;
-    return <div className={classeslinkedClaim}>
+	let classeslistedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
+    return <div className={classeslistedClaim}>
 	  { this.relevanceCtrlUI() }
 	  { this.relevanceLinkUI() }
       <div className={classesPointCard}>
@@ -817,7 +822,7 @@ class PointCard extends React.Component {
 
 export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence, parentPoint}) {
   let point = pointEdge.node; 
-  let classes = `linkedClaimGroup`;  
+  let classes = `listedClaimGroup`;  
   if (point) {
   return <div className={classes} key={point.url}>
       <ExpandedPointCard point={point}
@@ -830,7 +835,7 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
     parentPoint={parentPoint}/>
       </div>;
   } else {
-    return <div className="linkedClaimGroup" key={index}></div>;
+    return <div className="listedClaimGroup" key={index}></div>;
   }
 }
 

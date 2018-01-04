@@ -558,6 +558,7 @@ class RelevanceComponent extends React.Component {
       this.props.mutate({
         variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
       }).then( res => {
+      }).then( res => {
         console.log(res)
       });
     } else {
@@ -566,13 +567,15 @@ class RelevanceComponent extends React.Component {
   }
 
   render(){
-    return <span className="relVoteGroup" >
-	  How Relevant is this claim? 
-      <a className="relVoteLink" onClick={this.handleClick0}>0%</a>
-      <a className="relVoteLink" onClick={this.handleClick33}>33%</a>
-      <a className="relVoteLink" onClick={this.handleClick66}>66%</a>
-      <a className="relVoteLink" onClick={this.handleClick100}>100%</a>
-      </span>
+    return <div className="relCtrlGroup" >
+	  <div className="relCtrlLabel">How Relevant is this claim?</div> 
+      <div className="relCtrlVoteOptions">
+		  <a className="relVoteLink" onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
+		  <a className="relVoteLink" onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
+		  <a className="relVoteLink" onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
+		  <a className="relVoteLink" onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
+	  </div>
+      </div>
     }
 }
 
@@ -582,63 +585,17 @@ const RelevanceVote = compose(
 )(RelevanceComponent)
 
 
-class RelevanceLink extends React.Component {
-  constructor(props) {
-    super(props)
-	this.state = {
-      buttonClicked: false
-    }	
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(e) {
-	console.log("toggle relevance ui");
-	if (this.state.buttonClicked)
-		this.setState({ buttonClicked: false })
-	else
-		this.setState({ buttonClicked: true })
-  }
-  
-  get evidenceType() {
-    if (this.props.link){
-      switch (this.props.link.type) {
-        case "supporting":
-          return EvidenceType.SUPPORT
-        case "counter":
-          return EvidenceType.COUNTER
-        default:
-          return null
-      }
-    }
-  }
-
-  get relevance() {
-    return this.props.link && this.props.link.relevance
-  }
-  
-  // TODO : make relevance voting controls work again
-  // TODO : layout
-  render(){   
-    if (this.props.parentPoint) {
-		return <div className="relevanceArea">
-		<a className="relevanceDisplay" onClick={this.handleClick}>{this.relevance}%</a>	
-		{ this.state.buttonClicked ? 
-			<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			
-			: <span></span> }	
-		</div> 
-	}
-	else return null
-  }
-}
-
-
 class PointCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {expandedIndex: {}}
+    this.state = {
+		expandedIndex: {},
+		relLinkClicked: false
+	}
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
+    this.handleRelClick = this.handleRelClick.bind(this);	
   }
 
   get point() {
@@ -662,6 +619,39 @@ class PointCard extends React.Component {
     return this.props.link && this.props.link.relevance
   }
 
+    handleRelClick(e) {
+	console.log("toggle relevance ui");
+	if (this.state.relLinkClicked)
+		this.setState({ relLinkClicked: false })
+	else
+		this.setState({ relLinkClicked: true })
+  }    
+  
+  relevanceCtrlUI() {
+    if (this.props.parentPoint) {
+		return <span>
+			{ this.state.relLinkClicked ? 
+				<div className="relevanceCtrlArea">
+					<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
+				</div> 
+				: <span className="noRelevanceCtrl"></span> }	
+		</span>		
+	  }
+	else return null
+  } 
+ 
+  relevanceLinkUI() {
+    if (this.props.parentPoint) {
+		return <div className="relevanceLinkArea">
+		<a className="relevanceLink" onClick={this.handleRelClick}>{this.relevance}%</a>	
+		{ this.state.buttonClicked ? 
+			<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			
+			: <span></span> }	
+		</div>  
+	  }
+	else return null
+  }
+   
   handleSeeEvidence(point=this.point) {
     const i = this.state.expandedIndex
     i[point.id] = true
@@ -700,16 +690,6 @@ class PointCard extends React.Component {
                          expandedIndex: this.state.expandedIndex,
                          handleSeeEvidence: this.handleSeeEvidence,
                          handleHideEvidence:this.handleHideEvidence});
-  }
-
-  relevanceUI() {
-    if (this.props.parentPoint) {
-	  return <div className="relevanceDisplay"><Hover onHover={<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>}>
-               <span >{this.relevance}%</span>
-             </Hover></div>
-	  return <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>	 
-	  }
-	else return <span>relevanceUI no parent</span>
   }
   
   contentWidth() {
@@ -791,15 +771,17 @@ class PointCard extends React.Component {
 					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
 */
    
+
+   
+   
   // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
 	let classes = `point-card ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
-	
-	// old: { this.relevanceUI() }
-    return <div>
-	  <RelevanceLink point={point} parentPoint={this.props.parentPoint} link={this.props.link}/>
+    return <div className="linkedClaim">
+	  { this.relevanceCtrlUI() }
+	  { this.relevanceLinkUI() }
       <div className={classes}>
         <div className={ this.contentWidth()  }>
           <div className="row-fluid">
@@ -834,7 +816,7 @@ class PointCard extends React.Component {
 
 export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence, parentPoint}) {
   let point = pointEdge.node; 
-  let classes = `pointCardGroup`;  
+  let classes = `linkedClaimGroup`;  
   if (point) {
   return <div className={classes} key={point.url}>
       <ExpandedPointCard point={point}
@@ -847,7 +829,7 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
     parentPoint={parentPoint}/>
       </div>;
   } else {
-    return <div className="pointCardGroup" key={index}></div>;
+    return <div className="linkedClaimGroup" key={index}></div>;
   }
 }
 

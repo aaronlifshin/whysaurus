@@ -772,17 +772,18 @@ class PointCard extends React.Component {
 */
    
 
-   
+   		
    
   // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
-	let classes = `point-card ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
-    return <div className="linkedClaim">
+	let classesPointCard = `point-card ${this.evidenceTypeClass()} ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"} row-fluid toggleChildVisOnHover`;
+	let classeslinkedClaim = `linkedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"}`;
+    return <div className={classeslinkedClaim}>
 	  { this.relevanceCtrlUI() }
 	  { this.relevanceLinkUI() }
-      <div className={classes}>
+      <div className={classesPointCard}>
         <div className={ this.contentWidth()  }>
           <div className="row-fluid">
             <div className="cardTopRow span12">

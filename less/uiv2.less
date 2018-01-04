@@ -137,16 +137,27 @@ body {
 .linkedClaimGroup {
 	//margin-top: 1px;
 }
+.linkedClaim {
+	padding-left: 3px;
+	padding-right: @cardPadding * .75;;
+	//padding-top: @cardPaddingTop;
+}
+
+.relGroupHilite {
+	background-color: #fffbd1;
+	margin-bottom: @marginVerticalStandard * .5;
+}
 
 .relevanceCtrlArea {
 	//background-color: pink;
 	width: @cardWidth + (2 * @cardPadding);
 	padding-bottom: 4px;
-	margin-top: @marginVerticalStandard * 1.5;
+	margin-top: @marginVerticalStandard * .5;
 }
 
 .relCtrlLabel {
 	margin-bottom: @marginVerticalInsideCards;
+	padding-top: 10px;
 }
 
 .relCtrlVoteOptions {
@@ -222,6 +233,10 @@ a:hover .perctSignSmall {
 	padding: @cardPadding;
 	padding-top: @cardPaddingTop;
 	padding-bottom: @cardPaddingTop;
+}
+
+.relExtraMarginBottom {
+	margin-bottom: @marginVerticalStandard *.5;
 }
 
 .point-card {

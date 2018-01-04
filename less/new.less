@@ -1507,18 +1507,25 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .seeEvidenceContainer {
     display: inline-block;
-    width:95px;
+    //width:95px;
 }
 
 
 .pointBoxStatLine {
     /*opacity: .8; */ /*goes to 1 on hover*/
     /*font-weight: bold;*/
+  -o-transition:.08s;
+  -ms-transition:.08s;
+  -moz-transition:.08s;
+  -webkit-transition:.08s;
+  transition:.08s;
+  transform-origin: bottom left;
 }
+
 
 .pointCard:hover .pointBoxStatLine {
     opacity: 1;
-    /*font-weight: bold;*/
+    transform: scale(1.085) ;
 }
 
 .pointCard:hover .pointBoxActions {
@@ -1572,7 +1579,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .agreeInlineMargin {
     margin-left: 6px;
-    margin-right: 14px;
+    //margin-right: 14px;
 }
 
 .arrowIcon {

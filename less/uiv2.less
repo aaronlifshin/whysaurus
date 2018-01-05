@@ -459,7 +459,7 @@ a:hover .perctSignSmall {
 .addEvidenceButton {
 	margin-bottom: @marginVerticalStandard;
 	margin-top: @marginVerticalStandard;
-	margin-left: 18px;
+	margin-left: 14px;
 	color: black;
 }
 
@@ -510,19 +510,26 @@ a:hover .perctSignSmall {
 
 // ARROWS
 
+@arrowFontSize: 18px;
+
 .arrowPointToSupport {
-	font-size: 18px;
+	font-size: @arrowFontSize;
 	position: relative;
 	left: 47px;
     top: -4px;
 }
 
 .arrowCard {
-	font-size: 18px;
+	font-size: @arrowFontSize;
     position: relative;
     top: -5px;
 	right: 8px;
     //color: @darkerGreyColor;
+}
+
+.arrowAddEvidenceButton {
+	font-size: @arrowFontSize;
+	margin-bottom: 2px;
 }
 
 a:hover .arrowAddEvidenceButton {

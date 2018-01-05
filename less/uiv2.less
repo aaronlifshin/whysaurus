@@ -1,7 +1,7 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
 // Positioning Grid setup
-@cardWidth: 400px;
+@cardWidth: 420px;
 @indent: 34px;
 @cardListWidth: @cardWidth + ( 4 * @indent);
 
@@ -336,7 +336,8 @@ a:hover .perctSignSmall {
 	//font-size: @fontSizeMedium; // @fontSizeBitLarge;
     font-weight:500; // using the "Book" weight of Meta, from TypeKit
 	line-height: @lineHeightBigger;
-    letter-spacing: @letterSpacingSubtle;	
+    letter-spacing: @letterSpacingSubtle;
+	font-size:18px;
 	//margin-bottom: 17px; 
     //padding-left: 1px;
     //padding-right:4px;
@@ -399,7 +400,7 @@ a:hover .perctSignSmall {
 
 .cardBottomAction {
 	font-size: @fontSizeActions;
-    color: @grayTextLighter ;  /*@blue ;*/
+    color: black; // @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
 	//margin-bottom:2px;
 	margin-right: 12px;
@@ -407,7 +408,7 @@ a:hover .perctSignSmall {
     margin-top:4px;
     display:inline-block;
     z-index:1000;
-    font-weight: bold
+    //font-weight: bold
 }
 
 .point-card:hover .cardBottomAction {
@@ -428,6 +429,7 @@ a:hover .perctSignSmall {
 
 .point-card:hover .cardBottomActionRow {
     transform: scale(1.085) ;
+	font-weight: bold;
 }
 
 
@@ -485,11 +487,13 @@ a:hover .perctSignSmall {
 }
 
 .point-card .agree.current-vote {
-    color: green;
+    color: black; //@green;
+	font-weight: bold;
 }
 
 .point-card .disagree.current-vote {
-    color: red;
+    color: @red;
+	font-weight: bold;
 }
 
 

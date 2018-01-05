@@ -264,7 +264,7 @@ class EvidenceLink extends React.Component {
         return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <span className="cardBottomAction"><span className="shownStatTillHidden">No </span><span className="hiddenStatTillRevealed">Add </span>Evidence</span>
+      return <span className="cardBottomAction">Add Evidence</span>
     }  
   }
 

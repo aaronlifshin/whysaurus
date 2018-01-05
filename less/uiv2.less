@@ -5,13 +5,14 @@
 @indent: 34px;
 @cardListWidth: @cardWidth + ( 4 * @indent);
 
+@cardBorderWidth: 1px;
 @cardPadding: 12px;
 @cardPaddingTop: @cardPadding * .75;
 
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
 
-
+@darkerGreyColor: #5d5d5d;
 @smallGreyLinkColor: #a9a9a9;
 @smallGreyLinkSize: 12px;
 
@@ -94,8 +95,9 @@ body {
 
 .supportHeading, .counterHeading {
 	//margin-top: 20px;
-	margin-left: @indent + @cardPadding;
+	margin-left: @indent + @cardBorderWidth + @cardPadding + 1; //the extra +1 seems necessary visually
 	margin-bottom: @marginVerticalStandard;
+	color: @darkerGreyColor;
 }
 
 
@@ -178,17 +180,18 @@ body {
 	//left: (-1.2 * @indent);
     //top: 27px;
 	width: @indent;
+	text-align: right;
 }
 
 .relevanceLink {
 	position: relative;
-	top: 36px;
-	//margin-left: @cardPadding;
+	top: 15px;
 	margin-bottom: 3px;
+	padding-right: 4px;
 	width: 100%;
 	font-size: 14px;
 	font-weight: bold;
-	color: #5d5d5d;
+	color: @darkerGreyColor;
 	font-family: ff-meta-web-pro-condensed;
 }
 
@@ -230,7 +233,7 @@ a:hover .perctSignSmall {
 	//top: 70px;
 	vertical-align: top;
 	width: @cardWidth;
-	border-width: 1px;
+	border-width: @cardBorderWidth;
     border-color: #b9bbbd;
     border-style: solid;
 	margin-bottom: -2px; // overlap bottom border with top border of the next point down, for now
@@ -475,6 +478,13 @@ a:hover .perctSignSmall {
 }
 
 
+.arrowCard {
+	font-size: 24px;
+    position: relative;
+    top: 11px;
+	right: 13px;
+    color: @darkerGreyColor;
+}
 
 
 // RESPONSIVE -- TO DO: move this to a separate css file

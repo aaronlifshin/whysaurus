@@ -658,6 +658,7 @@ class PointCard extends React.Component {
   relevanceLinkUI() {
     if (this.props.parentPoint) {
 		return <div className="relevanceLinkArea">
+		<div className="arrowCard">&#x21B3;</div>
 		<a className="relevanceLink" onClick={this.handleRelClick}>{this.relevance}%</a>	
 		{ this.state.buttonClicked ? 
 			<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			

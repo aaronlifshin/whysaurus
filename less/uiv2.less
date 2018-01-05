@@ -99,10 +99,15 @@ body {
 .supportHeading, .counterHeading {
 	//margin-top: 20px;
 	margin-left: @indent + @cardBorderWidth + @cardPadding + 1; //the extra +1 seems necessary visually
-	margin-bottom: @marginVerticalStandard;
+	margin-bottom: @marginVerticalStandard * .75;
 	color: @darkerGreyColor;
+	text-transform: uppercase;
+    font-size: 13px;
 }
 
+.counterHeading {
+	color: @red;
+}
 
 .evidenceBlockCounter, .evidenceBlockSupport {
 	display: inline-block;

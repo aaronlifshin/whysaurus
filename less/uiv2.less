@@ -70,6 +70,9 @@ body {
 	margin-bottom: 60px;
 }
 
+.listedClaimGroup {
+	width: @cardWidth + @indent;
+}
 
 /* The animation code */
 @keyframes evidenceBlockReveal {
@@ -140,7 +143,7 @@ body {
 	//margin-top: 1px;
 }
 .listedClaim {
-	padding-left: 3px;
+	//padding-left: 3px;
 	padding-right: @cardPadding * .75;;
 	//padding-top: @cardPaddingTop;
 }
@@ -159,7 +162,7 @@ body {
 	//background-color: pink;
 	width: @cardWidth + (2 * @cardPadding);
 	padding-bottom: 4px;
-	margin-top: @marginVerticalStandard * .5;
+	margin-top: @marginVerticalStandard * .5 + 2px; // the extra 2px seem to be necessary visually
 }
 
 .relCtrlLabel {
@@ -516,9 +519,28 @@ a:hover .arrowAddEvidenceButton {
 
 @media (max-width: 767px) {
 
+  body {
+    padding-left:10px;
+  }
+
+  #header {
+	position: fixed;
+	width: 100vw; // viewport-width units
+  }
+  
+  .container {
+    //left: 10px;
+    //position: absolute;
+  }
+	
+  .pointStream {
+	margin-top: 24px;
+  }
+	
   .point-card {
 	//background-color: red;
 	display: inline-block;
+	width: 80vw; // viewport-width units
   }
   
   .pointCardImage {

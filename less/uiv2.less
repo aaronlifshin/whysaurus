@@ -189,9 +189,24 @@ body {
 	margin-bottom: 3px;
 	padding-right: 4px;
 	width: 100%;
-	font-size: 14px;
-	font-weight: bold;
-	color: @darkerGreyColor;
+	//font-weight: bold;
+	//color: @darkerGreyColor;
+}
+.relevanceLink.counter {
+	color: @red ;
+}
+.relevanceLink.support {
+	color: black; // @darkerGreyColor ;
+}
+.relevanceLink:hover {
+	color: @blue;
+}
+
+.relevanceDisplay {
+	position:relative;
+	top: -6px;
+	right: 1px;
+	font-size: 13px;	
 	font-family: ff-meta-web-pro-condensed;
 }
 
@@ -479,15 +494,14 @@ a:hover .perctSignSmall {
 
 
 .arrowCard {
-	font-size: 24px;
+	font-size: 18px;
     position: relative;
-    top: -4px;
-	right: 10px;
-    color: @darkerGreyColor;
+    top: -5px;
+	right: 8px;
+    //color: @darkerGreyColor;
 }
-.relevanceLink:hover .arrowCard{
-	color: @blue;
-}
+
+
 
 
 // RESPONSIVE -- TO DO: move this to a separate css file

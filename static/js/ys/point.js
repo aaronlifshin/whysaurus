@@ -658,13 +658,14 @@ class PointCard extends React.Component {
   // TODO: rebuild arrow using css in order to control stroke width, instead of unicode &#x21B3;
   relevanceLinkUI() {
     if (this.props.parentPoint) {
-		return <a className="relevanceLink" onClick={this.handleRelClick}>
+		let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
+		return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
 		<div className="relevanceLinkArea">
-		<div className="arrowCard">&#x21B3;</div>
-		<span>{this.relevance}</span>%	
-		{ this.state.buttonClicked ? 
-			<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			
-			: <span></span> }	
+			<span className="relevanceDisplay">{this.relevance}%</span>
+			<div className="arrowCard">&#x21B3;</div>
+			{ this.state.buttonClicked ? 
+				<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			
+				: <span></span> }	
 		</div></a>  
 	  }
 	else return null

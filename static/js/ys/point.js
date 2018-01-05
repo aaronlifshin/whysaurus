@@ -365,8 +365,13 @@ class AddEvidenceCard extends React.Component {
           </div>
       }
     } else {
-		let classes = `addEvidenceButton ${this.linkType=="counter" ? "addEvidenceButtonCounter" : null }`
-        return <div className={classes}><a  onClick={this.handleClickAddEvidence}>{this.addText}</a></div>
+		let classes = `addEvidenceButton ${this.linkType=="counter" ? "addEvidenceButtonCounter" : "" }`
+        return <a onClick={this.handleClickAddEvidence}>
+				<div className={classes}>
+					<div className="arrowAddEvidenceButton">↓</div>
+					<div className="addEvidenceButtonLabel">{this.addText}</div>
+				</div>
+			   </a>
     }
   }
 }

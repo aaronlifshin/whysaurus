@@ -71,7 +71,7 @@ body {
 }
 
 .listedClaimGroup {
-	width: @cardWidth + @indent;
+	width: auto; 
 }
 
 /* The animation code */
@@ -378,6 +378,7 @@ a:hover .perctSignSmall {
     //-ms-flex: 1;  /* IE 10 */ 
 	//background-color: blue;
 	//padding-top: @cardPadding - @cardPaddingTop;
+	//float: right;
 
 }
 
@@ -519,6 +520,8 @@ a:hover .arrowAddEvidenceButton {
 
 @media (max-width: 767px) {
 
+ @cardWidthSmallScreens: 80vw;
+
   body {
     padding-left:10px;
   }
@@ -536,15 +539,20 @@ a:hover .arrowAddEvidenceButton {
   .pointStream {
 	margin-top: 24px;
   }
-	
+  
+  .listedClaimGroup {
+	width: @cardWidthSmallScreens + (2 * @indent); 
+  }
+
   .point-card {
 	//background-color: red;
 	display: inline-block;
-	width: 80vw; // viewport-width units
+	width: @cardWidthSmallScreens; // viewport-width units
   }
   
   .pointCardImage {
-	margin-top: 4px;
+	margin-top: @marginVerticalStandard;
   }
+  
 
 }

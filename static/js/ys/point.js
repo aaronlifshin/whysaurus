@@ -783,39 +783,43 @@ class PointCard extends React.Component {
   render(){
     const point = this.point;
     console.log("rendering " + point.url)
+	let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
 	let classesPointCard = `point-card ${this.evidenceTypeClass()} ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"} row-fluid toggleChildVisOnHover`;
-	let classeslistedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-    return <div className={classeslistedClaim}>
-	  { this.relevanceCtrlUI() }
-	  { this.relevanceLinkUI() }
-      <div className={classesPointCard}>
-        <div className={ this.contentWidth()  }>
-          <div className="row-fluid">
-            <div className="cardTopRow span12">
-              <Byline point={point}/>
-              <CommentCount point={point}/>
-              <ShareIcon point={point}/>
-              { this.moreMenu() } 
+    return <div className="listedClaimAndItsEvidence">
+	  <div className={classesListedClaim}>
+		  { this.relevanceCtrlUI() }
+		  { this.relevanceLinkUI() }
+		  <div className={classesPointCard}>
+			<div className={ this.contentWidth()  }>
+			  <div className="row-fluid">
+				<div className="cardTopRow span12">
+				  <Byline point={point}/>
+				  <CommentCount point={point}/>
+				  <ShareIcon point={point}/>
+				  { this.moreMenu() } 
+				</div>
+			  </div>
+			  <div className="row-fluid">
+				<div className="pointText span12">
+				  <Point point={point}/>
+				</div>
+			  </div>
+			  {this.sources()}
+			  <div className="row-fluid">
+				<div className="cardBottomActionRow" >
+				  <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
+				  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+				</div>
+			  </div>
 			</div>
-          </div>
-          <div className="row-fluid">
-            <div className="pointText span12">
-              <Point point={point}/>
-            </div>
-          </div>
-          {this.sources()}
-          <div className="row-fluid">
-            <div className="cardBottomActionRow" >
-              <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
-              <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-            </div>
-          </div>
-        </div>
-		{this.image()}
-      </div>
-      <div className="row-fluid">
+			{this.image()}
+		  </div>
+	  </div>
+	  
+      <div className="evidenceRow row-fluid">
 	    {this.evidence()} 
       </div>
+	  
     </div>;
   }
 }

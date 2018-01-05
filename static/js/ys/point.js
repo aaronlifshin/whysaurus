@@ -345,9 +345,9 @@ class AddEvidenceCard extends React.Component {
       case EvidenceType.ROOT:
         return "Add Point"
       case EvidenceType.SUPPORT:
-        return "Add a Supporting Claim"
+        return "Add Supporting Claim"
       case EvidenceType.COUNTER:
-        return "Add a Counter Claim";
+        return "Add Counter Claim";
       default:
         return "Add Evidence"
     }
@@ -365,7 +365,8 @@ class AddEvidenceCard extends React.Component {
           </div>
       }
     } else {
-      return <div className="addEvidenceButton"><a  onClick={this.handleClickAddEvidence}>{this.addText}</a></div>
+		let classes = `addEvidenceButton ${this.linkType=="counter" ? "addEvidenceButtonCounter" : null }`
+        return <div className={classes}><a  onClick={this.handleClickAddEvidence}>{this.addText}</a></div>
     }
   }
 }
@@ -709,10 +710,8 @@ class PointCard extends React.Component {
   
   evidence() {
     if (this.expanded() ) {
-		var classes = "evidenceBlock" 
-		// If this is the first level down, remove an indent bc the Relevance widget will yield one when it appears for the first time
-		if (!this.props.parentPoint) 
-			classes = "evidenceBlock firstLevelOffset"	// concat() didn't seem to work? -JF			
+		// If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
+		let classes = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
 		return <div className={classes}>
 	    {this.supportingPoints()}
         {this.counterPoints()}

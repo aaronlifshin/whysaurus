@@ -117,7 +117,7 @@ body {
 
 .evidenceList {
 	margin-left: @indent; // Handled by relevanceLinkArea
-	margin-top: @marginVerticalStandard;
+	margin-top: @marginVerticalStandard - 6px; // subtract some for the arrow
 }
 
 
@@ -506,6 +506,14 @@ a:hover .perctSignSmall {
 	font-weight: bold;
 }
 
+// ARROWS
+
+.arrowPointToSupport {
+	font-size: 18px;
+	position: relative;
+	left: 47px;
+    top: -4px;
+}
 
 .arrowCard {
 	font-size: 18px;

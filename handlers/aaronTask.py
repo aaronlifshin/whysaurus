@@ -1,6 +1,7 @@
 import os
 import logging
 import re
+from random import randint
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import ndb
@@ -245,7 +246,49 @@ class AaronTask(AuthHandler):
 
         logging.warn('Populate Update Complete! - Updated: %d Bypassed: %d' % (cnt, bypassed))
 
+    def PopulateGaids(self):
+        maxCreates = 250
+        bigMessage = ['Populating GA Ids']
+        gaIds = []
+
+        query = WhysaurusUser.query()
+        for yUser in query.iter():
+            if yUser.gaId is None:
+                continue
+            gaIds.append(yUser.gaId)
+
+        bigMessage.append('Existing gaIds: %s' % (len(gaIds)))
+
+        cntNewIds = 0
+        query = WhysaurusUser.query()
+        for yUser in query.iter():
+            if yUser.gaId is not None:
+                continue
+
+            newId = yUser.generateUserGaid(isNewUser=False, existingGaids=gaIds)
+
+            if newId is None:
+                bigMessage.append('User %s (%s) failed generation: %s' % (yUser.name, str(yUser.auth_ids), yUser.gaId))
+                continue
+
+            yUser.put()
+
+            bigMessage.append('User %s (%s) got gaId: %s' % (yUser.name, str(yUser.auth_ids), yUser.gaId))
+
+            cntNewIds += 1
+            if cntNewIds >= maxCreates:
+                break
+
+        bigMessage.append('Generated %s new gaIds' % (cntNewIds))
+
+        template_values = {
+            'messages': bigMessage
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/django/message.html')
+        self.response.out.write(template.render(path, template_values))
+
     def get(self):
+        self.PopulateGaids()
 
         """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

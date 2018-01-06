@@ -19,6 +19,8 @@ from models.reportEvent import DayEventSummary
 
 
 class AdminPage(AuthHandler):
+    USERS_PER_PAGE = 250
+
     def createPrivateArea(self, newName, newDisplayName):
         results = {'result': False}
         try:
@@ -97,7 +99,7 @@ class AdminPage(AuthHandler):
             users = users + [{'u':yUser, 'index':i, 'userKey': yUser.key.urlsafe()}]
             i = i+1
             
-        paginator = Paginator(users, 25) 
+        paginator = Paginator(users, self.USERS_PER_PAGE)
         page = self.request.get('page')
 
         try:

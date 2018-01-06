@@ -5,6 +5,7 @@ import random
 import string
 import datetime
 import webapp2
+from random import randint
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
@@ -34,6 +35,7 @@ class WhysaurusUser(auth_models.User):
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)
     url = ndb.StringProperty(default=None)
+    gaId = ndb.StringProperty(default=None)
     numCopies = ndb.IntegerProperty(default=0)
     admin = ndb.BooleanProperty(default=False)
     role = ndb.StringProperty(default="")
@@ -138,6 +140,58 @@ class WhysaurusUser(auth_models.User):
         self.set_password(randomPassword)
         self.put()
         return randomPassword
+
+
+    def setUserGaid(self, newGaid):
+        self.gaId = newGaid
+        self.put()
+        return newGaid
+
+    def generateUserGaid(self, isNewUser, existingGaids = None):
+        """Generate (but don't put) a unique GA Id for the user (can be long running!)"""
+
+        if self.gaId is not None:
+            return self.gaId
+
+        newId = generateUniqueUserGaid(isNewUser, existingGaids)
+
+        self.gaId = newId
+
+        return newId
+
+    @staticmethod
+    def generateUniqueUserGaid(isNewUser, existingGaids = None):
+        # Obviously a bit excessive to query all users - should we switch to something more heuristic?
+        if existingGaids is None:
+            existingGaids = []
+            query = WhysaurusUser.query()
+            for yUser in query.iter():
+                if yUser.gaId is None:
+                    continue
+            existingGaids.append(yUser.gaId)
+
+        newId = None
+
+        cntAttempts = 0
+        while True:
+            cntAttempts += 1
+            if cntAttempts > 100:
+                logging.error('Too Many Attempts To Generate Unique GA Id!')
+                return None
+
+            if isNewUser:
+                newId = datetime.datetime.now().strftime("%y%m%d%H") + str(randint(100, 10000))
+            else:
+                newId = str(randint(10000, 1000000))
+            if id in existingGaids:
+                continue
+            else:
+                break
+
+        if newId is None:
+            return None
+
+        return newId
     
     def login(self):
         # Update last login time
@@ -175,6 +229,7 @@ class WhysaurusUser(auth_models.User):
                    
         auth_id = '%s: %s' % ('name', name)
         url = WhysaurusUser.constructURL(name)
+        gaid = WhysaurusUser.generateUniqueUserGaid(True)
     
         unique_properties = ['email', 'url', 'name'] if email else ['url', 'name']
         
@@ -188,7 +243,7 @@ class WhysaurusUser(auth_models.User):
 
         result, creationData = WhysaurusUser.create_user(auth_id,
           unique_properties,
-          url=url, email=email, name=name, password_raw=password,
+          url=url, email=email, name=name, password_raw=password, gaId=gaid,
           websiteURL=website, areasOfExpertise=areas, currentProfession=profession, 
           bio=bio, verified=False, privateAreas=privateAreas)
  
@@ -214,7 +269,7 @@ class WhysaurusUser(auth_models.User):
             if existingPrivateArea:
                 areaUser = AreaUser(userKey=user.key.urlsafe(), privateArea=existingPrivateArea)
                 areaUser.putUnique()
-            
+
             ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")
             user.addToSearchIndex()         
             return user # SUCCESS       

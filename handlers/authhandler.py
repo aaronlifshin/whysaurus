@@ -114,7 +114,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 # need to figure out how to pass this over to AJAX
                 # and what the point creation will look like
                 logging.info("Have post login action when signing up as an email user")
-            elif len(user.privateAreas) == 1:
+            elif len(user.privateAreas) == 1 and not user.admin:
                 self.setUserArea(user.privateAreas[0])
                 results['redirect'] = "/"
             
@@ -187,7 +187,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 # Public area, no op
                 logging.info('There was a post login action, \
                         so the user is not logged into the private area.')
-            elif len(user.privateAreas) == 1:
+            elif len(user.privateAreas) == 1 and not user.admin:
                 # One private area, put 'em in
                 self.setUserArea(user.privateAreas[0])
             # Otherwise, public
@@ -366,6 +366,21 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         resultJSON = json.dumps(results)
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
+
+    def setUserGaid(self):
+        results = {'result': False}
+        loggedInUser = self.current_user
+        if loggedInUser and loggedInUser.isAdmin:
+            targetUserUrl = self.request.get('userurl')
+            newGaid = self.request.get('newGaid')
+            if targetUserUrl and newGaid:
+                u = WhysaurusUser.getByUrl(targetUserUrl)
+                if u:
+                    u.setUserGaid(newGaid)
+                    results = {'result': True, 'username': u.name, 'newGaid': newGaid}
+        resultJSON = json.dumps(results)
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
+        self.response.out.write(resultJSON)
         
 
     def _on_signin(self, data, auth_info, provider):
@@ -388,7 +403,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             user.login()
             if 'postloginaction' in self.session:
                 logging.info('There was a post login action, so the user is not logged into the private area.')
-            elif len(user.privateAreas) > 0:
+            elif len(user.privateAreas) > 0 and not user.admin:
                 self.setUserArea(user.privateAreas[0])
         else:
             # check whether there's a user currently logged in

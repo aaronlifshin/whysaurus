@@ -16,10 +16,12 @@
         <th>Created</th>
         <th>Edited</th>  
         <th>Viewed </th>        
-        <th>Last Login </th>                      		                     
+        <th>Last Login </th>
+        <th>GA ID</th>
         <th>User Classroom(s)</th>
         <th>User Role</th>
-        <th>Password reset</th>                      
+        <th>Password reset</th>
+        <th>Set User GA Id</th>
     </tr>
   {% for yUser in users %}
     <tr id="{{yUser.index}}" name="userRow" data-url="{{yUser.u.url}}">
@@ -29,6 +31,7 @@
         <td>{{yUser.u.editedCount}}</td>  
         <td>{{yUser.u.viewedCount}}</td>
         <td>{{yUser.u.PSTlastlogin}}</td>
+        <td>{{yUser.u.gaId}}</td>
         <td>
           <select data-placeholder="Choose classroom(s)..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
           {% for area in areas %}
@@ -52,8 +55,12 @@
             {% if yUser.u.emailUser %}
                 <a  name="resetPassword" data-userurl="{{yUser.u.url}}">Reset password </a>                
             {% endif %}
-        
-        </td>      
+        </td>
+        <td>
+            {% if yUser.u %}
+                <a  name="setUserGaid" data-userurl="{{yUser.u.url}}">Set User GA Id</a>
+            {% endif %}
+        </td>
     </tr>
   {% endfor %}
   </table>

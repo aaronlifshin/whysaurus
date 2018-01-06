@@ -599,18 +599,18 @@ class WhysaurusUser(auth_models.User):
         self.lastViewed = now
 
         if self.lastVisitDate:
-            if self.lastVisitDate.day == now.day:
+            if self.lastVisitDate.date() == now.date():
                 pass
             else:
-                daysSinceLastVisit = (now.day - self.lastVisitDate.day).days
+                daysSinceLastVisit = (now.date() - self.lastVisitDate.date()).days
                 self.lastVisitAvgIntervalDays = (daysSinceLastVisit + self.lastVisitAvgIntervalDays * self.lastVisitCount) / (self.lastVisitCount + 1)
                 self.lastVisitCount += 1
-                self.lastVisitDate = now.day
+                self.lastVisitDate = now
         else:
             # Let's not count the very first visit so we're consistent
             self.lastVisitCount = 0
             self.lastVisitAvgIntervalDays = 0
-            self.lastVisitDate = now.day
+            self.lastVisitDate = now
 
         # We won't put here as each call here is responsible to put afterward
         

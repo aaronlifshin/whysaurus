@@ -41,12 +41,16 @@ class WhysaurusUser(auth_models.User):
     role = ndb.StringProperty(default="")
     recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
     viewCount = ndb.IntegerProperty(default=0)
+    lastViewed = ndb.DateTimeProperty()
+    lastVisitDate = ndb.DateTimeProperty()
+    lastVisitCount = ndb.IntegerProperty(default=0)
+    lastVisitAvgIntervalDays = ndb.FloatProperty(default=0)
     createdPointRootKeys = ndb.KeyProperty(repeated=True)
     editedPointRootKeys = ndb.KeyProperty(repeated=True)
-    websiteURL =  ndb.StringProperty()
-    areasOfExpertise =  ndb.StringProperty()
-    currentProfession =  ndb.StringProperty()
-    bio =  ndb.StringProperty()
+    websiteURL = ndb.StringProperty()
+    areasOfExpertise = ndb.StringProperty()
+    currentProfession = ndb.StringProperty()
+    bio = ndb.StringProperty()
     # TODO; take out once migrated to privateAreas
     privateArea = ndb.StringProperty()
     privateAreas = ndb.StringProperty(repeated=True)
@@ -54,6 +58,8 @@ class WhysaurusUser(auth_models.User):
     token = ndb.StringProperty()  
     tokenExpires = ndb.DateTimeProperty()
     lastLogin = ndb.DateTimeProperty()
+    loginCount = ndb.IntegerProperty(default=0)
+    loginAvgIntervalDays = ndb.FloatProperty(default=0)
     notificationFrequency = ndb.StringProperty(default="Weekly")
     lastEmailSent = ndb.DateTimeProperty()
     _notifications = None
@@ -70,6 +76,10 @@ class WhysaurusUser(auth_models.User):
     @property
     def PSTlastlogin(self):
         return PST.convert(self.lastLogin)
+
+    @property
+    def PSTlastView(self):
+        return PST.convert(self.lastViewed)
         
     @property
     def notifications(self):
@@ -194,9 +204,13 @@ class WhysaurusUser(auth_models.User):
         return newId
     
     def login(self):
-        # Update last login time
-        self.lastLogin = datetime.datetime.now()
         now = datetime.datetime.now()
+        if self.lastLogin:
+            daysSinceLastLogin = (now - self.lastLogin).days
+            self.loginAvgIntervalDays = (daysSinceLastLogin + self.loginAvgIntervalDays * self.loginCount)/(self.loginCount + 1)
+            self.loginCount += 1
+        # Update last login time
+        self.lastLogin = now
         # Create And Store Token    
         if not self.token or self.tokenExpires < now: 
             self.createChannel()                 
@@ -580,6 +594,24 @@ class WhysaurusUser(auth_models.User):
             self.viewCount = len(self.recentlyViewedRootKeys)
         else:
             self.viewCount += 1
+
+        now = datetime.datetime.now()
+        self.lastViewed = now
+
+        if self.lastVisitDate:
+            if self.lastVisitDate.day == now.day:
+                pass
+            else:
+                daysSinceLastVisit = (now.day - self.lastVisitDate.day).days
+                self.lastVisitAvgIntervalDays = (daysSinceLastVisit + self.lastVisitAvgIntervalDays * self.lastVisitCount) / (self.lastVisitCount + 1)
+                self.lastVisitCount += 1
+                self.lastVisitDate = now.day
+        else:
+            # Let's not count the very first visit so we're consistent
+            self.lastVisitCount = 0
+            self.lastVisitAvgIntervalDays = 0
+            self.lastVisitDate = now.day
+
         # We won't put here as each call here is responsible to put afterward
         
         return addedToList

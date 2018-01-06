@@ -16,7 +16,9 @@
         <th>Created</th>
         <th>Edited</th>  
         <th>Viewed </th>        
-        <th>Last Login </th>                      		                     
+        <th>Last Login (PST)</th>
+        <th>Last Visit (PST)</th>
+        <th>Avg Visit Days</th>
         <th>User Classroom(s)</th>
         <th>User Role</th>
         <th>Password reset</th>                      
@@ -29,6 +31,8 @@
         <td>{{yUser.u.editedCount}}</td>  
         <td>{{yUser.u.viewedCount}}</td>
         <td>{{yUser.u.PSTlastlogin}}</td>
+        <td>{{yUser.u.PSTlastView}}</td>
+        <td>{{yUser.u.lastVisitAvgIntervalDays}}</td>
         <td>
           <select data-placeholder="Choose classroom(s)..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
           {% for area in areas %}

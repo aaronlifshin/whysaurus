@@ -40,14 +40,14 @@ class ReportEvent(ndb.Model):
     @classmethod
     def recordEvent(cls, userKeyUrlsafe, entityKey1Urlsafe, entityKey2Urlsafe, eventName):
         logging.info('Entered RECORD event')
-        userKey = ndb.Key(urlsafe = userKeyUrlsafe)
+        userKey = ndb.Key(urlsafe=userKeyUrlsafe)
         entityKey1 = None
         entityKey2 = None
         if entityKey1Urlsafe and entityKey1Urlsafe != '':
-            entityKey1 = ndb.Key(urlsafe = entityKey1Urlsafe) 
+            entityKey1 = ndb.Key(urlsafe=entityKey1Urlsafe)
         if entityKey2Urlsafe and entityKey2Urlsafe != '':
             logging.info('E2US: ++++++ ' + str(entityKey2Urlsafe))
-            entityKey2 = ndb.Key(urlsafe = entityKey2Urlsafe)
+            entityKey2 = ndb.Key(urlsafe=entityKey2Urlsafe)
         
         
         todayPST = PST.convert(datetime.datetime.now())
@@ -55,7 +55,7 @@ class ReportEvent(ndb.Model):
         
         qry = DayEventSummary.query( 
             DayEventSummary.day == dayGMT, 
-            DayEventSummary.name == eventName )
+            DayEventSummary.name == eventName)
         daySummaries = qry.fetch(1)
         daySummary = None
         if daySummaries:
@@ -72,14 +72,14 @@ class ReportEvent(ndb.Model):
         r = ReportEvent(user=userKey, 
                     refEntity1=entityKey1,
                     refEntity2=entityKey2,
-                    time = datetime.datetime.now(),
-                    name = eventName)
+                    time=datetime.datetime.now(),
+                    name=eventName)
         r.put()
 
     @classmethod
     def queueEventRecord(cls, userKeyUrlsafe, entityKey1Urlsafe, entityKey2Urlsafe, eventName):
         taskParams = {
-                         'userKeyUrlsafe':userKeyUrlsafe,     
+                         'userKeyUrlsafe': userKeyUrlsafe,
                          'eventName': eventName
                          }
         if entityKey1Urlsafe:

@@ -282,10 +282,15 @@ a:hover .perctSignSmall {
   }
 }
 
-.point-card:hover {
+.point-card:hover, .point-card:focus  {
     background-color: #fafafa; //white; // #f6fdff; //rgb(244, 253, 255);
+	outline-style: none;
 }
-
+.point-card:focus  {
+	//background-color:pink; // for testing
+	//background-color:white; // for testing
+}
+	
 // red styling on CPs
 .point-card.counter {
 	border-color: #f6a3a3 ;
@@ -419,8 +424,7 @@ a:hover .perctSignSmall {
     z-index:1000;
     //font-weight: bold
 }
-
-.point-card:hover .cardBottomAction {
+.point-card:hover .cardBottomAction, .point-card:focus .cardBottomAction {
     color: @blue ;
 }
 
@@ -434,11 +438,10 @@ a:hover .perctSignSmall {
   transition:.08s;
   transform-origin: bottom left;
 }
-
-
-.point-card:hover .cardBottomActionRow {
+.point-card:hover .cardBottomActionRow, .point-card:focus .cardBottomActionRow  {
     transform: scale(1.085) ;
 	font-weight: bold;
+	color: @blue ;
 }
 
 

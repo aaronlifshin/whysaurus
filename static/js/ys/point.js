@@ -45,7 +45,7 @@ export const EvidenceType = Object.freeze({
 });
 
 function Byline(props){
-  return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
+  return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" tabIndex="-1" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
 }
 
 // TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
@@ -109,6 +109,7 @@ mutation EditPoint($url: String!, $title: String) {
   }
 }
 `
+
 const EditTitleForm = ( props ) => {
   return (
       <Form onSubmit={props.onSubmit}>
@@ -128,6 +129,7 @@ class PointComponent extends React.Component {
     this.state = {editing: false}
     this.handleClickEdit = this.handleClickEdit.bind(this);
     this.handleClickSave = this.handleClickSave.bind(this);
+    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);	
   }
 
   get point() {
@@ -148,6 +150,11 @@ class PointComponent extends React.Component {
     })
     // this component will be replaced after save, so we don't need to update state
   }
+  
+  handleToggleEvidence() {
+    console.log("PointComponent : toggle evidence!")
+    this.props.onClick && this.props.onClick()	
+  }
 
   titleUI() {
     if (this.state.editing) {
@@ -160,8 +167,10 @@ class PointComponent extends React.Component {
       }
     } else {
       return <span className="pointTitle">
-        <a href={this.point.url}>{this.point.title}</a>
+        <a tabIndex="-1" onClick={this.handleToggleEvidence}>{this.point.title}</a>
         </span>
+		
+	  /* OLD CODE FOR EDITING POINT TITLES: */
       /*return <span className="pointTitle">
         <a href={this.point.url}>{this.point.title}</a>
 		{this.props.data.currentUser &&
@@ -596,14 +605,23 @@ class PointCard extends React.Component {
     super(props);
     this.state = {
 		expandedIndex: {},
-		relLinkClicked: false
+		relLinkClicked: false,
+		focusAssigned: false
 	}
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
+    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);	
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
-    this.handleRelClick = this.handleRelClick.bind(this);	
+    this.handleRelClick = this.handleRelClick.bind(this);
   }
 
+  // TO DO: make focus on the 1st point loaded (not the last one, as its currently doing) --> may need to happen in Evidence?
+  componentDidMount() {
+	//console.log("FOCUS");
+	//this.cardToFocusOn.focus();
+	this.setState({ focusAssigned: true })
+  }
+  
   get point() {
     return this.props.data.point ? this.props.data.point : this.props.point
   }
@@ -639,8 +657,8 @@ class PointCard extends React.Component {
     return this.props.link && this.props.link.relevance
   }
 
-    handleRelClick(e) {
-	console.log("toggle relevance ui");
+  handleRelClick(e) {
+	//console.log("toggle relevance ui");
 	if (this.state.relLinkClicked)
 		this.setState({ relLinkClicked: false })
 	else
@@ -688,6 +706,21 @@ class PointCard extends React.Component {
     i[point.id] = false
     this.setState({expandedIndex: i})	
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
+  }
+  
+  handleToggleEvidence(point=this.point) {
+	console.log("pointCard : toggle ")
+	const i = this.state.expandedIndex
+	if (this.expanded() ) {
+		console.log("pointCard : EXPANDED ")
+		i[point.id] = false
+		this.setState({expandedIndex: i})		  
+	}
+	else {
+		console.log("pointCard : NOT EXPANDED ")
+		i[point.id] = true
+		this.setState({expandedIndex: i})		  
+	}	
   }
 
   expanded() {
@@ -798,7 +831,7 @@ class PointCard extends React.Component {
 	  <div className={classesListedClaim}>
 		  { this.relevanceCtrlUI() }
 		  { this.relevanceLinkUI() }
-		  <div className={classesPointCard}>
+		  <div className={classesPointCard} tabIndex="0" ref={(input) => { this.cardToFocusOn = input; }}>
 			<div className={ this.contentWidth()  }>
 			  <div className="row-fluid">
 				<div className="cardTopRow span12">
@@ -810,7 +843,7 @@ class PointCard extends React.Component {
 			  </div>
 			  <div className="row-fluid">
 				<div className="pointText span12">
-				  <Point point={point}/>
+				  <Point point={point} onClick={this.handleToggleEvidence}/>
 				</div>
 			  </div>
 			  {this.sources()}

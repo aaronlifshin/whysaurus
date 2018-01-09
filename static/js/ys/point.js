@@ -234,7 +234,7 @@ class Sources extends React.Component {
   render(){
     return <div className="sources">
       {this.point.sources && this.point.sources.map(({name, url}, i) =>
-        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a href={url}>{name}</a></div>
+        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" href={url}>{name}</a></div>
       )}
     </div>
   }
@@ -428,6 +428,11 @@ class AgreeDisagreeComponent extends React.Component {
     this.handleClickDisagree = this.handleClickDisagree.bind(this);
   }
 
+  // move focus to the next point card, uses tabbable.js plugin  
+  focusOnNextCard() {	
+	setTimeout(function () { $.tabNext() } , 900)	
+  }
+  
   handleClickAgree() {
     console.log("agree");
     if (this.props.data.currentUser){
@@ -437,7 +442,8 @@ class AgreeDisagreeComponent extends React.Component {
                     parentURL: this.props.parentPoint && this.props.parentPoint.url}
       }).then( res => {
         console.log(res)
-      });	  	  
+      });
+	  this.focusOnNextCard()
     } else {
       $("#loginDialog").modal("show");
     }
@@ -453,6 +459,7 @@ class AgreeDisagreeComponent extends React.Component {
       }).then( res => {
         console.log(res)
       });
+	  this.focusOnNextCard()
     } else {
       $("#loginDialog").modal("show");
     }
@@ -605,8 +612,7 @@ class PointCard extends React.Component {
     super(props);
     this.state = {
 		expandedIndex: {},
-		relLinkClicked: false,
-		focusAssigned: false
+		relLinkClicked: false
 	}
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
@@ -615,12 +621,20 @@ class PointCard extends React.Component {
     this.handleRelClick = this.handleRelClick.bind(this);
   }
 
+  /* Assign focus - WIP 
+  
   // TO DO: make focus on the 1st point loaded (not the last one, as its currently doing) --> may need to happen in Evidence?
-  componentDidMount() {
-	//console.log("FOCUS");
-	//this.cardToFocusOn.focus();
-	this.setState({ focusAssigned: true })
+	componentDidMount() {
+		this.cardToFocusOn.focus();
+		//console.log("pointCard: componentDidMount()");		
+	}
+	
+  // uses tabbable.js plugin
+  focusOnNextCard() {	
+	setTimeout(function () { $.tabNext() } , 1200);
+	console.log("pointCard : focusOnNextCard() ")	
   }
+*/	
   
   get point() {
     return this.props.data.point ? this.props.data.point : this.props.point
@@ -754,14 +768,15 @@ class PointCard extends React.Component {
     if (this.expanded() ) {
 		// If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
 		let classes = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+		console.log(pointCard : evidence() ")
 		return <div className={classes}>
 		<div className="arrowPointToSupport">↓</div>
 	    {this.supportingPoints()}
         {this.counterPoints()}
-	  </div>		
+	  </div>
 	}
   }
-		
+  	
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport">
@@ -818,11 +833,11 @@ class PointCard extends React.Component {
 					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
 */
    
-
-   		
+     		
    
   // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
-  render(){
+  // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
+ render(){
     const point = this.point;
     console.log("rendering " + point.url)
 	let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;

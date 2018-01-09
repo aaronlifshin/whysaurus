@@ -265,7 +265,7 @@ class EvidenceLink extends React.Component {
     this.props.onHide && this.props.onHide()
   }
   
-  whichEvidenceButton() {
+  whichEvidenceButton() {	  		  
 	if (this.hasEvidence()) {
       if (this.props.expanded) {
         return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
@@ -297,7 +297,6 @@ const AddEvidenceForm = ( props ) => {
 	</div>
   );
 }
-
 
 class AddEvidenceCard extends React.Component {
   constructor(props) {
@@ -350,7 +349,6 @@ class AddEvidenceCard extends React.Component {
     }
   }
 
-  // TODO: Should this function be renamed to be specific/descriptive, like addEvidenceLabel? -JF
   get addText(){
     switch (this.evidenceType){
       case EvidenceType.ROOT:
@@ -376,9 +374,12 @@ class AddEvidenceCard extends React.Component {
           </div>
       }
     } else {
-		let classes = `addEvidenceButton ${this.linkType=="counter" ? "addEvidenceButtonCounter" : "" }`
+		let classesButton = `addEvidenceButton ${this.linkType=="counter" ? "addEvidenceButtonCounter" : "" }`
+		// TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
+		let classesLine = `dashedLine dashedLineAddEvidenceButton ${this.linkType=="counter" ? "dashedLineAddCounter" : "dashedLineAddSupport" }`
         return <a onClick={this.handleClickAddEvidence}>
-				<div className={classes}>
+				<div className={classesButton}>
+					<div className={classesLine}></div>
 					<div className="arrowAddEvidenceButton">↓</div>
 					<div className="addEvidenceButtonLabel">{this.addText}</div>
 				</div>
@@ -687,6 +688,7 @@ class PointCard extends React.Component {
 			{ this.state.relLinkClicked ? 
 				<div className="relevanceCtrlArea">
 					<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
+					<div className="dashedLine dashedLineRelevanceCtrl"></div>
 				</div> 
 				: <span className="noRelevanceCtrl"></span> }	
 		</span>		

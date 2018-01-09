@@ -547,7 +547,7 @@ a:hover .perctSignSmall {
 .arrowPointToSupport {
 	font-size: @arrowFontSize;
 	position: relative;
-	left: 47px;
+	left: 48px;
     top: -4px;
 }
 
@@ -567,6 +567,47 @@ a:hover .perctSignSmall {
 a:hover .arrowAddEvidenceButton {
 	display: inline-block; 
 	text-decoration: none !important;
+}
+
+
+// DASHED LINES
+
+.dashedLine {
+    color: #acacac;
+    width: 1px;
+    border-left-style: dashed;
+    border-left-width: 1px;
+    position: absolute;
+}
+
+.dashedLineRelevanceCtrl {
+    height: 95px;
+    margin-left: 17px;
+    margin-top: -84px;
+}
+
+// not used yet
+.dashedLineEvidenceBlock {
+	height: 45%;
+    margin-left: 18px;
+    margin-top: -26px;
+}
+
+.dashedLineAddEvidenceButton {
+    margin-left: 4px;
+	display: none;
+}
+.addEvidenceButton:hover .dashedLineAddEvidenceButton {
+	display: inline;
+}
+.dashedLineAddSupport {
+    height: 43px;
+    margin-top: -42px;
+}
+.dashedLineAddCounter {
+    height: 42px; // 18px;
+    margin-top: -42px; //-16px;
+	color: @red;
 }
 
 

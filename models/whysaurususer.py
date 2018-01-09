@@ -163,7 +163,7 @@ class WhysaurusUser(auth_models.User):
         if self.gaId is not None:
             return self.gaId
 
-        newId = generateUniqueUserGaid(isNewUser, existingGaids)
+        newId = WhysaurusUser.generateUniqueUserGaid(isNewUser, existingGaids)
 
         self.gaId = newId
 

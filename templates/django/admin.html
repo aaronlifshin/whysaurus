@@ -19,9 +19,10 @@
         <th>Last Login (PST)</th>
         <th>Last Visit (PST)</th>
         <th>Avg Visit Days</th>
-        <th>Last Login </th>
-        <th>GA ID</th>        <th>User Classroom(s)</th>
+        <th>GA ID</th>
+        <th>User Classroom(s)</th>
         <th>User Role</th>
+        <th>Last Email</th>
         <th>Password reset</th>
         <th>Set User GA Id</th>
     </tr>
@@ -35,7 +36,8 @@
         <td>{{yUser.u.PSTlastlogin}}</td>
         <td>{{yUser.u.PSTlastView}}</td>
         <td>{{yUser.u.lastVisitAvgIntervalDays}}</td>
-        <td>{{yUser.u.gaId}}</td>        <td>
+        <td>{{yUser.u.gaId}}</td>
+        <td>
           <select data-placeholder="Choose classroom(s)..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
           {% for area in areas %}
             {% if area.name in yUser.u.privateAreas %}
@@ -54,6 +56,7 @@
                 <option {% if yUser.u.isAdmin %}selected="true"{% endif %}>Admin</option>
             </select>
         </td>
+        <td>{{yUser.u.lastEmailSent}}</td>
         <td>
             {% if yUser.u.emailUser %}
                 <a  name="resetPassword" data-userurl="{{yUser.u.url}}">Reset password </a>                

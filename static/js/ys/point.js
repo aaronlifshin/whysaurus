@@ -284,15 +284,17 @@ class EvidenceLink extends React.Component {
 
 const AddEvidenceForm = ( props ) => {
   return (
+	  <div className="addEvidenceFormGroup">  	  
+	  <div className="arrowAddEvidenceForm">↓</div>
       <Form onSubmit={props.onSubmit}>
       { formApi => (
-          <form onSubmit={formApi.submitForm} id="form1">
-          <label htmlFor="title">Title</label>
-          <Text field="title" id="title" />
-          <button type="submit">Add</button>
+          <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
+          <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Some dinosaurs had feathers."' />
+          <button type="submit" className="addEvidenceFormButton">Add</button>
           </form>
       )}
     </Form>
+	</div>
   );
 }
 

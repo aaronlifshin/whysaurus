@@ -94,7 +94,15 @@ const Hover = ({ onHover, children }) => (
 
 const VoteStats = ({point}) => (
     <div className="vote-stats">
-      <p>Agreed: {point.upVotes} <br/> Disagreed: {point.downVotes}</p>
+      <p>	  
+	  {point.upVotes} Agrees<br/> 
+	  {point.downVotes} Disagrees<br/>
+	  </p>
+	  <div className="menuDivider"></div>
+	  <p>
+	  {point.numSupporting} Supporting Claim{point.numSupporting !=1 ? "s" : null}<br/>
+	  {point.numCounter} Counter Claim{point.numCounter !=1 ? "s" : null}<br/>
+	  </p>
     </div>
 )
 

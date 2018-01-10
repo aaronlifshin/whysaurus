@@ -360,11 +360,11 @@ class AddEvidenceCard extends React.Component {
   get addText(){
     switch (this.evidenceType){
       case EvidenceType.ROOT:
-        return "Add Point"
+        return "Add Evidence"
       case EvidenceType.SUPPORT:
-        return "Add Supporting Claim"
+        return "Add Evidence For"
       case EvidenceType.COUNTER:
-        return "Add Counter Claim";
+        return "Add Evidence Against";
       default:
         return "Add Evidence"
     }
@@ -382,14 +382,14 @@ class AddEvidenceCard extends React.Component {
           </div>
       }
     } else {
-		let classesButton = `addEvidenceButton ${this.linkType=="counter" ? "addEvidenceButtonCounter" : "" }`
+		let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
 		// TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
 		let classesLine = `dashedLine dashedLineAddEvidenceButton ${this.linkType=="counter" ? "dashedLineAddCounter" : "dashedLineAddSupport" }`
         return <a onClick={this.handleClickAddEvidence}>
 				<div className={classesButton}>
 					<div className={classesLine}></div>
 					<div className="arrowAddEvidenceButton">↓</div>
-					<div className="addEvidenceButtonLabel">{this.addText}</div>
+					<div className="buttonBlack addEvidenceButton">{this.addText}</div>
 				</div>
 			   </a>
     }

@@ -482,18 +482,47 @@ a:hover .perctSignSmall {
 	margin-right: 24px;
 }
 
-.addEvidenceButton {
+.addEvidenceButtonGrp {
 	margin-bottom: @marginVerticalStandard;
 	margin-top: @marginVerticalStandard;
 	margin-left: 14px;
 	color: black;
 }
 
-.addEvidenceButtonCounter {
+.addEvidenceButtonGrpCounter {
 	margin-bottom: @marginVerticalStandard * 2.5;
 	color: @red;
 }
 
+.buttonBlack {
+    display: table;
+	padding: 5px;
+	padding-left: 11px;
+	padding-right: 12px;
+    margin-bottom: 0;
+    //font-family: ff-meta-web-pro-condensed,sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    font-style: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+    border: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.addEvidenceButton {
+    //width: 132px;
+}
+
+.addEvidenceButtonGrpCounter .addEvidenceButton {
+    width: auto;
+	background-color: @red;
+}
 
 .addEvidenceFormGroup {
 	margin-top: @marginVerticalStandard * 1.35;
@@ -620,7 +649,7 @@ a:hover .arrowAddEvidenceButton {
     margin-left: 4px;
 	display: none;
 }
-.addEvidenceButton:hover .dashedLineAddEvidenceButton {
+.addEvidenceButtonGrp:hover .dashedLineAddEvidenceButton {
 	display: inline;
 }
 .dashedLineAddSupport {

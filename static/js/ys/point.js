@@ -813,6 +813,27 @@ class PointCard extends React.Component {
     }
   }
 
+  numSupportingPlusCounter(){
+    return ( this.point.numSupporting + this.point.numCounter) 
+  }
+  
+  // TODO: this is defined in the model point.py, so we could pass it up through GraphQL if that would be faster
+  linksRatio() {
+    let sup = this.point.numSupporting
+    let cou = this.point.numCounter
+	if (sup == 0 && cou == 0)
+        return 50		
+	else if (cou == 0)
+		return 100
+	else if (sup == 0)
+		return 0
+	else {
+		let ratio = sup/(sup + cou)
+		//console.log("linksRatio : " + ratio)
+		return ratio
+	}
+  }
+	
   sources(){
     if (this.point.sources){
       return <div className="row-fluid">
@@ -853,11 +874,12 @@ class PointCard extends React.Component {
     const point = this.point;
     console.log("rendering " + point.url)
 	let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-	let classesStackCardGroup = `stackCardGroup`	
-	let classesStackCard1 = `stackCard ${this.expanded() ? "stackCardDealBottom stackCardHidden" : ""}`
-	let classesStackCard2 = `stackCard ${this.expanded() ? "stackCardDealInvertXform stackCardHidden" : ""}`
-	let classesStackCard3 = `stackCard ${this.expanded() ? "stackCardDealInvertXform stackCardHidden" : ""}`
-	let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"} row-fluid toggleChildVisOnHover`;
+	let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`	
+	let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
+	let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
+	let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
+	let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
+    //console.log("linksRatio " + this.linksRatio() )
     return <div className="listedClaimAndItsEvidence">
 	
 	  <div className={classesListedClaim}>

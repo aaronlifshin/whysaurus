@@ -853,11 +853,21 @@ class PointCard extends React.Component {
     const point = this.point;
     console.log("rendering " + point.url)
 	let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-	let classesPointCard = `point-card ${this.evidenceTypeClass()} ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"} row-fluid toggleChildVisOnHover`;
+	let classesStackCardGroup = `stackCardGroup`	
+	let classesStackCard1 = `stackCard ${this.expanded() ? "stackCardDealBottom stackCardHidden" : ""}`
+	let classesStackCard2 = `stackCard ${this.expanded() ? "stackCardDealInvertXform stackCardHidden" : ""}`
+	let classesStackCard3 = `stackCard ${this.expanded() ? "stackCardDealInvertXform stackCardHidden" : ""}`
+	let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"} row-fluid toggleChildVisOnHover`;
     return <div className="listedClaimAndItsEvidence">
+	
 	  <div className={classesListedClaim}>
 		  { this.relevanceCtrlUI() }
 		  { this.relevanceLinkUI() }
+
+		<div className={classesStackCardGroup} tabIndex="-1">	  
+		<div className={classesStackCard1} tabIndex="-1">	
+		<div className={classesStackCard2} tabIndex="-1">			  
+		<div className={classesStackCard3} tabIndex="-1">	  
 		  <div className={classesPointCard} tabIndex="0" ref={(input) => { this.cardToFocusOn = input; }}>
 			<div className={ this.contentWidth()  }>
 			  <div className="row-fluid">
@@ -883,6 +893,11 @@ class PointCard extends React.Component {
 			</div>
 			{this.image()}
 		  </div>
+	  </div>
+	  </div>
+	  </div>
+	  </div>
+	  
 	  </div>
 	  
       <div className="evidenceRow row-fluid">

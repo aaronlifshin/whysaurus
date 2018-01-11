@@ -2,7 +2,7 @@
 
 // Positioning Grid setup
 @cardWidth: 420px;
-@indent: 34px;
+@indent: 36px;
 @cardListWidth: @cardWidth + ( 4 * @indent);
 
 @cardBorderWidth: 1px;
@@ -15,6 +15,12 @@
 @darkerGreyColor: #5d5d5d;
 @smallGreyLinkColor: #a9a9a9;
 @smallGreyLinkSize: 12px;
+
+
+//for testing animation
+.animPink {
+	background: pink !important;
+}
 
 
 .row-fluid [class*=span] {
@@ -75,11 +81,14 @@ body {
 	//max-width: 600px; // ONE COLUMN VERSION
 }
 
-/* The animation code */
+
+// EVIDENCE BLOCK REVEAL ANIMATION:
+// See also: DEALING CARDS ANIMATION
+
 @keyframes evidenceBlockReveal {
    0% { max-height: 20px; opacity: 0;  }
-   40% { opacity: 0; transform: scaleY(.5); }
-   80% {  max-height: 500px; transform: scaleY(1) }
+   40% { opacity: 0; transform: translateY(-20px); } //  transform: scaleY(.5)
+   80% {  max-height: 500px; transform: translateY(0) } //  transform: scaleY(1
    100% { max-height: 5000px; opacity: 1; }
 }
 
@@ -99,8 +108,8 @@ body {
 
 .supportHeading, .counterHeading {
 	//margin-top: 20px;
-	margin-left: @indent + @cardBorderWidth + @cardPadding + 1; //the extra +1 seems necessary visually
-	margin-bottom: @marginVerticalStandard * .75;
+	margin-left: @indent + @cardBorderWidth + @cardPadding + 17; //the extra +17 covers the width of the cardstack
+	margin-bottom: @marginVerticalStandard;
 	color: @darkerGreyColor;
 	text-transform: uppercase;
     font-size: 13px;
@@ -122,28 +131,9 @@ body {
 }
 
 
-// ANIMATION
-
-// UNUSED?
-@keyframes makeSpaceForEvidence {
-    from {height: 20px;  }
-    to {height:200px; }
-}
-.animateSiblingsDown {
-	//animation-name: makeSpaceForEvidence;
-    //animation-duration: 1s;
-	//animation-iteration-count: 1;
-}
-
-//for testing animation
-.animPink {
-	background: pink !important;
-}
-
 
 
 // CARD PLACEMENT AND RELEVANCE
-
 
 .listedClaimGroup {
 	//margin-top: 1px;
@@ -202,10 +192,6 @@ body {
 	color: @blue ;
 }
 
-
-
-
-
 .relevanceLink {
 	position: relative;
 	top: 15px;
@@ -257,6 +243,67 @@ a:hover .perctSignSmall {
 	vertical-align: top;
 }
 
+.stackCardGroup {
+	position: relative; 
+	display: inline-block;
+	margin-top: -4px;
+}
+
+.stackCard {
+	border-width: @cardBorderWidth;
+    border-color: #b9bbbd;
+    border-style: solid;
+	background-color: white;
+	width: @cardWidth;    
+ 	position: relative;   
+    left: 3px;
+    top: -3px;
+	box-sizing: border-box;
+}
+
+// DEALING CARDS ANIMATION:
+// See also EVIDENCE BLOCK REVEAL ANIMATION
+
+@stackDealY: 320px;
+@stackDealX: 24px; 
+@stackDealDuration: 0.15s;
+@stackDealTimingFunction: cubic-bezier(.25, 0, .9, .4);  // ease-out and accelerate
+@stackDealNumberOfCards: 3;
+
+.stackCardDealBottom {
+	transform:translate(@stackDealX, @stackDealY);
+	-o-transition: @stackDealDuration;
+	-ms-transition: @stackDealDuration;
+	-moz-transition: @stackDealDuration;
+	-webkit-transition:@stackDealDuration;
+	transition:@stackDealDuration;
+	transition-timing-function: @stackDealTimingFunction;
+	transform-origin: top left;
+}
+
+.stackCardDealInvertXform {
+	transform:translate( ( -1 * @stackDealX / @stackDealNumberOfCards ), (-1 * @stackDealY / @stackDealNumberOfCards) );
+	-o-transition:@stackDealDuration;
+	-ms-transition:@stackDealDuration;
+	-moz-transition:@stackDealDuration;
+	-webkit-transition:@stackDealDuration;
+	transition:@stackDealDuration;
+	transform-origin: top left;	
+	transition-timing-function: @stackDealTimingFunction;
+	
+}
+
+.stackCardHidden {
+	border-color: rgba(0,0,0,0); // make border disappear with alpha bc it won't reposition children 
+	background: none;
+	-o-transition: @stackDealDuration;
+	-ms-transition: @stackDealDuration;
+	-moz-transition: @stackDealDuration;
+	-webkit-transition: @stackDealDuration;
+	transition: @stackDealDuration;
+	transition-timing-function: @stackDealTimingFunction;
+}
+
 .point-card {
 	//background-color: red;
 	display: inline-flex;	
@@ -270,12 +317,8 @@ a:hover .perctSignSmall {
 	//position: sticky;
 	//top: 70px;
 	vertical-align: top;
-	width: @cardWidth;
-	border-width: @cardBorderWidth;
-    border-color: #b9bbbd;
-    border-style: solid;
-	margin-bottom: -2px; // overlap bottom border with top border of the next point down, for now
-	background-color: white;
+	overflow-wrap: break-word;
+	//margin-bottom: -2px; // overlap bottom border with top border of the next point down, for now
 	padding: @cardPadding;
 	padding-top: @cardPaddingTop;
 	padding-bottom: @cardPaddingTop;
@@ -599,8 +642,8 @@ a:hover .perctSignSmall {
 .arrowPointToSupport {
 	font-size: @arrowFontSize;
 	position: relative;
-	left: 48px;
-    top: -4px;
+	left: 51px;
+    top: -21px;
 }
 
 .arrowCard {

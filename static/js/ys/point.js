@@ -384,11 +384,11 @@ class AddEvidenceCard extends React.Component {
     } else {
 		let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
 		// TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
-		let classesLine = `dashedLine dashedLineAddEvidenceButton ${this.linkType=="counter" ? "dashedLineAddCounter" : "dashedLineAddSupport" }`
+		let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }`
         return <a onClick={this.handleClickAddEvidence}>
 				<div className={classesButton}>
 					<div className={classesLine}></div>
-					<div className="arrowAddEvidenceButton">↓</div>
+					<div className="arrowAddEvidenceButton">▼</div>
 					<div className="buttonBlack addEvidenceButton">{this.addText}</div>
 				</div>
 			   </a>
@@ -696,7 +696,7 @@ class PointCard extends React.Component {
 			{ this.state.relLinkClicked ? 
 				<div className="relevanceCtrlArea">
 					<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
-					<div className="dashedLine dashedLineRelevanceCtrl"></div>
+
 				</div> 
 				: <span className="noRelevanceCtrl"></span> }	
 		</span>		
@@ -710,6 +710,7 @@ class PointCard extends React.Component {
 		let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
 		return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
 		<div className="relevanceLinkArea">
+			<div className="dottedLine dottedLineRelevanceLink"></div>
 			<span className="relevanceDisplay">{this.relevance}%</span>
 			<div className="arrowCard">&#x21B3;</div>
 			{ this.state.buttonClicked ? 

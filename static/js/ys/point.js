@@ -253,6 +253,7 @@ class EvidenceLink extends React.Component {
     super(props)
     this.handleClickSee = this.handleClickSee.bind(this);
     this.handleClickHide = this.handleClickHide.bind(this);
+	this.handleClickToggle = this.handleClickToggle.bind(this);
   }
 
   get point() {
@@ -263,16 +264,23 @@ class EvidenceLink extends React.Component {
     return this.point.numSupporting > 0 || this.point.numCounter > 0;
   }
   
+  // TODO: can this be replaced by handleClickToggle? -JF
   handleClickSee(e) {
 	console.log("see");
     this.props.onSee && this.props.onSee()
   }
 
+  // TODO: can this be replaced by handleClickToggle? -JF
   handleClickHide(e) {
     console.log("hide");
     this.props.onHide && this.props.onHide()
   }
   
+  handleClickToggle() {
+    console.log("toggle");
+    this.props.onToggle && this.props.onToggle()
+  }
+    
   whichEvidenceButton() {	  		  
 	if (this.hasEvidence()) {
       if (this.props.expanded) {
@@ -281,7 +289,7 @@ class EvidenceLink extends React.Component {
         return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <span className="cardBottomAction">Add Evidence</span>
+      return <a className="cardBottomAction" onClick={this.handleClickToggle}>Add Evidence</a>
     }  
   }
 
@@ -916,7 +924,7 @@ class PointCard extends React.Component {
 			  {this.sources()}
 			  <div className="row-fluid">
 				<div className="cardBottomActionRow" >
-				  <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} expanded={this.expanded()}/></span>
+				  <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
 				  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
 				</div>
 			  </div>

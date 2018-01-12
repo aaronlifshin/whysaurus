@@ -369,7 +369,12 @@ class AddEvidenceCard extends React.Component {
         return "Add Evidence"
     }
   }
-
+  
+  // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
+  numSupportingPlusCounter(){
+    return ( this.point.numSupporting + this.point.numCounter) 
+  }
+  
   render(){
     if (this.state.adding) {
       if (this.state.saving) {
@@ -384,7 +389,7 @@ class AddEvidenceCard extends React.Component {
     } else {
 		let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
 		// TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
-		let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }`
+		let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
         return <a onClick={this.handleClickAddEvidence}>
 				<div className={classesButton}>
 					<div className={classesLine}></div>
@@ -780,10 +785,11 @@ class PointCard extends React.Component {
   evidence() {
     if (this.expanded() ) {
 		// If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
-		let classes = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+		let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+		let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`		
 		console.log("pointCard : evidence() ")
-		return <div className={classes}>
-		<div className="arrowPointToSupport">↓</div>
+		return <div className={classesEvidenceBlock}>
+		<div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
 	    {this.supportingPoints()}
         {this.counterPoints()}
 	  </div>
@@ -813,7 +819,8 @@ class PointCard extends React.Component {
       </div>
     }
   }
-
+  
+  // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
   numSupportingPlusCounter(){
     return ( this.point.numSupporting + this.point.numCounter) 
   }

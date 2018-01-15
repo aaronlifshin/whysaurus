@@ -645,14 +645,26 @@ class PointCard extends React.Component {
     this.handleRelClick = this.handleRelClick.bind(this);
   }
 
-  /* Assign focus - WIP 
+   //Assign focus - WIP 
   
   // TO DO: make focus on the 1st point loaded (not the last one, as its currently doing) --> may need to happen in Evidence?
-	componentDidMount() {
-		this.cardToFocusOn.focus();
-		//console.log("pointCard: componentDidMount()");		
+  
+	scroll() {
+		this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
 	}
-	
+	componentDidMount() {
+		console.log("pointCard: componentDidMount()");		
+		//this.cardToFocusOn.focus();
+		
+		// scroll browser to unfolded claim
+		// TO DO: currently scrolling to get bottom unfolded claim into view, but maybe we should be scrolling to get the 
+		//        unfolded claim into view and as many of its children as possible; wait till focus() is sorted before pursuing
+		// TO DO: Note that our two refs inputs are writing over eachother; we need to build a container to hold them and edit that as per https://github.com/react-native-training/react-native-elements/issues/392
+		// TO DO: "smooth" option not currently supported by Safari or iOS Safari
+		//this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+		//setTimeout( this.scroll() , 3600);
+	}
+/*	
   // uses tabbable.js plugin
   focusOnNextCard() {	
 	setTimeout(function () { $.tabNext() } , 1200);
@@ -896,7 +908,7 @@ class PointCard extends React.Component {
 	let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
 	let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
     //console.log("linksRatio " + this.linksRatio() )
-    return <div className="listedClaimAndItsEvidence">
+    return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 	
 	  <div className={classesListedClaim}>
 		  { this.relevanceCtrlUI() }

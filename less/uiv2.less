@@ -124,6 +124,7 @@ body {
 .evidenceBlockCounter, .evidenceBlockSupport {
 	display: inline-block;
 	float: left;
+	//transition: 1s;
 	//width: @cardListWidth;
 }
 
@@ -308,8 +309,8 @@ a:hover .perctSignSmall {
 	transition-timing-function: @stackDealTimingFunction;
 }
 .stackCardHidden {
-	border-color: rgba(0,0,0,0); // make border disappear with alpha bc it won't reposition children 
-	background: none;
+	border-color: rgba(0,0,0,0) !important; // make border disappear with alpha bc it won't reposition children 
+	background: none !important;
 }
 
 
@@ -357,7 +358,7 @@ a:hover .perctSignSmall {
 	outline-style: none;
 }
 .point-card:focus  {
-	//background-color:pink !important; // for testing
+	//background-color:green !important; // for testing
 	//background-color:white; // for testing
 }
 	

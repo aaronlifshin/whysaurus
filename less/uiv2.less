@@ -6,8 +6,9 @@
 @cardListWidth: @cardWidth + ( 4 * @indent);
 
 @cardBorderWidth: 1px;
-@cardPadding: 12px;
-@cardPaddingTop: @cardPadding * .75;
+@cardPadding: 14px;
+@cardPaddingRight: 12px;
+@cardPaddingTop: @cardPaddingRight * .75;
 
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
@@ -329,7 +330,8 @@ a:hover .perctSignSmall {
 	vertical-align: top;
 	overflow-wrap: break-word;
 	//margin-bottom: -2px; // overlap bottom border with top border of the next point down, for now
-	padding: @cardPadding;
+	padding-left: @cardPadding;
+	padding-right: @cardPaddingRight;
 	padding-top: @cardPaddingTop;
 	padding-bottom: @cardPaddingTop;
 }
@@ -418,7 +420,7 @@ a:hover .perctSignSmall {
     font-weight:500; // using the "Book" weight of Meta, from TypeKit
 	line-height: @lineHeightBigger;
     letter-spacing: @letterSpacingSubtle;
-	font-size:18px;
+	font-size:17px;
 	//margin-bottom: 17px; 
     //padding-left: 1px;
     //padding-right:4px;
@@ -721,7 +723,7 @@ a:hover .arrowAddEvidenceButton {
 }
 .dottedLineRelevanceLink {
     height: 27px;
-    margin-left: 20px;
+    margin-left: 19px;
     margin-top: -33px;
 }
 .counter .dottedLine {
@@ -730,8 +732,8 @@ a:hover .arrowAddEvidenceButton {
 
 .listedClaim:hover .dottedLineRelevanceLink, .listedClaim:focus .dottedLineRelevanceLink  {
     //transform: scale(1.085) ;
-    border-width: 3px;
-    left: -2px;
+    border-width: 4px;
+    left: -1px;
 	color: @blue ;
 }
 

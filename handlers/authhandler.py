@@ -294,11 +294,11 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                     subject='Whysaurus password reset',
                     html="A password reset request has been received for your account. <br> \
                         Please reset your password  \
-                        <a href=\"%s\">here</a>.<br><br>Aaron Lifshin <br> \
-                        CTO" % verification_url,
+                        <a href=\"%s\">here</a>.<br><br>Thanks,<br>Whysaurus<br> \
+                        " % verification_url,
                     body="A password reset request has been received for your account. \n \
                         Please reset your password by visiting this URL:  \
-                        %s. \n\nAaron Lifshin \n CTO" % verification_url,
+                        %s. \n\n Thanks,\n Whysaurus\n" % verification_url,
                     reply_to="community@whysaurus.com"
                 )
                 results = {'result': True}

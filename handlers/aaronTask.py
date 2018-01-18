@@ -5,6 +5,7 @@ from random import randint
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import ndb
+from google.appengine.ext import deferred
 
 from authhandler import AuthHandler
 from models.point import PointRoot
@@ -23,6 +24,40 @@ from google.appengine.api import namespace_manager
 from handlers.dbIntegrityCheck import DBIntegrityCheck
 
 from google.appengine.api import namespace_manager
+
+
+def IndClearLowQualityFlags(cursor=None, num_updated=0, batch_size=250, cntUpdatedNet=0):
+    logging.info('ClearLowQuality Update: Start: %d  Batch: %d' % (num_updated, batch_size))
+
+    query = Point.query()
+    points, next_cursor, more = query.fetch_page(batch_size, start_cursor=cursor)
+
+    cnt = 0
+    cntSkip = 0
+    cntUpdate = 0
+    # for p in query.iter():
+    for p in points:
+        cnt += 1
+
+        # if p.isLowQualityAdmin == False:
+        #     cntSkip += 1
+        #     continue
+        if p.isLowQualityAdmin:
+            cntUpdate += 1
+        p.isLowQualityAdmin = False
+        p.put()
+
+    logging.info('ClearLowQuality Incremental: Count: %d  Updated: %d  Skipped: %d' % (cnt, cntUpdate, cntSkip))
+
+    # If there are more entities, re-queue this task for the next page.
+    if more:
+        deferred.defer(IndClearLowQualityFlags,
+                       cursor=next_cursor,
+                       num_updated=(num_updated + cnt),
+                       batch_size=batch_size,
+                       cntUpdatedNet=(cntUpdatedNet + cntUpdate))
+    else:
+        logging.warning('ClearLowQuality Complete! - Net Updated: %d' % (cntUpdatedNet + cntUpdate))
 
 
 
@@ -289,6 +324,11 @@ class AaronTask(AuthHandler):
 
     def get(self):
         # self.PopulateGaids()
+        deferred.defer(IndClearLowQualityFlags)
+        self.response.write("""
+            Schema update started. Check the console for task progress. 
+            <a href="/">View entities</a>.
+            """)
 
         """
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -118,11 +118,10 @@ class Point(ndb.Model):
     # creator is the creator of the first version of this Point (perhaps this should be stored on pointRoot? -JF)
     creatorURL = ndb.StringProperty(indexed=False)
     creatorName = ndb.StringProperty(indexed=False)
-
-	# author is the creator of *this version* of this Point 
+    # author is the creator of *this version* of this Point
     authorName = ndb.StringProperty(indexed=False)
     authorURL = ndb.StringProperty(indexed=False)
-	
+
     content = ndb.TextProperty(indexed=False)
     summaryText = ndb.TextProperty(indexed=False)  # This is Text not String because I do not want it indexed
     title = ndb.StringProperty(indexed=False)
@@ -151,7 +150,13 @@ class Point(ndb.Model):
     _relevanceVote = None
     _linkInfo = None
     isTop = ndb.BooleanProperty(default=True)
-    
+    isLowQualityAdmin = ndb.BooleanProperty(default=False)
+    engagementScoreBase = ndb.IntegerProperty(default=0) # accrued engagement score - access via engagementScore prop
+    # pointValueCached = ndb.FloatProperty(indexed=False)  # cache of pointValue for indexing
+
+    ENGAGEMENT_PER_VOTE = 1
+    ENGAGEMENT_PER_LINK = 10
+    ENGAGEMENT_PER_COMMENT = 3
 
     @property
     def numSupporting(self):
@@ -175,6 +180,10 @@ class Point(ndb.Model):
         return (min(1, len(self.sources))
                 + self.upVotes - self.downVotes
                 + self.getChildrenPointRating())
+
+    @property
+    def engagementScore(self):
+        return self.engagementScoreBase
 
     @property
     def linksRatio(self):
@@ -364,6 +373,7 @@ class Point(ndb.Model):
         point.upVotes = 0
         point.downVotes = 0
         point.voteTotal = 0
+        point.engagementScoreBase = 0
         point.imageURL = imageURL
         point.imageDescription = imageDescription
         point.imageAuthor = imageAuthor
@@ -667,6 +677,8 @@ class Point(ndb.Model):
             links = links + [newLink] if links else [newLink]      
             links = self.sortLinks(linkType, links)
 
+            self.engagementScoreBase += Point.ENGAGEMENT_PER_LINK
+
             # Gene: Really, this needs to operate with the user that adds the link no?
             # (But right now that's updated as author already - if we change that we'll need to pass it.)
             root_user = linkCurrentVersion.authorURL
@@ -838,6 +850,7 @@ class Point(ndb.Model):
             newPoint.upVotes = self.upVotes # number of agrees
             newPoint.downVotes = self.downVotes # number of disagrees
             newPoint.voteTotal = self.voteTotal
+            newPoint.engagementScoreBase = self.engagementScoreBase
             newPoint.imageURL = self.imageURL if imageURL is None else imageURL
             newPoint.imageDescription = self.imageDescription if imageDescription is None else imageDescription
             newPoint.imageAuthor = self.imageAuthor if imageAuthor is None else imageAuthor
@@ -952,7 +965,8 @@ class Point(ndb.Model):
             newPoint.version = self.version + 1
             newPoint.upVotes = self.upVotes
             newPoint.downVotes = self.downVotes
-            newPoint.voteTotal = self.voteTotal  
+            newPoint.voteTotal = self.voteTotal
+            newPoint.engagementScoreBase = self.engagementScoreBase
             newPoint.ribbonTotal = self.ribbonTotal
             newPoint.imageURL = self.imageURL
             newPoint.imageDescription = self.imageDescription
@@ -993,6 +1007,13 @@ class Point(ndb.Model):
             self.usersContributed = self.usersContributed + [userUrlContributed]
             self.put()
             logging.info('addContributingUser: %s -> %s' % (userUrlContributed, self.url))
+
+
+    def updateLowQualityAdmin(self, lowQuality):
+        # TODO: Gene: Use transactional update to include versioning
+        self.isLowQualityAdmin = lowQuality
+        self.put()
+        return True
 
     def getSources(self):
         if len(self.sources) > 0:
@@ -1322,9 +1343,30 @@ class PointRoot(ndb.Model):
 
     @staticmethod
     @ndb.tasklet
+    def getLowEngagementPoints_async(user):
+        pointsQuery = Point.gql("WHERE current = TRUE AND isLowQualityAdmin = FALSE AND isTop = TRUE AND engagementScoreBase < 15 ORDER BY engagementScoreBase ASC")
+        resultPoints = None
+        if user:
+            resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
+        else:
+            resultPoints = yield pointsQuery.fetch_async(50)
+        raise ndb.Return(resultPoints)
+
+    @staticmethod
+    @ndb.tasklet
+    def getLowQualityPoints_async(user):
+        pointsQuery = Point.gql("WHERE current = TRUE AND isLowQualityAdmin = TRUE ORDER BY dateEdited DESC")
+        resultPoints = None
+        if user:
+            resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
+        else:
+            resultPoints = yield pointsQuery.fetch_async(50)
+        raise ndb.Return(resultPoints)
+
+    @staticmethod
+    @ndb.tasklet
     def getRecentActivityAll_async(user):
-        pointsQuery = Point.gql(
-            "WHERE current = TRUE ORDER BY dateEdited DESC")
+        pointsQuery = Point.gql("WHERE current = TRUE ORDER BY dateEdited DESC")
         resultPoints = None
         if user:
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
@@ -1335,8 +1377,7 @@ class PointRoot(ndb.Model):
     @staticmethod
     @ndb.tasklet
     def getRecentCurrentPoints_async(user):
-        pointsQuery = Point.gql(
-            "WHERE current = TRUE AND isTop = TRUE ORDER BY dateEdited DESC")
+        pointsQuery = Point.gql("WHERE current = TRUE AND isTop = TRUE AND isLowQualityAdmin = FALSE ORDER BY dateEdited DESC")
         resultPoints = None
         if user:
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
@@ -1346,8 +1387,7 @@ class PointRoot(ndb.Model):
                 
     @staticmethod
     def getRecentCurrentPoints(user):
-        pointsQuery = Point.gql(
-            "WHERE current = TRUE AND isTop = TRUE ORDER BY dateEdited DESC")
+        pointsQuery = Point.gql("WHERE current = TRUE AND isTop = TRUE AND isLowQualityAdmin = FALSE ORDER BY dateEdited DESC")
         resultPoints = None
         if user:
             resultPoints =  map(lambda x: x.addVote(user), (pointsQuery.fetch(50)))
@@ -1376,6 +1416,18 @@ class PointRoot(ndb.Model):
             resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
         else:
             resultPoints = yield pointsQuery.fetch_async(50)            
+        raise ndb.Return(resultPoints)
+
+    @staticmethod
+    @ndb.tasklet
+    def getHighestScorePoints_async(user):
+        # TODO: Gene: How do we want to query by score?
+        pointsQuery = Point.gql("WHERE current = TRUE ORDER BY voteTotal DESC")
+        resultPoints = None
+        if user:
+            resultPoints = yield map(lambda x: x.addVote_async(user), (yield pointsQuery.fetch_async(50)))
+        else:
+            resultPoints = yield pointsQuery.fetch_async(50)
         raise ndb.Return(resultPoints)
     
     
@@ -1492,6 +1544,9 @@ class PointRoot(ndb.Model):
             root_user = comment.userUrl
             if root_user:
                 cur.addContributingUser(root_user)
+
+            cur.engagementScoreBase += Point.ENGAGEMENT_PER_COMMENT
+            cur.put()
         
     # shift this comment and all its childern into the archived array
     # return the number of comments archived

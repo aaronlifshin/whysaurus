@@ -46,6 +46,7 @@ routes = [
     Route('/deletePoint', DeletePoint),
     Route('/editPoint', EditPoint),
     Route('/changeEditorsPick', handler='WhySaurus.EditPoint:changeEditorsPick', name='changeEditorsPick'),
+    Route('/changeLowQualityAdmin', handler='WhySaurus.EditPoint:changeLowQualityAdmin', name='changeLowQualityAdmin'),
     Route('/makeFeatured', handler='WhySaurus.EditPoint:makeFeatured', name='makeFeatured'),
     Route('/refreshTopStatus', handler='WhySaurus.EditPoint:refreshTopStatus', name='refreshTopStatus'),
     Route('/unlinkPoint', UnlinkPoint),

@@ -58,6 +58,28 @@ indexes:
 - kind: Point
   properties:
   - name: current
+  - name: isLowQualityAdmin
+  - name: dateEdited
+    direction: desc
+
+- kind: Point
+  properties:
+  - name: current
+  - name: isLowQualityAdmin
+  - name: isTop
+  - name: dateEdited
+    direction: desc
+
+- kind: Point
+  properties:
+  - name: current
+  - name: isLowQualityAdmin
+  - name: isTop
+  - name: engagementScoreBase
+
+- kind: Point
+  properties:
+  - name: current
   - name: isTop
   - name: dateEdited
     direction: desc

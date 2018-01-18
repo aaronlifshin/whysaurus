@@ -31,6 +31,12 @@ class GetPointsList(AuthHandler):
             points = yield PointRoot.getTopRatedPoints_async(user)
         elif listType == 'editorsPics':
             points = yield PointRoot.getEditorsPicks_async(user)
+        elif listType == 'lowEngagement':
+            points = yield PointRoot.getLowEngagementPoints_async(user)
+        elif listType == 'lowQuality':
+            points = yield PointRoot.getLowQualityPoints_async(user)
+        elif listType == 'highestScore':
+            points = yield PointRoot.getHighestScorePoints_async(user)
 
         template_values = {
             'points':points

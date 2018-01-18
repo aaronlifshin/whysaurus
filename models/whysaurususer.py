@@ -104,6 +104,10 @@ class WhysaurusUser(auth_models.User):
     @property
     def isAdmin(self):
         return self.admin or (self.role == 'Admin')
+
+    @property
+    def isModerator(self):
+        return self.isAdmin
        
     def getActiveNotifications(self):
         self._notifications, self._newNotificationCount, \
@@ -178,7 +182,7 @@ class WhysaurusUser(auth_models.User):
             for yUser in query.iter():
                 if yUser.gaId is None:
                     continue
-            existingGaids.append(yUser.gaId)
+                existingGaids.append(yUser.gaId)
 
         newId = None
 
@@ -463,12 +467,16 @@ class WhysaurusUser(auth_models.User):
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
                 point.upVotes = point.upVotes + 1
+                point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == 0 and voteValue == -1:  # DOWNVOTE
                 point.downVotes = point.downVotes + 1
+                point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == 1 and voteValue == 0:  # CANCEL UPVOTE
                 point.upVotes = point.upVotes - 1
+                point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == -1 and voteValue == 0:  # CANCEL DOWNVOTE
                 point.downVotes = point.downVotes - 1
+                point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == -1 and voteValue == 1:  # DOWN TO UP
                 point.downVotes = point.downVotes - 1
                 point.upVotes = point.upVotes + 1

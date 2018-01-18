@@ -131,11 +131,13 @@
                     </a>
                     </li>       
                     <li><a id='makeFeaturedPick'>Make Featured</a></li>
-                    <li><a id='refreshTopStatus'>Refresh Top Status</a></li>                       
+                    <li><a id='refreshTopStatus'>Refresh Top Status</a></li>
+                    <li><a id='changeLowQualityAdminTrigger'>Low Quality:{{point.isLowQualityAdmin}}</a></li>
                 </ul>
             </div>	
             {% include 'changeEditorsPick.html' %}             			
-        {% endif %} 
+            {% include 'changeLowQualityAdmin.html' %}
+        {% endif %}
 
 		</div>
         <div class="span2 responsiveInline">
@@ -159,6 +161,9 @@
                     <li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
                     <li>Viewed: {{ pointRoot.viewCount }}</li>
                     <li>Score: {{point.pointValue}}</li>
+                    {% if user.isAdmin %}
+                        <li>Engagement: {{point.engagementScore}}</li>
+                    {% endif %}
                 </ul>  
             </div>
          </div>  

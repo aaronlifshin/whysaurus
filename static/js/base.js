@@ -1754,9 +1754,21 @@ function activateMainPageLeftColumn() {
     $('#mostAgrees').click(function() {
         loadPointList('topRated', '#mostAgreesArea', this);
     });
+
+    $('#highestScore').click(function() {
+        loadPointList('highestScore', '#highestScoreArea', this);
+    });
     
     $('#recentlyViewedTab').click(function() {
         toggleTabbedArea("#leftColumn", this, "#recentlyViewedArea"); 
+    });
+
+    $('#lowEngagementTab').click(function() {
+        loadPointList('lowEngagement', '#lowEngagementArea', this);
+    });
+
+    $('#lowQualityTab').click(function() {
+        loadPointList('lowQuality', '#lowQualityArea', this);
     });
     
     $("#newPointTitle").on('keyup', function(e) {setCharNum(e.target, "#newPointTitle_charNum");});

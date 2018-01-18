@@ -650,13 +650,21 @@ function setUpMenuAreas() {
         title = $('#mainPointTitle').text();
         $("#changeEditorsPick .modal-header h4").text(title);
         $("#changeEditorsPick").modal('show');
-    }); 
+    });
+
+    $('#submitChangeEditorsPick').off('.ys').on('click.ys', changeEditorsPick);
+
+    // These elements are admin only, but jquery degrades gracefully, so not checking for their presence
+    $('#changeLowQualityAdminTrigger').off('.ys').on('click.ys', function() {
+        title = $('#mainPointTitle').text();
+        $("#changeLowQualityAdmin .modal-header h4").text(title);
+        $("#changeLowQualityAdmin").modal('show');
+    });
     
-    $('#submitChangeEditorsPick').off('.ys').on('click.ys', changeEditorsPick);     
+    $('#submitChangeLowQualityAdmin').off('.ys').on('click.ys', changeLowQualityAdmin);
     
     $('#makeFeaturedPick').off('.ys').on('click.ys', makeFeaturedPick);   
-    $('#refreshTopStatus').off('.ys').on('click.ys', refreshTopStatus);     
-
+    $('#refreshTopStatus').off('.ys').on('click.ys', refreshTopStatus);
 }
 
 
@@ -896,6 +904,39 @@ function changeEditorsPick() {
         		    stopSpinnerOnButton('#submitChangeEditorsPick', changeEditorsPick);          		    
         		}        		          
     		},    		
+    	});
+    	$.ajax();
+    }
+}
+
+function changeLowQualityAdmin() {
+    pick = $('#lowQualityAdmin').get(0).checked;
+    {
+        startSpinnerOnButton('#submitChangeLowQualityAdmin');
+        $.ajaxSetup({
+    		url: "/changeLowQualityAdmin",
+    		global: false,
+    		type: "POST",
+    		data: {
+    			'urlToEdit': $('#pointArea').data('pointurl'),
+    			'lowQuality': pick
+    		},
+    		success: function(obj) {
+    			if (obj.result == true) {
+    		        // set the values in the main point page
+        		    if (pick) {
+        		        $('#changeLowQualityAdminTrigger').text('Low Quality: True');
+        		    } else {
+        		        $('#changeLowQualityAdminTrigger').text('Low Quality: False');
+        		    }
+        		    stopSpinnerOnButton('#submitChangeLowQualityAdmin', changeLowQualityAdmin);
+        		    $('#changeLowQualityAdmin').modal('hide');
+        		    showSuccessAlert('Low Quality updated.')
+        		} else {
+        		    showAlertAfter('Server error: ' + obj.error + '. You may try again.', '#changeLowQualityAdmin [name="alertArea"]');
+        		    stopSpinnerOnButton('#submitChangeLowQualityAdmin', changeLowQualityAdmin);
+        		}
+    		},
     	});
     	$.ajax();
     }

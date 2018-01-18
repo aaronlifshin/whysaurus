@@ -98,8 +98,8 @@ const VoteStats = ({point}) => (
       </p>
       <div className="menuDivider"></div>
       <p>
-        {point.numSupporting} Supporting Claim{point.numSupporting !=1 ? "s" : null}<br/>
-        {point.numCounter} Counter Claim{point.numCounter !=1 ? "s" : null}<br/>
+        {point.numSupporting} Supporting Claim{point.numSupporting != 1 ? "s" : null}<br/>
+        {point.numCounter} Counter Claim{point.numCounter != 1 ? "s" : null}<br/>
       </p>
     </div>
 )
@@ -251,7 +251,7 @@ class EvidenceLink extends React.Component {
     super(props)
     this.handleClickSee = this.handleClickSee.bind(this);
     this.handleClickHide = this.handleClickHide.bind(this);
-  this.handleClickToggle = this.handleClickToggle.bind(this);
+    this.handleClickToggle = this.handleClickToggle.bind(this);
   }
 
   get point() {
@@ -706,25 +706,25 @@ class PointCard extends React.Component {
   }
 
   handleRelClick(e) {
-  //console.log("toggle relevance ui");
-  if (this.state.relLinkClicked)
-    this.setState({ relLinkClicked: false })
-  else
-    this.setState({ relLinkClicked: true })
+    //console.log("toggle relevance ui");
+    if (this.state.relLinkClicked) {
+      this.setState({ relLinkClicked: false })
+    } else {
+      this.setState({ relLinkClicked: true })
+    }
   }
 
   relevanceCtrlUI() {
     if (this.props.parentPoint) {
-    return <span>
-      { this.state.relLinkClicked ?
-          <div className="relevanceCtrlArea">
-            <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
-
-          </div> :
-          <span className="noRelevanceCtrl"></span>
-      }
-    </span>
-    }  else {
+      return <span>
+        { this.state.relLinkClicked ?
+            <div className="relevanceCtrlArea">
+              <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
+            </div> :
+            <span className="noRelevanceCtrl"></span>
+        }
+      </span>
+    } else {
       return null
     }
   }
@@ -734,17 +734,18 @@ class PointCard extends React.Component {
     if (this.props.parentPoint) {
     let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
     return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
-    <div className="relevanceLinkArea">
-      <div className="dottedLine dottedLineRelevanceLink"></div>
-      <span className="relevanceDisplay">{this.relevance}%</span>
-      <div className="arrowCard">&#x21B3;</div>
-      { this.state.buttonClicked ?
-          <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/> :
-          <span></span>
-      }
-    </div></a>
+      <div className="relevanceLinkArea">
+        <div className="dottedLine dottedLineRelevanceLink"></div>
+        <span className="relevanceDisplay">{this.relevance}%</span>
+        <div className="arrowCard">&#x21B3;</div>
+        { this.state.buttonClicked ?
+            <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/> :
+            <span></span>
+        }
+      </div></a>
+    } else {
+      return null
     }
-  else return null
   }
 
   handleSeeEvidence(point=this.point) {

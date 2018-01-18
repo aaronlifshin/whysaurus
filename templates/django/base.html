@@ -200,10 +200,11 @@
                 <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
                       <a class="dropdown-toggle" data-toggle="dropdown">SIGN IN </a>
                       <ul id="userMenuSignedOut" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li><p class="dropdown-heading"> Sign in with </p></li>
                         <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
                         <li><a tabindex="-1" href="/auth/google"> Google </a></li>
-                        <li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>
-                        <li><a tabindex="-1" class="loginWithEmail"> Whysaurus </a></li>                    
+                        <!--<li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>-->
+                        <li><a tabindex="-1" class="loginWithEmail"> Email </a></li>                    
                       </ul>
                 </div>
         	  {% endif %}
@@ -381,18 +382,17 @@
       </div>
       
       <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
-        <div class="modal-header">
-          <h3>Sign In</h3>
+        <div class="modal-header modalHeaderSignInWith">
+          <h3>It's Easy</h3>
         </div>
-        <div class="modal-body">
-          It's Easy
+        <div class="modal-body modalBodySignInWith">
           <div id="signInWithFacebook_Dlg" class="boxedElement"  onclick="loginWith(event, 'Facebook')"><a tabindex="1" href="javascript:;" > Sign in with Facebook </a></div>
           <div id="signInWithGoogle_Dlg" class="boxedElement" onclick="loginWith(event, 'Google')"><a tabindex="2" href="javascript:;"> Sign in with Google </a></div>
-          <div id="signInWithTwitter_Dlg" class="boxedElement" onclick="loginWith(event, 'Twitter')"><a tabindex="3" href="javascript:;"> Sign in with Twitter </a></div>
-          <div id="signInWithEmail_Dlg" class="boxedElement" onclick="ga('send', 'event', 'Login', 'With Whysaurus', 'Dialog')"><a tabindex="4" > Sign in with Whysaurus </a> </div>
+          <!--<div id="signInWithTwitter_Dlg" class="boxedElement" onclick="loginWith(event, 'Twitter')"><a tabindex="3" href="javascript:;"> Sign in with Twitter </a></div>-->
+          <div id="signInWithEmail_Dlg" class="boxedElement" onclick="ga('send', 'event', 'Login', 'With Whysaurus', 'Dialog')"><a tabindex="4" > Sign in with Email </a> </div>
           
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer modalFooterSignInWith">
           <a  tabindex="4" class="btn btn-cancel" data-dismiss="modal" >Cancel</a>
         </div>
       </div>

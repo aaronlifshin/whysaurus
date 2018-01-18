@@ -262,11 +262,15 @@ a:visited {
     padding-bottom:8px;
 }
    
-.dropdown-menu>li>a {
+.dropdown-menu>li>a, .dropdown-menu>li>.dropdown-heading {
     padding-top:3px;
     padding-right:20px;
     padding-bottom: 3px;
     padding-left:10px;
+}
+
+.dropdown-heading { 
+    margin-bottom: 2px;
 }
 
 .iconDropdown {
@@ -276,6 +280,7 @@ a:visited {
 .dropdown-menu .divider {
     border-bottom-color: @grayOutlinesMid;
 }
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    HEADER BAR STUFF(MOSTLY)
@@ -579,9 +584,10 @@ a:visited {
 }
       
 #userMenuSignedOut {
-    min-width: 90px;
+    min-width: 112px;
     margin-left: -46px;
     margin-top: -1px;
+    padding-bottom: 13px;
 }
     
 // bootstrap default is to set right to 0, but I'm not sure why - it seems to cause only problems - JF
@@ -2426,9 +2432,36 @@ button#counter_addPointWhenNonZero {
 	vertical-align:middle;
 	margin-bottom:5px;
 	margin-top:5px;
-	padding-left:10px;
-	padding-top:5px;
+	padding-left:18px;
+	padding-top:9px;
+    padding-bottom:12px;
 	cursor:pointer;
+}
+
+[id^=signInWith] a {
+    color: white;
+    font-size: 18px;
+}
+
+#signInWithFacebook_Dlg {
+    background-color: #4267b2; //FB branding blue
+}
+#signInWithGoogle_Dlg {
+    background-color: #ea4335; //Google branding red
+}
+#signInWithEmail_Dlg {
+    background-color: black;
+}
+
+@modalSignInWithPaddingH: 24px;
+.modalHeaderSignInWith, .modalFooterSignInWith {
+    padding-left: @modalSignInWithPaddingH;
+    padding-right: @modalSignInWithPaddingH;
+}
+.modalBodySignInWith {
+    padding-bottom: 32px;
+    padding-left: @modalSignInWithPaddingH;
+    padding-right: @modalSignInWithPaddingH;
 }
 
 [id^=signInWith] a {

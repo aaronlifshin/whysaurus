@@ -305,10 +305,10 @@ class WhysaurusUser(auth_models.User):
             subject='Whysaurus Email Verification',
             body="Thank you for %s. \n\
                 Please verify your email address by navigating to this link: \
-                %s\n\nAaron Lifshin \nCTO" % (reason, verification_url), 
+                %s\n\nThanks, \nWhysaurus" % (reason, verification_url), 
             html="Thank you for %s. <br>\
                 Please verify your email address by clicking on \
-                <a href=\"%s\">this link</a>.<br><br>Aaron Lifshin <br> \
+                <a href=\"%s\">this link</a>.<br><br>Thanks,<br>Whysaurus<br> \
                 CTO" % (reason, verification_url),                
             reply_to="community@whysaurus.com"
         )            

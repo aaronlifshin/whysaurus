@@ -59,8 +59,8 @@ class PointList extends React.Component {
     } else if (!(this.props.data.points || this.props.data.point)) {
       return <div>Loading points...</div>
     } else {
-	  // FOR INIFINITE WIDTH VERSION: remove .span12 from #infiniteOrFiniteWidth	
-	  // FOR FINITE WIDTH VERSION: add .span12 from #infiniteOrFiniteWidth		  
+      // FOR INIFINITE WIDTH VERSION: remove .span12 from #infiniteOrFiniteWidth	
+      // FOR FINITE WIDTH VERSION: add .span12 from #infiniteOrFiniteWidth		  
       return <div className="row pointStream">
         <div id="infiniteOrFiniteWidth" className=""> 
 	{this.renderPointCards(this.props.data)}

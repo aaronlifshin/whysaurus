@@ -61,26 +61,24 @@ function SupportingCount(props){
 
 // Currently unused; moreMenu currently being generated via a local function within PointCard()
 function MoreMenu(props) {
-	return <span className="cardTopRowItem dropdown">
-			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-			 <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <li>More Actions</li>
-                <li className="divider"></li> 
-				<li>
-					<span className=""><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount} Upstream Points</span>
-				</li>
-				 <li className="divider"></li> 
-                <li>
-					<a onClick={props.point.handleClickEdit} className="" >Edit</a>
-				</li>
-            </ul> 
-		</span>	
+  return <span className="cardTopRowItem dropdown">
+    <a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+    <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+      <li>More Actions</li>
+      <li className="divider"></li>
+      <li>
+        <span className=""><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount} Upstream Points</span>
+       </li>
+       <li className="divider"></li>
+       <li><a onClick={props.point.handleClickEdit} className="" >Edit</a></li>
+    </ul>
+  </span>
 }
 /*
-				Code to check if current user is the point Author
-					{this.props.data.currentUser &&
-					this.props.data.currentUser.url == this.point.authorURL &&
-					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
+        Code to check if current user is the point Author
+          {this.props.data.currentUser &&
+          this.props.data.currentUser.url == this.point.authorURL &&
+          <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
 */
 
 
@@ -94,15 +92,15 @@ const Hover = ({ onHover, children }) => (
 
 const VoteStats = ({point}) => (
     <div className="vote-stats">
-      <p>	  
-	  {point.upVotes} Agrees<br/> 
-	  {point.downVotes} Disagrees<br/>
-	  </p>
-	  <div className="menuDivider"></div>
-	  <p>
-	  {point.numSupporting} Supporting Claim{point.numSupporting !=1 ? "s" : null}<br/>
-	  {point.numCounter} Counter Claim{point.numCounter !=1 ? "s" : null}<br/>
-	  </p>
+      <p>
+        {point.upVotes} Agrees<br/>
+        {point.downVotes} Disagrees<br/>
+      </p>
+      <div className="menuDivider"></div>
+      <p>
+        {point.numSupporting} Supporting Claim{point.numSupporting !=1 ? "s" : null}<br/>
+        {point.numCounter} Counter Claim{point.numCounter !=1 ? "s" : null}<br/>
+      </p>
     </div>
 )
 
@@ -137,7 +135,7 @@ class PointComponent extends React.Component {
     this.state = {editing: false}
     this.handleClickEdit = this.handleClickEdit.bind(this);
     this.handleClickSave = this.handleClickSave.bind(this);
-    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);	
+    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
   }
 
   get point() {
@@ -158,10 +156,10 @@ class PointComponent extends React.Component {
     })
     // this component will be replaced after save, so we don't need to update state
   }
-  
+
   handleToggleEvidence() {
     console.log("PointComponent : toggle evidence!")
-    this.props.onClick && this.props.onClick()	
+    this.props.onClick && this.props.onClick()
   }
 
   titleUI() {
@@ -177,14 +175,14 @@ class PointComponent extends React.Component {
       return <span className="pointTitle">
         <a tabIndex="-1" onClick={this.handleToggleEvidence}>{this.point.title}</a>
         </span>
-		
-	  /* OLD CODE FOR EDITING POINT TITLES: */
+
+    /* OLD CODE FOR EDITING POINT TITLES: */
       /*return <span className="pointTitle">
         <a href={this.point.url}>{this.point.title}</a>
-		{this.props.data.currentUser &&
+    {this.props.data.currentUser &&
         this.props.data.currentUser.url == this.point.authorURL &&
         <a onClick={this.handleClickEdit} className="editLink" >edit</a>}
-        </span>	*/			
+        </span> */
     }
   }
 
@@ -192,13 +190,13 @@ class PointComponent extends React.Component {
     const score = this.point.pointValue
     return <div>
       {this.titleUI()}
-	  <span className="scoreAnimContainerMax">
-	  <span className="scoreAnimContainerReset">
+    <span className="scoreAnimContainerMax">
+    <span className="scoreAnimContainerReset">
       <Hover onHover={<VoteStats point={this.point}/>}>
       <span className="ux2ScoreInLine"><span className="positiveScore">{score > 0 && "+"}{score}</span></span>
       </Hover>
-	  </span>
-	  </span>
+    </span>
+    </span>
       </div>
   }
 }
@@ -253,7 +251,7 @@ class EvidenceLink extends React.Component {
     super(props)
     this.handleClickSee = this.handleClickSee.bind(this);
     this.handleClickHide = this.handleClickHide.bind(this);
-	this.handleClickToggle = this.handleClickToggle.bind(this);
+  this.handleClickToggle = this.handleClickToggle.bind(this);
   }
 
   get point() {
@@ -263,10 +261,10 @@ class EvidenceLink extends React.Component {
   hasEvidence() {
     return this.point.numSupporting > 0 || this.point.numCounter > 0;
   }
-  
+
   // TODO: can this be replaced by handleClickToggle? -JF
   handleClickSee(e) {
-	console.log("see");
+    console.log("see");
     this.props.onSee && this.props.onSee()
   }
 
@@ -275,14 +273,14 @@ class EvidenceLink extends React.Component {
     console.log("hide");
     this.props.onHide && this.props.onHide()
   }
-  
+
   handleClickToggle() {
     console.log("toggle");
     this.props.onToggle && this.props.onToggle()
   }
-    
-  whichEvidenceButton() {	  		  
-	if (this.hasEvidence()) {
+
+  whichEvidenceButton() {
+    if (this.hasEvidence()) {
       if (this.props.expanded) {
         return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
@@ -290,18 +288,18 @@ class EvidenceLink extends React.Component {
       }
     } else {
       return <a className="cardBottomAction" onClick={this.handleClickToggle}>Add Evidence</a>
-    }  
+    }
   }
 
   render(){
-	return <span className="evidenceContainer">{this.whichEvidenceButton()}</span>
+  return <span className="evidenceContainer">{this.whichEvidenceButton()}</span>
   }
 }
 
 const AddEvidenceForm = ( props ) => {
   return (
-	  <div className="addEvidenceFormGroup">  	  
-	  <div className="arrowAddEvidenceForm">↓</div>
+    <div className="addEvidenceFormGroup">
+    <div className="arrowAddEvidenceForm">↓</div>
       <Form onSubmit={props.onSubmit}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
@@ -310,7 +308,7 @@ const AddEvidenceForm = ( props ) => {
           </form>
       )}
     </Form>
-	</div>
+  </div>
   );
 }
 
@@ -340,7 +338,7 @@ class AddEvidenceCard extends React.Component {
     values.parentURL = this.point.url
     values.linkType = this.linkType
     this.setState({saving: true})
-    this.props.mutate({ 
+    this.props.mutate({
       variables: values
     })
       .then( res => {
@@ -377,12 +375,12 @@ class AddEvidenceCard extends React.Component {
         return "Add Evidence"
     }
   }
-  
+
   // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
   numSupportingPlusCounter(){
-    return ( this.point.numSupporting + this.point.numCounter) 
+    return ( this.point.numSupporting + this.point.numCounter)
   }
-  
+
   render(){
     if (this.state.adding) {
       if (this.state.saving) {
@@ -395,16 +393,16 @@ class AddEvidenceCard extends React.Component {
           </div>
       }
     } else {
-		let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-		// TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
-		let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
+    let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
+    // TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
+    let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
         return <a onClick={this.handleClickAddEvidence}>
-				<div className={classesButton}>
-					<div className={classesLine}></div>
-					<div className="arrowAddEvidenceButton">▼</div>
-					<div className="buttonBlack addEvidenceButton">{this.addText}</div>
-				</div>
-			   </a>
+        <div className={classesButton}>
+          <div className={classesLine}></div>
+          <div className="arrowAddEvidenceButton">▼</div>
+          <div className="buttonBlack addEvidenceButton">{this.addText}</div>
+        </div>
+         </a>
     }
   }
 }
@@ -452,11 +450,11 @@ class AgreeDisagreeComponent extends React.Component {
     this.handleClickDisagree = this.handleClickDisagree.bind(this);
   }
 
-  // move focus to the next point card, uses tabbable.js plugin  
-  focusOnNextCard() {	
-	setTimeout(function () { $.tabNext() } , 900)	
+  // move focus to the next point card, uses tabbable.js plugin
+  focusOnNextCard() {
+    setTimeout(function () { $.tabNext() } , 900)
   }
-  
+
   handleClickAgree() {
     console.log("agree");
     if (this.props.data.currentUser){
@@ -467,7 +465,7 @@ class AgreeDisagreeComponent extends React.Component {
       }).then( res => {
         console.log(res)
       });
-	  this.focusOnNextCard()
+    this.focusOnNextCard()
     } else {
       $("#loginDialog").modal("show");
     }
@@ -483,7 +481,7 @@ class AgreeDisagreeComponent extends React.Component {
       }).then( res => {
         console.log(res)
       });
-	  this.focusOnNextCard()
+    this.focusOnNextCard()
     } else {
       $("#loginDialog").modal("show");
     }
@@ -600,7 +598,7 @@ class RelevanceComponent extends React.Component {
   handleClick100() {
     console.log("100");
     if (this.props.data.currentUser){
-      
+
       this.props.mutate({
         variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
       }).then( res => {
@@ -614,13 +612,13 @@ class RelevanceComponent extends React.Component {
 
   render(){
     return <div className="relCtrlGroup" >
-	  <div className="relCtrlLabel">How Relevant is this claim?</div> 
+    <div className="relCtrlLabel">How Relevant is this claim?</div>
       <div className="relCtrlVoteOptions">
-		  <a className="relVoteLink" onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
-		  <a className="relVoteLink" onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-		  <a className="relVoteLink" onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
-		  <a className="relVoteLink" onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
-	  </div>
+      <a className="relVoteLink" onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink" onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink" onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink" onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
+    </div>
       </div>
     }
 }
@@ -635,47 +633,47 @@ class PointCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-		expandedIndex: {},
-		relLinkClicked: false
-	}
+    expandedIndex: {},
+    relLinkClicked: false
+  }
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
-    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);	
+    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
   }
 
-   //Assign focus - WIP 
-  
+   //Assign focus - WIP
+
   // TO DO: make focus on the 1st point loaded (not the last one, as its currently doing) --> may need to happen in Evidence?
-  
-	scroll() {
-		//this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-	}
-	componentDidMount() {
-		console.log("pointCard: componentDidMount()");		
-		//this.cardToFocusOn.focus();
-		
-		// scroll browser to unfolded claim
-		// TO DO: currently scrolling to get bottom unfolded claim into view, but maybe we should be scrolling to get the 
-		//        unfolded claim into view and as many of its children as possible; wait till focus() is sorted before pursuing
-		// TO DO: Note that our two refs inputs are writing over eachother; we need to build a container to hold them and edit that as per https://github.com/react-native-training/react-native-elements/issues/392
-		// TO DO: "smooth" option not currently supported by Safari or iOS Safari
-		//this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-		//setTimeout( this.scroll() , 3600);
-	}
-/*	
-  // uses tabbable.js plugin
-  focusOnNextCard() {	
-	setTimeout(function () { $.tabNext() } , 1200);
-	console.log("pointCard : focusOnNextCard() ")	
+  scroll() {
+    // this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
   }
-*/	
-  
+
+  componentDidMount() {
+    console.log("pointCard: componentDidMount()");
+    //this.cardToFocusOn.focus();
+
+    // scroll browser to unfolded claim
+    // TO DO: currently scrolling to get bottom unfolded claim into view, but maybe we should be scrolling to get the
+    //        unfolded claim into view and as many of its children as possible; wait till focus() is sorted before pursuing
+    // TO DO: Note that our two refs inputs are writing over eachother; we need to build a container to hold them and edit that as per https://github.com/react-native-training/react-native-elements/issues/392
+    // TO DO: "smooth" option not currently supported by Safari or iOS Safari
+    //this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    //setTimeout( this.scroll() , 3600);
+  }
+/*
+  // uses tabbable.js plugin
+  focusOnNextCard() {
+    setTimeout(function () { $.tabNext() } , 1200);
+    console.log("pointCard : focusOnNextCard() ")
+  }
+*/
+
   get point() {
     return this.props.data.point ? this.props.data.point : this.props.point
   }
-  
+
   get evidenceType() {
     if (this.props.link){
       switch (this.props.link.type) {
@@ -688,7 +686,7 @@ class PointCard extends React.Component {
       }
     }
   }
-  
+
   // TODO: the "root" case doesn't seem to be working -JF
   evidenceTypeClass() {
     switch (this.evidenceType){
@@ -702,50 +700,53 @@ class PointCard extends React.Component {
         return "";
     }
   }
-  
+
   get relevance() {
     return this.props.link && this.props.link.relevance
   }
 
   handleRelClick(e) {
-	//console.log("toggle relevance ui");
-	if (this.state.relLinkClicked)
-		this.setState({ relLinkClicked: false })
-	else
-		this.setState({ relLinkClicked: true })
-  }    
-  
+  //console.log("toggle relevance ui");
+  if (this.state.relLinkClicked)
+    this.setState({ relLinkClicked: false })
+  else
+    this.setState({ relLinkClicked: true })
+  }
+
   relevanceCtrlUI() {
     if (this.props.parentPoint) {
-		return <span>
-			{ this.state.relLinkClicked ? 
-				<div className="relevanceCtrlArea">
-					<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
+    return <span>
+      { this.state.relLinkClicked ?
+          <div className="relevanceCtrlArea">
+            <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
 
-				</div> 
-				: <span className="noRelevanceCtrl"></span> }	
-		</span>		
-	  }
-	else return null
-  } 
- 
+          </div> :
+          <span className="noRelevanceCtrl"></span>
+      }
+    </span>
+    }  else {
+      return null
+    }
+  }
+
   // TODO: rebuild arrow using css in order to control stroke width, instead of unicode &#x21B3;
   relevanceLinkUI() {
     if (this.props.parentPoint) {
-		let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
-		return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
-		<div className="relevanceLinkArea">
-			<div className="dottedLine dottedLineRelevanceLink"></div>
-			<span className="relevanceDisplay">{this.relevance}%</span>
-			<div className="arrowCard">&#x21B3;</div>
-			{ this.state.buttonClicked ? 
-				<RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>			
-				: <span></span> }	
-		</div></a>  
-	  }
-	else return null
+    let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
+    return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
+    <div className="relevanceLinkArea">
+      <div className="dottedLine dottedLineRelevanceLink"></div>
+      <span className="relevanceDisplay">{this.relevance}%</span>
+      <div className="arrowCard">&#x21B3;</div>
+      { this.state.buttonClicked ?
+          <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/> :
+          <span></span>
+      }
+    </div></a>
+    }
+  else return null
   }
-   
+
   handleSeeEvidence(point=this.point) {
     const i = this.state.expandedIndex
     i[point.id] = true
@@ -756,23 +757,22 @@ class PointCard extends React.Component {
   handleHideEvidence(point=this.point) {
     const i = this.state.expandedIndex
     i[point.id] = false
-    this.setState({expandedIndex: i})	
+    this.setState({expandedIndex: i})
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
   }
-  
+
   handleToggleEvidence(point=this.point) {
-	console.log("pointCard : toggle ")
-	const i = this.state.expandedIndex
-	if (this.expanded() ) {
-		console.log("pointCard : EXPANDED ")
-		i[point.id] = false
-		this.setState({expandedIndex: i})		  
-	}
-	else {
-		console.log("pointCard : NOT EXPANDED ")
-		i[point.id] = true
-		this.setState({expandedIndex: i})		  
-	}	
+    console.log("pointCard : toggle ")
+    const i = this.state.expandedIndex
+    if (this.expanded() ) {
+      console.log("pointCard : EXPANDED ")
+      i[point.id] = false
+      this.setState({expandedIndex: i})
+    } else {
+      console.log("pointCard : NOT EXPANDED ")
+      i[point.id] = true
+      this.setState({expandedIndex: i})
+    }
   }
 
   expanded() {
@@ -787,81 +787,82 @@ class PointCard extends React.Component {
                          handleSeeEvidence: this.handleSeeEvidence,
                          handleHideEvidence:this.handleHideEvidence});
   }
-  
+
   contentWidth() {
-	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
-	if (this.point.imageURL)
-	  return "span9"
-	else	
-	  return "span12 fullWidthContent"
+  // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
+    if (this.point.imageURL) {
+      return "span9"
+    } else {
+      return "span12 fullWidthContent"
+    }
   }
-  
+
   image() {
-	// TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
-	if (this.point.imageURL)
-		return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
+  // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
+  if (this.point.imageURL)
+    return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
-  
+
   evidence() {
     if (this.expanded() ) {
-		// If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
-		let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
-		let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`		
-		console.log("pointCard : evidence() ")
-		return <div className={classesEvidenceBlock}>
-		<div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
-	    {this.supportingPoints()}
-        {this.counterPoints()}
-	  </div>
-	}
+      // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
+      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+      let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+      console.log("pointCard : evidence() ")
+      return <div className={classesEvidenceBlock}>
+      <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
+        {this.supportingPoints()}
+          {this.counterPoints()}
+      </div>
+    }
   }
-  	
+
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport">
         <div className="evidenceList">
-          {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}	  
+          {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}
           {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
-		  <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
-		</div>
+      <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+    </div>
       </div>
     }
   }
-  
+
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-	      {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}	  		
+        {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
-		</div>
+    </div>
       </div>
     }
   }
-  
+
   // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
   numSupportingPlusCounter(){
-    return ( this.point.numSupporting + this.point.numCounter) 
+    return ( this.point.numSupporting + this.point.numCounter)
   }
-  
+
   // TODO: this is defined in the model point.py, so we could pass it up through GraphQL if that would be faster
   linksRatio() {
     let sup = this.point.numSupporting
     let cou = this.point.numCounter
-	if (sup == 0 && cou == 0)
-        return 50		
-	else if (cou == 0)
-		return 100
-	else if (sup == 0)
-		return 0
-	else {
-		let ratio = sup/(sup + cou)
-		//console.log("linksRatio : " + ratio)
-		return ratio
-	}
+    if (sup == 0 && cou == 0)
+      return 50
+    else if (cou == 0)
+      return 100
+    else if (sup == 0)
+      return 0
+    else {
+      let ratio = sup/(sup + cou)
+      //console.log("linksRatio : " + ratio)
+      return ratio
+    }
   }
-	
+
   sources(){
     if (this.point.sources){
       return <div className="row-fluid">
@@ -871,96 +872,96 @@ class PointCard extends React.Component {
       </div>
     }
   }
-  
+
   // TODO: make Edit Claim work
   moreMenu() {
-	return <span className="cardTopRowItem dropdown">
-			<a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-			 <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <li>More Actions</li>
-                <li className="divider"></li> 
-				<li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
-				<li className="divider"></li> 
-                <li><a onClick={this.point.handleClickEdit} className="" >Edit Claim</a></li> 
-				<li className="divider"></li> 
-				<li><a target="_blank" href={this.point.url}>Open in a new tab</a></li>
-            </ul> 
-		</span>
+    return <span className="cardTopRowItem dropdown">
+      <a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+      <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+         <li>More Actions</li>
+         <li className="divider"></li>
+         <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
+         <li className="divider"></li>
+         <li><a onClick={this.point.handleClickEdit} className="" >Edit Claim</a></li>
+         <li className="divider"></li>
+         <li><a target="_blank" href={this.point.url}>Open in a new tab</a></li>
+       </ul>
+    </span>
   }
 /*
-				Code to check if current user is the point Author
-					{this.props.data.currentUser &&
-					this.props.data.currentUser.url == this.point.authorURL &&
-					<a onClick={this.handleClickEdit} className="editLink" >Edit</a>}					
+        Code to check if current user is the point Author
+          {this.props.data.currentUser &&
+          this.props.data.currentUser.url == this.point.authorURL &&
+          <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
 */
-   
-     		
-   
+
+
+
   // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
  render(){
     const point = this.point;
     console.log("rendering " + point.url)
-	let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-	let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`	
-	let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
-	let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-	let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-	let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
+    let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
+    let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`
+    let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
+    let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
+    let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
+    let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
     //console.log("linksRatio " + this.linksRatio() )
     return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-	
-	  <div className={classesListedClaim}>
-		  { this.relevanceCtrlUI() }
-		  { this.relevanceLinkUI() }
 
-		<div className={classesStackCardGroup} tabIndex="-1">	  
-		<div className={classesStackCard1} tabIndex="-1">	
-		<div className={classesStackCard2} tabIndex="-1">			  
-		<div className={classesStackCard3} tabIndex="-1">	  
-		  <div className={classesPointCard} tabIndex="0" ref={(input) => { this.cardToFocusOn = input; }}>
-			<div className={ this.contentWidth()  }>
-			  <div className="row-fluid">
-				<div className="cardTopRow span12">
-				  <Byline point={point}/>
-				  <CommentCount point={point}/>
-				  <ShareIcon point={point}/>
-				  { this.moreMenu() } 
-				</div>
-			  </div>
-			  <div className="row-fluid">
-				<div className="pointText span12">
-				  <Point point={point} onClick={this.handleToggleEvidence}/>
-				</div>
-			  </div>
-			  {this.sources()}
-			  <div className="row-fluid">
-				<div className="cardBottomActionRow" >
-				  <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
-				  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-				</div>
-			  </div>
-			</div>
-			{this.image()}
-		  </div>
-	  </div>
-	  </div>
-	  </div>
-	  </div>
-	  
-	  </div>
-	  
-      <div className="evidenceRow row-fluid">
-	    {this.evidence()} 
+    <div className={classesListedClaim}>
+      { this.relevanceCtrlUI() }
+      { this.relevanceLinkUI() }
+
+    <div className={classesStackCardGroup} tabIndex="-1">
+    <div className={classesStackCard1} tabIndex="-1">
+    <div className={classesStackCard2} tabIndex="-1">
+    <div className={classesStackCard3} tabIndex="-1">
+      <div className={classesPointCard} tabIndex="0" ref={(input) => { this.cardToFocusOn = input; }}>
+      <div className={ this.contentWidth()  }>
+        <div className="row-fluid">
+        <div className="cardTopRow span12">
+          <Byline point={point}/>
+          <CommentCount point={point}/>
+          <ShareIcon point={point}/>
+          { this.moreMenu() }
+        </div>
+        </div>
+        <div className="row-fluid">
+        <div className="pointText span12">
+          <Point point={point} onClick={this.handleToggleEvidence}/>
+        </div>
+        </div>
+        {this.sources()}
+        <div className="row-fluid">
+        <div className="cardBottomActionRow" >
+          <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
+          <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+        </div>
+        </div>
       </div>
-	  
+      {this.image()}
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    </div>
+
+      <div className="evidenceRow row-fluid">
+      {this.evidence()}
+      </div>
+
     </div>;
   }
 }
 
 export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence, parentPoint}) {
-  let point = pointEdge.node; 
-  let classes = `listedClaimGroup`;  
+  let point = pointEdge.node;
+  let classes = `listedClaimGroup`;
   if (point) {
   return <div className={classes} key={point.url}>
       <ExpandedPointCard point={point}
@@ -1002,4 +1003,3 @@ export const ExpandedPointCard = graphql(GetPoint)(PointCard)
 //   }
 // }`
 // export const CollapsedPointCard = graphql(ExpandPoint)(PointCard)
-

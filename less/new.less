@@ -2436,6 +2436,8 @@ button#counter_addPointWhenNonZero {
 	padding-top:9px;
     padding-bottom:12px;
 	cursor:pointer;
+    border-style: none;
+    border-radius: 3px;
 }
 
 [id^=signInWith] a {
@@ -2444,13 +2446,22 @@ button#counter_addPointWhenNonZero {
 }
 
 #signInWithFacebook_Dlg {
-    background-color: #4267b2; //FB branding blue
+    background-color: hsl(220, 46%, 48%); //FB branding blue
+}
+#signInWithFacebook_Dlg:hover {
+    background-color: hsl(220, 66%, 58%); //FB branding blue
 }
 #signInWithGoogle_Dlg {
-    background-color: #ea4335; //Google branding red
+    background-color: hsl(5, 81%, 56%); //Google branding red
+}
+#signInWithGoogle_Dlg:hover {
+    background-color:hsla(5, 98%, 65%, 1); //Google branding red
 }
 #signInWithEmail_Dlg {
-    background-color: black;
+    background-color: hsla(0, 0%, 5%, 1); 
+}
+#signInWithEmail_Dlg:hover {
+    background-color: hsla(0, 0%, 25%, 1);
 }
 
 @modalSignInWithPaddingH: 24px;
@@ -2466,12 +2477,16 @@ button#counter_addPointWhenNonZero {
 
 [id^=signInWith] a {
 	line-height: 2em;
+    text-decoration: none;
 }
 
 [id^=signInWith]:hover {
-	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
-	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+[id^=signInWith]:active {
+    transform: scale(.975);
 }
 
 

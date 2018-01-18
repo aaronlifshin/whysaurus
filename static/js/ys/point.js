@@ -650,7 +650,7 @@ class PointCard extends React.Component {
   // TO DO: make focus on the 1st point loaded (not the last one, as its currently doing) --> may need to happen in Evidence?
   
 	scroll() {
-		this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+		//this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
 	}
 	componentDidMount() {
 		console.log("pointCard: componentDidMount()");		

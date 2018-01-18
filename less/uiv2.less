@@ -27,6 +27,7 @@
 .container {
 	// FOR INFINITE WIDTH VERSION
 	width: auto;
+	// FOR FINITE WIDTH COMMENT THIS LINE OUT
 	/////////////////
 }
 
@@ -86,6 +87,7 @@ body {
 	// *** max-content is perfect but doesn't not have full cross-browser support ***
 	width: max-content;
 	margin-left: 32px;
+	// FOR FINITE WIDTH COMMENT THESE LINES OUT
 	///////////////////
 }
 
@@ -831,6 +833,10 @@ a:hover .arrowAddEvidenceButton {
 	//background-color: red;
 	display: inline-block;
 	width: @cardWidthSmallScreens; // viewport-width units
+  }
+  
+  .stackCard {
+  	width: @cardWidthSmallScreens; // viewport-width units
   }
   
   .pointCardImage {

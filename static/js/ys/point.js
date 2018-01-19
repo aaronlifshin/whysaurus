@@ -129,22 +129,58 @@ const EditTitleForm = ( props ) => {
   );
 }
 
-class PointComponent extends React.Component {
+class EditPointComponent extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {editing: false}
-    this.handleClickEdit = this.handleClickEdit.bind(this);
+    this.state = {saving: false}
     this.handleClickSave = this.handleClickSave.bind(this);
-    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
   }
 
   get point() {
     return this.props.point;
   }
 
-  handleClickEdit(e) {
-    console.log("edit");
-    this.setState({editing: true})
+  handleClickSave(values, e, formApi) {
+    values.url = this.point.url
+    this.setState({saving: true})
+    this.props.mutate({
+      variables: values
+    })
+    // this component will be replaced after save, so we don't need to update state
+  }
+
+  titleUI() {
+    if (this.state.saving) {
+      return <span>Saving...</span>
+    } else {
+      return <span>
+        <EditTitleForm onSubmit={this.handleClickSave}/>
+      </span>
+    }
+  }
+
+  render(){
+    const score = this.point.pointValue
+    return <div>
+      {this.titleUI()}
+    </div>
+  }
+}
+
+const EditPoint = compose(
+  graphql(EditPointQuery),
+)(EditPointComponent)
+
+class PointComponent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {saving: false}
+    this.handleClickSave = this.handleClickSave.bind(this);
+    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
+  }
+
+  get point() {
+    return this.props.point;
   }
 
   handleClickSave(values, e, formApi) {
@@ -163,7 +199,7 @@ class PointComponent extends React.Component {
   }
 
   titleUI() {
-    if (this.state.editing) {
+    if (this.props.editing) {
       if (this.state.saving) {
         return <span>Saving...</span>
       } else {
@@ -202,7 +238,6 @@ class PointComponent extends React.Component {
 }
 
 const Point = compose(
-  graphql(EditPointQuery),
   graphql(CurrentUserQuery),
 )(PointComponent)
 
@@ -636,11 +671,18 @@ class PointCard extends React.Component {
     expandedIndex: {},
     relLinkClicked: false
   }
+    this.handleEditsSaved = this.handleEditsSaved.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
+    this.handleClickEdit = this.handleClickEdit.bind(this);
+
+  }
+
+  handleClickEdit(e) {
+    this.setState({editing: true})
   }
 
    //Assign focus - WIP
@@ -746,6 +788,10 @@ class PointCard extends React.Component {
     } else {
       return null
     }
+  }
+
+  handleEditsSaved(point=this.point) {
+    this.setState({editing: false})
   }
 
   handleSeeEvidence(point=this.point) {
@@ -883,7 +929,7 @@ class PointCard extends React.Component {
          <li className="divider"></li>
          <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
          <li className="divider"></li>
-         <li><a onClick={this.point.handleClickEdit} className="" >Edit Claim</a></li>
+         <li><a onClick={this.handleClickEdit} className="" >Edit Claim</a></li>
          <li className="divider"></li>
          <li><a target="_blank" href={this.point.url}>Open in a new tab</a></li>
        </ul>
@@ -896,11 +942,18 @@ class PointCard extends React.Component {
           <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
 */
 
-
+  pointComponent() {
+    const point = this.point;
+    if (this.state.editing){
+      return <EditPoint point={point} onEditsSaved={this.handleEditsSaved}/>
+    } else {
+      return <Point point={point} onClick={this.handleToggleEvidence}/>
+    }
+  }
 
   // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
- render(){
+  render(){
     const point = this.point;
     console.log("rendering " + point.url)
     let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
@@ -932,7 +985,7 @@ class PointCard extends React.Component {
         </div>
         <div className="row-fluid">
         <div className="pointText span12">
-          <Point point={point} onClick={this.handleToggleEvidence}/>
+          { this.pointComponent() }
         </div>
         </div>
         {this.sources()}

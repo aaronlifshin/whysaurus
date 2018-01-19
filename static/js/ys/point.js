@@ -36,6 +36,7 @@ ${pointFieldsFragment}
 fragment evidenceFields on Point {
  supportingPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} },
  counterPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} }
+ relevantPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} }
 }`
 
 export const EvidenceType = Object.freeze({

@@ -85,6 +85,23 @@ class Point(NdbObjectType):
                 point.link_type = 'counter'
         return points or []
 
+    # a list of the most relevant supporting and counter points
+    # introduced for single column views
+    relevantPoints = relay.ConnectionField(lambda: SubPointConnection)
+    def resolve_relevantPoints(self, info, **args):
+        supportingPoints = self.getLinkedPoints("supporting", None)
+        counterPoints = self.getLinkedPoints("counter", None)
+        if supportingPoints:
+            for point in supportingPoints:
+                point.parent = self
+                point.link_type = 'supporting'
+        if counterPoints:
+            for point in counterPoints:
+                point.parent = self
+                point.link_type = 'counter'
+        # TODO: sort by relevance, or do a more efficient query that just returns the most relevant points
+        return (supportingPoints or []) + (counterPoints or [])
+
 
 class Link(graphene.ObjectType):
     voteCount = graphene.Int()

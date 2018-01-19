@@ -24,7 +24,7 @@
 	background: pink !important;
 }
 
-.container {
+#mainContainer {
 	// FOR INFINITE WIDTH VERSION
 	width: auto;
 	// FOR FINITE WIDTH COMMENT THIS LINE OUT
@@ -241,7 +241,18 @@ body {
 
 .relVoteLink {
 	margin-right: 16px;
-	color: black;
+	//color: black;
+	//color: pink;
+}
+
+.myRelevanceVoteHigh {
+	color: black !important;
+}
+.myRelevanceVoteLow {
+	color: @red !important;
+}
+.relVoteLink:active {
+	transform: scale(.9);
 }
 
 .perctSignSmall {

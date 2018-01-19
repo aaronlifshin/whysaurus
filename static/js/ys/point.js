@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
+import MediaQuery from 'react-responsive';
 
 const CurrentUserQuery = gql`
 query CurrentUser {
@@ -811,10 +812,16 @@ class PointCard extends React.Component {
       let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       console.log("pointCard : evidence() ")
+      const singleColumnThreshold = 1224;
       return <div className={classesEvidenceBlock}>
-      <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
-        {this.supportingPoints()}
+        <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
+        <MediaQuery minDeviceWidth={singleColumnThreshold}>
+          {this.supportingPoints()}
           {this.counterPoints()}
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={singleColumnThreshold}>
+          {this.relevantPoints()}
+        </MediaQuery>
       </div>
     }
   }
@@ -835,10 +842,23 @@ class PointCard extends React.Component {
     if (this.expanded() && this.point.counterPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-        {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}
+          {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
-    </div>
+        </div>
+      </div>
+    }
+  }
+
+  relevantPoints(){
+    if (this.expanded() && this.point.relevantPoints){
+      return <div className="evidenceBlockCounter">
+        <div className="evidenceList">
+          {this.point.relevantPoints.edges.length > 0 && <div className="relevantHeading">Relevant Claims</div>}
+          {this.point.relevantPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
+          <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+          <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
+        </div>
       </div>
     }
   }

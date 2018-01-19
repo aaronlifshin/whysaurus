@@ -37,6 +37,7 @@
     "react-apollo": "^2.0.1",
     "react-dom": "^16.0.0",
     "react-form": "^2.12.1",
+    "react-responsive": "^4.0.3",
     "webpack": "^3.5.1"
   },
   "scripts": {

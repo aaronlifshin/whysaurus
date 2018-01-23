@@ -165,9 +165,20 @@ body {
 	left: -1 * @indent; 
 }
 
+@relevanceRevealDuration: .33s;
+@relGroupHiliteBG: #fffbd1;
+@keyframes relGroupHiliteReveal {
+   0% {background-color: #fffbd100;  }
+   100% { background-color: @relGroupHiliteBG; }
+}
+
 .relGroupHilite {
-	background-color: #fffbd1;
+	animation-name: relGroupHiliteReveal;
+    animation-duration: @relevanceRevealDuration;
+	animation-timing-function: ease;
+	animation-iteration-count: 1;
 	margin-bottom: @marginVerticalStandard * 1.3;
+	background-color: @relGroupHiliteBG;
 }
 
 .relevanceCtrlArea {
@@ -175,6 +186,18 @@ body {
 	width: @cardWidth + (2 * @cardPadding);
 	padding-bottom: 4px;
 	margin-top: 11px; // needs to be pretty big to account for the possibility of a cardstack above it
+	animation-name: relevanceCtrlAreaReveal;
+    animation-duration: @relevanceRevealDuration;
+	animation-timing-function: ease;
+	animation-iteration-count: 1;
+}
+
+
+@keyframes relevanceCtrlAreaReveal {
+   0% { max-height: 0; opacity: 0;  }
+   25% { opacity: 0; }
+   60% { max-height: 100px; }
+   100% { opacity: 1; }
 }
 
 .relCtrlLabel {
@@ -250,9 +273,6 @@ body {
 }
 .myRelevanceVoteLow {
 	color: @red !important;
-}
-.relVoteLink:active {
-	transform: scale(.9);
 }
 
 .perctSignSmall {

@@ -919,11 +919,11 @@ class PointCard extends React.Component {
       { this.relevanceCtrlUI() }
       { this.relevanceLinkUI() }
 
-    <div className={classesStackCardGroup} tabIndex="-1">
+    <div className={classesStackCardGroup} tabIndex="0" ref={(input) => { this.cardToFocusOn = input;}} >
     <div className={classesStackCard1} tabIndex="-1">
     <div className={classesStackCard2} tabIndex="-1">
     <div className={classesStackCard3} tabIndex="-1">
-      <div className={classesPointCard} tabIndex="0" ref={(input) => { this.cardToFocusOn = input; }}>
+      <div className={classesPointCard} tabIndex="-1">
       <div className={ this.contentWidth()  }>
         <div className="row-fluid">
         <div className="cardTopRow span12">

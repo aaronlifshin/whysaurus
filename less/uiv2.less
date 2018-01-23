@@ -122,7 +122,8 @@ body {
 }
 
 .evidenceBlockEmpty {
-	margin-top: 12px;
+	position: relative;
+	top: -10px;
 }
 
 
@@ -412,11 +413,16 @@ a:hover .perctSignSmall {
 .point-card:focus {
 	outline-style: none;
 }
-
+/*
 .stackCardGroup:hover .stackCard {
-	background-color: hsla(0, 0%, 96%, 1); //light yellow
+	background-color: hsla(0, 0%, 96%, 1); 
+	outline-style: none;
+}*/
+.point-card:hover {
+	background-color: hsla(0, 0%, 96%, 1); 
 	outline-style: none;
 }
+
 .stackCardGroup:focus .stackCard {
 	//background-color:green !important; // for testing
 	//background-color:white; // for testing
@@ -431,16 +437,16 @@ a:hover .perctSignSmall {
 .stackCard.counter {
 	border-color: #f6a3a3 ;
 }
-.stackCardGroup:hover .stackCard.counter {
-	background-color: hsla(330, 100%, 96%, 1) ;
-}
 .stackCardGroup:focus .stackCard.counter {
 	background-color: hsla(330,50%, 97%, 1);
 }
-
-.stackCardGroup:hover .stackCard {
-//	background-color: pink;
+/*.stackCardGroup:hover .stackCard.counter {
+	background-color: hsla(330, 100%, 96%, 1) ;
+}*/
+.point-card.counter:hover {
+	background-color: hsla(330, 100%, 96%, 1) ;
 }
+
 
 
 // FUNCTIONALITY INSIDE CARDS
@@ -596,15 +602,23 @@ a:hover .perctSignSmall {
   transition:@hoverTransitionDuration;
   transform-origin: bottom left;
 }
-.stackCardGroup:hover .cardBottomActionRow, .stackCardGroup:hover .cardBottomAction  {
-    transform: scale(@cardBottomActionScaleUpOnHover) ;
-	font-weight: bold;
-	color: @blue ;
-}
 .stackCardGroup:focus .cardBottomActionRow, .stackCardGroup:focus .cardBottomAction  {
 	font-weight: bold;
 	color: @blue ;
 }
+/*.stackCardGroup:hover .cardBottomActionRow, .stackCardGroup:hover .cardBottomAction  {
+    transform: scale(@cardBottomActionScaleUpOnHover) ;
+	font-weight: bold;
+	color: @blue ;
+}*/
+.point-card:hover .cardBottomActionRow, .point-card:hover .cardBottomAction  {
+    transform: scale(@cardBottomActionScaleUpOnHover) ;
+	font-weight: bold;
+	color: @blue ;
+}
+
+
+
 
 .evidenceContainer {
     display: inline-block;	
@@ -622,7 +636,7 @@ a:hover .perctSignSmall {
 
 .addEvidenceButtonGrp {
 	margin-bottom: @marginVerticalStandard *2.5;
-	margin-top: @marginVerticalStandard;
+	margin-top: @marginVerticalStandard * 3;
 	margin-left: 14px;
 	color: black;
 }
@@ -892,7 +906,7 @@ a:hover .arrowAddEvidenceButton {
 }
 .dottedLineNoEvidence {
 	height: 27px;
-    margin-top: -20px;
+    margin-top: -26px;
 }
 
 

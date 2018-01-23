@@ -810,7 +810,7 @@ class PointCard extends React.Component {
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
-      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null} ${this.numSupportingPlusCounter() == 0 ? "evidenceBlockEmpty" : null}`
+      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null} {this.numSupportingPlusCounter() == 0 ? "evidenceBlock" : null}`
       let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       console.log("pointCard : evidence() ")
       return <div className={classesEvidenceBlock}>
@@ -915,11 +915,11 @@ class PointCard extends React.Component {
     //console.log("linksRatio " + this.linksRatio() )
     return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
-    <div className={classesListedClaim}>
+    <div className={classesListedClaim} tabIndex="-1" >
       { this.relevanceCtrlUI() }
       { this.relevanceLinkUI() }
 
-    <div className={classesStackCardGroup} tabIndex="0" ref={(input) => { this.cardToFocusOn = input;}} >
+    <div className={classesStackCardGroup} tabIndex="0" ref={(input) => { this.cardToFocusOn = input;}}>
     <div className={classesStackCard1} tabIndex="-1">
     <div className={classesStackCard2} tabIndex="-1">
     <div className={classesStackCard3} tabIndex="-1">

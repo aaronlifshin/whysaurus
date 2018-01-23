@@ -168,6 +168,7 @@ body {
 	//padding-left: 3px;
 	padding-right: @cardPadding * 2;;
 	//padding-top: @cardPaddingTop;
+	outline-style: none;
 }
 
 .removeOneIndent {
@@ -421,17 +422,19 @@ a:hover .perctSignSmall {
 .point-card:focus {
 	outline-style: none;
 }
-/*
+
 .stackCardGroup:hover .stackCard {
-	background-color: hsla(0, 0%, 96%, 1); 
+	background-color: hsla(0, 0%, 97%, 1); 
 	outline-style: none;
-}*/
+}
+/*
 .point-card:hover {
 	background-color: hsla(0, 0%, 96%, 1); 
 	outline-style: none;
 }
-
+*/
 .stackCardGroup:focus .stackCard {
+/*.listedClaim:focus .stackCard {*/
 	//background-color:green !important; // for testing
 	//background-color:white; // for testing
     background-color: hsla(0, 0%, 97%, 1); //white; // #f6fdff; //rgb(244, 253, 255);
@@ -446,15 +449,19 @@ a:hover .perctSignSmall {
 	border-color: #f6a3a3 ;
 }
 .stackCardGroup:focus .stackCard.counter {
+/*.listedClaim:focus .stackCard.counter {*/
+
 	background-color: hsla(330,50%, 97%, 1);
 }
-/*.stackCardGroup:hover .stackCard.counter {
+.stackCardGroup:hover .stackCard.counter {
+/*.listedClaim:focus .stackCard.counter {*/
 	background-color: hsla(330, 100%, 96%, 1) ;
-}*/
+}
+/*
 .point-card.counter:hover {
 	background-color: hsla(330, 100%, 96%, 1) ;
 }
-
+*/
 
 
 // FUNCTIONALITY INSIDE CARDS
@@ -615,6 +622,7 @@ a:hover .perctSignSmall {
   transform-origin: bottom left;
 }
 .stackCardGroup:focus .cardBottomActionRow, .stackCardGroup:focus .cardBottomAction  {
+/*.listedClaim:focus .cardBottomActionRow, .listedClaim:focus .cardBottomAction  {*/
 	font-weight: bold;
 	color: @blue ;
 }

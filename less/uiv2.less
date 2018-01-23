@@ -264,9 +264,15 @@ body {
 
 .relVoteLink {
 	margin-right: 16px;
+	display: inline-block; // needed for scale down on click
 	//color: black;
 	//color: pink;
 }
+// scale down on click
+.relVoteLink:active {
+    transform: scale(0.92);
+}
+
 
 .myRelevanceVoteHigh {
 	color: black !important;
@@ -563,6 +569,14 @@ a:hover .perctSignSmall {
     z-index:1000;
     //font-weight: bold
 }
+
+// scale down on click
+@cardBottomActionScaleUpOnHover: 1.085;
+@cardBottomActionScaleDownOnClick: 0.92 * @cardBottomActionScaleUpOnHover;
+.cardBottomAction:active {
+    transform: scale(@cardBottomActionScaleDownOnClick) !important ;
+}
+
 /*.point-card:hover .cardBottomAction, .point-card:focus .cardBottomAction {
     color: @blue ;
 }*/
@@ -578,16 +592,14 @@ a:hover .perctSignSmall {
   transform-origin: bottom left;
 }
 .stackCardGroup:hover .cardBottomActionRow, .stackCardGroup:hover .cardBottomAction  {
-    transform: scale(1.085) ;
+    transform: scale(@cardBottomActionScaleUpOnHover) ;
 	font-weight: bold;
 	color: @blue ;
 }
 .stackCardGroup:focus .cardBottomActionRow, .stackCardGroup:focus .cardBottomAction  {
-    //transform: scale(1.085) ;
 	font-weight: bold;
 	color: @blue ;
 }
-
 
 .evidenceContainer {
     display: inline-block;	

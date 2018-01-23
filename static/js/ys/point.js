@@ -617,10 +617,10 @@ class RelevanceComponent extends React.Component {
     return <div className="relCtrlGroup" >
     <div className="relCtrlLabel">How Relevant is this claim?</div>
       <div className="relCtrlVoteOptions">
-      <a className="relVoteLink scaleDownOnClick" onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink scaleDownOnClick" onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink scaleDownOnClick" onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink scaleDownOnClick" onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
     </div>
       </div>
     }

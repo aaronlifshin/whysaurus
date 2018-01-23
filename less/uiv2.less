@@ -326,6 +326,7 @@ a:hover .perctSignSmall {
     left: 3px;
     top: -3px;
 	box-sizing: border-box;
+	transform-origin: top left;
 }
 
 // DEALING CARDS ANIMATION:
@@ -337,27 +338,26 @@ a:hover .perctSignSmall {
 @stackDealTimingFunction: cubic-bezier(.25, 0, .9, .4);  // ease-out and accelerate
 @stackDealNumberOfCards: 3;
 
-.stackCardDealBottom {
-	transform:translate(@stackDealX, @stackDealY);
-	-o-transition: @stackDealDuration;
-	-ms-transition: @stackDealDuration;
-	-moz-transition: @stackDealDuration;
-	-webkit-transition:@stackDealDuration;
-	transition:@stackDealDuration;
-	transition-timing-function: @stackDealTimingFunction;
-	transform-origin: top left;
+@keyframes stackCardDealBottom {
+   0% { transform: translate(0, 0); }
+   100% { transform: translate(@stackDealX, @stackDealY); }
+}
+.stackCardDealBottom {	
+	animation-name: stackCardDealBottom;
+    animation-duration: @stackDealDuration;
+	animation-timing-function: @stackDealTimingFunction;
+	animation-iteration-count: 1;
 }
 
+@keyframes stackCardDealInvertXform {
+   0% { transform: translate(0, 0); }
+   100% { transform: translate( (-1 * @stackDealX / @stackDealNumberOfCards), (-1 * @stackDealY / @stackDealNumberOfCards)); }
+}
 .stackCardDealInvertXform {
-	transform:translate( ( -1 * @stackDealX / @stackDealNumberOfCards ), (-1 * @stackDealY / @stackDealNumberOfCards) );
-	-o-transition:@stackDealDuration;
-	-ms-transition:@stackDealDuration;
-	-moz-transition:@stackDealDuration;
-	-webkit-transition:@stackDealDuration;
-	transition:@stackDealDuration;
-	transform-origin: top left;	
-	transition-timing-function: @stackDealTimingFunction;
-	
+	animation-name: stackCardDealInvertXform;
+    animation-duration: @stackDealDuration;
+	animation-timing-function: @stackDealTimingFunction;
+	animation-iteration-count: 1;	
 }
 
 .stackCardDealFade {

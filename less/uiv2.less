@@ -17,6 +17,10 @@
 @smallGreyLinkColor: #a9a9a9;
 @smallGreyLinkSize: 12px;
 
+//@blueDark: #0071BC;
+@blueLight: hsl(196, 100%, 60%);
+@redLight: hsl(0, 100%, 48%);
+
 @hoverTransitionDuration: .08s;
 
 //for testing animation
@@ -659,6 +663,7 @@ a:hover .perctSignSmall {
 	margin-top: @marginVerticalStandard * 3;
 	margin-left: 14px;
 	color: black;
+	width: max-content;
 }
 
 .addEvidenceButtonGrpCounter {
@@ -695,17 +700,50 @@ a:hover .perctSignSmall {
     transform: scale(@buttonUX2ScaleDownOnClick);
 	outline-style: none;
 }
+.buttonUX2Blue {
+	background-color: @blue;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @blueLight;
+}
+.buttonUX2Blue:hover {
+    background-color: @blueLight;
+}
+.buttonUX2Red {
+	background-color: @red;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @redLight;
+}
+.buttonUX2Red:hover {
+    background-color: @redLight;
+}
+.cancelButton {
+	background: none;
+	border: none;
+	font-size: @fontSizeActions;
+	outline-style: none;
+}
+.cancelButton:hover {
+	text-decoration:underline;
+}
+.cancelButton:focus {
+	text-decoration:underline;
+	outline-style: none;
+}
+
+.cancelButton:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
+}
+
+
 
 .addEvidenceButton {
     display: table; // seems necessary for scaling on hover to work, but also causes underline
     top: -20px;
     left: 14px;
     position: relative;	
-}
-
-.addEvidenceButtonGrpCounter .addEvidenceButton {
-    width: auto;
-	background-color: @red;
+	width: auto;
 }
 
 @buttonUX2ScaleUpOnHover: 1.075;
@@ -717,33 +755,10 @@ a:hover .perctSignSmall {
 	transition: @hoverTransitionDuration;
 	background-color: black;
 }
-.addEvidenceButtonGrpCounter:hover .addEvidenceButton {
-	background-color: hsl(0, 100%, 48%);
-}
-a:hover .addEvidenceButtonGrpCounter {
-	text-decoration-color: @red;
-}
+
 .addEvidenceButton:active {
     transform: scale(@buttonUX2ScaleUpOnHover * @buttonUX2ScaleDownOnClick) !important;
 }
-
-
-
-
-a:hover .addEvidenceButtonGrpCounter .buttonUX2 {
-	//text-decoration-color: @red;
-}
-.addEvidenceButtonGrp:hover .buttonUX2{
-	//background-color: @blue;
-}
-.addEvidenceButtonGrpCounter:hover .buttonUX2{
-	//color: @red;
-}
-
-
-
-
-
 
 .addEvidenceFormGroup {
 	margin-top: @marginVerticalStandard * 1.35;
@@ -769,8 +784,10 @@ a:hover .addEvidenceButtonGrpCounter .buttonUX2 {
 
 .addEvidenceFormButton {
 	margin-left: 4px;
-	height: 41px;
-    width: 24px;
+	margin-right: 4px;
+	height: 36px;
+    //width: 24px;
+	font-size: 21px;
 }
 
 .fullWidth {

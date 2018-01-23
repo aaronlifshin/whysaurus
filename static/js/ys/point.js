@@ -296,6 +296,8 @@ class EvidenceLink extends React.Component {
   }
 }
 
+// TODO: make cancel button work
+// TODO: if we are adding a counter point, then add class .buttonUX2Red to the submit button
 const AddEvidenceForm = ( props ) => {
   return (
     <div className="addEvidenceFormGroup">
@@ -304,7 +306,8 @@ const AddEvidenceForm = ( props ) => {
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Some dinosaurs had feathers."' />
-          <button type="submit" className="addEvidenceFormButton">Add</button>
+          <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
+		  <button type="cancel" className="cancelButton">Cancel</button>
           </form>
       )}
     </Form>
@@ -393,14 +396,15 @@ class AddEvidenceCard extends React.Component {
           </div>
       }
     } else {
-    let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    let buttonName = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
+    let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
     let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
-        return <a onClick={this.handleClickAddEvidence}>
-        <div className={classesButton}>
+    let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
+	let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
+	  return <a onClick={this.handleClickAddEvidence}>
+        <div className={classesButtonGrp}>
           <div className={classesLine}></div>
           <div className="arrowAddEvidenceButton">&#x21B3;</div>
-          <button type="button" name={buttonName} tabIndex="0" className="buttonUX2 addEvidenceButton">{this.addText}</button>
+          <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
         </div>
          </a>
     }

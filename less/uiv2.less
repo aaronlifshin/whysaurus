@@ -121,6 +121,11 @@ body {
 	//z-index:-1;
 }
 
+.evidenceBlockEmpty {
+	margin-top: 12px;
+}
+
+
 .supportHeading, .counterHeading {
 	//margin-top: 20px;
 	margin-left: @indent + @cardBorderWidth + @cardPadding + 17; //the extra +17 covers the width of the cardstack
@@ -572,7 +577,7 @@ a:hover .perctSignSmall {
 
 // scale down on click
 @cardBottomActionScaleUpOnHover: 1.085;
-@cardBottomActionScaleDownOnClick: 0.92 * @cardBottomActionScaleUpOnHover;
+@cardBottomActionScaleDownOnClick: 0.96 * @cardBottomActionScaleUpOnHover;
 .cardBottomAction:active {
     transform: scale(@cardBottomActionScaleDownOnClick) !important ;
 }
@@ -626,28 +631,8 @@ a:hover .perctSignSmall {
 	margin-bottom: @marginVerticalStandard * 2.5;
 }
 
-a:hover .buttonBlack {
-	text-decoration: underline;
-	text-decoration-color: @blue;
-	transform: scale(1.075);
-    transform-origin: top left;
-	transition: @hoverTransitionDuration;
-}
-
-a:hover .addEvidenceButtonGrpCounter .buttonBlack {
-	//text-decoration-color: @red;
-}
-
-.addEvidenceButtonGrp:hover .buttonBlack{
-	//background-color: @blue;
-}
-.addEvidenceButtonGrpCounter:hover .buttonBlack{
-	//color: @red;
-}
-
-
-.buttonBlack {
-    display: table;
+.buttonUX2 {
+    display: table; // seems necessary for scaling on hover to work
 	padding: 5px;
 	padding-left: 11px;
 	padding-right: 12px;
@@ -660,16 +645,27 @@ a:hover .addEvidenceButtonGrpCounter .buttonBlack {
     vertical-align: middle;
     cursor: pointer;
     color: white;
-    background-color: black;
+    background-color: hsl(0, 0%, 25%);
     border: none;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
 }
+.buttonUX2:focus {
+    outline: 2px solid @blue;
+}
+.buttonUX2:hover {
+    background-color: black;
+}
+@buttonUX2ScaleDownOnClick: 0.975;
+.buttonUX2:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
+	outline-style: none;
+}
 
 .addEvidenceButton {
-    //width: 132px;
-	top: -6px;
+    top: -20px;
+    left: 14px;
     position: relative;	
 }
 
@@ -677,6 +673,38 @@ a:hover .addEvidenceButtonGrpCounter .buttonBlack {
     width: auto;
 	background-color: @red;
 }
+
+@buttonUX2ScaleUpOnHover: 1.075;
+.addEvidenceButtonGrp:hover .addEvidenceButton {
+	text-decoration: none !important;
+	//text-decoration-color: @blue;
+	transform: scale(@buttonUX2ScaleUpOnHover);
+    transform-origin: top left;
+	transition: @hoverTransitionDuration;
+}
+.addEvidenceButton:active {
+    transform: scale(@buttonUX2ScaleUpOnHover * @buttonUX2ScaleDownOnClick) !important;
+}
+
+
+
+
+
+
+a:hover .addEvidenceButtonGrpCounter .buttonUX2 {
+	//text-decoration-color: @red;
+}
+.addEvidenceButtonGrp:hover .buttonUX2{
+	//background-color: @blue;
+}
+.addEvidenceButtonGrpCounter:hover .buttonUX2{
+	//color: @red;
+}
+
+
+
+
+
 
 .addEvidenceFormGroup {
 	margin-top: @marginVerticalStandard * 1.35;
@@ -766,10 +794,13 @@ a:hover .addEvidenceButtonGrpCounter .buttonBlack {
 }
 
 .arrowAddEvidenceButton {
-	font-size: 10px;
+/*	font-size: 10px;
 	margin-bottom: 2px;
 	margin-left:2px;
-	display:inline-block;
+	display:inline-block;*/
+	font-size: @arrowFontSize;
+	margin-bottom: 2px;
+	margin-left:4px;
 }
 
 .addEvidenceButtonGrpCounter .arrowAddEvidenceButton {
@@ -841,9 +872,9 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .addEvidenceButtonGrp:hover .arrowAddEvidenceButton {
-	transform: scale(1.3) translateY(1px);
-	transform-origin: bottom;
-	transition: @hoverTransitionDuration;
+	//transform: scale(1.3) translateY(1px);
+	//transform-origin: bottom;
+	//transition: @hoverTransitionDuration;
 	//color: @blue;
 }
 

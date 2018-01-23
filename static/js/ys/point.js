@@ -394,13 +394,13 @@ class AddEvidenceCard extends React.Component {
       }
     } else {
     let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    // TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
+    let buttonName = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
     let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
         return <a onClick={this.handleClickAddEvidence}>
         <div className={classesButton}>
           <div className={classesLine}></div>
-          <div className="arrowAddEvidenceButton">▼</div>
-          <div className="buttonBlack addEvidenceButton">{this.addText}</div>
+          <div className="arrowAddEvidenceButton">&#x21B3;</div>
+          <button type="button" name={buttonName} tabIndex="0" className="buttonUX2 addEvidenceButton">{this.addText}</button>
         </div>
          </a>
     }
@@ -810,13 +810,13 @@ class PointCard extends React.Component {
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
-      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null} ${this.numSupportingPlusCounter() == 0 ? "evidenceBlockEmpty" : null}`
       let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       console.log("pointCard : evidence() ")
       return <div className={classesEvidenceBlock}>
       <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
         {this.supportingPoints()}
-          {this.counterPoints()}
+        {this.counterPoints()}
       </div>
     }
   }

@@ -39,6 +39,10 @@ a:hover {
     color: @blue ;
 }
 
+a:focus, a:hover {
+	text-decoration: unset;
+}
+
 .dropdown-menu>li>a {
     padding-top:3px;
     padding-right:20px;
@@ -122,8 +126,8 @@ body {
 }
 
 .evidenceBlockEmpty {
-	position: relative;
-	top: -10px;
+	//position: relative;
+	margin-top:-2 * @marginVerticalStandard;
 }
 
 
@@ -274,6 +278,10 @@ body {
 	//color: black;
 	//color: pink;
 }
+.relVoteLink:hover {
+	text-decoration: underline;
+}
+
 // scale down on click
 .relVoteLink:active {
     transform: scale(0.92);
@@ -476,6 +484,7 @@ a:hover .perctSignSmall {
 
 .byline:hover {
 	//color: @grayTextLighter;
+	text-decoration: underline;
 }
 
 .moreMenu {
@@ -580,9 +589,12 @@ a:hover .perctSignSmall {
     z-index:1000;
     //font-weight: bold
 }
+.cardBottomAction:hover {
+	text-decoration: underline;
+}
 
 // scale down on click
-@cardBottomActionScaleUpOnHover: 1.085;
+@cardBottomActionScaleUpOnHover: 1.055;
 @cardBottomActionScaleDownOnClick: 0.96 * @cardBottomActionScaleUpOnHover;
 .cardBottomAction:active {
     transform: scale(@cardBottomActionScaleDownOnClick) !important ;
@@ -646,7 +658,6 @@ a:hover .perctSignSmall {
 }
 
 .buttonUX2 {
-    display: table; // seems necessary for scaling on hover to work
 	padding: 5px;
 	padding-left: 11px;
 	padding-right: 12px;
@@ -678,6 +689,7 @@ a:hover .perctSignSmall {
 }
 
 .addEvidenceButton {
+    display: table; // seems necessary for scaling on hover to work, but also causes underline
     top: -20px;
     left: 14px;
     position: relative;	
@@ -695,12 +707,17 @@ a:hover .perctSignSmall {
 	transform: scale(@buttonUX2ScaleUpOnHover);
     transform-origin: top left;
 	transition: @hoverTransitionDuration;
+	background-color: black;
+}
+.addEvidenceButtonGrpCounter:hover .addEvidenceButton {
+	background-color: hsl(0, 100%, 48%);
+}
+a:hover .addEvidenceButtonGrpCounter {
+	text-decoration-color: @red;
 }
 .addEvidenceButton:active {
     transform: scale(@buttonUX2ScaleUpOnHover * @buttonUX2ScaleDownOnClick) !important;
 }
-
-
 
 
 

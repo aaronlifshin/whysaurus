@@ -184,7 +184,7 @@ class PointComponent extends React.Component {
     <span className="scoreAnimContainerMax">
     <span className="scoreAnimContainerReset">
       <Hover onHover={<VoteStats point={this.point}/>}>
-       <span className="ux2ScoreInLine"><span className="positiveScore"><AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score == prevScore}>{score > 0 && "+"}{score}</AnimateOnChange></span></span>
+       <span className="ux2ScoreInLine"><span className={score < 0 ? "negativeScore": "positiveScore"}><AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score == prevScore}>{score > 0 && "+"}{score}</AnimateOnChange></span></span>
       </Hover>
     </span>
     </span>

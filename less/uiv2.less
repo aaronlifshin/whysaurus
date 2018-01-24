@@ -560,13 +560,17 @@ a:hover .perctSignSmall {
 	display: inline-block;
 }
 
+.negativeScore {
+	color: @red;
+}
+
 .Score--bounce{
-  animation:Score-keyframes--bounce .5s ease;
+  animation:Score-keyframes--bounce .4s ease;
   transform-origin: left bottom;
 }
 @keyframes Score-keyframes--bounce{
   0% { transform:scale(1) }
-  40% { transform:scale(1.4) } 
+  40% { transform:scale(1.25) } 
   100% { transform:scale(1) }  
 }
 

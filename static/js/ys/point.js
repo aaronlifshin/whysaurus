@@ -143,6 +143,7 @@ class PointComponent extends React.Component {
   }
 
   handleToggleEvidence() {
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
     console.log("PointComponent : toggle evidence!")
     this.props.onClick && this.props.onClick()
   }
@@ -249,18 +250,21 @@ class EvidenceLink extends React.Component {
 
   // TODO: can this be replaced by handleClickToggle? -JF
   handleClickSee(e) {
-    console.log("see");
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+    console.log("EvidenceLink : handleClickSee");
     this.props.onSee && this.props.onSee()
   }
 
   // TODO: can this be replaced by handleClickToggle? -JF
   handleClickHide(e) {
-    console.log("hide");
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+	console.log("EvidenceLink: handleClickHide");
     this.props.onHide && this.props.onHide()
   }
 
   handleClickToggle() {
-    console.log("toggle");
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+	console.log("EvidenceLink : handleClickToggle");
     this.props.onToggle && this.props.onToggle()
   }
 
@@ -444,8 +448,9 @@ class AgreeDisagreeComponent extends React.Component {
     setTimeout(function () { $.tabNext() } , 900)
   }
 
-  handleClickAgree() {
-    console.log("agree");
+  handleClickAgree(e) {
+    e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
+	console.log("AgreeDisagreeComponent : agree");
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -460,8 +465,9 @@ class AgreeDisagreeComponent extends React.Component {
     }
   }
 
-  handleClickDisagree() {
-    console.log("disagree");
+  handleClickDisagree(e) {
+    e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
+	console.log("AgreeDisagreeComponent : disagree");
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -631,6 +637,7 @@ class PointCard extends React.Component {
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
+    this.handleToggleEvidenceFromCard = this.handleToggleEvidenceFromCard.bind(this);
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
   }
@@ -754,20 +761,37 @@ class PointCard extends React.Component {
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
   }
 
+  // When user clicks on the pointTitle or "Add Evidence"
   handleToggleEvidence(point=this.point) {
-    console.log("pointCard : toggle ")
     const i = this.state.expandedIndex
-    if (this.expanded() ) {
-      console.log("pointCard : EXPANDED ")
+    console.log("pointCard : handleToggleEvidence : point.url : " + point.url)
+    if (this.expanded()) {
+      console.log("pointCard : handleToggleEvidence : EXPANDED ")
       i[point.id] = false
       this.setState({expandedIndex: i})
     } else {
-      console.log("pointCard : NOT EXPANDED ")
+      console.log("pointCard : handleToggleEvidence : NOT EXPANDED ")
       i[point.id] = true
       this.setState({expandedIndex: i})
     }
   }
-
+  
+  // When user clicks on the cardstack (but not on any particular link)
+  // TODO: can/should these two toggle functions be consolidated?
+  handleToggleEvidenceFromCard() {
+    const i = this.state.expandedIndex
+    console.log("pointCard : handleToggleEvidenceFromCard : point.url : " + this.point.url)
+    if (this.expanded()) {
+      console.log("pointCard : handleToggleEvidenceFromCard : EXPANDED ")
+      i[this.point.id] = false
+      this.setState({expandedIndex: i})
+    } else {
+      console.log("pointCard : handleToggleEvidenceFromCard : NOT EXPANDED ")
+      i[this.point.id] = true
+      this.setState({expandedIndex: i})
+    }
+  }
+ 
   expanded() {
     return this.state.expandedIndex[this.point.id]
   }
@@ -904,10 +928,11 @@ class PointCard extends React.Component {
       { this.relevanceCtrlUI() }
       { this.relevanceLinkUI() }
 
-    <div className={classesStackCardGroup} tabIndex="0" ref={(input) => { this.cardToFocusOn = input;}}>
+	<div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidenceFromCard} ref={(input) => { this.cardToFocusOn = input;}}>
     <div className={classesStackCard1} tabIndex="-1">
     <div className={classesStackCard2} tabIndex="-1">
     <div className={classesStackCard3} tabIndex="-1">
+	
       <div className={classesPointCard} tabIndex="-1">
       <div className={ this.contentWidth()  }>
         <div className="row-fluid">
@@ -933,6 +958,7 @@ class PointCard extends React.Component {
       </div>
       {this.image()}
       </div>
+	  
     </div>
     </div>
     </div>

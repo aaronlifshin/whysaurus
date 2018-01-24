@@ -290,11 +290,11 @@ class EvidenceLink extends React.Component {
 const AddEvidenceForm = ( props ) => {
   return (
     <div className="addEvidenceFormGroup">
-    <div className="arrowAddEvidenceForm">↓</div>
+    <div className="arrowAddEvidenceForm">&#x21B3;</div>
       <Form onSubmit={props.onSubmit}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
-          <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Some dinosaurs had feathers."' />
+          <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
           <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
 		  <button type="cancel" className="cancelButton">Cancel</button>
           </form>

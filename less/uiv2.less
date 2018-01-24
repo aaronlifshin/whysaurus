@@ -1,5 +1,6 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
+
 // Positioning Grid setup
 @cardWidth: 420px;
 @indent: 36px;
@@ -13,15 +14,32 @@
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
 
+
+// Colors
 @darkerGreyColor: #5d5d5d;
 @smallGreyLinkColor: #a9a9a9;
 @smallGreyLinkSize: 12px;
-
-//@blueDark: #0071BC;
 @blueLight: hsl(196, 100%, 60%);
 @redLight: hsl(0, 100%, 48%);
 
+
+// Typography
+@baseFontSizeUX2: 16px;
+
+@fontSizeActionsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeStatsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeButtonsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizePointTitle: @baseFontSizeUX2 * 1.063; // ~17px
+@arrowFontSizeUX2: @baseFontSizeUX2 * 1.125; // ~18px
+
+
+// Animation
 @hoverTransitionDuration: .08s;
+
+
+
+
+
 
 //for testing animation
 .animPink {
@@ -141,7 +159,7 @@ body {
 	margin-bottom: @marginVerticalStandard;
 	color: @darkerGreyColor;
 	text-transform: uppercase;
-    font-size: 13px;
+    font-size: @baseFontSize * 0.813; // ~13px
 }
 
 .counterHeading {
@@ -222,7 +240,7 @@ body {
 
 .relCtrlVoteOptions {
 	margin-bottom: @marginVerticalInsideCards *2;
-	font-size: 28px;
+	font-size:  @baseFontSizeUX2 * 1.75; // ~28px;
     font-weight: bold;
 }
 
@@ -269,7 +287,7 @@ body {
 	position:relative;
 	top: -6px;
 	right: 1px;
-	font-size: 13px;	
+    font-size: @baseFontSize * 0.813; // ~13px
 	font-family: ff-meta-web-pro-condensed;
 }
 
@@ -512,11 +530,10 @@ a:hover .perctSignSmall {
 
 .pointTitle {
 	color: black;
-	//font-size: @fontSizeMedium; // @fontSizeBitLarge;
     font-weight:500; // using the "Book" weight of Meta, from TypeKit
 	line-height: @lineHeightBigger;
     letter-spacing: @letterSpacingSubtle;
-	font-size:17px;
+	font-size: @fontSizePointTitle;
 	//margin-bottom: 17px; 
     //padding-left: 1px;
     //padding-right:4px;
@@ -526,6 +543,7 @@ a:hover .perctSignSmall {
 	color: black;
 }
 
+// unused now that edit is inside the more menu
 .editLink {
 	padding-left: 4px;
 	padding-right: 4px;
@@ -546,7 +564,7 @@ a:hover .perctSignSmall {
 .vote-stats p{
 	padding: 6px;
 	margin-bottom:4px;
-	font-size: 14px;
+	font-size: @fontSizeStatsUX2;
 }
 
 .menuDivider {
@@ -587,7 +605,7 @@ a:hover .perctSignSmall {
 
 
 .cardBottomAction {
-	font-size: @fontSizeActions;
+	font-size: @fontSizeActionsUX2;
     color: black; // @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
 	//margin-bottom:2px;
@@ -675,7 +693,7 @@ a:hover .perctSignSmall {
     margin-bottom: 0;
     //font-family: ff-meta-web-pro-condensed,sans-serif;
     font-weight: 700;
-    font-size: 14px;
+    font-size: @fontSizeButtonsUX2;
     font-style: normal;
     text-align: center;
     vertical-align: middle;
@@ -719,7 +737,7 @@ a:hover .perctSignSmall {
 .cancelButton {
 	background: none;
 	border: none;
-	font-size: @fontSizeActions;
+	font-size: @fontSizeActionsUX2;
 	outline-style: none;
 }
 .cancelButton:hover {
@@ -733,8 +751,6 @@ a:hover .perctSignSmall {
 .cancelButton:active {
     transform: scale(@buttonUX2ScaleDownOnClick);
 }
-
-
 
 .addEvidenceButton {
     display: table; // seems necessary for scaling on hover to work, but also causes underline
@@ -773,7 +789,7 @@ a:hover .perctSignSmall {
 }
 
 .arrowAddEvidenceForm {
-    font-size: 18px;
+    font-size: @arrowFontSizeUX2;
     position: relative;
 	left: 14px;
 	top: -6px;
@@ -782,7 +798,7 @@ a:hover .perctSignSmall {
 .addEvidenceFormTextField {
 	height: 28px;
 	width: @cardWidth;
-    font-size: 16px;
+    font-size: @baseFontSizeUX2;
     padding: 8px;
 }
 
@@ -791,7 +807,7 @@ a:hover .perctSignSmall {
 	margin-right: 4px;
 	height: 36px;
     //width: 24px;
-	font-size: 21px;
+	font-size: @baseFontSizeUX2 * 1.13125; // ~21px
 }
 
 .fullWidth {
@@ -836,17 +852,16 @@ a:hover .perctSignSmall {
 
 // ARROWS
 
-@arrowFontSize: 18px;
 
 .arrowPointToSupport {
-	font-size: @arrowFontSize;
+	font-size: @arrowFontSizeUX2;
 	position: relative;
 	left: 52px;
     top: -13px;
 }
 
 .arrowCard {
-	font-size: @arrowFontSize;
+	font-size: @arrowFontSizeUX2;
     position: relative;
     top: -5px;
 	right: 8px;
@@ -858,7 +873,7 @@ a:hover .perctSignSmall {
 	margin-bottom: 2px;
 	margin-left:2px;
 	display:inline-block;*/
-	font-size: @arrowFontSize;
+	font-size: @arrowFontSizeUX2;
 	margin-bottom: 2px;
 	margin-left:4px;
 }

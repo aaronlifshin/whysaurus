@@ -4,6 +4,8 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 
+import AnimateOnChange from 'react-animate-on-change';
+
 const CurrentUserQuery = gql`
 query CurrentUser {
   currentUser { url }
@@ -172,14 +174,17 @@ class PointComponent extends React.Component {
     }
   }
 
+  // To turn animation off change the logic in this line: animate={score == prevScore}
+  // TODO: set prevScore correctly, somehow
   render(){
     const score = this.point.pointValue
+	const prevScore = this.point.pointValue
     return <div>
       {this.titleUI()}
     <span className="scoreAnimContainerMax">
     <span className="scoreAnimContainerReset">
       <Hover onHover={<VoteStats point={this.point}/>}>
-      <span className="ux2ScoreInLine"><span className="positiveScore">{score > 0 && "+"}{score}</span></span>
+       <span className="ux2ScoreInLine"><span className="positiveScore"><AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score == prevScore}>{score > 0 && "+"}{score}</AnimateOnChange></span></span>
       </Hover>
     </span>
     </span>

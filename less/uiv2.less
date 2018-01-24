@@ -552,6 +552,25 @@ a:hover .perctSignSmall {
 	//font-style: italic;
 }
 
+.ux2ScoreInLine {
+	display: inline-block;
+}
+
+.scorePreAnimate {
+	display: inline-block;
+}
+
+.Score--bounce{
+  animation:Score-keyframes--bounce .5s ease;
+  transform-origin: left bottom;
+}
+@keyframes Score-keyframes--bounce{
+  0% { transform:scale(1) }
+  40% { transform:scale(1.4) } 
+  100% { transform:scale(1) }  
+}
+
+
 .vote-stats {
     background: white;
     border: 1px grey solid;

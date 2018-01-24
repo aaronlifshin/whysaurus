@@ -972,6 +972,14 @@ a:hover .arrowAddEvidenceButton {
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 
+// zoom out a bit for smaller monitors
+// using height because the purpose here is to be able to fit more evidence on screen
+@media (max-device-height: 680px) {
+	#mainContainer {
+		zoom: .8;
+	}
+}
+
 @media (max-width: 767px) {
 
  @cardWidthSmallScreens: 80vw;

@@ -744,7 +744,7 @@ a:hover .perctSignSmall {
 	width: auto;
 }
 
-@buttonUX2ScaleUpOnHover: 1.075;
+@buttonUX2ScaleUpOnHover: 1.025;
 .addEvidenceButtonGrp:hover .addEvidenceButton {
 	text-decoration: none !important;
 	//text-decoration-color: @blue;
@@ -753,6 +753,12 @@ a:hover .perctSignSmall {
 	transition: @hoverTransitionDuration;
 	background-color: black;
 }
+.addEvidenceButtonGrp:hover .buttonUX2Red {
+    background-color: @redLight;
+}
+
+
+
 
 .addEvidenceButton:active {
     transform: scale(@buttonUX2ScaleUpOnHover * @buttonUX2ScaleDownOnClick) !important;

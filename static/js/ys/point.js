@@ -59,21 +59,6 @@ function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
 }
 
-// Currently unused; moreMenu currently being generated via a local function within PointCard()
-function MoreMenu(props) {
-  return <span className="cardTopRowItem dropdown">
-    <a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-    <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-      <li>More Actions</li>
-      <li className="divider"></li>
-      <li>
-        <span className=""><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount} Upstream Points</span>
-       </li>
-       <li className="divider"></li>
-       <li><a onClick={props.point.handleClickEdit} className="" >Edit</a></li>
-    </ul>
-  </span>
-}
 /*
         Code to check if current user is the point Author
           {this.props.data.currentUser &&
@@ -881,7 +866,6 @@ class PointCard extends React.Component {
     }
   }
 
-  // TODO: make Edit Claim work
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
       <a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
@@ -903,9 +887,6 @@ class PointCard extends React.Component {
           <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
 */
 
-
-
-  // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
  render(){
     const point = this.point;

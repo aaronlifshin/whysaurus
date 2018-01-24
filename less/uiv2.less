@@ -237,7 +237,7 @@ body {
 	-webkit-transition:@hoverTransitionDuration;
 	/* ...and now for the proper property */
 	transition:@hoverTransitionDuration;
-	transform-origin: bottom right;
+	transform-origin: bottom center;
 }
 
 .listedClaim:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
@@ -894,10 +894,9 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .listedClaim:hover .dottedLineRelevanceLink, .listedClaim:focus .dottedLineRelevanceLink  {
-    //transform: scale(1.085) ;
-    border-width: 4px;
-    left: -1px;
 	color: @blue ;
+	height: 32px;
+    margin-top: -38px;
 }
 
 // not used yet

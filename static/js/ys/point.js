@@ -142,7 +142,7 @@ class PointComponent extends React.Component {
     // this component will be replaced after save, so we don't need to update state
   }
 
-  handleToggleEvidence() {
+  handleToggleEvidence(e) {
 	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
     console.log("PointComponent : toggle evidence!")
     this.props.onClick && this.props.onClick()
@@ -262,7 +262,7 @@ class EvidenceLink extends React.Component {
     this.props.onHide && this.props.onHide()
   }
 
-  handleClickToggle() {
+  handleClickToggle(e) {
 	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
 	console.log("EvidenceLink : handleClickToggle");
     this.props.onToggle && this.props.onToggle()

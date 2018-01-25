@@ -32,12 +32,18 @@ fragment pointFields on Point {
   currentUserVote
 }
 `
+export const evidenceEdgesFragment = gql`
+fragment evidenceEdges on SubPointConnection {
+  edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }}
+}`
+
 
 export const expandedPointFieldsFragment = gql`
 ${pointFieldsFragment}
+${evidenceEdgesFragment}
 fragment evidenceFields on Point {
- supportingPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} },
- counterPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} }
+ supportingPoints { ...evidenceEdges },
+ counterPoints { ...evidenceEdges }
 }`
 
 export const EvidenceType = Object.freeze({
@@ -332,11 +338,23 @@ class AddEvidenceCard extends React.Component {
 
   handleClickSave(values, e, formApi) {
     console.log("saving evidence")
-    values.parentURL = this.point.url
+    let parentURL = this.point.url
+    values.parentURL = parentURL
     values.linkType = this.linkType
     this.setState({saving: true})
     this.props.mutate({
-      variables: values
+      variables: values,
+      update: (proxy, { data: { addEvidence: { newEdges } }}) => {
+        const data = proxy.readQuery({ query: GetPoint, variables: {url: parentURL} })
+        if (this.linkType == 'counter') {
+          data.point.counterPoints.edges = data.point.counterPoints.edges.concat(newEdges.edges)
+        } else {
+          data.point.supportingPoints.edges = data.point.supportingPoints.edges.concat(newEdges.edges)
+        }
+        proxy.writeQuery({ query: GetPoint,
+                           variables: {url: parentURL},
+                           data: data });
+      }
     })
       .then( res => {
         this.setState({saving: false,
@@ -406,13 +424,11 @@ class AddEvidenceCard extends React.Component {
 }
 
 export const AddEvidenceQuery = gql`
-${expandedPointFieldsFragment}
+${pointFieldsFragment}
+${evidenceEdgesFragment}
 mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
   addEvidence(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames, linkType: $linkType, parentURL: $parentURL}) {
-    point {
-    ...pointFields,
-    ...evidenceFields
-    }
+    newEdges { ...evidenceEdges }
   }
 }
 `

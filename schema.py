@@ -149,6 +149,10 @@ class AddEvidence(graphene.Mutation):
 
     point = graphene.Field(Point)
 
+    newEdges = relay.ConnectionField(SubPointConnection)
+    def resolve_newEdges(self, info, **args):
+        return [self.point]
+
     def mutate(self, info, point_data):
         oldPoint, oldPointRoot = PointModel.getCurrentByUrl(point_data.parentURL)
         newPoint, newLinkPoint = PointModel.addSupportingPoint(
@@ -165,7 +169,11 @@ class AddEvidence(graphene.Mutation):
             sourcesNames=point_data.sourceNames
         )
 
-        return AddEvidence(point=newPoint)
+        # these two are in service of the SubPointConnection logic - we should find a way to DRY this up
+        newLinkPoint.parent = newPoint
+        newLinkPoint.link_type = point_data.linkType
+
+        return AddEvidence(point=newLinkPoint)
 
 class EditPointInput(graphene.InputObjectType):
     url = graphene.String(required=True)

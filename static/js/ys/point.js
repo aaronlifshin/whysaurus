@@ -383,6 +383,7 @@ class AddEvidenceCard extends React.Component {
       variables: values,
       update: (proxy, { data: { addEvidence: { newEdges } }}) => {
         const data = proxy.readQuery({ query: GetPoint, variables: {url: parentURL} })
+        data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
         if (this.linkType == 'counter') {
           data.point.counterPoints.edges = data.point.counterPoints.edges.concat(newEdges.edges)
         } else {

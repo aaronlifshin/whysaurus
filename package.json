@@ -32,11 +32,14 @@
     "grunt-rename": "^0.1.3",
     "grunt-shell": "0.3.x",
     "immutable": "^4.0.0-rc.9",
+    "jquery.tabbable": "^1.0.1",
     "pretty-immutable": "^1.0.1",
-    "react": "^16.0.0",
+    "react": "^16.2.0",
+    "react-animate-on-change": "^1.0.1",
     "react-apollo": "^2.0.1",
     "react-dom": "^16.0.0",
     "react-form": "^2.12.1",
+    "react-responsive": "^4.0.3",
     "webpack": "^3.5.1"
   },
   "scripts": {

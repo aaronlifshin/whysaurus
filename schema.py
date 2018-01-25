@@ -85,6 +85,23 @@ class Point(NdbObjectType):
                 point.link_type = 'counter'
         return points or []
 
+    # a list of the most relevant supporting and counter points
+    # introduced for single column views
+    relevantPoints = relay.ConnectionField(lambda: SubPointConnection)
+    def resolve_relevantPoints(self, info, **args):
+        supportingPoints = self.getLinkedPoints("supporting", None)
+        counterPoints = self.getLinkedPoints("counter", None)
+        if supportingPoints:
+            for point in supportingPoints:
+                point.parent = self
+                point.link_type = 'supporting'
+        if counterPoints:
+            for point in counterPoints:
+                point.parent = self
+                point.link_type = 'counter'
+        # TODO: sort by relevance, or do a more efficient query that just returns the most relevant points
+        return (supportingPoints or []) + (counterPoints or [])
+
 
 class Link(graphene.ObjectType):
     voteCount = graphene.Int()
@@ -149,6 +166,10 @@ class AddEvidence(graphene.Mutation):
 
     point = graphene.Field(Point)
 
+    newEdges = relay.ConnectionField(SubPointConnection)
+    def resolve_newEdges(self, info, **args):
+        return [self.point]
+
     def mutate(self, info, point_data):
         oldPoint, oldPointRoot = PointModel.getCurrentByUrl(point_data.parentURL)
         newPoint, newLinkPoint = PointModel.addSupportingPoint(
@@ -165,7 +186,11 @@ class AddEvidence(graphene.Mutation):
             sourcesNames=point_data.sourceNames
         )
 
-        return AddEvidence(point=newPoint)
+        # these two are in service of the SubPointConnection logic - we should find a way to DRY this up
+        newLinkPoint.parent = newPoint
+        newLinkPoint.link_type = point_data.linkType
+
+        return AddEvidence(point=newLinkPoint)
 
 class EditPointInput(graphene.InputObjectType):
     url = graphene.String(required=True)

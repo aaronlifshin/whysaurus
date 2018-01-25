@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
+import MediaQuery from 'react-responsive';
+
+import AnimateOnChange from 'react-animate-on-change';
 
 const CurrentUserQuery = gql`
 query CurrentUser {
@@ -30,12 +33,19 @@ fragment pointFields on Point {
   currentUserVote
 }
 `
+export const evidenceEdgesFragment = gql`
+fragment evidenceEdges on SubPointConnection {
+  edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }}
+}`
+
 
 export const expandedPointFieldsFragment = gql`
 ${pointFieldsFragment}
+${evidenceEdgesFragment}
 fragment evidenceFields on Point {
- supportingPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} },
- counterPoints { edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }} }
+ supportingPoints { ...evidenceEdges },
+ counterPoints { ...evidenceEdges },
+ relevantPoints { ...evidenceEdges }
 }`
 
 export const EvidenceType = Object.freeze({
@@ -59,21 +69,6 @@ function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
 }
 
-// Currently unused; moreMenu currently being generated via a local function within PointCard()
-function MoreMenu(props) {
-  return <span className="cardTopRowItem dropdown">
-    <a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-    <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-      <li>More Actions</li>
-      <li className="divider"></li>
-      <li>
-        <span className=""><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount} Upstream Points</span>
-       </li>
-       <li className="divider"></li>
-       <li><a onClick={props.point.handleClickEdit} className="" >Edit</a></li>
-    </ul>
-  </span>
-}
 /*
         Code to check if current user is the point Author
           {this.props.data.currentUser &&
@@ -193,7 +188,8 @@ class PointComponent extends React.Component {
     // this component will be replaced after save, so we don't need to update state
   }
 
-  handleToggleEvidence() {
+  handleToggleEvidence(e) {
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
     console.log("PointComponent : toggle evidence!")
     this.props.onClick && this.props.onClick()
   }
@@ -222,14 +218,17 @@ class PointComponent extends React.Component {
     }
   }
 
+  // To turn animation off change the logic in this line: animate={score == prevScore}
+  // TODO: set prevScore correctly, somehow
   render(){
     const score = this.point.pointValue
+	const prevScore = this.point.pointValue
     return <div>
       {this.titleUI()}
     <span className="scoreAnimContainerMax">
     <span className="scoreAnimContainerReset">
       <Hover onHover={<VoteStats point={this.point}/>}>
-      <span className="ux2ScoreInLine"><span className="positiveScore">{score > 0 && "+"}{score}</span></span>
+       <span className="ux2ScoreInLine"><span className={score < 0 ? "negativeScore": "positiveScore"}><AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score == prevScore}>{score > 0 && "+"}{score}</AnimateOnChange></span></span>
       </Hover>
     </span>
     </span>
@@ -275,7 +274,7 @@ class Sources extends React.Component {
   render(){
     return <div className="sources">
       {this.point.sources && this.point.sources.map(({name, url}, i) =>
-        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" href={url}>{name}</a></div>
+        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name}</a></div>
       )}
     </div>
   }
@@ -299,18 +298,21 @@ class EvidenceLink extends React.Component {
 
   // TODO: can this be replaced by handleClickToggle? -JF
   handleClickSee(e) {
-    console.log("see");
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+    console.log("EvidenceLink : handleClickSee");
     this.props.onSee && this.props.onSee()
   }
 
   // TODO: can this be replaced by handleClickToggle? -JF
   handleClickHide(e) {
-    console.log("hide");
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+	console.log("EvidenceLink: handleClickHide");
     this.props.onHide && this.props.onHide()
   }
 
-  handleClickToggle() {
-    console.log("toggle");
+  handleClickToggle(e) {
+	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+	console.log("EvidenceLink : handleClickToggle");
     this.props.onToggle && this.props.onToggle()
   }
 
@@ -331,15 +333,18 @@ class EvidenceLink extends React.Component {
   }
 }
 
+// TODO: make cancel button work
+// TODO: if we are adding a counter point, then add class .buttonUX2Red to the submit button
 const AddEvidenceForm = ( props ) => {
   return (
     <div className="addEvidenceFormGroup">
-    <div className="arrowAddEvidenceForm">↓</div>
+    <div className="arrowAddEvidenceForm">&#x21B3;</div>
       <Form onSubmit={props.onSubmit}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
-          <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Some dinosaurs had feathers."' />
-          <button type="submit" className="addEvidenceFormButton">Add</button>
+          <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+          <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
+		  <button type="cancel" className="cancelButton">Cancel</button>
           </form>
       )}
     </Form>
@@ -370,11 +375,23 @@ class AddEvidenceCard extends React.Component {
 
   handleClickSave(values, e, formApi) {
     console.log("saving evidence")
-    values.parentURL = this.point.url
+    let parentURL = this.point.url
+    values.parentURL = parentURL
     values.linkType = this.linkType
     this.setState({saving: true})
     this.props.mutate({
-      variables: values
+      variables: values,
+      update: (proxy, { data: { addEvidence: { newEdges } }}) => {
+        const data = proxy.readQuery({ query: GetPoint, variables: {url: parentURL} })
+        if (this.linkType == 'counter') {
+          data.point.counterPoints.edges = data.point.counterPoints.edges.concat(newEdges.edges)
+        } else {
+          data.point.supportingPoints.edges = data.point.supportingPoints.edges.concat(newEdges.edges)
+        }
+        proxy.writeQuery({ query: GetPoint,
+                           variables: {url: parentURL},
+                           data: data });
+      }
     })
       .then( res => {
         this.setState({saving: false,
@@ -428,14 +445,15 @@ class AddEvidenceCard extends React.Component {
           </div>
       }
     } else {
-    let classesButton = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    // TODO: the dashed line should not be present (or just hidden) if there are zero claims in the evidence list above it
+    let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
     let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
-        return <a onClick={this.handleClickAddEvidence}>
-        <div className={classesButton}>
+    let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
+	let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
+	  return <a onClick={this.handleClickAddEvidence}>
+        <div className={classesButtonGrp}>
           <div className={classesLine}></div>
-          <div className="arrowAddEvidenceButton">▼</div>
-          <div className="buttonBlack addEvidenceButton">{this.addText}</div>
+          <div className="arrowAddEvidenceButton">&#x21B3;</div>
+          <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
         </div>
          </a>
     }
@@ -443,13 +461,11 @@ class AddEvidenceCard extends React.Component {
 }
 
 export const AddEvidenceQuery = gql`
-${expandedPointFieldsFragment}
+${pointFieldsFragment}
+${evidenceEdgesFragment}
 mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
   addEvidence(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames, linkType: $linkType, parentURL: $parentURL}) {
-    point {
-    ...pointFields,
-    ...evidenceFields
-    }
+    newEdges { ...evidenceEdges }
   }
 }
 `
@@ -490,8 +506,9 @@ class AgreeDisagreeComponent extends React.Component {
     setTimeout(function () { $.tabNext() } , 900)
   }
 
-  handleClickAgree() {
-    console.log("agree");
+  handleClickAgree(e) {
+    e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
+	console.log("AgreeDisagreeComponent : agree");
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -506,8 +523,9 @@ class AgreeDisagreeComponent extends React.Component {
     }
   }
 
-  handleClickDisagree() {
-    console.log("disagree");
+  handleClickDisagree(e) {
+    e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
+	console.log("AgreeDisagreeComponent : disagree");
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -644,15 +662,18 @@ class RelevanceComponent extends React.Component {
       $("#loginDialog").modal("show");
     }
   }
-
+  
+  // TODO: reflect the user's current vote;
+  //   if it is 100% or 66%, add the class add class .myRelevanceVoteHigh
+  //   if it is 33% or 0%, add the class add class .myRelevanceVoteLow
   render(){
     return <div className="relCtrlGroup" >
     <div className="relCtrlLabel">How Relevant is this claim?</div>
       <div className="relCtrlVoteOptions">
-      <a className="relVoteLink" onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink" onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink" onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink" onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
+      <a className="relVoteLink " onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
     </div>
       </div>
     }
@@ -675,6 +696,7 @@ class PointCard extends React.Component {
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
+    this.handleToggleEvidenceFromCard = this.handleToggleEvidenceFromCard.bind(this);
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
@@ -808,20 +830,37 @@ class PointCard extends React.Component {
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
   }
 
+  // When user clicks on the pointTitle or "Add Evidence"
   handleToggleEvidence(point=this.point) {
-    console.log("pointCard : toggle ")
     const i = this.state.expandedIndex
-    if (this.expanded() ) {
-      console.log("pointCard : EXPANDED ")
+    console.log("pointCard : handleToggleEvidence : point.url : " + point.url)
+    if (this.expanded()) {
+      console.log("pointCard : handleToggleEvidence : EXPANDED ")
       i[point.id] = false
       this.setState({expandedIndex: i})
     } else {
-      console.log("pointCard : NOT EXPANDED ")
+      console.log("pointCard : handleToggleEvidence : NOT EXPANDED ")
       i[point.id] = true
       this.setState({expandedIndex: i})
     }
   }
-
+  
+  // When user clicks on the cardstack (but not on any particular link)
+  // TODO: can/should these two toggle functions be consolidated?
+  handleToggleEvidenceFromCard() {
+    const i = this.state.expandedIndex
+    console.log("pointCard : handleToggleEvidenceFromCard : point.url : " + this.point.url)
+    if (this.expanded()) {
+      console.log("pointCard : handleToggleEvidenceFromCard : EXPANDED ")
+      i[this.point.id] = false
+      this.setState({expandedIndex: i})
+    } else {
+      console.log("pointCard : handleToggleEvidenceFromCard : NOT EXPANDED ")
+      i[this.point.id] = true
+      this.setState({expandedIndex: i})
+    }
+  }
+ 
   expanded() {
     return this.state.expandedIndex[this.point.id]
   }
@@ -853,13 +892,19 @@ class PointCard extends React.Component {
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
-      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null} ${this.numSupportingPlusCounter() == 0 ? "evidenceBlockEmpty" : null}`
       let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       console.log("pointCard : evidence() ")
+      const singleColumnThreshold = 1224;
       return <div className={classesEvidenceBlock}>
-      <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
-        {this.supportingPoints()}
+        <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
+        <MediaQuery minDeviceWidth={singleColumnThreshold}>
+          {this.supportingPoints()}
           {this.counterPoints()}
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={singleColumnThreshold}>
+          {this.relevantPoints()}
+        </MediaQuery>
       </div>
     }
   }
@@ -880,10 +925,23 @@ class PointCard extends React.Component {
     if (this.expanded() && this.point.counterPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-        {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}
+          {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
-    </div>
+        </div>
+      </div>
+    }
+  }
+
+  relevantPoints(){
+    if (this.expanded() && this.point.relevantPoints){
+      return <div className="evidenceBlockCounter">
+        <div className="evidenceList">
+          {this.point.relevantPoints.edges.length > 0 && <div className="relevantHeading">Relevant Claims</div>}
+          {this.point.relevantPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
+          <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+          <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
+        </div>
       </div>
     }
   }
@@ -920,7 +978,6 @@ class PointCard extends React.Component {
     }
   }
 
-  // TODO: make Edit Claim work
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
       <a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
@@ -942,7 +999,7 @@ class PointCard extends React.Component {
           <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
 */
 
-  pointComponent() {
+ pointComponent() {
     const point = this.point;
     if (this.state.editing){
       return <EditPoint point={point} onEditsSaved={this.handleEditsSaved}/>
@@ -951,7 +1008,6 @@ class PointCard extends React.Component {
     }
   }
 
-  // TODO: I moved the Edit button inside the more Menu and now it's  no longer working. I tried building the MoreMenu as a local and as a global fuction ( this.moreMenu() } v <MoreMenu point={point}/> ) ). Lets pick which to use and trash the other code -JF
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
   render(){
     const point = this.point;
@@ -965,15 +1021,16 @@ class PointCard extends React.Component {
     //console.log("linksRatio " + this.linksRatio() )
     return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
-    <div className={classesListedClaim}>
+    <div className={classesListedClaim} tabIndex="-1" >
       { this.relevanceCtrlUI() }
       { this.relevanceLinkUI() }
 
-    <div className={classesStackCardGroup} tabIndex="-1">
+	<div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidenceFromCard} ref={(input) => { this.cardToFocusOn = input;}}>
     <div className={classesStackCard1} tabIndex="-1">
     <div className={classesStackCard2} tabIndex="-1">
     <div className={classesStackCard3} tabIndex="-1">
-      <div className={classesPointCard} tabIndex="0" ref={(input) => { this.cardToFocusOn = input; }}>
+	
+      <div className={classesPointCard} tabIndex="-1">
       <div className={ this.contentWidth()  }>
         <div className="row-fluid">
         <div className="cardTopRow span12">
@@ -998,6 +1055,7 @@ class PointCard extends React.Component {
       </div>
       {this.image()}
       </div>
+	  
     </div>
     </div>
     </div>

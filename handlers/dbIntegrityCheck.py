@@ -350,15 +350,15 @@ class DBIntegrityCheck(AuthHandler):
             # new version:
             message = mail.EmailMessage(
                 sender='aaron@whysaurus.com',
-                        to='aaronlifshin@gmail.com',
-                        cc='joshua@whysaurus.com',
-                        subject='Database Integrity Check Results %s' % str(PST.convert(datetime.datetime.now())),
-                        body=str(bigMessage),
-                        reply_to="aaron@whysaurus.com"
-                )                    
-                if html:
-                    message.html = template.render(path, template_values),
-                message.send()
+                to='aaronlifshin@gmail.com',
+                cc='joshua@whysaurus.com',
+                subject='Database Integrity Check Results %s' % str(PST.convert(datetime.datetime.now())),
+                body=str(bigMessage),
+                reply_to="aaron@whysaurus.com"
+            )                    
+            if html:
+                message.html = template.render(path, template_values),
+            message.send()
             # (end of new version)                    
                 
             self.queueNightlyTask()

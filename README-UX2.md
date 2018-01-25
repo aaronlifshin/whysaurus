@@ -9,7 +9,7 @@ The prototype uses https://facebook.github.io/react/ to build a fast, clean, rec
 
 1. Follow the normal Whysaurus installation instructions. You may want to use the instructions here https://github.com/aaronlifshin/whysaurus/pull/17/files until that PR gets merged to master
 2. Make sure you have `npm` installed. If you use `homebrew` on a Mac, you can do `brew install npm`. If you're on another platform, see the instructions here to get started: https://docs.npmjs.com/getting-started/installing-node
-Windows 7 gave us trouble but Windows 10 seems to work fine.
+*Windows 10 seems to work fine, but we haven't gotten this to work on Windows 7 yet (have tried multiple approaches, including via cygwin).
 3. In your project directory, run `npm install`. On windows, be sure to run as admin.
 4. On windows run `npm install webpack -g`
 5. Run `npm run bundle`

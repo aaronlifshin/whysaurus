@@ -1,35 +1,83 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
+
 // Positioning Grid setup
-@cardWidth: 360px;
-@indent: 15px;
-@cardPadding: 8px;
+@cardWidth: 420px;
+@indent: 36px;
+@cardListWidth: @cardWidth + ( 4 * @indent);
+
+@cardBorderWidth: 1px;
+@cardPadding: 14px;
+@cardPaddingRight: 12px;
+@cardPaddingTop: @cardPaddingRight * .75;
 
 @marginVerticalStandard: 16px;
-@marginVerticalSmall: 12px;
+@marginVerticalInsideCards: 14px;
 
-@cardListWidth: @cardWidth + @indent;
 
+// Colors
+@darkerGreyColor: #5d5d5d;
+@smallGreyLinkColor: #a9a9a9;
+@smallGreyLinkSize: 12px;
+@blueLight: hsl(196, 100%, 60%);
+@redLight: hsl(0, 100%, 48%);
+
+
+// Typography
+@baseFontSizeUX2: 16px;
+
+@fontSizeActionsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeStatsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeButtonsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizePointTitle: @baseFontSizeUX2 * 1.063; // ~17px
+@arrowFontSizeUX2: @baseFontSizeUX2 * 1.125; // ~18px
+
+
+// Animation
+@hoverTransitionDuration: .08s;
+
+
+
+
+
+
+//for testing animation
+.animPink {
+	background: pink !important;
+}
+
+#mainContainer {
+	// FOR INFINITE WIDTH VERSION
+	width: auto;
+	// FOR FINITE WIDTH COMMENT THIS LINE OUT
+	/////////////////
+}
 
 .row-fluid [class*=span] {
 	min-height: auto;
 }
 
-
-////////////////////////////
-// BG Pattern
-
-// BLUE version
-/*
-@bgColor: #F3FCFF;
-@bgGridColor: #E1F6FF;
-@bgGridWidth: 4px;
-@bgGridStroke: 2px;
-#header {
-	background-color: #cff1fc;
+a:hover {
+    color: @blue ;
 }
-*/
 
+a:focus, a:hover {
+	text-decoration: unset;
+}
+
+.dropdown-menu>li>a {
+    padding-top:3px;
+    padding-right:20px;
+    padding-bottom: 3px;
+    padding-left:3px;
+}
+
+.bringToFront {
+	z-index: 1000;
+}
+
+// BG Pattern
+//
 // B/W version
 @bgColor: white;
 @bgGridColor: #f7f7f7;
@@ -41,61 +89,419 @@ body {
     background-image: linear-gradient(to right, @bgGridColor @bgGridStroke, transparent @bgGridStroke), 
 	                  linear-gradient(to bottom, @bgGridColor @bgGridStroke, transparent @bgGridStroke);
 }
-
+// BLUE version
+/*
+@bgColor: #F3FCFF;
+@bgGridColor: #E1F6FF;
+@bgGridWidth: 4px;
+@bgGridStroke: 2px;
+#header {
+	background-color: #cff1fc;
+}
+*/
 //////////////////////////////////
 
+
+// BLOCKS OF EVIDENCE
 
 .pointStream {
 	margin-top: 2 * @marginVerticalStandard;
 	margin-left: 0;
+	margin-bottom: 60px;
+	
+	// FOR INFINITE WIDTH:
+	// *** max-content is perfect but doesn't not have full cross-browser support ***
+	width: max-content;
+	margin-left: 32px;
+	// FOR FINITE WIDTH COMMENT THESE LINES OUT
+	///////////////////
 }
 
-.pointCardGroup {
+.listedClaimGroup {
+	width: auto; 
+	//max-width: 600px; // ONE COLUMN VERSION
 }
 
-.point-card {
-	//background-color: red;
+
+// EVIDENCE BLOCK REVEAL ANIMATION:
+// See also: DEALING CARDS ANIMATION
+
+@keyframes evidenceBlockReveal {
+   0% { max-height: 20px; opacity: 0;  }
+   40% { opacity: 0; transform: translateY(-20px); } //  transform: scaleY(.5)
+   80% {  max-height: 500px; transform: translateY(0) } //  transform: scaleY(1
+   100% { max-height: 5000px; opacity: 1; }
+}
+
+.evidenceBlock {
 	display: inline-block;
-	width: @cardWidth;
-	border-width: 1px;
-    border-color: grey;
-    border-style: solid;
+	transform-origin: top left;
+	animation-name: evidenceBlockReveal;
+    animation-duration: .3s;
+	animation-timing-function: ease;
+	//animation-timing-function: ease-out;
+	animation-iteration-count: 1;
+	background-color: #0000ff50;
+	
+	//position: relative;
+	//z-index:-1;
+}
+
+.evidenceBlockEmpty {
+	//position: relative;
+	margin-top:-2 * @marginVerticalStandard;
+}
+
+
+.supportHeading, .counterHeading {
+	//margin-top: 20px;
+	margin-left: @indent + @cardBorderWidth + @cardPadding + 17; //the extra +17 covers the width of the cardstack
 	margin-bottom: @marginVerticalStandard;
-	background-color: white;
-	padding: @cardPadding;
-	padding-top: @cardPadding * .75;
+	color: @darkerGreyColor;
+	text-transform: uppercase;
+    font-size: @baseFontSize * 0.813; // ~13px
+}
+
+.counterHeading {
+	color: @red;
+}
+
+.evidenceBlockCounter, .evidenceBlockSupport {
+	display: inline-block;
+	float: left;
+	//transition: 1s;
+	//width: @cardListWidth;
+}
+
+.evidenceList {
+	margin-left: @indent; // Handled by relevanceLinkArea
+	margin-top: @marginVerticalStandard - 6px; // subtract some for the arrow
+}
+
+
+
+
+// CARD PLACEMENT AND RELEVANCE
+
+.listedClaimGroup {
+	//margin-top: 1px;
+}
+.listedClaim {
+	//padding-left: 3px;
+	padding-right: @cardPadding * 2;;
+	//padding-top: @cardPaddingTop;
+	outline-style: none;
+}
+
+.removeOneIndent {
+	position:relative;
+	left: -1 * @indent; 
+}
+
+@relevanceRevealDuration: .33s;
+@relGroupHiliteBG: #fffbd1;
+@keyframes relGroupHiliteReveal {
+   0% {background-color: #fffbd100;  }
+   100% { background-color: @relGroupHiliteBG; }
+}
+
+.relGroupHilite {
+	animation-name: relGroupHiliteReveal;
+    animation-duration: @relevanceRevealDuration;
+	animation-timing-function: ease;
+	animation-iteration-count: 1;
+	margin-bottom: @marginVerticalStandard * 1.3;
+	background-color: @relGroupHiliteBG;
+}
+
+.relevanceCtrlArea {
+	//background-color: pink;
+	width: @cardWidth + (2 * @cardPadding);
+	padding-bottom: 4px;
+	margin-top: 11px; // needs to be pretty big to account for the possibility of a cardstack above it
+	animation-name: relevanceCtrlAreaReveal;
+    animation-duration: @relevanceRevealDuration;
+	animation-timing-function: ease;
+	animation-iteration-count: 1;
+}
+
+
+@keyframes relevanceCtrlAreaReveal {
+   0% { max-height: 0; opacity: 0;  }
+   25% { opacity: 0; }
+   60% { max-height: 100px; }
+   100% { opacity: 1; }
+}
+
+.relCtrlLabel {
+	margin-bottom: @marginVerticalInsideCards;
+	padding-top: 10px;
+}
+
+.relCtrlVoteOptions {
+	margin-bottom: @marginVerticalInsideCards *2;
+	font-size:  @baseFontSizeUX2 * 1.75; // ~28px;
+    font-weight: bold;
+}
+
+.relevanceLinkArea {
+	display: inline-block;
+	vertical-align: top;
+	width: @indent;
+	text-align: right;
+	-o-transition:@hoverTransitionDuration;
+	-ms-transition:@hoverTransitionDuration;
+	-moz-transition:@hoverTransitionDuration;
+	-webkit-transition:@hoverTransitionDuration;
+	/* ...and now for the proper property */
+	transition:@hoverTransitionDuration;
+	transform-origin: bottom center;
+}
+
+.listedClaim:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
+    transform: scale(1.085) ;
+	font-weight: bold;
+	color: @blue ;
+}
+
+.relevanceLink {
+	position: relative;
+	top: 6px;
+	margin-bottom: 3px;
+	padding-right: 4px;
+	width: 100%;
+	//font-weight: bold;
+	//color: @darkerGreyColor;
+}
+.relevanceLink.counter {
+	color: @red ;
+}
+.relevanceLink.support {
+	color: black; // @darkerGreyColor ;
+}
+.relevanceLink:hover {
+	color: @blue;
 }
 
 .relevanceDisplay {
-	position: relative;
-	margin-left: @cardPadding;
-	margin-bottom: 3px;
+	position:relative;
+	top: -6px;
+	right: 1px;
+    font-size: @baseFontSize * 0.813; // ~13px
+	font-family: ff-meta-web-pro-condensed;
 }
 
-.relVoteGroup {
-	position: relative;
-    top: 2px; // not sure why this is nec
-	margin-bottom: 0px;
-	margin-left: 12px;
-	padding: 0px
+.relCtrlGroup {
+	margin-left: @indent + @cardPadding + 19px; // +19 to account for the width of the cardStack
 }
 
 .relVoteLink {
-	margin-left: 8px;
+	margin-right: 16px;
+	display: inline-block; // needed for scale down on click
+	//color: black;
+	//color: pink;
+}
+.relVoteLink:hover {
+	text-decoration: underline;
+}
+
+// scale down on click
+.relVoteLink:active {
+    transform: scale(0.92);
+}
+
+
+.myRelevanceVoteHigh {
+	color: black !important;
+}
+.myRelevanceVoteLow {
+	color: @red !important;
+}
+
+.perctSignSmall {
+	font-size: 60%;
+	vertical-align: top;
+}
+
+a:hover .perctSignSmall {
+	display: inline-block;
+	text-decoration: none !important;
+
+}
+
+.numbersFixVertAlign {
+	vertical-align: top;
+}
+
+.stackCardGroup {
+	position: relative; 
+	display: inline-block;
+	margin-bottom: -8px;
+	outline-style: none;
+}
+.stackCardGroup:focus {
+	outline-style: none;
+}
+
+.stackCard {
+    border-color: hsl(210, 0%, 75%);
+	border-width: @cardBorderWidth;
+    border-style: solid;
+	background-color: white;
+	width: @cardWidth;    
+ 	position: relative;   
+    left: 3px;
+    top: -3px;
+	box-sizing: border-box;
+	transform-origin: top left;
+}
+
+// DEALING CARDS ANIMATION:
+// See also EVIDENCE BLOCK REVEAL ANIMATION
+
+@stackDealY: 320px;
+@stackDealX: 0; 
+@stackDealDuration: 0.15s;
+@stackDealTimingFunction: cubic-bezier(.25, 0, .9, .4);  // ease-out and accelerate
+@stackDealNumberOfCards: 3;
+
+@keyframes stackCardDealBottom {
+   0% { transform: translate(0, 0); }
+   100% { transform: translate(@stackDealX, @stackDealY); }
+}
+.stackCardDealBottom {	
+	animation-name: stackCardDealBottom;
+    animation-duration: @stackDealDuration;
+	animation-timing-function: @stackDealTimingFunction;
+	animation-iteration-count: 1;
+}
+
+@keyframes stackCardDealInvertXform {
+   0% { transform: translate(0, 0); }
+   100% { transform: translate( (-1 * @stackDealX / @stackDealNumberOfCards), (-1 * @stackDealY / @stackDealNumberOfCards)); }
+}
+.stackCardDealInvertXform {
+	animation-name: stackCardDealInvertXform;
+    animation-duration: @stackDealDuration;
+	animation-timing-function: @stackDealTimingFunction;
+	animation-iteration-count: 1;	
+}
+
+.stackCardDealFade {
+	// make border disappear with alpha bc it won't reposition children 
+	// use !important to override red borders from .counter
+	border-color: rgba(0,0,0,0) !important; 
+	background: none !important; 
+	-o-transition: @stackDealDuration;
+	-ms-transition: @stackDealDuration;
+	-moz-transition: @stackDealDuration;
+	-webkit-transition: @stackDealDuration;
+	transition: @stackDealDuration;
+	transition-timing-function: @stackDealTimingFunction;
+}
+.stackCardHidden {
+	border-color: rgba(0,0,0,0) !important; // make border disappear with alpha bc it won't reposition children 
+	background: none !important;
+}
+
+
+.point-card {
+	//background-color: red;
+	display: inline-flex;	
+	-webkit-inline-flex: 1;
+	-ms-inline-flexbox: 1;
+	
+	//display: flex; 
+	//-webkit-flex: 1; /* Safari 6.1+ */
+    //-ms-flex: 1;
+	
+	//position: sticky;
+	//top: 70px;
+	vertical-align: top;
+	overflow-wrap: break-word;
+	//margin-bottom: -2px; // overlap bottom border with top border of the next point down, for now
+	padding-left: @cardPadding;
+	padding-right: @cardPaddingRight;
+	padding-top: @cardPaddingTop;
+	padding-bottom: @cardPaddingTop;
+}
+
+.relExtraMarginBottom {
+	margin-bottom: @marginVerticalStandard *.5;
+}
+
+.point-card {
+  &.support {
+    //top:9px;
+  }
+  &.oppose {
+    border: 1px red solid;
+  }
+  &.root {
+    border: 1px black solid;
+  }
+}
+
+
+.point-card:focus {
+	outline-style: none;
+}
+
+.stackCardGroup:hover .stackCard {
+	background-color: hsla(0, 0%, 97%, 1); 
+}
+/*
+.point-card:hover {
+	background-color: hsla(0, 0%, 96%, 1); 
+	outline-style: none;
+}
+*/
+.stackCardGroup:focus .stackCard {
+/*.listedClaim:focus .stackCard {*/
+	//background-color:green !important; // for testing
+	//background-color:white; // for testing
+    background-color: hsla(0, 0%, 97%, 1); //white; // #f6fdff; //rgb(244, 253, 255);
+	outline-style: none;	
+}
+	
+// red styling on CPs
+.stackCard.counter {
+	border-color: #f6a3a3 ;
+}
+.stackCardGroup:focus .stackCard.counter {
+/*.listedClaim:focus .stackCard.counter {*/
+
+	background-color: hsla(330,50%, 97%, 1);
+}
+.stackCardGroup:hover .stackCard.counter {
+/*.listedClaim:focus .stackCard.counter {*/
+	background-color: hsla(330, 100%, 96%, 1) ;
+}
+/*
+.point-card.counter:hover {
+	background-color: hsla(330, 100%, 96%, 1) ;
+}
+*/
+
+
+// FUNCTIONALITY INSIDE CARDS
+
+.fullWidthContent {
+	//padding-right: 12px;
 }
 
 .cardTopRow {
-    font-size: 12px;
-    color: #a9a9a9;
-	margin-bottom: @marginVerticalSmall;
+    font-size: @smallGreyLinkSize;
+    color: @smallGreyLinkColor;
+	margin-bottom: 6px;
 }
 
 .cardTopRowItem {
 	margin-right: 10px;
 }
 
-.cardTopRowIconWithStat {
-	margin-right: 1px;
+.iconWithStat {
+	margin-right: 2px;
 }
 
 .byline {
@@ -104,60 +510,328 @@ body {
 }
 
 .byline:hover {
+	//color: @grayTextLighter;
+	text-decoration: underline;
+}
+
+.moreMenu {
 	color: @grayTextLighter;
+	font-weight: bold;
+}
+.moreMenu:hover {
+	text-decoration:none;
 }
 
 
 .pointText {
-	margin-bottom: @marginVerticalSmall;
+	margin-bottom: @marginVerticalInsideCards;
+	padding-right: 2%;
 }
+
+.pointTitle {
+	color: black;
+    font-weight:500; // using the "Book" weight of Meta, from TypeKit
+	line-height: @lineHeightBigger;
+    letter-spacing: @letterSpacingSubtle;
+	font-size: @fontSizePointTitle;
+	//margin-bottom: 17px; 
+    //padding-left: 1px;
+    //padding-right:4px;
+}
+
+.pointTitle a {
+	color: black;
+}
+
+// unused now that edit is inside the more menu
+.editLink {
+	padding-left: 4px;
+	padding-right: 4px;
+	font-size: @smallGreyLinkSize;
+    color: @smallGreyLinkColor !important;
+	//font-style: italic;
+}
+
+.ux2ScoreInLine {
+	display: inline-block;
+}
+
+.scorePreAnimate {
+	display: inline-block;
+}
+
+.negativeScore {
+	color: @red;
+}
+
+.Score--bounce{
+  animation:Score-keyframes--bounce .4s ease;
+  transform-origin: left bottom;
+}
+@keyframes Score-keyframes--bounce{
+  0% { transform:scale(1) }
+  40% { transform:scale(1.1) } 
+  100% { transform:scale(1) }  
+}
+
 
 .vote-stats {
     background: white;
-    border: 1px black solid;
-	width: 120px;
+    border: 1px grey solid;
+	width: 150px;
     position: relative;
-    left: -6px;
-    top: 24px;
+    left: 10px;
+    top: -4px;
 }
 
 .vote-stats p{
-	padding: 4px;
+	padding: 6px;
 	margin-bottom:4px;
+	font-size: @fontSizeStatsUX2;
 }
 
-.pointcardBottomRowAction {
+.menuDivider {
+    width: 100%;
+    border-bottom-color: #cccccc;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.pointCardImageContainer {
+	//display: flex;   
+	//-webkit-flex: 1; /* Safari 6.1+ */
+    //-ms-flex: 1;  /* IE 10 */ 
+	//background-color: blue;
+	//padding-top: @cardPadding - @cardPaddingTop;
+	//float: right;
+}
+
+.pointCardImage {
+    width: 100%;
+	height: 100%;
+	max-height: 140px;
+	object-fit: cover;
+}
+
+.sources {
+	margin-bottom: 5px;
+}
+
+.source a {
+	//padding-left: 4px;
+	//padding-right: 4px;
+	font-size: @smallGreyLinkSize;
+    color: @smallGreyLinkColor; // !important;
+	//font-style: italic;
+}
+
+
+.cardBottomAction {
+	font-size: @fontSizeActionsUX2;
+    color: black; // @grayTextLighter ;  /*@blue ;*/
+    /*font-weight: bold;*/
+	//margin-bottom:2px;
 	margin-right: 12px;
+    //margin-right:4px; 
+    margin-top:4px;
+    display:inline-block;
+    z-index:1000;
+    //font-weight: bold
 }
+.cardBottomAction:hover {
+	text-decoration: underline;
+}
+
+// scale down on click
+@cardBottomActionScaleUpOnHover: 1.055;
+@cardBottomActionScaleDownOnClick: 0.96 * @cardBottomActionScaleUpOnHover;
+.cardBottomAction:active {
+    transform: scale(@cardBottomActionScaleDownOnClick) !important ;
+}
+
+/*.point-card:hover .cardBottomAction, .point-card:focus .cardBottomAction {
+    color: @blue ;
+}*/
+
+.cardBottomActionRow {
+	margin-top: 5px;
+  -o-transition:@hoverTransitionDuration;
+  -ms-transition:@hoverTransitionDuration;
+  -moz-transition:@hoverTransitionDuration;
+  -webkit-transition:@hoverTransitionDuration;
+  /* ...and now for the proper property */
+  transition:@hoverTransitionDuration;
+  transform-origin: bottom left;
+}
+.stackCardGroup:focus .cardBottomActionRow, .stackCardGroup:focus .cardBottomAction  {
+/*.listedClaim:focus .cardBottomActionRow, .listedClaim:focus .cardBottomAction  {*/
+	font-weight: bold;
+	color: @blue ;
+}
+/*.stackCardGroup:hover .cardBottomActionRow, .stackCardGroup:hover .cardBottomAction  {
+    transform: scale(@cardBottomActionScaleUpOnHover) ;
+	font-weight: bold;
+	color: @blue ;
+}*/
+.point-card:hover .cardBottomActionRow, .point-card:hover .cardBottomAction  {
+    transform: scale(@cardBottomActionScaleUpOnHover) ;
+	font-weight: bold;
+	color: @blue ;
+}
+
+
+
+
+.evidenceContainer {
+    display: inline-block;	
+	// fixed width for roll-over method of switching from No Evidence to Add Evidence, but unnecessary with the scaling approach
+    //width: 97px;
+}
+
 .agree {
-	margin-right: 6px;
+	//margin-right: 6px;
 }
 
-
-.supportHeading, .counterHeading {
-	margin-bottom: 12px;
+.disagree {
+	margin-right: 24px;
 }
 
-
-.evidenceList {
-	display: inline-block;
-	float: left;
-	width: @cardListWidth;
-	margin-left: @indent;
+.addEvidenceButtonGrp {
+	margin-bottom: @marginVerticalStandard *2.5;
+	margin-top: @marginVerticalStandard * 3;
+	margin-left: 14px;
+	color: black;
+	width: max-content;
 }
 
-.point-card.counter {
-	border-color: #ff5c5c;
+.addEvidenceButtonGrpCounter {
+	margin-bottom: @marginVerticalStandard * 2.5;
+}
+
+.buttonUX2 {
+	padding: 5px;
+	padding-left: 11px;
+	padding-right: 12px;
+    margin-bottom: 0;
+    //font-family: ff-meta-web-pro-condensed,sans-serif;
+    font-weight: 700;
+    font-size: @fontSizeButtonsUX2;
+    font-style: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+    background-color: hsl(0, 0%, 25%);
+    border: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.buttonUX2:focus {
+    outline: 2px solid @blue;
+}
+.buttonUX2:hover {
+    background-color: black;
+}
+@buttonUX2ScaleDownOnClick: 0.975;
+.buttonUX2:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
+	outline-style: none;
+}
+.buttonUX2Blue {
+	background-color: @blue;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @blueLight;
+}
+.buttonUX2Blue:hover {
+    background-color: @blueLight;
+}
+.buttonUX2Red {
+	background-color: @red;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @redLight;
+}
+.buttonUX2Red:hover {
+    background-color: @redLight;
+}
+.cancelButton {
+	background: none;
+	border: none;
+	font-size: @fontSizeActionsUX2;
+	outline-style: none;
+}
+.cancelButton:hover {
+	text-decoration:underline;
+}
+.cancelButton:focus {
+	text-decoration:underline;
+	outline-style: none;
+}
+
+.cancelButton:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
 }
 
 .addEvidenceButton {
-	margin-bottom: @marginVerticalStandard;
+    display: table; // seems necessary for scaling on hover to work, but also causes underline
+    top: -20px;
+    left: 14px;
+    position: relative;	
+	width: auto;
 }
 
+@buttonUX2ScaleUpOnHover: 1.025;
+.addEvidenceButtonGrp:hover .addEvidenceButton {
+	text-decoration: none !important;
+	//text-decoration-color: @blue;
+	transform: scale(@buttonUX2ScaleUpOnHover);
+    transform-origin: top left;
+	transition: @hoverTransitionDuration;
+	background-color: black;
+}
+.addEvidenceButtonGrp:hover .buttonUX2Red {
+    background-color: @redLight;
+}
 
+.addEvidenceButton:active {
+    transform: scale(@buttonUX2ScaleUpOnHover * @buttonUX2ScaleDownOnClick) !important;
+}
 
+.addEvidenceFormGroup {
+	margin-top: @marginVerticalStandard * 1.35;
+}
 
+.addEvidenceForm {
+	margin-top: 0; 
+}
 
+.arrowAddEvidenceForm {
+    font-size: @arrowFontSizeUX2;
+    position: relative;
+	left: 14px;
+	top: -6px;
+}
+
+.addEvidenceFormTextField {
+	height: 28px;
+	width: @cardWidth;
+    font-size: @baseFontSizeUX2;
+    padding: 8px;
+}
+
+.addEvidenceFormButton {
+	margin-left: 4px;
+	margin-right: 4px;
+	height: 36px;
+    //width: 24px;
+	font-size: @baseFontSizeUX2 * 1.13125; // ~21px
+}
+
+.fullWidth {
+	width: 100%;
+}
 
 .hover {
     position: relative;
@@ -186,9 +860,182 @@ body {
 }
 
 .point-card .agree.current-vote {
-    color: green;
+    color: black; //@green;
+	font-weight: bold;
 }
 
 .point-card .disagree.current-vote {
-    color: red;
+    color: @red;
+	font-weight: bold;
+}
+
+// ARROWS
+
+
+.arrowPointToSupport {
+	font-size: @arrowFontSizeUX2;
+	position: relative;
+	left: 52px;
+    top: -13px;
+}
+
+.arrowCard {
+	font-size: @arrowFontSizeUX2;
+    position: relative;
+    top: -5px;
+	right: 8px;
+    //color: @darkerGreyColor;
+}
+
+.arrowAddEvidenceButton {
+/*	font-size: 10px;
+	margin-bottom: 2px;
+	margin-left:2px;
+	display:inline-block;*/
+	font-size: @arrowFontSizeUX2;
+	margin-bottom: 2px;
+	margin-left:4px;
+}
+
+.addEvidenceButtonGrpCounter .arrowAddEvidenceButton {
+	color: @red;
+}
+
+a:hover .arrowAddEvidenceButton {
+	display: inline-block; 
+	text-decoration: none !important;
+}
+
+
+// DASHED LINES
+
+.dashedLine {
+    color: #acacac;
+    width: 1px;
+    border-left-style: dashed;
+    border-left-width: 1px;
+    position: absolute;
+}
+
+.dottedLine {
+    //color: #acacac;
+    width: 1px;
+    border-left-style: dotted;
+    border-left-width: 1px;
+    position: absolute;
+}
+.dottedLineRelevanceLink {
+    height: 27px;
+    margin-left: 19px;
+    margin-top: -33px;
+}
+.counter .dottedLine {
+	color: @red;
+}
+
+.listedClaim:hover .dottedLineRelevanceLink, .listedClaim:focus .dottedLineRelevanceLink  {
+	color: @blue ;
+	height: 32px;
+    margin-top: -38px;
+}
+
+// not used yet
+.dashedLineEvidenceBlock {
+	height: 45%;
+    margin-left: 18px;
+    margin-top: -26px;
+}
+
+.transitionDashedLine {
+	transform: scaleY(2) ;
+	transform-origin: bottom;
+	transition: @hoverTransitionDuration;
+}
+
+.addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {
+    //border-width: 3px;
+    //margin-left: 5px;
+    margin-top: -68px;
+	transition: @hoverTransitionDuration;
+	height: 72px;
+	//color: @blue;
+}
+
+.addEvidenceButtonGrp:hover .arrowAddEvidenceButton {
+	//transform: scale(1.3) translateY(1px);
+	//transform-origin: bottom;
+	//transition: @hoverTransitionDuration;
+	//color: @blue;
+}
+
+.dottedLineAddEvidenceButton {
+    margin-left: 6px;
+	display: inline;
+	z-index: -5;
+	height: 66px;
+    margin-top: -60px;
+}
+.dottedLineAddSupport, .dottedLineAddCounter {
+}
+.dottedLineAddCounter {
+	color: @red;
+}
+.dottedLineNoEvidence {
+	height: 27px;
+    margin-top: -26px;
+}
+
+
+// RESPONSIVE -- TO DO: move this to a separate css file
+
+// zoom out a bit for smaller monitors
+// using height because the purpose here is to be able to fit more evidence on screen
+@media (max-device-height: 680px) {
+	#mainContainer {
+		zoom: .8;
+	}
+}
+
+@media (max-width: 767px) {
+
+ @cardWidthSmallScreens: 80vw;
+
+  body {
+    padding-left:10px;
+  }
+
+  #header {
+	position: fixed;
+	width: 100vw; // viewport-width units
+  }
+  
+  .container {
+    //left: 10px;
+    //position: absolute;
+  }
+	
+  .pointStream {
+	margin-top: 24px;
+	margin-left: 0;
+  }
+  
+  .listedClaimGroup {
+	width: @cardWidthSmallScreens + (2 * @indent); 
+  }
+
+  .point-card {
+	//background-color: red;
+	display: inline-block;
+	width: @cardWidthSmallScreens; // viewport-width units
+  }
+  
+  .stackCard {
+  	width: @cardWidthSmallScreens; // viewport-width units
+  }
+  
+  .pointCardImage {
+	margin-top: @marginVerticalStandard;
+  }
+  
+
 }

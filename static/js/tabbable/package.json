@@ -1,0 +1,61 @@
+{
+  "_from": "jquery.tabbable",
+  "_id": "jquery.tabbable@1.0.1",
+  "_inBundle": false,
+  "_integrity": "sha1-JT8JagPi6zwotdvrYsNt7HnVcEg=",
+  "_location": "/jquery.tabbable",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "jquery.tabbable",
+    "name": "jquery.tabbable",
+    "escapedName": "jquery.tabbable",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/jquery.tabbable/-/jquery.tabbable-1.0.1.tgz",
+  "_shasum": "253f096a03e2eb3c28b5dbeb62c36dec79d57048",
+  "_spec": "jquery.tabbable",
+  "_where": "C:\\DATA\\PROJECTS\\ACTIVE\\Whysaurus_local\\Product\\CODE\\Git\\branch_point-card-apollo\\Working\\whysaurus_point-card-apollo",
+  "author": {
+    "name": "Mark Lagendijk",
+    "email": "mark@lagendijk.info"
+  },
+  "bugs": {
+    "url": "https://github.com/marklagendijk/jQuery.tabbable/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Simple utility for selecting the next / previous 'tabbable' element. Includes and uses the ':tabbable' and ':focusable' selectors from jQuery UI Core.",
+  "devDependencies": {
+    "gulp": "~3.3.0",
+    "gulp-rename": "~0.2.1",
+    "gulp-uglify": "~0.1.0"
+  },
+  "homepage": "https://github.com/marklagendijk/jQuery.tabbable",
+  "keywords": [
+    "jQuery",
+    "tab",
+    "focus",
+    ":tabbable",
+    ":focusable"
+  ],
+  "license": "MIT",
+  "main": "jquery.tabbable.js",
+  "name": "jquery.tabbable",
+  "repository": {
+    "type": "git",
+    "url": "git+https://marklagendijk@github.com/marklagendijk/jQuery.tabbable.git"
+  },
+  "scripts": {
+    "minify": "gulp minify"
+  },
+  "version": "1.0.1"
+}

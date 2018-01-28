@@ -337,13 +337,30 @@ class DBIntegrityCheck(AuthHandler):
             self.response.out.write(self.template_render('message.html', template_values))                    
         else:
             path = os.path.join(os.path.dirname(__file__), '../templates/dbcheck.html')
-            mail.send_mail(sender='aaron@whysaurus.com',
+            
+            # old version, delete once the new version is working:            
+            # mail.send_mail(sender='aaron@whysaurus.com',
+            #    to='aaronlifshin@gmail.com',
+            #    subject='Database Integrity Check Results %s' % str(PST.convert(datetime.datetime.now())),
+            #    html=template.render(path, template_values),
+            #    body=str(bigMessage),
+            #    reply_to="aaron@whysaurus.com"
+            #    )
+                
+            # new version:
+            message = mail.EmailMessage(
+                sender='aaron@whysaurus.com',
                 to='aaronlifshin@gmail.com',
+                cc='joshua@whysaurus.com',
                 subject='Database Integrity Check Results %s' % str(PST.convert(datetime.datetime.now())),
-                html=template.render(path, template_values),
                 body=str(bigMessage),
                 reply_to="aaron@whysaurus.com"
-                )
+            )                    
+            if html:
+                message.html = template.render(path, template_values),
+            message.send()
+            # (end of new version)                    
+                
             self.queueNightlyTask()
             template_values = {
                 'message': "Sent email successfully. Queued nightly task.",

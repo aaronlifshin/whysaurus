@@ -344,9 +344,9 @@ a:visited {
 .newPointInputRowFieldArea {
     // use the full width, minus the space needed for the publish button
     // the ~ and "" is needed to pass the calc command through the less compiler
-    width: -moz-calc(~"100% - 150px");
-    width: -webkit-calc(~"100% - 150px");
-    width: calc(~"100% - 150px");
+    width: -moz-calc(~"100% - 165px");
+    width: -webkit-calc(~"100% - 165px");
+    width: calc(~"100% - 165px");
     margin-right:8px;
     display:inline;
 }
@@ -372,9 +372,9 @@ a:visited {
   	-moz-border-radius: 0px;
   	border-radius: 2px; 
   	font-size: 16px;   
-    height: 32px;  
+    height: 36px;  
     width: 100%;   
-    padding-left: 4px;
+    padding-left: 8px;
     padding-right: 4px;
     padding-bottom: 4px;
 }
@@ -898,10 +898,10 @@ JSON error related to displaying comments. But when I don't use this class, the 
  .pointActionButton {
     margin-top:0px;
     margin-bottom:2px;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom:5px;
+    //padding-left: 12px;
+    //padding-right: 12px;
+    //padding-top: 8px;
+    //padding-bottom:5px;
     font-size: 20px
  }
  
@@ -2436,6 +2436,8 @@ button#counter_addPointWhenNonZero {
 	padding-top:9px;
     padding-bottom:12px;
 	cursor:pointer;
+    border-style: none;
+    border-radius: 3px;
 }
 
 [id^=signInWith] a {
@@ -2444,13 +2446,22 @@ button#counter_addPointWhenNonZero {
 }
 
 #signInWithFacebook_Dlg {
-    background-color: #4267b2; //FB branding blue
+    background-color: hsl(220, 46%, 48%); //FB branding blue
+}
+#signInWithFacebook_Dlg:hover {
+    background-color: hsl(220, 66%, 58%); //FB branding blue
 }
 #signInWithGoogle_Dlg {
-    background-color: #ea4335; //Google branding red
+    background-color: hsl(5, 81%, 56%); //Google branding red
+}
+#signInWithGoogle_Dlg:hover {
+    background-color:hsla(5, 98%, 65%, 1); //Google branding red
 }
 #signInWithEmail_Dlg {
-    background-color: black;
+    background-color: hsla(0, 0%, 5%, 1); 
+}
+#signInWithEmail_Dlg:hover {
+    background-color: hsla(0, 0%, 25%, 1);
 }
 
 @modalSignInWithPaddingH: 24px;
@@ -2466,12 +2477,16 @@ button#counter_addPointWhenNonZero {
 
 [id^=signInWith] a {
 	line-height: 2em;
+    text-decoration: none;
 }
 
 [id^=signInWith]:hover {
-	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
-	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+[id^=signInWith]:active {
+    transform: scale(.975);
 }
 
 
@@ -2484,15 +2499,19 @@ button#counter_addPointWhenNonZero {
 }
    
 #showSignupDialog {
-	margin-top: 15px;
+	margin-top: 8px;
+    margin-bottom: 16px;
 }
 
 #forgot_emailLoginDialog {
-	//margin-left: 15px;	
+	margin-top: 8px;	
+    margin-right: 8px;
+    font-size: 14px;
+    color: hsl(0, 0%, 59%);
 }
 
 #cancel_emailLoginDialog {
-	//margin-right: 15px;
+	margin-left: 5px;
 }
 
 #showSignupDialog {
@@ -2505,12 +2524,13 @@ button#counter_addPointWhenNonZero {
    
 #backToLogin    {
     margin-left: 15px;     
-    margin-bottom: 15px; 
+    margin-bottom: 18px; 
+    margin-top: 6px;
 }
 
 #cancel_signupDialog {
     margin-right: 5px;
-	margin-left:15px;
+	margin-left: 5px;
 }
 
 
@@ -3090,7 +3110,11 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
 .modalSubheading {
     padding-top: 24px;
-    color: @grayTextDark;
+    margin-bottom: 12px;
+    color: #969696;
+    font-size: 15px;
+    padding-left: 8px;
+    font-family:"ff-meta-web-pro-condensed", sans-serif;	
 }
 
 .modal label, .accordion-group-heading {
@@ -3468,6 +3492,59 @@ h2.idLinkOffset:before {
     //background-color:red;
 }
 
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   FEEDBACK FOOTER LINK
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#footer
+{
+    position:fixed;
+    bottom: 0;
+    right:0;
+    //margin-bottom:18px;
+    //background-color: #f0f0f0;
+    padding: 8px;
+    width: 72px;
+}
+
+a.feedbackFooterLink {
+    //color: black;
+    font-size: 14px;
+    display: inline-block;
+    text-align: right;
+    font-weight: 500;
+    color: hsl(0, 0%, 60%);
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   FEEDBACK PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.contactTitle {
+    margin-top: 18px;
+    margin-bottom: 36px;
+}   
+   
+.contactForm {
+    margin-top: 32px;
+}
+
+.contactForm input {
+    height: 28px;
+}
+
+.contactForm label {
+    font-size: 1em;
+}
+
+.contactTextArea {
+    margin-top: 10px;
+}
+   
+.error {
+    color: @red;
+}
+   
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    ADMIN PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */

@@ -1,5 +1,6 @@
 import os
 import constants
+import datetime
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import mail
@@ -9,9 +10,9 @@ from authhandler import AuthHandler
 class ContactSend(AuthHandler):
     def post(self):
         mail.send_mail(
-            sender='aaron@whysaurus.com',
+            sender='community@whysaurus.com',
             to='community@whysaurus.com',
-            subject='WHYSAURUS CONTACT RE: ' + self.request.get('subject'),
+            subject='WHYSAURUS CONTACT RE: ' + self.request.get('subject') +' date: '+ PST.convert(datetime.datetime.now()),
             body='From: ' + self.request.get('name') + '\n' + self.request.get('message'),
             reply_to=self.request.get('email')
         )

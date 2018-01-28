@@ -281,10 +281,14 @@
     {% else %}
       <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
          <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">          
-            <div class="modal-header"><h3>Sign In</h3></div>
+            <div class="modal-header"><h3>Sign in</h3></div>
                 
             <div class="row-fluid" id="alertArea"></div>    
-            <div class="modal-body">    
+            <div class="modal-body">
+                <div class="row-fluid">   
+                  <a  id="showSignupDialog" class="btn">New users click here to sign up</a>
+                   <p class="modalSubheading">Returning users:</p>     
+                </div>         
               <div class="control-group">            
                 <label class="control-label" for="login_userEmail">Email or Username</label>
                 <div class="controls">            
@@ -302,12 +306,9 @@
             </div>
             <div class="modal-footer">
                 <div class="row-fluid">
-                  <a  id="forgot_emailLoginDialog" class="btn pull-left">Forgot Password</a>  
-                  <a  id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>                                        
+                  <a  id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a> 
                   <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right" onclick="ga('send', 'event', 'Login', 'Sign in Whysaurus User')">Sign In</a>
-                </div>
-                <div class="row-fluid">                
-                    <a  id="showSignupDialog" class="btn btn-cancel">New to Whysaurus? Click here to sign up.</a>                                                    
+                  <a  id="forgot_emailLoginDialog" class="pull-right">Forgot Password</a>                  
                 </div>
             </div> 
           </form>
@@ -316,7 +317,7 @@
       <div class="modal hide fade" data-keyboard="true" id="signupDialog" role="dialog" aria-hidden="true">
          <form id='frm_signupDialog' class="form-horizontal" action="" method="POST">          
             <div class="modal-header"><h3>Sign Up</h3></div>    
-            <a  id="backToLogin" class="btn">Already a User? Click here to sign in.</a>                                                    
+            <a  id="backToLogin" class="btn">Got an account? Click here to sign in.</a>                                                    
             
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">       
@@ -331,14 +332,14 @@
                 <label class="control-label" for="signup_userEmail">Email Address</label>
                 <div class="controls">            
                     <input id="signup_userEmail" name="signup_userEmail" type="text"
-                    placeholder="For logging in and receiving Whysaurus notifications..."></input>
+                    placeholder="For signing in and notifications"></input>
                 </div>
               </div>  
               <div class="control-group">            
                 <label class="control-label" for="signup_password1">Password</label>
                 <div class="controls">            
                     <input id="signup_password1" name="signup_password1" type="password"
-                    placeholder="At least 8 characters long, with both a letter and a number..."></input>
+                    placeholder="8+ characters with a letter and a number"></input>
                 </div>
               </div>
               <div class="control-group">            
@@ -348,33 +349,33 @@
                     placeholder=""></input>
                 </div>
               </div>       
-              <h5 class="modalSubheading">Optional: Tell the community more about yourself </h5>
+              <p class="modalSubheading">Optional</p>
               <div class="control-group">            
-                <label class="control-label" for="signup_userWebsite">Website URL</label>
+                <label class="control-label" for="signup_userWebsite">Website</label>
                 <div class="controls">            
                     <input id="signup_userWebsite" name="signup_userWebsite" type="text" value=""
-                    placeholder="Link to your website..."></input>
+                    placeholder="http://..."></input>
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="signup_userAreas">Expertise</label>                            
                 <div class="controls">            
                     <input id="signup_userAreas" name="signup_userAreas" type="text" value=""
-                    placeholder="Subjects you know about..."></input>
+                    placeholder="Stuff you know about"></input>
                 </div>
               </div>
               <div class="control-group">
                 <label  class="control-label" for="signup_userProfession">Profession</label>                                      
                 <div class="controls">            
                     <input id="signup_userProfession" name="signup_userProfession" type="text" value=""
-                    placeholder="Your current profession..."></input>
+                    placeholder="Your day job"></input>
                 </div>
               </div>
               <div class="control-group">
-                <label  class="control-label" for="signup_userBio">Short Biography </label>                                                
+                <label  class="control-label" for="signup_userBio">Bio</label>                                                
                 <div class="controls">            
                     <textarea id="signup_userBio" name="signup_userBio" type="text" rows="3"
-                    placeholder="Anything else about yourself that you'd like to share..."></textarea>   
+                    placeholder="Anything else about yourself that you'd like to share"></textarea>   
                 </div>
               </div>        
             </div>    
@@ -427,7 +428,10 @@
 
     {% block mainPageContent %} 
     {% endblock %}
-  </div>     
+    <div id="footer">
+        <a href="/contact" target="_blank" class="feedbackFooterLink">Give us Feedback</a>
+    </div>
+    </div>    
     {% profiler_includes %}    
   </body> 
 </html>

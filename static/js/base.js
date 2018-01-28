@@ -198,9 +198,8 @@ function getNewSourcesNames() {
 }
 
 function createPointFromMainPage() {
-    ga('send', 'event', 'Main Page Action', 'Make a Point');
-    
     if ($('#newPointTitle').val().length > MAX_TITLE_CHARS) {
+        ga('send', 'event', 'Main Page Action', 'Make a Point Failed', 'Title Length Exceeded', $('#newPointTitle').val().length);
         showAlert('Please do not exceed ' + MAX_TITLE_CHARS + ' characters for the title.');
         return;
     }
@@ -208,6 +207,9 @@ function createPointFromMainPage() {
         showAlert('To create a point you must enter something for the title!');      
         return;
     }
+    
+    ga('send', 'event', 'Main Page Action', 'Make a Point', 'Main Page Make A Point');
+    ga('send', 'event', 'Point', 'Create Point', 'Create Point Main Page');
     
     startSpinnerAfterButton('#mainPagePublish');    
         
@@ -385,13 +387,16 @@ function stopSpinner() {
 function submitPointDialog(clickedElement) {
     var dialogAction = $(clickedElement).data('dialogaction');
     if (dialogAction == "new") {
+        ga('send', 'event', 'Point', 'Create Point', 'Point Dialog New Point');
         ga('send', 'event', 'Point Dialog', 'Publish to Library', 'New');
         newPoint();
     } else if (dialogAction == "edit") {
+        ga('send', 'event', 'Point', 'Edit Point', 'Point Dialog Edit');
         ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Edit');
         callPointEdit();
     } else if (dialogAction == "createLinked") {
         var linkType = $(clickedElement).data('linktype');
+        ga('send', 'event', 'Point', 'Add ' + linkType + ' point', 'Point Dialog Add ' + linkType + ' point');
         ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Add ' + linkType + ' point');
         addPoint(linkType);
     }
@@ -1655,7 +1660,7 @@ function activateHeaderAndDialogs() {
                     
     } else {
         $( "#CreatePoint" ).on('click', function() {
-            ga('send', 'event', 'Header Menu', 'Make a Point');
+            ga('send', 'event', 'Header Menu', 'Header Make A Point', 'Header Make A Point');
             showPointDialog("new", "New Point");
         });
 

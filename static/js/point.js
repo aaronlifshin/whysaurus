@@ -720,6 +720,9 @@ function sendRelevanceVote(event) {
     $('.styledRadio').off('.ys');        
     voteValue = selectedRadioButton.val();	
     linkType = relBase.data('linktype');
+    parentRootURL = $('#pointArea').data('rootus');
+    childRootURL = relBase.data('childurlsafe');
+    
     //_gaq.push(['_trackEvent', 'Vote', 'Relevance of ' + linkType , voteValue]);
     ga('send', 'event', 'Vote', 'Relevance of ' + linkType, voteValue);
                         
@@ -728,8 +731,8 @@ function sendRelevanceVote(event) {
 		global: false,
 		type: "POST",
 		data: {
-            'parentRootURLsafe': $('#pointArea').data('rootus'),
-            'childRootURLsafe': relBase.data('childurlsafe'),
+            'parentRootURLsafe': parentRootURL,
+            'childRootURLsafe': childRootURL,
             'linkType': linkType,
             'vote': voteValue,
 		},

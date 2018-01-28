@@ -6,6 +6,7 @@ from random import randint
 from google.appengine.ext.webapp import template
 from google.appengine.ext import ndb
 from google.appengine.ext import deferred
+from google.appengine.ext.ndb import metadata
 
 from authhandler import AuthHandler
 from models.point import PointRoot
@@ -26,28 +27,38 @@ from handlers.dbIntegrityCheck import DBIntegrityCheck
 from google.appengine.api import namespace_manager
 
 
-def IndClearLowQualityFlags(cursor=None, num_updated=0, batch_size=250, cntUpdatedNet=0):
-    logging.info('ClearLowQuality Update: Start: %d  Batch: %d' % (num_updated, batch_size))
+def IndClearLowQualityFlags(cursor=None, num_updated=0, batch_size=250, cntUpdatedNet=0, namespace=None, namespaces=None):
+    logging.info('ClearLowQuality Update: Start: %d  Batch: %d  Namespace: %s' % (num_updated, batch_size, namespace))
 
-    query = Point.query()
-    points, next_cursor, more = query.fetch_page(batch_size, start_cursor=cursor)
+    if namespace:
+        previous_namespace = namespace_manager.get_namespace()
+        namespace_manager.set_namespace(namespace)
+    else:
+        previous_namespace = None
 
-    cnt = 0
-    cntSkip = 0
-    cntUpdate = 0
-    # for p in query.iter():
-    for p in points:
-        cnt += 1
+    try:
+        query = Point.query()
+        points, next_cursor, more = query.fetch_page(batch_size, start_cursor=cursor)
 
-        # if p.isLowQualityAdmin == False:
-        #     cntSkip += 1
-        #     continue
-        if p.isLowQualityAdmin:
-            cntUpdate += 1
-        p.isLowQualityAdmin = False
-        p.put()
+        cnt = 0
+        cntSkip = 0
+        cntUpdate = 0
+        # for p in query.iter():
+        for p in points:
+            cnt += 1
 
-    logging.info('ClearLowQuality Incremental: Count: %d  Updated: %d  Skipped: %d' % (cnt, cntUpdate, cntSkip))
+            # if p.isLowQualityAdmin == False:
+            #     cntSkip += 1
+            #     continue
+            if p.isLowQualityAdmin:
+                cntUpdate += 1
+            p.isLowQualityAdmin = False
+            p.put()
+
+        logging.info('ClearLowQuality Incremental: Count: %d  Updated: %d  Skipped: %d' % (cnt, cntUpdate, cntSkip))
+    finally:
+        if previous_namespace:
+            namespace_manager.set_namespace(previous_namespace)
 
     # If there are more entities, re-queue this task for the next page.
     if more:
@@ -55,10 +66,34 @@ def IndClearLowQualityFlags(cursor=None, num_updated=0, batch_size=250, cntUpdat
                        cursor=next_cursor,
                        num_updated=(num_updated + cnt),
                        batch_size=batch_size,
-                       cntUpdatedNet=(cntUpdatedNet + cntUpdate))
+                       cntUpdatedNet=(cntUpdatedNet + cntUpdate),
+                       namespace=namespace,
+                       namespaces=namespaces)
     else:
-        logging.warning('ClearLowQuality Complete! - Net Updated: %d' % (cntUpdatedNet + cntUpdate))
+        logging.warning('ClearLowQuality Complete! - Net Updated: %d  Namespace: %s' % (cntUpdatedNet + cntUpdate, namespace))
 
+        if namespaces and len(namespaces) > 0:
+            nextNamespace = namespaces[0]
+            del namespaces[0]
+            logging.warning('ClearLowQuality: Next Namespace: %s  Count: %d' % (nextNamespace, len(namespaces)))
+            deferred.defer(IndClearLowQualityFlags,
+                           cursor=None,
+                           num_updated=0,
+                           batch_size=batch_size,
+                           cntUpdatedNet=0,
+                           namespace=nextNamespace,
+                           namespaces=namespaces)
+
+def IndUpdatePointsAllNamespace():
+    namespaces = [namespace for namespace in metadata.get_namespaces()]
+    logging.warning('%d Namespaces To Query: %s' % (len(namespaces), namespaces[0]))
+    assert (namespaces[0] == "")
+    if len(namespaces) == 1:
+        namespaces = None
+    else:
+        del namespaces[0]
+
+    IndClearLowQualityFlags(namespaces=namespaces)
 
 
 # One-off tasks for changing DB stuff for new versions
@@ -324,7 +359,8 @@ class AaronTask(AuthHandler):
 
     def get(self):
         # self.PopulateGaids()
-        deferred.defer(IndClearLowQualityFlags)
+        # deferred.defer(IndClearLowQualityFlags)
+        # deferred.defer(IndUpdatePointsAllNamespace)
         self.response.write("""
             Schema update started. Check the console for task progress. 
             <a href="/">View entities</a>.

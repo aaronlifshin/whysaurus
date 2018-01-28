@@ -46,6 +46,10 @@
             {% if user.gaId %}userId: '{{user.gaId}}'{% endif %}
         });
 
+        {% if user.isAdmin %}
+          ga('set', 'isAdmin', 1);
+        {% endif %}
+
         ga('send', 'pageview');
     </script>
 

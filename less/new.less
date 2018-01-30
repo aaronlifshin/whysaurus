@@ -3549,16 +3549,73 @@ a.feedbackFooterLink {
    ADMIN PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
+.adminTopButtons {
+		margin-top:24px;
+		margin-bottom: 24px;
+}
+
+.adminTopLink {
+	margin-left: 8px;
+	margin-right: 8px;
+}
+   
+.adminTable {
+	table-layout: fixed;
+	//max-width: unset;
+	//width: 100%;
+	white-space: nowrap;
+}   
+   
 .adminTable td {
     border: 1px solid #a9a9a9;
-    padding: 5px 5px;
-    
+    padding: 2px 8px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;   
 }
 
 .adminTable th {
     border: 1px solid #a9a9a9;
     background-color: #ffe4b9;
-    padding: 5px 5px;
+    padding: 8px;
+}
+
+.adminTableDetail {
+    font-size: 11px;
+    color: grey;
+    font-family: ff-meta-web-pro,sans-serif;
+    font-weight: 400;
+    line-height: 120%;
+    margin-top: 8px;
+    display: inline-block;
+    font-style: italic;
+}
+
+.adminTableDateCol {
+	//max-width: 70px;
+	//white-space: normal !important;
+	text-align: center;
+}
+
+.adminTableSimpleNumber {
+	white-space: normal !important;
+	max-width: 75px;
+	text-align: center;
+}
+
+.adminTableClassrooms {
+	white-space: normal !important;
+	max-width: 500px;
+	text-align: center;
+}
+
+.chosen-container {
+	width: 400px !important;
+}
+
+.adminTableEllipsisObvi {
+	//max-width: 72px;
+	white-space: normal;
 }
 
 .belowThreshold {
@@ -3567,6 +3624,7 @@ a.feedbackFooterLink {
 
 .role-chooser {
   width:100px;
+  margin: 2px;
 }
 
 // adjustments to responsive css

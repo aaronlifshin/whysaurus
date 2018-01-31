@@ -513,7 +513,7 @@ class AgreeDisagreeComponent extends React.Component {
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
-                    vote: 1,
+                    vote: this.props.point.currentUserVote == 1 ? 0 : 1,
                     parentURL: this.props.parentPoint && this.props.parentPoint.url}
       }).then( res => {
         console.log(res)
@@ -530,7 +530,7 @@ class AgreeDisagreeComponent extends React.Component {
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
-                    vote: -1,
+                    vote: this.props.point.currentUserVote == -1 ? 0 : -1,
                     parentURL: this.props.parentPoint && this.props.parentPoint.url}
       }).then( res => {
         console.log(res)

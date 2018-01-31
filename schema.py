@@ -67,9 +67,13 @@ class Point(NdbObjectType):
         else:
             return 0
 
+    # TODO: we call getAllLinkedPoints 3 times - find a way to cache that value
+
     supportingPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_supportingPoints(self, info, **args):
-        points = self.getLinkedPoints("supporting", None)
+        self._linkedPoints = self._linkedPoints or self.getAllLinkedPoints(info.context.current_user)
+
+        points = self._linkedPoints[0]
         if points:
             for point in points:
                 point.parent = self
@@ -78,7 +82,9 @@ class Point(NdbObjectType):
 
     counterPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_counterPoints(self, info, **args):
-        points = self.getLinkedPoints("counter", None)
+        self._linkedPoints = self._linkedPoints or self.getAllLinkedPoints(info.context.current_user)
+
+        points = self._linkedPoints[1]
         if points:
             for point in points:
                 point.parent = self
@@ -89,8 +95,9 @@ class Point(NdbObjectType):
     # introduced for single column views
     relevantPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_relevantPoints(self, info, **args):
-        supportingPoints = self.getLinkedPoints("supporting", None)
-        counterPoints = self.getLinkedPoints("counter", None)
+        self._linkedPoints = self._linkedPoints or self.getAllLinkedPoints(info.context.current_user)
+
+        supportingPoints, counterPoints = self._linkedPoints
         if supportingPoints:
             for point in supportingPoints:
                 point.parent = self
@@ -107,6 +114,7 @@ class Link(graphene.ObjectType):
     voteCount = graphene.Int()
     type = graphene.String()
     relevance = graphene.Float()
+    relevanceVote = graphene.Int()
     parentURLsafe = graphene.String()
     childURLsafe = graphene.String()
 
@@ -122,7 +130,7 @@ class SubPointConnection(relay.Connection):
     class Edge:
         link = graphene.Field(Link)
         def resolve_link(self, info):
-            return Link(type=self.node.link_type, relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe)
+            return Link(type=self.node.link_type, relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe, relevanceVote=self.node.myVoteValue)
 
         relevance = graphene.Float()
         def resolve_relevance(self, info, **args):
@@ -253,7 +261,7 @@ class RelevanceVote(graphene.Mutation):
             if user:
                 result, newRelevance, newVoteCount = user.addRelevanceVote(parentRootURLsafe, rootURLsafe, linkType, vote)
                 if result:
-                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
+                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, relevanceVote=vote, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
                 else:
                     raise Exception(str('vote failed: ' + str(vote)))
             else:

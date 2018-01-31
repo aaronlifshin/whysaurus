@@ -35,7 +35,7 @@ fragment pointFields on Point {
 `
 export const evidenceEdgesFragment = gql`
 fragment evidenceEdges on SubPointConnection {
-  edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, parentURLsafe, childURLsafe }}
+  edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, relevanceVote, parentURLsafe, childURLsafe }}
 }`
 
 
@@ -574,6 +574,7 @@ mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURL
       id,
       type,
       relevance,
+      relevanceVote,
       parentURLsafe,
       childURLsafe
     }
@@ -656,12 +657,15 @@ class RelevanceComponent extends React.Component {
       this.props.mutate({
         variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
       }).then( res => {
-      }).then( res => {
         console.log(res)
       });
     } else {
       $("#loginDialog").modal("show");
     }
+  }
+
+  linkClassFor(vote){
+    return (this.props.link.relevanceVote == vote) ? "relVoteLink currentVote" : "relVoteLink"
   }
   
   // TODO: reflect the user's current vote;
@@ -669,12 +673,12 @@ class RelevanceComponent extends React.Component {
   //   if it is 33% or 0%, add the class add class .myRelevanceVoteLow
   render(){
     return <div className="relCtrlGroup" >
-    <div className="relCtrlLabel">How Relevant is this claim?</div>
+      <div className="relCtrlLabel">How Relevant is this claim {this.props.link.relevanceVote}?</div>
       <div className="relCtrlVoteOptions">
-      <a className="relVoteLink " onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink " onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink " onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
-      <a className="relVoteLink " onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
+      <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
+      <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
+      <a className={this.linkClassFor(33)} onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
+      <a className={this.linkClassFor(0)} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
     </div>
       </div>
     }
@@ -784,7 +788,7 @@ class PointCard extends React.Component {
       return <span>
         { this.state.relLinkClicked ?
             <div className="relevanceCtrlArea">
-              <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/>
+              <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} link={this.props.link} linkType={this.evidenceType}/>
             </div> :
             <span className="noRelevanceCtrl"></span>
         }

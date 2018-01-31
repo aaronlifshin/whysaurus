@@ -150,6 +150,7 @@ class Point(ndb.Model):
     _vote = None
     _relevanceVote = None
     _linkInfo = None
+    _linkedPoints = None
     isTop = ndb.BooleanProperty(default=True)
     
 

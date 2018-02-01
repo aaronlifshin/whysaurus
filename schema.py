@@ -107,7 +107,7 @@ class Point(NdbObjectType):
                 point.parent = self
                 point.link_type = 'counter'
         # TODO: sort by relevance, or do a more efficient query that just returns the most relevant points
-        return (supportingPoints or []) + (counterPoints or [])
+        return sorted((supportingPoints or []) + (counterPoints or []), key=lambda point: -point.relevance)
 
 
 class Link(graphene.ObjectType):

@@ -665,7 +665,10 @@ class RelevanceComponent extends React.Component {
   }
 
   linkClassFor(vote){
-    return (this.props.link.relevanceVote == vote) ? "relVoteLink currentVote" : "relVoteLink"
+	let myVoteClass = "myRelevanceVoteLow"
+	if (vote > 50)
+		myVoteClass = "myRelevanceVoteHigh"
+    return (this.props.link.relevanceVote == vote) ? ("relVoteLink " +myVoteClass) : "relVoteLink"
   }
   
   // TODO: reflect the user's current vote;

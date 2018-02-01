@@ -158,6 +158,7 @@ class EditPointComponent extends React.Component {
     const score = this.point.pointValue
     return <div>
       {this.titleUI()}
+      <a onClick={this.props.onCancel}>Cancel</a>
     </div>
   }
 }
@@ -697,7 +698,7 @@ class PointCard extends React.Component {
     expandedIndex: {},
     relLinkClicked: false
   }
-    this.handleEditsSaved = this.handleEditsSaved.bind(this);
+    this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
@@ -817,7 +818,7 @@ class PointCard extends React.Component {
     }
   }
 
-  handleEditsSaved(point=this.point) {
+  handleCancelEdit() {
     this.setState({editing: false})
   }
 
@@ -1007,7 +1008,7 @@ class PointCard extends React.Component {
  pointComponent() {
     const point = this.point;
     if (this.state.editing){
-      return <EditPoint point={point} onEditsSaved={this.handleEditsSaved}/>
+      return <EditPoint point={point} onCancel={this.handleCancelEdit}/>
     } else {
       return <Point point={point} onClick={this.handleToggleEvidence}/>
     }

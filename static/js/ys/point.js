@@ -111,6 +111,7 @@ mutation EditPoint($url: String!, $title: String) {
 }
 `
 
+// TODO: make cancel button work ;)
 const EditTitleForm = ( props ) => {
   return (
       <Form onSubmit={props.onSubmit}>
@@ -118,6 +119,7 @@ const EditTitleForm = ( props ) => {
           <form onSubmit={formApi.submitForm} id="form1">
           <Text field="title" id="title" />
           <button type="submit">Save</button>
+		  <button type="cancel">Cancel</button>
           </form>
       )}
     </Form>
@@ -708,7 +710,7 @@ class PointCard extends React.Component {
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
-
+    this.handleClickMore = this.handleClickMore.bind(this);
   }
 
   handleClickEdit(e) {
@@ -986,9 +988,14 @@ class PointCard extends React.Component {
     }
   }
 
+  handleClickMore(e) {
+    e.stopPropagation();
+	//console.log("pointCard : handleClickMore(e) ")
+  }
+  
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
-      <a className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+      <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
          <li>More Actions</li>
          <li className="divider"></li>

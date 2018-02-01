@@ -65,12 +65,41 @@ a:focus, a:hover {
 	text-decoration: unset;
 }
 
-.dropdown-menu>li>a {
-    padding-top:3px;
-    padding-right:20px;
-    padding-bottom: 3px;
-    padding-left:3px;
+.dropdown-menu {
+	padding: 0;
+	border-radius: 5px;
+    //background-color: #e1ffff;
 }
+
+.infoNonToggle, .infoToggle, .subInfoToggle, li {
+	margin: 0;
+	overflow: hidden;
+}
+
+.dropdown-menu .divider {
+    border: none;
+    height: 2px;
+    margin: 0;
+	background-color: rgba(0,0,0,.09);
+}
+
+.dropdown-menu>li>a, .dropdown-menu>li>span {
+    padding:10px;
+	display: inline-block;
+	width: 100%;
+}
+
+
+
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover, 
+.dropdown-submenu:focus>a, .dropdown-submenu:hover>a {
+	//color: @blue;
+	font-weight: 800;
+	//background-color: white;
+	background-image: none;
+	//text-decoration: underline;	
+}
+
 
 .bringToFront {
 	z-index: 1000;
@@ -516,7 +545,10 @@ a:hover .perctSignSmall {
 
 .moreMenu {
 	color: @grayTextLighter;
-	font-weight: bold;
+	font-weight: 800;
+    font-size: 13px;
+    position: relative;
+    top: 1px;
 }
 .moreMenu:hover {
 	text-decoration:none;

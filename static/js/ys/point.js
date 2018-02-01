@@ -997,16 +997,17 @@ class PointCard extends React.Component {
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-         <li>More Actions</li>
-         <li className="divider"></li>
-         <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
-         <li className="divider"></li>
+
          <li><a onClick={this.handleClickEdit} className="" >Edit Claim</a></li>
-         <li className="divider"></li>
          <li><a target="_blank" href={this.point.url}>Open in a new tab</a></li>
+		 <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
        </ul>
     </span>
   }
+/* 
+         <li><span className="moreMenuHeading">More Actions</span></li>
+         <li className="divider"></li> 
+*/
 /*
         Code to check if current user is the point Author
           {this.props.data.currentUser &&

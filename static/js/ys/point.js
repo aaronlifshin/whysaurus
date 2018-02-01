@@ -171,22 +171,11 @@ class PointComponent extends React.Component {
   constructor(props) {
     super(props)
     this.state = {saving: false}
-    this.handleClickSave = this.handleClickSave.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
   }
 
   get point() {
     return this.props.point;
-  }
-
-  handleClickSave(values, e, formApi) {
-    console.log("saving edits")
-    values.url = this.point.url
-    this.setState({saving: true})
-    this.props.mutate({
-      variables: values
-    })
-    // this component will be replaced after save, so we don't need to update state
   }
 
   handleToggleEvidence(e) {
@@ -196,27 +185,9 @@ class PointComponent extends React.Component {
   }
 
   titleUI() {
-    if (this.props.editing) {
-      if (this.state.saving) {
-        return <span>Saving...</span>
-      } else {
-        return <span>
-            <EditTitleForm onSubmit={this.handleClickSave}/>
-          </span>
-      }
-    } else {
-      return <span className="pointTitle">
-        <a tabIndex="-1" onClick={this.handleToggleEvidence}>{this.point.title}</a>
-        </span>
-
-    /* OLD CODE FOR EDITING POINT TITLES: */
-      /*return <span className="pointTitle">
-        <a href={this.point.url}>{this.point.title}</a>
-    {this.props.data.currentUser &&
-        this.props.data.currentUser.url == this.point.authorURL &&
-        <a onClick={this.handleClickEdit} className="editLink" >edit</a>}
-        </span> */
-    }
+    return <span className="pointTitle">
+      <a tabIndex="-1" onClick={this.handleToggleEvidence}>{this.point.title}</a>
+    </span>
   }
 
   // To turn animation off change the logic in this line: animate={score == prevScore}

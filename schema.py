@@ -172,6 +172,7 @@ class AddEvidence(graphene.Mutation):
     class Arguments:
         point_data = PointInput(required=True)
 
+    parent = graphene.Field(Point)
     point = graphene.Field(Point)
 
     newEdges = relay.ConnectionField(SubPointConnection)
@@ -198,7 +199,7 @@ class AddEvidence(graphene.Mutation):
         newLinkPoint.parent = newPoint
         newLinkPoint.link_type = point_data.linkType
 
-        return AddEvidence(point=newLinkPoint)
+        return AddEvidence(point=newLinkPoint, parent=newPoint)
 
 class EditPointInput(graphene.InputObjectType):
     url = graphene.String(required=True)

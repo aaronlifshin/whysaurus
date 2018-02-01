@@ -226,7 +226,12 @@ class Point(ndb.Model):
     @property
     def rootURLsafe(self):
         return self.key.parent().urlsafe();
-        
+
+    @property
+    def relevance(self):
+        if self._linkInfo:
+            return self._linkInfo.rating
+
     @property
     def relevancePercent(self):
         if self._linkInfo is None or self._linkInfo.voteCount == 0:

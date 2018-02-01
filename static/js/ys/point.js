@@ -111,15 +111,13 @@ mutation EditPoint($url: String!, $title: String) {
 }
 `
 
-// TODO: make cancel button work ;)
 const EditTitleForm = ( props ) => {
   return (
       <Form onSubmit={props.onSubmit}>
       { formApi => (
-          <form onSubmit={formApi.submitForm} id="form1">
-          <Text field="title" id="title" />
+          <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
+          <Text field="title" id="editPointTextField" />
           <button type="submit">Save</button>
-		  <button type="cancel">Cancel</button>
           </form>
       )}
     </Form>
@@ -160,7 +158,7 @@ class EditPointComponent extends React.Component {
     const score = this.point.pointValue
     return <div>
       {this.titleUI()}
-      <a onClick={this.props.onCancel}>Cancel</a>
+	  <button  onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
     </div>
   }
 }
@@ -683,9 +681,15 @@ class PointCard extends React.Component {
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
     this.handleClickMore = this.handleClickMore.bind(this);
+	this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
 
+  handleClickNoProp(e) {
+	e.stopPropagation();	  
+  }
+  
   handleClickEdit(e) {
+	e.stopPropagation();	  
     this.setState({editing: true})
   }
 
@@ -794,7 +798,8 @@ class PointCard extends React.Component {
     }
   }
 
-  handleCancelEdit() {
+  handleCancelEdit(e) {
+    e.stopPropagation()
     this.setState({editing: false})
   }
 
@@ -971,7 +976,7 @@ class PointCard extends React.Component {
       <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
          <li><a onClick={this.handleClickEdit} className="" >Edit Claim</a></li>
-         <li><a target="_blank" href={this.point.url}>Open in a new tab</a></li>
+         <li><a onClick={this.handleClickNoProp} target="_blank" href={this.point.url}>Open in a new tab</a></li>
 		 <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
        </ul>
     </span>

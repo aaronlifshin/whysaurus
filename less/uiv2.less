@@ -575,13 +575,15 @@ a:hover .perctSignSmall {
 	color: black;
 }
 
-// unused now that edit is inside the more menu
-.editLink {
-	padding-left: 4px;
-	padding-right: 4px;
-	font-size: @smallGreyLinkSize;
-    color: @smallGreyLinkColor !important;
-	//font-style: italic;
+.editPointTextForm {
+	display: inline-block;
+    width: calc(~"100% - 60px"); // full width minus space for cancel button	
+	width: -moz-calc(~"100% - 60px");
+    width: -webkit-calc(~"100% - 60px");
+}
+
+#editPointTextField {
+	width: 85%;
 }
 
 .ux2ScoreInLine {
@@ -793,6 +795,7 @@ a:hover .perctSignSmall {
 	border: none;
 	font-size: @fontSizeActionsUX2;
 	outline-style: none;
+	display: inline-block;
 }
 .cancelButton:hover {
 	text-decoration:underline;
@@ -837,6 +840,7 @@ a:hover .perctSignSmall {
 
 .addEvidenceForm {
 	margin-top: 0; 
+	display: inline-block;
 }
 
 .arrowAddEvidenceForm {

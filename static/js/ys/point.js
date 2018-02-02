@@ -158,7 +158,7 @@ class EditPointComponent extends React.Component {
     const score = this.point.pointValue
     return <div>
       {this.titleUI()}
-	  <button  onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
+	  <button onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
     </div>
   }
 }
@@ -877,6 +877,8 @@ class PointCard extends React.Component {
     return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
 
+// <MediaQuery minWidth={singleColumnThreshold}>
+// <MediaQuery maxWidth={singleColumnThreshold}>
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -974,12 +976,17 @@ class PointCard extends React.Component {
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-      <ul id="" className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
+
+	  <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
+	        <div className="dropdown-caret">
+        <div className="caret-outer"></div>
+        <div className="caret-inner"></div>
+      </div>
          <li><a onClick={this.handleClickEdit} className="" >Edit Claim</a></li>
          <li><a onClick={this.handleClickNoProp} target="_blank" href={this.point.url}>Open in a new tab</a></li>
 		 <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
-       </ul>
+      </ul>
     </span>
   }
 /* 

@@ -117,7 +117,7 @@ const EditTitleForm = ( props ) => {
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
           <Text onClick={props.onClick} field="title" id="editPointTextField"/>
-          <button onClick={props.onClick} type="submit">Save</button>
+          <button onClick={props.onClick} class="buttonUX2" type="submit">Save</button>
           </form>
       )}
     </Form>

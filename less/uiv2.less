@@ -645,13 +645,17 @@ li .iconWithStat {
 
 .editPointTextForm {
 	display: inline-block;
-    width: calc(~"100% - 60px"); // full width minus space for cancel button	
-	width: -moz-calc(~"100% - 60px");
-    width: -webkit-calc(~"100% - 60px");
+    width: calc(~"100% - 48px"); // full width minus space for cancel button	
+	width: -moz-calc(~"100% - 48px");
+    width: -webkit-calc(~"100% - 48px");
+	margin-top: 6px;
 }
 
 #editPointTextField {
-	width: 85%;
+	width: 81%;
+    margin-right: 4px;
+    height: 30px;
+	padding: 4px;
 }
 
 .ux2ScoreInLine {
@@ -864,6 +868,7 @@ li .iconWithStat {
 	font-size: @fontSizeActionsUX2;
 	outline-style: none;
 	display: inline-block;
+	padding-right: 0;
 }
 .cancelButton:hover {
 	text-decoration:underline;

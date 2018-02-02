@@ -116,8 +116,8 @@ const EditTitleForm = ( props ) => {
       <Form onSubmit={props.onSubmit}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
-          <Text field="title" id="editPointTextField" />
-          <button type="submit">Save</button>
+          <Text onClick={props.onClick} field="title" id="editPointTextField"/>
+          <button onClick={props.onClick} type="submit">Save</button>
           </form>
       )}
     </Form>
@@ -129,6 +129,12 @@ class EditPointComponent extends React.Component {
     super(props)
     this.state = {saving: false}
     this.handleClickSave = this.handleClickSave.bind(this);
+	this.handleClickNoProp = this.handleClickNoProp.bind(this);
+  }
+
+  handleClickNoProp(e) {
+	e.stopPropagation();	
+    console.log("EditPointComponent : toggle handleClickNoProp(e)")	
   }
 
   get point() {
@@ -149,7 +155,7 @@ class EditPointComponent extends React.Component {
       return <span>Saving...</span>
     } else {
       return <span>
-        <EditTitleForm onSubmit={this.handleClickSave}/>
+        <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave}/>
       </span>
     }
   }

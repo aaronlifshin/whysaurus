@@ -132,9 +132,9 @@ class EditPointComponent extends React.Component {
 	this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
 
+  // TODO: this simple function is also defined in the PointCard component - can/should it be declared in a single place somehow?
   handleClickNoProp(e) {
 	e.stopPropagation();	
-    console.log("EditPointComponent : toggle handleClickNoProp(e)")	
   }
 
   get point() {
@@ -691,6 +691,7 @@ class PointCard extends React.Component {
 	this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
 
+  // TODO: this simple function is also defined in the EditPointComponent component - can/should it be declared in a single place somehow?
   handleClickNoProp(e) {
 	e.stopPropagation();	  
   }

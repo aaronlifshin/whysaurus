@@ -990,8 +990,8 @@ class PointCard extends React.Component {
         <div className="caret-outer"></div>
         <div className="caret-inner"></div>
       </div>
-         <li><a onClick={this.handleClickEdit} className="" >Edit Claim</a></li>
-         <li><a onClick={this.handleClickNoProp} target="_blank" href={this.point.url}>Open in a new tab</a></li>
+         <li><a onClick={this.handleClickEdit} className="" ><span className="iconWithStat fa fa-pencil"></span>Edit Claim</a></li>
+         <li><a onClick={this.handleClickNoProp} target="_blank" href={this.point.url}><span className="iconWithStat fa fa-external-link"></span>Open in a new tab</a></li>
 		 <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
       </ul>
     </span>

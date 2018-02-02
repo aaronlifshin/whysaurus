@@ -322,9 +322,11 @@ body {
 }
 
 .relCtrlVoteOptions {
-	margin-bottom: @marginVerticalInsideCards *2;
+	margin-bottom: @marginVerticalInsideCards * 1.33;
 	font-size:  @baseFontSizeUX2 * 1.75; // ~28px;
     font-weight: bold;
+	position: relative;
+    left: -4px;
 }
 
 .relevanceLinkArea {
@@ -381,6 +383,11 @@ body {
 .relVoteLink {
 	margin-right: 16px;
 	display: inline-block; // needed for scale down on click
+	border: solid;
+    border-color: @relGroupHiliteBG;
+	padding: 4px;
+	padding-right: 3px;
+	padding-bottom: 9px;
 	//color: black;
 	//color: pink;
 }
@@ -393,12 +400,13 @@ body {
     transform: scale(0.92);
 }
 
-
 .myRelevanceVoteHigh {
 	color: black !important;
+	//border-color: black;
 }
 .myRelevanceVoteLow {
 	color: @red !important;
+	//border-color: @red;	
 }
 
 .perctSignSmall {
@@ -414,6 +422,8 @@ a:hover .perctSignSmall {
 
 .numbersFixVertAlign {
 	vertical-align: top;
+	position: relative;
+    top: -4px;
 }
 
 .stackCardGroup {

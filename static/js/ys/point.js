@@ -655,13 +655,13 @@ class RelevanceComponent extends React.Component {
   //   if it is 33% or 0%, add the class add class .myRelevanceVoteLow
   render(){
     return <div className="relCtrlGroup" >
-      <div className="relCtrlLabel">How Relevant is this claim {this.props.link.relevanceVote}?</div>
+      <div className="relCtrlLabel">How Relevant is this claim?</div>
       <div className="relCtrlVoteOptions">
       <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
       <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
       <a className={this.linkClassFor(33)} onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
       <a className={this.linkClassFor(0)} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
-    </div>
+	  </div>
       </div>
     }
 }

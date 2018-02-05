@@ -932,7 +932,7 @@ class PointCard extends React.Component {
     if (this.expanded() && this.point.relevantPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-          {this.point.relevantPoints.edges.length > 0 && <div className="relevantHeading">Relevant Claims</div>}
+          {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence For and Against, sorted by Relevance</div>}
           {this.point.relevantPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
           <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>

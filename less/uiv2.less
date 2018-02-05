@@ -820,6 +820,7 @@ li .iconWithStat {
 	margin-left: 14px;
 	color: black;
 	width: max-content;
+	display: inline-block;
 }
 
 .addEvidenceButtonGrpCounter {
@@ -880,7 +881,9 @@ li .iconWithStat {
 	font-size: @fontSizeActionsUX2;
 	outline-style: none;
 	display: inline-block;
-	padding-right: 0;
+	padding: 0;
+	padding-left: 6px;
+
 }
 .cancelButton:hover {
 	text-decoration:underline;
@@ -893,6 +896,13 @@ li .iconWithStat {
 .cancelButton:active {
     transform: scale(@buttonUX2ScaleDownOnClick);
 }
+.cancelButtonAddEvidence {
+	padding-right: 0;
+	float: right;
+    margin-top: 13px;
+    margin-right: 8px;
+}
+
 
 .addEvidenceButton {
     display: table; // seems necessary for scaling on hover to work, but also causes underline
@@ -920,7 +930,12 @@ li .iconWithStat {
 }
 
 .addEvidenceFormGroup {
-	margin-top: @marginVerticalStandard * 1.35;
+	//margin-top: @marginVerticalStandard * 1.35;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+    top: -10px;
+    margin-left: @indent * .75; 
 }
 
 .addEvidenceForm {
@@ -935,20 +950,48 @@ li .iconWithStat {
 	top: -6px;
 }
 
+.addEvidenceFormLabel {
+	color: @darkerGreyColor;
+    font-size: @baseFontSize * 0.813; // ~13px
+}
+
 .addEvidenceFormTextField {
 	height: 28px;
-	width: @cardWidth;
+	width: @cardWidth - 20px; // I don't know why this subtraction is needed visually, but it seems to be -JF
     font-size: @baseFontSizeUX2;
+	color: black;
     padding: 8px;
+	display: block;
+}
+.addEvidenceFormTextField::placeholder {
+	color: grey;
+	font-style: italic;
+}
+.addEvidenceFormTextField::-ms-input-placeholder { /* IE 10-11*/
+	color: grey;
+	font-style: italic;
+}
+.addEvidenceFormTextField:-ms-input-placeholder { /* MS Edge */
+	color: grey;
+	font-style: italic;
 }
 
 .addEvidenceFormButton {
 	margin-left: 4px;
-	margin-right: 4px;
-	height: 36px;
+	margin-top: 8px;
+	//height: 36px;
     //width: 24px;
-	font-size: @baseFontSizeUX2 * 1.13125; // ~21px
+	font-size: @baseFontSizeUX2 * 1.13125; // ~18px
+	padding-bottom: 7px;
+	float: right;
 }
+
+.addEvidenceFormSaving {
+	margin-left: 27px;
+	position: relative;
+    top: 4px;
+}
+
 
 .fullWidth {
 	width: 100%;
@@ -1016,6 +1059,7 @@ li .iconWithStat {
 	font-size: @arrowFontSizeUX2;
 	margin-bottom: 2px;
 	margin-left:4px;
+	display: inline-block;
 }
 
 .addEvidenceButtonGrpCounter .arrowAddEvidenceButton {

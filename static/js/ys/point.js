@@ -117,7 +117,7 @@ const EditTitleForm = ( props ) => {
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
           <Text onClick={props.onClick} field="title" id="editPointTextField"/>
-          <button onClick={props.onClick} class="buttonUX2" type="submit">Save</button>
+          <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
           </form>
       )}
     </Form>
@@ -311,18 +311,16 @@ class EvidenceLink extends React.Component {
   }
 }
 
-// TODO: make cancel button work
-// TODO: if we are adding a counter point, then add class .buttonUX2Red to the submit button
+// TODO : depending on user tests, maybe add <div className="addEvidenceFormLabel">Add evidence this list</div>	
 const AddEvidenceForm = ( props ) => {
   return (
     <div className="addEvidenceFormGroup">
-    <div className="arrowAddEvidenceForm">&#x21B3;</div>
       <Form onSubmit={props.onSubmit}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
           <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
-          <button type="cancel" className="cancelButton" onClick={props.onCancel}>Cancel</button>
+          <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
           </form>
       )}
     </Form>
@@ -417,31 +415,29 @@ class AddEvidenceCard extends React.Component {
     return ( this.point.numSupporting + this.point.numCounter)
   }
 
-  render(){
-    if (this.state.adding) {
-      if (this.state.saving) {
-        return <div>
-          Saving...
-          </div>
-      } else {
-        return <div>
-          <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleCancel}/>
-          </div>
-      }
-    } else {
-    let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
+  renderForm() {
+      return <span>	
+          { this.state.saving ? <span className="addEvidenceFormSaving">Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleCancel}/> }		  
+        </span>
+  }
+
+  renderButton() { 
     let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
     let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
+    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
+  }  
+  
+  render() {	
+    let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
+    let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`	
     return <a onClick={this.handleClickAddEvidence}>
-        <div className={classesButtonGrp}>
-          <div className={classesLine}></div>
-          <div className="arrowAddEvidenceButton">&#x21B3;</div>
-          <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
-        </div>
-         </a>
-    }
-  }
+	         <div className={classesButtonGrp}>
+			   <div className={classesLine}></div>
+			   <div className="arrowAddEvidenceButton">&#x21B3;</div>
+			   { this.state.adding ? this.renderForm() : this.renderButton() }
+	         </div>
+	        </a>  
+  } 
 }
 
 export const AddEvidenceQuery = gql`

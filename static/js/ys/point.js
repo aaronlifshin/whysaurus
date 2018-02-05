@@ -884,22 +884,20 @@ class PointCard extends React.Component {
     return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
 
-// <MediaQuery minWidth={singleColumnThreshold}>
-// <MediaQuery maxWidth={singleColumnThreshold}>
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
       let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null} ${this.numSupportingPlusCounter() == 0 ? "evidenceBlockEmpty" : ""}`
       let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       console.log("pointCard : evidence() ")
-      const singleColumnThreshold = 1224;
+      const singleColumnThreshold = 1064;
       return <div className={classesEvidenceBlock}>
         <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
-        <MediaQuery minDeviceWidth={singleColumnThreshold}>
+        <MediaQuery minWidth={singleColumnThreshold}>
           {this.supportingPoints()}
           {this.counterPoints()}
         </MediaQuery>
-        <MediaQuery maxDeviceWidth={singleColumnThreshold}>
+        <MediaQuery maxWidth={singleColumnThreshold}>
           {this.relevantPoints()}
         </MediaQuery>
       </div>

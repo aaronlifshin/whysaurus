@@ -276,21 +276,21 @@ class EvidenceLink extends React.Component {
 
   // TODO: can this be replaced by handleClickToggle? -JF
   handleClickSee(e) {
-	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+    e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
     console.log("EvidenceLink : handleClickSee");
     this.props.onSee && this.props.onSee()
   }
 
   // TODO: can this be replaced by handleClickToggle? -JF
   handleClickHide(e) {
-	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
-	console.log("EvidenceLink: handleClickHide");
+    e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+    console.log("EvidenceLink: handleClickHide");
     this.props.onHide && this.props.onHide()
   }
 
   handleClickToggle(e) {
-	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
-	console.log("EvidenceLink : handleClickToggle");
+    e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+    console.log("EvidenceLink : handleClickToggle");
     this.props.onToggle && this.props.onToggle()
   }
 
@@ -322,7 +322,7 @@ const AddEvidenceForm = ( props ) => {
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
           <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
-		  <button type="cancel" className="cancelButton">Cancel</button>
+          <button type="cancel" className="cancelButton" onClick={props.onCancel}>Cancel</button>
           </form>
       )}
     </Form>
@@ -336,6 +336,7 @@ class AddEvidenceCard extends React.Component {
     this.state = {adding: false}
     this.handleClickAddEvidence = this.handleClickAddEvidence.bind(this)
     this.handleClickSave = this.handleClickSave.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
   }
 
   get point() {
@@ -349,6 +350,10 @@ class AddEvidenceCard extends React.Component {
     } else {
       $("#loginDialog").modal("show");
     }
+  }
+
+  handleCancel(e){
+    this.setState({adding: false})
   }
 
   handleClickSave(values, e, formApi) {
@@ -420,15 +425,15 @@ class AddEvidenceCard extends React.Component {
           </div>
       } else {
         return <div>
-          <AddEvidenceForm onSubmit={this.handleClickSave}/>
+          <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleCancel}/>
           </div>
       }
     } else {
     let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
     let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
     let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
-	let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
-	  return <a onClick={this.handleClickAddEvidence}>
+    let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
+    return <a onClick={this.handleClickAddEvidence}>
         <div className={classesButtonGrp}>
           <div className={classesLine}></div>
           <div className="arrowAddEvidenceButton">&#x21B3;</div>

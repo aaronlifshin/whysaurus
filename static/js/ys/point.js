@@ -913,7 +913,7 @@ class PointCard extends React.Component {
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport">
         <div className="evidenceList">
-          {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Supporting Claims</div>}
+          {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Evidence For</div>}
           {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
       <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
     </div>
@@ -925,7 +925,7 @@ class PointCard extends React.Component {
     if (this.expanded() && this.point.counterPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-          {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Counter Claims</div>}
+          {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Evidence Against</div>}
           {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
         </div>
@@ -933,11 +933,12 @@ class PointCard extends React.Component {
     }
   }
 
+  // TODO: if users ask about this, add <span className="sortBy">Sorted by Relevance</span>
   relevantPoints(){
     if (this.expanded() && this.point.relevantPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-          {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence For and Against, sorted by Relevance</div>}
+          {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence For <span className="headingPlus">+</span> Against</div>}
           {this.point.relevantPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
           <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>

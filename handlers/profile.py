@@ -78,6 +78,9 @@ class Profile(AuthHandler):
         else:
             permissionToView = len(profileUser.privateAreas) == 0
 
+        if profileUser and profileUser.url == 'Tom_Gratian':
+            permissionToView = False
+
         if profileUser and permissionToView:
             self.response.out.write(
                 self.template_render(

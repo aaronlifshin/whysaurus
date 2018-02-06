@@ -94,7 +94,46 @@ def IndUpdatePointsAllNamespace():
         del namespaces[0]
 
     IndClearLowQualityFlags(namespaces=namespaces)
+    
+def ChangeUserUrl(cursor=None, num_updated=0, batch_size=250, cntUpdatedNet=0, namespace=None, namespaces=None):
+    logging.info('ChangeUserUrl Update: Start: %d  Batch: %d  Namespace: %s' % (num_updated, batch_size, namespace))
 
+    query = Point.query()
+    points, next_cursor, more = query.fetch_page(batch_size, start_cursor=cursor)
+
+    cnt = 0
+    cntSkip = 0
+    cntUpdate = 0
+    # for p in query.iter():
+    for p in points:
+        cnt += 1
+
+        if p.authorURL != 'Tom_Gratian' and p.authorURL != 'tom_gratian' and p.creatorURL != 'Tom_Gratian' and p.creatorURL != 'tom_gratian':
+            continue
+
+        logging.warning('ChangeUserUrl: Update: %s  Author -> (%s, %s)' % (p.url, p.authorName, p.authorURL))
+        
+        p.authorName = 'Big T'
+        p.creatorName = 'Big T'
+        p.put()
+            
+        cntUpdate += 1
+        # p.isLowQualityAdmin = False
+        # p.put()
+
+    logging.info('ChangeUserUrl Incremental: Count: %d  Updated: %d  Skipped: %d' % (cnt, cntUpdate, cntSkip))
+    
+    # If there are more entities, re-queue this task for the next page.
+    if more:
+        deferred.defer(ChangeUserUrl,
+                       cursor=next_cursor,
+                       num_updated=(num_updated + cnt),
+                       batch_size=batch_size,
+                       cntUpdatedNet=(cntUpdatedNet + cntUpdate),
+                       namespace=namespace,
+                       namespaces=namespaces)
+    else:
+        logging.warning('ChangeUserUrl Complete! - Net Updated: %d  Namespace: %s' % (cntUpdatedNet + cntUpdate, namespace))
 
 # One-off tasks for changing DB stuff for new versions
 class AaronTask(AuthHandler):
@@ -356,11 +395,36 @@ class AaronTask(AuthHandler):
         }
         path = os.path.join(os.path.dirname(__file__), '../templates/django/message.html')
         self.response.out.write(template.render(path, template_values))
+        
+
+    def UpdateUserName(self, userUrl, userName):
+        maxUpdates = 1
+        bigMessage = ['Populating user name (%s): %s' % (userUrl, userName)]
+        
+        updates = 0
+        query = WhysaurusUser.query()
+        for yUser in query.iter():
+            if yUser.url != userUrl:
+                continue
+            bigMessage.append('Changing user name (%s / %s): %s' % (yUser.url, yUser.name, userName))
+            yUser.name = userName
+            yUser.put()
+            updates += 1
+            
+        bigMessage.append('Users: %s' % (updates))
+
+        template_values = {
+            'messages': bigMessage
+        }
+        path = os.path.join(os.path.dirname(__file__), '../templates/django/message.html')
+        self.response.out.write(template.render(path, template_values))
 
     def get(self):
         # self.PopulateGaids()
         # deferred.defer(IndClearLowQualityFlags)
         # deferred.defer(IndUpdatePointsAllNamespace)
+        # self.UpdateUserName('Tom_Gratian', 'Big T')
+        # ChangeUserUrl()
         self.response.write("""
             Schema update started. Check the console for task progress. 
             <a href="/">View entities</a>.

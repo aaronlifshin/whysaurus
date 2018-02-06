@@ -155,8 +155,9 @@ class Point(ndb.Model):
     # pointValueCached = ndb.FloatProperty(indexed=False)  # cache of pointValue for indexing
 
     ENGAGEMENT_PER_VOTE = 1
-    ENGAGEMENT_PER_LINK = 10
-    ENGAGEMENT_PER_COMMENT = 3
+    ENGAGEMENT_PER_COMMENT = 2
+    ENGAGEMENT_PER_LINK = 4
+    ENGAGEMENT_PER_CONTRIBUTOR = 10
 
     @property
     def numSupporting(self):
@@ -183,7 +184,7 @@ class Point(ndb.Model):
 
     @property
     def engagementScore(self):
-        return self.engagementScoreBase
+        return self.engagementScoreBase + len(self.usersContributed) * self.ENGAGEMENT_PER_CONTRIBUTOR
 
     @property
     def linksRatio(self):

@@ -47,7 +47,10 @@
         });
 
         {% if user.isAdmin %}
-          ga('set', 'isAdmin', 1);
+          //ga('set', 'isAdmin', 1);
+          ga('set', 'dimension1', 'admin');
+        {% else %}
+          ga('set', 'dimension1', 'user');
         {% endif %}
 
         ga('send', 'pageview');

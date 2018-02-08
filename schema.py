@@ -274,7 +274,7 @@ class RelevanceVote(graphene.Mutation):
 class HomePage(graphene.ObjectType):
     featuredPoint = graphene.Field(Point)
     def resolve_featuredPoint(self, info, **args):
-        return FeaturedPoint.getFeatured()
+        return FeaturedPoint.getFeaturedPoint()
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)

@@ -9,7 +9,12 @@ import * as schema from './schema';
 
 class Home extends React.Component {
   render(){
-    return <div>Home Page!!</div>
+    let homePage = this.props.data.homePage;
+    let featuredPoint = homePage && homePage.featuredPoint;
+    return <div><h1>Home Page</h1>
+      <h3>Featured Point:</h3>
+      <h4>{featuredPoint && featuredPoint.title}</h4>
+      </div>
   }
 }
 

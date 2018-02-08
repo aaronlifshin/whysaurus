@@ -351,11 +351,13 @@ class AddEvidenceCard extends React.Component {
   }
 
   handleCancel(e){
+	//this.setState({saving: false})
     this.setState({adding: false})
+	console.log("AddEvidenceCard : handleCancel")
   }
 
   handleClickSave(values, e, formApi) {
-    console.log("saving evidence")
+    console.log("AddEvidenceCard : handleClickSave")
     let parentURL = this.point.url
     values.parentURL = parentURL
     values.linkType = this.linkType

@@ -6,6 +6,7 @@ from graphene import relay
 from graphene_gae import NdbObjectType, NdbConnectionField
 
 from models.point import Point as PointModel
+from models.point import FeaturedPoint
 from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
 
@@ -270,6 +271,11 @@ class RelevanceVote(graphene.Mutation):
         else:
             raise Exception(str('point not defined ' +  str(point)))
 
+class HomePage(graphene.ObjectType):
+    featuredPoint = graphene.Field(Point)
+    def resolve_featuredPoint(self, info, **args):
+        return FeaturedPoint.getFeatured()
+
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
     def resolve_points(self, info, **args):
@@ -279,6 +285,10 @@ class Query(graphene.ObjectType):
     def resolve_point(self, info, **args):
         point, pointRoot = PointModel.getCurrentByUrl(args['url'])
         return point
+
+    homePage = graphene.Field(HomePage)
+    def resolve_homePage(self, info):
+        return HomePage()
 
     currentUser = graphene.Field(User)
     def resolve_currentUser(self, info):

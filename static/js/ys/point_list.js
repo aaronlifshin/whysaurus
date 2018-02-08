@@ -1,11 +1,12 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {GetPoint, EvidenceType, PointCard, ExpandedPointCard, Byline, newPointCard, expandedPointFieldsFragment} from './point';
+import { EvidenceType, PointCard, ExpandedPointCard, Byline, newPointCard } from './point';
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { GetPoint } from './schema.js';
 
 class PointList extends React.Component {
   constructor(props) {

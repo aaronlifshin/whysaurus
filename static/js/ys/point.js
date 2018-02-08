@@ -267,7 +267,7 @@ const AddEvidenceForm = ( props ) => {
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
           <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
-          <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
+		  <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
           </form>
       )}
     </Form>
@@ -281,7 +281,7 @@ class AddEvidenceCard extends React.Component {
     this.state = {adding: false}
     this.handleClickAddEvidence = this.handleClickAddEvidence.bind(this)
     this.handleClickSave = this.handleClickSave.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
+    this.handleClickCancel = this.handleClickCancel.bind(this)
   }
 
   get point() {
@@ -297,9 +297,9 @@ class AddEvidenceCard extends React.Component {
     }
   }
 
-  handleCancel(e){
-	//this.setState({saving: false})
-    this.setState({adding: false})
+  handleClickCancel(e){
+	e.stopPropagation();
+    this.setState({adding: false})	
 	console.log("AddEvidenceCard : handleCancel")
   }
 
@@ -364,13 +364,13 @@ class AddEvidenceCard extends React.Component {
     return ( this.point.numSupporting + this.point.numCounter)
   }
 
-  renderForm() {
+  renderAddEvidenceForm() {
       return <span>	
-          { this.state.saving ? <span className="addEvidenceFormSaving">Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleCancel}/> }		  
+          { this.state.saving ? <span className="addEvidenceFormSaving">Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleClickCancel}/> }		  
         </span>
   }
 
-  renderButton() { 
+  renderAddEvidenceButton() { 
     let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
     let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
     return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
@@ -383,7 +383,7 @@ class AddEvidenceCard extends React.Component {
 	         <div className={classesButtonGrp}>
 			   <div className={classesLine}></div>
 			   <div className="arrowAddEvidenceButton">&#x21B3;</div>
-			   { this.state.adding ? this.renderForm() : this.renderButton() }
+			   { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
 	         </div>
 	        </a>  
   } 
@@ -910,7 +910,7 @@ class PointCard extends React.Component {
           <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
 */
 
- pointComponent() {
+ pointTextComponent() {
     const point = this.point;
     if (this.state.editing){
       return <EditPoint point={point} onCancel={this.handleCancelEdit}/>
@@ -953,7 +953,7 @@ class PointCard extends React.Component {
         </div>
         <div className="row-fluid">
         <div className="pointText span12">
-          { this.pointComponent() }
+          { this.pointTextComponent() }
         </div>
         </div>
         {this.sources()}

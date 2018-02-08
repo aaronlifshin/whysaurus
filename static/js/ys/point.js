@@ -244,12 +244,16 @@ class EvidenceLink extends React.Component {
   whichEvidenceButton() {
     if (this.hasEvidence()) {
       if (this.props.expanded) {
-        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
+        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Close</a>
       } else {
         return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
       }
     } else {
-      return <a className="cardBottomAction" onClick={this.handleClickToggle}>Add Evidence</a>
+      if (this.props.expanded) {
+        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickToggle}>Close</a>
+      } else {
+        return <a className="cardBottomAction" onClick={this.handleClickToggle}>Add Evidence</a>	
+	  }
     }
   }
 
@@ -734,11 +738,11 @@ class PointCard extends React.Component {
     const i = this.state.expandedIndex
     console.log("pointCard : handleToggleEvidence : point.url : " + point.url)
     if (this.expanded()) {
-      console.log("pointCard : handleToggleEvidence : EXPANDED ")
+      console.log("pointCard : handleToggleEvidence : CONTRACTING ")
       i[point.id] = false
       this.setState({expandedIndex: i})
     } else {
-      console.log("pointCard : handleToggleEvidence : NOT EXPANDED ")
+      console.log("pointCard : handleToggleEvidence : EXPANDING ")
       i[point.id] = true
       this.setState({expandedIndex: i})
     }

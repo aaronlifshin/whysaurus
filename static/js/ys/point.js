@@ -557,7 +557,7 @@ class RelevanceComponent extends React.Component {
   //   if it is 33% or 0%, add the class add class .myRelevanceVoteLow
   render(){
     return <div className="relCtrlGroup" >
-      <div className="relCtrlLabel">How Relevant is this claim?</div>
+      <div className="relCtrlLabel">How Relevant is this claim for you?</div>
       <div className="relCtrlVoteOptions">
       <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
       <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
@@ -835,7 +835,7 @@ class PointCard extends React.Component {
     if (this.expanded() && this.point.relevantPoints){
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
-          {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence For <span className="headingPlus">+</span> Against</div>}
+          {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence</div>}
           {this.point.relevantPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
           <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>

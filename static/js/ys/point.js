@@ -552,18 +552,24 @@ class RelevanceComponent extends React.Component {
     return (this.props.link.relevanceVote == vote) ? ("relVoteLink " +myVoteClass) : "relVoteLink"
   }
   
-  // TODO: reflect the user's current vote;
-  //   if it is 100% or 66%, add the class add class .myRelevanceVoteHigh
-  //   if it is 33% or 0%, add the class add class .myRelevanceVoteLow
+  get relevance() {
+    return this.props.link && this.props.link.relevance
+  }
+  
+  // TODO: add number of Votes so far to relevanceStats
   render(){
     return <div className="relCtrlGroup" >
       <div className="relCtrlLabel">How Relevant is this claim for you?</div>
-      <div className="relCtrlVoteOptions">
-      <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
-      <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-      <a className={this.linkClassFor(33)} onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
-      <a className={this.linkClassFor(0)} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
-	  </div>
+        <div className="relCtrlVoteOptions">
+          <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(33)} onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(0)} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
+	    </div>
+        <div className="relevanceExplanation">
+		  <div className="relevanceStats">{this.relevance}% average on all votes so far</div>
+          <div className="relevanceEquation">A Claim's Score * its Avg Relevance = its contribution to its parent's score</div>
+		</div>
       </div>
     }
 }
@@ -689,7 +695,7 @@ class PointCard extends React.Component {
     }
   }
 
-  // TODO: rebuild arrow using css in order to control stroke width, instead of unicode &#x21B3;
+  // TODO: rebuild arrow using css in order to control stroke width and cross-browser display, instead of unicode &#x21B3;
   relevanceLinkUI() {
     if (this.props.parentPoint) {
     let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
@@ -698,10 +704,6 @@ class PointCard extends React.Component {
         <div className="dottedLine dottedLineRelevanceLink"></div>
         <span className="relevanceDisplay">{this.relevance}%</span>
         <div className="arrowCard">&#x21B3;</div>
-        { this.state.buttonClicked ?
-            <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} linkType={this.evidenceType}/> :
-            <span></span>
-        }
       </div></a>
     } else {
       return null

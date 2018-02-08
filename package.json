@@ -40,6 +40,8 @@
     "react-dom": "^16.0.0",
     "react-form": "^2.12.1",
     "react-responsive": "^4.0.3",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "webpack": "^3.5.1"
   },
   "scripts": {

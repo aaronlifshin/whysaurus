@@ -86,13 +86,7 @@ class PointList extends React.Component {
 // }`;
 
 
-// return the "whysaurus url" for this page
-function url(){
-  let parts = window.location.pathname.split("/");
-  return parts.pop() || parts.pop(); // the || accounts for a trailing slash
-}
-
 // TODO: this doesn't work, but will need to for, eg, front page point lists
 // export const PointListWithPoints = graphql(GetPoints)(PointList);
 
-export const PointListWithPoint = graphql(GetPoint, {options: {variables: {url: url()}}})(PointList);
+export const PointListWithPoint = graphql(GetPoint, {options: ({match}) => ({variables: {url: match.params.url}})})(PointList);

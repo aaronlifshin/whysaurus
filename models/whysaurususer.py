@@ -38,6 +38,7 @@ class WhysaurusUser(auth_models.User):
     gaId = ndb.StringProperty(default=None)
     numCopies = ndb.IntegerProperty(default=0)
     admin = ndb.BooleanProperty(default=False)
+    internal = ndb.BooleanProperty(default=False)
     role = ndb.StringProperty(default="")
     recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
     viewCount = ndb.IntegerProperty(default=0)
@@ -106,6 +107,10 @@ class WhysaurusUser(auth_models.User):
         return self.admin or (self.role == 'Admin')
 
     @property
+    def isInternal(self):
+        return self.internal or self.isAdmin
+
+    @property
     def isModerator(self):
         return self.isAdmin
        
@@ -160,6 +165,11 @@ class WhysaurusUser(auth_models.User):
         self.gaId = newGaid
         self.put()
         return newGaid
+    
+    def setInternalUser(self):
+        self.internal = True
+        self.put()
+        return True
 
     def generateUserGaid(self, isNewUser, existingGaids = None):
         """Generate (but don't put) a unique GA Id for the user (can be long running!)"""
@@ -467,16 +477,16 @@ class WhysaurusUser(auth_models.User):
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
                 point.upVotes = point.upVotes + 1
-                point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
+                # point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == 0 and voteValue == -1:  # DOWNVOTE
                 point.downVotes = point.downVotes + 1
-                point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
+                # point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == 1 and voteValue == 0:  # CANCEL UPVOTE
                 point.upVotes = point.upVotes - 1
-                point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
+                # point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == -1 and voteValue == 0:  # CANCEL DOWNVOTE
                 point.downVotes = point.downVotes - 1
-                point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
+                # point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == -1 and voteValue == 1:  # DOWN TO UP
                 point.downVotes = point.downVotes - 1
                 point.upVotes = point.upVotes + 1

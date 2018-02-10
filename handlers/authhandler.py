@@ -382,6 +382,20 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
         
+    def setInternalUser(self):
+        results = {'result': False}
+        loggedInUser = self.current_user
+        if loggedInUser and loggedInUser.isAdmin:
+            targetUserUrl = self.request.get('userurl')
+            if targetUserUrl:
+                u = WhysaurusUser.getByUrl(targetUserUrl)
+                if u:
+                    u.setInternalUser()
+                    results = {'result': True, 'username': u.name}
+        resultJSON = json.dumps(results)
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
+        self.response.out.write(resultJSON)
+        
 
     def _on_signin(self, data, auth_info, provider):
         auth_id = '%s: %s' % (provider, data['id'])

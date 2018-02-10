@@ -184,7 +184,12 @@ class Point(ndb.Model):
 
     @property
     def engagementScore(self):
-        return self.engagementScoreBase + len(self.usersContributed) * self.ENGAGEMENT_PER_CONTRIBUTOR
+        return self.engagementScoreBase \
+               + self.downVotes * self.ENGAGEMENT_PER_VOTE \
+               + self.upVotes * self.ENGAGEMENT_PER_VOTE \
+               + len(self.supportingLinks) * self.ENGAGEMENT_PER_LINK \
+               + len(self.counterLinks) * self.ENGAGEMENT_PER_LINK \
+               + len(self.usersContributed) * self.ENGAGEMENT_PER_CONTRIBUTOR
 
     @property
     def linksRatio(self):
@@ -678,7 +683,7 @@ class Point(ndb.Model):
             links = links + [newLink] if links else [newLink]      
             links = self.sortLinks(linkType, links)
 
-            self.engagementScoreBase += Point.ENGAGEMENT_PER_LINK
+            # self.engagementScoreBase += Point.ENGAGEMENT_PER_LINK
 
             # Gene: Really, this needs to operate with the user that adds the link no?
             # (But right now that's updated as author already - if we change that we'll need to pass it.)

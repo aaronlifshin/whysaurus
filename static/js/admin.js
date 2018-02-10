@@ -208,6 +208,37 @@ function setUserGaid(clickedElem) {
     }
 }
 
+function setInternalUser(clickedElem) {
+    var userURL =  $(clickedElem).data('userurl');
+    var r = confirm("Set user as an internal user (non-reversible): " + userURL + "?");
+    if (!r) {
+        confirm("Internal Set Bypassed!")
+        return;
+    }
+
+    $.ajaxSetup({
+      url: "/setInternalUser",
+      global: false,
+      type: "POST",
+      data: { 'userurl': userURL },
+      success: function(obj){
+        if (obj.result == true) {
+          showSuccessAlert('User flagged internal: ' + obj.username);
+        } else {
+          if (obj.error) {
+            showAlert(obj.error);
+          } else {
+            showAlert("There was an error");
+          }
+        }
+      },
+      error: function(xhr, textStatus, error){
+        showAlert('The server returned an error. You may try again. ' + error);
+      }
+    });
+    $.ajax();
+}
+
 function setupChosen() {
     $('.chosen-select').chosen().change(
       function(e, o){
@@ -231,6 +262,10 @@ $(document).ready(function() {
 
     $('[name=setUserGaid]').click(function() {
         setUserGaid(this);
+    });
+    
+    $('[name=setInternalUser]').click(function() {
+        setInternalUser(this);
     });
     
     $('#submit_createPrivateArea').click( createPrivateArea );

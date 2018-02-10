@@ -15,7 +15,7 @@
     <tr>
         <th>User Unique URL</th>
 		<th>GA ID</th>
-        <th class='adminTableEllipsisObvi'>Set User GA Id</th>
+		<th>Internal</th>
 		<th>User Role</th>
 		<th>User Name</th>
         <th class='adminTableSimpleNumber'>Created</th>
@@ -25,6 +25,8 @@
         <th class='adminTableDateCol'>Last Login (PST)</th>
         <th class='adminTableDateCol'>Last Visit (PST)</th>
         <th class='adminTableDateCol'>Last Notification Email</th>
+        <th class='adminTableEllipsisObvi'>Set User GA Id</th>
+        <th class='adminTableEllipsisObvi'>Set Internal</th>
         <th class='adminTableClassrooms'>User Classroom(s)</th>
         <th class='adminTableEllipsisObvi'>Password reset</th>
     </tr>
@@ -32,11 +34,7 @@
     <tr id="{{yUser.index}}" name="userRow" data-url="{{yUser.u.url}}">
         <td>{{yUser.u.url}}</td>
 		<td>{{yUser.u.gaId}}</td>
-        <td class='adminTableEllipsisObvi'>
-            {% if yUser.u %}
-                <a  name="setUserGaid" data-userurl="{{yUser.u.url}}">Set GA Id</a>
-            {% endif %}
-        </td>
+		<td>{{yUser.u.isInternal}}</td>
 		<td>
             <select class="role-chooser">
                 <option {% if yUser.u.isLimited %}selected="true"{% endif %}>Limited</option>                
@@ -53,6 +51,16 @@
         <td class='adminTableDateCol'>{{yUser.u.PSTlastlogin}}</td>
         <td class='adminTableDateCol'>{{yUser.u.PSTlastView}}</td>
 		<td class='adminTableDateCol'>{{yUser.u.lastEmailSent}}</td>
+        <td class='adminTableEllipsisObvi'>
+            {% if yUser.u %}
+                <a  name="setUserGaid" data-userurl="{{yUser.u.url}}">Set GA Id</a>
+            {% endif %}
+        </td>
+        <td class='adminTableEllipsisObvi'>
+            {% if yUser.u %}
+                <a  name="setInternalUser" data-userurl="{{yUser.u.url}}">Set Internal</a>
+            {% endif %}
+        </td>
         <td class='adminTableClassrooms'>
           <select data-placeholder="Choose classroom(s)..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
           {% for area in areas %}

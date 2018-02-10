@@ -777,6 +777,9 @@ function saveComment(event) {
     commentText = ed.getContent();    
     if (commentText.trim() == '') return;
     
+    pointURL = $('#pointArea').data('pointurl');
+    ga('send', 'event', 'Comment', 'Comment', pointURL);
+    
     startSpinnerOnButton('#saveCommentSubmit');    
     $.ajaxSetup({
 		url: "/saveComment",

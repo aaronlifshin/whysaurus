@@ -887,11 +887,11 @@ class PointCard extends React.Component {
 	//console.log("pointCard : handleClickMore(e) ")
   }
   
+  // TODO: add code to link to other "upstream" claims
+  // <li><span className=""><span className="iconWithStat fa fa-level-up"></span>Linked to {this.point.supportedCount} other claims</span></li>
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-
-
 	  <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
 	        <div className="dropdown-caret">
         <div className="caret-outer"></div>
@@ -899,7 +899,6 @@ class PointCard extends React.Component {
       </div>
          <li><a onClick={this.handleClickEdit} className="" ><span className="iconWithStat fa fa-pencil"></span>Edit Claim</a></li>
          <li><a onClick={this.handleClickNoProp} target="_blank" href={this.point.url}><span className="iconWithStat fa fa-external-link"></span>Open in a new tab</a></li>
-		 <li><span className=""><span className="iconWithStat fa fa-level-up"></span>{this.point.supportedCount} upstream points</span></li>
       </ul>
     </span>
   }

@@ -2422,18 +2422,19 @@ button#counter_addPointWhenNonZero {
 
 #loginDialog {
     /* new custom width */
-    width: 300px;
+    width: 664px;
     /* must be half of the width, minus scrollbar on the left (30px) */
-    margin-left: -150px;
+    margin-left: -312px;
+    //min-height: 375px;
 }
 
 [id^=signInWith] {
 	height:2em;
 	vertical-align:middle;
-	margin-bottom:5px;
+	margin-bottom:2px;
 	margin-top:5px;
 	padding-left:18px;
-	padding-top:9px;
+	//padding-top:9px;//
     padding-bottom:12px;
 	cursor:pointer;
     border-style: none;
@@ -2441,8 +2442,11 @@ button#counter_addPointWhenNonZero {
 }
 
 [id^=signInWith] a {
-    color: white;
     font-size: 18px;
+}
+
+#signInWithFacebook_Dlg a, #signInWithGoogle_Dlg a,{
+    color: white;
 }
 
 #signInWithFacebook_Dlg {
@@ -2453,15 +2457,17 @@ button#counter_addPointWhenNonZero {
 }
 #signInWithGoogle_Dlg {
     background-color: hsl(5, 81%, 56%); //Google branding red
+    width: 171px; // match to fb button width
+    text-align: left;
 }
 #signInWithGoogle_Dlg:hover {
     background-color:hsla(5, 98%, 65%, 1); //Google branding red
 }
 #signInWithEmail_Dlg {
-    background-color: hsla(0, 0%, 5%, 1); 
+    //background-color: #005E80;
 }
 #signInWithEmail_Dlg:hover {
-    background-color: hsla(0, 0%, 25%, 1);
+//   background-color: hsla(0, 0%, 25%, 1);
 }
 
 @modalSignInWithPaddingH: 24px;
@@ -2470,9 +2476,12 @@ button#counter_addPointWhenNonZero {
     padding-right: @modalSignInWithPaddingH;
 }
 .modalBodySignInWith {
+    width: 212px; 
     padding-bottom: 32px;
-    padding-left: @modalSignInWithPaddingH;
+    padding-left: 8px;
     padding-right: @modalSignInWithPaddingH;
+    padding-top: 0;
+    display: inline-block;
 }
 
 [id^=signInWith] a {
@@ -2488,6 +2497,37 @@ button#counter_addPointWhenNonZero {
 [id^=signInWith]:active {
     transform: scale(.975);
 }
+
+.dialogVerticalLine {
+    height: 175px;
+    //margin-left: 8px;
+    //margin-right: 8px;
+    display: inline-block;
+    vertical-align: top;
+    border-left-style: solid;
+    border-left-color: #bdbdbd;
+    border-left-width: 1px;
+}
+
+
+.returningUserSignIn {
+    //width: 200px;
+    //height: 200px;
+    //color: pink;
+    display: inline-block;
+    vertical-align: top;
+    width: 360px;
+    margin-left: @modalSignInWithPaddingH;
+}
+
+#login_userEmail, #login_userPassword {
+    width: 196px;
+}
+
+.signInFooter {
+    margin-top: -8px;
+}
+
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -3117,6 +3157,10 @@ fieldset { padding:0; border:0; margin-top:25px;}
     font-size: 15px;
     padding-left: 8px;
     font-family:"ff-meta-web-pro-condensed", sans-serif;	
+}
+
+.noTopPad {
+    padding-top: 0;
 }
 
 .modal label, .accordion-group-heading {

@@ -382,11 +382,22 @@ class AddEvidenceCard extends React.Component {
   
   render() {	
     let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`	
+    let classesLineWideScreen = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`	
+  	let classesLineNarrowScreen = `${this.linkType=="supporting" ? "dottedLine dottedLineAddEvidenceButton dottedLineAddSupport" : "counter"}`
+	let classesArrowWideScreen = "arrowAddEvidenceButton"
+  	let classesArrowNarrowScreen = `${this.linkType=="supporting" ? "arrowAddEvidenceButton" : "hidden"}`
+    // TODO: should this be declared globally? -JF
+  	const singleColumnThreshold = 1064;
     return <a onClick={this.handleClickAddEvidence}>
-	         <div className={classesButtonGrp}>
-			   <div className={classesLine}></div>
-			   <div className="arrowAddEvidenceButton">&#x21B3;</div>
+	         <div className={classesButtonGrp}>			   			   
+               <MediaQuery minWidth={singleColumnThreshold}>
+                 <div className={classesLineWideScreen}></div>
+			     <div className={classesArrowWideScreen}>&#x21B3;</div>
+               </MediaQuery>
+               <MediaQuery maxWidth={singleColumnThreshold}>
+                 <div className={classesLineNarrowScreen}></div>
+			     <div className={classesArrowNarrowScreen}>&#x21B3;</div>
+               </MediaQuery>			   		   
 			   { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
 	         </div>
 	        </a>  

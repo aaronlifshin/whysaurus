@@ -944,9 +944,10 @@ class PointCard extends React.Component {
     return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
     <div className={classesListedClaim} tabIndex="-1" >
-      { this.relevanceCtrlUI() }
-      { this.relevanceLinkUI() }
-
+    {this.relevanceCtrlUI()}
+	
+	<div className="relLinkAndStackCards">	
+    {this.relevanceLinkUI()}
 	<div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidenceFromCard} ref={(input) => { this.cardToFocusOn = input;}}>
     <div className={classesStackCard1} tabIndex="-1">
     <div className={classesStackCard2} tabIndex="-1">
@@ -982,7 +983,8 @@ class PointCard extends React.Component {
     </div>
     </div>
     </div>
-
+    </div>
+	
     </div>
 
       <div className="evidenceRow row-fluid">

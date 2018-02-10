@@ -193,7 +193,6 @@ body {
 	margin-bottom: 60px;
 	
 	// FOR INFINITE WIDTH:
-	// *** max-content is perfect but doesn't not have full cross-browser support ***
 	width: max-content;
 	width: -moz-max-content;  
 	margin-left: 32px;
@@ -367,7 +366,12 @@ body {
 	transform-origin: bottom center;
 }
 
-.listedClaim:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
+.relLinkAndStackCards {
+	width: max-content;
+	width: -moz-max-content;  
+}
+
+.relLinkAndStackCards:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
     transform: scale(1.085) ;
 	font-weight: bold;
 	color: @blue ;
@@ -851,6 +855,7 @@ li .iconWithStat {
 	margin-left: 14px;
 	color: black;
 	width: max-content;
+	width: -moz-max-content;  
 	//display: inline-block;
 }
 

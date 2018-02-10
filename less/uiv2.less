@@ -332,6 +332,18 @@ body {
 	padding-top: 10px;
 }
 
+.relCtrlClose {
+	float: right;
+    font-size: 27px;
+    position: relative;
+    top: -6px;
+	cursor: pointer;
+}
+
+.relCtrlClose a {
+	color: @smallGreyLinkColor;
+}
+
 .relCtrlVoteOptions {
 	margin-bottom: 18px;
 	font-size:  @baseFontSizeUX2 * 1.75; // ~28px;
@@ -389,6 +401,7 @@ body {
 
 .relCtrlGroup {
 	margin-left: @indent + @cardPadding + 19px; // +19 to account for the width of the cardStack
+	width: 90%;
 }
 
 .relVoteLink {

@@ -475,8 +475,9 @@ class RelevanceComponent extends React.Component {
     this.handleClick33 = this.handleClick33.bind(this);
     this.handleClick66 = this.handleClick66.bind(this);
     this.handleClick100 = this.handleClick100.bind(this);
+    this.handleClickClose = this.handleClickClose.bind(this);
   }
-
+  
   get rootURLsafe() {
     return this.props.point.rootURLsafe
   }
@@ -549,6 +550,11 @@ class RelevanceComponent extends React.Component {
     }
   }
 
+  handleClickClose() {
+    //console.log("");
+    this.props.onClose && this.props.onClose()
+  }
+  
   linkClassFor(vote){
 	let myVoteClass = "myRelevanceVoteLow"
 	if (vote > 50)
@@ -563,7 +569,7 @@ class RelevanceComponent extends React.Component {
   // TODO: add number of Votes so far to relevanceStats
   render(){
     return <div className="relCtrlGroup" >
-      <div className="relCtrlLabel">How Relevant is this claim for you?</div>
+      <div className="relCtrlLabel">How Relevant is this claim for you? <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span></div>
         <div className="relCtrlVoteOptions">
           <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
@@ -691,7 +697,7 @@ class PointCard extends React.Component {
       return <span>
         { this.state.relLinkClicked ?
             <div className="relevanceCtrlArea">
-              <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} link={this.props.link} linkType={this.evidenceType}/>
+              <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} link={this.props.link} linkType={this.evidenceType} onClose={this.handleRelClick}/>
             </div> :
             <span className="noRelevanceCtrl"></span>
         }

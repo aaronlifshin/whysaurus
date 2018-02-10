@@ -99,7 +99,7 @@ class EditPointComponent extends React.Component {
 
   titleUI() {
     if (this.state.saving) {
-      return <span>Saving...</span>
+      return <span><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span>
     } else {
       return <span>
         <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave}/>
@@ -370,7 +370,7 @@ class AddEvidenceCard extends React.Component {
 
   renderAddEvidenceForm() {
       return <span>	
-          { this.state.saving ? <span className="addEvidenceFormSaving">Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleClickCancel}/> }		  
+          { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleClickCancel}/> }		  
         </span>
   }
 

@@ -306,6 +306,8 @@ body {
 	animation-iteration-count: 1;
 	margin-bottom: @marginVerticalStandard * 1.3;
 	background-color: @relGroupHiliteBG;
+	max-width: @cardWidth * 1.1; // hacky - preventing this yellow area from expanding horizontally when evidence below it expands
+
 }
 
 .relevanceCtrlArea {
@@ -1184,6 +1186,13 @@ a:hover .arrowAddEvidenceButton {
     margin-top: -26px;
 }
 
+.spinnerPointSubmitButtonPosition {
+	display: inline-block;
+	position: relative;
+	top: 0;
+	left: 0;
+	margin-right: 4px;
+}
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 

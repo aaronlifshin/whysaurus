@@ -572,11 +572,13 @@ class RelevanceComponent extends React.Component {
 	    </div>
         <div className="relevanceExplanation">
 		  <div className="relevanceStats">{this.relevance}% average on all votes so far</div>
-          <div className="relevanceEquation">A Claim's Score * its Avg Relevance = its contribution to its parent's score</div>
+          <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>
 		</div>
       </div>
     }
 }
+
+// A Claim's Score * its Avg Relevance = its contribution to its parent's score
 
 const RelevanceVote = compose(
   graphql(RelevanceVoteQuery),

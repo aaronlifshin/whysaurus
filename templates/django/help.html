@@ -130,18 +130,22 @@ Dinosaurs are awesome.
 <li>Agrees</li>
 <li>Disagrees</li>
 <li>Sources</li>
-<li>Relevance of Supporting/Counter points</li>
-<li>Scores of Supporting/Counter points</li>
+<li>Scores of Evidence claims, multiplied by their Relevance</li>
 </ul>
+eg, A +10 Supporting Claim with 50% Relevance contributes +5 (+10 * 50%) to the claim above it. If it were a Counter Claim, then it would contribute -5.<br/>
+<br/>
 The scoring algorithm is a work-in-progress. Currently the algorithm only “looks” one level down. In the future, it may be possible to defend a point’s score by attacking its counter points.
 </p>
 
-<h4>Why is there a Relevance rating in addition to the Agree/Disagree rating?</h4>
-The relevance score allows us to find the most important ideas quickly and easy.
+<h4>Why is there a Relevance rating in addition to Agree/Disagree?</h4>
+Relevance score allows us to find the most important ideas quickly and easy.
 For example, if the point "The Earth's atmosphere is getting warmer" were supported by "It snows often in Finland",
-we might agree with both points, but mark this particular link with a low relevance.<br/><br/>
-
+we might agree with both points, but mark this particular link with a low relevance.<br/>
+<br/>
 Every link between two points has a unique relevance score.
+
+<h4>How are claims sorted?</h4>
+<p>By relevance.</p>
 
 <!--
 <h4>How is the color of the score determined?</h4>

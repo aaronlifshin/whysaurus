@@ -48,6 +48,126 @@ a:hover {
     cursor:pointer;
 }
 
+////////////////////
+// Buttons UX2
+//
+// These get re-established in the apollo branch, in uiv2.less, 
+// copying them in here bc I'm working on the sign-up dialogs and 
+// want to make their design forward compatible -JF
+
+// Colors
+@darkerGreyColor: #5d5d5d;
+@smallGreyLinkColor: #a9a9a9;
+@smallGreyLinkSize: 12px;
+@blueLight: hsl(196, 100%, 60%);
+@redLight: hsl(0, 100%, 48%);
+
+
+// Typography
+@baseFontSizeUX2: 16px;
+@fontSizeActionsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeStatsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeButtonsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizePointTitle: @baseFontSizeUX2 * 1.063; // ~17px
+@arrowFontSizeUX2: @baseFontSizeUX2 * 1.125; // ~18px
+
+.buttonUX2 {
+	padding: 5px;
+	padding-left: 11px;
+	padding-right: 12px;
+    margin-bottom: 0;
+    //font-family: ff-meta-web-pro-condensed,sans-serif;
+    font-weight: 700;
+    font-size: @fontSizeButtonsUX2;
+    font-style: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+    background-color: hsl(0, 0%, 25%);
+    border: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.buttonUX2:focus {
+    outline: 2px solid @blue;
+}
+.buttonUX2:hover {
+    background-color: black;
+}
+@buttonUX2ScaleDownOnClick: 0.975;
+.buttonUX2:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
+	outline-style: none;
+}
+.buttonUX2Blue {
+	background-color: @blue;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @blueLight;
+}
+.buttonUX2Blue:hover {
+    background-color: @blueLight;
+}
+.buttonUX2Red {
+	background-color: @red;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @redLight;
+}
+.buttonUX2Red:hover {
+    background-color: @redLight;
+}
+.cancelGreyButton {
+	background-color: hsl(0, 0%, 60%);
+	/*border: none;
+	font-size: @fontSizeActionsUX2;
+	outline-style: none;
+	display: inline-block;
+	padding: 0;
+	padding-left: 6px;*/
+
+}
+.cancelButton:hover {
+	text-decoration:underline;
+}
+.cancelButton:focus {
+	text-decoration:underline;
+	outline-style: none;
+}
+.cancelButton:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
+}
+
+
+////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .hiddenForNow {
     display: none;
 }
@@ -2445,6 +2565,10 @@ button#counter_addPointWhenNonZero {
     font-size: 18px;
 }
 
+#signInWithEmail_Dlg {
+    font-size: 14px !important;
+}
+
 #signInWithFacebook_Dlg a, #signInWithGoogle_Dlg a,{
     color: white;
 }
@@ -2521,7 +2645,10 @@ button#counter_addPointWhenNonZero {
 }
 
 #login_userEmail, #login_userPassword {
-    width: 196px;
+    width: 270px;
+    font-size: 16px;
+    padding: 11px;
+    margin-bottom: -4px;
 }
 
 .signInFooter {
@@ -2819,10 +2946,6 @@ button#counter_addPointWhenNonZero {
     right: 8px;
 }
 
-.btn {
-    //font-size:@baseFontSize;
-}
-
 .primaryButtonDisabled {
     //background-color: @btnPrimaryBackgroundDisabled;
     color:@btnPrimaryTypeDisabled;
@@ -3112,15 +3235,15 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-    MODAL DILAOGS
+    MODAL DIALOGS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 
 .modal input::-webkit-input-placeholder, .modal textarea::-webkit-input-placeholder {
     font-family:"ff-meta-web-pro", sans-serif;
     font-size:0.9375em;
-    font-style: regular;    
-    color:#6D6E70;
+    font-style: italic; //regular;    
+    color: @grayTextLighter;
 }
 
 .modal input:-moz-placeholder, .modal textarea:-moz-placeholder { /* Firefox 18- */
@@ -3143,6 +3266,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
     font-style: regular;        
     color:#6D6E70;
 }
+
 
 .modal textarea {
     //width:75%;

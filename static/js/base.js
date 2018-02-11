@@ -1080,9 +1080,6 @@ function validateSignupDialog() {
     return valid;
 }
 
-
-
-
 function createNewUser() {
     if (validateSignupDialog()) {
         //startSpinnerOnButton('#submit_signupDialog');
@@ -1625,7 +1622,14 @@ function activateHeaderAndDialogs() {
             ga('send', 'event', 'Required login ',  event.target.id);
             console.log('Required login ' +  event.target.id);
         });
-                
+        
+        $("#signInFromHeader").on('click', function() {
+            $("#loginDialog").modal('show')   
+        });
+        
+        
+
+        
         $(".loginWithEmail").on('click', function() {
             $("#emailLoginDialog").modal('show');
         });
@@ -1635,8 +1639,7 @@ function activateHeaderAndDialogs() {
         });
         $("#fromAreaShowSignupDialog").on('click', function() {
             $("#signupDialog").modal('show')            
-        });        
-        
+        });               
 
         $("#signInWithEmail_Dlg").on('click', function() {
             if ($("#loginDialog").data('postloginaction') == 'createFromMain') {            
@@ -1644,7 +1647,7 @@ function activateHeaderAndDialogs() {
                 $("#login_userAction").val($("#loginDialog").data('postloginaction'));      
             }                  
             $("#loginDialog").modal('hide');
-            $("#emailLoginDialog").modal('show');           
+            $("#signupDialog").modal('show');           
         });
 
         $("#backToLogin").on('click', function() {

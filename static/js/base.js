@@ -1142,7 +1142,7 @@ function validateForgotPassword() {
     valid = true;
     email = $("#login_userEmail").val();
     if (email == '') {
-        dialogAlert('#emailLoginDialog','Please enter your login email address or username.');
+        dialogAlert('#loginDialog','Please enter your login email address or username.');
         valid = false;
     }  
     return valid;
@@ -1170,13 +1170,13 @@ function forgotPassword() {
                             showSuccessAlert('We have sent an email with a password reset link to your email address.');                        
                         }                
         			} else {
-                        dialogAlert('#emailLoginDialog', obj.error ? obj.error : "There was an error");
+                        dialogAlert('#loginDialog', obj.error ? obj.error : "There was an error");
                         stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
                         removeDisableColorButtonPrimary('#forgot_emailLoginDialog');                        
         			}
         		},
         		error: function(xhr, textStatus, error){
-                    dialogAlert('#emailLoginDialog','The server returned an error. You may try again. ' + error);
+                    dialogAlert('#loginDialog','The server returned an error. You may try again. ' + error);
                     stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
                     removeDisableColorButtonPrimary('#forgot_emailLoginDialog');                     
                 }

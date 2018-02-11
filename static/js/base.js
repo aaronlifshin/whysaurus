@@ -1135,14 +1135,24 @@ function createNewUser() {
 }
 
 function login() {
-    $('#frm_emailLoginDialog').submit();
+    email = $("#login_userEmail").val();
+    pw = $("#login_userPassword").val();
+    if (email == '') {
+        dialogAlert('#loginDialog','Please enter your email address or username.');
+    }
+    else if (pw == '') {
+        dialogAlert('#loginDialog','Please enter your password.');
+    }
+    else {  
+        $('#frm_emailLoginDialog').submit();    
+    }
 }
 
 function validateForgotPassword() {
     valid = true;
     email = $("#login_userEmail").val();
     if (email == '') {
-        dialogAlert('#loginDialog','Please enter your login email address or username.');
+        dialogAlert('#loginDialog','Please enter your email address or username.');
         valid = false;
     }  
     return valid;

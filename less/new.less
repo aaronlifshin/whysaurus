@@ -2542,7 +2542,7 @@ button#counter_addPointWhenNonZero {
 
 #loginDialog {
     /* new custom width */
-    width: 664px;
+    width: 632px;
     /* must be half of the width, minus scrollbar on the left (30px) */
     margin-left: -312px;
     //min-height: 375px;
@@ -2551,8 +2551,8 @@ button#counter_addPointWhenNonZero {
 [id^=signInWith] {
 	height:2em;
 	vertical-align:middle;
-	margin-bottom:2px;
-	margin-top:5px;
+	margin-bottom:6px;
+	//margin-top:5px;
 	padding-left:18px;
 	//padding-top:9px;//
     padding-bottom:12px;
@@ -2565,9 +2565,12 @@ button#counter_addPointWhenNonZero {
     font-size: 18px;
 }
 
-#signInWithEmail_Dlg {
-    font-size: 14px !important;
+#signInWithEmail_Dlg a {
+    font-size: 15px !important;
+    position: relative;
+    top: 9px;
 }
+
 
 #signInWithFacebook_Dlg a, #signInWithGoogle_Dlg a,{
     color: white;
@@ -2594,17 +2597,19 @@ button#counter_addPointWhenNonZero {
 //   background-color: hsla(0, 0%, 25%, 1);
 }
 
-@modalSignInWithPaddingH: 24px;
-.modalHeaderSignInWith, .modalFooterSignInWith {
+@modalSignInWithPaddingH: 30px;
+.modalHeaderSignInWith, .modalFooterSignInWith, .modalBodySignInWith {
     padding-left: @modalSignInWithPaddingH;
     padding-right: @modalSignInWithPaddingH;
+    padding-top: 18px;
 }
-.modalBodySignInWith {
+
+.signWithInButtons {
     width: 212px; 
     padding-bottom: 32px;
-    padding-left: 8px;
-    padding-right: @modalSignInWithPaddingH;
-    padding-top: 0;
+    padding-left: 0;
+    padding-right: @modalSignInWithPaddingH * .8;
+    padding-top: 14px;
     display: inline-block;
 }
 
@@ -2623,7 +2628,7 @@ button#counter_addPointWhenNonZero {
 }
 
 .dialogVerticalLine {
-    height: 175px;
+    height: 171px;
     //margin-left: 8px;
     //margin-right: 8px;
     display: inline-block;
@@ -2640,7 +2645,7 @@ button#counter_addPointWhenNonZero {
     //color: pink;
     display: inline-block;
     vertical-align: top;
-    width: 360px;
+    //width: 360px;
     margin-left: @modalSignInWithPaddingH;
 }
 
@@ -2652,7 +2657,8 @@ button#counter_addPointWhenNonZero {
 }
 
 .signInFooter {
-    margin-top: -8px;
+    margin-top: -4px; 
+    padding-right: 0;
 }
 
 
@@ -2673,7 +2679,7 @@ button#counter_addPointWhenNonZero {
 #forgot_emailLoginDialog {
 	margin-top: 8px;	
     margin-right: 8px;
-    font-size: 14px;
+    font-size: 15px;
     color: hsl(0, 0%, 59%);
 }
 
@@ -3277,14 +3283,15 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .modalSubheading {
     padding-top: 24px;
     margin-bottom: 12px;
-    color: #969696;
+    color: @grayTextDark;
     font-size: 15px;
     padding-left: 8px;
-    font-family:"ff-meta-web-pro-condensed", sans-serif;	
+    //font-family:"ff-meta-web-pro-condensed", sans-serif;	
 }
 
-.noTopPad {
+.returningUsersHeading {
     padding-top: 0;
+    //background-color: @gray;
 }
 
 .modal label, .accordion-group-heading {

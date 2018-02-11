@@ -127,8 +127,6 @@
                         <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
                         <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
                             <span class="responsiveLabel">
-                                <!--{{ user.name|escape }}-->                        
-                                <!--{{ user.name|slice:"12" }}{% if user.name|length > 12 %}...{% endif %} --> 
                                 {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}                       
                             </span> 
                             <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
@@ -205,19 +203,8 @@
                                                                                                                                           
         	  {% else %}
                 <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
-                      <a id="signInFromHeader">SIGN IN </a>
-                <!-- old
-                      <a class="dropdown-toggle" data-toggle="dropdown">SIGN IN </a>
-                      <ul id="userMenuSignedOut" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                        <li><p class="dropdown-heading"> Sign in with </p></li>
-                        <li><a tabindex="-1" href="/auth/facebook"> Facebook </a></li>
-                        <li><a tabindex="-1" href="/auth/google"> Google </a></li>
-
-                        <li><a tabindex="-1" class="loginWithEmail"> Email </a></li>                    
-                      </ul>
-                    -->
-                        <!--<li><a tabindex="-1" href="/auth/twitter"> Twitter </a></li>-->
-                      </div>
+                  <a id="signInFromHeader">SIGN IN </a>
+                </div>
         	  {% endif %}
     	  {% endif %} <!-- headerhideactions -->
         </div>
@@ -252,9 +239,7 @@
         </div>
     </div>
    {% endif %}
-   -->
-    
-    
+   -->  
 
     {% if user %}
         <script> 
@@ -285,44 +270,7 @@
         </script>
         {% include 'pointDialog.html' %}
         {% include 'selectSupportingPointsSearch.html' %}
-    {% else %}
-      <div class="modal hide fade" data-keyboard="true" id="emailLoginDialog" role="dialog" aria-hidden="true">
-      <!--
-         <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">          
-            <div class="modal-header"><h3>Sign in</h3></div>
-                
-            <div class="row-fluid" id="alertArea"></div>    
-            <div class="modal-body">
-                <div class="row-fluid">   
-                  <a  id="showSignupDialog" class="btn">New users click here to sign up</a>
-                   <p class="modalSubheading">Returning users:</p>     
-                </div>         
-              <div class="control-group">            
-                <label class="control-label" for="login_userEmail">Email or Username</label>
-                <div class="controls">            
-                    <input id="login_userEmail" name="login_userEmail" type="text"></input>
-                </div>
-              </div>      
-              <div class="control-group">            
-                <label class="control-label" for="login_userPassword">Password</label>
-                <div class="controls">            
-                    <input id="login_userPassword" name="login_userPassword" type="password"></input>
-                </div>
-              </div>
-              <input id="login_userPointText" name="login_userPointText" type="hidden"></input>   
-              <input id="login_userAction" name="login_userAction" type="hidden"></input>                                       
-            </div>
-            <div class="modal-footer">
-                <div class="row-fluid">
-                  <a  id="cancel_emailLoginDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a> 
-                  <a  id="submit_emailLoginDialog" class="btn btn-primary pull-right" onclick="ga('send', 'event', 'Login', 'Sign in Whysaurus User')">Sign In</a>
-                  <a  id="forgot_emailLoginDialog" class="pull-right">Forgot Password</a>                  
-                </div>
-            </div> 
-          </form>
-          -->        
-      </div>
-              
+    {% else %}             
       <div class="modal hide fade" data-keyboard="true" id="signupDialog" role="dialog" aria-hidden="true">
          <form id='frm_signupDialog' class="form-horizontal" action="" method="POST">          
             <div class="modal-header"><h3>Sign Up</h3></div>                                                     
@@ -397,7 +345,6 @@
       </div>
       
       <div class="modal hide fade" id="loginDialog" tabindex="-1" title="Sign In" role="dialog" aria-hidden="true">
-
       <div class="modal-header modalHeaderSignInWith">
           <h3>It's Easy</h3>
         </div>       
@@ -411,7 +358,6 @@
         <div class="dialogVerticalLine"></div>        
         <div class="returningUserSignIn">       
          <form id='frm_emailLoginDialog' class="form-horizontal" action="/login" method="POST">                          
-            <!--<div class="">       -->  
                 <div class="row-fluid">   
                    <p class="modalSubheading returningUsersHeading">Returning Users</p>     
                 </div>         
@@ -429,7 +375,6 @@
               </div>
               <input id="login_userPointText" name="login_userPointText" type="hidden"></input>   
               <input id="login_userAction" name="login_userAction" type="hidden"></input>                                       
-            <!--</div>-->
             <div class="modal-footer signInFooter">
                 <div class="row-fluid">
                   <a  id="cancel_emailLoginDialog" class="btn btn-cancel buttonUX2 cancelGreyButton pull-right" data-dismiss="modal">Cancel</a> 

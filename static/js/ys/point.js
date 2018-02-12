@@ -557,10 +557,14 @@ class RelevanceComponent extends React.Component {
   
   linkClassFor(vote){
 	let defaultClasses = "relVoteLink number "
-	let myVoteClass = "myRelevanceVoteLow"
-	if (vote > 50)
-		myVoteClass = "myRelevanceVoteHigh"
-    return (this.props.link.relevanceVote == vote) ? (defaultClasses + myVoteClass) : defaultClasses
+	let myVoteClass = "myRelevanceVote0"
+	if (vote == 33)
+		myVoteClass = "myRelevanceVote33"
+    else if (vote == 66)
+		myVoteClass = "myRelevanceVote66"
+    else if (vote == 100)
+		myVoteClass = "myRelevanceVote100"		
+    return (this.props.link.relevanceVote == vote) ? (defaultClasses + myVoteClass) : defaultClasses	
   }
   
   get relevance() {
@@ -573,10 +577,10 @@ class RelevanceComponent extends React.Component {
 	  <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span>
       <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
         <div className="relCtrlVoteOptions">
-          <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
-          <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-          <a className={this.linkClassFor(33)} onClick={this.handleClick33}>33<span className="perctSignSmall">%</span></a>
-          <a className={this.linkClassFor(0)} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(100) + " relVoteLink100"} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(66) + " relVoteLink66"} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(33) + " relVoteLink33"} onClick={this.handleClick33}>33<span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(0) + " relVoteLink0"} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
 	    </div>
         <div className="relevanceExplanation">
 		  <div className="relevanceStats">{this.relevance}% average on all votes so far</div>

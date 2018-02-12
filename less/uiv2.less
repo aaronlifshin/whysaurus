@@ -19,6 +19,7 @@
 @darkerGreyColor: #5d5d5d;
 @smallGreyLinkColor: #a9a9a9;
 @smallGreyLinkSize: 12px;
+@blue: hsl(196, 100%, 42%);
 @blueLight: hsl(196, 100%, 60%);
 @redLight: hsl(0, 100%, 48%);
 
@@ -37,7 +38,9 @@
 @hoverTransitionDuration: .08s;
 
 
-
+.number {
+	font-family: "usual", sans-serif !important;
+}
 
 
 
@@ -348,7 +351,7 @@ body {
 
 .relCtrlVoteOptions {
 	margin-bottom: 18px;
-	font-size:  @baseFontSizeUX2 * 1.75; // ~28px;
+	font-size:  @baseFontSizeUX2 * 1.5; // ~28px;
     font-weight: bold;
 	position: relative;
     left: -4px;
@@ -399,10 +402,11 @@ body {
 }
 
 .relevanceDisplay {
+	display: inline-block;
 	position:relative;
 	top: -6px;
 	right: 1px;
-    font-size: @baseFontSize * 0.813; // ~13px
+    font-size: @baseFontSize * 0.75; // ~12px
 	font-family: ff-meta-web-pro-condensed;
 }
 
@@ -412,38 +416,82 @@ body {
 }
 
 .relVoteLink {
-	margin-right: 16px;
-	display: inline-block; // needed for scale down on click
-	border: solid;
-    border-color: @relGroupHiliteBG;
-	padding: 4px;
-	padding-right: 3px;
-	padding-bottom: 9px;
+	color: @blue;
+	margin-right: 0px;
+    display: inline-block;
+    border: solid;
+    border-color: @relGroupHiliteBG; // prevents offset when border appears
+    padding-top: 8px;
+    padding-bottom: 3px;
+    padding-right: 8px;
+    padding-left: 10px;
+    min-width: 44px;
+    height: 25px;
+    vertical-align: middle;
+    text-align: center;	
+	border-radius: 5px;
 	//color: black;
-	//color: pink;
+	//color: pink;		
 }
+@relLinkBoxWidth: 2px;
 .relVoteLink:hover {
-	text-decoration: underline;
+	//text-decoration: underline;
+	border-style: solid;
+    border-width: @relLinkBoxWidth;
+    border-color: @blueLight;
+	color: @blueLight;
 }
 
 // scale down on click
 .relVoteLink:active {
-    transform: scale(0.92);
+    transform: scale(0.975);
 }
 
 .myRelevanceVoteHigh {
-	color: black !important;
+	color: white !important ;
+	background-color: @blue; // black;
+}
+.myRelevanceVoteLow {
+	color: white !important ;
+	background-color: @blue; // @red;
+}
+
+
+
+
+/*
+.myRelevanceVoteHigh {
+	color: black !important ;
+	border-style: solid;
+    border-width: @relLinkBoxWidth;
+    border-color: black;
 	//border-color: black;
 }
 .myRelevanceVoteLow {
-	color: @red !important;
+	color: @red ;
+	border-style: solid;
+    border-width: @relLinkBoxWidth;
+    border-color: @red;
 	//border-color: @red;	
 }
+*/
 
 .perctSignSmall {
-	font-size: 60%;
-	vertical-align: top;
+    font-size: 60%;
+    vertical-align: top;
+    position: relative;
+    top: -3px;
 }
+.perctSignSmallRelLink {
+    font-size: 75%;
+    vertical-align: top;
+    position: relative;
+    top: -1px;
+    left: 1px;
+}
+
+
+
 
 a:hover .perctSignSmall {
 	display: inline-block;
@@ -705,6 +753,10 @@ li .iconWithStat {
     margin-right: 4px;
     height: 30px;
 	padding: 4px;
+}
+
+.score {
+	font-size: 100%
 }
 
 .ux2ScoreInLine {

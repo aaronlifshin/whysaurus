@@ -150,10 +150,10 @@ class PointComponent extends React.Component {
 	const prevScore = this.point.pointValue
     return <div>
       {this.titleUI()}
-    <span className="scoreAnimContainerMax">
+    <span className="scoreAnimContainerMax score">
     <span className="scoreAnimContainerReset">
       <Hover onHover={<VoteStats point={this.point}/>}>
-       <span className="ux2ScoreInLine"><span className={score < 0 ? "negativeScore": "positiveScore"}><AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score == prevScore}>{score >= 0 && "+"}{score}</AnimateOnChange></span></span>
+       <span className="ux2ScoreInLine number"><span className={score < 0 ? "negativeScore": "positiveScore"}><AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score == prevScore}>{score >= 0 && "+"}{score}</AnimateOnChange></span></span>
       </Hover>
     </span>
     </span>
@@ -556,10 +556,11 @@ class RelevanceComponent extends React.Component {
   }
   
   linkClassFor(vote){
+	let defaultClasses = "relVoteLink number "
 	let myVoteClass = "myRelevanceVoteLow"
 	if (vote > 50)
 		myVoteClass = "myRelevanceVoteHigh"
-    return (this.props.link.relevanceVote == vote) ? ("relVoteLink " +myVoteClass) : "relVoteLink"
+    return (this.props.link.relevanceVote == vote) ? (defaultClasses + myVoteClass) : defaultClasses
   }
   
   get relevance() {
@@ -573,7 +574,7 @@ class RelevanceComponent extends React.Component {
         <div className="relCtrlVoteOptions">
           <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-          <a className={this.linkClassFor(33)} onClick={this.handleClick33}><span className="numbersFixVertAlign">33</span><span className="perctSignSmall">%</span></a>
+          <a className={this.linkClassFor(33)} onClick={this.handleClick33}>33<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(0)} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
 	    </div>
         <div className="relevanceExplanation">
@@ -708,13 +709,15 @@ class PointCard extends React.Component {
   }
 
   // TODO: rebuild arrow using css in order to control stroke width and cross-browser display, instead of unicode &#x21B3;
+  // TODO: make animation only occur on the claim being manipulated (rather than on all relevance)
+  //  code with animation:  <AnimateOnChange baseClassName="relevanceDisplay" animationClassName="Score--bounce" animate={this.relevance != -1}>{this.relevance}%</AnimateOnChange>
   relevanceLinkUI() {
     if (this.props.parentPoint) {
     let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
     return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
       <div className="relevanceLinkArea">
         <div className="dottedLine dottedLineRelevanceLink"></div>
-        <span className="relevanceDisplay">{this.relevance}%</span>
+		<span className="relevanceDisplay number"><span>{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
         <div className="arrowCard">&#x21B3;</div>
       </div></a>
     } else {

@@ -5,6 +5,7 @@ import random
 import string
 import datetime
 import webapp2
+from random import randint
 
 from google.appengine.ext import ndb
 from google.appengine.api import search
@@ -34,17 +35,23 @@ class WhysaurusUser(auth_models.User):
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)
     url = ndb.StringProperty(default=None)
+    gaId = ndb.StringProperty(default=None)
     numCopies = ndb.IntegerProperty(default=0)
     admin = ndb.BooleanProperty(default=False)
+    internal = ndb.BooleanProperty(default=False)
     role = ndb.StringProperty(default="")
     recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
     viewCount = ndb.IntegerProperty(default=0)
+    lastViewed = ndb.DateTimeProperty()
+    lastVisitDate = ndb.DateTimeProperty()
+    lastVisitCount = ndb.IntegerProperty(default=0)
+    lastVisitAvgIntervalDays = ndb.FloatProperty(default=0)
     createdPointRootKeys = ndb.KeyProperty(repeated=True)
     editedPointRootKeys = ndb.KeyProperty(repeated=True)
-    websiteURL =  ndb.StringProperty()
-    areasOfExpertise =  ndb.StringProperty()
-    currentProfession =  ndb.StringProperty()
-    bio =  ndb.StringProperty()
+    websiteURL = ndb.StringProperty()
+    areasOfExpertise = ndb.StringProperty()
+    currentProfession = ndb.StringProperty()
+    bio = ndb.StringProperty()
     # TODO; take out once migrated to privateAreas
     privateArea = ndb.StringProperty()
     privateAreas = ndb.StringProperty(repeated=True)
@@ -52,6 +59,8 @@ class WhysaurusUser(auth_models.User):
     token = ndb.StringProperty()  
     tokenExpires = ndb.DateTimeProperty()
     lastLogin = ndb.DateTimeProperty()
+    loginCount = ndb.IntegerProperty(default=0)
+    loginAvgIntervalDays = ndb.FloatProperty(default=0)
     notificationFrequency = ndb.StringProperty(default="Weekly")
     lastEmailSent = ndb.DateTimeProperty()
     _notifications = None
@@ -68,6 +77,10 @@ class WhysaurusUser(auth_models.User):
     @property
     def PSTlastlogin(self):
         return PST.convert(self.lastLogin)
+
+    @property
+    def PSTlastView(self):
+        return PST.convert(self.lastViewed)
         
     @property
     def notifications(self):
@@ -92,6 +105,14 @@ class WhysaurusUser(auth_models.User):
     @property
     def isAdmin(self):
         return self.admin or (self.role == 'Admin')
+
+    @property
+    def isInternal(self):
+        return self.internal or self.isAdmin
+
+    @property
+    def isModerator(self):
+        return self.isAdmin
        
     def getActiveNotifications(self):
         self._notifications, self._newNotificationCount, \
@@ -138,11 +159,72 @@ class WhysaurusUser(auth_models.User):
         self.set_password(randomPassword)
         self.put()
         return randomPassword
+
+
+    def setUserGaid(self, newGaid):
+        self.gaId = newGaid
+        self.put()
+        return newGaid
+    
+    def setInternalUser(self):
+        self.internal = True
+        self.put()
+        return True
+
+    def generateUserGaid(self, isNewUser, existingGaids = None):
+        """Generate (but don't put) a unique GA Id for the user (can be long running!)"""
+
+        if self.gaId is not None:
+            return self.gaId
+
+        newId = WhysaurusUser.generateUniqueUserGaid(isNewUser, existingGaids)
+
+        self.gaId = newId
+
+        return newId
+
+    @staticmethod
+    def generateUniqueUserGaid(isNewUser, existingGaids = None):
+        # Obviously a bit excessive to query all users - should we switch to something more heuristic?
+        if existingGaids is None:
+            existingGaids = []
+            query = WhysaurusUser.query()
+            for yUser in query.iter():
+                if yUser.gaId is None:
+                    continue
+                existingGaids.append(yUser.gaId)
+
+        newId = None
+
+        cntAttempts = 0
+        while True:
+            cntAttempts += 1
+            if cntAttempts > 100:
+                logging.error('Too Many Attempts To Generate Unique GA Id!')
+                return None
+
+            if isNewUser:
+                newId = datetime.datetime.now().strftime("%y%m%d%H") + str(randint(100, 10000))
+            else:
+                newId = str(randint(10000, 1000000))
+            if id in existingGaids:
+                continue
+            else:
+                break
+
+        if newId is None:
+            return None
+
+        return newId
     
     def login(self):
-        # Update last login time
-        self.lastLogin = datetime.datetime.now()
         now = datetime.datetime.now()
+        if self.lastLogin:
+            daysSinceLastLogin = (now - self.lastLogin).days
+            self.loginAvgIntervalDays = (daysSinceLastLogin + self.loginAvgIntervalDays * self.loginCount)/(self.loginCount + 1)
+            self.loginCount += 1
+        # Update last login time
+        self.lastLogin = now
         # Create And Store Token    
         if not self.token or self.tokenExpires < now: 
             self.createChannel()                 
@@ -175,6 +257,7 @@ class WhysaurusUser(auth_models.User):
                    
         auth_id = '%s: %s' % ('name', name)
         url = WhysaurusUser.constructURL(name)
+        gaid = WhysaurusUser.generateUniqueUserGaid(True)
     
         unique_properties = ['email', 'url', 'name'] if email else ['url', 'name']
         
@@ -188,7 +271,7 @@ class WhysaurusUser(auth_models.User):
 
         result, creationData = WhysaurusUser.create_user(auth_id,
           unique_properties,
-          url=url, email=email, name=name, password_raw=password,
+          url=url, email=email, name=name, password_raw=password, gaId=gaid,
           websiteURL=website, areasOfExpertise=areas, currentProfession=profession, 
           bio=bio, verified=False, privateAreas=privateAreas)
  
@@ -214,7 +297,7 @@ class WhysaurusUser(auth_models.User):
             if existingPrivateArea:
                 areaUser = AreaUser(userKey=user.key.urlsafe(), privateArea=existingPrivateArea)
                 areaUser.putUnique()
-            
+
             ReportEvent.queueEventRecord(user.key.urlsafe(), None, None, "New User")
             user.addToSearchIndex()         
             return user # SUCCESS       
@@ -232,10 +315,10 @@ class WhysaurusUser(auth_models.User):
             subject='Whysaurus Email Verification',
             body="Thank you for %s. \n\
                 Please verify your email address by navigating to this link: \
-                %s\n\nAaron Lifshin \nCTO" % (reason, verification_url), 
+                %s\n\nThanks, \nWhysaurus" % (reason, verification_url), 
             html="Thank you for %s. <br>\
                 Please verify your email address by clicking on \
-                <a href=\"%s\">this link</a>.<br><br>Aaron Lifshin <br> \
+                <a href=\"%s\">this link</a>.<br><br>Thanks,<br>Whysaurus<br> \
                 CTO" % (reason, verification_url),                
             reply_to="community@whysaurus.com"
         )            
@@ -394,12 +477,16 @@ class WhysaurusUser(auth_models.User):
         if updatePoint:
             if previousVoteValue == 0 and voteValue == 1:  # UPVOTE
                 point.upVotes = point.upVotes + 1
+                # point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == 0 and voteValue == -1:  # DOWNVOTE
                 point.downVotes = point.downVotes + 1
+                # point.engagementScoreBase += point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == 1 and voteValue == 0:  # CANCEL UPVOTE
                 point.upVotes = point.upVotes - 1
+                # point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == -1 and voteValue == 0:  # CANCEL DOWNVOTE
                 point.downVotes = point.downVotes - 1
+                # point.engagementScoreBase -= point.ENGAGEMENT_PER_VOTE
             if previousVoteValue == -1 and voteValue == 1:  # DOWN TO UP
                 point.downVotes = point.downVotes - 1
                 point.upVotes = point.upVotes + 1
@@ -525,6 +612,24 @@ class WhysaurusUser(auth_models.User):
             self.viewCount = len(self.recentlyViewedRootKeys)
         else:
             self.viewCount += 1
+
+        now = datetime.datetime.now()
+        self.lastViewed = now
+
+        if self.lastVisitDate:
+            if self.lastVisitDate.date() == now.date():
+                pass
+            else:
+                daysSinceLastVisit = (now.date() - self.lastVisitDate.date()).days
+                self.lastVisitAvgIntervalDays = (daysSinceLastVisit + self.lastVisitAvgIntervalDays * self.lastVisitCount) / (self.lastVisitCount + 1)
+                self.lastVisitCount += 1
+                self.lastVisitDate = now
+        else:
+            # Let's not count the very first visit so we're consistent
+            self.lastVisitCount = 0
+            self.lastVisitAvgIntervalDays = 0
+            self.lastVisitDate = now
+
         # We won't put here as each call here is responsible to put afterward
         
         return addedToList

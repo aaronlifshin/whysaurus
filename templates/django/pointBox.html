@@ -6,22 +6,22 @@
                                    {% if point.linksRatio <= 50 %}pointCardRed{% else %}pointCardGrey{% endif %}">                        
             <div class="pointCardChild {% if point.numSupportingPlusCounter > 0 %}pointCardDrawn{% else %}pointCardHidden{% endif %} 
                                        {% if point.linksRatio <= 20 %}pointCardRed{% else %}pointCardGrey{% endif %}">             
-                <div class="pointCardTop pointCardChild pointCardDrawn pointCardGrey">  
-   <div class="row-fluid">
+                <div class="pointCardTop pointCardChild pointCardDrawn pointCardGrey">
+   <div class="row-fluid pointTitleContainer" data-pointurl='{{point.url}}'>
        <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %} {% if point.imageURL and point.imageURL.strip %}responsivePointBoxTitleWithImage{% endif %}">
 			<div name="pointByline" class="byline">
             <!-- <a target="_blank" href="../user/{{point.authorURL}}">{{point.creatorOrAuthorName}}</a> -->
 			{% if point.creatorURL %}
-				By <a target="_blank" href="../user/{{point.creatorURL}}">{{point.creatorName}}</a>			
+				By <a target="_blank" href="../user/{{point.creatorURL}}">{{point.creatorName}}</a>
 			{% else %} 
 				Most recent contributor: <a target="_blank" href="../user/{{point.authorURL}}">{{point.authorName}}</a>
-			{% endif %}			
+			{% endif %}
             {% if point.numUsersContributed > 0 %}
                 <span name="pointBylineOtherUsers"> &  {{point.numUsersContributed}} other{% if point.numUsersContributed > 1 %}s{% endif %} </span>
             {% endif %}
 			</div>
 
-		  <div class="pointTitle">
+		  <div class="pointTitle" data-pointurl='{{point.url}}'>
               <a href="/point/{{ point.url }}" style="text-decoration:none">                  
                   <span>{{ point.title|escape }}</span>
 			  </a>
@@ -85,8 +85,7 @@
 				{% endif %}
                                 -->                                                
 			{% else %} 
-				<!--<span ><a class="pointBoxActions needsEvidence " href="/point/{{ point.url }}">No Evidence, add some</a></span>-->
-                                <span ><a class="pointBoxActions needsEvidence" href="/point/{{ point.url }}"><span class="shownStatTillHidden">No </span><span class="hiddenStatTillRevealed">Add </span>Evidence</a></span>                                
+                    <span ><a class="pointBoxActions needsEvidence" href="/point/{{ point.url }}">Add Evidence</a></span>                                
 			{% endif %}
         </span>
                         <span class="">

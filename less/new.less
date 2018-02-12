@@ -48,6 +48,126 @@ a:hover {
     cursor:pointer;
 }
 
+////////////////////
+// Buttons UX2
+//
+// These get re-established in the apollo branch, in uiv2.less, 
+// copying them in here bc I'm working on the sign-up dialogs and 
+// want to make their design forward compatible -JF
+
+// Colors
+@darkerGreyColor: #5d5d5d;
+@smallGreyLinkColor: #a9a9a9;
+@smallGreyLinkSize: 12px;
+@blueLight: hsl(196, 100%, 60%);
+@redLight: hsl(0, 100%, 48%);
+
+
+// Typography
+@baseFontSizeUX2: 16px;
+@fontSizeActionsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeStatsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeButtonsUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizePointTitle: @baseFontSizeUX2 * 1.063; // ~17px
+@arrowFontSizeUX2: @baseFontSizeUX2 * 1.125; // ~18px
+
+.buttonUX2 {
+	padding: 5px;
+	padding-left: 11px;
+	padding-right: 12px;
+    margin-bottom: 0;
+    //font-family: ff-meta-web-pro-condensed,sans-serif;
+    font-weight: 700;
+    font-size: @fontSizeButtonsUX2;
+    font-style: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+    background-color: hsl(0, 0%, 25%);
+    border: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.buttonUX2:focus {
+    outline: 2px solid @blue;
+}
+.buttonUX2:hover {
+    background-color: black;
+}
+@buttonUX2ScaleDownOnClick: 0.975;
+.buttonUX2:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
+	outline-style: none;
+}
+.buttonUX2Blue {
+	background-color: @blue;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @blueLight;
+}
+.buttonUX2Blue:hover {
+    background-color: @blueLight;
+}
+.buttonUX2Red {
+	background-color: @red;
+} 
+.buttonUX2Blue:focus {
+    outline-color: @redLight;
+}
+.buttonUX2Red:hover {
+    background-color: @redLight;
+}
+.cancelGreyButton {
+	background-color: hsl(0, 0%, 60%);
+	/*border: none;
+	font-size: @fontSizeActionsUX2;
+	outline-style: none;
+	display: inline-block;
+	padding: 0;
+	padding-left: 6px;*/
+
+}
+.cancelButton:hover {
+	text-decoration:underline;
+}
+.cancelButton:focus {
+	text-decoration:underline;
+	outline-style: none;
+}
+.cancelButton:active {
+    transform: scale(@buttonUX2ScaleDownOnClick);
+}
+
+
+////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .hiddenForNow {
     display: none;
 }
@@ -262,11 +382,15 @@ a:visited {
     padding-bottom:8px;
 }
    
-.dropdown-menu>li>a {
+.dropdown-menu>li>a, .dropdown-menu>li>.dropdown-heading {
     padding-top:3px;
     padding-right:20px;
     padding-bottom: 3px;
     padding-left:10px;
+}
+
+.dropdown-heading { 
+    margin-bottom: 2px;
 }
 
 .iconDropdown {
@@ -276,6 +400,7 @@ a:visited {
 .dropdown-menu .divider {
     border-bottom-color: @grayOutlinesMid;
 }
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    HEADER BAR STUFF(MOSTLY)
@@ -339,9 +464,9 @@ a:visited {
 .newPointInputRowFieldArea {
     // use the full width, minus the space needed for the publish button
     // the ~ and "" is needed to pass the calc command through the less compiler
-    width: -moz-calc(~"100% - 150px");
-    width: -webkit-calc(~"100% - 150px");
-    width: calc(~"100% - 150px");
+    width: -moz-calc(~"100% - 165px");
+    width: -webkit-calc(~"100% - 165px");
+    width: calc(~"100% - 165px");
     margin-right:8px;
     display:inline;
 }
@@ -367,9 +492,9 @@ a:visited {
   	-moz-border-radius: 0px;
   	border-radius: 2px; 
   	font-size: 16px;   
-    height: 32px;  
+    height: 36px;  
     width: 100%;   
-    padding-left: 4px;
+    padding-left: 8px;
     padding-right: 4px;
     padding-bottom: 4px;
 }
@@ -579,9 +704,10 @@ a:visited {
 }
       
 #userMenuSignedOut {
-    min-width: 90px;
+    min-width: 112px;
     margin-left: -46px;
     margin-top: -1px;
+    padding-bottom: 13px;
 }
     
 // bootstrap default is to set right to 0, but I'm not sure why - it seems to cause only problems - JF
@@ -892,10 +1018,10 @@ JSON error related to displaying comments. But when I don't use this class, the 
  .pointActionButton {
     margin-top:0px;
     margin-bottom:2px;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom:5px;
+    //padding-left: 12px;
+    //padding-right: 12px;
+    //padding-top: 8px;
+    //padding-bottom:5px;
     font-size: 20px
  }
  
@@ -1507,18 +1633,25 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .seeEvidenceContainer {
     display: inline-block;
-    width:95px;
+    //width:95px;
 }
 
 
 .pointBoxStatLine {
     /*opacity: .8; */ /*goes to 1 on hover*/
     /*font-weight: bold;*/
+  -o-transition:.08s;
+  -ms-transition:.08s;
+  -moz-transition:.08s;
+  -webkit-transition:.08s;
+  transition:.08s;
+  transform-origin: bottom left;
 }
+
 
 .pointCard:hover .pointBoxStatLine {
     opacity: 1;
-    /*font-weight: bold;*/
+    transform: scale(1.085) ;
 }
 
 .pointCard:hover .pointBoxActions {
@@ -1572,7 +1705,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .agreeInlineMargin {
     margin-left: 6px;
-    margin-right: 14px;
+    //margin-right: 14px;
 }
 
 .arrowIcon {
@@ -2408,29 +2541,128 @@ button#counter_addPointWhenNonZero {
 
 #loginDialog {
     /* new custom width */
-    width: 300px;
+    width: 632px;
     /* must be half of the width, minus scrollbar on the left (30px) */
-    margin-left: -150px;
+    margin-left: -312px;
+    //min-height: 375px;
 }
 
 [id^=signInWith] {
 	height:2em;
 	vertical-align:middle;
-	margin-bottom:5px;
-	margin-top:5px;
-	padding-left:10px;
-	padding-top:5px;
+	margin-bottom:6px;
+	//margin-top:5px;
+	padding-left:18px;
+	//padding-top:9px;//
+    padding-bottom:12px;
 	cursor:pointer;
+    border-style: none;
+    border-radius: 3px;
+}
+
+[id^=signInWith] a {
+    font-size: 18px;
+}
+
+#signInWithEmail_Dlg a {
+    font-size: 15px !important;
+    position: relative;
+    top: 9px;
+}
+
+
+#signInWithFacebook_Dlg a, #signInWithGoogle_Dlg a,{
+    color: white;
+}
+
+#signInWithFacebook_Dlg {
+    background-color: hsl(220, 46%, 48%); //FB branding blue
+}
+#signInWithFacebook_Dlg:hover {
+    background-color: hsl(220, 66%, 58%); //FB branding blue
+}
+#signInWithGoogle_Dlg {
+    background-color: hsl(5, 81%, 56%); //Google branding red
+    width: 171px; // match to fb button width
+    text-align: left;
+}
+#signInWithGoogle_Dlg:hover {
+    background-color:hsla(5, 98%, 65%, 1); //Google branding red
+}
+#signInWithEmail_Dlg {
+    //background-color: #005E80;
+}
+#signInWithEmail_Dlg:hover {
+//   background-color: hsla(0, 0%, 25%, 1);
+}
+
+@modalSignInWithPaddingH: 30px;
+.modalHeaderSignInWith, .modalFooterSignInWith, .modalBodySignInWith {
+    padding-left: @modalSignInWithPaddingH;
+    padding-right: @modalSignInWithPaddingH;
+    padding-top: 18px;
+}
+
+.signWithInButtons {
+    width: 212px; 
+    padding-bottom: 32px;
+    padding-left: 0;
+    padding-right: @modalSignInWithPaddingH * .8;
+    padding-top: 14px;
+    display: inline-block;
 }
 
 [id^=signInWith] a {
 	line-height: 2em;
+    text-decoration: none;
 }
 
 [id^=signInWith]:hover {
-	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
-	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+	//box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+}
+[id^=signInWith]:active {
+    transform: scale(.975);
+}
+
+.dialogVerticalLine {
+    height: 171px;
+    //margin-left: 8px;
+    //margin-right: 8px;
+    display: inline-block;
+    vertical-align: top;
+    border-left-style: solid;
+    border-left-color: #bdbdbd;
+    border-left-width: 1px;
+}
+
+
+.returningUserSignIn {
+    //width: 200px;
+    //height: 200px;
+    //color: pink;
+    display: inline-block;
+    vertical-align: top;
+    //width: 360px;
+    margin-left: @modalSignInWithPaddingH;
+}
+
+#login_userEmail, #login_userPassword {
+    width: 270px;
+    font-size: 16px;
+    padding: 11px;
+    margin-bottom: -4px;
+}
+
+.signInFooter {
+    margin-top: -4px; 
+    padding-right: 0;
+    padding-bottom: 16px;
+}
+
+#loginDialog .alert {
+    margin-bottom: 0;
 }
 
 
@@ -2443,33 +2675,50 @@ button#counter_addPointWhenNonZero {
 }
    
 #showSignupDialog {
-	margin-top: 15px;
+	margin-top: 8px;
+    margin-bottom: 16px;
 }
 
 #forgot_emailLoginDialog {
-	//margin-left: 15px;	
+	margin-top: 7px;	
+    margin-right: 8px;
+    font-size: 15px;
+    color: hsl(0, 0%, 59%);
+    float: right;
 }
 
 #cancel_emailLoginDialog {
-	//margin-right: 15px;
+	margin-left: 5px;
 }
 
 #showSignupDialog {
     //margin-left: 15px;  	
 }
 
+
+
+
+
+
+
+
+
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Create new User login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
    
 #backToLogin    {
-    margin-left: 15px;     
-    margin-bottom: 15px; 
+    margin-bottom: 18px;
+    margin-top: 6px;
+    font-size: 14px;
+    position: relative;
+    top: 8px;
 }
 
 #cancel_signupDialog {
     margin-right: 5px;
-	margin-left:15px;
+	margin-left: 5px;
 }
 
 
@@ -2714,10 +2963,6 @@ button#counter_addPointWhenNonZero {
     position: relative;
     top: 8px;
     right: 8px;
-}
-
-.btn {
-    //font-size:@baseFontSize;
 }
 
 .primaryButtonDisabled {
@@ -3009,15 +3254,15 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
-    MODAL DILAOGS
+    MODAL DIALOGS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 
 .modal input::-webkit-input-placeholder, .modal textarea::-webkit-input-placeholder {
     font-family:"ff-meta-web-pro", sans-serif;
     font-size:0.9375em;
-    font-style: regular;    
-    color:#6D6E70;
+    font-style: italic; //regular;    
+    color: @grayTextLighter;
 }
 
 .modal input:-moz-placeholder, .modal textarea:-moz-placeholder { /* Firefox 18- */
@@ -3041,6 +3286,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
     color:#6D6E70;
 }
 
+
 .modal textarea {
     //width:75%;
     resize:none;
@@ -3049,7 +3295,16 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
 .modalSubheading {
     padding-top: 24px;
+    margin-bottom: 12px;
     color: @grayTextDark;
+    font-size: 15px;
+    padding-left: 8px;
+    //font-family:"ff-meta-web-pro-condensed", sans-serif;	
+}
+
+.returningUsersHeading {
+    padding-top: 0;
+    //background-color: @gray;
 }
 
 .modal label, .accordion-group-heading {
@@ -3428,19 +3683,129 @@ h2.idLinkOffset:before {
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
+   FEEDBACK FOOTER LINK
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#footer
+{
+    position:fixed;
+    bottom: 0;
+    right:0;
+    //margin-bottom:18px;
+    //background-color: #f0f0f0;
+    padding: 8px;
+    width: 72px;
+}
+
+a.feedbackFooterLink {
+    //color: black;
+    font-size: 14px;
+    display: inline-block;
+    text-align: right;
+    font-weight: 500;
+    color: hsl(0, 0%, 60%);
+}
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++
+   FEEDBACK PAGE
+   +++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.contactTitle {
+    margin-top: 18px;
+    margin-bottom: 36px;
+}   
+   
+.contactForm {
+    margin-top: 32px;
+}
+
+.contactForm input {
+    height: 28px;
+}
+
+.contactForm label {
+    font-size: 1em;
+}
+
+.contactTextArea {
+    margin-top: 10px;
+}
+   
+.error {
+    color: @red;
+}
+   
+/* +++++++++++++++++++++++++++++++++++++++++++++++
    ADMIN PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
+.adminTopButtons {
+		margin-top:24px;
+		margin-bottom: 24px;
+}
+
+.adminTopLink {
+	margin-left: 8px;
+	margin-right: 8px;
+}
+   
+.adminTable {
+	table-layout: fixed;
+	//max-width: unset;
+	//width: 100%;
+	white-space: nowrap;
+}   
+   
 .adminTable td {
     border: 1px solid #a9a9a9;
-    padding: 5px 5px;
-    
+    padding: 2px 8px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;   
 }
 
 .adminTable th {
     border: 1px solid #a9a9a9;
     background-color: #ffe4b9;
-    padding: 5px 5px;
+    padding: 8px;
+}
+
+.adminTableDetail {
+    font-size: 11px;
+    color: grey;
+    font-family: ff-meta-web-pro,sans-serif;
+    font-weight: 400;
+    line-height: 120%;
+    margin-top: 8px;
+    display: inline-block;
+    font-style: italic;
+}
+
+.adminTableDateCol {
+	//max-width: 70px;
+	//white-space: normal !important;
+	text-align: center;
+}
+
+.adminTableSimpleNumber {
+	white-space: normal !important;
+	max-width: 75px;
+	text-align: center;
+}
+
+.adminTableClassrooms {
+	white-space: normal !important;
+	max-width: 500px;
+	text-align: center;
+}
+
+.chosen-container {
+	width: 400px !important;
+}
+
+.adminTableEllipsisObvi {
+	//max-width: 72px;
+	white-space: normal;
 }
 
 .belowThreshold {
@@ -3449,6 +3814,7 @@ h2.idLinkOffset:before {
 
 .role-chooser {
   width:100px;
+  margin: 2px;
 }
 
 // adjustments to responsive css

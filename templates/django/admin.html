@@ -3,33 +3,65 @@
 {% block mainPageContent %}
   <script type="text/javascript" src="/static/js/admin.js"></script>
 
-  <button id='createPrivateArea'>Create Classroom</button>
-  <button id='saveUsers'>Save Users</button>  
-  <a href='uploadUserPage' id='uploadUsers'>Upload Users</a>  
-  <a href='/dailyReport' id='dailyReport'>Go to daily report</a>
-  <a href='/job/adminTest' id='adminTest'>Test</a>
-          
+  <div class="adminTopButtons">
+    <button id='createPrivateArea'>Create Classroom</button>
+    <button id='saveUsers'>Save Users</button>  
+    <a class="adminTopLink" href='uploadUserPage' id='uploadUsers'>Upload Users</a>  
+    <a class="adminTopLink" href='/dailyReport' id='dailyReport'>Go to daily report</a>
+    <a class="adminTopLink" href='/job/adminTest' id='adminTest'>Test</a>
+  </div>
+ 
   <table id="userTable" class="adminTable">
     <tr>
         <th>User Unique URL</th>
-        <th>User Name</th>
-        <th>Created</th>
-        <th>Edited</th>  
-        <th>Viewed </th>        
-        <th>Last Login </th>                      		                     
-        <th>User Classroom(s)</th>
-        <th>User Role</th>
-        <th>Password reset</th>                      
+		<th>GA ID</th>
+		<th class='adminTableSimpleNumber'>Internal<span class='adminTableDetail'>Ys Team Account?</span></th>
+		<th>User Role</th>
+		<th>User Name</th>
+        <th class='adminTableSimpleNumber'>Created</th>
+        <th class='adminTableSimpleNumber'>Edited</th>  
+        <th class='adminTableSimpleNumber'>Viewed </th>
+        <th class='adminTableSimpleNumber'>Average Days b/t Visits <span class='adminTableDetail'>Since 1/2018</span></th>
+        <th class='adminTableDateCol'>Last Login (PST)</th>
+        <th class='adminTableDateCol'>Last Visit (PST)</th>
+        <th class='adminTableDateCol'>Last Notification Email</th>
+        <th class='adminTableEllipsisObvi'>Set User GA Id</th>
+        <th class='adminTableEllipsisObvi'>Set Internal</th>
+        <th class='adminTableClassrooms'>User Classroom(s)</th>
+        <th class='adminTableEllipsisObvi'>Password reset</th>
     </tr>
   {% for yUser in users %}
     <tr id="{{yUser.index}}" name="userRow" data-url="{{yUser.u.url}}">
         <td>{{yUser.u.url}}</td>
-        <td><a href="/user/{{yUser.u.url}}">{{yUser.u.name}}</a></td>  
-        <td>{{yUser.u.createdCount}}</td>       
-        <td>{{yUser.u.editedCount}}</td>  
-        <td>{{yUser.u.viewedCount}}</td>
-        <td>{{yUser.u.PSTlastlogin}}</td>
-        <td>
+		<td>{{yUser.u.gaId}}</td>
+		<td>{{yUser.u.isInternal}}</td>
+		<td>
+            <select class="role-chooser">
+                <option {% if yUser.u.isLimited %}selected="true"{% endif %}>Limited</option>                
+                <option {% if not yUser.u.isTeacher and not yUser.u.isAdmin and not yUser.u.isLimited %}selected="true"{% endif %}>User</option>                  
+                <option {% if yUser.u.isTeacher %}selected="true"{% endif %}>Teacher</option>
+                <option {% if yUser.u.isAdmin %}selected="true"{% endif %}>Admin</option>
+            </select>
+        </td>
+		<td><a href="/user/{{yUser.u.url}}">{{yUser.u.name}}</a></td>  
+        <td class='adminTableSimpleNumber'>{{yUser.u.createdCount}}</td>       
+        <td class='adminTableSimpleNumber'>{{yUser.u.editedCount}}</td>  
+        <td class='adminTableSimpleNumber'>{{yUser.u.viewedCount}}</td>
+		<td class='adminTableSimpleNumber'>{{yUser.u.lastVisitAvgIntervalDays}}</td>
+        <td class='adminTableDateCol'>{{yUser.u.PSTlastlogin}}</td>
+        <td class='adminTableDateCol'>{{yUser.u.PSTlastView}}</td>
+		<td class='adminTableDateCol'>{{yUser.u.lastEmailSent}}</td>
+        <td class='adminTableEllipsisObvi'>
+            {% if yUser.u %}
+                <a  name="setUserGaid" data-userurl="{{yUser.u.url}}">Set GA Id</a>
+            {% endif %}
+        </td>
+        <td class='adminTableEllipsisObvi'>
+            {% if yUser.u %}
+                <a  name="setInternalUser" data-userurl="{{yUser.u.url}}">Set Internal</a>
+            {% endif %}
+        </td>
+        <td class='adminTableClassrooms'>
           <select data-placeholder="Choose classroom(s)..." class="chosen-select private-area-chooser" multiple="" tabindex="-1">
           {% for area in areas %}
             {% if area.name in yUser.u.privateAreas %}
@@ -40,20 +72,12 @@
           {% endfor %}
           </select>
         </td>
-        <td>
-            <select class="role-chooser">
-                <option {% if yUser.u.isLimited %}selected="true"{% endif %}>Limited</option>                
-                <option {% if not yUser.u.isTeacher and not yUser.u.isAdmin and not yUser.u.isLimited %}selected="true"{% endif %}>User</option>                  
-                <option {% if yUser.u.isTeacher %}selected="true"{% endif %}>Teacher</option>
-                <option {% if yUser.u.isAdmin %}selected="true"{% endif %}>Admin</option>
-            </select>
-        </td>
-        <td>
+        <td class='adminTableEllipsisObvi'>
             {% if yUser.u.emailUser %}
                 <a  name="resetPassword" data-userurl="{{yUser.u.url}}">Reset password </a>                
             {% endif %}
-        
-        </td>      
+        </td>
+
     </tr>
   {% endfor %}
   </table>

@@ -74,9 +74,8 @@
 								Most recent contributor: <a target="_blank" href="../user/{{point.authorURL}}">{{point.authorName}}</a>
 							{% endif %}
                         </span>
-		                {% if point.numUsersContributed == 1 %}
-                            <span id="otherUsers"> & 1 other </span>
-
+                        {% if point.numUsersContributed > 0 %}
+                            <span id="otherUsers"> &  {{point.numUsersContributed}} other{% if point.numUsersContributed > 1 %}s{% endif %} </span>
                         {% endif %}
                         <!--<br>Last Edited {{point.PSTdateEdited}} -->
                         <span> &#183;  </span><!-- &#183; = small dot -->
@@ -132,11 +131,13 @@
                     </a>
                     </li>       
                     <li><a id='makeFeaturedPick'>Make Featured</a></li>
-                    <li><a id='refreshTopStatus'>Refresh Top Status</a></li>                       
+                    <li><a id='refreshTopStatus'>Refresh Top Status</a></li>
+                    <li><a id='changeLowQualityAdminTrigger'>Low Quality:{{point.isLowQualityAdmin}}</a></li>
                 </ul>
             </div>	
             {% include 'changeEditorsPick.html' %}             			
-        {% endif %} 
+            {% include 'changeLowQualityAdmin.html' %}
+        {% endif %}
 
 		</div>
         <div class="span2 responsiveInline">
@@ -160,6 +161,9 @@
                     <li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
                     <li>Viewed: {{ pointRoot.viewCount }}</li>
                     <li>Score: {{point.pointValue}}</li>
+                    {% if user.isAdmin %}
+                        <li>Engagement: {{point.engagementScore}}</li>
+                    {% endif %}
                 </ul>  
             </div>
          </div>  

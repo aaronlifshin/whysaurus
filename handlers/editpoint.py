@@ -81,6 +81,25 @@ class EditPoint(AuthHandler):
         resultJSON = json.dumps(result)    
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
+
+    def changeLowQualityAdmin(self):
+        result = {'result': False}
+        try:
+            if self.current_user and self.current_user.isAdmin:
+                point, pointRoot = Point.getCurrentByUrl(self.request.get('urlToEdit'))
+                if not point:
+                    result['error'] = 'Not able to find point by URL'
+                pick = True if self.request.get('lowQuality') == 'true' else False
+                if point.updateLowQualityAdmin(pick):
+                    result = {'result': True}
+            else:
+                result = {'result': False, 'error': 'Permission denied!'}
+        except Exception as e:
+            result = {'result': False, 'error': str(e)}
+
+        resultJSON = json.dumps(result)
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
+        self.response.out.write(resultJSON)
      
     def makeFeatured(self):
         result = {'result': False}

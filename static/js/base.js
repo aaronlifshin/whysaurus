@@ -168,7 +168,7 @@ function make_this_show_login_dlg(button, populateDialogFields) {
         if (typeof populateDialogFields == 'function' ) {
             populateDialogFields();
         }
-        _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+        ga('send', 'event', 'Required login ',  event.target.id);
         console.log('Required login ' +  event.target.id);
     });
 }
@@ -198,9 +198,8 @@ function getNewSourcesNames() {
 }
 
 function createPointFromMainPage() {
-    _gaq.push(['_trackEvent', 'Main Page Action', 'Make a Point']);
-    
     if ($('#newPointTitle').val().length > MAX_TITLE_CHARS) {
+        ga('send', 'event', 'Main Page Action', 'Make a Point Failed', 'Title Length Exceeded', $('#newPointTitle').val().length);
         showAlert('Please do not exceed ' + MAX_TITLE_CHARS + ' characters for the title.');
         return;
     }
@@ -208,6 +207,9 @@ function createPointFromMainPage() {
         showAlert('To create a point you must enter something for the title!');      
         return;
     }
+    
+    ga('send', 'event', 'Main Page Action', 'Make a Point', 'Main Page Make A Point');
+    ga('send', 'event', 'Point', 'Create Point', 'Create Point Main Page');
     
     startSpinnerAfterButton('#mainPagePublish');    
         
@@ -385,14 +387,17 @@ function stopSpinner() {
 function submitPointDialog(clickedElement) {
     var dialogAction = $(clickedElement).data('dialogaction');
     if (dialogAction == "new") {
-        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'New']);
+        ga('send', 'event', 'Point', 'Create Point', 'Point Dialog New Point');
+        ga('send', 'event', 'Point Dialog', 'Publish to Library', 'New');
         newPoint();
     } else if (dialogAction == "edit") {
-        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'Edit']);        
+        ga('send', 'event', 'Point', 'Edit Point', 'Point Dialog Edit');
+        ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Edit');
         callPointEdit();
     } else if (dialogAction == "createLinked") {
         var linkType = $(clickedElement).data('linktype');
-        _gaq.push(['_trackEvent', 'Point Dialog', 'Publish to Library', 'Add ' + linkType + ' point']);                
+        ga('send', 'event', 'Point', 'Add ' + linkType + ' point', 'Point Dialog Add ' + linkType + ' point');
+        ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Add ' + linkType + ' point');
         addPoint(linkType);
     }
 }
@@ -432,7 +437,7 @@ function votePointCard(elem, voteType) {
     }
 	//console.log("votePointCard newVote "+ newVote);    
 
-    _gaq.push(['_trackEvent', 'Vote', 'MainPage ' + voteType, pointURL, newVote]);
+    ga('send', 'event', 'Vote', 'MainPage ' + voteType, pointURL, newVote);
     
     $.ajaxSetup({
        url: "/vote",
@@ -710,19 +715,7 @@ function loadHomePage(shouldPushState) {
 }
 
 function makePointsCardsClickable() {
-    $( ".pointCard" ).click( function(ev) {
-        if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
-            return;
-        } else if (ev.which == 2) { // Middle mouse button
-            return;
-        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
-            return;
-        } else {
-            loadPoint($(this).data('pointurl'), true);
-            ev.preventDefault();
-        }
-    });
-    
+
     if (loggedIn) {    
         $('[name=UpVote]').off('.ys').on('click.ys', function(e) {
             var event = e || window.event;
@@ -739,18 +732,38 @@ function makePointsCardsClickable() {
         });
     } else {
         $('[name=UpVote]').off('.ys').on('click.ys', function(event) {
-            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            ga('send', 'event', 'Required login ',  event.target.id);
             $("#loginDialog").modal('show');
             event.stopPropagation();  
             return false;    
         });
         $('[name=DownVote]').off('.ys').on('click.ys', function(event) {
-            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            ga('send', 'event', 'Required login ',  event.target.id);
             $("#loginDialog").modal('show');
             event.stopPropagation();  
             return false;    
         }); 
     }
+
+    
+    $( ".pointCard" ).click( function(ev) {
+    //$( ".pointTitleContainer" ).click( function(ev) {
+    //$( ".pointTitle" ).click( function(ev) {
+        var target = (ev.target ? ev.target : ev.srcElement);
+        if (target.tagName.toLowerCase() == 'a') {
+            return;
+        }
+        if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
+            return;
+        } else if (ev.which == 2) { // Middle mouse button
+            return;
+        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+            return;
+        } else {
+            loadPoint($(this).data('pointurl'), true);
+            ev.preventDefault();
+        }
+    });
 }
 
 function makeHomeNavsClickable() {
@@ -783,7 +796,7 @@ function replacePointContent(pointHTML, pointURL, pointTitle, shouldPushState, r
     	    history.pushState({whysaurus: true, }, pointTitle, newURL);                
         }        
 	}          	
-     _gaq.push(['_trackPageview', newURL ]);      		          		              		
+	ga('send', 'pageview', newURL);
 	document.title = pointTitle;    
 }
 
@@ -825,7 +838,7 @@ function loadMainPageLeftColumn(shouldPushState) {
             $('#mainContainer').data('contentpath', '/');                        
             if (shouldPushState) {
       		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');   
-                _gaq.push(['_trackPageview', "/" ]);      		          		              		                       		          		              		
+                ga('send', 'pageview', "/");
       		}
 			activateMainPageLeftColumn();
       		document.title = 'Whysaurus - A better way to explain ideas';      		
@@ -869,7 +882,7 @@ function loadPointContent(pointurl, shouldPushState, replaceState) {
 function loadPointList(listType, areaToLoad, selectedTab) {
     $(areaToLoad).html('<div id="historyAreaLoadingSpinner"><img src="/static/img/ajax-loader.gif" /></div>');
     toggleTabbedArea('#leftColumn', selectedTab, areaToLoad);
-    _gaq.push(['_trackEvent', 'Main Page', 'Filter', listType]);
+    ga('send', 'event', 'Main Page', 'Filter', listType);
     
     $.ajax({
     	url: '/getPointsList',
@@ -970,7 +983,7 @@ function selectSearchLinkPoint(elem, linkType) {
     startSpinnerOnButton('#pointSelectText');   
     linkPointURL =  $(elem).data('pointurl');
     parentPointURL =  $('#pointArea').data('pointurl');
-     _gaq.push(['_trackEvent', 'Link Manipulation', 'Added ' + linkType + ' from search' , linkPointURL + ' to ' + parentPointURL]);                
+    ga('send', 'event', 'Link Manipulation', 'Added ' + linkType + ' from search' , linkPointURL + ' to ' + parentPointURL);
     selectPoint(linkPointURL, parentPointURL, linkType);  
 }
 
@@ -1067,9 +1080,6 @@ function validateSignupDialog() {
     return valid;
 }
 
-
-
-
 function createNewUser() {
     if (validateSignupDialog()) {
         //startSpinnerOnButton('#submit_signupDialog');
@@ -1125,14 +1135,24 @@ function createNewUser() {
 }
 
 function login() {
-    $('#frm_emailLoginDialog').submit();
+    email = $("#login_userEmail").val();
+    pw = $("#login_userPassword").val();
+    if (email == '') {
+        dialogAlert('#loginDialog','Please enter your email address or username.');
+    }
+    else if (pw == '') {
+        dialogAlert('#loginDialog','Please enter your password.');
+    }
+    else {  
+        $('#frm_emailLoginDialog').submit();    
+    }
 }
 
 function validateForgotPassword() {
     valid = true;
     email = $("#login_userEmail").val();
     if (email == '') {
-        dialogAlert('#emailLoginDialog','Please enter your login email address or username.');
+        dialogAlert('#loginDialog','Please enter your email address or username.');
         valid = false;
     }  
     return valid;
@@ -1160,13 +1180,13 @@ function forgotPassword() {
                             showSuccessAlert('We have sent an email with a password reset link to your email address.');                        
                         }                
         			} else {
-                        dialogAlert('#emailLoginDialog', obj.error ? obj.error : "There was an error");
+                        dialogAlert('#loginDialog', obj.error ? obj.error : "There was an error");
                         stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
                         removeDisableColorButtonPrimary('#forgot_emailLoginDialog');                        
         			}
         		},
         		error: function(xhr, textStatus, error){
-                    dialogAlert('#emailLoginDialog','The server returned an error. You may try again. ' + error);
+                    dialogAlert('#loginDialog','The server returned an error. You may try again. ' + error);
                     stopSpinnerOnButton('#forgot_emailLoginDialog', forgotPassword);
                     removeDisableColorButtonPrimary('#forgot_emailLoginDialog');                     
                 }
@@ -1609,10 +1629,17 @@ function activateHeaderAndDialogs() {
         $("#CreatePoint").attr('href', "#loginDialog");
         $("#CreatePoint").attr('data-toggle', "modal");
         $("#CreatePoint").off(".ys").on("click.ys", function(event) {
-            _gaq.push(['_trackEvent', 'Required login ',  event.target.id ]); 
+            ga('send', 'event', 'Required login ',  event.target.id);
             console.log('Required login ' +  event.target.id);
         });
-                
+        
+        $("#signInFromHeader").on('click', function() {
+            $("#loginDialog").modal('show')   
+        });
+        
+        
+
+        
         $(".loginWithEmail").on('click', function() {
             $("#emailLoginDialog").modal('show');
         });
@@ -1622,8 +1649,7 @@ function activateHeaderAndDialogs() {
         });
         $("#fromAreaShowSignupDialog").on('click', function() {
             $("#signupDialog").modal('show')            
-        });        
-        
+        });               
 
         $("#signInWithEmail_Dlg").on('click', function() {
             if ($("#loginDialog").data('postloginaction') == 'createFromMain') {            
@@ -1631,7 +1657,7 @@ function activateHeaderAndDialogs() {
                 $("#login_userAction").val($("#loginDialog").data('postloginaction'));      
             }                  
             $("#loginDialog").modal('hide');
-            $("#emailLoginDialog").modal('show');           
+            $("#signupDialog").modal('show');           
         });
 
         $("#backToLogin").on('click', function() {
@@ -1647,7 +1673,7 @@ function activateHeaderAndDialogs() {
                     
     } else {
         $( "#CreatePoint" ).on('click', function() {
-            _gaq.push(['_trackEvent', 'Header Menu', 'Make a Point']);
+            ga('send', 'event', 'Header Menu', 'Header Make A Point', 'Header Make A Point');
             showPointDialog("new", "New Point");
         });
 
@@ -1746,9 +1772,21 @@ function activateMainPageLeftColumn() {
     $('#mostAgrees').click(function() {
         loadPointList('topRated', '#mostAgreesArea', this);
     });
+
+    $('#highestScore').click(function() {
+        loadPointList('highestScore', '#highestScoreArea', this);
+    });
     
     $('#recentlyViewedTab').click(function() {
         toggleTabbedArea("#leftColumn", this, "#recentlyViewedArea"); 
+    });
+
+    $('#lowEngagementTab').click(function() {
+        loadPointList('lowEngagement', '#lowEngagementArea', this);
+    });
+
+    $('#lowQualityTab').click(function() {
+        loadPointList('lowQuality', '#lowQualityArea', this);
     });
     
     $("#newPointTitle").on('keyup', function(e) {setCharNum(e.target, "#newPointTitle_charNum");});
@@ -1780,7 +1818,7 @@ function preloadImages() {
 }
 
 function loginWith(ev, provider) {
-    _gaq.push(['_trackEvent', 'Login', 'With ' + provider, 'Dialog']);
+    ga('send', 'event', 'Login', 'With ' + provider, 'Dialog');
     var url = "/auth/" + provider.toLowerCase();
     var action = $('#loginDialog').data('postloginaction') || null;
     if (action == 'createFromMain') {

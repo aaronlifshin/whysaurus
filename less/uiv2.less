@@ -313,7 +313,7 @@ body {
 
 .relevanceCtrlArea {
 	//background-color: pink;
-	width: @cardWidth + (2 * @cardPadding);
+	//width: @cardWidth + (2 * @cardPadding);
 	padding-bottom: 4px;
 	margin-top: 11px; // needs to be pretty big to account for the possibility of a cardstack above it
 	animation-name: relevanceCtrlAreaReveal;
@@ -354,7 +354,7 @@ body {
 	font-size:  @baseFontSizeUX2 * 1.5; // ~28px;
     font-weight: bold;
 	position: relative;
-    left: -4px;
+    left: -14px;
 }
 
 .relevanceLinkArea {
@@ -421,7 +421,7 @@ body {
     display: inline-block;
     border: solid;
     border-color: @relGroupHiliteBG; // prevents offset when border appears
-    padding-top: 8px;
+    padding-top: 10px;
     padding-bottom: 3px;
     padding-right: 8px;
     padding-left: 10px;
@@ -439,7 +439,7 @@ body {
 	border-style: solid;
     border-width: @relLinkBoxWidth;
     border-color: @blueLight;
-	color: @blueLight;
+	//color: @blueLight;
 }
 
 // scale down on click
@@ -1300,6 +1300,11 @@ a:hover .arrowAddEvidenceButton {
 	width: @cardWidthSmallScreens + (2 * @indent); 
   }
 
+  .relGroupHilite {
+ 	width: 88vw; 
+	max-width: unset;
+  }
+  
   .point-card {
 	//background-color: red;
 	display: inline-block;

@@ -338,6 +338,8 @@ body {
     position: relative;
     top: -6px;
 	cursor: pointer;
+	font-family: serif;
+    font-size: 24px;
 }
 
 .relCtrlClose a {
@@ -371,9 +373,9 @@ body {
 	width: -moz-max-content;  
 }
 
-.relLinkAndStackCards:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
-    transform: scale(1.085) ;
-	font-weight: bold;
+.relCtrlAndLinkAndStackCards:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
+    //transform: scale(1.085) ;
+	//font-weight: bold;
 	color: @blue ;
 }
 
@@ -784,7 +786,7 @@ li .iconWithStat {
     color: black; // @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
 	//margin-bottom:2px;
-	margin-right: 12px;
+	margin-right: 0;
     //margin-right:4px; 
     margin-top:4px;
     display:inline-block;
@@ -794,6 +796,13 @@ li .iconWithStat {
 .cardBottomAction:hover {
 	text-decoration: underline;
 }
+
+.bottomActionDot {
+	margin-right: 8px;
+	margin-left: 8px;
+}
+
+
 
 // scale down on click
 @cardBottomActionScaleUpOnHover: 1.055;
@@ -842,11 +851,15 @@ li .iconWithStat {
 }
 
 .agree {
-	//margin-right: 6px;
+	margin-right: 6px;
 }
 
 .disagree {
-	margin-right: 24px;
+	//margin-right: 24px;
+}
+
+.relevanceVoteBottomAction {
+	margin-right: 18px;
 }
 
 .addEvidenceButtonGrp {
@@ -1138,10 +1151,10 @@ a:hover .arrowAddEvidenceButton {
 	color: @red;
 }
 
-.listedClaim:hover .dottedLineRelevanceLink, .listedClaim:focus .dottedLineRelevanceLink  {
+.relCtrlAndLinkAndStackCards:hover .dottedLineRelevanceLink, .listedClaim:focus .dottedLineRelevanceLink  {
 	color: @blue ;
-	height: 32px;
-    margin-top: -38px;
+	//height: 32px;
+    //margin-top: -38px;
 }
 
 // not used yet

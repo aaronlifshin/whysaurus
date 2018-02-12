@@ -940,9 +940,12 @@ class PointCard extends React.Component {
     let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
     let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
     let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
+    let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
+    let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
     //console.log("linksRatio " + this.linksRatio() )
     return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-
+	
+	<div className="relCtrlAndLinkAndStackCards">	
     <div className={classesListedClaim} tabIndex="-1" >
     {this.relevanceCtrlUI()}
 	
@@ -972,7 +975,10 @@ class PointCard extends React.Component {
         <div className="row-fluid">
         <div className="cardBottomActionRow" >
           <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
-          <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+          <span className="cardBottomAction bottomActionDot">·</span>
+		  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+		  <span className={classesRelevanceDot}>·</span>
+		  <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
         </div>
         </div>
       </div>
@@ -986,7 +992,8 @@ class PointCard extends React.Component {
     </div>
 	
     </div>
-
+    </div>
+	
       <div className="evidenceRow row-fluid">
       {this.evidence()}
       </div>

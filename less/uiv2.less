@@ -42,8 +42,6 @@
 	font-family: "usual", sans-serif !important;
 }
 
-
-
 //for testing animation
 .animPink {
 	background: pink !important;
@@ -339,7 +337,7 @@ body {
 	float: right;
     font-size: 27px;
     position: relative;
-    top: -6px;
+    margin-top: 2px;
 	cursor: pointer;
 	font-family: serif;
     font-size: 24px;
@@ -403,11 +401,18 @@ body {
 
 .relevanceDisplay {
 	display: inline-block;
+	width: 100%;
 	position:relative;
 	top: -6px;
 	right: 1px;
     font-size: @baseFontSize * 0.75; // ~12px
-	font-family: ff-meta-web-pro-condensed;
+}
+
+.positionRelDisplay {
+	text-align: center;
+    display: block;
+    position: relative;
+    left: 7px;
 }
 
 .relCtrlGroup {

@@ -570,7 +570,8 @@ class RelevanceComponent extends React.Component {
   // TODO: add number of Votes so far to relevanceStats
   render(){
     return <div className="relCtrlGroup" >
-      <div className="relCtrlLabel">How Relevant is this claim for you? <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span></div>
+	  <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span>
+      <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
         <div className="relCtrlVoteOptions">
           <a className={this.linkClassFor(100)} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(66)} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
@@ -717,7 +718,7 @@ class PointCard extends React.Component {
     return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
       <div className="relevanceLinkArea">
         <div className="dottedLine dottedLineRelevanceLink"></div>
-		<span className="relevanceDisplay number"><span>{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
+		<span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
         <div className="arrowCard">&#x21B3;</div>
       </div></a>
     } else {

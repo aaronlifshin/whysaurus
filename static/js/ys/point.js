@@ -602,9 +602,9 @@ class PointCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    expandedIndex: {},
-    relLinkClicked: false
-  }
+      expandedIndex: {},
+      relLinkClicked: false
+    }
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
@@ -614,16 +614,16 @@ class PointCard extends React.Component {
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
     this.handleClickMore = this.handleClickMore.bind(this);
-	this.handleClickNoProp = this.handleClickNoProp.bind(this);
+    this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
 
   // TODO: this simple function is also defined in the EditPointComponent component - can/should it be declared in a single place somehow?
   handleClickNoProp(e) {
-	e.stopPropagation();	  
+    e.stopPropagation();
   }
   
   handleClickEdit(e) {
-	e.stopPropagation();	  
+    e.stopPropagation();
     this.setState({editing: true})
   }
 
@@ -736,6 +736,7 @@ class PointCard extends React.Component {
   }
 
   handleSeeEvidence(point=this.point) {
+    this.props.data.refetch({url: this.props.url, omitEvidence: false})
     const i = this.state.expandedIndex
     i[point.id] = true
     this.setState({expandedIndex: i})
@@ -1016,6 +1017,7 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
   if (point) {
   return <div className={classes} key={point.url}>
       <ExpandedPointCard point={point}
+    omitEvidence={true}
     url={point.url}
     expandedIndex={expandedIndex}
     expanded={true}

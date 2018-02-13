@@ -424,8 +424,8 @@ body {
 	color: @blue;
 	margin-right: 0px;
     display: inline-block;
-    border: solid;
-    border-color: @relGroupHiliteBG; // prevents offset when border appears
+    //border: solid;
+    //border-color: @relGroupHiliteBG; // prevents offset when border appears
     padding-top: 10px;
     padding-bottom: 3px;
     padding-right: 8px;
@@ -438,13 +438,13 @@ body {
 	//color: black;
 	//color: pink;		
 }
-@relLinkBoxWidth: 2px;
 .relVoteLink:hover {
 	//text-decoration: underline;
-	border-style: solid;
-    border-width: @relLinkBoxWidth;
-    border-color: @blueLight;
-	//color: @blueLight;
+	//border-style: solid;
+    //border-width: @relLinkBoxWidth;
+    //border-color: @blueLight;
+	//background-color: @blueLight;
+	color: white !important;
 }
 
 // scale down on click
@@ -452,13 +452,39 @@ body {
     transform: scale(0.975);
 }
 
-.myRelevanceVoteHigh {
-	color: white !important ;
-	background-color: @blue; // black;
+@relColor0: @blue; // hsla(0, 0%, 80%, 1); // black; // @blue; // 
+@relColor33:  @blue; //hsla(0, 0%, 60%, 1); // black; // @blue; // 
+@relColor66:  @blue; //hsla(0, 0%, 40%, 1); // black; // @blue; // 
+@relColor100:  @blue; //hsla(0, 0%, 20%, 1); // black; // @blue; // 
+
+.relVoteLink0:hover {
+	background-color: @blueLight; // @relColor0;
 }
-.myRelevanceVoteLow {
-	color: white !important ;
-	background-color: @blue; // @red;
+.relVoteLink33:hover {
+	background-color: @blueLight; //@relColor33;
+}
+.relVoteLink66:hover {
+	background-color: @blueLight; //@relColor66;
+}
+.relVoteLink100:hover {
+	background-color: @blueLight; //@relColor100;
+}
+
+.myRelevanceVote100 {
+	color: white;// !important ;
+	background-color: @relColor100; 
+}
+.myRelevanceVote66 {
+	color: white;// !important ;
+	background-color: @relColor66; 
+}
+.myRelevanceVote33 {
+	color: white;// !important ;
+	background-color: @relColor33; 
+}
+.myRelevanceVote0 {
+	color: white;// !important ;
+	background-color: @relColor0; 
 }
 
 
@@ -908,7 +934,7 @@ li .iconWithStat {
 }
 
 .agree {
-	margin-right: 6px;
+	margin-right: 8px;
 }
 
 .disagree {

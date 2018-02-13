@@ -132,19 +132,6 @@ class SubPointConnection(relay.Connection):
         def resolve_link(self, info):
             return Link(type=self.node.link_type, relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe, relevanceVote=self.node.myVoteValue)
 
-        relevance = graphene.Float()
-        def resolve_relevance(self, info, **args):
-            return self.node._linkInfo.rating
-
-        relevanceVoteCount = graphene.Int()
-        def resolve_relevanceVoteCount(self, info):
-            return self.node.relevanceVoteCount
-
-        type = graphene.String()
-        def resolve_type(self, info, **args):
-            # this assumes link_type has been set in the Point.resolve_xxxPoints methods, above
-            return self.node.link_type
-
 class ExpandPoint(graphene.Mutation):
     class Arguments:
         url = graphene.String(required=True)

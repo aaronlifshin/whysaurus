@@ -119,10 +119,11 @@ query Point($url: String) {
 }`
 
 export const HomePage = gql`
+${pointFieldsFragment}
 query HomePage {
   homePage {
     featuredPoint {
-      title
+      ...pointFields
     }
   }
 }

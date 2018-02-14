@@ -5,6 +5,7 @@ const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { PointList } from './point_list';
 import * as schema from './schema';
 
 class Home extends React.Component {
@@ -13,7 +14,7 @@ class Home extends React.Component {
     let featuredPoint = homePage && homePage.featuredPoint;
     return <div><h1>Home Page</h1>
       <h3>Featured Point:</h3>
-      <h4>{featuredPoint && featuredPoint.title}</h4>
+      {featuredPoint && <PointList point={featuredPoint}/>}
       </div>
   }
 }

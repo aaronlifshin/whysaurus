@@ -103,8 +103,8 @@ mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURL
 
 export const GetPoint = gql`
 ${expandedPointFieldsFragment}
-query Point($url: String, $omitEvidence: Boolean) {
-  point(url: $url, omitEvidence: $omitEvidence) {
+query Point($url: String) {
+  point(url: $url) {
     ...pointFields,
     ...evidenceFields
  }

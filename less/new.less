@@ -1,29 +1,29 @@
 @import "variables.less"; // Modify this for custom colors, font-sizes, etc
 
- 
- 
+
+
 // undo some weird stuff that the bootstrap-glyphicons.css for bootstrap 3 is doing
 // this file is being imported at the top of bootstrap.less, so that it overrides as little as possible
 // it is being used for the arrow icons in the explanatory illustration carousel
 *, *:before, *:after {
     -webkit-box-sizing: inherit;
     -moz-box-sizing: inherit;
-    box-sizing: inherit; 
-} 
+    box-sizing: inherit;
+}
 
-         
+
 // scrollbar always visible to prevent horizontal shifting
 html {overflow-y: scroll;}
-  
-.no-space [class*="span"] { 
+
+.no-space [class*="span"] {
     margin: 0 0 0 0 ;
-}            
-                
+}
+
 .center { float: none; margin-left: auto; margin-right: auto; }
 
-/* test */  
+/* test */
 body {
-	padding-top: @headerHeight;
+    padding-top: @headerHeight;
     font-family: ff-meta-web-pro,sans-serif;
     font-size: @baseFontSize;
     line-height: @baseLineHeight;
@@ -33,7 +33,7 @@ body {
 
 
 h1 { font-size: @fontSizeLarge;  } // standard main point headings
-h2 { font-size: @fontSizeLarge * 1.9; margin: 48px 0 0px 0; -webkit-text-stroke: 0.5px;} 
+h2 { font-size: @fontSizeLarge * 1.9; margin: 48px 0 0px 0; -webkit-text-stroke: 0.5px;}
 h3 { font-size: @fontSizeLarge * 1.66; }
 h4 { font-size: @fontSizeLargeShave; margin: 28px 0 8px 0; -webkit-text-stroke: 0.2px;}
 h5 { font-size: @fontSizeLarge * 0.66; }
@@ -43,7 +43,7 @@ h6 { font-size: @fontSizeLarge * 0.50; }
 h1 {
     line-height: @lineHeightBig;
 }
-       
+
 a:hover {
     cursor:pointer;
 }
@@ -51,8 +51,8 @@ a:hover {
 ////////////////////
 // Buttons UX2
 //
-// These get re-established in the apollo branch, in uiv2.less, 
-// copying them in here bc I'm working on the sign-up dialogs and 
+// These get re-established in the apollo branch, in uiv2.less,
+// copying them in here bc I'm working on the sign-up dialogs and
 // want to make their design forward compatible -JF
 
 // Colors
@@ -72,9 +72,9 @@ a:hover {
 @arrowFontSizeUX2: @baseFontSizeUX2 * 1.125; // ~18px
 
 .buttonUX2 {
-	padding: 5px;
-	padding-left: 11px;
-	padding-right: 12px;
+    padding: 5px;
+    padding-left: 11px;
+    padding-right: 12px;
     margin-bottom: 0;
     //font-family: ff-meta-web-pro-condensed,sans-serif;
     font-weight: 700;
@@ -99,11 +99,11 @@ a:hover {
 @buttonUX2ScaleDownOnClick: 0.975;
 .buttonUX2:active {
     transform: scale(@buttonUX2ScaleDownOnClick);
-	outline-style: none;
+        outline-style: none;
 }
 .buttonUX2Blue {
-	background-color: @blue;
-} 
+        background-color: @blue;
+}
 .buttonUX2Blue:focus {
     outline-color: @blueLight;
 }
@@ -111,8 +111,8 @@ a:hover {
     background-color: @blueLight;
 }
 .buttonUX2Red {
-	background-color: @red;
-} 
+    background-color: @red;
+}
 .buttonUX2Blue:focus {
     outline-color: @redLight;
 }
@@ -120,53 +120,25 @@ a:hover {
     background-color: @redLight;
 }
 .cancelGreyButton {
-	background-color: hsl(0, 0%, 60%);
-	/*border: none;
-	font-size: @fontSizeActionsUX2;
-	outline-style: none;
-	display: inline-block;
-	padding: 0;
-	padding-left: 6px;*/
+    background-color: hsl(0, 0%, 60%);
+/*border: none;
+font-size: @fontSizeActionsUX2;
+outline-style: none;
+display: inline-block;
+         padding: 0;
+        padding-left: 6px;*/
 
 }
 .cancelButton:hover {
-	text-decoration:underline;
+    text-decoration:underline;
 }
 .cancelButton:focus {
-	text-decoration:underline;
-	outline-style: none;
+    text-decoration:underline;
+    outline-style: none;
 }
 .cancelButton:active {
     transform: scale(@buttonUX2ScaleDownOnClick);
 }
-
-
-////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .hiddenForNow {
     display: none;
@@ -186,8 +158,8 @@ a:hover {
 
 
 .toggleChildStrikeThruOnHover:hover .strikethruOnHover {
-	text-decoration: line-through;
-	opacity: .5;
+    text-decoration: line-through;
+    opacity: .5;
 }
 
 .showStatOnHover:hover .hiddenStatTillRevealed {
@@ -195,7 +167,7 @@ a:hover {
 }
 
 .hideStatOnHover:hover .shownStatTillHidden {
-	display: none;
+    display: none;
 }
 
 .toggleChildVisOnHover:hover .hiddenStatTillRevealed {
@@ -203,15 +175,13 @@ a:hover {
 }
 
 .toggleChildVisOnHover:hover .shownStatTillHidden {
-	display: none;
+    display: none;
 }
-
 
 
 .hiddenAgreeCtrlTillRevealed {
     opacity:0; /* switch this to zero to enable showing disagree/agree only on hover */
 }
-
 
 
 .showChildOnHover:hover .hiddenTillRevealed {
@@ -226,30 +196,30 @@ a:hover {
 .inlineBlock {
     display: inline-block;
 }
-  
+
 .inline {
     display:inline;
-}  
-  
+}
+
 /* gets unhidden for extra-extra-small screens in new-responsive-767px-max.less */
 .hidden-xxs {
     display: inherit;
-} 
-.visible-xxs {
-    display: none;   
 }
-    
-/* if we want to set a "visited" color for links, uncomment this... 
+.visible-xxs {
+    display: none;
+}
+
+/* if we want to set a "visited" color for links, uncomment this...
 a:visited {
     color: @purple;
 }*/
 
 .title a:visited, .voteArea a:visited {
-	text-decoration: none;
+    text-decoration: none;
 }
 .title a:hover {
-	text-decoration: inherit;
-	color:inherit;
+    text-decoration: inherit;
+    color:inherit;
 }
 
 .voteArea a:hover {
@@ -274,10 +244,10 @@ a:visited {
 #mainContainer {
     //margin-top: 8px;
 }
- 
+
 .dropdown .caret {
-	margin-left:1px;
-}  
+    margin-left:1px;
+}
 
 .fullPageText {
     max-width: 540px;
@@ -343,7 +313,7 @@ a:visited {
 
 
 .borderButton {
-	font-family: @sansCondFontFamily;
+    font-family: @sansCondFontFamily;
     font-weight: 700;
     font-size: @fontSizeMediumCond;
     color: @grayTextMedium;
@@ -351,11 +321,11 @@ a:visited {
     background-color:#FFFFFF;
     border: 1px solid @grayOutlinesMid;
     border-radius: 2px;
-	padding: 9px 15px 4px;
+    padding: 9px 15px 4px;
 }
 
 .borderButton:hover {
-    background-color:@blueLight;	
+    background-color:@blueLight;
     text-decoration:none;
 }
 
@@ -381,7 +351,7 @@ a:visited {
     padding-top:7px;
     padding-bottom:8px;
 }
-   
+
 .dropdown-menu>li>a, .dropdown-menu>li>.dropdown-heading {
     padding-top:3px;
     padding-right:20px;
@@ -389,7 +359,7 @@ a:visited {
     padding-left:10px;
 }
 
-.dropdown-heading { 
+.dropdown-heading {
     margin-bottom: 2px;
 }
 
@@ -405,60 +375,60 @@ a:visited {
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    HEADER BAR STUFF(MOSTLY)
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-      
+
 #header{
-    height:@headerHeight;	
+    height:@headerHeight;
 }
- 
+
 #logoImage {
-    margin-top: 2px;	
+    margin-top: 2px;
 }
- 
+
 #CreatePoint {
     margin-left:9px; //nudge this link onto the grid
 }
- 
+
 .grayBackground {
-	background:#F0F0F0;
+    background:#F0F0F0;
 }
 
 .blueBackground {
-  background:#b7e0fe;
+    background:#b7e0fe;
 }
 
 #searchArea{
-	height: 48px;
-	line-height:48px;
-	position:relative;
+    height: 48px;
+    line-height:48px;
+    position:relative;
 }
 
 #searchBox {
-  position:relative;
-	top:3px;
-  width:100%; 
-  color:black;
+    position:relative;
+    top:3px;
+    width:100%;
+    color:black;
     // use these three CSS3 box-sizing calls to cause the padding to cut
     //  into the box width instead of add to it
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
-	box-sizing: border-box;  
-  height:30px;
-	padding-right:40px;
-	border: 1px solid #000000;
-	-webkit-border-radius: 0px;
-  	-moz-border-radius: 0px;
-  	border-radius: 2px; 
-  	font-size: 16px;
-}  
-   
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    height:30px;
+    padding-right:40px;
+    border: 1px solid #000000;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 2px;
+    font-size: 16px;
+}
+
 #searchArea .searchIcon {
-	position: relative;
-	top: -32px;
-	right: -2px;
-	height: 16px;
-	width:25px;
-	background-image: url("/static/img/icon_magnifyingGlass.png");
-	background-repeat: no-repeat;
+    position: relative;
+    top: -32px;
+    right: -2px;
+    height: 16px;
+    width:25px;
+    background-image: url("/static/img/icon_magnifyingGlass.png");
+    background-repeat: no-repeat;
 }
 
 .newPointInputRowFieldArea {
@@ -481,19 +451,19 @@ a:visited {
     color: @grayTextLight;
 }
 
- 
+
 .mainPageInput {
     // use border-box to keep padding from making the element bigger
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-	border: 1px solid #000000;
-	-webkit-border-radius: 0px;
-  	-moz-border-radius: 0px;
-  	border-radius: 2px; 
-  	font-size: 16px;   
-    height: 36px;  
-    width: 100%;   
+    border: 1px solid #000000;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 2px;
+    font-size: 16px;
+    height: 36px;
+    width: 100%;
     padding-left: 8px;
     padding-right: 4px;
     padding-bottom: 4px;
@@ -512,9 +482,9 @@ a:visited {
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
-       
-}   
-     
+
+}
+
 .explanationTitle {
     font-size: 24px;
     //text-transform: uppercase;
@@ -523,9 +493,9 @@ a:visited {
     line-height: @lineHeightBig;
     letter-spacing: .65px;
     text-align: center;
-    
-}   
-  
+
+}
+
 .newPointCallTitle {
     font-size: 37px;
     //text-transform: uppercase;
@@ -535,7 +505,7 @@ a:visited {
     letter-spacing: .65px;
     text-align: center;
     display: inline-block; // needed so that child spans can inherit this when they toggle on for responsive visibility
-    
+
 }
 
 .sectionTitle {
@@ -547,7 +517,7 @@ a:visited {
     letter-spacing: .65px;
     margin-top:16px;
     //text-align: center;
-    
+
 }
 
 
@@ -566,32 +536,32 @@ a:visited {
 }
 
 #newPointTitle::-webkit-input-placeholder, #searchBox::-webkit-input-placeholder {
-	font-size: 0.9375em;
-	color:#6D6E70;
-	font-style: italic;
-	padding-top: 0.18em;
+    font-size: 0.9375em;
+    color:#6D6E70;
+    font-style: italic;
+    padding-top: 0.18em;
 }
 
 #newPointTitle::-webkit-input-placeholder, #searchBox:-moz-placeholder { /* Firefox 18- */
     font-size: 0.9375em;
     color:#6D6E70;
-    font-style: italic;   
-	padding-top: 0.18em;
+    font-style: italic;
+    padding-top: 0.18em;
 }
 
 #newPointTitle::-webkit-input-placeholder, #searchBox::-moz-placeholder {  /* Firefox 19+ */
     font-size: 0.9375em;
     color:#6D6E70;
     font-style: italic;
-	padding-top: 0.18em;
+        padding-top: 0.18em;
 }
 
-#newPointTitle::-webkit-input-placeholder, #searchBox:-ms-input-placeholder {  
+#newPointTitle::-webkit-input-placeholder, #searchBox:-ms-input-placeholder {
     font-size: 0.9375em;
     font:Georgia, Garamond, serif;
     color:#6D6E70;
-    font-style: italic;  
-	padding-top: 0.18em;
+    font-style: italic;
+    padding-top: 0.18em;
 }
 
 
@@ -603,24 +573,24 @@ a:visited {
 
 // DEPRECATED?
 #footerCopyright{
-	font-size: 0.5625em;
-	color:#58595B;
-	line-height: 10px;
-	margin-top: 16px;
+    font-size: 0.5625em;
+    color:#58595B;
+    line-height: 10px;
+    margin-top: 16px;
 }
 
 .topSpace {
-	height:22px;
+    height:22px;
 }
-  
+
 .Heading_Black_Caps {
-	size:0.875em;
+    size:0.875em;
     font-family: "ff-meta-web-pro-condensed", sans-serif;
     color:black;
     font-weight: bold;
 }
-   
-.headerUserName {	                                
+
+.headerUserName {
     font-family: @sansCondFontFamily;
     color: black;
     font-size: @fontSizeMediumCond;
@@ -628,9 +598,9 @@ a:visited {
     position:relative;
 }
 
-.headerLinks {	                                
+.headerLinks {
     margin-top:14px;
-	display:block;
+    display:block;
     font-size: @fontSizeMediumCond;
     font-weight: bold;
     line-height: @baseLineHeight;
@@ -642,32 +612,32 @@ a:visited {
 }
 
 .headerLinks a {
-    padding-right:5%;	
+    padding-right:5%;
 }
 
-.headerUserName a {	                                
+.headerUserName a {
     color: black;
 }
- 
+
 .Heading_Black_Caps a {
-	color:black;
-	cursor:pointer;
+    color:black;
+    cursor:pointer;
 }
-   
+
 .aboutMenu {
-	position:relative;	
-	width:60px;
+    position:relative;
+    width:60px;
     left: @gridGutterWidth;
 }
-    
+
 .aboutMenu a {
-    padding-right:0;	
+    padding-right:0;
 }
-  
+
 #aboutDropdown {
     margin-top:12px;
-}  
-  
+}
+
 .headerLinkIcon {
     max-height:22px;
     padding:0;
@@ -680,36 +650,36 @@ a:visited {
 .nudgeLeft {
     margin-left:-3px;
 }
-   
+
 .userMenuArea #avatar {
-	margin-left:5px;
+    margin-left:5px;
     margin-top: -2px;
-	height:40px;
-	width:40px;
+    height:40px;
+    width:40px;
 }
- 
+
 .userMenuArea a, #notifications a.dropdown-toggle  {
-	height:48px;
-	line-height:48px;
+    height:48px;
+    line-height:48px;
 }
 
 .userMenuArea .dropdown-menu li a {
-	height:auto;
+    height:auto;
 }
-       
+
 #userMenuSignedIn {
     min-width: 150px;
     margin-top: -1px;
-    right:0px;    
+    right:0px;
 }
-      
+
 #userMenuSignedOut {
     min-width: 112px;
     margin-left: -46px;
     margin-top: -1px;
     padding-bottom: 13px;
 }
-    
+
 // bootstrap default is to set right to 0, but I'm not sure why - it seems to cause only problems - JF
 .pull-right > .dropdown-menu {
   right: auto;
@@ -720,7 +690,7 @@ a:visited {
   //min-width: initial; // bootstrap default is 160px, but it looks better without this - JF
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-bottom-right-radius: 4px;  
+  border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
@@ -728,43 +698,43 @@ a:visited {
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END HEADER BAR STUFF
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-      
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    NOTIFICATION DROPDOWN STUFF
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 #notifications {
-    position: relative;	
+    position: relative;
     right: 18px;
     cursor:pointer;
 }
- 
+
 #notificationIcon {
 
     max-width: 28px;
 }
- 
+
 #notificationCount {
-	position: absolute;
-	top: 20%;
-	text-align: center;
-	background-color: #00ADEE;
-	color: white;
-	padding-left: 3px;
-	padding-right: 3px;
-	padding-top: 1px;
+    position: absolute;
+    top: 20%;
+    text-align: center;
+    background-color: #00ADEE;
+    color: white;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 1px;
     padding-bottom: 0px;
-	left: 77%;
-	font-family: "ff-meta-web-pro-condensed", sans-serif;
-	font-size: 0.75em;
-	font-weight: 700;
-	border-radius:2px;
+    left: 77%;
+    font-family: "ff-meta-web-pro-condensed", sans-serif;
+    font-size: 0.75em;
+    font-weight: 700;
+    border-radius:2px;
 }
-  
-   
+
+
 .notification-menu {
-    margin-left: -328px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu 
-	border-radius:0px;
+    margin-left: -328px; // a bit hacky bc I've tweaked bootstrap's behavior for .pull-right>.dropdown-menu
+    border-radius:0px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     -moz-overflow-scrolling: touch;
@@ -772,9 +742,9 @@ a:visited {
     -o-overflow-scrolling: touch;
     overflow-scrolling: touch;
     height: auto;
-    max-height: 600px;    
+    max-height: 600px;
     top:53px;
-    width: 360px; 
+    width: 360px;
     padding-top: 4px;
 }
 
@@ -799,56 +769,56 @@ a:visited {
     padding-left: 3px;
     width: 285px;
     margin-top: -1px;
-    white-space: normal;   
+    white-space: normal;
 }
 
 .vertalignmiddle {
-	vertical-align:middle;
+    vertical-align:middle;
     padding-bottom: 1px;
 }
 
 .Heading_GreyMid_Caps {
-	font-family:"ff-meta-web-pro-condensed", sans-serif;
-    font-weight:700;    
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
+    font-weight:700;
     text-transform: uppercase;
     font-size:0.875em;
     color:#a9a9a9;
 }
 
 .Submenu_text_main {
-	font-family:"ff-meta-web-pro", sans-serif;
-	font-weight:400;
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-weight:400;
     font-size:0.813em;
     color:#000000;
 }
 
 .Submenu_SmallText{
-	font-family:"ff-meta-web-pro", sans-serif;
-	font-weight:400;
-	font-size:0.75em;
-	color:#bdbdbd;
-	line-height:120%;
+    font-family:"ff-meta-web-pro", sans-serif;
+    font-weight:400;
+    font-size:0.75em;
+    color:#bdbdbd;
+    line-height:120%;
 }
 
 .notificationMenuItem, #notificationMenuHeader, #notificationMenuFooter {
-	cursor:pointer;	
+    cursor:pointer;
     padding:4px 4px 4px 4px;
-	border-bottom: 1px solid #d7d7d7;
-	width:auto;
+    border-bottom: 1px solid #d7d7d7;
+    width:auto;
 }
 
 
 .notificationAvatar {
-	float:right;
+    float:right;
     margin-top:1px;
 }
 
 .notificationMenuItem:hover, #notificationMenuHeader:hover, #notificationMenuFooter:hover {
-	background-color:@blueLight;
+    background-color:@blueLight;
 }
 
 .notificationCleared {
-	background-color:#F0F0F0;
+    background-color:#F0F0F0;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -859,8 +829,8 @@ a:visited {
    NOTIFICATION AREA IN PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #notificationsArea li {
-	list-style:none;
-    border-bottom: 1px solid #B9BBBD;	
+    list-style:none;
+    border-bottom: 1px solid #B9BBBD;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -868,25 +838,25 @@ a:visited {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
    /*
-.pointCardArea {   
-	margin-bottom: @spaceBtPointCards;
+.pointCardArea {
+        margin-bottom: @spaceBtPointCards;
     position: relative;
     top: 8px;
     left: -5px;
 }*/
 
 /* This .pointCard class is referred to somehow in the JSON that displays comments.
-When I was building the cardstack, placing this class on multiple cards gave me a 
+When I was building the cardstack, placing this class on multiple cards gave me a
 JSON error related to displaying comments. But when I don't use this class, the error goes away... -JF */
 .pointCard {
-	margin-bottom: @spaceBtPointCards;
+    margin-bottom: @spaceBtPointCards;
     position: relative;
     top: 8px;
     left: -5px;
 }
 
 .pointCardChild {
-    position: relative;    
+    position: relative;
     background-color: white;
     left: 3px;
     top: -3px;
@@ -897,18 +867,18 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCardHidden {
-	top:-2px;
+        top:-2px;
 }
 
 .pointCardTop {
-	word-wrap: break-word;
-	cursor:pointer;
+        word-wrap: break-word;
+        cursor:pointer;
     padding:@boxPaddingDefault;
-	padding-top: 11px;
-}  
-  
+        padding-top: 11px;
+}
+
 .pointCardDrawn  {
-	border-width:1px;
+        border-width:1px;
     border-style: solid;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
@@ -916,11 +886,11 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCardGrey {
-	border-color:@grayPointBoxOutlines;
+        border-color:@grayPointBoxOutlines;
 }
 
 .pointCardRed {
-	border-color:rgba(236, 19, 26, 0.35);
+        border-color:rgba(236, 19, 26, 0.35);
 }
 
 
@@ -932,7 +902,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 
 [id$=_nonzeroPoints] .pointCard {
-	position: relative;
+        position: relative;
 }
 
 /*
@@ -944,16 +914,16 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCard:hover .score, .pointSmall:hover .score, .pointListPoint:hover .score {
-	color:white;
+        color:white;
 }
 */
 .pointCard .pointTitle {
-	color: black;
-	font-size: @fontSizeMedium; // @fontSizeBitLarge;
+        color: black;
+        font-size: @fontSizeMedium; // @fontSizeBitLarge;
     font-weight:500; // using the "Book" weight of Meta, from TypeKit
-	line-height: @lineHeightBigger;
-    letter-spacing: @letterSpacingSubtle;	
-	margin-bottom: 17px; 
+        line-height: @lineHeightBigger;
+    letter-spacing: @letterSpacingSubtle;
+        margin-bottom: 17px;
     padding-left: 1px;
     padding-right:4px;
 }
@@ -963,10 +933,10 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCard .stat {
-	//color: @grayTextMedium;
+        //color: @grayTextMedium;
     /*font-weight: bold;*/
-	font-family: @sansFontFamily;
-	//font-size: @fontSizeSmaller;
+        font-family: @sansFontFamily;
+        //font-size: @fontSizeSmaller;
     padding-right:4px;
     //padding-left:3px;
 }
@@ -978,13 +948,13 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .pointCard .linkStat {
     height:23px;
-    min-height:0px;   
+    min-height:0px;
     display:block;
-    float:left;    
+    float:left;
 }
 
 .pointCard .counterColor {
-	background-color:  @grayTextExtraLight;
+        background-color:  @grayTextExtraLight;
 }
 
 .pointCard .supportColor {
@@ -999,13 +969,13 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCard .gauge {
-	position:relative;
-	margin-top: 8px;	
+        position:relative;
+        margin-top: 8px;
 }
 
 .pointCard .gaugeText {
-	top:2px;    	
-	position: absolute;
+        top:2px;
+        position: absolute;
     font-size: @fontSizeSmall;
     letter-spacing: @letterSpacingCond;
     color: @grayTextMedium;
@@ -1024,14 +994,14 @@ JSON error related to displaying comments. But when I don't use this class, the 
     //padding-bottom:5px;
     font-size: 20px
  }
- 
+
  .pointActionButtonBorder {
     padding-top: 3px;
     padding-bottom:2px;
-} 
- 
+}
+
 .pointCard .gaugeCounter {
-	right: 3px;
+        right: 3px;
 }
 
 .pointCard .gaugeSupporting {
@@ -1039,7 +1009,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCard .pointTitle a:hover, .pointSmall .smallTitle a:hover {
-	//text-decoration:none;
+        //text-decoration:none;
 }
 
 .pointTitle a {
@@ -1055,14 +1025,14 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 
 .pointSmall {
-	/* background-color: #f8f8f8; */
+        /* background-color: #f8f8f8; */
     border-style:solid;
     border-width:1px;
     border-color: @grayBoxOutlines;
     word-wrap: break-word;
     cursor:pointer;
     padding:5px;
-	margin-bottom: @spaceBtPointCards;
+        margin-bottom: @spaceBtPointCards;
     //-webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     //-moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     //box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
@@ -1076,10 +1046,10 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointSmall .smallTitle {
-	color: #6D6E70;
-	font-size: 0.75em;
-	line-height: 1.3125em;	
-	margin-bottom: 8px;	
+        color: #6D6E70;
+        font-size: 0.75em;
+        line-height: 1.3125em;
+        margin-bottom: 8px;
 }
 
 
@@ -1088,80 +1058,80 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointSmall .smallStat {
-	color: @grayTextMedium;
+        color: @grayTextMedium;
     /*font-weight: bold;*/
-	font-family: @sansFontFamily;
-	font-size: @fontSizeSmaller;	
+        font-family: @sansFontFamily;
+        font-size: @fontSizeSmaller;
 }
 
 .yellow .score {
-	color:#EBC821;
+        color:#EBC821;
 }
 
 .yellow:hover .title {
-	background-color: #EBC821;
+        background-color: #EBC821;
 }
 
 .red .score {
-	color:@red;
+        color:@red;
 }
 
 .red:hover .title {
-	background-color: @red;
+        background-color: @red;
 }
 
 .green .score {
-	color:@green;
+        color:@green;
 }
 
 .green:hover .title {
-	background-color: @green;
+        background-color: @green;
 }
 
 .title a {
-	color: #000;
+        color: #000;
 }
 
 .greenScore {
-	color:@green;
+        color:@green;
 }
 
 
 .redScore {
-	color:@red !important;
+        color:@red !important;
     font-size:1.05em;
 }
 
 .yellowScore {
-	color:#EBC821;
+        color:#EBC821;
 }
 .noScore {
-	color:#b9bbbd;
+        color:#b9bbbd;
 }
 
 .positiveScore {
-	color:black;
+        color:black;
     font-size:1.05em;
 }
 
 
 
 .boxedElement {
-	border-style:solid;
-	border-width:1px;
+        border-style:solid;
+        border-width:1px;
     border-color: @grayBoxOutlines;
-  	word-wrap: break-word;
+        word-wrap: break-word;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
- 
+
 .boxedElement H5 {
-	padding-left: 5px;
+        padding-left: 5px;
 }
- 
+
 .pointSummaryText {
-	padding-left: 5px;
+        padding-left: 5px;
 }
 
 
@@ -1170,13 +1140,13 @@ JSON error related to displaying comments. But when I don't use this class, the 
    MANIFESTO, PRIVATE AREA BAR and other HOMEPAGE ROW CONTENT
    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-   
+
 .areaChoose {
     margin-top: 0px;
     margin-bottom: -4px;
-}   
-   
-   
+}
+
+
 .manifestoHeaderArea {
     //margin-top: -52px;
     //margin-bottom: @homepageRowVerticalPadding;
@@ -1205,7 +1175,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
     font-weight: bold;
     letter-spacing: 0.65px;
     color:black;
-    
+
 }
 
 .manifestoTitleBig:hover {
@@ -1215,20 +1185,20 @@ JSON error related to displaying comments. But when I don't use this class, the 
 #hideManifesto {
     font-size: @fontSizeSmall;
     margin-top: -20px;
-    z-index: 100000; 
+    z-index: 100000;
 }
 
 .manifestoTextTopHeader {
     //font-size: @fontSizeXXXL;
 }
- 
+
 #manifestoText {
-    color: black;    
+    color: black;
     background-color:white;
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-} 
+}
 
 .twitter-share-button {
     margin-top:16px;
@@ -1285,7 +1255,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
     border-top-style: solid;
 }
 
- 
+
 .explanationsCentered {
     margin-left:auto;
     margin-right:auto;
@@ -1293,23 +1263,23 @@ JSON error related to displaying comments. But when I don't use this class, the 
     width:796px; //need to set width precisely to get the centering via margin:auto to work, afaik -JF
     //padding-left:14px;
     min-height:1px;
-}  
- 
+}
+
 .explanationBlock {
     display:block;
     float:left;
     margin-left:98px;
     // for 4 illustrations use this margin:
     //margin-left:64px;
-    
-} 
-  
+
+}
+
 .slideGroup {
     margin-left:auto;
     margin-right:auto;
-    max-width: 250px;    
+    max-width: 250px;
 }
- 
+
 .carousel {
     margin-bottom:4px;
 }
@@ -1343,28 +1313,28 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .explanationText {
-	color: black;
-	font-size: @fontSizeMedium;
-	line-height: @lineHeightBig;	
-	margin-bottom: 9px;	
+        color: black;
+        font-size: @fontSizeMedium;
+        line-height: @lineHeightBig;
+        margin-bottom: 9px;
     margin-left:0;
-}  
+}
 
 .explanationTextCentered {
-	color: black;
-	font-size: @baseFontSize;
-	line-height: @lineHeightBig;	
+        color: black;
+        font-size: @baseFontSize;
+        line-height: @lineHeightBig;
     text-align:center;
     //font-weight:bold;
     max-width: 185px;
     margin:auto;
-	margin-bottom: 10px;	
+        margin-bottom: 10px;
 }
 
 .explanationTextCentered.lessWidth {
         max-width: 150px;
 }
-    
+
 
 
 .slideGroup > .explanationTextCentered {
@@ -1383,7 +1353,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .explanationImage {
     margin-bottom:24px;
 }
-  
+
 .explanationImageCentered {
     display:block;
     margin:auto;
@@ -1399,7 +1369,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 
 
- 
+
 .cheatImageLeft {
     padding-left:16px;
 }
@@ -1413,14 +1383,14 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .homepageCallsToAction {
     margin-left: 0;
     font-weight:bold;
-	font-size: 31px; 
-	color:@grayOutlinesMid;
-	font-family:@sansCondFontFamily;
-	line-height: @lineHeightDefault;
+        font-size: 31px;
+        color:@grayOutlinesMid;
+        font-family:@sansCondFontFamily;
+        line-height: @lineHeightDefault;
     text-transform: uppercase;
     padding-left: 62px;
-} 
-       
+}
+
 #homepageCallsToActionMain {
     margin-left: 16px;
     margin-top:@homepageRowVerticalPadding
@@ -1433,12 +1403,12 @@ JSON error related to displaying comments. But when I don't use this class, the 
     border-bottom-color:@grayOutlinesMid;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-} 
+}
 
 .privateAreaHeader {
-	background:@privateAreaStrip;
-	//height: @lineHeightXXXL;
-	line-height: @lineHeightXXXL;
+        background:@privateAreaStrip;
+        //height: @lineHeightXXXL;
+        line-height: @lineHeightXXXL;
 }
 
 .publicAreaColor {
@@ -1447,7 +1417,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 
 .privateAreaContentOffset {
-	margin-top: 16px;
+        margin-top: 16px;
 }
 
 #areaLine {
@@ -1467,43 +1437,43 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 
- 
- 
+
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    MAIN PAGE COLUMNS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .valueProp {
-	font-weight:bold;    
-	font-size: @fontSizeBitLarge;     
-	font-family:@sansCondFontFamily;
-	line-height: @lineHeightBig;    
+        font-weight:bold;
+        font-size: @fontSizeBitLarge;
+        font-family:@sansCondFontFamily;
+        line-height: @lineHeightBig;
 }
 
 .columnHeading {
-	font-weight:bold;
-	font-size: @fontSizeMedium; 
-	color:@grayTextDark;
-	font-family:@sansCondFontFamily;
-	line-height: @lineHeightDefault;
-    margin-bottom: 10px;	
+        font-weight:bold;
+        font-size: @fontSizeMedium;
+        color:@grayTextDark;
+        font-family:@sansCondFontFamily;
+        line-height: @lineHeightDefault;
+    margin-bottom: 10px;
     margin-top:@homepageRowVerticalPadding;
 }
 
 .columnHeadingFeatured {
-	font-weight:bold;
-	font-size: @fontSizeMedium; 
-	color:@grayTextDark;
-	font-family:@sansCondFontFamily;
-	line-height: @lineHeightDefault;
-    margin-bottom: 8px;	
+        font-weight:bold;
+        font-size: @fontSizeMedium;
+        color:@grayTextDark;
+        font-family:@sansCondFontFamily;
+        line-height: @lineHeightDefault;
+    margin-bottom: 8px;
     margin-top:@homepageRowVerticalPadding + 16px;
     padding-left: 10px;
 }
 
 
 .columnHeadingBig {
-	font-size: @fontSizeLargeCond; 
+        font-size: @fontSizeLargeCond;
     color: black;
 }
 
@@ -1512,28 +1482,28 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 #userInfoArea {
-    margin-top:21px;    
+    margin-top:21px;
 }
 
 .bottomBorder {
-	border-bottom: 1px solid #d7d7d7;
+        border-bottom: 1px solid #d7d7d7;
 }
 
 #mainPageMainArea {
-	margin-top:44px;
+        margin-top:44px;
     padding-left: 10px;
 }
 
 .columnHeading button {
     display: inline;
-	color:@grayTextExtraLight;
+        color:@grayTextExtraLight;
     border: 0px;
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: 95% 0%;
     font-style:normal;
-	font-weight:bold;
-	font-size: 1em;   
+        font-weight:bold;
+        font-size: 1em;
     //margin-bottom: 2px;
 }
 
@@ -1545,7 +1515,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .columnHeading .tab {
     padding-left: 0;
     padding-right: .5em;
-}    
+}
 
 .columnHeading button:hover {
     color: #00ADEE;
@@ -1554,36 +1524,36 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 #voteLabel {
-	margin-top: 1em;
-	margin-bottom: 1em;
+        margin-top: 1em;
+        margin-bottom: 1em;
 }
 
 .marginBottom {
-	margin-bottom:16px;
+        margin-bottom:16px;
 }
 .vertSpaced {
-	margin-bottom: 10px;
+        margin-bottom: 10px;
 }
 
 .dropShadow {
-	-webkit-box-shadow: -1px 1px 8px rgba(50, 50, 50, 0.5);
-	-moz-box-shadow:    -1px 1px 8px rgba(50, 50, 50, 0.5);
-	box-shadow:         -1px 1px 8px rgba(50, 50, 50, 0.5);
+        -webkit-box-shadow: -1px 1px 8px rgba(50, 50, 50, 0.5);
+        -moz-box-shadow:    -1px 1px 8px rgba(50, 50, 50, 0.5);
+        box-shadow:         -1px 1px 8px rgba(50, 50, 50, 0.5);
 }
 
 .dropShadow:hover {
-	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
-	box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+        -webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+        -moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+        box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
 }
 
 // DEPRECATED?
 /*
 .hugeScore{
-	font-weight:bold;
-	font-size:4.6250em;
-	font-family:@sansFontFamily;
-	line-height:100px;
+        font-weight:bold;
+        font-size:4.6250em;
+        font-family:@sansFontFamily;
+        line-height:100px;
 }
 */
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -1591,14 +1561,14 @@ JSON error related to displaying comments. But when I don't use this class, the 
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .ux2ScoreInLine {
-	font-weight: bold;
-	padding-left: 4px;
+        font-weight: bold;
+        padding-left: 4px;
 }
 
 // used to create space for font size animation
-// (Reset fontSize) = 1/(Max fontSize) 
+// (Reset fontSize) = 1/(Max fontSize)
 .scoreAnimContainerMax { font-size: 125%; line-height: 0; }
-.scoreAnimContainerReset { font-size: 80%; } 
+.scoreAnimContainerReset { font-size: 80%; }
 
 .pointBoxSourcesArea {
     margin-top: 6px;
@@ -1607,20 +1577,20 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .pointBoxBelowTitle {
     margin-left: 2px;
 }
-   
+
 .pointAreaActions {
     font-family: @sansFontFamily;
-	font-size:@fontSizeActions;
+        font-size:@fontSizeActions;
     color:@blue;
-	margin-bottom:10px;
+        margin-bottom:10px;
 }
 
 .pointBoxActions {
-	font-size: @fontSizeActions;
+        font-size: @fontSizeActions;
     color: @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
-	margin-bottom:2px;
-    margin-right:4px; 
+        margin-bottom:2px;
+    margin-right:4px;
     margin-top:4px;
     display:inline-block;
     z-index:1000;
@@ -1628,7 +1598,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointBoxActions:hover {
-    text-decoration: underline;   
+    text-decoration: underline;
 }
 
 .seeEvidenceContainer {
@@ -1695,9 +1665,9 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .inlineDot {
     margin:0;
     padding:0;
-	font-size: @fontSizeActions;
+        font-size: @fontSizeActions;
     color:@blue;
-} 
+}
 
 .noRightMargin {
     margin-right:0;
@@ -1717,7 +1687,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .arrowChar {
-	font-size: @fontSizeActions * 1.66;
+        font-size: @fontSizeActions * 1.66;
     font-weight: bold;
 }
 
@@ -1733,23 +1703,23 @@ JSON error related to displaying comments. But when I don't use this class, the 
 [name="UpVote"]:hover, [name="DownVote"]:hover {
     text-decoration:underline;
 }
-       
+
 .shareIcon {
     width: 14px;
     padding-bottom: 2px;
     padding-left: 3px;
 }
-  
-.needsEvidence { 
+
+.needsEvidence {
     /*opacity:0.5;*/
-	//color:@blue; 	
+        //color:@blue;
     //color: @red; / !important;
-} 
-   
+}
+
 .scaleDownOnClick {
     display: inline-block;
 }
- 
+
 .pointBoxActions .scaleDownOnClick:hover {
     text-decoration:underline;
 }
@@ -1760,17 +1730,17 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 
 #scoreAndVotingSection {
-	margin-top: 12px;  
-}  
+        margin-top: 12px;
+}
 
 #scoreAndVotingSection a {
-	cursor:pointer;
+        cursor:pointer;
 }
 
 #scoreAndVotingSection div {
-	margin-left:0px;
+        margin-left:0px;
 }
-     
+
 
 .iconSourcesSmall {
     margin-right: 4px;
@@ -1785,7 +1755,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
     margin-right: 4px;
     padding-left: 2px;
     font-weight: bold; //chrome seems to have a bug where this image position changes when its parent is toggled bt bold and not-bold, so just keeping it bold
-    
+
 }
 
 .iconAgreesSmallMainPoint {
@@ -1805,29 +1775,29 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 #blueRibbon {
-	padding-left:15px;
+        padding-left:15px;
 }
 
 #ribbonTotal {
     width: 10px;
     height: 15px;
-	padding-left:15px;
-	background-repeat: no-repeat;
-	background-position: 25% 50%;	
-	background-size: 11px 16px;
-	color:#6d6e70;
+        padding-left:15px;
+        background-repeat: no-repeat;
+        background-position: 25% 50%;
+        background-size: 11px 16px;
+        color:#6d6e70;
 }
 
 .notAwarded #ribbonTotal {
-	background-image:url("/static/img/awardsIconSmall.png");	
+        background-image:url("/static/img/awardsIconSmall.png");
 }
 
 .awarded #ribbonTotal {
-	background-image:url("/static/img/blueribbon.png");	
+        background-image:url("/static/img/blueribbon.png");
 }
 
 #blueRibbon a:hover {
-	-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+        -webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
     box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
     /* background-position:-60px center; */
@@ -1843,7 +1813,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .radioButtonLabelDefault {
     display: inline-block;
     font-size:@fontSizeMediumCond;
-	font-family: @sansCondFontFamily;
+        font-family: @sansCondFontFamily;
     font-weight: 700;
     color: @grayTextLight;
     background:none;
@@ -1875,7 +1845,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .dropdown-menu > li > a {
-	color:#000000;
+        color:#000000;
 }
 
 #classroomSubmenu {
@@ -1893,7 +1863,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 // comes into play when agree/disagree buttons get toggled
 .pointBoxActions .inactiveVote, .pointBoxActions .inactiveVote a {
-    color: @grayTextLighter 
+    color: @grayTextLighter
 }
 /*
 .inactiveVote:hover, .inactiveVote:hover a {
@@ -1902,28 +1872,28 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 
 .redVote, .redVote:hover, .redVote:focus {
-	color:@red;
-	font-weight:bold;	
+        color:@red;
+        font-weight:bold;
 }
 
 .greenVote, .greenVote:hover, .greenVote:focus {
-	color:@green;
-	font-weight:bold;
+        color:@green;
+        font-weight:bold;
 }
 
 .selectedVote, .selectedVote:hover, .selected:focus {
     color: black;
-	//color:@green;
-	font-weight:bold;
+        //color:@green;
+        font-weight:bold;
 }
 
 
 .linkBlue {
-	border-top: 4px solid #00adee;
+        border-top: 4px solid #00adee;
 }
 
 .pointColumnMenuArea {
-	margin-top:@spaceBtPointCards * 2;
+        margin-top:@spaceBtPointCards * 2;
 }
 
 .arrowImage {
@@ -1970,11 +1940,11 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 #supporting_nonzeroPoints, #counter_nonzeroPoints  {
-	margin-bottom: 24px;
+        margin-bottom: 24px;
 }
 
 #supporting_numberOfPoints, #counter_numberOfPoints {
-	margin-bottom: 8px;
+        margin-bottom: 8px;
 }
 
 #supporting_zeroPointsText, #counter_zeroPointsText {
@@ -1982,8 +1952,8 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 #addEvidencePromptText {
-	font-size: 0.8em;
-	margin-top: 1em;
+        font-size: 0.8em;
+        margin-top: 1em;
 }
 
 .unlinkbutton {
@@ -1992,25 +1962,25 @@ JSON error related to displaying comments. But when I don't use this class, the 
 
 .unlinkbutton a {
     cursor: pointer;
-    font-size: @fontSizeSmall;   
+    font-size: @fontSizeSmall;
     padding-top:10px;
     padding-left: 0px;
-    color: #3ccaff;       
+    color: #3ccaff;
     height: 100%;
     width: 100%;
 }
 
 .mainPointContent{
-	color:@grayTextLight; //@grayTextMedium;
-	font-family: @sansFontFamily;
+        color:@grayTextLight; //@grayTextMedium;
+        font-family: @sansFontFamily;
     font-size: @fontSizeSmall;
     /*width: 362px;*/
-	margin-right: 32px;		
+        margin-right: 32px;
 }
 
 .upstreamLinks{
-	font-family: @sansFontFamily;
-    font-size: @fontSizeActions;	
+        font-family: @sansFontFamily;
+    font-size: @fontSizeActions;
 }
 
 .upstreamSupporting {
@@ -2021,7 +1991,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
     padding-right:16px;
 }
 
- 
+
 .mainPointContent p {
     line-height: 140%;
     margin-bottom:11px;
@@ -2033,10 +2003,10 @@ JSON error related to displaying comments. But when I don't use this class, the 
     //font-weight: bold;
     margin-top: 0px;
     margin-bottom:-1px;
-   	color: @blue;
+        color: @blue;
     //border-style:solid;
-	border-width:1px;
-	border-color:@grayBoxOutlines;
+        border-width:1px;
+        border-color:@grayBoxOutlines;
     padding:@boxPaddingDefault;
     padding-top: 0;
     padding-bottom:5px;
@@ -2060,18 +2030,18 @@ JSON error related to displaying comments. But when I don't use this class, the 
     font-size: @fontSizeActions;
     //margin-top: 0px;
     //margin-bottom:-1px;
-   	color: @blue;
+        color: @blue;
     margin-top: -2px;
     margin-bottom: 8px;
 }
- 
+
 .relevanceTitle {
     font-size: @fontSizeLarge;
     font-weight:bold;
     color: black;
     margin-top:0px;
-	margin-right: 32px;	
-	line-height:@lineHeightBig;
+        margin-right: 32px;
+        line-height:@lineHeightBig;
 }
 
 .relevanceEditIcon {
@@ -2087,13 +2057,13 @@ JSON error related to displaying comments. But when I don't use this class, the 
     padding-bottom: 0px;
     height: 15px;
     position: relative;
-    bottom: 1px; 
+    bottom: 1px;
 }
-         
+
 .relevanceVote {
-	border-style:solid;
-	border-width:1px;
-	border-color:@grayBoxOutlines;
+        border-style:solid;
+        border-width:1px;
+        border-color:@grayBoxOutlines;
     padding:@boxPaddingDefault;
     background-color:@widgetBG;
     margin-bottom:-1px;
@@ -2103,7 +2073,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
     z-index:10;
     -webkit-box-shadow: @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
     -moz-box-shadow:    @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
-    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);    
+    box-shadow:         @dsHorDistDefault @dsVerDistDefault @dsBlurDefault rgba(50, 50, 50, @dsOpacityDefault);
 }
 
 .relevanceValGroup{
@@ -2112,20 +2082,20 @@ JSON error related to displaying comments. But when I don't use this class, the 
     margin-top: 16px;
     margin-left:auto;
     margin-right:auto;
-    
+
     label {
        //display:block;
        //margin-top: 30px;
-       //margin-left: 20px;       
+       //margin-left: 20px;
    }
-   
-   
+
+
    input[type="radio"] {
        margin-left: 20px;
        margin-right: 20px;
        // hide this in order to re-style the radio buttons
-    } 
- 
+    }
+
 }
 
 .relevanceRadioLabel {
@@ -2152,10 +2122,10 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .relevanceTextLine {
-    //text-align:left; 
-	font-size: @fontSizeSmaller;
-	color: @grayTextMedium;
-    line-height: @lineHeightDefault; 
+    //text-align:left;
+        font-size: @fontSizeSmaller;
+        color: @grayTextMedium;
+    line-height: @lineHeightDefault;
     margin-top: 36px;
 }
 
@@ -2191,11 +2161,11 @@ JSON error related to displaying comments. But when I don't use this class, the 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END: SOURCE ENTRIES IN MAINPOINTS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
+
 // DEPRECATED?
 /*
 h4.condensed {
-	line-height: 100%;
+        line-height: 100%;
 }
 */
 
@@ -2220,14 +2190,14 @@ h4.mainPointTitleText {
     font-size: @fontSizeLarge;
     color: black;
     margin-top:0px;
-	margin-right: 32px;	
-	line-height:@lineHeightBig;
+        margin-right: 32px;
+        line-height:@lineHeightBig;
 }
 
 .arrowText {
     font-size: @fontSizeMedium;
     font-weight:bold;
-	line-height:@lineHeightBig;
+        line-height:@lineHeightBig;
     color: black;
     position:relative;
     top:-63px;
@@ -2239,7 +2209,7 @@ h4.mainPointTitleText {
 .pointListTextBig {
     font-size: @fontSizeLarge;
     font-weight:bold;
-	line-height:@lineHeightBig;
+        line-height:@lineHeightBig;
     color: black;
     margin-top:4px;
     margin-left:4px;
@@ -2250,14 +2220,14 @@ h4.mainPointTitleText {
     font-size: @fontSizeMedium;
     color: black;
     margin-top:0px;
-	line-height:@lineHeightDefault;
+        line-height:@lineHeightDefault;
 }
 
 
 
 
 h4.mission {
-	font-family: "ff-meta-web-pro", sans-serif;
+        font-family: "ff-meta-web-pro", sans-serif;
     font-size: 1.1em;
     line-height: 100%;
     color: #6d6e70;
@@ -2269,44 +2239,44 @@ h4.mission {
 }
 
 #pointArea {
-	position: relative;
-	margin-left:0px;
+        position: relative;
+        margin-left:0px;
     margin-top:4px;
-	padding-top: 10px;
+        padding-top: 10px;
 }
 
 #timestampAndEditLink {
-	margin-bottom: 12px;
+        margin-bottom: 12px;
     margin-top: 15px;
 }
 
 #viewPointHistory {
-	cursor: pointer;
+        cursor: pointer;
 }
 
 .byline {
-	font-size: @fontSizeSmall;
-	color: @grayTextLighter; //@grayTextMedium;
-    line-height: @lineHeightBig; 
-	float: left;
-	margin-bottom: 7px;
-	width: 100%;
+        font-size: @fontSizeSmall;
+        color: @grayTextLighter; //@grayTextMedium;
+    line-height: @lineHeightBig;
+        float: left;
+        margin-bottom: 7px;
+        width: 100%;
     /*text-transform: Uppercase;*/
     //margin-top: 10px;
-	/*padding-top:10px;*/
+        /*padding-top:10px;*/
 }
 
 .byline a {
-	color: @grayTextLighter; //@grayTextMedium;
+        color: @grayTextLighter; //@grayTextMedium;
 }
 
 .contributor {
     //text-transform: Uppercase;
-	//font-size: @fontSizeSmallCaps;
+        //font-size: @fontSizeSmallCaps;
 }
-   
+
 #pointSummary {
-	margin-bottom: 12px;
+        margin-bottom: 12px;
     display: inline-block;
 }
 
@@ -2320,41 +2290,41 @@ h4.mission {
 .mainPointImageDescription:before{content:"Image Description: ";font-size:inherit;font-style:inherit;font-weight:normal}
 
 #mainPointImageArea {
-	float: right;
-	margin-left: 0px;
+        float: right;
+        margin-left: 0px;
     margin-bottom: 4px;
     margin-right:-2px; //patching a bug with positioning, not sure why this is nec but its working -JF
 }
-  
+
 .imageAreaMaxHeight {
     max-height: 150px;
     overflow: hidden;
 }
-    
+
 .mainPointImageCaption{
-	font-size: @fontSizeSmaller;
-	font-style: italic;
-	text-align: left;
-	color: @grayTextLight;
+        font-size: @fontSizeSmaller;
+        font-style: italic;
+        text-align: left;
+        color: @grayTextLight;
     line-height: @lineHeightDefault;
     margin: 0px;
     margin-right: 11px;
     border: 0px;
-    padding: 0px; 
+    padding: 0px;
     padding-top: 4px;
 }
 
 .mainPointImageAuthor{
-	font-size: @fontSizeSmaller;
-	text-align: left;
-	color: @grayTextLight;
+        font-size: @fontSizeSmaller;
+        text-align: left;
+        color: @grayTextLight;
     text-transform: Uppercase;
     line-height: @lineHeightDefault;
     padding-top: 4px;
 }
 
 img.pointDisplay{
-	width: 95%;
+        width: 95%;
     position:relative;
 }
 
@@ -2368,100 +2338,100 @@ img.smallDisplay {
 }
 
 .mainPointButton {
-	display: inline;
-	color: #B9BBBD;
-	border: 0px;
-	background-color: transparent;
-	background-repeat: no-repeat;
-	background-position: 95% 0%;
+        display: inline;
+        color: #B9BBBD;
+        border: 0px;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: 95% 0%;
     font-family:"ff-meta-web-pro-condensed", sans-serif;
     font-weight:700;
     font-size:0.875em;
 }
 
 .mainPointButton:hover {
-	text-decoration: none;
-	color: #00ADEE;
-	background-position: 95% 100%;
+        text-decoration: none;
+        color: #00ADEE;
+        background-position: 95% 100%;
 }
 
 .tab:hover, .selectedTab {
-	text-decoration: none;
-	background-color: #00ADEE;
-	color: white;
-	background-position: 95% 100%;
+        text-decoration: none;
+        background-color: #00ADEE;
+        color: white;
+        background-position: 95% 100%;
 }
 
 .tab {
-	padding-left: 1em;
-	padding-right: 1em;
+        padding-left: 1em;
+        padding-right: 1em;
 }
 
 .rightMainPointButtons {
-	float: right;
+        float: right;
 }
 
 //DEPRECATED?
 /*
 .mainPointTitle h4 {
-	margin-top:0px;
-	margin-right: 10px;
-	line-height:120%;
+        margin-top:0px;
+        margin-right: 10px;
+        line-height:120%;
 }
-*/  
-      
+*/
+
 #stats li {
-	padding-left: 5px;
+        padding-left: 5px;
     color:black;
 }
 
- 
+
 .editPointArea {
     margin-right: 0px;
 }
 
 a#editPoint {
-	//float: right;
-	//background-image: url('/static/img/pencil_icon.png');
-	//background-color: transparent;
-	//background-repeat: no-repeat;
-	//background-position: 100% 100%;
-	//padding-right: 19px;
-	//height: 20px;	
+        //float: right;
+        //background-image: url('/static/img/pencil_icon.png');
+        //background-color: transparent;
+        //background-repeat: no-repeat;
+        //background-position: 100% 100%;
+        //padding-right: 19px;
+        //height: 20px;
     width:40px;
-	margin-right: 25px;
-}	
+        margin-right: 25px;
+}
 
 a#editPoint:hover {
-	color: #00ADEE;
-	background-position: 100% 100%;
+        color: #00ADEE;
+        background-position: 100% 100%;
 }
 
 .editIcon {
-	padding-left:2px;
+        padding-left:2px;
 }
 
 
 
 button#supporting_addPointWhenNonZero,
-button#counter_addPointWhenNonZero {	
-	margin-left:6px;
+button#counter_addPointWhenNonZero {
+        margin-left:6px;
     position:relative;
     z-index:1;
 }
 
 #supporting_unlinkToggle, #counter_unlinkToggle {
-	margin-left: 5%;
-	height:34px;
+        margin-left: 5%;
+        height:34px;
 }
 
-#supporting_pointActions, #counter_pointActions, 
+#supporting_pointActions, #counter_pointActions,
 #supporting_pointActionsWhenZero, #counter_pointActionsWhenZero
 {
-	margin-bottom:150px;
+        margin-bottom:150px;
     padding-left:6px;
 }
-#supporting_pointActions, #counter_pointActions, 
+#supporting_pointActions, #counter_pointActions,
 {
     padding-left:6px;
 }
@@ -2472,17 +2442,17 @@ button#counter_addPointWhenNonZero {
 
 
 #nonzeroSupportingPoints a.navWhy {
-	position: static;
+        position: static;
 }
 
 .redBorder {
-	border-color: #FF003F;
+        border-color: #FF003F;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Bootstrap Alerts style refinemenes area
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .topSpace .alert {
-	margin-top: 3px;
+        margin-top: 3px;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    End Bootstrap Alerts style refinemenes area
@@ -2493,42 +2463,42 @@ button#counter_addPointWhenNonZero {
    History area
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #historyAreaLoadingSpinner {
-	width: 16px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 1em;
+        width: 16px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1em;
 }
 
 #historyArea {
-	margin-top:15px;
+        margin-top:15px;
 }
 
 #historyArea .row{
-	margin-left:0px;
+        margin-left:0px;
 }
 
 #viewSupportingPoints {
-	cursor:pointer;
+        cursor:pointer;
 }
 
-.historyLastEdited {	
+.historyLastEdited {
     font-size:1.125em;
     font-style:italic;
     color: #8c8c8c;
     float: left;
     padding-top:10px;
 }
-    
+
 .blueBack {
-	background-color: #cfe2f3;
+        background-color: #cfe2f3;
 }
 
 .pinkBack {
-	background-color: #fff2cc;	
+        background-color: #fff2cc;
 }
 
 .blueBack .pointCard, .pinkBack .pointCard {
-    background-color: #FFFFFF;  	
+    background-color: #FFFFFF;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    End history area
@@ -2548,14 +2518,14 @@ button#counter_addPointWhenNonZero {
 }
 
 [id^=signInWith] {
-	height:2em;
-	vertical-align:middle;
-	margin-bottom:6px;
-	//margin-top:5px;
-	padding-left:18px;
-	//padding-top:9px;//
+        height:2em;
+        vertical-align:middle;
+        margin-bottom:6px;
+        //margin-top:5px;
+        padding-left:18px;
+        //padding-top:9px;//
     padding-bottom:12px;
-	cursor:pointer;
+        cursor:pointer;
     border-style: none;
     border-radius: 3px;
 }
@@ -2604,7 +2574,7 @@ button#counter_addPointWhenNonZero {
 }
 
 .signWithInButtons {
-    width: 212px; 
+    width: 212px;
     padding-bottom: 32px;
     padding-left: 0;
     padding-right: @modalSignInWithPaddingH * .8;
@@ -2613,14 +2583,14 @@ button#counter_addPointWhenNonZero {
 }
 
 [id^=signInWith] a {
-	line-height: 2em;
+        line-height: 2em;
     text-decoration: none;
 }
 
 [id^=signInWith]:hover {
-	//-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
-	//-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
-	//box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
+        //-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
+        //-moz-box-shadow:    -1px 1px 10px rgba(50, 50, 50, 0.75);
+        //box-shadow:         -1px 1px 10px rgba(50, 50, 50, 0.75);
 }
 [id^=signInWith]:active {
     transform: scale(.975);
@@ -2656,7 +2626,7 @@ button#counter_addPointWhenNonZero {
 }
 
 .signInFooter {
-    margin-top: -4px; 
+    margin-top: -4px;
     padding-right: 0;
     padding-bottom: 16px;
 }
@@ -2669,18 +2639,18 @@ button#counter_addPointWhenNonZero {
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Whysaurus User login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-#signupDialog {   
-	//height: 525px; // fixing the heigh creates a problem when alerts appear
-	position: absolute;
+#signupDialog {
+        //height: 525px; // fixing the heigh creates a problem when alerts appear
+        position: absolute;
 }
-   
+
 #showSignupDialog {
-	margin-top: 8px;
+        margin-top: 8px;
     margin-bottom: 16px;
 }
 
 #forgot_emailLoginDialog {
-	margin-top: 7px;	
+        margin-top: 7px;
     margin-right: 8px;
     font-size: 15px;
     color: hsl(0, 0%, 59%);
@@ -2688,11 +2658,11 @@ button#counter_addPointWhenNonZero {
 }
 
 #cancel_emailLoginDialog {
-	margin-left: 5px;
+        margin-left: 5px;
 }
 
 #showSignupDialog {
-    //margin-left: 15px;  	
+    //margin-left: 15px;
 }
 
 
@@ -2707,7 +2677,7 @@ button#counter_addPointWhenNonZero {
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Create new User login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
+
 #backToLogin    {
     margin-bottom: 18px;
     margin-top: 6px;
@@ -2718,7 +2688,7 @@ button#counter_addPointWhenNonZero {
 
 #cancel_signupDialog {
     margin-right: 5px;
-	margin-left: 5px;
+        margin-left: 5px;
 }
 
 
@@ -2731,7 +2701,7 @@ button#counter_addPointWhenNonZero {
 /*
  No longer used since select supporting point is going away
 #createSupportingPointLink {
-	display:block;
+        display:block;
     width: 231px;
     height: 52px;
     background:transparent url('/static/img/arrow_makeANewPoint_grey_231px.png') center top no-repeat;
@@ -2758,25 +2728,25 @@ button#counter_addPointWhenNonZero {
 }
 
 .noRightChannel {
-	right: -3.305785123966942%;
+        right: -3.305785123966942%;
     position: relative;
 }
 
 
 .pointSmall:hover [id^=selectPoint_arrow], .pointListPoint:hover [id^=selectPoint_arrow]{
-	background-image: url("/static/img/arrow_add_black_45px.png");
+        background-image: url("/static/img/arrow_add_black_45px.png");
 }
 
 #selectSupportingPointSearch {
-	width:90%;
-	margin-top: 10px;
+        width:90%;
+        margin-top: 10px;
     height: 24px;
 }
 .pushDown20px {
-	margin-bottom:20px;
+        margin-bottom:20px;
 }
 .pushDown18px {
-	margin-bottom:18px;
+        margin-bottom:18px;
 }
 
 
@@ -2796,8 +2766,8 @@ button#counter_addPointWhenNonZero {
     position: relative;
 }
 
-.searchLinkSelectButton {   
-	position:absolute;
+.searchLinkSelectButton {
+        position:absolute;
     top: 0;
     opacity:0.75;
     z-index:5000;
@@ -2809,14 +2779,14 @@ button#counter_addPointWhenNonZero {
 .searchLinkSelectButton a {
     padding-top:10px;
     padding-left: 10px;
-    color:#FFFFFF;  
+    color:#FFFFFF;
     font-size:1.2em;
     text-transform:uppercase;
     font-weight:bold;
     height: 100%;
     width: 100%;
 }
-          
+
 .popoutPoint {
     width:20px;
     height:20px;
@@ -2827,22 +2797,22 @@ button#counter_addPointWhenNonZero {
     border-style:none;
     background-image: url("/static/img/addPoint_icon_popout_20pxHi_v12.png");
 }
- 
+
 .popoutPoint:hover {
      background-position: 0 100%;
 }
 
 #searchResultsArea .pointCard:hover {
-    background-color: @pointCardBgSearchResults;	
+    background-color: @pointCardBgSearchResults;
 }
- 
-  
+
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Edit point dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .pointDialog {
-	/* height: 530px; */ /* not sure why we were specifying height... */
+        /* height: 530px; */ /* not sure why we were specifying height... */
     position: absolute;
     width: 640px;
     margin-left: -325px;
@@ -2857,7 +2827,7 @@ button#counter_addPointWhenNonZero {
 }
 
 #title_pointDialog {
-	width: 97.6%;
+        width: 97.6%;
     margin-bottom: 4px;
     margin-top: 4px;
     //height: 36px;
@@ -2873,10 +2843,10 @@ button#counter_addPointWhenNonZero {
 #title_pointDialog::-ms-input-placeholder { font-style: italic; }
 
 .charCount {
-  	font-family: "ff-meta-web-pro", sans-serif;
-  	font-size: @fontSizeMini; 
-  	text-transform: uppercase;
-  	font-weight:400;
+        font-family: "ff-meta-web-pro", sans-serif;
+        font-size: @fontSizeMini;
+        text-transform: uppercase;
+        font-weight:400;
     margin-bottom: 16px;
     padding-bottom: 0px;
     position: relative;
@@ -2893,7 +2863,7 @@ button#counter_addPointWhenNonZero {
     font-weight: normal;
     color: @grayTextDark !important;
     top: 141px !important;
-    left: 18px !important; 
+    left: 18px !important;
     cursor: text;
     pointer-events:none;
     width: 420px;
@@ -2923,22 +2893,22 @@ button#counter_addPointWhenNonZero {
 }
 
 .twoButtonsCancel {
-	//width:44px;
+        //width:44px;
     float:right;
     margin-right:16px;
 }
-  
+
 .twoButtonsSubmit {
    float:right;
    margin-right: 8px;
 }
 
 #buttonBar {
-	margin-top: 0px;
+        margin-top: 0px;
 }
 
 // TO DO: make the spinner position class uniform
-//  we shouldn't need to have three different classes for it 
+//  we shouldn't need to have three different classes for it
 .spinnerAddImagePosition {
    max-width:16px;
    max-height:16px;
@@ -2973,27 +2943,27 @@ button#counter_addPointWhenNonZero {
 
 
 #sourcesAdd {
-	margin-left: 2px;
+        margin-left: 2px;
     margin-bottom: 8px;
 }
 
 #collapsibleTitleArea {
     padding-left: 10px;
-    padding-right: 10px;    
+    padding-right: 10px;
 }
-   
+
 #collapsibleSourcesArea {
     padding-left: 10px;
-    padding-right: 10px;    
+    padding-right: 10px;
 }
 
 #collapsibleImageArea {
     padding-left: 10px;
-    padding-right: 10px;    
+    padding-right: 10px;
 }
-  
+
 [name="source_pointDialog"] {
-	min-height: 20px;
+        min-height: 20px;
     margin-top:6px;
 }
 
@@ -3001,10 +2971,10 @@ button#counter_addPointWhenNonZero {
     min-height: 20px;
 }
 .pointDialog .modal-footer {
-	//position:absolute;
-	//bottom: 0px;
-	width:100%;
-	padding: 0px 0px 15px;
+        //position:absolute;
+        //bottom: 0px;
+        width:100%;
+        padding: 0px 0px 15px;
 }
 
 .fieldEditImageArea {
@@ -3012,14 +2982,14 @@ button#counter_addPointWhenNonZero {
 }
 
 .removeSource {  /* Dialog and outliner */
-	color:red;
+        color:red;
     position: relative;
 }
 
 #sourcesArea {
     margin-bottom:-2px;
 }
- 
+
 #sourcesArea .sourceLink {
     text-align: left;
     position: relative;
@@ -3027,8 +2997,8 @@ button#counter_addPointWhenNonZero {
 }
 
 .pointDialog .textline {
-	text-align:left;
-	margin-left:15px;
+        text-align:left;
+        margin-left:15px;
 }
 
 .imageTextFieldsArea {
@@ -3048,15 +3018,15 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .ui-icon-down { background-image: url(/static/img/down-button.png) !important; background-size: 100% Auto;}
 
 #editorDiv {
-	margin-left:0;
+        margin-left:0;
 }
 #editor_pointDialog {
     height:60px !important;
-    width:97.5% !important;    
+    width:97.5% !important;
 }
-   
+
 .mceEditor > table {
-    width:100% !important;	
+    width:100% !important;
     height:60px !important;
 }
 
@@ -3066,7 +3036,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
     //width: 604px;
     //position: relative;
 }
- 
+
 /* MCE Placeholder Text: The placeholder */
 #editorDiv label {
     top: 0;
@@ -3076,7 +3046,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
     position: absolute;
 }
 
-  
+
 #textEdit_tbl {width:100% !important;height:60px !important;}
 #textEdit_ifr {width:100% !important;height:60px !important;}
 
@@ -3103,7 +3073,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
   margin-top:5px;
   width:100%;
   }
-  
+
 
   .accordion-group-heading .panel-heading {
       background-color:#efefef;
@@ -3111,7 +3081,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
       font-size:@fontSizeLargeCond;
       line-height:@lineHeightDefault;
       padding-top: 8px;
-      padding-bottom: 8px; 
+      padding-bottom: 8px;
       padding-left: 10px;
   }
 
@@ -3119,7 +3089,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
       background-color:@blueLight;
       color:@grayTextLight;
   }
-  
+
   a.accordion-group-heading:hover {
       text-decoration: none;
   }
@@ -3127,7 +3097,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
   .panel-heading, .control-group {
       //padding-left:10px;
   }
-  
+
   .modal h3, .modal button {
       font-family:"ff-meta-web-pro-condensed", sans-serif;
   }
@@ -3136,13 +3106,13 @@ fieldset { padding:0; border:0; margin-top:25px;}
       margin-top: 14px;
       margin-bottom: 10px;
   }
-  
+
   .addSourceButton {
     margin-top: 2px;
     margin-bottom: 6px;
   }
-  
-  
+
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END Edit point dialog stuff
@@ -3158,7 +3128,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
     -webkit-transform: rotate(360deg);
   }
 }
- 
+
 @keyframes rotate {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
@@ -3170,7 +3140,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
   animation: rotate 2s linear infinate;
 }
 
- 
+
 
 .filepicker-placeholder {
   /*width: 64px;
@@ -3189,53 +3159,53 @@ fieldset { padding:0; border:0; margin-top:25px;}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
     OUTLINER
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-   
+
 .outlinerInput {
-	width:100%;
+        width:100%;
 }
 
 .outlinerRow.highlighted {
-	background-color: @blueLight;
+        background-color: @blueLight;
 }
-   
+
 .outlinerInput.level1 {
-	margin-left: 5%;
-	width:95%;	
+        margin-left: 5%;
+        width:95%;
 }
 
 .outlinerInput.level2 {
     margin-left: 10%;
-    width:90%;      
+    width:90%;
 }
 
 .outlinerInput.level3 {
     margin-left: 15%;
-    width:85%;  
+    width:85%;
  }
 
 .outlinerInput.level4 {
     margin-left: 20%;
-    width:80%;  
+    width:80%;
 }
 
 .outlinerInput.level5 {
     margin-left: 25%;
-    width:75%;  
+    width:75%;
 }
 
 #outliner_details {
-	margin-left:0px;
-	width:40,83%;
+        margin-left:0px;
+        width:40,83%;
     background-color: @blueLight;
 }
 
 #outliner_details input {
-	width: 96.5%;
+        width: 96.5%;
 }
 
 #outliner_details textarea {
-    width:  95%;	
-    resize: none;    
+    width:  95%;
+    resize: none;
 }
 
 #outliner_details  {
@@ -3244,12 +3214,12 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 #outliner_details .repeatTitle {
-    height: 60px;   
+    height: 60px;
     border: none;
 }
 
 #outliner_details .furtherInfo {
-    height: 80px;	
+    height: 80px;
 }
 
 
@@ -3261,28 +3231,28 @@ fieldset { padding:0; border:0; margin-top:25px;}
 .modal input::-webkit-input-placeholder, .modal textarea::-webkit-input-placeholder {
     font-family:"ff-meta-web-pro", sans-serif;
     font-size:0.9375em;
-    font-style: italic; //regular;    
+    font-style: italic; //regular;
     color: @grayTextLighter;
 }
 
 .modal input:-moz-placeholder, .modal textarea:-moz-placeholder { /* Firefox 18- */
     font-family:"ff-meta-web-pro", sans-serif;
     font-size:0.9375em;
-    font-style: regular;        
+    font-style: regular;
     color:#6D6E70;
 }
 
 .modal input::-moz-placeholder, .modal textarea::-moz-placeholder {  /* Firefox 19+ */
     font-family:"ff-meta-web-pro", sans-serif;
     font-size:0.9375em;
-    font-style: regular;        
+    font-style: regular;
     color:#6D6E70;
 }
 
-.modal input:-ms-input-placeholder, .modal textarea:-ms-input-placeholder  {  
+.modal input:-ms-input-placeholder, .modal textarea:-ms-input-placeholder  {
     font-family:"ff-meta-web-pro", sans-serif;
     font-size:0.9375em;
-    font-style: regular;        
+    font-style: regular;
     color:#6D6E70;
 }
 
@@ -3299,7 +3269,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
     color: @grayTextDark;
     font-size: 15px;
     padding-left: 8px;
-    //font-family:"ff-meta-web-pro-condensed", sans-serif;	
+    //font-family:"ff-meta-web-pro-condensed", sans-serif;
 }
 
 .returningUsersHeading {
@@ -3308,7 +3278,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 
 .modal label, .accordion-group-heading {
-    font-family:"ff-meta-web-pro-condensed", sans-serif;	
+    font-family:"ff-meta-web-pro-condensed", sans-serif;
     font-weight:bold;
     font-size:0.9375em; /* 15 px */
     line-height: 200%;
@@ -3322,58 +3292,58 @@ fieldset { padding:0; border:0; margin-top:25px;}
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .profileInfoHeading {
-	font-weight:bold;
-	font-size: @fontSizeMediumCond; 
-	color:@grayTextExtraLight;
-	font-family:@sansCondFontFamily;
-	line-height: @lineHeightDefault;
+        font-weight:bold;
+        font-size: @fontSizeMediumCond;
+        color:@grayTextExtraLight;
+        font-family:@sansCondFontFamily;
+        line-height: @lineHeightDefault;
     text-transform: uppercase;
     margin-bottom: 0px;
-    margin-top: 18px;	
-}   
-   
+    margin-top: 18px;
+}
+
 .profileBodyText {
     font-family: @sansFontFamily;
     font-size: @fontSizeMedium;
     font-weight:normal;
     line-height: @lineHeightDefault;
-    
-}   
-   
+
+}
+
 #display_userName {
     width: 80%; // TEMPORARY: remove this once we have full size profile pics
     display: inline;
     margin-right:5px;
 }
- 
+
 #display_userEmail {
     margin-bottom:18px;
-} 
- 
+}
+
 .profileEditButton {
-	background-image: url('/static/img/pencil_icon_blue.png');
-	background-color: transparent;
-	background-repeat: no-repeat;
-	background-position: 100% 100%;
-	padding-right: 17px;
-	height: 20px;
+        background-image: url('/static/img/pencil_icon_blue.png');
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: 100% 100%;
+        padding-right: 17px;
+        height: 20px;
     margin-top: 2px;
-    line-height: 22px;	
+    line-height: 22px;
 }
 
 .profileEditButton:hover {
-	color: #00ADEE;
-	background-position: 100% 100%;
+        color: #00ADEE;
+        background-position: 100% 100%;
     cursor:pointer;
 }
 
 .profilePic {
-	width:80%; // TEMPORARY: remove this once we have full size profile pics
+        width:80%; // TEMPORARY: remove this once we have full size profile pics
     margin-top:2px;
 }
- 
+
 .userInfoAreaTempWidth {
-	width:80%; // TEMPORARY: remove this class once we have full size profile pics
+        width:80%; // TEMPORARY: remove this class once we have full size profile pics
 }
 .profileStatsArea {
     margin-bottom:8px;
@@ -3393,7 +3363,7 @@ a[name="profileEdit"] {
 
 #notificationFrequencyGroupLabel{
     //margin-right: 20px;
-    //margin-top: 25px;  
+    //margin-top: 25px;
 }
 
 .notificationTimeStamp {
@@ -3425,65 +3395,65 @@ a[name="profileEdit"] {
     border-bottom-width: 1px;
     border-bottom-color: @grayBoxOutlines;
 }
- 
+
 .commentsColumn {
     position:relative;
     top: 36px;
-}   
-   
+}
+
 .commentsButton {
     margin-bottom:6px;
-}   
-   
+}
+
 .commentIcon {
     padding-left:6px;
     height:18px;
 }
-   
+
 #commentCount {
     background-image: url('/static/img/speech_bubble_icon.png');
     background-repeat: no-repeat;
-    background-size: 28px Auto; 
-	padding-top:5px;
-	padding-left:35px;
+    background-size: 28px Auto;
+        padding-top:5px;
+        padding-left:35px;
 }
 
 #addComment {
-	padding-top: 1px;
-	padding-bottom: 30px;
+        padding-top: 1px;
+        padding-bottom: 30px;
 }
 
 .commentArea {
     display: block;
-	margin: 0 0 0 0;
+        margin: 0 0 0 0;
 }
 
-.commentArea .cmmnt { 
-    list-style:none;    
-    border-bottom:1px solid @grayBoxOutlines;    
+.commentArea .cmmnt {
+    list-style:none;
+    border-bottom:1px solid @grayBoxOutlines;
     word-wrap: break-word;
     position: relative;
 }
 
 .commentArea .cmmnt .userlink, .commentArea .cmmnt .pubdate {
-	font-size: @fontSizeMini; 
+        font-size: @fontSizeMini;
     line-height: @lineHeightDefault;
     //position: relative;
     //bottom: 4px;
 }
 
 #archivedComments {
-	color:@grayTextLight; //@grayTextMedium;
-	font-size: @fontSizeMini; 
+        color:@grayTextLight; //@grayTextMedium;
+        font-size: @fontSizeMini;
     line-height: @lineHeightDefault;
     margin-top: 12px;
     padding-left: 6px;
-}   
+}
 
-.commentArea .cmmnt .avatar img { 
-  -webkit-border-radius: 3px; 
-  -moz-border-radius: 3px; 
-  border-radius: 3px; 
+.commentArea .cmmnt .avatar img {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
   -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
   box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
@@ -3494,87 +3464,87 @@ a[name="profileEdit"] {
   transition: all 0.4s linear;
 }
 
-.commentArea .cmmnt .avatar a:hover img { 
-    opacity: 0.77; 
+.commentArea .cmmnt .avatar a:hover img {
+    opacity: 0.77;
 }
 
-.commentArea .cmmnt .cmmnt-content { 
+.commentArea .cmmnt .cmmnt-content {
     padding-left: 6px;
-	padding-top: 4px; 
-	padding-right: 6px; 
-	margin-left:0px; 
+        padding-top: 4px;
+        padding-right: 6px;
+        margin-left:0px;
     margin-bottom:4px;
     font-size: @fontSizeSmaller;
     line-height: @lineHeightDefault;
 }
-	
+
 a[name="commentReply"] {
-	cursor: pointer; 
-	float:right;
-	bottom: 2px;
-	right: 5px;
+        cursor: pointer;
+        float:right;
+        bottom: 2px;
+        right: 5px;
     position: absolute;
-   	font-size: @fontSizeSmaller; 
+        font-size: @fontSizeSmaller;
 }
 
 a[name="commentArchive"] {
-	cursor: pointer; 
-	float:right;
-	bottom: 2px;
-	right: 45px;
+        cursor: pointer;
+        float:right;
+        bottom: 2px;
+        right: 45px;
     position: absolute;
-   	font-size: @fontSizeSmaller; 
+        font-size: @fontSizeSmaller;
 }
 
 #commentViewArchived {
-    cursor: pointer;    
+    cursor: pointer;
 }
-   
+
 .cmmnt.level1 {
     margin-left: 5%;
-    width:95%;  
+    width:95%;
 }
 
 .cmmnt.level2 {
     margin-left: 10%;
-    width:90%;      
+    width:90%;
 }
 
 .cmmnt.level3 {
     margin-left: 15%;
-    width:85%;  
+    width:85%;
  }
 
 .cmmnt.level4 {
     margin-left: 20%;
-    width:80%;  
+    width:80%;
 }
 
 .cmmnt.level5 {
     margin-left: 25%;
-    width:75%;  
+    width:75%;
 }
 
 .cmmnt.level6 {
     margin-left: 30%;
-    width:70%;  
+    width:70%;
 }
 
 .cmmnt.level7 {
     margin-left: 35%;
-    width:65%;  
+    width:65%;
 }
 
 .cmmnt.level8 {
     margin-left: 40%;
-    width:60%;  
+    width:60%;
 }
 
 
 #chatTextbox {
-	margin-top: 5px;
-    width:  97%;   
-    resize: none;  	
+        margin-top: 5px;
+    width:  97%;
+    resize: none;
 }
 
 .chatRoom {
@@ -3585,17 +3555,17 @@ a[name="commentArchive"] {
     padding      : 20px;
     border       : solid #000;
     border-width : 0 0 2px 2px;
-}	
+}
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    AFFIX and EDUCATION NAVIGATION
    +++++++++++++++++++++++++++++++++++++++++++++++ */
-.affix, .affix-top, affix-bottom  {   
+.affix, .affix-top, affix-bottom  {
     margin-left:-16px;
     padding: 0;
     padding-right: 16px;
-} 
-   
+}
+
 .affix-top  {
     margin-top: 54px;
 }
@@ -3627,7 +3597,7 @@ a[name="commentArchive"] {
     margin-left: 3px;
     max-width: 260px;
 }
- 
+
 .edIntroLine {
     //margin-top:54px;
     font-style: italic;
@@ -3658,18 +3628,18 @@ blockquote {
 
 
 h2.idLinkOffset:before {
-  display: block; 
-  content: " "; 
-  margin-top: -70px; 
-  height: 70px; 
-  visibility: hidden; 
+  display: block;
+  content: " ";
+  margin-top: -70px;
+  height: 70px;
+  visibility: hidden;
 }
 
 .assignmentBullets {
   line-height: 133%;
 }
 
-.infoToggle, .infoNonToggle, .superInfoToggle, .subInfoToggle {  
+.infoToggle, .infoNonToggle, .superInfoToggle, .subInfoToggle {
     margin: 0px;
     list-style-type: none;
     list-style-position:outside;
@@ -3713,8 +3683,8 @@ a.feedbackFooterLink {
 .contactTitle {
     margin-top: 18px;
     margin-bottom: 36px;
-}   
-   
+}
+
 .contactForm {
     margin-top: 32px;
 }
@@ -3730,38 +3700,38 @@ a.feedbackFooterLink {
 .contactTextArea {
     margin-top: 10px;
 }
-   
+
 .error {
     color: @red;
 }
-   
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    ADMIN PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
 .adminTopButtons {
-		margin-top:24px;
-		margin-bottom: 24px;
+                margin-top:24px;
+                margin-bottom: 24px;
 }
 
 .adminTopLink {
-	margin-left: 8px;
-	margin-right: 8px;
+        margin-left: 8px;
+        margin-right: 8px;
 }
-   
+
 .adminTable {
-	table-layout: fixed;
-	//max-width: unset;
-	//width: 100%;
-	white-space: nowrap;
-}   
-   
+        table-layout: fixed;
+        //max-width: unset;
+        //width: 100%;
+        white-space: nowrap;
+}
+
 .adminTable td {
     border: 1px solid #a9a9a9;
     padding: 2px 8px;
-	white-space: nowrap;
+        white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;   
+    text-overflow: ellipsis;
 }
 
 .adminTable th {
@@ -3782,30 +3752,30 @@ a.feedbackFooterLink {
 }
 
 .adminTableDateCol {
-	//max-width: 70px;
-	//white-space: normal !important;
-	text-align: center;
+        //max-width: 70px;
+        //white-space: normal !important;
+        text-align: center;
 }
 
 .adminTableSimpleNumber {
-	white-space: normal !important;
-	max-width: 75px;
-	text-align: center;
+        white-space: normal !important;
+        max-width: 75px;
+        text-align: center;
 }
 
 .adminTableClassrooms {
-	white-space: normal !important;
-	max-width: 500px;
-	text-align: center;
+        white-space: normal !important;
+        max-width: 500px;
+        text-align: center;
 }
 
 .chosen-container {
-	width: 400px !important;
+        width: 400px !important;
 }
 
 .adminTableEllipsisObvi {
-	//max-width: 72px;
-	white-space: normal;
+        //max-width: 72px;
+        white-space: normal;
 }
 
 .belowThreshold {
@@ -3821,4 +3791,3 @@ a.feedbackFooterLink {
 @import "new-responsive-767px-max.less";
 @import "new-responsive-768px-979px.less";
 @import "new-responsive-1200px-min.less";
-

@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { EvidenceType, PointCard, ExpandedPointCard, Byline, newPointCard } from './point';
+import { EvidenceType, PointCard, Byline,  ExpandedPointCard } from './point';
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
@@ -17,6 +17,10 @@ class PointList extends React.Component {
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
   }
 
+  get parentPoint() {
+    return this.props.parentPoint;
+  }
+
   isPointExpanded(point) {
     return this.state.expandedIndex[point.url]
   }
@@ -25,31 +29,32 @@ class PointList extends React.Component {
     const i = this.state.expandedIndex
     i[point.url] = true
     this.setState({expandedIndex: i})
-    console.log("see evidence for ", point.url)
+    console.log("point list see evidence for ", point.url)
   }
 
   handleHideEvidence(point) {
     const i = this.state.expandedIndex
     i[point.url] = false
     this.setState({expandedIndex: i})
-    console.log("hide evidence for ", point.url)
+    console.log("point list hide evidence for ", point.url)
   }
 
-  renderPointCard(pointEdge, index) {
-    return newPointCard(pointEdge,
-                        {index: index,
-                         expandedIndex: this.state.expandedIndex,
-                         handleSeeEvidence: this.handleSeeEvidence,
-                         handleHideEvidence:this.handleHideEvidence});
-  }
-
-  renderPointCards(data) {
-    if (data.point) {
-      return this.renderPointCard({node: data.point})
-    } else if (data.points) {
-      return this.renderPointCard(data.points.edges[0])
+  renderPoint(point) {
+    if (this.isPointExpanded(point)) {
+      return <ExpandedPointCard point={point} url={point.url} parentPoint={this.parentPoint} expanded={true}
+                                onCollapse={() => this.handleHideEvidence(point)}/>
     } else {
-        return <div>Could not find data.point or data.points, please check your query.</div>
+      return <PointCard point={point} url={point.url} parentPoint={this.parentPoint}
+                        onExpand={() => this.handleSeeEvidence(point)}/>
+    }
+  }
+
+  renderEdge(edge) {
+    if (this.isPointExpanded(edge.node)) {
+      return <ExpandedPointCard point={edge.node} url={edge.node.url} link={edge.link} parentPoint={this.parentPoint} expanded={true}
+                                onCollapse={() => this.handleHideEvidence(edge.node)}/>
+    } else {
+      return <PointCard point={edge.node} url={edge.node.url} link={edge.link} parentPoint={this.parentPoint} onExpand={() => this.handleSeeEvidence(edge.node)}/>
     }
   }
 
@@ -57,36 +62,18 @@ class PointList extends React.Component {
     console.log("render")
     if (this.props.data && this.props.data.loading) {
       return <div>Loading!</div>
-    } else if (!(this.props.data.points || this.props.data.point)) {
-      return <div>Loading points...</div>
-    } else {
-      // FOR INIFINITE WIDTH VERSION: remove .span12 from #infiniteOrFiniteWidth
-      // FOR FINITE WIDTH VERSION: add .span12 from #infiniteOrFiniteWidth
-      return <div className="row pointStream">
-        <div id="infiniteOrFiniteWidth" className="">
-        {this.renderPointCards(this.props.data)}
-
+    } else if (this.props.data && this.props.data.point) {
+      return this.renderPoint(this.props.data.point);
+    } else if (this.props.edges) {
+      return <div>
+        {this.props.edges.map((edge, i) => this.renderEdge(edge))}
         </div>
-      </div>
+    } else {
+      return <div>dunno what to do...</div>
     }
   }
 }
 
-// const GetPoints = gql`
-// ${expandedPointFieldsFragment}
-// query GetPoints {
-//   points(first: 1) {
-//     edges {
-//       node {
-//         ...pointFields
-//         ...evidenceFields
-//       }
-//     }
-//   }
-// }`;
+export {PointList};
 
-
-// TODO: this doesn't work, but will need to for, eg, front page point lists
-// export const PointListWithPoints = graphql(GetPoints)(PointList);
-
-export const PointListWithPoint = graphql(GetPoint, {options: ({match}) => ({variables: {url: match.params.url}})})(PointList);
+export const PointListWithPoint = graphql(GetPoint)(PointList);

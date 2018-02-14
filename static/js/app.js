@@ -15,11 +15,20 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
+function PointPage({match}){
+  return <div className="row pointStream">
+    <div id="infiniteOrFiniteWidth" className="">
+      <PointListWithPoint url={match.params.url}/>
+    </div>
+    </div>
+}
+
+
 class App extends React.Component {
   render() {
     return (
         <Switch>
-        <Route exact path="/pointCard/:url" component={PointListWithPoint} />
+        <Route exact path="/pointCard/:url" component={PointPage} />
         <Route exact path="/home" component={HomePage} />
         </Switch>
     )

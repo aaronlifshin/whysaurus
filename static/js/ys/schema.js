@@ -110,6 +110,14 @@ query Point($url: String) {
  }
 }`
 
+export const GetCollapsedPoint = gql`
+${pointFieldsFragment}
+query Point($url: String) {
+  point(url: $url) {
+    ...pointFields
+ }
+}`
+
 export const HomePage = gql`
 query HomePage {
   homePage {
@@ -119,3 +127,4 @@ query HomePage {
   }
 }
 `
+

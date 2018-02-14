@@ -1304,6 +1304,18 @@ a:hover .arrowAddEvidenceButton {
 	}
 }
 
+@media (max-device-width: 1024px) {
+  #header {
+    position: fixed;
+    width: 100vw; // viewport-width units
+  }
+
+	#mainContainer {
+		zoom: .8;
+    overflow: scroll; // fixes an issue where the header scrolls horizontally on mobile
+	}
+}
+
 @media (max-width: 767px) {
 
  @cardWidthSmallScreens: 80vw;

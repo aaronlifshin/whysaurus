@@ -1,0 +1,18 @@
+{% extends "oneColumnLayout.html" %}
+
+
+{% block headBlock %}
+  <link href="/static/css/uiv2.css" rel="stylesheet" media="screen">
+  <script type="text/javascript" src="/static/js/point.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.screwdefaultbuttonsV2.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@15/dist/react.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+  <script src="https://use.fontawesome.com/1241fe931c.js"></script>
+{% endblock %}
+
+{% block leftColumnContent %}
+<div id="config" data-url="home"></div>
+<div id="root">React load failed!</div>
+<script type="text/javascript" src="/static/dist/bundle.js"></script>
+
+{% endblock %}

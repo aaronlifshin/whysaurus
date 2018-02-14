@@ -784,7 +784,7 @@ class PointCard extends React.Component {
       let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null} ${this.numSupportingPlusCounter() == 0 ? "evidenceBlockEmpty" : ""}`
       let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       console.log("pointCard : evidence() ")
-      const singleColumnThreshold = 1064;
+      const singleColumnThreshold = 960;
       return <div className={classesEvidenceBlock}>
         <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
         <MediaQuery minWidth={singleColumnThreshold}>

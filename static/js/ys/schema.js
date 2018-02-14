@@ -117,3 +117,14 @@ query Point($url: String) {
     ...pointFields
  }
 }`
+
+export const HomePage = gql`
+query HomePage {
+  homePage {
+    featuredPoint {
+      title
+    }
+  }
+}
+`
+

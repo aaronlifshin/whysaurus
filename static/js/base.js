@@ -1636,10 +1636,7 @@ function activateHeaderAndDialogs() {
         $("#signInFromHeader").on('click', function() {
             $("#loginDialog").modal('show')   
         });
-        
-        
-
-        
+                
         $(".loginWithEmail").on('click', function() {
             $("#emailLoginDialog").modal('show');
         });
@@ -1650,7 +1647,6 @@ function activateHeaderAndDialogs() {
         $("#fromAreaShowSignupDialog").on('click', function() {
             $("#signupDialog").modal('show')            
         });               
-
         $("#signInWithEmail_Dlg").on('click', function() {
             if ($("#loginDialog").data('postloginaction') == 'createFromMain') {            
                 $("#login_userPointText").val($('#newPointTitle').val());
@@ -1665,8 +1661,23 @@ function activateHeaderAndDialogs() {
             $("#loginDialog").modal('show');
         });
 
-        $('#submit_signupDialog').click( createNewUser );
-        $('#submit_emailLoginDialog').click( login );    
+        $('#submit_emailLoginDialog').click( login ); 
+        $('#loginDialog').keyup(function(event) {
+          if (event.keyCode === 13) {
+              $("#submit_emailLoginDialog").click() ;
+          }
+        });
+        
+        $('#submit_signupDialog').click( createNewUser ); 
+        
+        // TO DO: Make work. I don't know why it snot -JF
+        $('#signupDialog').keyup(function(event) {
+          if (event.keyCode === 13) {
+              console.log("ENTER");
+              $('#submit_signupDialog').click() ;
+          }
+        });
+        
         $('#forgot_emailLoginDialog').click( forgotPassword );        
 
         make_this_show_login_dlg($('#mainPagePublish'));

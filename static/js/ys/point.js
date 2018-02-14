@@ -76,12 +76,12 @@ class EditPointComponent extends React.Component {
     super(props)
     this.state = {saving: false}
     this.handleClickSave = this.handleClickSave.bind(this);
-	this.handleClickNoProp = this.handleClickNoProp.bind(this);
+    this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
 
   // TODO: this simple function is also defined in the PointCard component - can/should it be declared in a single place somehow?
   handleClickNoProp(e) {
-	e.stopPropagation();	
+    e.stopPropagation();
   }
 
   get point() {
@@ -111,7 +111,7 @@ class EditPointComponent extends React.Component {
     const score = this.point.pointValue
     return <div>
       {this.titleUI()}
-	  <button onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
+      <button onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
     </div>
   }
 }
@@ -132,7 +132,7 @@ class PointComponent extends React.Component {
   }
 
   handleToggleEvidence(e) {
-	e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
+    e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
     console.log("PointComponent : toggle evidence!")
     this.props.onClick && this.props.onClick()
   }
@@ -147,7 +147,7 @@ class PointComponent extends React.Component {
   // TODO: set prevScore correctly, somehow
   render(){
     const score = this.point.pointValue
-	const prevScore = this.point.pointValue
+        const prevScore = this.point.pointValue
     return <div>
       {this.titleUI()}
     <span className="scoreAnimContainerMax score">
@@ -252,8 +252,8 @@ class EvidenceLink extends React.Component {
       if (this.props.expanded) {
         return <a className="cardBottomAction hideEvidence" onClick={this.handleClickToggle}>Close</a>
       } else {
-        return <a className="cardBottomAction" onClick={this.handleClickToggle}>Add Evidence</a>	
-	  }
+        return <a className="cardBottomAction" onClick={this.handleClickToggle}>Add Evidence</a>
+          }
     }
   }
 
@@ -262,7 +262,7 @@ class EvidenceLink extends React.Component {
   }
 }
 
-// TODO : depending on user tests, maybe add <div className="addEvidenceFormLabel">Add evidence this list</div>	
+// TODO : depending on user tests, maybe add <div className="addEvidenceFormLabel">Add evidence this list</div>
 const AddEvidenceForm = ( props ) => {
   return (
     <div className="addEvidenceFormGroup">
@@ -271,7 +271,7 @@ const AddEvidenceForm = ( props ) => {
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
           <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
-		  <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
+          <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
           </form>
       )}
     </Form>
@@ -302,9 +302,9 @@ class AddEvidenceCard extends React.Component {
   }
 
   handleClickCancel(e){
-	e.stopPropagation();
-    this.setState({adding: false})	
-	console.log("AddEvidenceCard : handleCancel")
+    e.stopPropagation();
+    this.setState({adding: false})
+    console.log("AddEvidenceCard : handleCancel")
   }
 
   handleClickSave(values, e, formApi) {
@@ -369,28 +369,28 @@ class AddEvidenceCard extends React.Component {
   }
 
   renderAddEvidenceForm() {
-      return <span>	
-          { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleClickCancel}/> }		  
-        </span>
+      return <span>
+        { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleClickCancel}/> }
+    </span>
   }
 
-  renderAddEvidenceButton() { 
+  renderAddEvidenceButton() {
     let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
     let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
     return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
-  }  
-  
-  render() {	
+  }
+
+  render() {
     let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`	
+    let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
     return <a onClick={this.handleClickAddEvidence}>
-	         <div className={classesButtonGrp}>
-			   <div className={classesLine}></div>
-			   <div className="arrowAddEvidenceButton">&#x21B3;</div>
-			   { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
-	         </div>
-	        </a>  
-  } 
+                 <div className={classesButtonGrp}>
+                           <div className={classesLine}></div>
+                           <div className="arrowAddEvidenceButton">&#x21B3;</div>
+                           { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
+                 </div>
+                </a>
+  }
 }
 
 const AddEvidence = compose(
@@ -413,7 +413,7 @@ class AgreeDisagreeComponent extends React.Component {
 
   handleClickAgree(e) {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
-	console.log("AgreeDisagreeComponent : agree");
+    console.log("AgreeDisagreeComponent : agree");
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -430,7 +430,7 @@ class AgreeDisagreeComponent extends React.Component {
 
   handleClickDisagree(e) {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
-	console.log("AgreeDisagreeComponent : disagree");
+    console.log("AgreeDisagreeComponent : disagree");
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -477,7 +477,7 @@ class RelevanceComponent extends React.Component {
     this.handleClick100 = this.handleClick100.bind(this);
     this.handleClickClose = this.handleClickClose.bind(this);
   }
-  
+
   get rootURLsafe() {
     return this.props.point.rootURLsafe
   }
@@ -554,38 +554,38 @@ class RelevanceComponent extends React.Component {
     //console.log("");
     this.props.onClose && this.props.onClose()
   }
-  
+
   linkClassFor(vote){
-	let defaultClasses = "relVoteLink number "
-	let myVoteClass = "myRelevanceVote0"
-	if (vote == 33)
-		myVoteClass = "myRelevanceVote33"
+    let defaultClasses = "relVoteLink number "
+    let myVoteClass = "myRelevanceVote0"
+    if (vote == 33)
+      myVoteClass = "myRelevanceVote33"
     else if (vote == 66)
-		myVoteClass = "myRelevanceVote66"
+      myVoteClass = "myRelevanceVote66"
     else if (vote == 100)
-		myVoteClass = "myRelevanceVote100"		
-    return (this.props.link.relevanceVote == vote) ? (defaultClasses + myVoteClass) : defaultClasses	
+      myVoteClass = "myRelevanceVote100"
+    return (this.props.link.relevanceVote == vote) ? (defaultClasses + myVoteClass) : defaultClasses
   }
-  
+
   get relevance() {
     return this.props.link && this.props.link.relevance
   }
-  
+
   // TODO: add number of Votes so far to relevanceStats
   render(){
     return <div className="relCtrlGroup" >
-	  <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span>
+          <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span>
       <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
         <div className="relCtrlVoteOptions">
           <a className={this.linkClassFor(100) + " relVoteLink100"} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(66) + " relVoteLink66"} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(33) + " relVoteLink33"} onClick={this.handleClick33}>33<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(0) + " relVoteLink0"} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
-	    </div>
+            </div>
         <div className="relevanceExplanation">
-		  <div className="relevanceStats">{this.relevance}% average on all votes so far</div>
+                  <div className="relevanceStats">{this.relevance}% average on all votes so far</div>
           <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>
-		</div>
+                </div>
       </div>
     }
 }
@@ -621,7 +621,7 @@ class PointCard extends React.Component {
   handleClickNoProp(e) {
     e.stopPropagation();
   }
-  
+
   handleClickEdit(e) {
     e.stopPropagation();
     this.setState({editing: true})
@@ -722,7 +722,7 @@ class PointCard extends React.Component {
     return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
       <div className="relevanceLinkArea">
         <div className="dottedLine dottedLineRelevanceLink"></div>
-		<span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
+                <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
         <div className="arrowCard">&#x21B3;</div>
       </div></a>
     } else {
@@ -764,7 +764,7 @@ class PointCard extends React.Component {
       this.setState({expandedIndex: i})
     }
   }
-  
+
   // When user clicks on the cardstack (but not on any particular link)
   // TODO: can/should these two toggle functions be consolidated?
   handleToggleEvidenceFromCard() {
@@ -780,7 +780,7 @@ class PointCard extends React.Component {
       this.setState({expandedIndex: i})
     }
   }
- 
+
   expanded() {
     return this.state.expandedIndex[this.point.id]
   }
@@ -901,16 +901,16 @@ class PointCard extends React.Component {
 
   handleClickMore(e) {
     e.stopPropagation();
-	//console.log("pointCard : handleClickMore(e) ")
+    //console.log("pointCard : handleClickMore(e) ")
   }
-  
+
   // TODO: add code to link to other "upstream" claims
   // <li><span className=""><span className="iconWithStat fa fa-level-up"></span>Linked to {this.point.supportedCount} other claims</span></li>
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-	  <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
-	        <div className="dropdown-caret">
+          <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
+                <div className="dropdown-caret">
         <div className="caret-outer"></div>
         <div className="caret-inner"></div>
       </div>
@@ -919,9 +919,9 @@ class PointCard extends React.Component {
       </ul>
     </span>
   }
-/* 
+/*
          <li><span className="moreMenuHeading">More Actions</span></li>
-         <li className="divider"></li> 
+         <li className="divider"></li>
 */
 /*
         Code to check if current user is the point Author
@@ -953,18 +953,18 @@ class PointCard extends React.Component {
     let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
     //console.log("linksRatio " + this.linksRatio() )
     return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-	
-	<div className="relCtrlAndLinkAndStackCards">	
+
+        <div className="relCtrlAndLinkAndStackCards">
     <div className={classesListedClaim} tabIndex="-1" >
     {this.relevanceCtrlUI()}
-	
-	<div className="relLinkAndStackCards">	
+
+        <div className="relLinkAndStackCards">
     {this.relevanceLinkUI()}
-	<div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidenceFromCard} ref={(input) => { this.cardToFocusOn = input;}}>
+        <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidenceFromCard} ref={(input) => { this.cardToFocusOn = input;}}>
     <div className={classesStackCard1} tabIndex="-1">
     <div className={classesStackCard2} tabIndex="-1">
     <div className={classesStackCard3} tabIndex="-1">
-	
+
       <div className={classesPointCard} tabIndex="-1">
       <div className={ this.contentWidth()  }>
         <div className="row-fluid">
@@ -985,24 +985,24 @@ class PointCard extends React.Component {
         <div className="cardBottomActionRow" >
           <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
           <span className="cardBottomAction bottomActionDot">·</span>
-		  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-		  <span className={classesRelevanceDot}>·</span>
-		  <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+                  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+                  <span className={classesRelevanceDot}>·</span>
+                  <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
         </div>
         </div>
       </div>
       {this.image()}
       </div>
-	  
+
     </div>
     </div>
     </div>
     </div>
     </div>
-	
+
     </div>
     </div>
-	
+
       <div className="evidenceRow row-fluid">
       {this.evidence()}
       </div>

@@ -109,3 +109,22 @@ query Point($url: String) {
     ...evidenceFields
  }
 }`
+
+export const GetCollapsedPoint = gql`
+${pointFieldsFragment}
+query Point($url: String) {
+  point(url: $url) {
+    ...pointFields
+ }
+}`
+
+export const HomePage = gql`
+query HomePage {
+  homePage {
+    featuredPoint {
+      title
+    }
+  }
+}
+`
+

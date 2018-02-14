@@ -602,14 +602,13 @@ class PointCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expandedIndex: {},
+      expanded: props.expanded,
       relLinkClicked: false
     }
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
-    this.handleToggleEvidenceFromCard = this.handleToggleEvidenceFromCard.bind(this);
     this.renderSubPointCard = this.renderSubPointCard.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
@@ -735,63 +734,42 @@ class PointCard extends React.Component {
     this.setState({editing: false})
   }
 
-  handleSeeEvidence(point=this.point) {
-    this.props.data.refetch({url: this.props.url, omitEvidence: false})
-    const i = this.state.expandedIndex
-    i[point.id] = true
-    this.setState({expandedIndex: i})
+  expand(){
+    this.props.data.refetch({url: this.props.url, omitEvidence: false});
+    this.setState({expanded: true});
+  }
+
+  contract(){
+    this.setState({expanded: false});
+  }
+
+  handleSeeEvidence() {
+    this.expand();
     this.props.handleSeeEvidence && this.props.handleSeeEvidence(point);
   }
 
-  handleHideEvidence(point=this.point) {
-    const i = this.state.expandedIndex
-    i[point.id] = false
-    this.setState({expandedIndex: i})
+  handleHideEvidence() {
+    this.contract();
     this.props.handleHideEvidence && this.props.handleHideEvidence(point);
   }
 
   // When user clicks on the pointTitle or "Add Evidence"
-  handleToggleEvidence(point=this.point) {
-    const i = this.state.expandedIndex
-    console.log("pointCard : handleToggleEvidence : point.url : " + point.url)
+  handleToggleEvidence() {
     if (this.expanded()) {
-      console.log("pointCard : handleToggleEvidence : CONTRACTING ")
-      i[point.id] = false
-      this.setState({expandedIndex: i})
+      this.contract()
     } else {
-      console.log("pointCard : handleToggleEvidence : EXPANDING ")
-      i[point.id] = true
-      this.setState({expandedIndex: i})
-    }
-  }
-
-  // When user clicks on the cardstack (but not on any particular link)
-  // TODO: can/should these two toggle functions be consolidated?
-  handleToggleEvidenceFromCard() {
-    const i = this.state.expandedIndex
-    console.log("pointCard : handleToggleEvidenceFromCard : point.url : " + this.point.url)
-    if (this.expanded()) {
-      console.log("pointCard : handleToggleEvidenceFromCard : EXPANDED ")
-      i[this.point.id] = false
-      this.setState({expandedIndex: i})
-    } else {
-      console.log("pointCard : handleToggleEvidenceFromCard : NOT EXPANDED ")
-      i[this.point.id] = true
-      this.setState({expandedIndex: i})
+      this.expand()
     }
   }
 
   expanded() {
-    return this.state.expandedIndex[this.point.id]
+    return this.state.expanded;
   }
 
   renderSubPointCard(parentPoint, pointEdge, index){
     return newPointCard(pointEdge,
                         {index: index,
-                         parentPoint: parentPoint,
-                         expandedIndex: this.state.expandedIndex,
-                         handleSeeEvidence: this.handleSeeEvidence,
-                         handleHideEvidence:this.handleHideEvidence});
+                         parentPoint: parentPoint});
   }
 
   contentWidth() {
@@ -960,7 +938,7 @@ class PointCard extends React.Component {
 
         <div className="relLinkAndStackCards">
     {this.relevanceLinkUI()}
-        <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidenceFromCard} ref={(input) => { this.cardToFocusOn = input;}}>
+        <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
     <div className={classesStackCard1} tabIndex="-1">
     <div className={classesStackCard2} tabIndex="-1">
     <div className={classesStackCard3} tabIndex="-1">
@@ -1011,20 +989,16 @@ class PointCard extends React.Component {
   }
 }
 
-export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence, handleHideEvidence, parentPoint}) {
+export function newPointCard(pointEdge, {index, parentPoint}) {
   let point = pointEdge.node;
   let classes = `listedClaimGroup`;
   if (point) {
   return <div className={classes} key={point.url}>
       <ExpandedPointCard point={point}
-    omitEvidence={true}
-    url={point.url}
-    expandedIndex={expandedIndex}
-    expanded={true}
-    link={pointEdge.link}
-    handleSeeEvidence={handleSeeEvidence}
-    handleHideEvidence={handleHideEvidence}
-    parentPoint={parentPoint}/>
+                         url={point.url}
+                         expanded={false}
+                         link={pointEdge.link}
+                         parentPoint={parentPoint}/>
       </div>;
   } else {
     return <div className="listedClaimGroup" key={index}></div>;
@@ -1032,7 +1006,9 @@ export function newPointCard(pointEdge, {index, expandedIndex, handleSeeEvidence
 }
 
 export {PointCard};
-export const ExpandedPointCard = graphql(GetPoint)(PointCard)
+export const ExpandedPointCard = graphql(GetPoint, {
+  options: ({ url, expanded }) => ({ variables: { url: url, omitEvidence: !expanded } }),
+})(PointCard)
 
 // TODO: explore a mutation-based point loading model
 // export const ExpandPoint = gql`

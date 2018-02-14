@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { EvidenceType, PointCard, ExpandedPointCard, Byline, newPointCard } from './point';
+import { EvidenceType, PointCard, Byline, newPointCard } from './point';
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';

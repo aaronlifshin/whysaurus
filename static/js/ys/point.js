@@ -5,7 +5,8 @@ import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 import MediaQuery from 'react-responsive';
 import AnimateOnChange from 'react-animate-on-change';
-import { CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint } from './schema.js';
+import { CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint } from './schema.js';
+import {PointList} from './point_list.js'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -609,7 +610,6 @@ class PointCard extends React.Component {
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
-    this.renderSubPointCard = this.renderSubPointCard.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
     this.handleClickMore = this.handleClickMore.bind(this);
@@ -654,7 +654,7 @@ class PointCard extends React.Component {
 */
 
   get point() {
-    return this.props.data.point ? this.props.data.point : this.props.point
+    return (this.props.data && this.props.data.point) ? this.props.data.point : this.props.point
   }
 
   get evidenceType() {
@@ -735,28 +735,25 @@ class PointCard extends React.Component {
   }
 
   expand(){
-    this.props.data.refetch({url: this.props.url, omitEvidence: false});
-    this.setState({expanded: true});
+    this.props.onExpand()
   }
 
-  contract(){
-    this.setState({expanded: false});
+  collapse(){
+    this.props.onCollapse()
   }
 
   handleSeeEvidence() {
     this.expand();
-    this.props.handleSeeEvidence && this.props.handleSeeEvidence(point);
   }
 
   handleHideEvidence() {
-    this.contract();
-    this.props.handleHideEvidence && this.props.handleHideEvidence(point);
+    this.collapse();
   }
 
   // When user clicks on the pointTitle or "Add Evidence"
   handleToggleEvidence() {
     if (this.expanded()) {
-      this.contract()
+      this.collapse()
     } else {
       this.expand()
     }
@@ -764,12 +761,6 @@ class PointCard extends React.Component {
 
   expanded() {
     return this.state.expanded;
-  }
-
-  renderSubPointCard(parentPoint, pointEdge, index){
-    return newPointCard(pointEdge,
-                        {index: index,
-                         parentPoint: parentPoint});
   }
 
   contentWidth() {
@@ -812,9 +803,9 @@ class PointCard extends React.Component {
       return <div className="evidenceBlockSupport">
         <div className="evidenceList">
           {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Evidence For</div>}
-          {this.point.supportingPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
-      <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
-    </div>
+        <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point}/>
+          <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+        </div>
       </div>
     }
   }
@@ -824,7 +815,7 @@ class PointCard extends React.Component {
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
           {this.point.counterPoints.edges.length > 0 && <div className="counterHeading">Evidence Against</div>}
-          {this.point.counterPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
+        <PointList edges={this.point.counterPoints.edges} parentPoint={this.point}/>
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
         </div>
       </div>
@@ -837,7 +828,7 @@ class PointCard extends React.Component {
       return <div className="evidenceBlockCounter">
         <div className="evidenceList">
           {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence</div>}
-          {this.point.relevantPoints.edges.map((edge, i) => this.renderSubPointCard(this.point, edge, i))}
+        <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point}/>
           <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
           <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
         </div>
@@ -919,18 +910,20 @@ class PointCard extends React.Component {
 
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
   render(){
-    const point = this.point;
-    console.log("rendering " + point.url)
-    let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-    let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`
-    let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
-    let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-    let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-    let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
-    let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
-    let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
-    //console.log("linksRatio " + this.linksRatio() )
-    return <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
+    if (this.point){
+      const point = this.point;
+      console.log("rendering " + point.url)
+      let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
+      let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`
+      let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
+      let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
+      let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
+      let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
+      let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
+      let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
+      //console.log("linksRatio " + this.linksRatio() )
+      return <div className="listedClaimGroup">
+        <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
         <div className="relCtrlAndLinkAndStackCards">
     <div className={classesListedClaim} tabIndex="-1" >
@@ -985,40 +978,16 @@ class PointCard extends React.Component {
       {this.evidence()}
       </div>
 
-    </div>;
-  }
-}
-
-export function newPointCard(pointEdge, {index, parentPoint}) {
-  let point = pointEdge.node;
-  let classes = `listedClaimGroup`;
-  if (point) {
-  return <div className={classes} key={point.url}>
-      <ExpandedPointCard point={point}
-                         url={point.url}
-                         expanded={false}
-                         link={pointEdge.link}
-                         parentPoint={parentPoint}/>
-      </div>;
-  } else {
-    return <div className="listedClaimGroup" key={index}></div>;
+      </div>
+        </div>;
+    } else if (this.props.data && this.props.data.loading) {
+      return <div>Loading...</div>
+    } else {
+      return <div>Something strange happened...</div>
+    }
   }
 }
 
 export {PointCard};
-export const ExpandedPointCard = graphql(GetPoint, {
-  options: ({ url, expanded }) => ({ variables: { url: url, omitEvidence: !expanded } }),
-})(PointCard)
 
-// TODO: explore a mutation-based point loading model
-// export const ExpandPoint = gql`
-// ${expandedPointFieldsFragment}
-// mutation ExpandPoint($url: String!) {
-//   expandPoint(url: $url) {
-//     point {
-//       id,
-//       ...evidenceFields
-//     }
-//   }
-// }`
-// export const CollapsedPointCard = graphql(ExpandPoint)(PointCard)
+export const ExpandedPointCard = graphql(GetPoint)(PointCard)

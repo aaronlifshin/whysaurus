@@ -71,8 +71,6 @@ class Point(NdbObjectType):
 
     supportingPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_supportingPoints(self, info, **args):
-        if (('omitEvidence' in info.variable_values) and info.variable_values['omitEvidence']):
-            return []
         self._linkedPoints = self._linkedPoints or self.getAllLinkedPoints(info.context.current_user)
 
         points = self._linkedPoints[0]
@@ -84,8 +82,6 @@ class Point(NdbObjectType):
 
     counterPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_counterPoints(self, info, **args):
-        if (('omitEvidence' in info.variable_values) and info.variable_values['omitEvidence']):
-            return []
         self._linkedPoints = self._linkedPoints or self.getAllLinkedPoints(info.context.current_user)
 
         points = self._linkedPoints[1]
@@ -99,8 +95,6 @@ class Point(NdbObjectType):
     # introduced for single column views
     relevantPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_relevantPoints(self, info, **args):
-        if (('omitEvidence' in info.variable_values) and info.variable_values['omitEvidence']):
-            return []
         self._linkedPoints = self._linkedPoints or self.getAllLinkedPoints(info.context.current_user)
 
         supportingPoints, counterPoints = self._linkedPoints
@@ -268,7 +262,7 @@ class Query(graphene.ObjectType):
     def resolve_points(self, info, **args):
         return PointModel.query()
 
-    point = graphene.Field(Point, url=graphene.String(), omitEvidence=graphene.Boolean())
+    point = graphene.Field(Point, url=graphene.String())
     def resolve_point(self, info, **args):
         point, pointRoot = PointModel.getCurrentByUrl(args['url'])
         return point

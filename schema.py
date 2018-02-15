@@ -6,6 +6,7 @@ from graphene import relay
 from graphene_gae import NdbObjectType, NdbConnectionField
 
 from models.point import Point as PointModel
+from models.point import PointRoot
 from models.point import FeaturedPoint
 from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
@@ -262,6 +263,14 @@ class HomePage(graphene.ObjectType):
     featuredPoint = graphene.Field(Point)
     def resolve_featuredPoint(self, info, **args):
         return FeaturedPoint.getFeaturedPoint()
+
+    newPoints = graphene.List(Point)
+    def resolve_newPoints(self, info, **args):
+        return PointRoot.getRecentCurrentPoints(info.context.current_user)
+
+    editorsPicks = graphene.List(Point)
+    def resolve_editorsPicks(self, info, **args):
+        return PointRoot.getEditorsPicks(info.context.current_user)
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)

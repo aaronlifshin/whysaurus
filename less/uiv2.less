@@ -950,9 +950,9 @@ li .iconWithStat {
 	margin-top: @marginVerticalStandard * 3;
 	margin-left: 14px;
 	color: black;
-	width: max-content;
-	width: -moz-max-content;  
-	//display: inline-block;
+	display: inline-block;
+	//width: max-content;
+	//width: -moz-max-content;
 }
 
 .evidenceBlockEmpty .addEvidenceButtonGrp {
@@ -1041,9 +1041,9 @@ li .iconWithStat {
 
 
 .addEvidenceButton {
-    display: table; // seems necessary for scaling on hover to work, but also causes underline
-    top: -20px;
-    left: 14px;
+    display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
+    top: 2px;
+    left: 4px;
     position: relative;	
 	width: auto;
 }

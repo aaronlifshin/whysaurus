@@ -259,11 +259,15 @@ body {
 }
 
 
-.evidenceBlockCounter, .evidenceBlockSupport {
+.evidenceBlockCounter, .evidenceBlockSupport, .evidenceBlockEmpty {
 	display: inline-block;
 	float: left;
 	//transition: 1s;
 	//width: @cardListWidth;
+}
+
+.evidenceBlockEmpty {
+  margin-left: @indent;
 }
 
 .evidenceList {
@@ -590,7 +594,7 @@ a:hover .perctSignSmall {
 }
 .stackCardDealBottom {	
 	animation-name: stackCardDealBottom;
-    animation-duration: @stackDealDuration;
+  animation-duration: @stackDealDuration;
 	animation-timing-function: @stackDealTimingFunction;
 	animation-iteration-count: 1;
 }
@@ -601,11 +605,10 @@ a:hover .perctSignSmall {
 }
 .stackCardDealInvertXform {
 	animation-name: stackCardDealInvertXform;
-    animation-duration: @stackDealDuration;
+  animation-duration: @stackDealDuration;
 	animation-timing-function: @stackDealTimingFunction;
 	animation-iteration-count: 1;	
 }
-
 .stackCardDealFade {
 	// make border disappear with alpha bc it won't reposition children 
 	// use !important to override red borders from .counter
@@ -618,11 +621,12 @@ a:hover .perctSignSmall {
 	transition: @stackDealDuration;
 	transition-timing-function: @stackDealTimingFunction;
 }
+// END OF DEALING CARDS ANIMATION //
+
 .stackCardHidden {
 	border-color: rgba(0,0,0,0) !important; // make border disappear with alpha bc it won't reposition children 
 	background: none !important;
 }
-
 
 .point-card {
 	//background-color: red;

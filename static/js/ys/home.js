@@ -12,9 +12,15 @@ class Home extends React.Component {
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
+    let newPoints = homePage && homePage.newPoints;
+    let editorsPicks = homePage && homePage.editorsPicks;
     return <div><h1>Home Page</h1>
       <h3>Featured Point:</h3>
       {featuredPoint && <PointList point={featuredPoint}/>}
+      <h3>New Points:</h3>
+      {newPoints && <PointList points={newPoints}/>}
+      <h3>Editor's Picks:</h3>
+      {editorsPicks && <PointList points={editorsPicks}/>}
       </div>
   }
 }

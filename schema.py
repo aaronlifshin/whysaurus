@@ -190,6 +190,25 @@ class AddEvidence(graphene.Mutation):
 
         return AddEvidence(point=newLinkPoint, parent=newPoint)
 
+class NewPoint(graphene.Mutation):
+    class Arguments:
+        point_data = PointInput(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, point_data):
+        newPoint, newPointRoot = PointModel.create(
+            title=point_data.title,
+            content=point_data.content,
+            summaryText=point_data.summaryText,
+            user=info.context.current_user,
+            imageURL=point_data.imageURL,
+            imageAuthor=point_data.imageAuthor,
+            imageDescription=point_data.imageDescription
+        )
+
+        return NewPoint(point=newPoint)
+
 class EditPointInput(graphene.InputObjectType):
     url = graphene.String(required=True)
     title = graphene.String()
@@ -298,6 +317,7 @@ class Mutation(graphene.ObjectType):
     edit_point = EditPoint.Field()
     vote = Vote.Field()
     relevanceVote = RelevanceVote.Field()
+    new_point = NewPoint.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

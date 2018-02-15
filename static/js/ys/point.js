@@ -8,6 +8,9 @@ import AnimateOnChange from 'react-animate-on-change';
 import { CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint } from './schema.js';
 import {PointList} from './point_list.js'
 
+// For Responsive 
+const singleColumnThreshold = 960;
+
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
     SUPPORT:  Symbol("supporting"),
@@ -383,16 +386,27 @@ class AddEvidenceCard extends React.Component {
 
   render() {
     let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
+    //let classesLine = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`
+    let classesLineWideScreen = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${this.numSupportingPlusCounter() < 1 ? "dottedLineNoEvidence" : "" }`	
+  	let classesLineNarrowScreen = `${this.linkType=="supporting" ? "dottedLine dottedLineAddEvidenceButton dottedLineAddSupport" : "counter"}`
+	  let classesArrowWideScreen = "arrowAddEvidenceButton"
+  	let classesArrowNarrowScreen = `${this.linkType=="supporting" ? "arrowAddEvidenceButton" : "hidden"}`
     return <a onClick={this.handleClickAddEvidence}>
-                 <div className={classesButtonGrp}>
-                           <div className={classesLine}></div>
-                           <div className="arrowAddEvidenceButton">&#x21B3;</div>
-                           { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
-                 </div>
-                </a>
+	         <div className={classesButtonGrp}>			   			   
+               <MediaQuery minWidth={singleColumnThreshold}>
+                 <div className={classesLineWideScreen}></div>
+			     <div className={classesArrowWideScreen}>&#x21B3;</div>
+               </MediaQuery>
+               <MediaQuery maxWidth={singleColumnThreshold}>
+                 <div className={classesLineNarrowScreen}></div>
+			     <div className={classesArrowNarrowScreen}>&#x21B3;</div>
+               </MediaQuery>			   		   
+			   { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
+	         </div>
+	        </a> 
   }
 }
+
 
 const AddEvidence = compose(
   graphql(AddEvidenceQuery),
@@ -784,7 +798,6 @@ class PointCard extends React.Component {
       let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null} ${this.numSupportingPlusCounter() == 0 ? "evidenceBlockEmpty" : ""}`
       let classesEvidenceArrow = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
       console.log("pointCard : evidence() ")
-      const singleColumnThreshold = 960;
       return <div className={classesEvidenceBlock}>
         <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
         <MediaQuery minWidth={singleColumnThreshold}>

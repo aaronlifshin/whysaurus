@@ -26,9 +26,10 @@ fragment pointFields on Point {
   currentUserVote
 }
 `
+
 export const evidenceEdgesFragment = gql`
 fragment evidenceEdges on SubPointConnection {
-  edges { node { title, upVotes, ...pointFields }, link { id, type, relevance, relevanceVote, parentURLsafe, childURLsafe }}
+  edges { node { ...pointFields }, link { id, type, relevance, relevanceVote, parentURLsafe, childURLsafe }}
 }`
 
 
@@ -119,10 +120,17 @@ query Point($url: String) {
 }`
 
 export const HomePage = gql`
+${pointFieldsFragment}
 query HomePage {
   homePage {
     featuredPoint {
-      title
+      ...pointFields
+    }
+    newPoints {
+      ...pointFields
+    }
+    editorsPicks {
+      ...pointFields
     }
   }
 }

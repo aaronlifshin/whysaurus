@@ -26,8 +26,15 @@ class QuickCreate extends React.Component {
   }
 
   submit(values, e, formApi){
-    this.props.onSubmit(values);
-    formApi.resetAll();
+    this.setState({submitting: true});
+    this.props.onSubmit(values).then(
+      (val) => {
+        this.setState({submitting: false});
+        formApi.resetAll();
+      },
+      (err) => {
+        this.setState({submitting: false});
+      });
   }
 
   validateTitle(title){
@@ -46,6 +53,14 @@ class QuickCreate extends React.Component {
     };
   }
 
+  submitButton(){
+    if (this.state.submitting) {
+      return <span>Adding your point...</span>;
+    } else {
+      return <button onClick={this.props.onClick} className="buttonUX2" type="submit">Save</button>;
+    }
+  }
+
   render(){
     let props = this.props;
     return <Form onSubmit={this.submit}
@@ -54,7 +69,7 @@ class QuickCreate extends React.Component {
       { formApi => (
           <form onSubmit={formApi.submitForm} className="editPointTextForm">
             <Text onClick={props.onClick} onChange={this.handleChange} field="title" id="editPointTextField" />
-            <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
+            {this.submitButton()}
             <p>{formApi.errors.title}</p>
           <p classes={this.state.charsLeft < 0 ? 'overMaxChars' : ''}>{this.state.charsLeft}</p>
           </form>
@@ -76,12 +91,12 @@ class Home extends React.Component {
   }
 
   createNewPoint(pointData) {
-    this.props.mutate({
+    return this.props.mutate({
       variables: pointData,
       update: (proxy, {data: {newPoint: { point }}}) => {
-        const data = proxy.readQuery({ query: schema.HomePage})
-        data.homePage.newPoints.unshift(point)
-        proxy.writeQuery({query: schema.HomePage, data: data})
+        const data = proxy.readQuery({ query: schema.HomePage});
+        data.homePage.newPoints.unshift(point);
+        proxy.writeQuery({query: schema.HomePage, data: data});
       }
     });
   }

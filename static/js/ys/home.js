@@ -11,10 +11,12 @@ import { Form, Text } from 'react-form';
 
 class QuickCreate extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = {charsLeft: props.titleMaxCharacterCount}
+    super(props);
+    this.state = {charsLeft: props.titleMaxCharacterCount};
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
+    this.validateTitle = this.validateTitle.bind(this);
+    this.errorValidator = this.errorValidator.bind(this);
   }
 
   handleChange(text) {
@@ -28,17 +30,36 @@ class QuickCreate extends React.Component {
     formApi.resetAll();
   }
 
+  validateTitle(title){
+    if (!title || title.trim() === '') {
+      return 'Point text is required.';
+    } else if (title.length > this.props.titleMaxCharacterCount){
+      return 'Point text too long.';
+    } else {
+      return null;
+    }
+  }
+
+  errorValidator(values) {
+    return {
+      title: this.validateTitle(values.title)
+    };
+  }
+
   render(){
     let props = this.props;
-    return <Form onSubmit={this.submit}>
+    return <Form onSubmit={this.submit}
+                 validateError={this.errorValidator}
+                 dontValidateOnMount={true}>
       { formApi => (
           <form onSubmit={formApi.submitForm} className="editPointTextForm">
-          <Text onClick={props.onClick} onChange={this.handleChange} field="title" id="editPointTextField" />
-          <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
+            <Text onClick={props.onClick} onChange={this.handleChange} field="title" id="editPointTextField" />
+            <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
+            <p>{formApi.errors.title}</p>
           <p classes={this.state.charsLeft < 0 ? 'overMaxChars' : ''}>{this.state.charsLeft}</p>
           </form>
       )}
-    </Form>
+    </Form>;
   }
 }
 

@@ -8,6 +8,8 @@ import { graphql, compose } from 'react-apollo';
 import { PointList } from './point_list';
 import * as schema from './schema';
 import { Form, Text } from 'react-form';
+import { Carousel } from 'react-responsive-carousel';
+import MediaQuery from 'react-responsive';
 
 class QuickCreate extends React.Component {
   constructor(props) {
@@ -101,12 +103,57 @@ class Home extends React.Component {
     });
   }
 
+  illustrations(){
+    const singleColumnThreshold = 960;
+    return <div className="row" id="explanationRowHomepage">
+      <MediaQuery minWidth={singleColumnThreshold}>
+        <div className="explanationsCentered">
+          <div className="explanationBlock">
+            <div className="explanationTextCentered">
+                Make Arguments<br/><strong>Point-by-Point</strong>
+            </div>
+            <img className="explanationImageCentered" src="/static/img/homepage_illustration1_smaller.png"/>
+          </div>
+          <div className="explanationBlock">
+            <div className="explanationTextCentered lessWidth">
+              <strong>Rate and improve</strong> Points collaboratively
+            </div>
+            <img className="explanationImageCentered" src="/static/img/homepage_illustration2_smaller.png"/>
+          </div>
+          <div className="explanationBlock">
+            <div className="explanationTextCentered lessWidth">
+                <strong>Re-use</strong> Points to build new Arguments
+            </div>
+            <img className="explanationImageCentered" src="/static/img/homepage_illustration3_smaller.png"/>
+          </div>
+        </div>
+      </MediaQuery>
+      <MediaQuery maxWidth={singleColumnThreshold}>
+      <Carousel showThumbs={false} showStatus={false} showIndicators={false}>
+          <div>
+            <img src="/static/img/homepage_illustration1_smaller.png"/>
+            <p className="legend">Make Arguments<br/><strong>Point-by-Point</strong></p>
+          </div>
+          <div>
+            <img src="/static/img/homepage_illustration2_smaller.png"/>
+            <p className="legend"><strong>Rate and improve</strong> Points collaboratively</p>
+          </div>
+          <div>
+            <img src="/static/img/homepage_illustration3_smaller.png"/>
+            <p className="legend"><strong>Re-use</strong> Points to build new Arguments</p>
+          </div>
+        </Carousel>
+      </MediaQuery>
+    </div>;
+  }
+
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
     let newPoints = homePage && homePage.newPoints;
     let editorsPicks = homePage && homePage.editorsPicks;
-    return <div><h1>Home Page</h1>
+    return <div>
+      {this.illustrations()}
       <h3>Make an Argument You Want to Prove</h3>
       <QuickCreate onSubmit={this.createNewPoint}/>
       <h3>Featured Point:</h3>
@@ -115,7 +162,7 @@ class Home extends React.Component {
       {newPoints && <PointList points={newPoints}/>}
       <h3>Editor's Picks:</h3>
       {editorsPicks && <PointList points={editorsPicks}/>}
-      </div>
+    </div>;
   }
 }
 

@@ -8,7 +8,7 @@ import AnimateOnChange from 'react-animate-on-change';
 import { CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint } from './schema.js';
 import {PointList} from './point_list.js'
 
-// For Responsive 
+// For Responsive
 const singleColumnThreshold = 960;
 
 export const EvidenceType = Object.freeze({
@@ -387,12 +387,12 @@ class AddEvidenceCard extends React.Component {
   render() {
     let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
     // This logic is bananas. I'm sorry. I'll find ways to make it clearer as the implementation continues. - JF
-    let classesLineWideScreen = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${(this.numSupportingPlusCounter() < 1 || (this.linkType=="counter" && (this.point.numCounter < 1 || this.point.numSupporting < 1))) ? "hidden" : "" }`	
-  	let classesLineNarrowScreen = `${(this.linkType=="supporting" && (this.numSupportingPlusCounter() > 0)) ? "dottedLine dottedLineAddEvidenceButton dottedLineAddSupport" : "hidden"}`	
+    let classesLineWideScreen = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${(this.numSupportingPlusCounter() < 1 || (this.linkType=="counter" && (this.point.numCounter < 1 || this.point.numSupporting < 1))) ? "hidden" : "" }`
+  	let classesLineNarrowScreen = `${(this.linkType=="supporting" && (this.numSupportingPlusCounter() > 0)) ? "dottedLine dottedLineAddEvidenceButton dottedLineAddSupport" : "hidden"}`
     let classesArrowWideScreen = `${(this.linkType=="supporting" || (this.point.numCounter > 0 && this.point.numSupporting > 0)  ) ? "arrowAddEvidenceButton" : "hidden"}`
-  	let classesArrowNarrowScreen = `${this.linkType=="supporting" ? "arrowAddEvidenceButton" : "hidden"}`    
+  	let classesArrowNarrowScreen = `${this.linkType=="supporting" ? "arrowAddEvidenceButton" : "hidden"}`
     return <a onClick={this.handleClickAddEvidence}>
-	         <div className={classesButtonGrp}>			   			   
+	         <div className={classesButtonGrp}>
             <MediaQuery minWidth={singleColumnThreshold}>
               <div className={classesLineWideScreen}></div>
               <div className={classesArrowWideScreen}>&#x21B3;</div>
@@ -400,10 +400,10 @@ class AddEvidenceCard extends React.Component {
             <MediaQuery maxWidth={singleColumnThreshold}>
               <div className={classesLineNarrowScreen}></div>
               <div className={classesArrowNarrowScreen}>&#x21B3;</div>
-            </MediaQuery>			   		   
+            </MediaQuery>
             { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
 	         </div>
-	        </a> 
+	        </a>
   }
 }
 
@@ -801,9 +801,9 @@ class PointCard extends React.Component {
       if (this.numSupportingPlusCounter() == 0) {
         return <div className={classesEvidenceBlock + " evidenceBlockEmpty"}>
           <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
-          <AddEvidence point={this.point} type={EvidenceType.COUNTER}/> 
+          <AddEvidence point={this.point} type={EvidenceType.COUNTER}/>
         </div>
-      } 
+      }
       else {
         return <div className={classesEvidenceBlock}>
          <MediaQuery minWidth={singleColumnThreshold}>
@@ -818,15 +818,15 @@ class PointCard extends React.Component {
     }
   }
 
-  
+
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport">
         <div className="evidenceList">
           {this.point.supportingPoints.edges.length > 0 && <div className="supportHeading">Evidence For</div>}
           <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point}/>
-          <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/> 
-          {this.point.counterPoints.edges.length < 1 && <AddEvidence point={this.point} type={EvidenceType.COUNTER}/> }          
+          <AddEvidence point={this.point} type={EvidenceType.SUPPORT}/>
+          {this.point.counterPoints.edges.length < 1 && <AddEvidence point={this.point} type={EvidenceType.COUNTER}/> }
         </div>
       </div>
     }

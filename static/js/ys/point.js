@@ -805,13 +805,13 @@ class PointCard extends React.Component {
         </div>
       } 
       else {
-        return <div className={classesEvidenceBlock}>    
-         <MediaQuery minWidth={singleColumnThreshold}> 
-          {this.point.supportingPoints.edges.length > 0 && this.supportingPoints()}
-          {this.point.counterPoints.edges.length > 0 && this.counterPoints()}                    
+        return <div className={classesEvidenceBlock}>
+         <MediaQuery minWidth={singleColumnThreshold}>
+          {this.point.supportingPoints && this.point.supportingPoints.edges.length > 0 && this.supportingPoints()}
+          {this.point.counterPoints && this.point.counterPoints.edges.length > 0 && this.counterPoints()}
          </MediaQuery>
          <MediaQuery maxWidth={singleColumnThreshold}>
-          {this.relevantPoints()}
+          {this.point.relevantPoints && this.relevantPoints()}
          </MediaQuery>
         </div>
       }

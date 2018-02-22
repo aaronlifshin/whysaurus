@@ -70,7 +70,7 @@ class QuickCreate extends React.Component {
                  dontValidateOnMount={true}>
       { formApi => (
           <form onSubmit={formApi.submitForm} className="editPointTextForm">
-            <Text onClick={props.onClick} onChange={this.handleChange} field="title" id="editPointTextField" />
+            <Text onChange={this.handleChange} field="title" id="editPointTextField" />
             {this.submitButton()}
             <p>{formApi.errors.title}</p>
           <p classes={this.state.charsLeft < 0 ? 'overMaxChars' : ''}>{this.state.charsLeft}</p>
@@ -93,14 +93,19 @@ class Home extends React.Component {
   }
 
   createNewPoint(pointData) {
-    return this.props.mutate({
-      variables: pointData,
-      update: (proxy, {data: {newPoint: { point }}}) => {
-        const data = proxy.readQuery({ query: schema.HomePage});
-        data.homePage.newPoints.unshift(point);
-        proxy.writeQuery({query: schema.HomePage, data: data});
-      }
-    });
+    if (this.props.CurrentUserQuery.currentUser){
+      return this.props.mutate({
+        variables: pointData,
+        update: (proxy, {data: {newPoint: { point }}}) => {
+          const data = proxy.readQuery({ query: schema.HomePage});
+          data.homePage.newPoints.unshift(point);
+          proxy.writeQuery({query: schema.HomePage, data: data});
+        }
+      });
+    } else {
+      $("#loginDialog").modal("show");
+      return Promise.reject("User not logged in");
+    }
   }
 
   illustrations(){
@@ -167,6 +172,7 @@ class Home extends React.Component {
 }
 
 export const HomePage = compose(
+  graphql(schema.CurrentUserQuery, {name: 'CurrentUserQuery'}),
   graphql(schema.HomePage),
   graphql(schema.NewPoint)
 )(Home);

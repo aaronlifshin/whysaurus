@@ -298,7 +298,7 @@ class AddEvidenceCard extends React.Component {
 
   handleClickAddEvidence(e) {
     console.log("add evidence")
-    if (this.props.data.currentUser){
+    if (this.props.CurrentUserQuery.currentUser){
       this.setState({adding: true})
     } else {
       $("#loginDialog").modal("show");
@@ -410,7 +410,7 @@ class AddEvidenceCard extends React.Component {
 
 const AddEvidence = compose(
   graphql(AddEvidenceQuery),
-  graphql(CurrentUserQuery),
+  graphql(CurrentUserQuery, {name: 'CurrentUserQuery'}),
 )(AddEvidenceCard)
 
 class AgreeDisagreeComponent extends React.Component {

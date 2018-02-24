@@ -978,20 +978,22 @@ li .iconWithStat {
 	padding: 5px;
 	padding-left: 11px;
 	padding-right: 12px;
-    margin-bottom: 0;
-    //font-family: ff-meta-web-pro-condensed,sans-serif;
-    font-weight: 700;
-    font-size: @fontSizeButtonsUX2;
-    font-style: normal;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    color: white;
-    background-color: hsl(0, 0%, 25%);
-    border: none;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+  position: relative;
+  top:-2px;
+  margin-bottom: 0;
+  //font-family: ff-meta-web-pro-condensed,sans-serif;
+  font-weight: 700;
+  font-size: @fontSizeButtonsUX2;
+  font-style: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  color: white;
+  background-color: hsl(0, 0%, 25%);
+  border: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .buttonUX2:focus {
     outline: 2px solid @blue;
@@ -1084,10 +1086,10 @@ li .iconWithStat {
 .addEvidenceFormGroup {
 	//margin-top: @marginVerticalStandard * 1.35;
 	display: inline-block;
-	vertical-align: top;
+	//vertical-align: top;
 	position: relative;
-    top: -10px;
-    margin-left: @indent * .75; 
+  //top: -10px;
+  margin-left: @indent * .5; 
 }
 
 .addEvidenceForm {
@@ -1291,13 +1293,14 @@ a:hover .arrowAddEvidenceButton {
     margin-top: -33px;
 }
 .dottedLineElbow {
-  width: 10px;
-  height: 8px;
+  width: 8px;
+  height: 10px;
   border-bottom-style: dotted;
   border-bottom-width: 1px;    
   border-left-style: dotted;
   border-left-width: 1px;
   position: absolute; 
+  top: 17px;
   margin-left: @dottedLineElbowIndent;
 }
 

@@ -389,7 +389,6 @@ class AddEvidenceCard extends React.Component {
         { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="support" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel}/> }
     </span>
   } 
-    
 
   addText(evidenceType){   
     switch (evidenceType){
@@ -442,7 +441,6 @@ class AddEvidenceCard extends React.Component {
     return this.props.type
   }
 
-  
   renderAddEvidenceFormBasedOnState() {
     if (this.state.addingSupport) {
       return <span>
@@ -470,23 +468,32 @@ class AddEvidenceCard extends React.Component {
       </span>       
   }
   
+  renderEvidenceArrow(color) {
+    let arrowGrpClass = `arrowEvidence`
+    let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
+    let arrowStemClass = `arrowStemEvidence ${(this.numSupportingPlusCounter() == 0) && "arrowStemEvidenceShort" } ${color == "red" && "arrowStemRed"}`
+    return <div className={arrowGrpClass}>
+          <div className={arrowHeadClass}></div>
+          <div className={arrowStemClass}></div>
+        </div>    
+  }
+    
   render() {
-    let topDivClass = "AddEvidenceUI"
+    let topDivClass = `addEvidenceUI ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow" }   `
     switch (this.uiType) {  
     case "DUAL":
       return <div className={topDivClass}>
-        <div className="arrowNoEvidence">
-          <div className="arrowHeadUp"></div>
-          <div className="arrowStemNoEvidence"></div>
-        </div>
+        { this.renderEvidenceArrow() }
         { (this.state.addingSupport || this.state.addingCounter) ? this.renderAddEvidenceFormBasedOnState() : this.renderDualButtons() }       
       </div>      
     case "SUPPORT":
       return <div className={topDivClass}>
+        { this.renderEvidenceArrow() }
         { this.state.addingSupport ? this.renderAddEvidenceForm("support") : this.renderSupportButton() }  
       </div>      
     case "COUNTER":
-      return <div className={topDivClass}>     
+      return <div className={topDivClass}> 
+        { this.renderEvidenceArrow("red") }      
         { this.state.addingCounter ? this.renderAddEvidenceForm("counter") : this.renderCounterButton() }  
       </div>      
     default:
@@ -494,8 +501,7 @@ class AddEvidenceCard extends React.Component {
       return <div className={topDivClass}> 
       </div>    
     }
-
-    
+   
   }
 }
 
@@ -828,7 +834,7 @@ class PointCard extends React.Component {
       <div className="relevanceLinkArea">
         <div className="dottedLine dottedLineRelevanceLink"></div>
                 <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
-        <div className="arrowCard">&#x21B3;</div>
+        <div className="dottedLine dottedLineElbow"></div>
       </div></a>
     } else {
       return null

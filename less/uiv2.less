@@ -3,7 +3,7 @@
 
 // Positioning Grid setup
 @cardWidth: 420px;
-@indent: 36px;
+@indent: 45px;
 @cardListWidth: @cardWidth + ( 4 * @indent);
 
 @cardBorderWidth: 1px;
@@ -240,7 +240,7 @@ body {
 
 .supportHeading, .counterHeading {
 	//margin-top: 20px;
-	margin-left: @indent + @cardBorderWidth + @cardPadding + 17; //the extra +17 covers the width of the cardstack
+	margin-left: @indent + @cardBorderWidth + @cardPadding + 15; //the extra covers the width of the cardstack
 	margin-bottom: @marginVerticalStandard;
 	color: @darkerGreyColor;
 	text-transform: uppercase;
@@ -270,7 +270,7 @@ body {
 }
 
 .evidenceBlockEmpty {
-  margin-left: @indent;
+  margin-left: @indent + 9px; // not sure why the 9px is nec
 }
 
 .evidenceList {
@@ -342,12 +342,13 @@ body {
 
 .relCtrlClose {
 	float: right;
-    font-size: 27px;
-    position: relative;
-    margin-top: 2px;
+  font-size: 27px;
+  position: relative;
+  margin-top: 2px;
+  margin-right: 10px;
 	cursor: pointer;
 	font-family: serif;
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .relCtrlClose a {
@@ -391,7 +392,7 @@ body {
 	position: relative;
 	top: 6px;
 	margin-bottom: 3px;
-	padding-right: 4px;
+	padding-right: 2px; // allow space for full card stack
 	width: 100%;
 	//font-weight: bold;
 	//color: @darkerGreyColor;
@@ -419,11 +420,11 @@ body {
 	text-align: center;
     display: block;
     position: relative;
-    left: 7px;
+    left: 8px;
 }
 
 .relCtrlGroup {
-	margin-left: @indent + @cardPadding + 19px; // +19 to account for the width of the cardStack
+	margin-left: @indent + @cardPadding + 16px; // + extra to account for the width of the cardStack
 	width: 90%;
 }
 
@@ -1194,23 +1195,40 @@ li .iconWithStat {
   border-right: @arrowHeadWidth solid transparent; 
   border-bottom: 8px solid black;
 }  
+.arrowHeadUpRed {
+  border-bottom-color: @red !important;
+}
 
 @arrowStemWidth: 2px;
-.arrowStemNoEvidence {
+
+.arrowStemEvidence {
   width: 12px;
-  height: 20px;
+  height: 106px;
   margin-left: (@arrowHeadWidth/2) + 0.8px; // not sure why the 0.8 is whats needed to look right
   border-style: none;
   border-left: @arrowStemWidth solid black;
   border-bottom: @arrowStemWidth solid black;
 }
-
-.arrowNoEvidence {
+.arrowStemEvidenceShort {
+  height: 20px;
+}
+.arrowEvidence {
   display: inline-block;
-  margin-left: 30px;
+  margin-left: 21px;
   margin-right: 2px;
 }
+.arrowStemRed {
+  border-bottom-color: @red !important;
+  border-left-color: @red !important;
+}
+.verticalOffsetForLongEvidenceArrow {
+  position: relative;
+  top: -33px;
+}
 
+.arrowElbowEvidence {
+
+} 
 
 
 .arrowPointToSupport {
@@ -1266,16 +1284,30 @@ a:hover .arrowAddEvidenceButton {
     border-left-width: 1px;
     position: absolute;
 }
+@dottedLineElbowIndent:  24px;
 .dottedLineRelevanceLink {
     height: 27px;
-    margin-left: 19px;
+    margin-left: @dottedLineElbowIndent;
     margin-top: -33px;
 }
+.dottedLineElbow {
+  width: 10px;
+  height: 8px;
+  border-bottom-style: dotted;
+  border-bottom-width: 1px;    
+  border-left-style: dotted;
+  border-left-width: 1px;
+  position: absolute; 
+  margin-left: @dottedLineElbowIndent;
+}
+
 .counter .dottedLine {
 	color: @red;
 }
 
-.relCtrlAndLinkAndStackCards:hover .dottedLineRelevanceLink, .listedClaim:focus .dottedLineRelevanceLink  {
+.relCtrlAndLinkAndStackCards:hover .dottedLineRelevanceLink, 
+.relCtrlAndLinkAndStackCards:hover .dottedLineElbow, 
+.listedClaim:focus .dottedLineRelevanceLink  {
 	color: @blue ;
 	//height: 32px;
     //margin-top: -38px;
@@ -1292,6 +1324,10 @@ a:hover .arrowAddEvidenceButton {
 	transform: scaleY(2) ;
 	transform-origin: bottom;
 	transition: @hoverTransitionDuration;
+}
+
+.addEvidenceUI {
+  margin-bottom: 52px;
 }
 
 .addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {

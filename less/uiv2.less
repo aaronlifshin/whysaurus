@@ -1052,10 +1052,11 @@ li .iconWithStat {
 
 .addEvidenceButton {
     display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
-    top: 2px;
-    left: 4px;
-    position: relative;	
-	width: auto;
+    //top: 2px;
+    //left: 4px;
+    //position: relative;	
+    width: auto;
+    margin-right: 4px;
 }
 
 .buttonUX2Red.addEvidenceButton {
@@ -1184,6 +1185,32 @@ li .iconWithStat {
 }
 
 // ARROWS
+
+@arrowHeadWidth: 4px;
+.arrowHeadUp {
+  width: 0; 
+  height: 0; 
+  border-left: @arrowHeadWidth solid transparent;
+  border-right: @arrowHeadWidth solid transparent; 
+  border-bottom: 8px solid black;
+}  
+
+@arrowStemWidth: 2px;
+.arrowStemNoEvidence {
+  width: 12px;
+  height: 20px;
+  margin-left: (@arrowHeadWidth/2) + 0.8px; // not sure why the 0.8 is whats needed to look right
+  border-style: none;
+  border-left: @arrowStemWidth solid black;
+  border-bottom: @arrowStemWidth solid black;
+}
+
+.arrowNoEvidence {
+  display: inline-block;
+  margin-left: 30px;
+  margin-right: 2px;
+}
+
 
 
 .arrowPointToSupport {

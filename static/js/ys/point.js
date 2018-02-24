@@ -5,6 +5,10 @@ import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 import MediaQuery from 'react-responsive';
 import AnimateOnChange from 'react-animate-on-change';
+
+// TODO: make work
+//import Arrow from '@elsdoerfer/react-arrow';
+
 import { CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint } from './schema.js';
 import {PointList} from './point_list.js'
 
@@ -380,7 +384,7 @@ class AddEvidenceCard extends React.Component {
   }  
  
   renderAddEvidenceForm(evidenceType) {
-    //console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
+    console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
     return <span>
         { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="support" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel}/> }
     </span>
@@ -438,39 +442,60 @@ class AddEvidenceCard extends React.Component {
     return this.props.type
   }
 
-  render() {
-    let topDivClass = "AddEvidenceUI"
+  
+  renderAddEvidenceFormBasedOnState() {
     if (this.state.addingSupport) {
-      return <div className={topDivClass}>
+      return <span>
         {this.renderAddEvidenceForm("support")}
-      </div>     
+      </span>     
     }
     else if (this.state.addingCounter) {
-      return <div className={topDivClass}>
+      return <span>
         {this.renderAddEvidenceForm("counter")}
-      </div>       
-    }    
-    else if (this.uiType=="DUAL") {
-      return <div className={topDivClass}>
-        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("support")}</a>  
-        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a>  
-      </div>      
+      </span>      
     }
-    else if (this.uiType=="SUPPORT") {
+    else return (null)       
+  }
+  
+  renderSupportButton() {
+    return <a onClick={this.handleClickAddEvidenceSupport}>{this.renderAddEvidenceButton("support")}</a>    
+  }
+  renderCounterButton() {
+    return <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a>       
+  }  
+  renderDualButtons() {
+      return <span>
+        {this.renderSupportButton()}
+        {this.renderCounterButton()}     
+      </span>       
+  }
+  
+  render() {
+    let topDivClass = "AddEvidenceUI"
+    switch (this.uiType) {  
+    case "DUAL":
       return <div className={topDivClass}>
-        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("support")}</a>  
+        <div className="arrowNoEvidence">
+          <div className="arrowHeadUp"></div>
+          <div className="arrowStemNoEvidence"></div>
+        </div>
+        { (this.state.addingSupport || this.state.addingCounter) ? this.renderAddEvidenceFormBasedOnState() : this.renderDualButtons() }       
       </div>      
-    }
-    else if (this.uiType=="COUNTER") {
+    case "SUPPORT":
+      return <div className={topDivClass}>
+        { this.state.addingSupport ? this.renderAddEvidenceForm("support") : this.renderSupportButton() }  
+      </div>      
+    case "COUNTER":
       return <div className={topDivClass}>     
-        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a> 
+        { this.state.addingCounter ? this.renderAddEvidenceForm("counter") : this.renderCounterButton() }  
       </div>      
-    }
-    else {
+    default:
       console.log("AddEvidenceCard : render() : something's wrong!")
       return <div className={topDivClass}> 
-      </div>
-    }    
+      </div>    
+    }
+
+    
   }
 }
 

@@ -268,13 +268,14 @@ class EvidenceLink extends React.Component {
 
 // TODO : depending on user tests, maybe add <div className="addEvidenceFormLabel">Add evidence this list</div>
 const AddEvidenceForm = ( props ) => {
+  let submitClasses = `buttonUX2 addEvidenceFormButton ${props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
   return (
     <div className="addEvidenceFormGroup">
       <Form onSubmit={props.onSubmit}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
-          <button type="submit" className="buttonUX2 addEvidenceFormButton">Add</button>
+          <button type="submit" className={submitClasses}>Add</button>
           <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
           </form>
       )}
@@ -286,47 +287,58 @@ const AddEvidenceForm = ( props ) => {
 class AddEvidenceCard extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {adding: false}
-    this.handleClickAddEvidence = this.handleClickAddEvidence.bind(this)
-    this.handleClickSave = this.handleClickSave.bind(this)
+    this.state = {addingSupport: false, addingCounter: false }
     this.handleClickCancel = this.handleClickCancel.bind(this)
+    // TODO: CONDENSE THESE TWO INTO SINGLE FUNCTIONS WITH A VARIABLE? - JF
+    this.handleClickAddEvidenceSupport = this.handleClickAddEvidenceSupport.bind(this)
+    this.handleClickAddEvidenceCounter = this.handleClickAddEvidenceCounter.bind(this)
+    this.handleClickSaveSupport = this.handleClickSaveSupport.bind(this)
+    this.handleClickSaveCounter = this.handleClickSaveCounter.bind(this)
+
   }
 
   get point() {
     return this.props.point;
   }
 
-  handleClickAddEvidence(e) {
+  handleClickAddEvidenceSupport(e) {
     console.log("add evidence")
     if (this.props.data.currentUser){
-      this.setState({adding: true})
+      this.setState({addingSupport: true, addingCounter: false})
     } else {
       $("#loginDialog").modal("show");
     }
   }
-
+  
+  handleClickAddEvidenceCounter(e) {
+    console.log("add evidence")
+    if (this.props.data.currentUser){
+      this.setState({adding: false, addingCounter: true})
+    } else {
+      $("#loginDialog").modal("show");
+    }
+  }  
+ 
   handleClickCancel(e){
     e.stopPropagation();
-    this.setState({adding: false})
+    this.setState({addingSupport: false, addingCounter: false})
     console.log("AddEvidenceCard : handleCancel")
   }
 
-  handleClickSave(values, e, formApi) {
+  // TODO: CONDENSE THESE TWO INTO A SINGLE FUNCTION WITH A VARIABLE? - JF
+  handleClickSaveSupport(values, e, formApi) {
     console.log("AddEvidenceCard : handleClickSave")
     let parentURL = this.point.url
     values.parentURL = parentURL
-    values.linkType = this.linkType
     this.setState({saving: true})
     this.props.mutate({
       variables: values,
       update: (proxy, { data: { addEvidence: { newEdges } }}) => {
         const data = proxy.readQuery({ query: GetPoint, variables: {url: parentURL} })
         data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
-        if (this.linkType == 'counter') {
-          data.point.counterPoints.edges = data.point.counterPoints.edges.concat(newEdges.edges)
-        } else {
-          data.point.supportingPoints.edges = data.point.supportingPoints.edges.concat(newEdges.edges)
-        }
+
+        data.point.supportingPoints.edges = data.point.supportingPoints.edges.concat(newEdges.edges)
+
         proxy.writeQuery({ query: GetPoint,
                            variables: {url: parentURL},
                            data: data });
@@ -338,29 +350,68 @@ class AddEvidenceCard extends React.Component {
         console.log(res)
       });
   }
+  handleClickSaveCounter(values, e, formApi) {
+    console.log("AddEvidenceCard : handleClickSave")
+    let parentURL = this.point.url
+    values.parentURL = parentURL
+    this.setState({saving: true})
+    this.props.mutate({
+      variables: values,
+      update: (proxy, { data: { addEvidence: { newEdges } }}) => {
+        const data = proxy.readQuery({ query: GetPoint, variables: {url: parentURL} })
+        data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
+        
+        data.point.counterPoints.edges = data.point.counterPoints.edges.concat(newEdges.edges)
 
-  get evidenceType(){
+        proxy.writeQuery({ query: GetPoint,
+                           variables: {url: parentURL},
+                           data: data });
+      }
+    })
+      .then( res => {
+        this.setState({saving: false,
+                       adding: false})
+        console.log(res)
+      });
+  }  
+
+
+
+
+
+  
+  renderAddEvidenceForm(evidenceType) {
+    console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
+    let classesArrowNarrowScreen = `${evidenceType=="support" ? "arrowAddEvidenceButton" : "hidden"}`    
+    return <span>
+        { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm evidenceType={evidenceType} onSubmit={this.handleClickSave} onCancel={this.handleClickCancel}/> }
+    </span>
+  }  
+    
+  get uiType(){
     return this.props.type
   }
 
+  // DEPRECATED? -JF
   get linkType(){
-    switch (this.evidenceType) {
-      case EvidenceType.SUPPORT:
+    switch (this.uiType) {
+      case uiType.SUPPORT:
         return "supporting"
-      case EvidenceType.COUNTER:
+      case uiType.COUNTER:
         return "counter"
       default:
         return null
     }
   }
 
+  // DEPRECATED? -JF
   get addText(){
-    switch (this.evidenceType){
-      case EvidenceType.ROOT:
+    switch (this.uiType){
+      case uiType.ROOT:
         return "Add Evidence"
-      case EvidenceType.SUPPORT:
+      case uiType.SUPPORT:
         return "Add Evidence For"
-      case EvidenceType.COUNTER:
+      case uiType.COUNTER:
         return "Add Evidence Against";
       default:
         return "Add Evidence"
@@ -372,18 +423,26 @@ class AddEvidenceCard extends React.Component {
     return ( this.point.numSupporting + this.point.numCounter)
   }
 
-  renderAddEvidenceForm() {
-      return <span>
-        { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm onSubmit={this.handleClickSave} onCancel={this.handleClickCancel}/> }
-    </span>
-  }
-
-  renderAddEvidenceButton() {
+  // DEPRECATED? -JF
+  renderAddEvidenceButton(type) {
     let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
     let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
     return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
   }
+  
+  renderAddSupportButton() {
+    let classesButton = "buttonUX2 addEvidenceButton"
+    let nameButton = "addSupportingEvidenceButton"
+    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>Add Evidence For</button>
+  }
 
+  renderAddCounterButton() {
+    let classesButton = "buttonUX2 buttonUX2Red addEvidenceButton"
+    let nameButton = "addCounterEvidenceButton"
+    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>Add Evidence Against</button>
+  }
+
+/*
   render() {
     let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
     // This logic is bananas. I'm sorry. I'll find ways to make it clearer as the implementation continues. - JF
@@ -404,6 +463,25 @@ class AddEvidenceCard extends React.Component {
             { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
 	         </div>
 	        </a> 
+  }
+ */ 
+  render() {
+    if (this.state.addingSupport) {
+      return <div className="AddEvidenceUI">
+        {this.renderAddEvidenceForm("support")}
+      </div>     
+    }
+    else if (this.state.addingCounter) {
+      return <div className="AddEvidenceUI">
+        {this.renderAddEvidenceForm("counter")}
+      </div>       
+    }         
+    else {
+      return <div className="AddEvidenceUI">
+        <a onClick={this.handleClickAddEvidenceSupport}>{this.renderAddSupportButton()}</a> 
+        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddCounterButton()}</a> 
+      </div>
+    }    
   }
 }
 

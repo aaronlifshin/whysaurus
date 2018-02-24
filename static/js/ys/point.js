@@ -412,30 +412,6 @@ class AddEvidenceCard extends React.Component {
     let buttonLabel = this.addText(evidenceType)
     return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{buttonLabel}</button>
   }
-
-/*
-  render() {
-    let classesButtonGrp = `addEvidenceButtonGrp ${this.linkType=="counter" ? "addEvidenceButtonGrpCounter" : "" }`
-    // This logic is bananas. I'm sorry. I'll find ways to make it clearer as the implementation continues. - JF
-    let classesLineWideScreen = `dottedLine dottedLineAddEvidenceButton ${this.linkType=="counter" ? "dottedLineAddCounter" : "dottedLineAddSupport" }  ${(this.numSupportingPlusCounter() < 1 || (this.linkType=="counter" && (this.point.numCounter < 1 || this.point.numSupporting < 1))) ? "hidden" : "" }`	
-  	let classesLineNarrowScreen = `${(this.linkType=="supporting" && (this.numSupportingPlusCounter() > 0)) ? "dottedLine dottedLineAddEvidenceButton dottedLineAddSupport" : "hidden"}`	
-    let classesArrowWideScreen = `${(this.linkType=="supporting" || (this.point.numCounter > 0 && this.point.numSupporting > 0)  ) ? "arrowAddEvidenceButton" : "hidden"}`
-  	let classesArrowNarrowScreen = `${this.linkType=="supporting" ? "arrowAddEvidenceButton" : "hidden"}`    
-    return <a onClick={this.handleClickAddEvidence}>
-	         <div className={classesButtonGrp}>			   			   
-            <MediaQuery minWidth={singleColumnThreshold}>
-              <div className={classesLineWideScreen}></div>
-              <div className={classesArrowWideScreen}>&#x21B3;</div>
-            </MediaQuery>
-            <MediaQuery maxWidth={singleColumnThreshold}>
-              <div className={classesLineNarrowScreen}></div>
-              <div className={classesArrowNarrowScreen}>&#x21B3;</div>
-            </MediaQuery>			   		   
-            { this.state.adding ? this.renderAddEvidenceForm() : this.renderAddEvidenceButton() }
-	         </div>
-	        </a> 
-  }
- */ 
  
   get uiType(){
     return this.props.type

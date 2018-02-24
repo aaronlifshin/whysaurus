@@ -289,9 +289,10 @@ class AddEvidenceCard extends React.Component {
     super(props)
     this.state = {addingSupport: false, addingCounter: false }
     this.handleClickCancel = this.handleClickCancel.bind(this)
-    // TODO: CONDENSE THESE TWO INTO SINGLE FUNCTIONS WITH A VARIABLE? - JF
     this.handleClickAddEvidenceSupport = this.handleClickAddEvidenceSupport.bind(this)
     this.handleClickAddEvidenceCounter = this.handleClickAddEvidenceCounter.bind(this)
+    
+    // TODO: CONDENSE THESE TWO INTO SINGLE FUNCTIONS WITH A VARIABLE? - JF    
     this.handleClickSaveSupport = this.handleClickSaveSupport.bind(this)
     this.handleClickSaveCounter = this.handleClickSaveCounter.bind(this)
 
@@ -379,65 +380,34 @@ class AddEvidenceCard extends React.Component {
   }  
  
   renderAddEvidenceForm(evidenceType) {
-    console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
-    //let classesArrowNarrowScreen = `${evidenceType=="support" ? "arrowAddEvidenceButton" : "hidden"}`    
+    //console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
     return <span>
         { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="support" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel}/> }
     </span>
   } 
     
-  get uiType(){
-    return this.props.type
-  }
 
-  // DEPRECATED? -JF
-  get linkType(){
-    switch (this.uiType) {
-      case uiType.SUPPORT:
-        return "supporting"
-      case uiType.COUNTER:
-        return "counter"
-      default:
-        return null
-    }
-  }
-
-  // DEPRECATED? -JF
-  get addText(){
-    switch (this.uiType){
-      case uiType.ROOT:
-        return "Add Evidence"
-      case uiType.SUPPORT:
+  addText(evidenceType){   
+    switch (evidenceType){
+      case "support":
         return "Add Evidence For"
-      case uiType.COUNTER:
-        return "Add Evidence Against";
+      case "counter":
+        return "Add Evidence Against"
       default:
         return "Add Evidence"
     }
   }
 
-  // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
+  // TODO: this is declared as a local function in two different components - should it be a global fuction or a const? -JF
   numSupportingPlusCounter(){
     return ( this.point.numSupporting + this.point.numCounter)
   }
 
-  // DEPRECATED? -JF
-  renderAddEvidenceButton(type) {
-    let classesButton = `buttonUX2 ${this.linkType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
-    let nameButton = `${this.linkType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
-    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{this.addText}</button>
-  }
-  
-  renderAddSupportButton() {
-    let classesButton = "buttonUX2 addEvidenceButton"
-    let nameButton = "addSupportingEvidenceButton"
-    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>Add Evidence For</button>
-  }
-
-  renderAddCounterButton() {
-    let classesButton = "buttonUX2 buttonUX2Red addEvidenceButton"
-    let nameButton = "addCounterEvidenceButton"
-    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>Add Evidence Against</button>
+  renderAddEvidenceButton(evidenceType) {
+    let classesButton = `buttonUX2 ${evidenceType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
+    let nameButton = `${evidenceType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
+    let buttonLabel = this.addText(evidenceType)
+    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{buttonLabel}</button>
   }
 
 /*
@@ -463,6 +433,11 @@ class AddEvidenceCard extends React.Component {
 	        </a> 
   }
  */ 
+ 
+  get uiType(){
+    return this.props.type
+  }
+
   render() {
     let topDivClass = "AddEvidenceUI"
     if (this.state.addingSupport) {
@@ -477,18 +452,18 @@ class AddEvidenceCard extends React.Component {
     }    
     else if (this.uiType=="DUAL") {
       return <div className={topDivClass}>
-        <a onClick={this.handleClickAddEvidenceSupport}>{this.renderAddSupportButton()}</a> 
-        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddCounterButton()}</a> 
+        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("support")}</a>  
+        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a>  
       </div>      
     }
     else if (this.uiType=="SUPPORT") {
       return <div className={topDivClass}>
-        <a onClick={this.handleClickAddEvidenceSupport}>{this.renderAddSupportButton()}</a> 
+        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("support")}</a>  
       </div>      
     }
     else if (this.uiType=="COUNTER") {
-      return <div className={topDivClass}>
-        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddCounterButton()}</a> 
+      return <div className={topDivClass}>     
+        <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a> 
       </div>      
     }
     else {
@@ -498,6 +473,7 @@ class AddEvidenceCard extends React.Component {
     }    
   }
 }
+
 
 const AddEvidence = compose(
   graphql(AddEvidenceQuery),

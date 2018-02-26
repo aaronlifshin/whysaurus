@@ -10,6 +10,7 @@ import * as schema from './schema';
 import { Form, Text } from 'react-form';
 import { Carousel } from 'react-responsive-carousel';
 import MediaQuery from 'react-responsive';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 class QuickCreate extends React.Component {
   constructor(props) {
@@ -84,6 +85,18 @@ QuickCreate.defaultProps = {
   titleMaxCharacterCount: 200
 };
 
+const EditorsPicks = graphql(schema.EditorsPicks, {
+  props: ({ownProps, data: { loading, homePage }}) => ({
+    loading: loading,
+    points: homePage && homePage.editorsPicks
+  })
+})(PointList);
+const NewPoints = graphql(schema.NewPoints, {
+  props: ({ownProps, data: { loading, homePage }}) => ({
+    loading: loading,
+    points: homePage && homePage.newPoints
+  })
+})(PointList);
 
 class Home extends React.Component {
 
@@ -163,10 +176,20 @@ class Home extends React.Component {
       <QuickCreate onSubmit={this.createNewPoint}/>
       <h3>Featured Point:</h3>
       {featuredPoint && <PointList point={featuredPoint}/>}
-      <h3>New Points:</h3>
-      {newPoints && <PointList points={newPoints}/>}
-      <h3>Editor's Picks:</h3>
-      {editorsPicks && <PointList points={editorsPicks}/>}
+      <Tabs>
+        <TabList>
+          <Tab>New</Tab>
+          <Tab>Editor's Picks</Tab>
+        </TabList>
+        <TabPanel>
+          <h2>New Points</h2>
+          <NewPoints/>
+        </TabPanel>
+        <TabPanel>
+          <h2>Editor's Picks</h2>
+          <EditorsPicks/>
+        </TabPanel>
+      </Tabs>
     </div>;
   }
 }

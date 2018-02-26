@@ -69,7 +69,7 @@ class PointList extends React.Component {
       return <div>
         {this.props.points.map((point, i) => this.renderPoint(point))}
       </div>
-    } else if (this.props.data && this.props.data.loading) {
+    } else if (this.props.loading || (this.props.data && this.props.data.loading)) {
       return <div>Loading!</div>
     } else if (this.props.data && this.props.data.point) {
       return this.renderPoint(this.props.data.point);

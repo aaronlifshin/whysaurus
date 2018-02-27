@@ -117,22 +117,18 @@ class EditPointComponent extends React.Component {
     // this component will be replaced after save, so we don't need to update state
   }
 
-  titleUI() {
-    if (this.state.saving) {
-      return <span><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span>
-    } else {
-      return <span>
-        <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title}/>
-      </span>
-    }
-  }
-
   render(){
-    const score = this.point.pointValue
-    return <div>
-      {this.titleUI()}
-      <button onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
-    </div>
+    const score = this.point.pointValue;
+    if (this.state.saving) {
+      return <div><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</div>;
+    } else {
+      return <div>
+        <span>
+        <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title}/>
+        </span>
+        <button onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
+      </div>;
+    }
   }
 }
 

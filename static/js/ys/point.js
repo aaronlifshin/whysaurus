@@ -389,7 +389,8 @@ class AddEvidenceCard extends React.Component {
 
   renderAddEvidenceForm(evidenceType) {
     console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
-    return <span>
+    let groupClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    return <span className={groupClass}>
         { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="support" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel}/> }
     </span>
   }
@@ -405,7 +406,7 @@ class AddEvidenceCard extends React.Component {
     }
   }
 
-  // TODO: this is declared as a local function in two different components - should it be a global fuction or a const? -JF
+  // TODO: this is declared as a local function in two different components - should it be a global function or a const? -JF
   numSupportingPlusCounter(){
     return ( this.point.numSupporting + this.point.numCounter)
   }
@@ -435,11 +436,14 @@ class AddEvidenceCard extends React.Component {
     else return (null)
   }
 
+  // TODO: these two functions (that I wrote) could be consolidated into one -JF
   renderSupportButton() {
-    return <a onClick={this.handleClickAddEvidenceSupport}>{this.renderAddEvidenceButton("support")}</a>
+    let buttonClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    return <a className={buttonClass} onClick={this.handleClickAddEvidenceSupport}>{this.renderAddEvidenceButton("support")}</a>
   }
   renderCounterButton() {
-    return <a onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a>
+    let buttonClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    return <a className={buttonClass} onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a>
   }
   renderDualButtons() {
       return <span>
@@ -449,7 +453,7 @@ class AddEvidenceCard extends React.Component {
   }
 
   renderEvidenceArrow(color) {
-    let arrowGrpClass = `arrowEvidence`
+    let arrowGrpClass = `arrowEvidence ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
     let arrowStemClass = `arrowStemEvidence ${(this.numSupportingPlusCounter() == 0) && "arrowStemEvidenceShort" } ${color == "red" && "arrowStemRed"}`
     return <div className={arrowGrpClass}>
@@ -459,7 +463,7 @@ class AddEvidenceCard extends React.Component {
   }
 
   render() {
-    let topDivClass = `addEvidenceUI ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow" }   `
+    let topDivClass = `addEvidenceUI`
     switch (this.uiType) {
     case "DUAL":
       return <div className={topDivClass}>

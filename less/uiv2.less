@@ -1223,6 +1223,10 @@ li .iconWithStat {
   border-bottom-color: @red !important;
   border-left-color: @red !important;
 }
+// this class cheats the add evidence arrow up, to overlap with the pointcard above it
+// it is placed multiple times on a few individual controls, rather than just once on a parent, to prevent
+// its vertical offset from getting in the way of clicking on the controls in the pointcard above
+// perhaps there is a better way do accomplish that...
 .verticalOffsetForLongEvidenceArrow {
   position: relative;
   top: -33px;

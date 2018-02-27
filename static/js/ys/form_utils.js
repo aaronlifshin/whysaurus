@@ -4,7 +4,7 @@ export function withCharCount(WrappedComponent, maxChars) {
       super(props);
       this.updateCharCount = this.updateCharCount.bind(this);
       this.state = {
-        charsLeft: maxChars
+        charsLeft: props.countedValue ? (maxChars - props.countedValue.length) : maxChars
       };
     }
 

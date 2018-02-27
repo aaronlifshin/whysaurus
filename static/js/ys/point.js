@@ -72,18 +72,24 @@ const VoteStats = ({point}) => (
     </div>
 )
 
-const EditTitleForm = ( props ) => {
+const EditTitleFormComponent = ( props ) => {
   return (
-      <Form onSubmit={props.onSubmit}>
+      <Form onSubmit={props.onSubmit}
+            defaultValues={{title: props.point.title}}
+            validateError={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
-          <Text onClick={props.onClick} field="title" id="editPointTextField"/>
+          <Text onClick={props.onClick} onChange={props.updateCharCount} field="title" id="editPointTextField"/>
+          <p>{formApi.errors.title}</p>
+          <p classes={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
           <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
           </form>
       )}
     </Form>
   );
 }
+
+const EditTitleForm = formUtils.withCharCount(EditTitleFormComponent, validations.titleMaxCharacterCount);
 
 class EditPointComponent extends React.Component {
   constructor(props) {
@@ -116,7 +122,7 @@ class EditPointComponent extends React.Component {
       return <span><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span>
     } else {
       return <span>
-        <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave}/>
+        <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title}/>
       </span>
     }
   }

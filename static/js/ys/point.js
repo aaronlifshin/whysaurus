@@ -321,7 +321,7 @@ class AddEvidenceCard extends React.Component {
 
   handleClickAddEvidenceCounter(e) {
     console.log("add evidence")
-    if (this.props.data.currentUser){
+    if (this.props.CurrentUserQuery.currentUser){
       this.setState({adding: false, addingCounter: true})
     } else {
       $("#loginDialog").modal("show");

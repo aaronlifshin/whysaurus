@@ -41,20 +41,23 @@ class PointList extends React.Component {
 
   renderPoint(point) {
     if (this.isPointExpanded(point)) {
-      return <ExpandedPointCard point={point} url={point.url} parentPoint={this.parentPoint} expanded={true}
+      return <ExpandedPointCard point={point} url={point.url} key={point.url}
+                                parentPoint={this.parentPoint} expanded={true}
                                 onCollapse={() => this.handleHideEvidence(point)}/>
     } else {
-      return <PointCard point={point} url={point.url} parentPoint={this.parentPoint}
+      return <PointCard point={point} url={point.url} key={point.url} parentPoint={this.parentPoint}
                         onExpand={() => this.handleSeeEvidence(point)}/>
     }
   }
 
   renderEdge(edge) {
     if (this.isPointExpanded(edge.node)) {
-      return <ExpandedPointCard point={edge.node} url={edge.node.url} link={edge.link} parentPoint={this.parentPoint} expanded={true}
+      return <ExpandedPointCard point={edge.node} url={edge.node.url} key={edge.node.url}
+                                link={edge.link} parentPoint={this.parentPoint} expanded={true}
                                 onCollapse={() => this.handleHideEvidence(edge.node)}/>
     } else {
-      return <PointCard point={edge.node} url={edge.node.url} link={edge.link} parentPoint={this.parentPoint} onExpand={() => this.handleSeeEvidence(edge.node)}/>
+      return <PointCard point={edge.node} url={edge.node.url} key={edge.node.url}
+                        link={edge.link} parentPoint={this.parentPoint} onExpand={() => this.handleSeeEvidence(edge.node)}/>
     }
   }
 
@@ -66,7 +69,7 @@ class PointList extends React.Component {
       return <div>
         {this.props.points.map((point, i) => this.renderPoint(point))}
       </div>
-    } else if (this.props.data && this.props.data.loading) {
+    } else if (this.props.loading || (this.props.data && this.props.data.loading)) {
       return <div>Loading!</div>
     } else if (this.props.data && this.props.data.point) {
       return this.renderPoint(this.props.data.point);

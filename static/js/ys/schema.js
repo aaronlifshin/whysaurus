@@ -60,7 +60,7 @@ ${evidenceEdgesFragment}
 mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
   addEvidence(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames, linkType: $linkType, parentURL: $parentURL}) {
     newEdges { ...evidenceEdges }
-    parent { id, numSupporting, numCounter } 
+    parent { id, numSupporting, numCounter }
   }
 }
 `
@@ -126,10 +126,26 @@ query HomePage {
     featuredPoint {
       ...pointFields
     }
-    newPoints {
+  }
+}
+`
+
+export const EditorsPicks = gql`
+${pointFieldsFragment}
+query HomePage {
+  homePage {
+    editorsPicks {
       ...pointFields
     }
-    editorsPicks {
+  }
+}
+`
+
+export const NewPoints = gql`
+${pointFieldsFragment}
+query HomePage {
+  homePage {
+    newPoints {
       ...pointFields
     }
   }

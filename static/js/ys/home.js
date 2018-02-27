@@ -11,21 +11,15 @@ import { Form, Text } from 'react-form';
 import { Carousel } from 'react-responsive-carousel';
 import MediaQuery from 'react-responsive';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import * as validations from './validations';
+import * as formUtils from './form_utils.js';
 
 class QuickCreate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {charsLeft: props.titleMaxCharacterCount};
-    this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
-    this.validateTitle = this.validateTitle.bind(this);
     this.errorValidator = this.errorValidator.bind(this);
-  }
-
-  handleChange(text) {
-    this.setState({
-      charsLeft: this.props.titleMaxCharacterCount - text.length
-    });
+    this.state = {submitting: false};
   }
 
   submit(values, e, formApi){
@@ -40,19 +34,9 @@ class QuickCreate extends React.Component {
       });
   }
 
-  validateTitle(title){
-    if (!title || title.trim() === '') {
-      return 'Point text is required.';
-    } else if (title.length > this.props.titleMaxCharacterCount){
-      return 'Point text too long.';
-    } else {
-      return null;
-    }
-  }
-
   errorValidator(values) {
     return {
-      title: this.validateTitle(values.title)
+      title: validations.validateTitle(values.title)
     };
   }
 
@@ -71,19 +55,17 @@ class QuickCreate extends React.Component {
                  dontValidateOnMount={true}>
       { formApi => (
           <form onSubmit={formApi.submitForm} className="editPointTextForm">
-            <Text onChange={this.handleChange} field="title" id="editPointTextField" />
+            <Text onChange={this.props.updateCharCount} field="title" id="editPointTextField" />
             {this.submitButton()}
             <p>{formApi.errors.title}</p>
-          <p classes={this.state.charsLeft < 0 ? 'overMaxChars' : ''}>{this.state.charsLeft}</p>
+          <p classes={this.props.charsLeft && this.props.charsLeft < 0 ? 'overMaxChars' : ''}>{this.props.charsLeft}</p>
           </form>
       )}
     </Form>;
   }
 }
 
-QuickCreate.defaultProps = {
-  titleMaxCharacterCount: 200
-};
+const CountedQuickCreate = formUtils.withCharCount(QuickCreate, validations.titleMaxCharacterCount);
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
   props: ({ownProps, data: { loading, homePage }}) => ({
@@ -173,7 +155,7 @@ class Home extends React.Component {
     return <div>
       {this.illustrations()}
       <h3>Make an Argument You Want to Prove</h3>
-      <QuickCreate onSubmit={this.createNewPoint}/>
+      <CountedQuickCreate onSubmit={this.createNewPoint}/>
       <h3>Featured Point:</h3>
       {featuredPoint && <PointList point={featuredPoint}/>}
       <Tabs>

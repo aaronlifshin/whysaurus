@@ -5,6 +5,8 @@ import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 import MediaQuery from 'react-responsive';
 import AnimateOnChange from 'react-animate-on-change';
+import * as validations from './validations';
+import * as formUtils from './form_utils.js';
 
 // TODO: make work
 //import Arrow from '@elsdoerfer/react-arrow';
@@ -275,14 +277,18 @@ class EvidenceLink extends React.Component {
 }
 
 // TODO : depending on user tests, maybe add <div className="addEvidenceFormLabel">Add evidence this list</div>
-const AddEvidenceForm = ( props ) => {
+const AddEvidenceFormComponent = ( props ) => {
   let submitClasses = `buttonUX2 addEvidenceFormButton ${props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
   return (
     <div className="addEvidenceFormGroup">
-      <Form onSubmit={props.onSubmit}>
+      <Form onSubmit={props.onSubmit}
+            validateError={values => ({title: validations.validateTitle(values.title)})}
+            dontValidateOnMount={true}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
-          <Text field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+          <Text onChange={props.updateCharCount} field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+          <p>{formApi.errors.title}</p>
+          <p classes={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
           <button type="submit" className={submitClasses}>Add</button>
           <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
           </form>
@@ -291,6 +297,8 @@ const AddEvidenceForm = ( props ) => {
   </div>
   );
 }
+
+const AddEvidenceForm = formUtils.withCharCount(AddEvidenceFormComponent, validations.titleMaxCharacterCount);
 
 class AddEvidenceCard extends React.Component {
   constructor(props) {
@@ -662,7 +670,7 @@ class RelevanceComponent extends React.Component {
   get relevance() {
     return this.props.link && this.props.link.relevance
   }
-  
+
   get relevanceVoteCount() {
     return (this.props.link && this.props.link.voteCount)
   }
@@ -782,7 +790,7 @@ class PointCard extends React.Component {
   get relevance() {
     return this.props.link && this.props.link.relevance
   }
-  
+
   get relevanceVoteCount() {
     return this.props.link && this.props.link.voteCount
   }

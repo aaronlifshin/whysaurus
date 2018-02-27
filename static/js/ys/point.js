@@ -18,7 +18,11 @@ export const EvidenceType = Object.freeze({
 });
 
 function Byline(props){
-  return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" tabIndex="-1" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a></span>
+  let othersBlock = null;
+  if (props.point.numUsersContributed > 0) {
+    othersBlock = <span name="pointBylineOtherUsers"> &  {props.point.numUsersContributed} other{props.point.numUsersContributed > 1 && 's'}</span>;
+  }
+  return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" tabIndex="-1" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a>{othersBlock}</span>
 }
 
 // TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
@@ -585,6 +589,10 @@ class RelevanceComponent extends React.Component {
   get relevance() {
     return this.props.link && this.props.link.relevance
   }
+  
+  get relevanceVoteCount() {
+    return (this.props.link && this.props.link.voteCount)
+  }
 
   // TODO: add number of Votes so far to relevanceStats
   render(){
@@ -598,7 +606,7 @@ class RelevanceComponent extends React.Component {
           <a className={this.linkClassFor(0) + " relVoteLink0"} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
             </div>
         <div className="relevanceExplanation">
-                  <div className="relevanceStats">{this.relevance}% average on all votes so far</div>
+                  <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} votes so far</div>
           <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>
                 </div>
       </div>
@@ -700,6 +708,10 @@ class PointCard extends React.Component {
 
   get relevance() {
     return this.props.link && this.props.link.relevance
+  }
+  
+  get relevanceVoteCount() {
+    return this.props.link && this.props.link.voteCount
   }
 
   handleRelClick(e) {

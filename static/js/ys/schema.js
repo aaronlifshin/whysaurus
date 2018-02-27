@@ -20,6 +20,7 @@ fragment pointFields on Point {
   numSupporting,
   numCounter,
   numComments,
+  numUsersContributed,
   supportedCount,
   sources {url, name},
   rootURLsafe,
@@ -29,7 +30,7 @@ fragment pointFields on Point {
 
 export const evidenceEdgesFragment = gql`
 fragment evidenceEdges on SubPointConnection {
-  edges { node { ...pointFields }, link { id, type, relevance, relevanceVote, parentURLsafe, childURLsafe }}
+  edges { node { ...pointFields }, link { id, type, relevance, relevanceVote, voteCount, parentURLsafe, childURLsafe }}
 }`
 
 
@@ -95,6 +96,7 @@ mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURL
       type,
       relevance,
       relevanceVote,
+      voteCount,
       parentURLsafe,
       childURLsafe
     }

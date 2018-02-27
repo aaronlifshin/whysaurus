@@ -48,6 +48,14 @@ class Point(NdbObjectType):
     def resolve_sources(self, info):
         return self.getSources()
 
+    # numContributors = graphene.Int()
+    # def resolve_numContributors(self, info):
+    #     return self.numUsersContributed
+
+    numUsersContributed = graphene.Int()
+    def resolve_numUsersContributed(self, info):
+        return self.numUsersContributed
+
     numComments = graphene.Int()
     def resolve_numComments(self, info):
         # TODO: need to get a link to the point root and then get numComments from that
@@ -132,7 +140,7 @@ class SubPointConnection(relay.Connection):
     class Edge:
         link = graphene.Field(Link)
         def resolve_link(self, info):
-            return Link(type=self.node.link_type, relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe, relevanceVote=self.node.myVoteValue)
+            return Link(type=self.node.link_type, relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe, relevanceVote=self.node.myVoteValue, voteCount=self.node._linkInfo.voteCount)
 
 class ExpandPoint(graphene.Mutation):
     class Arguments:
@@ -270,7 +278,7 @@ class RelevanceVote(graphene.Mutation):
             if user:
                 result, newRelevance, newVoteCount = user.addRelevanceVote(parentRootURLsafe, rootURLsafe, linkType, vote)
                 if result:
-                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, relevanceVote=vote, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
+                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, relevanceVote=vote, voteCount=newVoteCount, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
                 else:
                     raise Exception(str('vote failed: ' + str(vote)))
             else:

@@ -1,3 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TitleText component renders 1`] = `<div />`;
+exports[`TitleText component renders 1`] = `
+<div
+  className="titleField"
+>
+  <input
+    onBlur={[Function]}
+    onChange={[Function]}
+    value=""
+  />
+  <p
+    classes=""
+  >
+    200
+  </p>
+  <p />
+</div>
+`;

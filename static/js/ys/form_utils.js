@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function withCharCount(WrappedComponent, maxChars) {
   return class extends React.Component {
     constructor(props) {

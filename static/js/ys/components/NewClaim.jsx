@@ -4,7 +4,7 @@ import * as formUtils from '../form_utils.js';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
 
-export class NewClaim extends React.Component {
+export default class NewClaim extends React.Component {
   constructor(props) {
     super(props)
   }

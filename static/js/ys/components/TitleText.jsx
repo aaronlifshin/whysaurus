@@ -10,7 +10,6 @@ const TitleText = props => (
     {fieldApi => {
       // field is here to strip that property out of `rest`
       const { field, ...rest } = props
-
       const { value, error, warning, success, setValue, setTouched } = fieldApi
 
       return (
@@ -19,7 +18,7 @@ const TitleText = props => (
             <div>
               <Text onChange={countedFieldOnChange} field="title" {...rest}/>
               <p classes={charsLeft && charsLeft < 0 ? 'overMaxChars' : ''}>{charsLeft}</p>
-              <p>{error}</p>
+              <p>{error && error.title}</p>
             </div>
               )}/>
         </div>

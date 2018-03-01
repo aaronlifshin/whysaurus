@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CharCount component renders 1`] = `
+<form>
+  <div>
+    <input
+      onBlur={[Function]}
+      onChange={[Function]}
+      value={Object {}}
+    />
+    <span
+      id="charsLeft"
+    >
+      200
+    </span>
+  </div>
+</form>
+`;

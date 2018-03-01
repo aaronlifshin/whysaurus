@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`New Claim component renders 1`] = `
+<form
+  className="addEvidenceForm"
+  id="form1"
+  onSubmit={[Function]}
+>
+  <div
+    className="titleField"
+  >
+    <div>
+      <input
+        className="addEvidenceFormTextField"
+        id="title"
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="Make a claim, eg \\"Dogs can learn more tricks than cats.\\""
+        value=""
+      />
+      <p
+        classes=""
+      >
+        200
+      </p>
+      <p />
+    </div>
+  </div>
+  <button
+    type="submit"
+  >
+    Add
+  </button>
+  <button
+    className="cancelButton cancelButtonAddEvidence"
+    onClick={undefined}
+    type="cancel"
+  >
+    Cancel
+  </button>
+</form>
+`;

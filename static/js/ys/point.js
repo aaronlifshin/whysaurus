@@ -7,12 +7,12 @@ import MediaQuery from 'react-responsive';
 import AnimateOnChange from 'react-animate-on-change';
 import * as validations from './validations';
 import * as formUtils from './form_utils.js';
+import { DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from './schema.js';
+import {PointList} from './point_list.js'
 
 // TODO: make work
 //import Arrow from '@elsdoerfer/react-arrow';
 
-import { CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint } from './schema.js';
-import {PointList} from './point_list.js'
 
 // For Responsive
 const singleColumnThreshold = 960;
@@ -708,7 +708,7 @@ const RelevanceVote = compose(
 )(RelevanceComponent)
 
 
-class PointCard extends React.Component {
+class PointCardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -990,18 +990,36 @@ class PointCard extends React.Component {
     //console.log("pointCard : handleClickMore(e) ")
   }
 
+  currentUserIsAdmin = () => (
+    this.props.currentUser && this.props.currentUser.admin
+  )
+
+  handleClickDelete = (e) => {
+    e.stopPropagation();
+    this.setState({deleting: true})
+    this.props.delete(this.point.url).
+      then((success) => {
+        console.log("Delete succeeded, affected queries should reload automatically.")
+        console.log(success)
+        this.props.onDelete && this.props.onDelete(success);
+      },
+           (error) => {
+             console.log("Delete failed: " + error)
+             this.setState({deleting: false})
+           })
+  }
+
+
   // TODO: add code to link to other "upstream" claims
   // <li><span className=""><span className="iconWithStat fa fa-level-up"></span>Linked to {this.point.supportedCount} other claims</span></li>
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-          <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
-                <div className="dropdown-caret">
-        <div className="caret-outer"></div>
-        <div className="caret-inner"></div>
-      </div>
-         <li><a onClick={this.handleClickEdit} className="" ><span className="iconWithStat fa fa-pencil"></span>Edit Claim</a></li>
-         <li><a onClick={this.handleClickNoProp} target="_blank" href={this.point.url}><span className="iconWithStat fa fa-external-link"></span>Open in a new tab</a></li>
+      <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
+        <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
+        <li><a onClick={this.handleClickEdit} className="" ><span className="iconWithStat fa fa-pencil"></span>Edit Claim</a></li>
+        <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat fa fa-external-link"></span>Open in a new tab</a></li>
+        { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}>Delete</a></li>  }
       </ul>
     </span>
   }
@@ -1027,9 +1045,11 @@ class PointCard extends React.Component {
 
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
   render(){
-    if (this.point){
+    if (this.state.deleting) {
+      return <div>Deleting...</div>
+    } else if (this.point){
       const point = this.point;
-      console.log("rendering " + point.url)
+//      console.log("rendering " + point.url)
       let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
       let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
@@ -1105,6 +1125,21 @@ class PointCard extends React.Component {
   }
 }
 
-export {PointCard};
+export const PointCard = compose(
+  graphql(CurrentUserQuery, {
+    name: 'CurrentUserQuery',
+    props: ({ownProps, CurrentUserQuery: { loading, currentUser, refetch }}) => ({
+      currentUserLoading: loading,
+      currentUser: currentUser,
+      refetchCurrentUser: refetch
+    })
+  }),
+  graphql(DeletePointMutation, {
+    props: ({ mutate }) => ({
+      delete: (url) => mutate({variables: {url},
+                               refetchQueries: [{query: EditorsPicks}, {query: NewPoints}]})
+    })
+  })
+)(PointCardComponent)
 
 export const ExpandedPointCard = graphql(GetPoint)(PointCard)

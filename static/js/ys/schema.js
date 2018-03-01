@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const CurrentUserQuery = gql`
 query CurrentUser {
-  currentUser { url }
+  currentUser { url, admin }
 }`
 
 export const pointFieldsFragment = gql`
@@ -80,6 +80,14 @@ mutation Vote($url: String!, $vote: Int!, $parentURL: String) {
       id
       pointValue
     }
+  }
+}
+`
+
+export const DeletePointMutation = gql`
+mutation Delete($url: String!) {
+  delete(url: $url) {
+    url
   }
 }
 `

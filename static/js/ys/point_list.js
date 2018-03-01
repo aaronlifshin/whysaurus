@@ -41,22 +41,22 @@ class PointList extends React.Component {
 
   renderPoint(point) {
     if (this.isPointExpanded(point)) {
-      return <ExpandedPointCard point={point} url={point.url} key={point.url}
+      return <ExpandedPointCard point={point} url={point.url} key={point.url}  onDelete={this.props.onDelete}
                                 parentPoint={this.parentPoint} expanded={true}
                                 onCollapse={() => this.handleHideEvidence(point)}/>
     } else {
-      return <PointCard point={point} url={point.url} key={point.url} parentPoint={this.parentPoint}
+      return <PointCard point={point} url={point.url} key={point.url} parentPoint={this.parentPoint}  onDelete={this.props.onDelete}
                         onExpand={() => this.handleSeeEvidence(point)}/>
     }
   }
 
   renderEdge(edge) {
     if (this.isPointExpanded(edge.node)) {
-      return <ExpandedPointCard point={edge.node} url={edge.node.url} key={edge.node.url}
+      return <ExpandedPointCard point={edge.node} url={edge.node.url} key={edge.node.url}  onDelete={this.props.onDelete}
                                 link={edge.link} parentPoint={this.parentPoint} expanded={true}
                                 onCollapse={() => this.handleHideEvidence(edge.node)}/>
     } else {
-      return <PointCard point={edge.node} url={edge.node.url} key={edge.node.url}
+      return <PointCard point={edge.node} url={edge.node.url} key={edge.node.url} onDelete={this.props.onDelete}
                         link={edge.link} parentPoint={this.parentPoint} onExpand={() => this.handleSeeEvidence(edge.node)}/>
     }
   }

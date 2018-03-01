@@ -76,11 +76,11 @@ const EditTitleFormComponent = ( props ) => {
   return (
       <Form onSubmit={props.onSubmit}
             defaultValues={{title: props.point.title}}
-            validateError={values => ({title: validations.validateTitle(values.title)})}>
+            validate={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
           <Text onClick={props.onClick} onChange={props.updateCharCount} field="title" id="editPointTextField"/>
-          <p>{formApi.errors.title}</p>
+          <p>{formApi.errors && formApi.errors.title}</p>
           <p classes={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
           <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
           </form>
@@ -284,12 +284,12 @@ const AddEvidenceFormComponent = ( props ) => {
   return (
     <div className="addEvidenceFormGroup">
       <Form onSubmit={props.onSubmit}
-            validateError={values => ({title: validations.validateTitle(values.title)})}
+            validate={values => ({title: validations.validateTitle(values.title)})}
             dontValidateOnMount={true}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text onChange={props.updateCharCount} field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
-          <p>{formApi.errors.title}</p>
+          <p>{formApi.errors && formApi.errors.title}</p>
           <p classes={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
           <button type="submit" className={submitClasses}>Add</button>
           <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>

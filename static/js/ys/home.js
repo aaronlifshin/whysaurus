@@ -51,13 +51,13 @@ class QuickCreate extends React.Component {
   render(){
     let props = this.props;
     return <Form onSubmit={this.submit}
-                 validateError={this.errorValidator}
+                 validate={this.errorValidator}
                  dontValidateOnMount={true}>
       { formApi => (
           <form onSubmit={formApi.submitForm} className="editPointTextForm">
             <Text onChange={this.props.updateCharCount} field="title" id="editPointTextField" />
             {this.submitButton()}
-            <p>{formApi.errors.title}</p>
+            <p>{ formApi.errors && formApi.errors.title }</p>
           <p classes={this.props.charsLeft && this.props.charsLeft < 0 ? 'overMaxChars' : ''}>{this.props.charsLeft}</p>
           </form>
       )}

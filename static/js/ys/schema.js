@@ -92,6 +92,15 @@ mutation Delete($url: String!) {
 }
 `
 
+export const UnlinkPointMutation = gql`
+mutation Unlink($parentURL: String!, $url: String!, $linkType: String!) {
+  unlink(parentURL: $parentURL, url: $url, linkType: $linkType) {
+    parentURL,
+    url
+  }
+}
+`
+
 export const RelevanceVoteQuery = gql`
 mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURLsafe: String!, $url: String!, $vote: Int!) {
   relevanceVote(linkType: $linkType, rootURLsafe: $rootURLsafe, parentRootURLsafe: $parentRootURLsafe, url: $url, vote: $vote) {

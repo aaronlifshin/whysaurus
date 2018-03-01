@@ -74,6 +74,7 @@ const EditorsPicks = graphql(schema.EditorsPicks, {
     points: homePage && homePage.editorsPicks
   })
 })(PointList);
+
 const NewPoints = graphql(schema.NewPoints, {
   props: ({ownProps, data: { loading, homePage }}) => ({
     loading: loading,

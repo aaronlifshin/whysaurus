@@ -15,12 +15,23 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-function PointPage({match}){
-  return <div className="row pointStream">
-    <div id="infiniteOrFiniteWidth" className="">
-      <PointListWithPoint url={match.params.url}/>
-    </div>
-    </div>
+const homeURL = "/home"
+
+class PointPage extends React.Component {
+
+  state = {goHome: false}
+
+  render(){
+    if (this.state.goHome){
+      return <Redirect to={homeURL}/>
+    } else {
+      return <div className="row pointStream">
+        <div id="infiniteOrFiniteWidth" className="">
+          <PointListWithPoint url={this.props.match.params.url} onDelete={() => {this.setState({goHome: true})}}/>
+        </div>
+      </div>
+    }
+  }
 }
 
 
@@ -29,7 +40,7 @@ class App extends React.Component {
     return (
         <Switch>
         <Route exact path="/pointCard/:url" component={PointPage} />
-        <Route exact path="/home" component={HomePage} />
+        <Route exact path={homeURL} component={HomePage} />
         </Switch>
     )
   }

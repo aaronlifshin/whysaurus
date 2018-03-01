@@ -14,6 +14,7 @@ from models.whysaurususer import WhysaurusUser
 # ideally we could use NdbObjectType here too, but I was running into funny errors.
 class User(graphene.ObjectType):
     url = graphene.String()
+    admin = graphene.Boolean()
 
 class Source(NdbObjectType):
     class Meta:
@@ -260,6 +261,21 @@ class Vote(graphene.Mutation):
         else:
             raise Exception(str('point not defined ' +  str(point)))
 
+class Delete(graphene.Mutation):
+    class Arguments:
+        url = graphene.String(required=True)
+
+    url = graphene.String()
+
+    def mutate(self, info, url):
+        user = info.context.current_user
+        point, point_root = PointModel.getCurrentByUrl(url)
+        result, msg = point_root.delete(user)
+        if result:
+            return Delete(url=url)
+        else:
+            raise Exception(str('delete failed: ' + msg))
+
 class RelevanceVote(graphene.Mutation):
     class Arguments:
         linkType = graphene.String(required=True)
@@ -317,9 +333,10 @@ class Query(graphene.ObjectType):
     def resolve_currentUser(self, info):
         user = info.context.current_user
         if (user):
-            return User(url=user.url)
+            return User(url=user.url, admin=user.admin)
 
 class Mutation(graphene.ObjectType):
+    delete = Delete.Field()
     expand_point = ExpandPoint.Field()
     add_evidence = AddEvidence.Field()
     edit_point = EditPoint.Field()

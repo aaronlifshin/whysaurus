@@ -3,6 +3,9 @@ import * as validations from '../validations';
 import * as formUtils from '../form_utils.js';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
+import ReactFilestack from 'filestack-react';
+import { config } from '../config'
+
 
 export default class NewClaim extends React.Component {
   constructor(props) {
@@ -15,6 +18,13 @@ export default class NewClaim extends React.Component {
       { formApi => (
         <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <TitleText id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+          <ReactFilestack
+            apikey={config.filestack.key}
+            buttonText="Upload Image"
+            buttonClass="classname"
+            options={{storeTo: {location: 's3'}}}
+            onSuccess={(response) => console.log(response)}
+            />
           <button type="submit">Add</button>
           <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
         </form>

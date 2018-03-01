@@ -1,21 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TitleText component renders 1`] = `
-<div
-  className="titleField"
->
+exports[`CharCount component renders 1`] = `
+<form>
   <div>
     <input
       onBlur={[Function]}
       onChange={[Function]}
-      value=""
+      value={Object {}}
     />
-    <p
-      classes=""
+    <span
+      id="charsLeft"
     >
       200
-    </p>
-    <p />
+    </span>
   </div>
-</div>
+</form>
 `;

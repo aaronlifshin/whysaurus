@@ -1,23 +1,34 @@
 import React from 'react'
-import * as validations from '../validations';
-import * as formUtils from '../form_utils.js';
-import { Form, Text, Field } from 'react-form';
+import PropTypes from 'prop-types'
+import { Form, Text, Field } from 'react-form'
+import CharCount from './CharCount'
+import * as validations from '../validations'
+import * as formUtils from '../form_utils.js'
 
-const TitleFieldComponent = props => (
+const TitleText = props => (
   <Field field={props.field}>
     {fieldApi => {
-      const { updateCharCount, charsLeft, onChange, field, ...rest } = props
+      // field is here to strip that property out of `rest`
+      const { field, ...rest } = props
 
       const { value, error, warning, success, setValue, setTouched } = fieldApi
 
       return (
         <div className="titleField">
-          <Text onChange={updateCharCount} field="title" {...rest}/>
-          <p classes={charsLeft && charsLeft < 0 ? 'overMaxChars' : ''}>{charsLeft}</p>
-          <p>{error}</p>
+          <CharCount maxChars={validations.titleMaxCharacterCount} render={({charsLeft, countedFieldOnChange}) => (
+            <div>
+              <Text onChange={countedFieldOnChange} field="title" {...rest}/>
+              <p classes={charsLeft && charsLeft < 0 ? 'overMaxChars' : ''}>{charsLeft}</p>
+              <p>{error}</p>
+            </div>
+              )}/>
         </div>
       )
     }}
   </Field>
 );
-export const TitleText = formUtils.withCharCount(TitleFieldComponent, validations.titleMaxCharacterCount)
+
+TitleText.propTypes = {
+}
+
+export default TitleText

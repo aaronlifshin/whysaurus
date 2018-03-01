@@ -1,8 +1,7 @@
 import React from 'react';
-import { TitleText } from '../ys/components/TitleText'
+import  TitleText from '../ys/components/TitleText'
 import renderer from 'react-test-renderer'
 import { Form } from 'react-form';
-
 
 test('TitleText component renders', () => {
   const component = renderer.create(

@@ -55,6 +55,7 @@
 	width: auto;
 	// FOR FINITE WIDTH COMMENT THIS LINE OUT
 	/////////////////
+  margin-left: 10%;
 }
 
 .row-fluid [class*=span] {
@@ -789,8 +790,8 @@ li .iconWithStat {
 
 #editPointTextField {
 	width: 81%;
-    margin-right: 4px;
-    height: 30px;
+  margin-right: 4px;
+  height: 30px;
 	padding: 4px;
 }
 
@@ -1377,6 +1378,40 @@ a:hover .arrowAddEvidenceButton {
 	left: 0;
 	margin-right: 4px;
 }
+
+// CHARACTER COUNTER
+
+.overMaxChars {
+  color: @red;
+}
+
+
+// HOME PAGE
+
+
+.mainPageClaimCreationArea {
+  margin-left: 0;
+  max-width: 720px;
+}
+
+.newPointInputRowFieldArea {
+    // use the full width, minus the space needed for the publish button
+    // the ~ and "" is needed to pass the calc command through the less compiler
+    width: -moz-calc(~"100% - 165px");
+    width: -webkit-calc(~"100% - 165px");
+    width: calc(~"100% - 165px");
+    margin-right:8px;
+    display:inline-block;
+}
+
+.homePageNewPointCallButton {
+    font-size: 16px;
+    padding: 8px 13px;
+    top: 0;    
+}
+
+
+
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 

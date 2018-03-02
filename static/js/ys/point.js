@@ -81,7 +81,7 @@ const EditTitleFormComponent = ( props ) => {
           <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
           <Text onClick={props.onClick} onChange={props.updateCharCount} field="title" id="editPointTextField"/>
           <p>{formApi.errors && formApi.errors.title}</p>
-          <p classes={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
+          <p className={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
           <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
           </form>
       )}
@@ -290,7 +290,7 @@ const AddEvidenceFormComponent = ( props ) => {
           <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
           <Text onChange={props.updateCharCount} field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
           <p>{formApi.errors && formApi.errors.title}</p>
-          <p classes={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
+          <p className={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
           <button type="submit" className={submitClasses}>Add</button>
           <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
           </form>

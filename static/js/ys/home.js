@@ -45,21 +45,25 @@ class QuickCreate extends React.Component {
     if (this.state.submitting) {
       return <span>Adding your point...</span>;
     } else {
-      return <button onClick={this.props.onClick} className="buttonUX2" type="submit">Save</button>;
+      return <button onClick={this.props.onClick} className="buttonUX2 homePageNewPointCallButton" type="submit">Publish to Library</button>;
     }
   }
+            //<p className={this.props.charsLeft && this.props.charsLeft < 0 ? ' newPointCharNum pull-right overMaxChars' : 'newPointCharNum pull-right'}>{this.props.charsLeft}</p>
 
   render(){
     let props = this.props;
+    let charCountClass = `newPointCharNum pull-right ${this.props.charsLeft && this.props.charsLeft < 0 ? 'overMaxChars' : ''}`
     return <Form onSubmit={this.submit}
                  validate={this.errorValidator}
                  dontValidateOnMount={true}>
       { formApi => (
-          <form onSubmit={formApi.submitForm} className="editPointTextForm">
-            <Text onChange={this.props.updateCharCount} field="title" id="editPointTextField" />
+          <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
+            <div className="newPointInputRowFieldArea">
+              <Text onChange={this.props.updateCharCount} field="title" id="newPointTextField" className="mainPageInput" />
+              <p className={charCountClass}>{this.props.charsLeft}</p>
+            </div>
             {this.submitButton()}
-            <p>{ formApi.errors && formApi.errors.title }</p>
-          <p classes={this.props.charsLeft && this.props.charsLeft < 0 ? 'overMaxChars' : ''}>{this.props.charsLeft}</p>
+            <p>{ formApi.errors && formApi.errors.title }</p>         
           </form>
       )}
     </Form>;
@@ -157,8 +161,12 @@ class Home extends React.Component {
     return <div>
       <NewClaim/>
       {this.illustrations()}
-      <h3>Make an Argument You Want to Prove</h3>
-      <CountedQuickCreate onSubmit={this.createNewPoint}/>
+      
+      <div className="mainPageClaimCreationArea">
+        <h3>Make an Argument You Want to Prove</h3>
+        <CountedQuickCreate onSubmit={this.createNewPoint}/>
+      </div>
+      
       <h3>Featured Point:</h3>
       {featuredPoint && <PointList point={featuredPoint}/>}
       <Tabs>

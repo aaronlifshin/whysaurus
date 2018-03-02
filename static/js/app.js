@@ -25,7 +25,7 @@ class PointPage extends React.Component {
     if (this.state.goHome){
       return <Redirect to={homeURL}/>
     } else {
-      return <div className="row pointStream">
+      return <div className="row pointStream infiniteWidth">
         <div id="infiniteOrFiniteWidth" className="">
           <PointListWithPoint url={this.props.match.params.url} onDelete={() => {this.setState({goHome: true})}}/>
         </div>

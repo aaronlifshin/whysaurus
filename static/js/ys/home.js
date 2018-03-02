@@ -15,6 +15,10 @@ import * as validations from './validations';
 import * as formUtils from './form_utils.js';
 import NewClaim from './components/NewClaim'
 
+// For Responsive
+// TO DO : this is also declared in point.js, lets set it up to live in a single place
+const singleColumnThreshold = 960;
+
 class QuickCreate extends React.Component {
   constructor(props) {
     super(props);
@@ -109,44 +113,44 @@ class Home extends React.Component {
     }
   }
 
+  renderIllustration1(){
+     return <div className="explanationBlock">
+       <div className="explanationTextCentered">Make Arguments<br/>Claim-by-Claim</div>
+       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_ClaimByClaim.png"/>
+     </div>
+  }
+  renderIllustration2(){
+     return  <div className="explanationBlock">
+      <div className="explanationTextCentered lessWidth">Collaborate to get<br/>other perspectives</div>
+      <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_Collaborate.png"/>
+     </div>
+  }
+  renderIllustration3(){
+     return  <div className="explanationBlock">
+       <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
+       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_FindUseful.png"/>
+     </div>
+  }
+  
   illustrations(){
-    const singleColumnThreshold = 960;
     return <div className="row" id="explanationRowHomepage">
       <MediaQuery minWidth={singleColumnThreshold}>
-        <div className="explanationsCentered">
-          <div className="explanationBlock">
-            <div className="explanationTextCentered">
-                Make Arguments<br/><strong>Point-by-Point</strong>
-            </div>
-            <img className="explanationImageCentered" src="/static/img/homepage_illustration1_smaller.png"/>
-          </div>
-          <div className="explanationBlock">
-            <div className="explanationTextCentered lessWidth">
-              <strong>Rate and improve</strong> Points collaboratively
-            </div>
-            <img className="explanationImageCentered" src="/static/img/homepage_illustration2_smaller.png"/>
-          </div>
-          <div className="explanationBlock">
-            <div className="explanationTextCentered lessWidth">
-                <strong>Re-use</strong> Points to build new Arguments
-            </div>
-            <img className="explanationImageCentered" src="/static/img/homepage_illustration3_smaller.png"/>
-          </div>
+        <div className="">           
+            {this.renderIllustration1()}
+            {this.renderIllustration2()}
+            {this.renderIllustration3()}
         </div>
       </MediaQuery>
       <MediaQuery maxWidth={singleColumnThreshold}>
-      <Carousel showThumbs={false} showStatus={false} showIndicators={false}>
+      <Carousel infiniteLoop={true} showIndicators={true} showArrows={true} showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
           <div>
-            <img src="/static/img/homepage_illustration1_smaller.png"/>
-            <p className="legend">Make Arguments<br/><strong>Point-by-Point</strong></p>
+            {this.renderIllustration1()}
           </div>
           <div>
-            <img src="/static/img/homepage_illustration2_smaller.png"/>
-            <p className="legend"><strong>Rate and improve</strong> Points collaboratively</p>
+            {this.renderIllustration2()}
           </div>
           <div>
-            <img src="/static/img/homepage_illustration3_smaller.png"/>
-            <p className="legend"><strong>Re-use</strong> Points to build new Arguments</p>
+            {this.renderIllustration3()}
           </div>
         </Carousel>
       </MediaQuery>
@@ -158,8 +162,10 @@ class Home extends React.Component {
     let featuredPoint = homePage && homePage.featuredPoint;
     let newPoints = homePage && homePage.newPoints;
     let editorsPicks = homePage && homePage.editorsPicks;
-    return <div>
-      <NewClaim/>
+    // removed this from the top of the div to make styling easier - JF
+    //       <NewClaim/>
+    ////////////////////////////////
+    return <div className="infiniteWidth">
       {this.illustrations()}
       
       <div className="mainPageClaimCreationArea">
@@ -167,24 +173,26 @@ class Home extends React.Component {
         <CountedQuickCreate onSubmit={this.createNewPoint}/>
       </div>
       
-      <div id="mainPageFeaturedArea">      
-        <h1 className="mainPageHeading indentToClaimText">Featured Argument</h1>
-        {featuredPoint && <PointList point={featuredPoint}/>}
-      </div>
-      
-      <div id="mainPageMainArea">      
-      <Tabs selectedTabClassName="tabUX2_selected">
-        <TabList>
-          <Tab className="tabUX2">New</Tab>
-          <Tab className="tabUX2">Editor's Picks</Tab>
-        </TabList>
-        <TabPanel>
-          <NewPoints/>
-        </TabPanel>
-        <TabPanel>
-          <EditorsPicks/>
-        </TabPanel>
-      </Tabs>
+      <div className="mainPageContentArea">
+        <div id="mainPageFeaturedArea">      
+          <h1 className="mainPageHeading indentToClaimText">Featured Argument</h1>
+          {featuredPoint && <PointList point={featuredPoint}/>}
+        </div>
+        
+        <div id="mainPageMainArea">      
+          <Tabs selectedTabClassName="tabUX2_selected">
+            <TabList>
+              <Tab className="tabUX2">New</Tab>
+              <Tab className="tabUX2">Editor's Picks</Tab>
+            </TabList>
+            <TabPanel>
+              <NewPoints/>
+            </TabPanel>
+            <TabPanel>
+              <EditorsPicks/>
+            </TabPanel>
+          </Tabs>
+        </div>
       </div>
       
       

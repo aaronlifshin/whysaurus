@@ -196,11 +196,13 @@ body {
 	margin-top: 2 * @marginVerticalStandard;
 	margin-left: 0;
 	margin-bottom: 60px;
-	
+	margin-left: 32px;
+}
+
+.infiniteWidth {
 	// FOR INFINITE WIDTH:
 	width: max-content;
 	width: -moz-max-content;  
-	margin-left: 32px;
 }
 
 .listedClaimGroup {
@@ -992,7 +994,7 @@ li .iconWithStat {
   margin-bottom: 0;
   //font-family: ff-meta-web-pro-condensed,sans-serif;
   font-weight: @buttonUX2_fontWeight;
-  font-size: @fontSizeButtonsUX2;
+  font-size: @fontSizePointTitle;
   font-style: normal;
   text-align: center;
   vertical-align: middle;
@@ -1437,10 +1439,29 @@ a:hover .arrowAddEvidenceButton {
 
 // HOME PAGE
 
+#explanationRowHomepage {
+  border-bottom-style: none;
+  margin-bottom: 27px;
+}
+
+.explanationTextCentered {
+  font-size: @fontSizePointTitle;
+  font-weight: 700;
+}
+
+.explanationImageCentered {
+  width: 96px;
+}
+
+.carousel .slide {
+  background: none !important;
+  min-width: none !important;
+  max-width: 96px !important;
+}
 
 .mainPageClaimCreationArea {
   margin-left: 12px;
-  max-width: 720px;
+  max-width: 698px;
 }
 
 .mainPageClaimCreationLabel {
@@ -1463,8 +1484,13 @@ a:hover .arrowAddEvidenceButton {
     top: 0;    
 }
 
+.mainPageContentArea {
+  //margin-left: 15%;
+}
+
 .mainPageHeading {
   margin-bottom: 16px; 
+  font-size: @fontSizePointTitle;
 }
 
 .indentToClaimText {

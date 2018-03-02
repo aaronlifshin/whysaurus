@@ -15,6 +15,7 @@ import {PointList} from './point_list.js'
 
 
 // For Responsive
+// TO DO : this is also declared in home.js, lets set it up to live in a single place
 const singleColumnThreshold = 960;
 
 export const EvidenceType = Object.freeze({

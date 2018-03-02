@@ -45,7 +45,7 @@ class QuickCreate extends React.Component {
     if (this.state.submitting) {
       return <span>Adding your point...</span>;
     } else {
-      return <button onClick={this.props.onClick} className="buttonUX2 homePageNewPointCallButton" type="submit">Publish to Library</button>;
+      return <button onClick={this.props.onClick} className="buttonUX2 buttonUX2Blue  homePageNewPointCallButton" type="submit">Publish to Library</button>;
     }
   }
             //<p className={this.props.charsLeft && this.props.charsLeft < 0 ? ' newPointCharNum pull-right overMaxChars' : 'newPointCharNum pull-right'}>{this.props.charsLeft}</p>
@@ -163,26 +163,32 @@ class Home extends React.Component {
       {this.illustrations()}
       
       <div className="mainPageClaimCreationArea">
-        <h3>Make an Argument You Want to Prove</h3>
+        <h3 className="mainPageClaimCreationLabel">Make an Argument You Want to Prove</h3>
         <CountedQuickCreate onSubmit={this.createNewPoint}/>
       </div>
       
-      <h3>Featured Point:</h3>
-      {featuredPoint && <PointList point={featuredPoint}/>}
-      <Tabs>
+      <div id="mainPageFeaturedArea">      
+        <h1 className="mainPageHeading indentToClaimText">Featured Argument</h1>
+        {featuredPoint && <PointList point={featuredPoint}/>}
+      </div>
+      
+      <div id="mainPageMainArea">      
+      <Tabs selectedTabClassName="tabUX2_selected">
         <TabList>
-          <Tab>New</Tab>
-          <Tab>Editor's Picks</Tab>
+          <Tab className="tabUX2">New</Tab>
+          <Tab className="tabUX2">Editor's Picks</Tab>
         </TabList>
         <TabPanel>
-          <h2>New Points</h2>
           <NewPoints/>
         </TabPanel>
         <TabPanel>
-          <h2>Editor's Picks</h2>
           <EditorsPicks/>
         </TabPanel>
       </Tabs>
+      </div>
+      
+      
+      
     </div>;
   }
 }

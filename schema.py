@@ -16,6 +16,7 @@ class User(graphene.ObjectType):
     url = graphene.String()
     role = graphene.String()
     admin = graphene.Boolean()
+    recentlyViewed = graphene.List(lambda: Point)
 
 class Source(NdbObjectType):
     class Meta:
@@ -352,7 +353,8 @@ class Query(graphene.ObjectType):
     def resolve_currentUser(self, info):
         user = info.context.current_user
         if (user):
-            return User(url=user.url, admin=user.isAdmin, role=user.role)
+            # TODO: this is really not ideal, but I can't figure out how to get WhysaurusUser working as a Meta-defined model :-( TV
+            return User(url=user.url, admin=user.isAdmin, role=user.role, recentlyViewed=user.getRecentlyViewed())
 
     search = graphene.List(Point, query=graphene.String(required=True))
     def resolve_search(self, info, **args):

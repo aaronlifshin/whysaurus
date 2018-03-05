@@ -102,9 +102,9 @@ class Home extends React.Component {
       return this.props.mutate({
         variables: pointData,
         update: (proxy, {data: {newPoint: { point }}}) => {
-          const data = proxy.readQuery({ query: schema.HomePage});
+          const data = proxy.readQuery({ query: schema.NewPoints});
           data.homePage.newPoints.unshift(point);
-          proxy.writeQuery({query: schema.HomePage, data: data});
+          proxy.writeQuery({query: schema.NewPoints, data: data});
         }
       });
     } else {

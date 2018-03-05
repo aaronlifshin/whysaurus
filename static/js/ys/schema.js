@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const CurrentUserQuery = gql`
 query CurrentUser {
-  currentUser { url, admin }
+  currentUser { url, admin, role }
 }`
 
 export const pointFieldsFragment = gql`

@@ -14,6 +14,7 @@ from models.whysaurususer import WhysaurusUser
 # ideally we could use NdbObjectType here too, but I was running into funny errors.
 class User(graphene.ObjectType):
     url = graphene.String()
+    role = graphene.String()
     admin = graphene.Boolean()
 
 class Source(NdbObjectType):
@@ -351,7 +352,7 @@ class Query(graphene.ObjectType):
     def resolve_currentUser(self, info):
         user = info.context.current_user
         if (user):
-            return User(url=user.url, admin=user.isAdmin)
+            return User(url=user.url, admin=user.isAdmin, role=user.role)
 
 class Mutation(graphene.ObjectType):
     delete = Delete.Field()

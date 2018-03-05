@@ -276,6 +276,24 @@ class Delete(graphene.Mutation):
         else:
             raise Exception(str('delete failed: ' + msg))
 
+class Unlink(graphene.Mutation):
+    class Arguments:
+        parentURL = graphene.String(required=True)
+        url = graphene.String(required=True)
+        linkType = graphene.String(required=True)
+
+    parentURL = graphene.String()
+    url = graphene.String()
+
+    def mutate(self, info, parentURL, url, linkType):
+        user = info.context.current_user
+        point, point_root = PointModel.getCurrentByUrl(parentURL)
+        new_version = point.unlink(url, linkType, user)
+        if new_version:
+            return Unlink(parentURL=parentURL, url=url)
+        else:
+            raise Exception(str('unlink failed:'))
+
 class RelevanceVote(graphene.Mutation):
     class Arguments:
         linkType = graphene.String(required=True)
@@ -337,6 +355,7 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     delete = Delete.Field()
+    unlink = Unlink.Field()
     expand_point = ExpandPoint.Field()
     add_evidence = AddEvidence.Field()
     edit_point = EditPoint.Field()

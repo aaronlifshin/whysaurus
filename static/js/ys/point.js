@@ -7,7 +7,7 @@ import MediaQuery from 'react-responsive';
 import AnimateOnChange from 'react-animate-on-change';
 import * as validations from './validations';
 import * as formUtils from './form_utils.js';
-import { DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from './schema.js';
+import { UnlinkPointMutation, DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from './schema.js';
 import {PointList} from './point_list.js'
 
 // TODO: make work
@@ -995,6 +995,8 @@ class PointCardComponent extends React.Component {
     this.props.currentUser && this.props.currentUser.admin
   )
 
+  hasParent = () => (this.props.parentPoint)
+
   handleClickDelete = (e) => {
     e.stopPropagation();
     this.setState({deleting: true})
@@ -1010,6 +1012,15 @@ class PointCardComponent extends React.Component {
            })
   }
 
+  handleClickUnlink = (e) => {
+    e.stopPropagation()
+    this.props.unlink(this.props.parentPoint.url, this.point.url, this.props.link.type).then((success) => {
+      console.log("unlink success")
+    },
+                             (error) => {
+                               console.log("unlink error: " + error)
+                             })
+  }
 
   // TODO: add code to link to other "upstream" claims
   // <li><span className=""><span className="iconWithStat fa fa-level-up"></span>Linked to {this.point.supportedCount} other claims</span></li>
@@ -1021,6 +1032,7 @@ class PointCardComponent extends React.Component {
         <li><a onClick={this.handleClickEdit} className="" ><span className="iconWithStat fa fa-pencil"></span>Edit Claim</a></li>
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat fa fa-external-link"></span>Open in a new tab</a></li>
         { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}>Delete</a></li>  }
+        { this.currentUserIsAdmin() && this.hasParent() && <li><a onClick={this.handleClickUnlink}>Unlink</a></li>  }
       </ul>
     </span>
   }
@@ -1139,6 +1151,12 @@ export const PointCard = compose(
     props: ({ mutate }) => ({
       delete: (url) => mutate({variables: {url},
                                refetchQueries: [{query: EditorsPicks}, {query: NewPoints}]})
+    })
+  }),
+  graphql(UnlinkPointMutation, {
+    props: ({ mutate }) => ({
+      unlink: (parentURL, url, linkType) => mutate({variables: {parentURL, url, linkType},
+                                                    refetchQueries: [{query: EditorsPicks}, {query: NewPoints}]})
     })
   })
 )(PointCardComponent)

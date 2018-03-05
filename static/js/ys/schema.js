@@ -138,6 +138,14 @@ query Point($url: String) {
  }
 }`
 
+export const Search = gql`
+${pointFieldsFragment}
+query Search($query: String!) {
+  search(query: $query) {
+    ...pointFields,
+  }
+}`
+
 export const HomePage = gql`
 ${pointFieldsFragment}
 query HomePage {

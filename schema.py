@@ -354,6 +354,15 @@ class Query(graphene.ObjectType):
         if (user):
             return User(url=user.url, admin=user.isAdmin, role=user.role)
 
+    search = graphene.List(Point, query=graphene.String(required=True))
+    def resolve_search(self, info, **args):
+        searchResultsFuture = PointModel.search(
+            user=info.context.current_user,
+            searchTerms=args['query']
+        )
+        searchResults = searchResultsFuture.get_result() if searchResultsFuture else []
+        return searchResults
+
 class Mutation(graphene.ObjectType):
     delete = Delete.Field()
     unlink = Unlink.Field()

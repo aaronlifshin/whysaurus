@@ -351,7 +351,7 @@ class Query(graphene.ObjectType):
     def resolve_currentUser(self, info):
         user = info.context.current_user
         if (user):
-            return User(url=user.url, admin=user.admin)
+            return User(url=user.url, admin=user.isAdmin)
 
 class Mutation(graphene.ObjectType):
     delete = Delete.Field()

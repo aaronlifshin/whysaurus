@@ -67,7 +67,7 @@ class QuickCreate extends React.Component {
               <p className={charCountClass}>{this.props.charsLeft}</p>
             </div>
             {this.submitButton()}
-            <p>{ formApi.errors && formApi.errors.title }</p>         
+            <p>{ formApi.errors && formApi.errors.title }</p>
           </form>
       )}
     </Form>;
@@ -131,11 +131,11 @@ class Home extends React.Component {
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_FindUseful.png"/>
      </div>
   }
-  
+
   illustrations(){
     return <div className="row" id="explanationRowHomepage">
       <MediaQuery minWidth={singleColumnThreshold}>
-        <div className="">           
+        <div className="">
             {this.renderIllustration1()}
             {this.renderIllustration2()}
             {this.renderIllustration3()}
@@ -162,24 +162,19 @@ class Home extends React.Component {
     let featuredPoint = homePage && homePage.featuredPoint;
     let newPoints = homePage && homePage.newPoints;
     let editorsPicks = homePage && homePage.editorsPicks;
-    // removed this from the top of the div to make styling easier - JF
-    //       <NewClaim/>
-    ////////////////////////////////
     return <div className="infiniteWidth">
       {this.illustrations()}
-      
       <div className="mainPageClaimCreationArea">
         <h3 className="mainPageClaimCreationLabel">Make an Argument You Want to Prove</h3>
         <CountedQuickCreate onSubmit={this.createNewPoint}/>
       </div>
-      
       <div className="mainPageContentArea">
-        <div id="mainPageFeaturedArea">      
+        <div id="mainPageFeaturedArea">
           <h1 className="mainPageHeading indentToClaimText">Featured Argument</h1>
           {featuredPoint && <PointList point={featuredPoint}/>}
         </div>
-        
-        <div id="mainPageMainArea">      
+
+        <div id="mainPageMainArea">
           <Tabs selectedTabClassName="tabUX2_selected">
             <TabList>
               <Tab className="tabUX2">New</Tab>
@@ -194,10 +189,7 @@ class Home extends React.Component {
           </Tabs>
         </div>
       </div>
-      
-      
-      
-    </div>;
+    </div>
   }
 }
 

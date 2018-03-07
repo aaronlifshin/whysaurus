@@ -47,18 +47,7 @@ class AddEvidence extends React.Component {
     values.parentURL = parentURL
     values.linkType = evidenceType
     this.setState({saving: true})
-    this.props.mutate({
-      variables: values,
-      update: (proxy, { data: { addEvidence: { newEdges } }}) => {
-        const data = proxy.readQuery({ query: schema.GetPoint, variables: {url: parentURL} })
-        data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
-        let points = data.point[evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
-        points.edges = points.edges.concat(newEdges.edges)
-        proxy.writeQuery({ query: schema.GetPoint,
-                           variables: {url: parentURL},
-                           data: data })
-      }
-    }).then( res => {
+    this.props.save(parentURL, evidenceType, values).then( res => {
       this.setState({saving: false,
                      addingSupport: false,
                      addingCounter: false})
@@ -175,7 +164,22 @@ class AddEvidence extends React.Component {
 
 
 export default compose(
-  graphql(schema.AddEvidenceQuery),
+  graphql(schema.AddEvidenceQuery, {
+    props: ({mutate}) => ({
+      save: (parentURL, evidenceType, values) => mutate({
+        variables: values,
+        update: (proxy, { data: { addEvidence: { newEdges } }}) => {
+          const data = proxy.readQuery({ query: schema.GetPoint, variables: {url: parentURL} })
+          data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
+          let points = data.point[evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
+          points.edges = points.edges.concat(newEdges.edges)
+          proxy.writeQuery({ query: schema.GetPoint,
+                             variables: {url: parentURL},
+                             data: data })
+        }
+      })
+    })
+  }),
   graphql(schema.CurrentUserQuery, {
     props: ({ownProps, data: {loading, currentUser, refetch}}) => ({
       userLoading: loading,

@@ -281,25 +281,21 @@ class EvidenceLink extends React.Component {
 }
 
 class AddEvidenceCard extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {addingSupport: false, addingCounter: false }
-    this.handleClickCancel = this.handleClickCancel.bind(this)
-    this.handleClickAddEvidenceSupport = this.handleClickAddEvidenceSupport.bind(this)
-    this.handleClickAddEvidenceCounter = this.handleClickAddEvidenceCounter.bind(this)
-
-    // TODO: CONDENSE THESE TWO INTO SINGLE FUNCTIONS WITH A VARIABLE? - JF
-    this.handleClickSaveSupport = this.handleClickSaveSupport.bind(this)
-    this.handleClickSaveCounter = this.handleClickSaveCounter.bind(this)
-
-  }
+  state = {addingSupport: false, addingCounter: false }
 
   get point() {
     return this.props.point;
   }
 
-  handleClickAddEvidenceSupport(e) {
-    console.log("add evidence")
+  get uiType(){
+    return this.props.type
+  }
+
+  get adding() {
+    return this.state.addingSupport || this.state.addingCounter
+  }
+
+  handleClickAddEvidenceSupport = (e) => {
     if (this.props.CurrentUserQuery.currentUser){
       this.setState({addingSupport: true, addingCounter: false})
     } else {
@@ -307,72 +303,50 @@ class AddEvidenceCard extends React.Component {
     }
   }
 
-  handleClickAddEvidenceCounter(e) {
-    console.log("add evidence")
+  handleClickAddEvidenceCounter = (e) => {
     if (this.props.CurrentUserQuery.currentUser){
-      this.setState({adding: false, addingCounter: true})
+      this.setState({addingSupport: false, addingCounter: true})
     } else {
       $("#loginDialog").modal("show");
     }
   }
 
-  handleClickCancel(e){
+  handleClickCancel = (e) => {
     e.stopPropagation();
     this.setState({addingSupport: false, addingCounter: false})
     console.log("AddEvidenceCard : handleCancel")
   }
 
-  // TODO: CONDENSE THESE TWO INTO A SINGLE FUNCTION WITH A VARIABLE? - JF
-  //    only differences are the values.linkType line and second data.point. line
-  handleClickSaveSupport(values, e, formApi) {
-    console.log("AddEvidenceCard : handleClickSave")
+  handleClickSave = (evidenceType, values, e, formApi) => {
     let parentURL = this.point.url
     values.parentURL = parentURL
-    values.linkType = "supporting"
+    values.linkType = evidenceType
     this.setState({saving: true})
     this.props.mutate({
       variables: values,
       update: (proxy, { data: { addEvidence: { newEdges } }}) => {
         const data = proxy.readQuery({ query: GetPoint, variables: {url: parentURL} })
         data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
-
-        data.point.supportingPoints.edges = data.point.supportingPoints.edges.concat(newEdges.edges)
-
+        let points = data.point[evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
+        points.edges = points.edges.concat(newEdges.edges)
         proxy.writeQuery({ query: GetPoint,
                            variables: {url: parentURL},
-                           data: data });
+                           data: data })
       }
+    }).then( res => {
+      this.setState({saving: false,
+                     addingSupport: false,
+                     addingCounter: false})
+      console.log(res)
     })
-      .then( res => {
-        this.setState({saving: false,
-                       adding: false})
-        console.log(res)
-      });
   }
-  handleClickSaveCounter(values, e, formApi) {
-    console.log("AddEvidenceCard : handleClickSave")
-    let parentURL = this.point.url
-    values.parentURL = parentURL
-    values.linkType = "counter"
-    this.setState({saving: true})
-    this.props.mutate({
-      variables: values,
-      update: (proxy, { data: { addEvidence: { newEdges } }}) => {
-        const data = proxy.readQuery({ query: GetPoint, variables: {url: parentURL} })
-        data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
 
-        data.point.counterPoints.edges = data.point.counterPoints.edges.concat(newEdges.edges)
+  handleClickSaveSupport = (values, e, formApi) => {
+    this.handleClickSave("supporting", values, e, formApi)
+  }
 
-        proxy.writeQuery({ query: GetPoint,
-                           variables: {url: parentURL},
-                           data: data });
-      }
-    })
-      .then( res => {
-        this.setState({saving: false,
-                       adding: false})
-        console.log(res)
-      });
+  handleClickSaveCounter = (values, e, formApi) => {
+    this.handleClickSave("counter", values, e, formApi)
   }
 
   addExistingClaim = (claim) => {
@@ -381,18 +355,18 @@ class AddEvidenceCard extends React.Component {
     console.log("TODO: UNIMPLEMENTED")
   }
 
-  renderAddEvidenceForm(evidenceType) {
+  renderAddEvidenceForm = (evidenceType) => {
     console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
     let groupClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     return <span className={groupClass}>
       { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> :
-        <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="support" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel} addExistingClaim={this.addExistingClaim}/> }
+        <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel} addExistingClaim={this.addExistingClaim}/> }
     </span>
   }
 
-  addText(evidenceType){
+  addText = (evidenceType) => {
     switch (evidenceType){
-      case "support":
+      case "supporting":
         return "Add Evidence For"
       case "counter":
         return "Add Evidence Against"
@@ -401,29 +375,16 @@ class AddEvidenceCard extends React.Component {
     }
   }
 
-  // TODO: this is declared as a local function in two different components - should it be a global function or a const? -JF
-  numSupportingPlusCounter(){
-    return ( this.point.numSupporting + this.point.numCounter)
+  numSupportingPlusCounter = () => {
+    return (this.point.numSupporting + this.point.numCounter)
   }
 
-  renderAddEvidenceButton(evidenceType) {
-    let classesButton = `buttonUX2 ${evidenceType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
-    let nameButton = `${evidenceType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
-    let buttonLabel = this.addText(evidenceType)
-    return <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{buttonLabel}</button>
-  }
-
-  get uiType(){
-    return this.props.type
-  }
-
-  renderAddEvidenceFormBasedOnState() {
+  renderAddEvidenceFormBasedOnState = () => {
     if (this.state.addingSupport) {
       return <span>
-        {this.renderAddEvidenceForm("support")}
+        {this.renderAddEvidenceForm("supporting")}
       </span>
-    }
-    else if (this.state.addingCounter) {
+    } else if (this.state.addingCounter) {
       return <span>
         {this.renderAddEvidenceForm("counter")}
       </span>
@@ -431,30 +392,34 @@ class AddEvidenceCard extends React.Component {
     else return (null)
   }
 
-  // TODO: these two functions (that I wrote) could be consolidated into one -JF
-  renderSupportButton() {
-    let buttonClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
-    return <a className={buttonClass} onClick={this.handleClickAddEvidenceSupport}>{this.renderAddEvidenceButton("support")}</a>
-  }
-  renderCounterButton() {
-    let buttonClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
-    return <a className={buttonClass} onClick={this.handleClickAddEvidenceCounter}>{this.renderAddEvidenceButton("counter")}</a>
-  }
-  renderDualButtons() {
-      return <span>
-        {this.renderSupportButton()}
-        {this.renderCounterButton()}
-      </span>
+  renderAddEvidenceButton = (evidenceType) => {
+    let classesButton = `buttonUX2 ${evidenceType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
+    let nameButton = `${evidenceType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
+    let buttonLabel = this.addText(evidenceType)
+    let aClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    let onClick = evidenceType == 'supporting' ? this.handleClickAddEvidenceSupport : this.handleClickAddEvidenceCounter
+    return <a className={aClass} onClick={onClick}>
+      <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{buttonLabel}</button>
+    </a>
   }
 
-  renderEvidenceArrow(color) {
+  renderSupportButton = () => this.renderAddEvidenceButton("supporting")
+
+  renderCounterButton = () => this.renderAddEvidenceButton("counter")
+
+  renderDualButtons = () => <span>
+    {this.renderSupportButton()}
+    {this.renderCounterButton()}
+  </span>
+
+  renderEvidenceArrow = (color) => {
     let arrowGrpClass = `arrowEvidence ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
     let arrowStemClass = `arrowStemEvidence ${(this.numSupportingPlusCounter() == 0) && "arrowStemEvidenceShort" } ${color == "red" && "arrowStemRed"}`
     return <div className={arrowGrpClass}>
-          <div className={arrowHeadClass}></div>
-          <div className={arrowStemClass}></div>
-        </div>
+      <div className={arrowHeadClass}></div>
+      <div className={arrowStemClass}></div>
+    </div>
   }
 
   render() {
@@ -463,12 +428,12 @@ class AddEvidenceCard extends React.Component {
     case "DUAL":
       return <div className={topDivClass}>
         { this.renderEvidenceArrow() }
-        { (this.state.addingSupport || this.state.addingCounter) ? this.renderAddEvidenceFormBasedOnState() : this.renderDualButtons() }
+        { (this.adding) ? this.renderAddEvidenceFormBasedOnState() : this.renderDualButtons() }
       </div>
     case "SUPPORT":
       return <div className={topDivClass}>
         { this.renderEvidenceArrow() }
-        { this.state.addingSupport ? this.renderAddEvidenceForm("support") : this.renderSupportButton() }
+        { this.state.addingSupport ? this.renderAddEvidenceForm("supporting") : this.renderSupportButton() }
       </div>
     case "COUNTER":
       return <div className={topDivClass}>

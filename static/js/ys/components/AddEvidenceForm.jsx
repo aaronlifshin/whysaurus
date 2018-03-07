@@ -9,7 +9,7 @@ import TitleText from './TitleText'
 import ClaimSearch from './ClaimSearch'
 
 // use onmousedown here to try to get in before blur hides the UI (see note in TitleText onBlur below)
-// TODO: check in with Josh to see if we can come up with better "hide" conditions so we can avoid this
+// TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
 const ExistingClaimPicker = ({claims, onSelectClaim}) => <ul>
       {claims && claims.map((claim) => <li onMouseDown={e => onSelectClaim(claim, e)} key={claim.id}>
                             {claim.title}
@@ -56,16 +56,17 @@ class AddEvidenceForm extends React.Component {
           render={({results, searching}) =>
                   <form onSubmit={submitForm} className="addEvidenceForm">
                       <TitleText id="title" className="addEvidenceFormTextField"
+                                   autoComplete='off'
                                    placeholder='Make a claim, eg "Dogs can learn more tricks than cats."'
                                    onFocus={() => {this.setState({titleTextFocused: true})}}
                                    // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
                                    // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired
-                                   // TODO: check in with josh to see if we can come up with better "hide" conditions
+                                   // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
                                    onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
                           />
-                          {this.existingClaimPicker(title, results, searching)}
-                        <button type="submit" className={submitClasses}>Add</button>
-                          <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
+                      {this.existingClaimPicker(title, results, searching)}
+                      <button type="submit" className={submitClasses}>Add</button>
+                      <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
                     </form>
                   }/>
       )}

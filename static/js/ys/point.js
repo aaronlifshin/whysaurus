@@ -9,6 +9,7 @@ import * as validations from './validations';
 import * as formUtils from './form_utils.js';
 import { UnlinkPointMutation, DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from './schema.js';
 import {PointList} from './point_list.js'
+import AddEvidenceForm from './components/AddEvidenceForm'
 
 // TODO: make work
 //import Arrow from '@elsdoerfer/react-arrow';
@@ -279,30 +280,6 @@ class EvidenceLink extends React.Component {
   }
 }
 
-// TODO : depending on user tests, maybe add <div className="addEvidenceFormLabel">Add evidence this list</div>
-const AddEvidenceFormComponent = ( props ) => {
-  let submitClasses = `buttonUX2 addEvidenceFormButton ${props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
-  return (
-    <div className="addEvidenceFormGroup">
-      <Form onSubmit={props.onSubmit}
-            validate={values => ({title: validations.validateTitle(values.title)})}
-            dontValidateOnMount={true}>
-      { formApi => (
-          <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
-          <Text onChange={props.updateCharCount} field="title" id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
-          <p>{formApi.errors && formApi.errors.title}</p>
-          <p className={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
-          <button type="submit" className={submitClasses}>Add</button>
-          <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={props.onCancel}>Cancel</button>
-          </form>
-      )}
-    </Form>
-  </div>
-  );
-}
-
-const AddEvidenceForm = formUtils.withCharCount(AddEvidenceFormComponent, validations.titleMaxCharacterCount);
-
 class AddEvidenceCard extends React.Component {
   constructor(props) {
     super(props)
@@ -398,11 +375,18 @@ class AddEvidenceCard extends React.Component {
       });
   }
 
+  addExistingClaim = (claim) => {
+    console.log("ADDING EXISTING CLAIM")
+    console.log(claim)
+    console.log("TODO: UNIMPLEMENTED")
+  }
+
   renderAddEvidenceForm(evidenceType) {
     console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
     let groupClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     return <span className={groupClass}>
-        { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> : <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="support" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel}/> }
+      { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> :
+        <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="support" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel} addExistingClaim={this.addExistingClaim}/> }
     </span>
   }
 

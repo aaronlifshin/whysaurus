@@ -50,11 +50,13 @@ Detailed Setup Instructions:
 
 5. Create a Whysaurus account
 
-6. Make your Whysaurus account an admin
-* In GoogleAppEngineLauncher, click SDK Console
-* Select Datastore Viewer from the left menu
+6. Make your local Whysaurus account an admin
+(Currently a different procedure than making a user admin on staging or production!) 
+* Go to the local console at http://localhost:8000/console
 * Select WhysaurusUser from the Entity Kind drop-down menu and click list entries
-* Click on the key of your new Whysaurus account
-* Change Admin to true
-* Scroll down to click save
-* Click Flush Memcache
+* Go to Datastore Viewer, click on the key for your user
+* Set admin = true, click save
+* Flush memcache
+* Refresh browser
+
+

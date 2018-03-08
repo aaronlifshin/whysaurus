@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const CurrentUserQuery = gql`
 query CurrentUser {
-  currentUser { url, admin, role }
+  currentUser { url, admin, role, recentlyViewed { id, url, title } }
 }`
 
 export const pointFieldsFragment = gql`
@@ -60,6 +60,17 @@ ${pointFieldsFragment}
 ${evidenceEdgesFragment}
 mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
   addEvidence(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames, linkType: $linkType, parentURL: $parentURL}) {
+    newEdges { ...evidenceEdges }
+    parent { id, numSupporting, numCounter }
+  }
+}
+`
+
+export const LinkPoint = gql`
+${pointFieldsFragment}
+${evidenceEdgesFragment}
+mutation LinkPoint($parentURL: String!, $url: String!, $linkType: String!) {
+  linkPoint(parentURL: $parentURL, linkType: $linkType, url: $url) {
     newEdges { ...evidenceEdges }
     parent { id, numSupporting, numCounter }
   }
@@ -136,6 +147,13 @@ query Point($url: String) {
   point(url: $url) {
     ...pointFields
  }
+}`
+
+export const Search = gql`
+query Search($query: String!) {
+  search(query: $query) {
+    id, url, title
+  }
 }`
 
 export const HomePage = gql`

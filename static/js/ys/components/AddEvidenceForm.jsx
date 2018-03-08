@@ -18,6 +18,11 @@ const ExistingClaimPicker = ({claims, onSelectClaim}) => <ul>
 
 class AddEvidenceForm extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.currentSupportingClaimURLs = new Set(this.props.currentSupportingClaims.map(claim => claim.url))
+  }
+
   static propTypes = {
     addExistingClaim: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
@@ -26,9 +31,11 @@ class AddEvidenceForm extends React.Component {
 
   state = {titleTextFocused: false}
 
-  selectExistingClaim = (claim) => {
-    this.props.addExistingClaim(claim)
-  }
+  selectExistingClaim = (claim) =>
+    this.props.addExistingClaim(this.props.evidenceType, claim)
+
+  filterCurrentSupport = (claims) =>
+    this.props.currentSupportingClaims ? claims.filter(claim => !this.currentSupportingClaimURLs.has(claim.url)) : claims
 
   existingClaimPicker = (titleValue, searchResults, searching) => {
     if (this.state.titleTextFocused) {
@@ -36,10 +43,10 @@ class AddEvidenceForm extends React.Component {
         if (searching) {
           return <div>Searching...</div>
         } else {
-          return <ExistingClaimPicker claims={searchResults} onSelectClaim={this.selectExistingClaim}/>
+          return <ExistingClaimPicker claims={this.filterCurrentSupport(searchResults)} onSelectClaim={this.selectExistingClaim}/>
         }
       } else if (this.props.user) {
-        return <ExistingClaimPicker claims={this.props.user.recentlyViewed} onSelectClaim={this.selectExistingClaim}/>
+        return <ExistingClaimPicker claims={this.filterCurrentSupport(this.props.user.recentlyViewed)} onSelectClaim={this.selectExistingClaim}/>
       }
     }
   }

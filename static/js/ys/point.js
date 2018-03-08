@@ -165,7 +165,7 @@ class PointComponent extends React.Component {
   // TODO: set prevScore correctly, somehow
   render(){
     const score = this.point.pointValue
-        const prevScore = this.point.pointValue
+    const prevScore = this.point.pointValue
     return <div>
       {this.titleUI()}
     <span className="scoreAnimContainerMax score">

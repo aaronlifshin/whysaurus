@@ -8,6 +8,7 @@ from graphene_gae import NdbObjectType, NdbConnectionField
 from models.point import Point as PointModel
 from models.point import PointRoot
 from models.point import FeaturedPoint
+from models.uservote import RelevanceVote as RelevanceVoteModel
 from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
 
@@ -167,6 +168,56 @@ class PointInput(graphene.InputObjectType):
     imageDescription = graphene.String()
     sourceURLs = graphene.List(graphene.String)
     sourceNames = graphene.List(graphene.String)
+
+class LinkPoint(graphene.Mutation):
+    class Arguments:
+        parentURL = graphene.String(required=True)
+        linkType = graphene.String(required=True)
+        url = graphene.String(required=True)
+
+    parent = graphene.Field(Point)
+    point = graphene.Field(Point)
+
+    newEdges = relay.ConnectionField(SubPointConnection)
+    def resolve_newEdges(self, info, **args):
+        return [self.point]
+
+    def mutate(self, info, url, parentURL, linkType):
+        supportingPoint, supportingPointRoot = PointModel.getCurrentByUrl(url)
+        oldPoint, oldPointRoot = PointModel.getCurrentByUrl(parentURL)
+        user = info.context.current_user
+        if user:
+            # NOTE: ported this over from handlers/linkpoint.py, don't totally understand it all
+            # This code is if the vote existed before and the point was unlinked, and now
+            # it is being re-linked
+            voteCount, rating, myVote = RelevanceVoteModel.getExistingVoteNumbers(
+                oldPointRoot.key, supportingPointRoot.key, linkType, user)
+            supportingPoint._relevanceVote = myVote
+            newLink = [{'pointRoot':supportingPointRoot,
+                        'pointCurrentVersion':supportingPoint,
+                        'linkType':linkType,
+                        'voteCount': voteCount,
+                        'fRating':rating }
+            ]
+            newVersion = oldPoint.update(
+                pointsToLink=newLink,
+                user=user
+            )
+            user.addRelevanceVote(
+                oldPointRoot.key.urlsafe(),
+                supportingPointRoot.key.urlsafe(), linkType, 100)
+
+            # get my vote for this point, to render it in the linkPoint template
+            supportingPoint.addVote(user)
+
+            # these two are in service of the SubPointConnection logic - we should find a way to DRY this up
+            supportingPoint.parent = oldPoint
+            supportingPoint.link_type = linkType
+
+            return LinkPoint(parent=oldPoint, point=supportingPoint)
+        else:
+            raise Exception("User not logged in.")
+
 
 class AddEvidence(graphene.Mutation):
     class Arguments:
@@ -370,6 +421,7 @@ class Mutation(graphene.ObjectType):
     unlink = Unlink.Field()
     expand_point = ExpandPoint.Field()
     add_evidence = AddEvidence.Field()
+    link_point = LinkPoint.Field()
     edit_point = EditPoint.Field()
     vote = Vote.Field()
     relevanceVote = RelevanceVote.Field()

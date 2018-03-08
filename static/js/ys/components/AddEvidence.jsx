@@ -47,13 +47,25 @@ class AddEvidence extends React.Component {
     values.parentURL = parentURL
     values.linkType = evidenceType
     this.setState({saving: true})
-    this.props.save(parentURL, evidenceType, values).then( res => {
-      this.setState({saving: false,
-                     addingSupport: false,
-                     addingCounter: false})
-      console.log(res)
-    })
+    this.props.save(parentURL, evidenceType, values).
+      then( res => {
+        this.setState({saving: false,
+                       addingSupport: false,
+                       addingCounter: false})
+      })
   }
+
+  addExistingClaim = (evidenceType, claim) => {
+    let parentURL = this.point.url
+    this.setState({saving: true})
+    this.props.linkExisting(parentURL, evidenceType, claim.url).
+      then( res => {
+        this.setState({saving: false,
+                       addingSupport: false,
+                       addingCounter: false})
+      })
+  }
+
 
   handleClickSaveSupport = (values, e, formApi) => {
     this.handleClickSave("supporting", values, e, formApi)
@@ -63,10 +75,9 @@ class AddEvidence extends React.Component {
     this.handleClickSave("counter", values, e, formApi)
   }
 
-  addExistingClaim = (claim) => {
-    console.log("ADDING EXISTING CLAIM")
-    console.log(claim)
-    console.log("TODO: UNIMPLEMENTED")
+  supportingClaims = (evidenceType) => {
+    let connections = this.point[evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
+    return connections ? connections.edges.map(edge => edge.node) : []
   }
 
   renderAddEvidenceForm = (evidenceType) => {
@@ -74,7 +85,11 @@ class AddEvidence extends React.Component {
     let groupClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     return <span className={groupClass}>
       { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> :
-        <AddEvidenceForm evidenceType={evidenceType} onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter} onCancel={this.handleClickCancel} addExistingClaim={this.addExistingClaim}/> }
+        <AddEvidenceForm evidenceType={evidenceType}
+                         onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter}
+                         onCancel={this.handleClickCancel}
+                         addExistingClaim={this.addExistingClaim}
+                         currentSupportingClaims={this.supportingClaims(evidenceType)}/> }
     </span>
   }
 
@@ -162,21 +177,32 @@ class AddEvidence extends React.Component {
   }
 }
 
+function updateGetPointWithEdges(proxy, url, evidenceType, edges) {
+  const data = proxy.readQuery({ query: schema.GetPoint, variables: {url: url} })
+  data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(edges.edges)
+  let points = data.point[evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
+  points.edges = points.edges.concat(edges.edges)
+  proxy.writeQuery({ query: schema.GetPoint,
+                     variables: {url: url},
+                     data: data })
+}
 
 export default compose(
   graphql(schema.AddEvidenceQuery, {
     props: ({mutate}) => ({
       save: (parentURL, evidenceType, values) => mutate({
         variables: values,
-        update: (proxy, { data: { addEvidence: { newEdges } }}) => {
-          const data = proxy.readQuery({ query: schema.GetPoint, variables: {url: parentURL} })
-          data.point.relevantPoints.edges = data.point.relevantPoints.edges.concat(newEdges.edges)
-          let points = data.point[evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
-          points.edges = points.edges.concat(newEdges.edges)
-          proxy.writeQuery({ query: schema.GetPoint,
-                             variables: {url: parentURL},
-                             data: data })
-        }
+        update: (proxy, { data: { addEvidence: { newEdges } }}) =>
+          updateGetPointWithEdges(proxy, parentURL, evidenceType, newEdges)
+      })
+    })
+  }),
+  graphql(schema.LinkPoint, {
+    props: ({mutate}) => ({
+      linkExisting: (parentURL, evidenceType, url) => mutate({
+        variables: {parentURL: parentURL, linkType: evidenceType, url: url},
+        update: (proxy, { data: { linkPoint: { newEdges } }}) =>
+          updateGetPointWithEdges(proxy, parentURL, evidenceType, newEdges)
       })
     })
   }),

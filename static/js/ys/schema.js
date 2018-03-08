@@ -66,6 +66,17 @@ mutation AddEvidence($title: String!, $linkType: String, $parentURL: String, $im
 }
 `
 
+export const LinkPoint = gql`
+${pointFieldsFragment}
+${evidenceEdgesFragment}
+mutation LinkPoint($parentURL: String!, $url: String!, $linkType: String!) {
+  linkPoint(parentURL: $parentURL, linkType: $linkType, url: $url) {
+    newEdges { ...evidenceEdges }
+    parent { id, numSupporting, numCounter }
+  }
+}
+`
+
 export const VoteQuery = gql`
 mutation Vote($url: String!, $vote: Int!, $parentURL: String) {
   vote(url: $url, vote: $vote, parentURL: $parentURL) {

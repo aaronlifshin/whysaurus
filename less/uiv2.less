@@ -1437,27 +1437,62 @@ a:hover .arrowAddEvidenceButton {
 }
 
 
-// HOME PAGE
+// HOME PAGE ILLUSTRATIONS AND CAROUSEL
+
+@homepageIllustrationWidth: 54px;
 
 #explanationRowHomepage {
-  border-bottom-style: none;
+  //border-bottom-style: none;
   margin-bottom: 27px;
 }
 
 .explanationTextCentered {
   font-size: @fontSizePointTitle;
-  font-weight: 700;
+  //font-weight: 700;
+  display: inline-block;
+  text-align: left;
 }
 
 .explanationImageCentered {
-  width: 96px;
+  display: inline-block;
+  vertical-align: top;
+  width: @homepageIllustrationWidth;
+}
+  
+
+// override react-carousel styling
+
+
+.carousel {
+  max-width: 80vw; // match to cardstacks 
+}
+
+.carousel.carousel-slider .control-arrow, control-arrow control-prev {
+  transition: none !important;
+  opacity: .6 !important;
+}
+
+.carousel .control-next.control-arrow:before {
+  border-left-color: @blue !important;
+}
+.carousel .control-prev.control-arrow:before {
+  border-right-color: @blue !important;
 }
 
 .carousel .slide {
   background: none !important;
   min-width: none !important;
-  max-width: 96px !important;
+  //max-width: 96px !important;
 }
+
+.carousel .slide img {
+  width: @homepageIllustrationWidth !important;
+}
+
+///////////////////////////////////////////
+
+// HOME PAGE
+
 
 .mainPageClaimCreationArea {
   margin-left: 12px;
@@ -1530,6 +1565,17 @@ a:hover .arrowAddEvidenceButton {
 	}
 }
 
+@media (max-width: 979px) and (min-width: 768px) {
+
+  .explanationBlock {
+    margin-left: 0;
+    margin-right: 32px;
+  }
+  .explanationTextCentered {
+    width: unset;
+  }
+}
+
 @media (max-width: 767px) {
 
  @cardWidthSmallScreens: 80vw;
@@ -1546,6 +1592,11 @@ a:hover .arrowAddEvidenceButton {
   .container {
     //left: 10px;
     //position: absolute;
+  }
+  
+  .explanationBlock {
+    margin: auto;
+    float: none;
   }
 	
   .pointStream {

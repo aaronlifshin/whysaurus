@@ -15,9 +15,7 @@ import * as validations from './validations';
 import * as formUtils from './form_utils.js';
 import NewClaim from './components/NewClaim'
 
-// For Responsive
-// TO DO : this is also declared in point.js, lets set it up to live in a single place
-const singleColumnThreshold = 960;
+
 
 class QuickCreate extends React.Component {
   constructor(props) {
@@ -90,6 +88,9 @@ const NewPoints = graphql(schema.NewPoints, {
   })
 })(PointList);
 
+  // For Responsive
+  const singleColumnThresholdForCarousel = 768;
+
 class Home extends React.Component {
 
   constructor(props) {
@@ -115,33 +116,33 @@ class Home extends React.Component {
 
   renderIllustration1(){
      return <div className="explanationBlock">
-       <div className="explanationTextCentered">Make Arguments<br/>Claim-by-Claim</div>
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_ClaimByClaim.png"/>
+       <div className="explanationTextCentered">Make Arguments<br/>Claim-by-Claim</div>
      </div>
   }
   renderIllustration2(){
      return  <div className="explanationBlock">
-      <div className="explanationTextCentered lessWidth">Collaborate to get<br/>other perspectives</div>
       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_Collaborate.png"/>
+      <div className="explanationTextCentered lessWidth">Collaborate to get<br/>other perspectives</div>
      </div>
   }
   renderIllustration3(){
      return  <div className="explanationBlock">
-       <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_FindUseful.png"/>
+       <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
      </div>
   }
 
   illustrations(){
     return <div className="row" id="explanationRowHomepage">
-      <MediaQuery minWidth={singleColumnThreshold}>
+      <MediaQuery minWidth={singleColumnThresholdForCarousel}>
         <div className="">
             {this.renderIllustration1()}
             {this.renderIllustration2()}
             {this.renderIllustration3()}
         </div>
       </MediaQuery>
-      <MediaQuery maxWidth={singleColumnThreshold}>
+      <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
       <Carousel infiniteLoop={true} showIndicators={true} showArrows={true} showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
           <div>
             {this.renderIllustration1()}

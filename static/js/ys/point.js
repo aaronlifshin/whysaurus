@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 import MediaQuery from 'react-responsive';
+import { CSSTransitionGroup } from 'react-transition-group' // ES6
 import AnimateOnChange from 'react-animate-on-change';
 import * as validations from './validations';
 import * as formUtils from './form_utils.js';
@@ -835,7 +836,8 @@ class PointCardComponent extends React.Component {
   render(){
     if (this.state.deleting) {
       return <div>Deleting...</div>
-    } else if (this.point){
+    } 
+    else if (this.point){
       const point = this.point;
 //      console.log("rendering " + point.url)
       let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
@@ -847,22 +849,27 @@ class PointCardComponent extends React.Component {
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
-      return <div className="listedClaimGroup">
+      
+      return <div className="listedClaimGroup">    
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
         <div className="relCtrlAndLinkAndStackCards">
-    <div className={classesListedClaim} tabIndex="-1" >
-    {this.relevanceCtrlUI()}
+        <div className={classesListedClaim} tabIndex="-1" >
+        {this.relevanceCtrlUI()}
 
         <div className="relLinkAndStackCards">
-    {this.relevanceLinkUI()}
+        {this.relevanceLinkUI()}
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
-    <div className={classesStackCard1} tabIndex="-1">
-    <div className={classesStackCard2} tabIndex="-1">
-    <div className={classesStackCard3} tabIndex="-1">
+        
+        <CSSTransitionGroup transitionName="stackCardDealBottom" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+        <div className={classesStackCard1} key={1} tabIndex="-1"> 
+        
+        <div className={classesStackCard2}  tabIndex="-1">
+        
+        <div className={classesStackCard3}  tabIndex="-1">
 
-      <div className={classesPointCard} tabIndex="-1">
-      <div className={ this.contentWidth()  }>
+        <div className={classesPointCard} tabIndex="-1">
+        <div className={ this.contentWidth()  }>
         <div className="row-fluid">
         <div className="cardTopRow span12">
           <Byline point={point}/>
@@ -884,30 +891,33 @@ class PointCardComponent extends React.Component {
                   <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
                   <span className={classesRelevanceDot}>·</span>
                   <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
-        </div>
-        </div>
-      </div>
-      {this.image()}
-      </div>
+              </div>
+              </div>
+            </div>
+            {this.image()}
+            </div>
 
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+          </div>
+          </div>         
+          </div>
+          </CSSTransitionGroup>
+          </div>
+          </div>
 
-    </div>
-    </div>
+          </div>
+          </div>
 
       <div className="evidenceRow row-fluid">
       {this.evidence()}
       </div>
 
       </div>
-        </div>;
-    } else if (this.props.data && this.props.data.loading) {
+      </div>
+    } 
+    else if (this.props.data && this.props.data.loading) {
       return <div>Loading...</div>
-    } else {
+    } 
+    else {
       return <div>Something strange happened...</div>
     }
   }

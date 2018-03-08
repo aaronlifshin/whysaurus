@@ -592,7 +592,7 @@ a:hover .perctSignSmall {
 
 @stackDealY: 320px;
 @stackDealX: 0; 
-@stackDealDuration: 0.15s;
+@stackDealDuration: .5s; //0.15s;
 @stackDealTimingFunction: cubic-bezier(.25, 0, .9, .4);  // ease-out and accelerate
 @stackDealNumberOfCards: 3;
 
@@ -600,23 +600,34 @@ a:hover .perctSignSmall {
    0% { transform: translate(0, 0); }
    100% { transform: translate(@stackDealX, @stackDealY); }
 }
-.stackCardDealBottom {	
+.stackCardDealBottom-enter {	 
 	animation-name: stackCardDealBottom;
   animation-duration: @stackDealDuration;
 	animation-timing-function: @stackDealTimingFunction;
 	animation-iteration-count: 1;
 }
 
+
+
 @keyframes stackCardDealInvertXform {
    0% { transform: translate(0, 0); }
    100% { transform: translate( (-1 * @stackDealX / @stackDealNumberOfCards), (-1 * @stackDealY / @stackDealNumberOfCards)); }
 }
-.stackCardDealInvertXform {
+.stackCardDealInvertXform-enter {
 	animation-name: stackCardDealInvertXform;
   animation-duration: @stackDealDuration;
 	animation-timing-function: @stackDealTimingFunction;
 	animation-iteration-count: 1;	
 }
+.stackCardDealInvertXform-leave {
+	animation-name: stackCardDealInvertXform;
+  animation-duration: @stackDealDuration;
+	animation-timing-function: @stackDealTimingFunction;
+	animation-iteration-count: 1;	
+}
+
+
+/*
 .stackCardDealFade {
 	// make border disappear with alpha bc it won't reposition children 
 	// use !important to override red borders from .counter
@@ -629,6 +640,7 @@ a:hover .perctSignSmall {
 	transition: @stackDealDuration;
 	transition-timing-function: @stackDealTimingFunction;
 }
+*/
 // END OF DEALING CARDS ANIMATION //
 
 .stackCardHidden {

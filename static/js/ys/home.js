@@ -47,7 +47,7 @@ class QuickCreate extends React.Component {
     if (this.state.submitting) {
       return <span>Adding your point...</span>;
     } else {
-      return <button onClick={this.props.onClick} className="buttonUX2 buttonUX2Blue  homePageNewPointCallButton" type="submit">Publish to Library</button>;
+      return <button onClick={this.props.onClick} className="buttonUX2 buttonUX2Blue  homePageNewPointCallButton pull-right" type="submit">Publish</button>;
     }
   }
             //<p className={this.props.charsLeft && this.props.charsLeft < 0 ? ' newPointCharNum pull-right overMaxChars' : 'newPointCharNum pull-right'}>{this.props.charsLeft}</p>
@@ -61,10 +61,10 @@ class QuickCreate extends React.Component {
       { formApi => (
           <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
             <div className="newPointInputRowFieldArea">
-              <Text onChange={this.props.updateCharCount} field="title" id="newPointTextField" className="mainPageInput" />
-              <p className={charCountClass}>{this.props.charsLeft}</p>
+              <Text onChange={this.props.updateCharCount} field="title" id="newPointTextField" className="mainPageInput" />              
             </div>
             {this.submitButton()}
+            <p className={charCountClass}>{this.props.charsLeft}</p>
             <p>{ formApi.errors && formApi.errors.title }</p>
           </form>
       )}

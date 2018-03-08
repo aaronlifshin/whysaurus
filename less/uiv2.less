@@ -1499,12 +1499,14 @@ a:hover .arrowAddEvidenceButton {
 
 
 .mainPageClaimCreationArea {
-  margin-left: 12px;
-  max-width: 698px;
+  margin-left: 14px;
+  width: @cardWidth;    
+  margin-bottom: 48px; // not sure why this needs to be so big, something about the floats I think -JF
 }
 
 .mainPageClaimCreationLabel {
   margin-left: 12px;
+  font-size: 24px;
 }
 
 .newPointInputRowFieldArea {
@@ -1514,13 +1516,21 @@ a:hover .arrowAddEvidenceButton {
     width: -webkit-calc(~"100% - 165px");
     width: calc(~"100% - 165px");
     margin-right:8px;
-    display:inline-block;
+    //display:inline-block;
+}
+
+.mainPageInput {
+  margin-bottom: 8px;
 }
 
 .homePageNewPointCallButton {
-    font-size: 16px;
-    padding: 8px 13px;
+    font-size: @fontSizePointTitle;
+    //padding: 8px 13px;
     top: 0;    
+}
+
+.newPointCharNum {
+  margin-right: 8px;
 }
 
 .mainPageContentArea {
@@ -1603,6 +1613,10 @@ a:hover .arrowAddEvidenceButton {
     float: none;
   }
 	
+  .mainPageClaimCreationArea {
+    width: @cardWidthSmallScreens;  
+  }
+  
   .pointStream {
 	margin-top: 24px;
 	margin-left: 0;

@@ -116,19 +116,19 @@ class Home extends React.Component {
 
   renderIllustration1(){
      return <div className="explanationBlock">
-       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_ClaimByClaim.png"/>
+       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_ClaimByClaim.png"/>
        <div className="explanationTextCentered">Make Arguments<br/>Claim-by-Claim</div>
      </div>
   }
   renderIllustration2(){
      return  <div className="explanationBlock">
-      <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_Collaborate.png"/>
+      <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_Collaborate.png"/>
       <div className="explanationTextCentered lessWidth">Collaborate to get<br/>other perspectives</div>
      </div>
   }
   renderIllustration3(){
      return  <div className="explanationBlock">
-       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v01_FindUseful.png"/>
+       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_FindUseful.png"/>
        <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
      </div>
   }
@@ -143,7 +143,7 @@ class Home extends React.Component {
         </div>
       </MediaQuery>
       <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
-      <Carousel infiniteLoop={true} showIndicators={true} showArrows={true} showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
+      <Carousel autoPlay={false} interval={2500} infiniteLoop={false} showIndicators={true} showArrows={true} showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
           <div>
             {this.renderIllustration1()}
           </div>

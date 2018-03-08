@@ -1439,24 +1439,27 @@ a:hover .arrowAddEvidenceButton {
 
 // HOME PAGE ILLUSTRATIONS AND CAROUSEL
 
-@homepageIllustrationWidth: 54px;
+@homepageIllustrationHeight: 40px;
 
 #explanationRowHomepage {
   //border-bottom-style: none;
-  margin-bottom: 27px;
+  margin-bottom: 32px;
+  padding-bottom: 21px;
 }
 
 .explanationTextCentered {
-  font-size: @fontSizePointTitle;
+  font-size: @fontSizeActionsUX2;
   //font-weight: 700;
   display: inline-block;
   text-align: left;
+  margin-top: 2px;
 }
 
 .explanationImageCentered {
   display: inline-block;
   vertical-align: top;
-  width: @homepageIllustrationWidth;
+  height: @homepageIllustrationHeight;
+  margin-right: 10px;
 }
   
 
@@ -1486,7 +1489,8 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .carousel .slide img {
-  width: @homepageIllustrationWidth !important;
+  height: @homepageIllustrationHeight !important;
+  width: unset !important;
 }
 
 ///////////////////////////////////////////

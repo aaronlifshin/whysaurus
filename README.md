@@ -18,7 +18,8 @@ Basic Setup Instructions:
 - Windows: try [WinLESS](http://www.winless.org), and only compile the files listed in bin/compilelessc.sh, and set their output (by right clicking on the files) to /static/css.
 5. Run `bin/compilelessc.sh` to compile CSS resources
    For Linux just run `npm install -g less`
-6. `bin/run.sh` or run in the Google App Engine Launcher and set to port 8081
+6. `bin/run.sh` to deploy locally
+
 
 Detailed Setup Instructions:
 
@@ -48,7 +49,7 @@ Detailed Setup Instructions:
   * You may need to apply this patch: https://gist.github.com/hlop/4951717/ (download gist, close SimpLESS, right-click SimpLESS in your applications folder and select show package contents, copy the downloaded less.js to SimpLESS\Resources\app\3p and overwrite the existing file
   * If you refresh your locally hosted Whysaurus page, it should now have the correct styling
 
-5. Create a Whysaurus account
+5. Create a Whysaurus account using email (google and facebook don't work locally, currently)
 
 6. Make your local Whysaurus account an admin
 (Currently a different procedure than making a user admin on staging or production!) 

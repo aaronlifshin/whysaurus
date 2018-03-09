@@ -861,12 +861,15 @@ class PointCardComponent extends React.Component {
         {this.relevanceLinkUI()}
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
         
-        <CSSTransitionGroup transitionName="stackCardDealBottom" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+        <CSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>        
+          <div className="quickTestRect">Test rectangle!</div>
+        </CSSTransitionGroup>        
+                
         <div className={classesStackCard1} key={1} tabIndex="-1"> 
         
-        <div className={classesStackCard2}  tabIndex="-1">
+        <div className={classesStackCard2} key={2} tabIndex="-1">
         
-        <div className={classesStackCard3}  tabIndex="-1">
+        <div className={classesStackCard3} key={3} tabIndex="-1">
 
         <div className={classesPointCard} tabIndex="-1">
         <div className={ this.contentWidth()  }>
@@ -900,7 +903,7 @@ class PointCardComponent extends React.Component {
           </div>
           </div>         
           </div>
-          </CSSTransitionGroup>
+
           </div>
           </div>
 

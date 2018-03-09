@@ -37,6 +37,14 @@
 // Animation
 @hoverTransitionDuration: .08s;
 
+// For testing
+.quickTestRect {
+  width: 100px;
+  height: 100px;
+  color: yellow;
+  background-color: teal;
+}
+
 .hidden {
   display: none;
 }
@@ -587,6 +595,28 @@ a:hover .perctSignSmall {
 	transform-origin: top left;
 }
 
+
+// FOR TESTING CSSTRANSITIONGROUP
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+///////////////////////////////
+
+
 // DEALING CARDS ANIMATION:
 // See also EVIDENCE BLOCK REVEAL ANIMATION
 
@@ -596,18 +626,16 @@ a:hover .perctSignSmall {
 @stackDealTimingFunction: cubic-bezier(.25, 0, .9, .4);  // ease-out and accelerate
 @stackDealNumberOfCards: 3;
 
-@keyframes stackCardDealBottom {
+@keyframes stackCardDealBottomKeys {
    0% { transform: translate(0, 0); }
    100% { transform: translate(@stackDealX, @stackDealY); }
 }
 .stackCardDealBottom-enter {	 
-	animation-name: stackCardDealBottom;
+	animation-name: stackCardDealBottomKeys;
   animation-duration: @stackDealDuration;
 	animation-timing-function: @stackDealTimingFunction;
 	animation-iteration-count: 1;
 }
-
-
 
 @keyframes stackCardDealInvertXform {
    0% { transform: translate(0, 0); }
@@ -619,6 +647,12 @@ a:hover .perctSignSmall {
 	animation-timing-function: @stackDealTimingFunction;
 	animation-iteration-count: 1;	
 }
+
+.stackCardDealInvertXform-enter-active {
+  color: pink;
+  background-color: purple;
+}
+
 .stackCardDealInvertXform-leave {
 	animation-name: stackCardDealInvertXform;
   animation-duration: @stackDealDuration;
@@ -626,8 +660,6 @@ a:hover .perctSignSmall {
 	animation-iteration-count: 1;	
 }
 
-
-/*
 .stackCardDealFade {
 	// make border disappear with alpha bc it won't reposition children 
 	// use !important to override red borders from .counter
@@ -640,7 +672,7 @@ a:hover .perctSignSmall {
 	transition: @stackDealDuration;
 	transition-timing-function: @stackDealTimingFunction;
 }
-*/
+
 // END OF DEALING CARDS ANIMATION //
 
 .stackCardHidden {

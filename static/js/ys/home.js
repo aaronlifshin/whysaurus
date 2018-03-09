@@ -54,7 +54,7 @@ class QuickCreate extends React.Component {
 
   render(){
     let props = this.props;
-    let charCountClass = `newPointCharNum pull-right ${this.props.charsLeft && this.props.charsLeft < 0 ? 'overMaxChars' : ''}`
+    let charCountClass = `charCounter newPointCharNum pull-right ${this.props.charsLeft && this.props.charsLeft < 0 ? 'overMaxChars' : ''}`
     return <Form onSubmit={this.submit}
                  validate={this.errorValidator}
                  dontValidateOnMount={true}>

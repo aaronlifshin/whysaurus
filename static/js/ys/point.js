@@ -832,94 +832,94 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
-  render(){
-    if (this.state.deleting) {
-      return <div>Deleting...</div>
-    } 
-    else if (this.point){
-      const point = this.point;
-//      console.log("rendering " + point.url)
-      let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
+  pointCardBody() {
+    let point = this.point
+    let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
+    let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
+    let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
+
+    return <div className={classesPointCard} tabIndex="-1">
+      <div className={ this.contentWidth()  }>
+        <div className="row-fluid">
+          <div className="cardTopRow span12">
+            <Byline point={point}/>
+            <CommentCount point={point}/>
+            <ShareIcon point={point}/>
+            { this.moreMenu() }
+          </div>
+        </div>
+        <div className="row-fluid">
+          <div className="pointText span12">
+          { this.pointTextComponent() }
+          </div>
+        </div>
+        {this.sources()}
+        <div className="row-fluid">
+          <div className="cardBottomActionRow" >
+            <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
+            <span className="cardBottomAction bottomActionDot">·</span>
+            <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+            <span className={classesRelevanceDot}>·</span>
+            <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+          </div>
+        </div>
+      </div>
+      {this.image()}
+    </div>
+  }
+//    <CSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+//    <div className="quickTestRect">Test rectangle!</div>
+//    </CSSTransitionGroup>
+
+  cardStack(children) {
+    if (this.expanded()) {
+      return children()
+    } else {
       let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
       let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
       let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-      let classesPointCard = `point-card stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
-      let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
-      let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
-      //console.log("linksRatio " + this.linksRatio() )
-      
-      return <div className="listedClaimGroup">    
+      return <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
+        <div className={classesStackCard1} key={1} tabIndex="-1">
+          <div className={classesStackCard2} key={2} tabIndex="-1">
+            <div className={classesStackCard3} key={3} tabIndex="-1">
+              {children()}
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
+  render(){
+    if (this.state.deleting) {
+      return <div>Deleting...</div>
+    } else if (this.point){
+      const point = this.point;
+      let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
+      return <div className="listedClaimGroup">
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-
-        <div className="relCtrlAndLinkAndStackCards">
-        <div className={classesListedClaim} tabIndex="-1" >
-        {this.relevanceCtrlUI()}
-
-        <div className="relLinkAndStackCards">
-        {this.relevanceLinkUI()}
-        <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
-        
-        <CSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>        
-          <div className="quickTestRect">Test rectangle!</div>
-        </CSSTransitionGroup>        
-                
-        <div className={classesStackCard1} key={1} tabIndex="-1"> 
-        
-        <div className={classesStackCard2} key={2} tabIndex="-1">
-        
-        <div className={classesStackCard3} key={3} tabIndex="-1">
-
-        <div className={classesPointCard} tabIndex="-1">
-        <div className={ this.contentWidth()  }>
-        <div className="row-fluid">
-        <div className="cardTopRow span12">
-          <Byline point={point}/>
-          <CommentCount point={point}/>
-          <ShareIcon point={point}/>
-          { this.moreMenu() }
-        </div>
-        </div>
-        <div className="row-fluid">
-        <div className="pointText span12">
-          { this.pointTextComponent() }
-        </div>
-        </div>
-        {this.sources()}
-        <div className="row-fluid">
-        <div className="cardBottomActionRow" >
-          <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
-          <span className="cardBottomAction bottomActionDot">·</span>
-                  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-                  <span className={classesRelevanceDot}>·</span>
-                  <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
-              </div>
+          <div className="relCtrlAndLinkAndStackCards">
+            <div className={classesListedClaim} tabIndex="-1" >
+              {this.relevanceCtrlUI()}
+              <div className="relLinkAndStackCards">
+                {this.relevanceLinkUI()}
+                <CSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+                  {this.cardStack(() => this.pointCardBody())}
+                </CSSTransitionGroup>
               </div>
             </div>
-            {this.image()}
-            </div>
-
           </div>
-          </div>         
+          <div className="evidenceRow row-fluid">
+            {this.evidence()}
           </div>
-
-          </div>
-          </div>
-
-          </div>
-          </div>
-
-      <div className="evidenceRow row-fluid">
-      {this.evidence()}
+        </div>
       </div>
-
-      </div>
-      </div>
-    } 
+    }
     else if (this.props.data && this.props.data.loading) {
       return <div>Loading...</div>
-    } 
+    }
     else {
       return <div>Something strange happened...</div>
     }

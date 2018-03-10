@@ -25,6 +25,7 @@
         <th class='adminTableDateCol'>Last Login (PST)</th>
         <th class='adminTableDateCol'>Last Visit (PST)</th>
         <th class='adminTableDateCol'>Last Notification Email</th>
+        <th class='adminTableDateCol'>Created</th>
         <th class='adminTableEllipsisObvi'>Set User GA Id</th>
         <th class='adminTableEllipsisObvi'>Set Internal</th>
         <th class='adminTableClassrooms'>User Classroom(s)</th>
@@ -51,6 +52,7 @@
         <td class='adminTableDateCol'>{{yUser.u.PSTlastlogin}}</td>
         <td class='adminTableDateCol'>{{yUser.u.PSTlastView}}</td>
 		<td class='adminTableDateCol'>{{yUser.u.lastEmailSent}}</td>
+		<td class='adminTableDateCol'>{{yUser.u.created}}</td>
         <td class='adminTableEllipsisObvi'>
             {% if yUser.u %}
                 <a  name="setUserGaid" data-userurl="{{yUser.u.url}}">Set GA Id</a>

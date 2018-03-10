@@ -213,7 +213,10 @@ class WhysaurusUser(auth_models.User):
                 break
 
         if newId is None:
+            logging.warning("Failed to generate new user id!")
             return None
+
+        logging.info('New User GA Id Generated: %s' % newId)
 
         return newId
     

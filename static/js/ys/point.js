@@ -468,11 +468,11 @@ class RelevanceComponent extends React.Component {
           <a className={this.linkClassFor(66) + " relVoteLink66"} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(33) + " relVoteLink33"} onClick={this.handleClick33}>33<span className="perctSignSmall">%</span></a>
           <a className={this.linkClassFor(0) + " relVoteLink0"} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
-            </div>
+        </div>
         <div className="relevanceExplanation">
-                  <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} votes so far</div>
+          <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} {this.relevanceVoteCount == 1 ? 'vote' : 'votes'} so far</div>
           <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>
-                </div>
+        </div>
       </div>
     }
 }

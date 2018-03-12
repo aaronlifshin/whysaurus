@@ -5,15 +5,15 @@ import * as schema from '../schema';
 import { graphql, compose } from 'react-apollo';
 import TitleText from './TitleText'
 
-const EditTitleForm = ( props ) => {
+const EditTitleForm = ({point, onSubmit, onClick}) => {
   return (
-    <Form onSubmit={props.onSubmit}
-          defaultValues={{title: props.point.title}}
+    <Form onSubmit={onSubmit}
+          defaultValues={{title: point.title}}
           validate={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
         <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
-          <TitleText onClick={props.onClick} id="editPointTextField"/>
-          <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
+          <TitleText onClick={onClick} id="editPointTextField"/>
+          <button onClick={onClick} className="buttonUX2" type="submit">Save</button>
         </form>
       )}
     </Form>
@@ -22,33 +22,25 @@ const EditTitleForm = ( props ) => {
 
 
 class EditPointComponent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {saving: false}
-    this.handleClickSave = this.handleClickSave.bind(this);
-    this.handleClickNoProp = this.handleClickNoProp.bind(this);
-  }
-
-  // TODO: this simple function is also defined in the PointCard component - can/should it be declared in a single place somehow?
-  handleClickNoProp(e) {
-    e.stopPropagation();
-  }
+  state = {saving: false}
 
   get point() {
     return this.props.point;
   }
 
-  handleClickSave(values, e, formApi) {
+  handleClickNoProp = (e) => {
+    e.stopPropagation();
+  }
+
+  handleClickSave = (values, e, formApi) => {
     values.url = this.point.url
     this.setState({saving: true})
     this.props.mutate({
       variables: values
-    })
-    // this component will be replaced after save, so we don't need to update state
+    }).then(null, (err) => this.setState({saving: false}))
   }
 
   render(){
-    const score = this.point.pointValue;
     if (this.state.saving) {
       return <div><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</div>;
     } else {

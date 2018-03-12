@@ -726,6 +726,7 @@ class PointCardComponent extends React.Component {
 
   handleClickUnlink = (e) => {
     e.stopPropagation()
+    this.setState({unlinking: true})
     this.props.unlink(this.props.parentPoint.url, this.point.url, this.props.link.type).then((success) => {
       console.log("unlink success")
     },
@@ -772,8 +773,9 @@ class PointCardComponent extends React.Component {
   render(){
     if (this.state.deleting) {
       return <div>Deleting...</div>
-    }
-    else if (this.point){
+    } else if (this.state.unlinking) {
+      return <div>Unlinking...</div>
+    } else if (this.point){
       const point = this.point;
 //      console.log("rendering " + point.url)
       let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
@@ -879,7 +881,7 @@ export const PointCard = compose(
   graphql(UnlinkPointMutation, {
     props: ({ mutate }) => ({
       unlink: (parentURL, url, linkType) => mutate({variables: {parentURL, url, linkType},
-                                                    refetchQueries: [{query: EditorsPicks}, {query: NewPoints}]})
+                                                    refetchQueries: [{query: GetPoint, variables: {url: parentURL}}]})
     })
   })
 )(PointCardComponent)

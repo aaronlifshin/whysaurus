@@ -13,7 +13,7 @@ const TitleText = props => (
 
       return (
         <div className="titleField">
-          <CharCount countedValue={value.title} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
+          <CharCount countedValue={value.title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
             <div>
               <Text field="title" {...rest}/>
               <p classes={charsLeft && charsLeft < 0 ? 'overMaxChars' : ''}>{charsLeft}</p>

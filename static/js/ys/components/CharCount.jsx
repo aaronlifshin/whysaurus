@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 export default class CharCount extends React.Component {
   static propTypes = {
     render: PropTypes.func.isRequired,
-    countedValue: PropTypes.number.isRequired,
+    countedValue: PropTypes.string.isRequired,
     maxChars: PropTypes.number.isRequired
   }
 

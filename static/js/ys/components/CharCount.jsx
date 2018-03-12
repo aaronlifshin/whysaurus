@@ -1,32 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export class CharCount extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.updateCharCountOnChange = this.updateCharCountOnChange.bind(this);
-    this.state = {
-      charsLeft: props.countedValue ? (props.maxChars - props.countedValue.length) : props.maxChars
-    };
-  }
-
-  updateCharCountOnChange(text) {
-    this.setState({
-      charsLeft: this.props.maxChars - text.length
-    });
+export default class CharCount extends React.Component {
+  static propTypes = {
+    render: PropTypes.func.isRequired,
+    countedValue: PropTypes.number.isRequired,
+    maxChars: PropTypes.number.isRequired
   }
 
   render(){
+    const {render, countedValue, maxChars} = this.props
     return (
-      this.props.render({charsLeft: this.state.charsLeft, countedFieldOnChange: this.updateCharCountOnChange})
+      this.props.render({charsLeft: (countedValue ? (maxChars - countedValue.length) : maxChars)})
     )
   }
 }
-
-CharCount.propTypes = {
-  render: PropTypes.func.isRequired,
-  maxChars: PropTypes.number.isRequired
-}
-
-export default CharCount

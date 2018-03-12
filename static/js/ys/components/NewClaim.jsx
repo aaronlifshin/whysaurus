@@ -1,6 +1,5 @@
 import React from 'react'
 import * as validations from '../validations';
-import * as formUtils from '../form_utils.js';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
 import ReactFilestack from 'filestack-react';

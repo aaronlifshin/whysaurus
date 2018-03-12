@@ -12,7 +12,6 @@ import { Carousel } from 'react-responsive-carousel';
 import MediaQuery from 'react-responsive';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import * as validations from './validations';
-import * as formUtils from './form_utils.js';
 import QuickCreateClaim from './components/QuickCreateClaim'
 
 const EditorsPicks = graphql(schema.EditorsPicks, {

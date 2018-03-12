@@ -211,10 +211,10 @@ class LinkPoint(graphene.Mutation):
             supportingPoint.addVote(user)
 
             # these two are in service of the SubPointConnection logic - we should find a way to DRY this up
-            supportingPoint.parent = oldPoint
+            supportingPoint.parent = newVersion
             supportingPoint.link_type = linkType
 
-            return LinkPoint(parent=oldPoint, point=supportingPoint)
+            return LinkPoint(parent=newVersion, point=supportingPoint)
         else:
             raise Exception("User not logged in.")
 

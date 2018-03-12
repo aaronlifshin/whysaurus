@@ -12,67 +12,7 @@ import { Carousel } from 'react-responsive-carousel';
 import MediaQuery from 'react-responsive';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import * as validations from './validations';
-import * as formUtils from './form_utils.js';
-import NewClaim from './components/NewClaim'
-
-
-
-class QuickCreate extends React.Component {
-  constructor(props) {
-    super(props);
-    this.submit = this.submit.bind(this);
-    this.errorValidator = this.errorValidator.bind(this);
-    this.state = {submitting: false};
-  }
-
-  submit(values, e, formApi){
-    this.setState({submitting: true});
-    this.props.onSubmit(values).then(
-      (val) => {
-        this.setState({submitting: false});
-        formApi.resetAll();
-      },
-      (err) => {
-        this.setState({submitting: false});
-      });
-  }
-
-  errorValidator(values) {
-    return {
-      title: validations.validateTitle(values.title)
-    };
-  }
-
-  submitButton(){
-    if (this.state.submitting) {
-      return <span>Adding your point...</span>;
-    } else {
-      return <button onClick={this.props.onClick} className="buttonUX2 buttonUX2Blue  homePageNewPointCallButton pull-right" type="submit">Publish</button>;
-    }
-  }
-            //<p className={this.props.charsLeft && this.props.charsLeft < 0 ? ' newPointCharNum pull-right overMaxChars' : 'newPointCharNum pull-right'}>{this.props.charsLeft}</p>
-
-  render(){
-    let props = this.props;
-    let charCountClass = `charCounter newPointCharNum pull-right ${this.props.charsLeft && this.props.charsLeft < 0 ? 'overMaxChars' : ''}`
-    return <Form onSubmit={this.submit}
-                 validate={this.errorValidator}
-                 dontValidateOnMount={true}>
-      { formApi => (
-          <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
-            <div className="newPointInputRowFieldArea">
-              <Text onChange={this.props.updateCharCount} field="title" id="newPointTextField" className="mainPageInput" />              
-            </div>
-            {this.submitButton()}
-            <p className={charCountClass}>{this.props.charsLeft}</p>
-            <p>{ formApi.errors && formApi.errors.title }</p>
-          </form>
-      )}
-    </Form>;
-  }
-}
-
-const CountedQuickCreate = formUtils.withCharCount(QuickCreate, validations.titleMaxCharacterCount);
+import QuickCreateClaim from './components/QuickCreateClaim'
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
   props: ({ownProps, data: { loading, homePage }}) => ({
@@ -167,7 +107,7 @@ class Home extends React.Component {
       {this.illustrations()}
       <div className="mainPageClaimCreationArea">
         <h3 className="mainPageClaimCreationLabel">Make an Argument You Want to Prove</h3>
-        <CountedQuickCreate onSubmit={this.createNewPoint}/>
+        <QuickCreateClaim onSubmit={this.createNewPoint}/>
       </div>
       <div className="mainPageContentArea">
         <div id="mainPageFeaturedArea">

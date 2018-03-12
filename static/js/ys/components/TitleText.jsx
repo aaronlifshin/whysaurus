@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { Form, Text, Field } from 'react-form'
 import CharCount from './CharCount'
 import * as validations from '../validations'
-import * as formUtils from '../form_utils.js'
 
 const TitleText = props => (
   <Field field={props.field}>
@@ -14,9 +13,9 @@ const TitleText = props => (
 
       return (
         <div className="titleField">
-          <CharCount maxChars={validations.titleMaxCharacterCount} render={({charsLeft, countedFieldOnChange}) => (
+          <CharCount countedValue={value.title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
             <div>
-              <Text onChange={countedFieldOnChange} field="title" {...rest}/>
+              <Text field="title" {...rest}/>
               <p classes={charsLeft && charsLeft < 0 ? 'overMaxChars' : ''}>{charsLeft}</p>
               <p>{error && error.title}</p>
             </div>

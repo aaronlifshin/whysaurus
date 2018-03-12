@@ -7,10 +7,10 @@ import MediaQuery from 'react-responsive';
 import { CSSTransitionGroup } from 'react-transition-group' // ES6
 import AnimateOnChange from 'react-animate-on-change';
 import * as validations from './validations';
-import * as formUtils from './form_utils.js';
 import { UnlinkPointMutation, DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from './schema.js';
 import {PointList} from './point_list.js'
 import AddEvidence from './components/AddEvidence'
+import EditPoint from './components/EditPoint'
 
 // TODO: make work
 //import Arrow from '@elsdoerfer/react-arrow';
@@ -74,70 +74,6 @@ const VoteStats = ({point}) => (
       </p>
     </div>
 )
-
-const EditTitleFormComponent = ( props ) => {
-  return (
-      <Form onSubmit={props.onSubmit}
-            defaultValues={{title: props.point.title}}
-            validate={values => ({title: validations.validateTitle(values.title)})}>
-      { formApi => (
-          <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
-          <Text onClick={props.onClick} onChange={props.updateCharCount} field="title" id="editPointTextField"/>
-          <p>{formApi.errors && formApi.errors.title}</p>
-          <p className={props.charsLeft && props.charsLeft < 0 ? 'overMaxChars' : ''}>{props.charsLeft}</p>
-          <button onClick={props.onClick} className="buttonUX2" type="submit">Save</button>
-          </form>
-      )}
-    </Form>
-  );
-}
-
-const EditTitleForm = formUtils.withCharCount(EditTitleFormComponent, validations.titleMaxCharacterCount);
-
-class EditPointComponent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {saving: false}
-    this.handleClickSave = this.handleClickSave.bind(this);
-    this.handleClickNoProp = this.handleClickNoProp.bind(this);
-  }
-
-  // TODO: this simple function is also defined in the PointCard component - can/should it be declared in a single place somehow?
-  handleClickNoProp(e) {
-    e.stopPropagation();
-  }
-
-  get point() {
-    return this.props.point;
-  }
-
-  handleClickSave(values, e, formApi) {
-    values.url = this.point.url
-    this.setState({saving: true})
-    this.props.mutate({
-      variables: values
-    })
-    // this component will be replaced after save, so we don't need to update state
-  }
-
-  render(){
-    const score = this.point.pointValue;
-    if (this.state.saving) {
-      return <div><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</div>;
-    } else {
-      return <div>
-        <span>
-        <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title}/>
-        </span>
-        <button onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
-      </div>;
-    }
-  }
-}
-
-const EditPoint = compose(
-  graphql(EditPointQuery),
-)(EditPointComponent)
 
 class PointComponent extends React.Component {
   constructor(props) {
@@ -836,7 +772,7 @@ class PointCardComponent extends React.Component {
   render(){
     if (this.state.deleting) {
       return <div>Deleting...</div>
-    } 
+    }
     else if (this.point){
       const point = this.point;
 //      console.log("rendering " + point.url)
@@ -849,8 +785,8 @@ class PointCardComponent extends React.Component {
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
-      
-      return <div className="listedClaimGroup">    
+
+      return <div className="listedClaimGroup">
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
         <div className="relCtrlAndLinkAndStackCards">
@@ -860,15 +796,15 @@ class PointCardComponent extends React.Component {
         <div className="relLinkAndStackCards">
         {this.relevanceLinkUI()}
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
-        
-        <CSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>        
+
+        <CSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           <div className="quickTestRect">Test rectangle!</div>
-        </CSSTransitionGroup>        
-                
-        <div className={classesStackCard1} key={1} tabIndex="-1"> 
-        
+        </CSSTransitionGroup>
+
+        <div className={classesStackCard1} key={1} tabIndex="-1">
+
         <div className={classesStackCard2} key={2} tabIndex="-1">
-        
+
         <div className={classesStackCard3} key={3} tabIndex="-1">
 
         <div className={classesPointCard} tabIndex="-1">
@@ -899,9 +835,8 @@ class PointCardComponent extends React.Component {
             </div>
             {this.image()}
             </div>
-
           </div>
-          </div>         
+          </div>
           </div>
 
           </div>
@@ -916,10 +851,10 @@ class PointCardComponent extends React.Component {
 
       </div>
       </div>
-    } 
+    }
     else if (this.props.data && this.props.data.loading) {
       return <div>Loading...</div>
-    } 
+    }
     else {
       return <div>Something strange happened...</div>
     }

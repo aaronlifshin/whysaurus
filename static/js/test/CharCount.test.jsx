@@ -6,12 +6,13 @@ import { Form, Text } from 'react-form';
 test('CharCount component renders', () => {
   const component = renderer.create(
     <Form>
-      {formApi => (
+      {({values}) => (
         <form>
           <CharCount maxChars={200}
-                     render={({charsLeft, countedFieldOnChange}) => (
+                     countedValue={values.title}
+                     render={({charsLeft}) => (
             <div>
-              <Text onChange={countedFieldOnChange} />
+              <Text />
               <span id="charsLeft">{charsLeft}</span>
             </div>
             )}/>

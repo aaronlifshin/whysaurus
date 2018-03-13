@@ -51,7 +51,7 @@ class AddEvidenceForm extends React.Component {
     }
   }
   
-  // TODO: add multiple options and randomize!
+  // TODO: add multiple options for each type and randomize!
   generatePlaceholderText(evidenceType) {
     let placeholderSupport = `Make a claim, eg "Dogs can learn more tricks than cats."`
     let placeholderCounter= `Make a claim, eg "Cats are better than dogs at killing mice."`

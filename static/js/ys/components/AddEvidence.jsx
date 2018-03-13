@@ -82,7 +82,7 @@ class AddEvidence extends React.Component {
 
   renderAddEvidenceForm = (evidenceType) => {
     console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
-    let groupClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    let groupClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrowForm"}`
     return <span className={groupClass}>
       { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> :
         <AddEvidenceForm evidenceType={evidenceType}
@@ -133,14 +133,15 @@ class AddEvidence extends React.Component {
   }
 
   renderSupportButton = () => this.renderAddEvidenceButton("supporting")
-
+  
   renderCounterButton = () => this.renderAddEvidenceButton("counter")
 
   renderDualButtons = () => <span>
-    {this.renderSupportButton()}
-    {this.renderCounterButton()}
+    {this.renderAddEvidenceButton("supporting")}
+    {this.renderAddEvidenceButton("counter")}
   </span>
 
+  
   renderEvidenceArrow = (color) => {
     let arrowGrpClass = `arrowEvidence`
     let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
@@ -153,21 +154,28 @@ class AddEvidence extends React.Component {
 
   render() {
     let topDivClass = `addEvidenceUI ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    let controlsAreaClass = `addEvidenceControlsArea ${(this.numSupportingPlusCounter() == 0) && "addEvidenceControlsAreaNoEvidence"}`
     switch (this.uiType) {
     case "DUAL":
       return <div className={topDivClass}>
         { this.renderEvidenceArrow() }
-        { (this.adding) ? this.renderAddEvidenceFormBasedOnState() : this.renderDualButtons() }
+        <span className={controlsAreaClass}>
+          { (this.adding) ? this.renderAddEvidenceFormBasedOnState() : this.renderDualButtons() }
+        </span>
       </div>
     case "SUPPORT":
       return <div className={topDivClass}>
         { this.renderEvidenceArrow() }
-        { this.state.addingSupport ? this.renderAddEvidenceForm("supporting") : this.renderSupportButton() }
+        <span className={controlsAreaClass}>
+          { this.state.addingSupport ? this.renderAddEvidenceForm("supporting") : this.renderSupportButton() }
+        </span>
       </div>
     case "COUNTER":
       return <div className={topDivClass}>
         { this.renderEvidenceArrow("red") }
-        { this.state.addingCounter ? this.renderAddEvidenceForm("counter") : this.renderCounterButton() }
+        <span className={controlsAreaClass}>
+          { this.state.addingCounter ? this.renderAddEvidenceForm("counter") : this.renderCounterButton() }
+        </span>       
       </div>
     default:
       console.log("AddEvidenceCard : render() : something's wrong!")

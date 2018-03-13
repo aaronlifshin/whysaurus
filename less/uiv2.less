@@ -708,6 +708,7 @@ a:hover .perctSignSmall {
   padding-right: @cardPaddingRight;
   padding-top: @cardPaddingTop;
   padding-bottom: @cardPaddingTop;
+  z-index: 2; // because the AddEvidence UI overlaps the bottomActionRow in some cases
 }
 
 .relExtraMarginBottom {
@@ -1297,7 +1298,7 @@ li .iconWithStat {
 }
 
 .point-card .agree.current-vote {
-    color: black; //@green;
+  color: black; //@green;
   font-weight: bold;
 }
 

@@ -199,7 +199,7 @@ class EvidenceLink extends React.Component {
   whichEvidenceButton() {
     if (this.hasEvidence()) {
       if (this.props.expanded) {
-        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Close</a>
+        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
         return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
       }

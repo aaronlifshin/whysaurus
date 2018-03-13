@@ -50,7 +50,17 @@ class AddEvidenceForm extends React.Component {
       }
     }
   }
-
+  
+  // TODO: add multiple options and randomize!
+  generatePlaceholderText(evidenceType) {
+    let placeholderSupport = `Make a claim, eg "Dogs can learn more tricks than cats."`
+    let placeholderCounter= `Make a claim, eg "Cats are better than dogs at killing mice."`
+    if (this.props.evidenceType=="counter") {
+        return placeholderCounter 
+    } else {
+        return placeholderSupport
+    }
+  } 
 
   render(){
     const {userLoading, user} = this.props
@@ -64,7 +74,7 @@ class AddEvidenceForm extends React.Component {
                   <form onSubmit={submitForm} className="addEvidenceForm">
                       <TitleText id="title" className="titleTextField"
                                    autoComplete='off'
-                                   placeholder='Make a claim, eg "Dogs can learn more tricks than cats."'
+                                   placeholder={this.generatePlaceholderText(this.props.evidenceType)}
                                    onFocus={() => {this.setState({titleTextFocused: true})}}
                                    // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
                                    // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired

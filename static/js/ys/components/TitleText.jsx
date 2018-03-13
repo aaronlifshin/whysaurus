@@ -11,11 +11,12 @@ const TitleText = props => (
       const { field, ...rest } = props
       const { value, error, warning, success, setValue, setTouched } = fieldApi
       let classesCharCounterDefault = "charCounter "
+      let classesErrorArea = `titleTextErrorArea ${(error && error.title) ? "titleTextErrorAreaContent" : "" }`
       return (
         <div className="claimTitleField">
           <CharCount countedValue={value.title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
             <span>
-              <span className="titleTextErrorArea">{error && error.title}</span>
+              <span className={classesErrorArea}>{error && error.title}</span>
               <Text field="title" {...rest}/>
               <span className={classesCharCounterDefault + (charsLeft && charsLeft < 0 ? ' overMaxChars' : '')}>{charsLeft}</span>              
             </span>

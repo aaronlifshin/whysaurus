@@ -788,6 +788,10 @@ class PointCardComponent extends React.Component {
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
 
+      
+      //<div className="quickTestRect">Test rectangle!</div>
+  
+      
       return <div className="listedClaimGroup">
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
@@ -800,7 +804,6 @@ class PointCardComponent extends React.Component {
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
 
         <CSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          <div className="quickTestRect">Test rectangle!</div>
         </CSSTransitionGroup>
 
         <div className={classesStackCard1} key={1} tabIndex="-1">

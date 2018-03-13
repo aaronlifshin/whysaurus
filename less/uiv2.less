@@ -1086,12 +1086,6 @@ li .iconWithStat {
   border-radius: @buttonUX2_borderRadius;
 }
 
-
-
-
-
-
-
 .buttonUX2:focus {
     outline: 2px solid @blue;
 }
@@ -1145,8 +1139,8 @@ li .iconWithStat {
 .cancelButtonAddEvidence {
   padding-right: 0;
   float: right;
-    margin-top: 13px;
-    margin-right: 8px;
+  margin-top: 6px;
+  margin-right: 12px;
 }
 
 
@@ -1207,13 +1201,17 @@ li .iconWithStat {
 }
 
 .addEvidenceFormTextField {
-  height: 28px;
+  //height: 28px;
   width: @cardWidth - 20px; // I don't know why this subtraction is needed visually, but it seems to be -JF
   font-size: @baseFontSizeUX2;
   color: black;
   padding: 8px;
+  padding-bottom: 32px;
+  padding-top: 8px;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0; //8px;
+  position: relative;
+  //top: -20px; // counteract 
 }
 .addEvidenceFormTextField::placeholder {
   color: grey;
@@ -1230,7 +1228,7 @@ li .iconWithStat {
 
 .addEvidenceFormButton {
   margin-left: 4px;
-  margin-top: 8px;
+  //margin-top: 8px;
   //height: 36px;
     //width: 24px;
   font-size: @baseFontSizeUX2 * 1.13125; // ~18px
@@ -1242,6 +1240,10 @@ li .iconWithStat {
   margin-left: 27px;
   position: relative;
     top: 4px;
+}
+
+.claimTextButtonsArea {
+  width: 100%;
 }
 
 
@@ -1476,12 +1478,29 @@ a:hover .arrowAddEvidenceButton {
   margin-right: 4px;
 }
 
+
+.claimTitleField {
+  margin-bottom: 12px;
+
+}
+
+.titleTextErrorArea {
+  display: block;
+}
+
 // CHARACTER COUNTER
 
 .charCounter {
     font-size: @fontSizeSmall;
     color: @grayTextLight;
-    margin-left: 310px;
+    //margin-left: 310px;
+    margin-right: 12px;
+    text-align: right;
+    display: block;
+    // cheat position up into the text input area
+    z-index: 100;
+    position: relative;
+    margin-top: -24px; //top: -24px;
 }
 
 .overMaxChars {
@@ -1558,8 +1577,10 @@ a:hover .arrowAddEvidenceButton {
 .mainPageClaimCreationLabel {
   margin-left: 12px;
   font-size: 24px;
+  //margin-bottom: 0px;
 }
 
+/* DEPRECATED
 .newPointInputRowFieldArea {
     // use the full width, minus the space needed for the publish button
     // the ~ and "" is needed to pass the calc command through the less compiler
@@ -1569,6 +1590,7 @@ a:hover .arrowAddEvidenceButton {
     margin-right:8px;
     //display:inline-block;
 }
+*/
 
 .mainPageInput {
   margin-bottom: 8px;

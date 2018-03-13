@@ -34,10 +34,10 @@ export default class QuickCreateClaim extends React.Component {
                  dontValidateOnMount={true}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
-            <div className="newPointInputRowFieldArea">
-              <TitleText id="newPointTextField" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+            <TitleText id="newPointTextField" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+            <div className="claimTextButtonsArea">
+              {this.submitButton()}
             </div>
-            {this.submitButton()}
           </form>
       )}
     </Form>;

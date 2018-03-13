@@ -16,7 +16,7 @@ export default class NewClaim extends React.Component {
                  validate={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
         <form onSubmit={formApi.submitForm} id="form1" className="addEvidenceForm">
-          <TitleText id="title" className="addEvidenceFormTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+          <TitleText id="title" className="titleTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
           <ReactFilestack
             apikey={config.filestack.key}
             buttonText="Upload Image"

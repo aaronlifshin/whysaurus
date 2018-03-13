@@ -62,7 +62,7 @@ class AddEvidenceForm extends React.Component {
           query={title}
           render={({results, searching}) =>
                   <form onSubmit={submitForm} className="addEvidenceForm">
-                      <TitleText id="title" className="addEvidenceFormTextField"
+                      <TitleText id="title" className="titleTextField"
                                    autoComplete='off'
                                    placeholder='Make a claim, eg "Dogs can learn more tricks than cats."'
                                    onFocus={() => {this.setState({titleTextFocused: true})}}

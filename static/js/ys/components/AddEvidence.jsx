@@ -125,9 +125,9 @@ class AddEvidence extends React.Component {
     let classesButton = `buttonUX2 ${evidenceType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
     let nameButton = `${evidenceType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
     let buttonLabel = this.addText(evidenceType)
-    let aClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    let classesAnchor = ""
     let onClick = evidenceType == 'supporting' ? this.handleClickAddEvidenceSupport : this.handleClickAddEvidenceCounter
-    return <a className={aClass} onClick={onClick}>
+    return <a className={classesAnchor} onClick={onClick}>
       <button type="button" name={nameButton} tabIndex="0" className={classesButton}>{buttonLabel}</button>
     </a>
   }
@@ -142,7 +142,7 @@ class AddEvidence extends React.Component {
   </span>
 
   renderEvidenceArrow = (color) => {
-    let arrowGrpClass = `arrowEvidence ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    let arrowGrpClass = `arrowEvidence`
     let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
     let arrowStemClass = `arrowStemEvidence ${(this.numSupportingPlusCounter() == 0) && "arrowStemEvidenceShort" } ${color == "red" && "arrowStemRed"}`
     return <div className={arrowGrpClass}>
@@ -152,7 +152,7 @@ class AddEvidence extends React.Component {
   }
 
   render() {
-    let topDivClass = `addEvidenceUI`
+    let topDivClass = `addEvidenceUI ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     switch (this.uiType) {
     case "DUAL":
       return <div className={topDivClass}>

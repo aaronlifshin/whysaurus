@@ -10,17 +10,17 @@ const TitleText = props => (
       // field is here to strip that property out of `rest`
       const { field, ...rest } = props
       const { value, error, warning, success, setValue, setTouched } = fieldApi
-
+      let classesCharCounterDefault = "charCounter "
       return (
-        <div className="titleField">
+        <span className="titleField">
           <CharCount countedValue={value.title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
-            <div>
-              <Text field="title" {...rest}/>
-              <p classes={charsLeft && charsLeft < 0 ? 'overMaxChars' : ''}>{charsLeft}</p>
+            <span>
               <p>{error && error.title}</p>
-            </div>
+              <Text field="title" {...rest}/>
+              <span className={classesCharCounterDefault + (charsLeft && charsLeft < 0 ? 'overMaxChars' : '')}>{charsLeft}</span>              
+            </span>
               )}/>
-        </div>
+        </span>
       )
     }}
   </Field>

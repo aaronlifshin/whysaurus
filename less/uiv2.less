@@ -1209,10 +1209,11 @@ li .iconWithStat {
 .addEvidenceFormTextField {
   height: 28px;
   width: @cardWidth - 20px; // I don't know why this subtraction is needed visually, but it seems to be -JF
-    font-size: @baseFontSizeUX2;
+  font-size: @baseFontSizeUX2;
   color: black;
-    padding: 8px;
+  padding: 8px;
   display: block;
+  margin-bottom: 8px;
 }
 .addEvidenceFormTextField::placeholder {
   color: grey;
@@ -1477,10 +1478,15 @@ a:hover .arrowAddEvidenceButton {
 
 // CHARACTER COUNTER
 
+.charCounter {
+    font-size: @fontSizeSmall;
+    color: @grayTextLight;
+    margin-left: 310px;
+}
+
 .overMaxChars {
   color: @red;
 }
-
 
 // HOME PAGE ILLUSTRATIONS AND CAROUSEL
 
@@ -1572,15 +1578,6 @@ a:hover .arrowAddEvidenceButton {
     font-size: @fontSizePointTitle;
     //padding: 8px 13px;
     top: 0;
-}
-
-.charCounter {
-    font-size: @fontSizeSmall;
-    color: @grayTextLight;
-}
-
-.newPointCharNum {
-  margin-right: 8px;
 }
 
 .mainPageContentArea {

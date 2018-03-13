@@ -744,8 +744,9 @@ class PointCardComponent extends React.Component {
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEdit} className="" ><span className="iconWithStat fa fa-pencil"></span>Edit Claim</a></li>
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat fa fa-external-link"></span>Open in a new tab</a></li>
-        { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}>Delete</a></li>  }
-        { this.currentUserIsAdmin() && this.hasParent() && <li><a onClick={this.handleClickUnlink}>Unlink</a></li>  }
+        { this.currentUserIsAdmin() && <li className="dropdownMenuCategory">Admin:</li>}
+        { this.currentUserIsAdmin() && this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat fa fa-unlink"></span>Unlink</a></li>  }
+        { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}><span className="iconWithStat fa fa-trash"></span>Delete</a></li>  }
       </ul>
     </span>
   }

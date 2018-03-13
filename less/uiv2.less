@@ -45,6 +45,22 @@
   background-color: teal;
 }
 
+
+// INFINITE WIDTH
+
+#mainContainer {
+  // FOR INFINITE WIDTH VERSION
+  width: auto;
+  // FOR FINITE WIDTH COMMENT THIS LINE OUT
+  /////////////////
+  margin-left: 10%;
+}
+
+/////////////////////////////
+
+
+// UTILITIES
+
 .hidden {
   display: none;
 }
@@ -58,14 +74,6 @@
   background: pink !important;
 }
 
-#mainContainer {
-  // FOR INFINITE WIDTH VERSION
-  width: auto;
-  // FOR FINITE WIDTH COMMENT THIS LINE OUT
-  /////////////////
-  margin-left: 10%;
-}
-
 .row-fluid [class*=span] {
   min-height: auto;
 }
@@ -77,6 +85,41 @@ a:hover {
 a:focus, a:hover {
   text-decoration: unset;
 }
+
+.bringToFront {
+  z-index: 1000;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.hover {
+    position: relative;
+  cursor:pointer;
+
+    &:hover &__no-hover {
+        //opacity: 0;
+    text-decoration:underline;
+    }
+
+    &:hover &__hover {
+        opacity: 1;
+    transform: scale(1); // undos the scale(0) in &__hover below
+    }
+
+    &__hover {
+        position: absolute;
+        top: 0;
+        opacity: 0;
+    transform: scale(0); // this prevents hover being activated by mousing over the invisible menu, there might be a more official way to do this? -JF
+    }
+
+    &__no-hover {
+        opacity: 1;
+    }
+}
+
 
 //////////////////////////////////////////////
 // DROPDOWNS
@@ -111,7 +154,6 @@ a:focus, a:hover {
   padding-top: 12px;
   padding-left: 24px;
 }
-
 
 .dropdown-menu>li>a, .dropdown-menu>li>span {
     padding:10px;
@@ -169,17 +211,14 @@ a:focus, a:hover {
   position: absolute;
 }
 
+.menuDivider {
+    width: 100%;
+    border-bottom-color: #cccccc;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
 
 //////////////////////////////////////////////
-
-
-
-
-
-
-.bringToFront {
-  z-index: 1000;
-}
 
 // BG Pattern
 //
@@ -516,9 +555,6 @@ body {
   background-color: @relColor0;
 }
 
-
-
-
 /*
 .myRelevanceVoteHigh {
   color: black !important ;
@@ -536,36 +572,6 @@ body {
 }
 */
 
-.perctSignSmall {
-    font-size: 60%;
-    vertical-align: top;
-    position: relative;
-    top: -3px;
-}
-.perctSignSmallRelLink {
-    font-size: 75%;
-    vertical-align: top;
-    position: relative;
-    top: -1px;
-    left: 1px;
-}
-
-
-
-
-a:hover .perctSignSmall {
-  display: inline-block;
-  text-decoration: none !important;
-
-}
-
-.numbersFixVertAlign {
-  vertical-align: top;
-  position: relative;
-    top: -4px;
-}
-
-
 .relevanceExplanation {
   font-size: @fontSizeSmall;
   color: @grayTextLighter; //@grayTextMedium;
@@ -580,30 +586,31 @@ a:hover .perctSignSmall {
   margin-bottom: 2px;
 }
 
-
-.stackCardGroup {
-  position: relative;
-  display: inline-block;
-  margin-bottom: -8px;
-  outline-style: none;
-}
-.stackCardGroup:focus {
-  outline-style: none;
-}
-
-.stackCard {
-    border-color: hsl(210, 0%, 75%);
-  border-width: @cardBorderWidth;
-    border-style: solid;
-  background-color: white;
-  width: @cardWidth;
-  position: relative;
-    left: 3px;
+.perctSignSmall {
+    font-size: 60%;
+    vertical-align: top;
+    position: relative;
     top: -3px;
-  box-sizing: border-box;
-  transform-origin: top left;
+}
+.perctSignSmallRelLink {
+    font-size: 75%;
+    vertical-align: top;
+    position: relative;
+    top: -1px;
+    left: 1px;
 }
 
+a:hover .perctSignSmall {
+  display: inline-block;
+  text-decoration: none !important;
+
+}
+
+.numbersFixVertAlign {
+  vertical-align: top;
+  position: relative;
+  top: -4px;
+}
 
 // FOR TESTING CSSTRANSITIONGROUP
 .example-enter {
@@ -683,6 +690,29 @@ a:hover .perctSignSmall {
 }
 
 // END OF DEALING CARDS ANIMATION //
+
+.stackCardGroup {
+  position: relative;
+  display: inline-block;
+  margin-bottom: -8px;
+  outline-style: none;
+}
+.stackCardGroup:focus {
+  outline-style: none;
+}
+
+.stackCard {
+  border-color: hsl(210, 0%, 75%);
+  border-width: @cardBorderWidth;
+  border-style: solid;
+  background-color: white;
+  width: @cardWidth;
+  position: relative;
+  left: 3px;
+  top: -3px;
+  box-sizing: border-box;
+  transform-origin: top left;
+}
 
 .stackCardHidden {
   border-color: rgba(0,0,0,0) !important; // make border disappear with alpha bc it won't reposition children
@@ -836,22 +866,6 @@ li .iconWithStat {
   color: black;
 }
 
-
-.editPointTextForm {
-  display: inline-block;
-    width: calc(~"100% - 48px"); // full width minus space for cancel button
-  width: -moz-calc(~"100% - 48px");
-    width: -webkit-calc(~"100% - 48px");
-  margin-top: 6px;
-}
-
-#editPointTextField {
-  width: 81%;
-  margin-right: 4px;
-  height: 30px;
-  padding: 4px;
-}
-
 .score {
   font-size: 100%
 }
@@ -892,13 +906,6 @@ li .iconWithStat {
   padding: 6px;
   margin-bottom:4px;
   font-size: @fontSizeStatsUX2;
-}
-
-.menuDivider {
-    width: 100%;
-    border-bottom-color: #cccccc;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
 }
 
 .pointCardImageContainer {
@@ -990,9 +997,6 @@ li .iconWithStat {
   color: @blue ;
 }
 
-
-
-
 .evidenceContainer {
     display: inline-block;
   // fixed width for roll-over method of switching from No Evidence to Add Evidence, but unnecessary with the scaling approach
@@ -1007,18 +1011,18 @@ li .iconWithStat {
   //margin-right: 24px;
 }
 
-.relevanceVoteBottomAction {
-  margin-right: 18px;
+.point-card .agree.current-vote {
+  color: black; //@green;
+  font-weight: bold;
 }
 
-.addEvidenceButtonGrp {
-  margin-bottom: @marginVerticalStandard *2.5;
-  margin-top: @marginVerticalStandard * 3;
-  margin-left: 14px;
-  color: black;
-  display: inline-block;
-  //width: max-content;
-  //width: -moz-max-content;
+.point-card .disagree.current-vote {
+    color: @red;
+  font-weight: bold;
+}
+
+.relevanceVoteBottomAction {
+  margin-right: 18px;
 }
 
 .evidenceBlockEmpty .addEvidenceButtonGrp {
@@ -1031,6 +1035,11 @@ li .iconWithStat {
 .evidenceBlockEmpty .addEvidenceButtonGrpCounter {
   //margin-left: 6px;
 }
+
+///////////////////////////////////////////////////////
+
+
+// BUTTONS
 
 @buttonUX2_paddingTop: 5px;
 @buttonUX2_paddingLeft: 11px;
@@ -1153,7 +1162,6 @@ li .iconWithStat {
   margin-right: 12px;
 }
 
-
 .addEvidenceButton {
     display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
     //top: 2px;
@@ -1165,6 +1173,16 @@ li .iconWithStat {
 
 .buttonUX2Red.addEvidenceButton {
   left:0;
+}
+
+.addEvidenceButtonGrp {
+  margin-bottom: @marginVerticalStandard *2.5;
+  margin-top: @marginVerticalStandard * 3;
+  margin-left: 14px;
+  color: black;
+  display: inline-block;
+  //width: max-content;
+  //width: -moz-max-content;
 }
 
 @buttonUX2ScaleUpOnHover: 1.025;
@@ -1182,6 +1200,41 @@ li .iconWithStat {
 
 .addEvidenceButton:active {
     transform: scale(@buttonUX2ScaleUpOnHover * @buttonUX2ScaleDownOnClick) !important;
+}
+
+.addEvidenceFormButton {
+  margin-left: 4px;
+  //margin-top: 8px;
+  //height: 36px;
+    //width: 24px;
+  font-size: @baseFontSizeUX2 * 1.13125; // ~18px
+  padding-bottom: 7px;
+  float: right;
+}
+
+.claimTextButtonsArea {
+  width: 100%;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// FORMS FOR CREATING AND EDITING CLAIMS
+
+.editPointTextForm {
+  display: inline-block;
+    width: calc(~"100% - 48px"); // full width minus space for cancel button
+  width: -moz-calc(~"100% - 48px");
+    width: -webkit-calc(~"100% - 48px");
+  margin-top: 6px;
+}
+
+#editPointTextField {
+  width: 81%;
+  margin-right: 4px;
+  height: 30px;
+  padding: 4px;
 }
 
 .addEvidenceFormGroup {
@@ -1219,7 +1272,6 @@ li .iconWithStat {
 .addEvidenceControlsAreaNoEvidence {
 }
 
-
 .titleTextField {
   //height: 28px;
   width: @cardWidth - 20px; // I don't know why this subtraction is needed visually, but it seems to be -JF
@@ -1247,66 +1299,14 @@ li .iconWithStat {
   font-style: italic;
 }
 
-.addEvidenceFormButton {
-  margin-left: 4px;
-  //margin-top: 8px;
-  //height: 36px;
-    //width: 24px;
-  font-size: @baseFontSizeUX2 * 1.13125; // ~18px
-  padding-bottom: 7px;
-  float: right;
-}
-
 .addEvidenceFormSaving {
   margin-left: 27px;
   position: relative;
     top: 4px;
 }
 
-.claimTextButtonsArea {
-  width: 100%;
-}
+/////////////////////////////////////////////
 
-
-.fullWidth {
-  width: 100%;
-}
-
-.hover {
-    position: relative;
-  cursor:pointer;
-
-    &:hover &__no-hover {
-        //opacity: 0;
-    text-decoration:underline;
-    }
-
-    &:hover &__hover {
-        opacity: 1;
-    transform: scale(1); // undos the scale(0) in &__hover below
-    }
-
-    &__hover {
-        position: absolute;
-        top: 0;
-        opacity: 0;
-    transform: scale(0); // this prevents hover being activated by mousing over the invisible menu, there might be a more official way to do this? -JF
-    }
-
-    &__no-hover {
-        opacity: 1;
-    }
-}
-
-.point-card .agree.current-vote {
-  color: black; //@green;
-  font-weight: bold;
-}
-
-.point-card .disagree.current-vote {
-    color: @red;
-  font-weight: bold;
-}
 
 // ARROWS
 
@@ -1359,7 +1359,6 @@ li .iconWithStat {
 }
 
 .arrowElbowEvidence {
-
 }
 
 
@@ -1398,6 +1397,7 @@ a:hover .arrowAddEvidenceButton {
   text-decoration: none !important;
 }
 
+/////////////////////////////////////////////////////////
 
 // DASHED LINES
 

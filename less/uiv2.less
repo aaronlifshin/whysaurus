@@ -126,7 +126,8 @@ a:focus, a:hover {
 
 @dropdownBorderColor: rgba(0,0,0,.1);
 .dropdown-menu {
-  padding: 0;
+  padding: 6px;
+  padding-bottom: 12px;
   border-radius: 5px;
     //background-color: #e1ffff;
   border: 1px solid @dropdownBorderColor;
@@ -141,10 +142,10 @@ a:focus, a:hover {
 }
 
 .dropdown-menu .divider {
-    border: none;
-    height: 2px;
-    margin: 0;
-  background-color: rgba(0,0,0,.09);
+  border: none;
+  //height: 2px;
+ // margin: 0;
+  //background-color: rgba(0,0,0,.09);
 }
 
 .dropdownMenuCategory {
@@ -156,7 +157,7 @@ a:focus, a:hover {
 }
 
 .dropdown-menu>li>a, .dropdown-menu>li>span {
-    padding:10px;
+  padding-top:6px;
   display: inline-block;
   width: 100%;
 }
@@ -701,8 +702,9 @@ a:hover .perctSignSmall {
   outline-style: none;
 }
 
+@stackCardDefaultBorderColor: hsl(210, 0%, 75%);
 .stackCard {
-  border-color: hsl(210, 0%, 75%);
+  border-color: @stackCardDefaultBorderColor;
   border-width: @cardBorderWidth;
   border-style: solid;
   background-color: white;
@@ -1275,20 +1277,23 @@ li .iconWithStat {
 .titleTextField {
   //height: 28px;
   width: @cardWidth - 20px; // I don't know why this subtraction is needed visually, but it seems to be -JF
-  font-size: 15px;
+  font-size: @fontSizePointTitle;
   color: black;
-  padding: 8px;
+  padding: 10px;
   padding-bottom: 32px;
-  padding-top: 8px;
+  padding-top: 10px;
   display: block;
   margin-bottom: 0; //8px;
   position: relative;
   //top: -20px; // counteract 
+  border-color: @stackCardDefaultBorderColor;
+  border-width: 1px;
+  border-style: solid;
 }
 .titleTextField::placeholder {
   color: grey;
   font-style: italic;
-  font-size: 15px; // temp; consider moving back up to 17 to match PointTitle once we move to a multi-line textarea
+  font-size: 16px; // temp; consider moving back up to 17 to match PointTitle once we move to a multi-line textarea
 }
 .titleTextField::-ms-input-placeholder { /* IE 10-11*/
   color: grey;
@@ -1304,6 +1309,35 @@ li .iconWithStat {
   position: relative;
     top: 4px;
 }
+
+.existingClaimPickerDropdown {
+  display: inline-block;
+  font-size: @fontSizePointTitle;
+  background-color: white;
+  border-color:  @stackCardDefaultBorderColor;
+  border-width: 1px;
+  border-style: solid;
+  width: 270px;
+  padding: 10px;
+  //min-height: 60px;
+  margin: 0;
+  margin-top: -8px;
+}
+
+.ExistingClaimList {
+  margin: 0;
+}
+
+.ExistingClaimList li {
+  line-height: 125%;
+}
+
+.existingClaimPickerHeading {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
 
 /////////////////////////////////////////////
 

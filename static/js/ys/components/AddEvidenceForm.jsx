@@ -10,7 +10,7 @@ import ClaimSearch from './ClaimSearch'
 
 // use onmousedown here to try to get in before blur hides the UI (see note in TitleText onBlur below)
 // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
-const ExistingClaimPicker = ({claims, onSelectClaim}) => <ul>
+const ExistingClaimPicker = ({claims, onSelectClaim}) => <ul className="ExistingClaimList">
       {claims && claims.map((claim) => <li onMouseDown={e => onSelectClaim(claim, e)} key={claim.id}>
                             {claim.title}
                             </li>)}
@@ -38,23 +38,31 @@ class AddEvidenceForm extends React.Component {
     this.props.currentSupportingClaims ? claims.filter(claim => !this.currentSupportingClaimURLs.has(claim.url)) : claims
 
   existingClaimPicker = (titleValue, searchResults, searching) => {
-    if (this.state.titleTextFocused) {
       if (titleValue && (titleValue != '')){
         if (searching) {
-          return <div>Searching...</div>
+          return <div className="">Searching...</div>
         } else {
           return <ExistingClaimPicker claims={this.filterCurrentSupport(searchResults)} onSelectClaim={this.selectExistingClaim}/>
         }
       } else if (this.props.user) {
         return <ExistingClaimPicker claims={this.filterCurrentSupport(this.props.user.recentlyViewed)} onSelectClaim={this.selectExistingClaim}/>
       }
-    }
   }
   
-  // TODO: add multiple options for each type and randomize!
+  // if (this.state.titleTextFocused) {
+  existingClaimPickerDropdown = (titleValue, searchResults, searching) => {
+    if (this.state.titleTextFocused) {
+      return <div className="existingClaimPickerDropdown">
+        <div className="existingClaimPickerHeading">Existing Claims:</div>
+        {this.existingClaimPicker(titleValue, searchResults, searching)}
+      </div>
+    }
+  }  
+ 
+  // TODO: add multiple options for each type and randomize to give it some fun magic!
   generatePlaceholderText(evidenceType) {
     let placeholderSupport = `Make a claim, eg "Dogs can learn more tricks than cats."`
-    let placeholderCounter= `Make a claim, eg "Cats are better than dogs at killing mice."`
+    let placeholderCounter= `Make a claim, eg "Cats are funnier than dogs."`
     if (this.props.evidenceType=="counter") {
         return placeholderCounter 
     } else {
@@ -81,7 +89,7 @@ class AddEvidenceForm extends React.Component {
                                    // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
                                    onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
                           />
-                      {this.existingClaimPicker(title, results, searching)}
+                      {this.existingClaimPickerDropdown(title, results, searching)}
                       <button type="submit" className={submitClasses}>Add</button>
                       <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
                     </form>

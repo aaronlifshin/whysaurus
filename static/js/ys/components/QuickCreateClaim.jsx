@@ -1,4 +1,5 @@
 import React from 'react'
+import * as validations from '../validations';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
 import { config } from '../config'
@@ -30,8 +31,7 @@ export default class QuickCreateClaim extends React.Component {
   render(){
     let props = this.props;
     return <Form onSubmit={this.submit}
-                 validate={this.errorValidator}
-                 dontValidateOnMount={true}>
+                 validate={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
             <TitleText id="newPointTextField" className="titleTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />

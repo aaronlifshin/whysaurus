@@ -869,7 +869,7 @@ class PointCardComponent extends React.Component {
 
 export const PointCard = compose(
   graphql(GetPoint, {
-    skip: ({expanded}) => console.log("skipping ") || console.log(!expanded) || !expanded
+    skip: ({expanded}) => !expanded
   }),
   graphql(CurrentUserQuery, {
     name: 'CurrentUserQuery',

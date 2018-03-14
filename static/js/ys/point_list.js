@@ -69,7 +69,7 @@ class PointList extends React.Component {
         {this.props.points.map((point, i) => this.renderPoint(point))}
       </div>
     } else if (this.props.loading || (this.props.data && this.props.data.loading)) {
-      return <div>Loading!</div>
+      return <div><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Loading!</div>
     } else if (this.props.data && this.props.data.point) {
       return this.renderPoint(this.props.data.point);
     } else if (this.props.edges) {

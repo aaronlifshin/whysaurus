@@ -586,7 +586,7 @@ class PointCardComponent extends React.Component {
   }
 
   expanded() {
-    return this.state.expanded;
+    return this.props.expanded;
   }
 
   contentWidth() {
@@ -789,10 +789,10 @@ class PointCardComponent extends React.Component {
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
 
-      
+
       //<div className="quickTestRect">Test rectangle!</div>
-  
-      
+
+
       return <div className="listedClaimGroup">
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
@@ -868,6 +868,9 @@ class PointCardComponent extends React.Component {
 }
 
 export const PointCard = compose(
+  graphql(GetPoint, {
+    skip: ({expanded}) => console.log("skipping ") || console.log(!expanded) || !expanded
+  }),
   graphql(CurrentUserQuery, {
     name: 'CurrentUserQuery',
     props: ({ownProps, CurrentUserQuery: { loading, currentUser, refetch }}) => ({
@@ -889,5 +892,3 @@ export const PointCard = compose(
     })
   })
 )(PointCardComponent)
-
-export const ExpandedPointCard = graphql(GetPoint)(PointCard)

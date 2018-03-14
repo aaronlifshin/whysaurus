@@ -666,11 +666,6 @@ a:hover .perctSignSmall {
 }
 
 .stackCardDealInvertXform {
-  color: pink;
-  background-color: purple;
-}
-
-.stackCardDealInvertXform {
   animation-name: stackCardDealInvertXform;
   animation-duration: @stackDealDuration;
   animation-timing-function: @stackDealTimingFunction;
@@ -740,7 +735,6 @@ a:hover .perctSignSmall {
   padding-right: @cardPaddingRight;
   padding-top: @cardPaddingTop;
   padding-bottom: @cardPaddingTop;
-  z-index: 2; // because the AddEvidence UI overlaps the bottomActionRow in some cases
 }
 
 .relExtraMarginBottom {
@@ -1251,6 +1245,8 @@ li .iconWithStat {
 .addEvidenceForm {
   margin-top: 0;
   display: inline-block;
+  position: relative;
+  top: -8px;
 }
 
 .arrowAddEvidenceForm {
@@ -1269,9 +1265,10 @@ li .iconWithStat {
     vertical-align: bottom;
     display: inline-block;
     position: relative;
-    top: 9px;
+    bottom: 16px;
 }
 .addEvidenceControlsAreaNoEvidence {
+    bottom: -16px;
 }
 
 .titleTextField {
@@ -1307,7 +1304,7 @@ li .iconWithStat {
 .addEvidenceFormSaving {
   margin-left: 27px;
   position: relative;
-    top: 4px;
+  top: 4px;
 }
 
 .existingClaimPickerDropdown {

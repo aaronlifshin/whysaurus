@@ -143,7 +143,7 @@ class AddEvidence extends React.Component {
 
   
   renderEvidenceArrow = (color) => {
-    let arrowGrpClass = `arrowEvidence`
+    let arrowGrpClass = `arrowEvidence ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
     let arrowStemClass = `arrowStemEvidence ${(this.numSupportingPlusCounter() == 0) && "arrowStemEvidenceShort" } ${color == "red" && "arrowStemRed"}`
     return <div className={arrowGrpClass}>
@@ -153,7 +153,7 @@ class AddEvidence extends React.Component {
   }
 
   render() {
-    let topDivClass = `addEvidenceUI ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
+    let topDivClass = `addEvidenceUI`
     let controlsAreaClass = `addEvidenceControlsArea ${(this.numSupportingPlusCounter() == 0) && "addEvidenceControlsAreaNoEvidence"}`
     switch (this.uiType) {
     case "DUAL":

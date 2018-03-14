@@ -631,7 +631,7 @@ class PointCardComponent extends React.Component {
 
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
-      return <div className="evidenceBlockSupport">
+      return <div className="evidenceBlockSupport evidenceBlockNudgeAlignment">
         <div className="evidenceList">
           <div className="supportHeading">Evidence For</div>
           <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point}/>
@@ -643,7 +643,7 @@ class PointCardComponent extends React.Component {
 
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
-      return <div className="evidenceBlockCounter">
+      return <div className="evidenceBlockCounter evidenceBlockNudgeAlignment">
         <div className="evidenceList">
           <div className="counterHeading">Evidence Against</div>
           <PointList edges={this.point.counterPoints.edges} parentPoint={this.point}/>
@@ -656,7 +656,7 @@ class PointCardComponent extends React.Component {
   // TODO: if users ask about this, add <span className="sortBy">Sorted by Relevance</span>
   relevantPoints(){
     if (this.expanded() && this.point.relevantPoints){
-      return <div className="evidenceBlockCounter">
+      return <div className="evidenceBlockBoth evidenceBlockNudgeAlignment">
         <div className="evidenceList">
           {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence</div>}
         <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point}/>

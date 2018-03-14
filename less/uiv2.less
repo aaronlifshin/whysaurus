@@ -288,7 +288,6 @@ body {
   //animation-timing-function: ease-out;
   animation-iteration-count: 1;
   background-color: #0000ff50;
-
   //position: relative;
   //z-index:-1;
 }
@@ -298,6 +297,10 @@ body {
   //margin-top:-2 * @marginVerticalStandard;
 }
 
+.evidenceBlockNudgeAlignment {
+  position: relative;
+  left: -8.5px;
+}
 
 .supportHeading, .counterHeading {
   //margin-top: 20px;
@@ -323,7 +326,7 @@ body {
 }
 
 
-.evidenceBlockCounter, .evidenceBlockSupport, .evidenceBlockEmpty {
+.evidenceBlockCounter, .evidenceBlockSupport, .evidenceBlockBoth, .evidenceBlockEmpty {
   display: inline-block;
   float: left;
   //transition: 1s;
@@ -360,7 +363,7 @@ body {
 }
 
 @relevanceRevealDuration: .33s;
-@relGroupHiliteBG: #fffbd1;
+@relGroupHiliteBG: #ccfffd; // light yellow: #fffbd1;
 @keyframes relGroupHiliteReveal {
    0% {background-color: #fffbd100;  }
    100% { background-color: @relGroupHiliteBG; }
@@ -368,7 +371,7 @@ body {
 
 .relGroupHilite {
   animation-name: relGroupHiliteReveal;
-    animation-duration: @relevanceRevealDuration;
+  animation-duration: @relevanceRevealDuration;
   animation-timing-function: ease;
   animation-iteration-count: 1;
   margin-bottom: @marginVerticalStandard * 1.3;
@@ -405,7 +408,7 @@ body {
   float: right;
   font-size: 27px;
   position: relative;
-  margin-top: 2px;
+  margin-top: 6px;
   margin-right: 10px;
   cursor: pointer;
   font-family: serif;
@@ -1265,7 +1268,7 @@ li .iconWithStat {
     vertical-align: bottom;
     display: inline-block;
     position: relative;
-    bottom: 16px;
+    bottom: 30px;
 }
 .addEvidenceControlsAreaNoEvidence {
     bottom: -16px;
@@ -1382,7 +1385,7 @@ li .iconWithStat {
 // perhaps there is a better way do accomplish that...
 .verticalOffsetForLongEvidenceArrow {
   position: relative;
-  top: -33px;
+  top: -45px;
 }
 .verticalOffsetForLongEvidenceArrowForm {
   top: 81px;
@@ -1449,9 +1452,9 @@ a:hover .arrowAddEvidenceButton {
 }
 @dottedLineElbowIndent:  24px;
 .dottedLineRelevanceLink {
-    height: 27px;
+    height: 32px;
     margin-left: @dottedLineElbowIndent;
-    margin-top: -33px;
+    margin-top: -39px;
 }
 .dottedLineElbow {
   width: 8px;

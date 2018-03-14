@@ -369,8 +369,8 @@ class RelevanceComponent extends React.Component {
     }
   }
 
-  handleClickClose() {
-    //console.log("");
+  handleClickClose(e) {
+    console.log("handleClickClose");
     this.props.onClose && this.props.onClose()
   }
 
@@ -397,7 +397,7 @@ class RelevanceComponent extends React.Component {
   // TODO: add number of Votes so far to relevanceStats
   render(){
     return <div className="relCtrlGroup" >
-          <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span>
+      <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span>
       <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
         <div className="relCtrlVoteOptions">
           <a className={this.linkClassFor(100) + " relVoteLink100"} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
@@ -516,6 +516,7 @@ class PointCardComponent extends React.Component {
 
   handleRelClick(e) {
     //console.log("toggle relevance ui");
+    e.stopPropagation();
     if (this.state.relLinkClicked) {
       this.setState({ relLinkClicked: false })
     } else {
@@ -547,7 +548,7 @@ class PointCardComponent extends React.Component {
     return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
       <div className="relevanceLinkArea">
         <div className="dottedLine dottedLineRelevanceLink"></div>
-                <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
+        <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
         <div className="dottedLine dottedLineElbow"></div>
       </div></a>
     } else {
@@ -603,7 +604,18 @@ class PointCardComponent extends React.Component {
   if (this.point.imageURL)
     return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
-
+  
+  // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
+  numSupportingPlusCounter(){
+    return ( this.point.numSupporting + this.point.numCounter)
+  }
+  hasSupportingEvidence = () => (
+    this.point.supportingPoints && this.point.supportingPoints.edges.length > 0
+  )
+  hasCounterEvidence = () => (
+    this.point.counterPoints && this.point.counterPoints.edges.length > 0
+  )
+  
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -618,8 +630,9 @@ class PointCardComponent extends React.Component {
       else {
         return <div className={classesEvidenceBlock}>
          <MediaQuery minWidth={singleColumnThreshold}>
-          {this.point.supportingPoints && this.point.supportingPoints.edges.length > 0 && this.supportingPoints()}
-          {this.point.counterPoints && this.point.counterPoints.edges.length > 0 && this.counterPoints()}
+          {this.hasSupportingEvidence() && this.hasCounterEvidence() && this.renderDottedLinesSplitEvidenceHeader()}
+          {this.hasSupportingEvidence() && this.supportingPoints()}
+          {this.hasCounterEvidence() && this.counterPoints()}
          </MediaQuery>
          <MediaQuery maxWidth={singleColumnThreshold}>
           {this.point.relevantPoints && this.relevantPoints()}
@@ -627,6 +640,13 @@ class PointCardComponent extends React.Component {
         </div>
       }
     }
+  }
+  
+  renderDottedLinesSplitEvidenceHeader() {
+    return <div className="dottedLinesSplitEvidenceHeader">
+      <div className="dottedLinesSplitEvidenceSupport"></div>
+      <div className="dottedLinesSplitEvidenceCounter"></div>
+    </div>
   }
 
   supportingPoints(){
@@ -643,7 +663,8 @@ class PointCardComponent extends React.Component {
 
   counterPoints(){
     if (this.expanded() && this.point.counterPoints){
-      return <div className="evidenceBlockCounter evidenceBlockNudgeAlignment">
+      return <div className="evidenceBlockCounter">
+        {this.point.supportingPoints.edges.length > 0 ? <div className="dottedLineCounterConnector"></div> : "" }
         <div className="evidenceList">
           <div className="counterHeading">Evidence Against</div>
           <PointList edges={this.point.counterPoints.edges} parentPoint={this.point}/>
@@ -665,11 +686,7 @@ class PointCardComponent extends React.Component {
       </div>
     }
   }
-
-  // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
-  numSupportingPlusCounter(){
-    return ( this.point.numSupporting + this.point.numCounter)
-  }
+ 
 
   // TODO: this is defined in the model point.py, so we could pass it up through GraphQL if that would be faster
   linksRatio() {

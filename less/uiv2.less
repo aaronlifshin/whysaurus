@@ -298,8 +298,7 @@ body {
 }
 
 .evidenceBlockNudgeAlignment {
-  position: relative;
-  left: -8.5px;
+  left: -9px;
 }
 
 .supportHeading, .counterHeading {
@@ -328,18 +327,27 @@ body {
 
 .evidenceBlockCounter, .evidenceBlockSupport, .evidenceBlockBoth, .evidenceBlockEmpty {
   display: inline-block;
-  float: left;
+  position: relative;
+  vertical-align: top;
+  
+  //float: left; // was using this earlier... but doesn't seem necessary with the vertical-align
+    
   //transition: 1s;
   //width: @cardListWidth;
+}
+
+.evidenceBlockCounter {
+  left: -32px;
 }
 
 .evidenceBlockEmpty {
   margin-left: @indent + 9px; // not sure why the 9px is nec
 }
 
+@evidenceListMarginTop: @marginVerticalStandard - 6px; // subtract some for the arrow
 .evidenceList {
   margin-left: @indent; // Handled by relevanceLinkArea
-  margin-top: @marginVerticalStandard - 6px; // subtract some for the arrow
+  margin-top: @evidenceListMarginTop;
 }
 
 
@@ -363,7 +371,7 @@ body {
 }
 
 @relevanceRevealDuration: .33s;
-@relGroupHiliteBG: #ccfffd; // light yellow: #fffbd1;
+@relGroupHiliteBG: hsla(178, 85%, 91%, 1); // light yellow: #fffbd1;   
 @keyframes relGroupHiliteReveal {
    0% {background-color: #fffbd100;  }
    100% { background-color: @relGroupHiliteBG; }
@@ -1435,6 +1443,7 @@ a:hover .arrowAddEvidenceButton {
 
 // DASHED LINES
 
+// DEPRECATED?
 .dashedLine {
     color: #acacac;
     width: 1px;
@@ -1443,11 +1452,12 @@ a:hover .arrowAddEvidenceButton {
     position: absolute;
 }
 
+@dottedLineWidth: 1px;
 .dottedLine {
     //color: #acacac;
     width: 1px;
     border-left-style: dotted;
-    border-left-width: 1px;
+    border-width: @dottedLineWidth;
     position: absolute;
 }
 @dottedLineElbowIndent:  24px;
@@ -1460,12 +1470,50 @@ a:hover .arrowAddEvidenceButton {
   width: 8px;
   height: 10px;
   border-bottom-style: dotted;
-  border-bottom-width: 1px;
   border-left-style: dotted;
-  border-left-width: 1px;
+  
   position: absolute;
   top: 17px;
   margin-left: @dottedLineElbowIndent;
+}
+
+.dottedLinesSplitEvidenceHeader {  
+    position: relative;
+    left: 60px;
+    top: -8px;
+    margin-bottom: -22px;
+}
+.dottedLinesSplitEvidenceSupport {
+  height: 27px; 
+  border-left-style: dotted;
+  border-bottom-style: dotted; // to keep height consistant
+  border-width: @dottedLineWidth;  
+  margin-right: 14px;
+  width: 0.5px;
+  display: inline-block;
+}
+.dottedLinesSplitEvidenceCounter {
+  width: 12px;
+  height: 18px;
+  border-bottom-style: dotted;
+  border-left-style: dotted;
+  border-width: @dottedLineWidth;  
+  color: @red;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.dottedLineCounterConnector {
+  width: 12px;
+  height: 9px;
+  border-width: @dottedLineWidth;
+  border-top-style: dotted; // solid; // dotted;
+  border-right-style: dotted; // solid; // dotted;
+  position: absolute;
+  top: 0.5px; // to align perfectly with .dottedLinesSplitEvidenceCounter
+  left: 57.5px;
+  margin-left: 0;
+  color: @red;
 }
 
 .counter .dottedLine {

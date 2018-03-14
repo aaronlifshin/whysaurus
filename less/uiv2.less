@@ -647,7 +647,7 @@ a:hover .perctSignSmall {
    0% { transform: translate(0, 0); }
    100% { transform: translate(@stackDealX, @stackDealY); }
 }
-.stackCardDealBottom-enter {
+.stackCardDealBottom {
   animation-name: stackCardDealBottomKeys;
   animation-duration: @stackDealDuration;
   animation-timing-function: @stackDealTimingFunction;
@@ -658,19 +658,19 @@ a:hover .perctSignSmall {
    0% { transform: translate(0, 0); }
    100% { transform: translate( (-1 * @stackDealX / @stackDealNumberOfCards), (-1 * @stackDealY / @stackDealNumberOfCards)); }
 }
-.stackCardDealInvertXform-enter {
+.stackCardDealInvertXform {
   animation-name: stackCardDealInvertXform;
   animation-duration: @stackDealDuration;
   animation-timing-function: @stackDealTimingFunction;
   animation-iteration-count: 1;
 }
 
-.stackCardDealInvertXform-enter-active {
+.stackCardDealInvertXform {
   color: pink;
   background-color: purple;
 }
 
-.stackCardDealInvertXform-leave {
+.stackCardDealInvertXform {
   animation-name: stackCardDealInvertXform;
   animation-duration: @stackDealDuration;
   animation-timing-function: @stackDealTimingFunction;
@@ -1285,7 +1285,7 @@ li .iconWithStat {
   display: block;
   margin-bottom: 0; //8px;
   position: relative;
-  //top: -20px; // counteract 
+  //top: -20px; // counteract
   border-color: @stackCardDefaultBorderColor;
   border-width: 1px;
   border-style: solid;

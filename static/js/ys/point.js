@@ -822,6 +822,7 @@ class PointCardComponent extends React.Component {
         <div className="relLinkAndStackCards">
         {this.relevanceLinkUI()}
         
+        <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={1}>
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
 
         <div className={classesStackCard1} tabIndex="-1">
@@ -861,6 +862,7 @@ class PointCardComponent extends React.Component {
           </div>
 
           </div>
+          </AnimateOnChange>
           
           </div>
 

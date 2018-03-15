@@ -34,7 +34,7 @@ export default class QuickCreateClaim extends React.Component {
                  validate={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
-            <TitleText id="newPointTextField" className="titleTextField" placeholder='Make a claim, eg "Dogs can learn more tricks than cats."' />
+            <TitleText id="newPointTextField" className="titleTextField" placeholder='Make a claim, eg "Dogs are better than cats."' />
             <div className="claimTextButtonsArea">
               {this.submitButton()}
             </div>

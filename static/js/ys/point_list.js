@@ -7,34 +7,68 @@ const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { GetPoint } from './schema.js';
+import { withRouter } from 'react-router';
 
-class PointList extends React.Component {
+class PointListComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {expandedIndex: {}}
-    this.isPointExpanded = this.isPointExpanded.bind(this);
-    this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
-    this.handleHideEvidence = this.handleHideEvidence.bind(this);
+    this.state = {expandedIndex: this.urlExpandedIndex()}
   }
 
   get parentPoint() {
     return this.props.parentPoint;
   }
 
-  isPointExpanded(point) {
-    return this.state.expandedIndex[point.url]
+  isPointExpanded = (point) => {
+    return !!this.state.expandedIndex[point.url]
   }
 
-  handleSeeEvidence(point) {
-    const i = this.state.expandedIndex
-    i[point.url] = true
-    this.setState({expandedIndex: i})
+  expandedIndex2Param = (index) => {
+    console.log(index)
+    return JSON.stringify(Object.keys(index).filter(key => index[key]))
   }
 
-  handleHideEvidence(point) {
-    const i = this.state.expandedIndex
-    i[point.url] = false
-    this.setState({expandedIndex: i})
+  expandedParam2Index = (param) => {
+    try {
+      return param ? JSON.parse(param).reduce((i, k) => {i[k] = true; return i}, {}) : {}
+    } catch (err) {
+      console.log("Error parsing URL expanded index:")
+      console.log(param)
+      console.log(err)
+      return {}
+    }
+  }
+
+  urlExpandedIndex = (urlSearchParams) => {
+    let params = urlSearchParams || new URLSearchParams(this.props.location.search)
+    return this.expandedParam2Index(params.get("expanded"))
+  }
+
+  updateURLExpandedIndex = (urlSearchParams, updatedIndex) => {
+    let params = urlSearchParams || new URLSearchParams(this.props.location.search)
+    if (Object.entries(updatedIndex).length > 0) {
+      params.set("expanded", this.expandedIndex2Param(updatedIndex))
+    } else {
+      params.delete("expanded")
+    }
+    const { location, history } = this.props
+    history.push({path: location.pathname, search: params.toString()})
+  }
+
+  modifyStateAndURL = (point, indexModifier) => {
+    let params = new URLSearchParams(this.props.location.search);
+    let index = this.urlExpandedIndex()
+    indexModifier(index)
+    this.setState({expandedIndex: index})
+    this.updateURLExpandedIndex(params, index)
+  }
+
+  handleSeeEvidence = (point) => {
+    this.modifyStateAndURL(point, index => index[point.url] = true)
+  }
+
+  handleHideEvidence = (point) => {
+    this.modifyStateAndURL(point, index => delete index[point.url])
   }
 
   renderPoint(point) {
@@ -49,7 +83,7 @@ class PointList extends React.Component {
     }
   }
 
-  renderEdge(edge) {
+  renderEdge = (edge) => {
     if (this.isPointExpanded(edge.node)) {
       return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} expanded={true}
                         link={edge.link} parentPoint={this.parentPoint}
@@ -82,6 +116,7 @@ class PointList extends React.Component {
   }
 }
 
-export {PointList};
+const PointList = withRouter(PointListComponent);
 
+export {PointList};
 export const PointListWithPoint = graphql(GetPoint)(PointList);

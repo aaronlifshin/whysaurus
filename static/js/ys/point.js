@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
 import MediaQuery from 'react-responsive';
@@ -165,59 +165,39 @@ class Sources extends React.Component {
 }
 
 class EvidenceLink extends React.Component {
-  constructor(props) {
-    super(props)
-    this.handleClickSee = this.handleClickSee.bind(this);
-    this.handleClickHide = this.handleClickHide.bind(this);
-    this.handleClickToggle = this.handleClickToggle.bind(this);
+  hasEvidence = () => {
+    const {point} = this.props;
+    return point.numSupporting > 0 || point.numCounter > 0;
   }
 
-  get point() {
-    return this.props.point;
-  }
-
-  hasEvidence() {
-    return this.point.numSupporting > 0 || this.point.numCounter > 0;
-  }
-
-  // TODO: can this be replaced by handleClickToggle? -JF
-  handleClickSee(e) {
+  handleClickSee = (e) => {
     e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
-    console.log("EvidenceLink : handleClickSee");
     this.props.onSee && this.props.onSee()
   }
 
-  // TODO: can this be replaced by handleClickToggle? -JF
-  handleClickHide(e) {
+  handleClickHide = (e) => {
     e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
-    console.log("EvidenceLink: handleClickHide");
     this.props.onHide && this.props.onHide()
   }
 
-  handleClickToggle(e) {
-    e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
-    console.log("EvidenceLink : handleClickToggle");
-    this.props.onToggle && this.props.onToggle()
-  }
-
-  whichEvidenceButton() {
+  evidenceButton = () => {
     if (this.hasEvidence()) {
       if (this.props.expanded) {
         return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
       } else {
-        return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee}>See Evidence</a>
+        return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee} onMouseOver={this.props.mouseOverPreload}>See Evidence</a>
       }
     } else {
       if (this.props.expanded) {
-        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickToggle}>Close</a>
+        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Close</a>
       } else {
-        return <a className="cardBottomAction" onClick={this.handleClickToggle}>Add Evidence</a>
-          }
+        return <a className="cardBottomAction" onClick={this.handleClickSee}>Add Evidence</a>
+      }
     }
   }
 
   render(){
-  return <span className="evidenceContainer">{this.whichEvidenceButton()}</span>
+    return <span className="evidenceContainer">{this.evidenceButton()}</span>
   }
 }
 
@@ -608,7 +588,7 @@ class PointCardComponent extends React.Component {
   if (this.point.imageURL)
     return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
-  
+
   // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
   numSupportingPlusCounter(){
     return ( this.point.numSupporting + this.point.numCounter)
@@ -619,7 +599,7 @@ class PointCardComponent extends React.Component {
   hasCounterEvidence = () => (
     this.point.counterPoints && this.point.counterPoints.edges.length > 0
   )
-  
+
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -645,7 +625,7 @@ class PointCardComponent extends React.Component {
       }
     }
   }
-  
+
   renderDottedLinesSplitEvidenceHeader() {
     return <div className="dottedLinesSplitEvidenceHeader">
       <div className="dottedLinesSplitEvidenceSupport"></div>
@@ -690,7 +670,7 @@ class PointCardComponent extends React.Component {
       </div>
     }
   }
- 
+
 
   // TODO: this is defined in the model point.py, so we could pass it up through GraphQL if that would be faster
   linksRatio() {
@@ -791,6 +771,15 @@ class PointCardComponent extends React.Component {
     }
   }
 
+  preloadPoint = () => {
+    console.log("preloading data for " + this.point.url)
+    this.props.client && this.props.client.query({
+      query: GetPoint,
+      variables: {url: this.point.url}
+    })
+  }
+
+
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
   render(){
     if (this.state.deleting) {
@@ -809,7 +798,7 @@ class PointCardComponent extends React.Component {
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
-      
+
       //<div className="quickTestRect">Test rectangle!</div>
 
       return <div className="listedClaimGroup">
@@ -821,7 +810,7 @@ class PointCardComponent extends React.Component {
 
         <div className="relLinkAndStackCards">
         {this.relevanceLinkUI()}
-        
+
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
 
         <div className={classesStackCard1} tabIndex="-1">
@@ -846,7 +835,10 @@ class PointCardComponent extends React.Component {
         {this.sources()}
         <div className="row-fluid">
         <div className="cardBottomActionRow" >
-          <span><EvidenceLink point={point} onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence} onToggle={this.handleToggleEvidence} expanded={this.expanded()}/></span>
+        <span><EvidenceLink point={point} expanded={this.expanded()}
+                            onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
+                            mouseOverPreload={this.preloadPoint}/>
+        </span>
           <span className="cardBottomAction bottomActionDot">·</span>
                   <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
                   <span className={classesRelevanceDot}>·</span>
@@ -861,7 +853,7 @@ class PointCardComponent extends React.Component {
           </div>
 
           </div>
-          
+
           </div>
 
           </div>
@@ -884,6 +876,7 @@ class PointCardComponent extends React.Component {
 }
 
 export const PointCard = compose(
+  withApollo,
   graphql(GetPoint, {
     skip: ({expanded}) => !expanded
   }),

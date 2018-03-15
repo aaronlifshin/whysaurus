@@ -430,7 +430,9 @@ class PointCardComponent extends React.Component {
     super(props);
     this.state = {
       expanded: props.expanded,
-      relLinkClicked: false
+      relLinkClicked: false,
+      expanding: false,
+      collapsing: false
     }
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
@@ -566,10 +568,12 @@ class PointCardComponent extends React.Component {
   }
 
   expand(){
+    this.setState({expanding: true, collapsing: false})
     this.props.onExpand()
   }
 
   collapse(){
+    this.setState({expanding: false, collapsing: true})
     this.props.onCollapse()
   }
 
@@ -608,7 +612,7 @@ class PointCardComponent extends React.Component {
   if (this.point.imageURL)
     return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
-  
+
   // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
   numSupportingPlusCounter(){
     return ( this.point.numSupporting + this.point.numCounter)
@@ -619,7 +623,7 @@ class PointCardComponent extends React.Component {
   hasCounterEvidence = () => (
     this.point.counterPoints && this.point.counterPoints.edges.length > 0
   )
-  
+
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -645,7 +649,7 @@ class PointCardComponent extends React.Component {
       }
     }
   }
-  
+
   renderDottedLinesSplitEvidenceHeader() {
     return <div className="dottedLinesSplitEvidenceHeader">
       <div className="dottedLinesSplitEvidenceSupport"></div>
@@ -690,7 +694,7 @@ class PointCardComponent extends React.Component {
       </div>
     }
   }
- 
+
 
   // TODO: this is defined in the model point.py, so we could pass it up through GraphQL if that would be faster
   linksRatio() {
@@ -809,9 +813,8 @@ class PointCardComponent extends React.Component {
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
-      
-      //<div className="quickTestRect">Test rectangle!</div>
 
+      //<div className="quickTestRect">Test rectangle!</div>
       return <div className="listedClaimGroup">
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
 
@@ -821,8 +824,9 @@ class PointCardComponent extends React.Component {
 
         <div className="relLinkAndStackCards">
         {this.relevanceLinkUI()}
-        
-        <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={1}>
+
+        <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={this.state.expanding}>
+        <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={this.state.collapsing}>
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
 
         <div className={classesStackCard1} tabIndex="-1">
@@ -863,7 +867,8 @@ class PointCardComponent extends React.Component {
 
           </div>
           </AnimateOnChange>
-          
+          </AnimateOnChange>
+
           </div>
 
           </div>

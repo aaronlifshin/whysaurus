@@ -11,6 +11,7 @@ import { UnlinkPointMutation, DeletePointMutation, CurrentUserQuery, EditPointQu
 import {PointList} from './point_list.js'
 import AddEvidence from './components/AddEvidence'
 import EditPoint from './components/EditPoint'
+import RelevanceRater from './components/RelevanceRater'
 
 // TODO: make work
 //import Arrow from '@elsdoerfer/react-arrow';
@@ -269,148 +270,12 @@ const AgreeDisagree = compose(
   graphql(CurrentUserQuery),
 )(AgreeDisagreeComponent)
 
-
-class RelevanceComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    // This binding is necessary to make `this` work in the callback
-    this.handleClick0 = this.handleClick0.bind(this);
-    this.handleClick33 = this.handleClick33.bind(this);
-    this.handleClick66 = this.handleClick66.bind(this);
-    this.handleClick100 = this.handleClick100.bind(this);
-    this.handleClickClose = this.handleClickClose.bind(this);
-  }
-
-  get rootURLsafe() {
-    return this.props.point.rootURLsafe
-  }
-
-  get parentRootURLsafe() {
-    return this.props.parentPoint.rootURLsafe
-  }
-
-  get linkType(){
-    switch (this.props.linkType) {
-      case EvidenceType.SUPPORT:
-        return "supporting"
-      case EvidenceType.COUNTER:
-        return "counter"
-      default:
-        return null
-    }
-  }
-
-  handleClick0() {
-    console.log("0");
-    if (this.props.data.currentUser){
-      this.props.mutate({
-        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 0}
-      }).then( res => {
-        console.log(res)
-      });
-    } else {
-      $("#loginDialog").modal("show");
-    }
-  }
-
-  handleClick33() {
-    console.log("33");
-    if (this.props.data.currentUser){
-      this.props.mutate({
-        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 33}
-      }).then( res => {
-        console.log(res)
-      });
-    } else {
-      $("#loginDialog").modal("show");
-    }
-  }
-
-  handleClick66() {
-    console.log("66");
-    if (this.props.data.currentUser){
-      this.props.mutate({
-        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 66}
-      }).then( res => {
-        console.log(res)
-      });
-    } else {
-      $("#loginDialog").modal("show");
-    }
-  }
-
-  handleClick100() {
-    console.log("100");
-    if (this.props.data.currentUser){
-
-      this.props.mutate({
-        variables: {linkType: this.linkType, url: this.props.point.url, parentRootURLsafe: this.parentRootURLsafe, rootURLsafe: this.rootURLsafe, vote: 100}
-      }).then( res => {
-        console.log(res)
-      });
-    } else {
-      $("#loginDialog").modal("show");
-    }
-  }
-
-  handleClickClose(e) {
-    console.log("handleClickClose");
-    this.props.onClose && this.props.onClose()
-  }
-
-  linkClassFor(vote){
-    let defaultClasses = "relVoteLink number "
-    let myVoteClass = "myRelevanceVote0"
-    if (vote == 33)
-      myVoteClass = "myRelevanceVote33"
-    else if (vote == 66)
-      myVoteClass = "myRelevanceVote66"
-    else if (vote == 100)
-      myVoteClass = "myRelevanceVote100"
-    return (this.props.link.relevanceVote == vote) ? (defaultClasses + myVoteClass) : defaultClasses
-  }
-
-  get relevance() {
-    return this.props.link && this.props.link.relevance
-  }
-
-  get relevanceVoteCount() {
-    return (this.props.link && this.props.link.voteCount)
-  }
-
-  // TODO: add number of Votes so far to relevanceStats
-  render(){
-    return <div className="relCtrlGroup" >
-      <span className="relCtrlClose"><a onClick={this.handleClickClose}>&#xd7;</a></span>
-      <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
-        <div className="relCtrlVoteOptions">
-          <a className={this.linkClassFor(100) + " relVoteLink100"} onClick={this.handleClick100}>100<span className="perctSignSmall">%</span></a>
-          <a className={this.linkClassFor(66) + " relVoteLink66"} onClick={this.handleClick66}>66<span className="perctSignSmall">%</span></a>
-          <a className={this.linkClassFor(33) + " relVoteLink33"} onClick={this.handleClick33}>33<span className="perctSignSmall">%</span></a>
-          <a className={this.linkClassFor(0) + " relVoteLink0"} onClick={this.handleClick0}>0<span className="perctSignSmall">%</span></a>
-        </div>
-        <div className="relevanceExplanation">
-          <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} {this.relevanceVoteCount == 1 ? 'vote' : 'votes'} so far</div>
-          <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>
-        </div>
-      </div>
-    }
-}
-
-// A Claim's Score * its Avg Relevance = its contribution to its parent's score
-
-const RelevanceVote = compose(
-  graphql(RelevanceVoteQuery),
-  graphql(CurrentUserQuery),
-)(RelevanceComponent)
-
-
 class PointCardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       expanded: props.expanded,
-      relLinkClicked: false
+      relevanceRater: false
     }
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
@@ -501,25 +366,33 @@ class PointCardComponent extends React.Component {
   handleRelClick(e) {
     //console.log("toggle relevance ui");
     e.stopPropagation();
-    if (this.state.relLinkClicked) {
-      this.setState({ relLinkClicked: false })
+    if (this.state.relevanceRater) {
+      this.setState({ relevanceRater: false })
     } else {
-      this.setState({ relLinkClicked: true })
+      this.setState({ relevanceRater: true })
     }
+  }
+
+  showRelevanceRater = (e) => {
+    e.stopPropagation();
+    this.setState({ relevanceRater: true })
+  }
+
+  hideRelevanceRater = (e) => {
+    e.stopPropagation();
+    this.setState({ relevanceRater: false })
   }
 
   relevanceCtrlUI() {
     if (this.props.parentPoint) {
       return <span>
-        { this.state.relLinkClicked ?
+        { this.state.relevanceRater ?
             <div className="relevanceCtrlArea">
-              <RelevanceVote point={this.point} parentPoint={this.props.parentPoint} link={this.props.link} linkType={this.evidenceType} onClose={this.handleRelClick}/>
+              <RelevanceRater point={this.point} parentPoint={this.props.parentPoint} link={this.props.link}  onClose={this.hideRelevanceRater}/>
             </div> :
             <span className="noRelevanceCtrl"></span>
         }
       </span>
-    } else {
-      return null
     }
   }
 
@@ -528,13 +401,14 @@ class PointCardComponent extends React.Component {
   //  code with animation:  <AnimateOnChange baseClassName="relevanceDisplay" animationClassName="Score--bounce" animate={this.relevance != -1}>{this.relevance}%</AnimateOnChange>
   relevanceLinkUI() {
     if (this.props.parentPoint) {
-    let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
-    return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
-      <div className="relevanceLinkArea">
-        <div className="dottedLine dottedLineRelevanceLink"></div>
-        <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
-        <div className="dottedLine dottedLineElbow"></div>
-      </div></a>
+      let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
+      return <a className={classesRelevanceLink} onClick={this.showRelevanceRater}>
+        <div className="relevanceLinkArea">
+          <div className="dottedLine dottedLineRelevanceLink"></div>
+          <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
+          <div className="dottedLine dottedLineElbow"></div>
+        </div>
+      </a>
     } else {
       return null
     }
@@ -789,8 +663,8 @@ class PointCardComponent extends React.Component {
     } else if (this.point){
       const point = this.point;
 //      console.log("rendering " + point.url)
-      let classesListedClaim = `listedClaim ${this.state.relLinkClicked ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-      let classesStackCardGroup = `stackCardGroup ${this.state.relLinkClicked ? "relExtraMarginBottom" : "relNotClicked"}`
+      let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
+      let classesStackCardGroup = `stackCardGroup ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
       let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
       let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`

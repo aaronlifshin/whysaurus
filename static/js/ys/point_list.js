@@ -13,14 +13,13 @@ class PointListComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {expandedIndex: this.urlExpandedIndex()}
-    this.isPointExpanded = this.isPointExpanded.bind(this);
   }
 
   get parentPoint() {
     return this.props.parentPoint;
   }
 
-  isPointExpanded(point) {
+  isPointExpanded = (point) => {
     return !!this.state.expandedIndex[point.url]
   }
 
@@ -84,7 +83,7 @@ class PointListComponent extends React.Component {
     }
   }
 
-  renderEdge(edge) {
+  renderEdge = (edge) => {
     if (this.isPointExpanded(edge.node)) {
       return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} expanded={true}
                         link={edge.link} parentPoint={this.parentPoint}
@@ -116,6 +115,7 @@ class PointListComponent extends React.Component {
     }
   }
 }
+
 const PointList = withRouter(PointListComponent);
 
 export {PointList};

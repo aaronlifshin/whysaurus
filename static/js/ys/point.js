@@ -98,20 +98,24 @@ class PointComponent extends React.Component {
     </span>
   }
 
-  // To turn animation off change the logic in this line: animate={score == prevScore}
-  // TODO: set prevScore correctly, somehow
+  // TODO: make it not animate when card redraws
   render(){
     const score = this.point.pointValue
-    const prevScore = this.point.pointValue
     return <div>
       {this.titleUI()}
-    <span className="scoreAnimContainerMax score">
-    <span className="scoreAnimContainerReset">
-      <Hover onHover={<VoteStats point={this.point}/>}>
-       <span className="ux2ScoreInLine number"><span className={score < 0 ? "negativeScore": "positiveScore"}><AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score == prevScore}>{score >= 0 && "+"}{score}</AnimateOnChange></span></span>
-      </Hover>
-    </span>
-    </span>
+        <span className="scoreAnimContainerMax score">
+          <span className="scoreAnimContainerReset">
+            <Hover onHover={<VoteStats point={this.point}/>}>
+             <span className="ux2ScoreInLine number">
+               <span className={score < 0 ? "negativeScore": "positiveScore"}>
+                <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score.diff != 0}>
+                  {score >= 0 && "+"}{score}
+                </AnimateOnChange>
+               </span>
+              </span>
+            </Hover>
+          </span>
+        </span>
       </div>
   }
 }
@@ -805,7 +809,7 @@ class PointCardComponent extends React.Component {
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
-
+      
       //<div className="quickTestRect">Test rectangle!</div>
 
       return <div className="listedClaimGroup">
@@ -817,6 +821,7 @@ class PointCardComponent extends React.Component {
 
         <div className="relLinkAndStackCards">
         {this.relevanceLinkUI()}
+        
         <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
 
         <div className={classesStackCard1} tabIndex="-1">
@@ -856,6 +861,7 @@ class PointCardComponent extends React.Component {
           </div>
 
           </div>
+          
           </div>
 
           </div>

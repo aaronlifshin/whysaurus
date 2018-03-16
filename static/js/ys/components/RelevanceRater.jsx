@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types'
 
+import Spinner from './Spinner'
 import * as schema from '../schema';
 
 class RelevanceComponent extends React.Component {
@@ -43,21 +44,27 @@ class RelevanceComponent extends React.Component {
   linkClassFor = (vote) =>
     "relVoteLink number relVoteLink" + vote + ((this.myRelevanceVote == vote) ? (" myRelevanceVote" + vote) : "")
 
-  voteButton = (vote) =>
-    <a className={this.linkClassFor(vote)} onClick={this.handleClickFn(vote)}>{vote}<span className="perctSignSmall">%</span></a>
+  isDisabled = () =>
+    this.state.rating 
+    
+  voteButton= (vote) =>
+    <button disabled={this.isDisabled()} className={this.linkClassFor(vote)} onClick={this.handleClickFn(vote)}>{vote}<span className="perctSignSmall">%</span></button>
+
+
+//      {this.state.rating ? <div>Rating...</div> :
 
   // TODO: add number of Votes so far to relevanceStats
   render(){
     return <div className="relCtrlGroup" >
       <span className="relCtrlClose"><a onClick={this.props.onClose}>&#xd7;</a></span>
       <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
-      {this.state.rating ? <div>Rating...</div> :
-                           <div className="relCtrlVoteOptions">
-                             {this.voteButton(100)}
-                             {this.voteButton(66)}
-                             {this.voteButton(33)}
-                             {this.voteButton(0)}
-                           </div>}
+       <div className="relCtrlVoteOptions">
+         {this.voteButton(100)}
+         {this.voteButton(66)}
+         {this.voteButton(33)}
+         {this.voteButton(0)}
+         {this.state.rating && <Spinner />}
+       </div>
       <div className="relevanceExplanation">
         <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} {this.relevanceVoteCount == 1 ? 'vote' : 'votes'} so far</div>
         <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>

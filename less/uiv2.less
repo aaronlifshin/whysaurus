@@ -447,14 +447,6 @@ body {
   color: @smallGreyLinkColor;
 }
 
-.relCtrlVoteOptions {
-  margin-bottom: 18px;
-  font-size:  @baseFontSizeUX2 * 1.5; // ~28px;
-    font-weight: bold;
-  position: relative;
-    left: -14px;
-}
-
 .relevanceLinkArea {
   display: inline-block;
   vertical-align: top;
@@ -520,23 +512,35 @@ body {
   width: 90%;
 }
 
-.relVoteLink {
+.relCtrlVoteOptions {
+  margin-bottom: 18px;
+  position: relative;
+  left: -14px;
+}
+
+.relVoteLink, .relVoteLink button {
+  font-size:  @baseFontSizeUX2 * 1.5; // ~28px;
+  font-weight: bold;
+  background-color: green;
+  background-color: inherit;
+  border: none;
   color: @blue;
   margin-right: 0px;
-    display: inline-block;
-    //border: solid;
-    //border-color: @relGroupHiliteBG; // prevents offset when border appears
-    padding-top: 10px;
-    padding-bottom: 3px;
-    padding-right: 8px;
-    padding-left: 10px;
-    min-width: 44px;
-    height: 25px;
-    vertical-align: middle;
-    text-align: center;
+  display: inline-block;
+  //border: solid;
+  //border-color: @relGroupHiliteBG; // prevents offset when border appears
+  padding-top: 8px;
+  padding-bottom: 7px;
+  padding-right: 8px;
+  padding-left: 10px;
+  min-width: 44px;
+  height: 25px;
+  vertical-align: middle;
+  text-align: center;
   border-radius: 5px;
   //color: black;
   //color: pink;
+  outline: none; // TO DO: figure out :focus style
 }
 .relVoteLink:hover {
   //text-decoration: underline;
@@ -546,11 +550,15 @@ body {
   //background-color: @blueLight;
   color: white !important;
 }
-
 // scale down on click
 .relVoteLink:active {
-    transform: scale(0.975);
+  transform: scale(0.975);
 }
+.relVoteLink:disabled {
+  //color: grey !important ;
+  //pointer-events: none;
+}
+
 
 @relColor0: @blue; // hsla(0, 0%, 80%, 1); // black; // @blue; //
 @relColor33:  @blue; //hsla(0, 0%, 60%, 1); // black; // @blue; //
@@ -569,6 +577,20 @@ body {
 .relVoteLink100:hover {
   background-color: @blueLight; //@relColor100;
 }
+.relVoteLinkSaving {
+  background-color: @blue !important;
+  //background-image: url("/static/img/ajax-loader.gif");
+  background-image: url("/static/img/Reload-1s-200px_white_transp.svg");
+  font-size: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  background-blend-mode: screen;
+}
+
+
+
+
 
 .myRelevanceVote100 {
   color: white;// !important ;
@@ -1598,14 +1620,18 @@ a:hover .arrowAddEvidenceButton {
     margin-top: -26px;
 }
 
-.spinnerPointSubmitButtonPosition {
+.spinner {
   display: inline-block;
   position: relative;
   top: 0;
   left: 0;
+  margin-left: 4px;
   margin-right: 4px;
+  width: 28px;
 }
-
+.spinnerPointList {
+  margin-left: 24px;
+}
 
 .claimTitleField {
   margin-bottom: 12px;

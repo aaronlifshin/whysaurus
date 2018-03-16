@@ -8,6 +8,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { GetPoint } from './schema.js';
 import { withRouter } from 'react-router';
+import Spinner from './components/Spinner'
+
 
 class PointListComponent extends React.Component {
   constructor(props) {
@@ -100,10 +102,10 @@ class PointListComponent extends React.Component {
       return this.renderPoint(this.props.point);
     } else if (this.props.points) {
       return <div>
-        {this.props.points.map((point, i) => this.renderPoint(point))}
-      </div>
+          {this.props.points.map((point, i) => this.renderPoint(point))}
+        </div>
     } else if (this.props.loading || (this.props.data && this.props.data.loading)) {
-      return <div><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Loading!</div>
+      return <div className="spinnerPointList"><Spinner /></div>
     } else if (this.props.data && this.props.data.point) {
       return this.renderPoint(this.props.data.point);
     } else if (this.props.edges) {

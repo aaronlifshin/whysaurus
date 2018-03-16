@@ -108,7 +108,7 @@ class PointComponent extends React.Component {
             <Hover onHover={<VoteStats point={this.point}/>}>
              <span className="ux2ScoreInLine number">
                <span className={score < 0 ? "negativeScore": "positiveScore"}>
-                <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score.diff != 0}>
+                <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score}>
                   {score >= 0 && "+"}{score}
                 </AnimateOnChange>
                </span>

@@ -1,15 +1,14 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { PointCard } from './point';
-const { Map, List, Seq } = require('immutable');
-const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { GetPoint } from './schema.js';
 import { withRouter } from 'react-router';
-import Spinner from './components/Spinner'
+import InfiniteScroll from 'react-infinite-scroll-component';
 
+import Spinner from './components/Spinner'
+import { GetPoint } from './schema.js';
+import { PointCard } from './point';
 
 class PointListComponent extends React.Component {
   constructor(props) {
@@ -73,7 +72,7 @@ class PointListComponent extends React.Component {
     this.modifyStateAndURL(point, index => delete index[point.url])
   }
 
-  renderPoint(point) {
+  renderPoint = (point) => {
     if (this.isPointExpanded(point)) {
       return <PointCard key={point.url} url={point.url} point={point} expanded={true}
                         parentPoint={this.parentPoint}
@@ -97,13 +96,36 @@ class PointListComponent extends React.Component {
     }
   }
 
+  renderPoints = (points) => this.props.points.map((point, i) => this.renderPoint(point))
+
+  renderInfinitePoints = (points) => (
+    <InfiniteScroll next={this.props.loadMorePoints} hasMore={this.props.hasMore}
+                    loader={<Spinner />} endMessage="No more points...">
+      {this.renderPoints(points)}
+    </InfiniteScroll>
+  )
+
+  renderPointsWithMoreLink = (points) => <div>
+    {this.renderPoints(points)}
+    <a onClick={this.props.loadMorePoints}>Load More...</a>
+  </div>
+
+
   render(){
     if (this.props.point) {
       return this.renderPoint(this.props.point);
     } else if (this.props.points) {
-      return <div>
-          {this.props.points.map((point, i) => this.renderPoint(point))}
+      if (this.props.loadMorePoints) {
+        if (this.props.infiniteScroll) {
+          return this.renderInfinitePoints(this.props.points)
+        } else {
+          return this.renderPointsWithMoreLink(this.props.points)
+        }
+      } else {
+        return <div>
+          {this.renderPoints(this.props.points)}
         </div>
+      }
     } else if (this.props.loading || (this.props.data && this.props.data.loading)) {
       return <div className="spinnerPointList"><Spinner /></div>
     } else if (this.props.data && this.props.data.point) {

@@ -178,7 +178,7 @@ query HomePage {
 }
 `
 
-export const NewPoints = gql`
+export const NewPointsOne = gql`
 ${pointFieldsFragment}
 query HomePage {
   homePage {
@@ -188,6 +188,19 @@ query HomePage {
   }
 }
 `
+
+export const NewPoints = gql`
+${pointFieldsFragment}
+query NewPoints($cursor: String, $limit: Int) {
+  newPoints(cursor: $cursor, limit: $limit) {
+    cursor
+    points {
+      ...pointFields
+    }
+    hasMore
+  }
+}
+`;
 
 export const NewPoint = gql`
 ${pointFieldsFragment}

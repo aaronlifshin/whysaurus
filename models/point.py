@@ -27,12 +27,14 @@ from __future__ import division
 import re
 import logging
 import math
+import pprint
 
 from google.appengine.ext import ndb
 from google.appengine.ext.db import BadRequestError, TransactionFailedError
 from google.appengine.api import search
 from google.appengine.api.taskqueue import Task
 from google.appengine.ext import deferred
+from google.appengine.datastore.datastore_query import Cursor
 
 from imageurl import ImageUrl
 from whysaurusexception import WhysaurusException
@@ -1403,10 +1405,17 @@ class PointRoot(ndb.Model):
         resultPoints = None
         if user:
             resultPoints =  map(lambda x: x.addVote(user), (pointsQuery.fetch(50)))
-            logging.info('RP ' + str(resultPoints))
         else:
             resultPoints =  pointsQuery.fetch(50)
         return resultPoints
+
+    @staticmethod
+    def getRecentCurrentPointsPage(limit=3, cursor=None, user=None):
+        pointsQuery = Point.gql("WHERE current = TRUE AND isTop = TRUE AND isLowQualityAdmin = FALSE ORDER BY dateEdited DESC")
+        resultPoints, newCursor, more = pointsQuery.fetch_page(limit, start_cursor=Cursor(urlsafe=cursor) if cursor else None )
+        if user:
+            resultPoints =  map(lambda x: x.addVote(user), resultPoints)
+        return resultPoints, newCursor, more
 
     @staticmethod
     def getTopRatedPoints(filterList = None):

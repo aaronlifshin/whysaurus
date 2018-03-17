@@ -2,8 +2,6 @@ import React from 'react'
 import * as validations from '../validations';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
-import { config } from '../config'
-
 
 export default class QuickCreateClaim extends React.Component {
   state = {submitting: false}

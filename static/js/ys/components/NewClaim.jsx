@@ -3,7 +3,7 @@ import * as validations from '../validations';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
 import ReactFilestack from 'filestack-react';
-import { config } from '../config'
+import config from '../config'
 
 
 export default class NewClaim extends React.Component {

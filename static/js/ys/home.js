@@ -21,10 +21,24 @@ const EditorsPicks = graphql(schema.EditorsPicks, {
   })
 })(PointList);
 
+const newPointsDefaultPageSize = 7
 const NewPoints = graphql(schema.NewPoints, {
-  props: ({ownProps, data: { loading, homePage }}) => ({
+  options: ({pointsPerPage}) => ({variables: {limit: pointsPerPage || newPointsDefaultPageSize}}),
+  props: ({ownProps: {pointsPerPage}, data: { loading, newPoints = {}, fetchMore}}) => ({
     loading: loading,
-    points: homePage && homePage.newPoints
+    points: newPoints.points,
+    hasMore: newPoints.hasMore,
+    infiniteScroll: true,
+    loadMorePoints: () => {
+      return fetchMore({
+        query: schema.NewPoints,
+        variables: {cursor: newPoints.cursor, limit: pointsPerPage || newPointsDefaultPageSize},
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          fetchMoreResult.newPoints.points = [...previousResult.newPoints.points, ...fetchMoreResult.newPoints.points]
+          return fetchMoreResult
+        }
+      })
+    }
   })
 })(PointList);
 
@@ -122,7 +136,7 @@ class Home extends React.Component {
               <Tab className="tabUX2">Editor's Picks</Tab>
             </TabList>
             <TabPanel>
-              <NewPoints/>
+              <NewPoints pointsPerPage={10}/>
             </TabPanel>
             <TabPanel>
               <EditorsPicks/>

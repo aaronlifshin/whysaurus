@@ -1,4 +1,5 @@
 import logging
+import pprint
 from google.appengine.ext import ndb
 
 import graphene
@@ -373,6 +374,11 @@ class RelevanceVote(graphene.Mutation):
         else:
             raise Exception(str('point not defined ' +  str(point)))
 
+class PagedPoints(graphene.ObjectType):
+    cursor = graphene.String()
+    points = graphene.List(Point)
+    hasMore = graphene.Boolean()
+
 class HomePage(graphene.ObjectType):
     featuredPoint = graphene.Field(Point)
     def resolve_featuredPoint(self, info, **args):
@@ -399,6 +405,11 @@ class Query(graphene.ObjectType):
     homePage = graphene.Field(HomePage)
     def resolve_homePage(self, info):
         return HomePage()
+
+    newPoints = graphene.Field(PagedPoints, cursor=graphene.String(), limit=graphene.Int())
+    def resolve_newPoints(self, info, **args):
+        results, nextCursor, more = PointRoot.getRecentCurrentPointsPage(user=info.context.current_user, cursor=args.get('cursor', None), limit=args.get('limit', 5))
+        return PagedPoints(cursor=nextCursor.urlsafe(), points=results, hasMore=more)
 
     currentUser = graphene.Field(User)
     def resolve_currentUser(self, info):

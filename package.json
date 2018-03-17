@@ -44,6 +44,7 @@
     "react-apollo": "^2.0.1",
     "react-dom": "^16.0.0",
     "react-form": "^3.2.0",
+    "react-infinite-scroll-component": "^3.0.2",
     "react-responsive": "^4.0.3",
     "react-responsive-carousel": "^3.1.33",
     "react-router": "^4.2.0",

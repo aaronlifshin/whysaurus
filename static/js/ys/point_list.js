@@ -5,15 +5,21 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { withRouter } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import PropTypes from 'prop-types';
+
 
 import Spinner from './components/Spinner'
 import { GetPoint } from './schema.js';
 import { PointCard } from './point';
+import config from './config'
 
 class PointListComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {expandedIndex: this.urlExpandedIndex()}
+    this.state = {
+      expandedIndex: this.urlExpandedIndex(),
+      hideIrrelevant: true
+    }
   }
 
   get parentPoint() {
@@ -110,6 +116,31 @@ class PointListComponent extends React.Component {
     <a onClick={this.props.loadMorePoints}>Load More...</a>
   </div>
 
+  renderEdges = (edges) => edges.map((edge, i) => this.renderEdge(edge))
+
+  showIrrelevant = () => this.setState({hideIrrelevant: false})
+
+  hideIrrelevant = () => this.setState({hideIrrelevant: true})
+
+  relevanceThreshold = () => this.props.relevanceThreshold
+
+  renderRelevantEdges = () => {
+    const threshold = this.relevanceThreshold()
+    if (threshold) {
+      let relevantEdges = this.props.edges.filter(({link: {relevance}}) => relevance > threshold)
+      if (relevantEdges.length != this.props.edges.length) {
+        return <div>{this.renderEdges(this.state.hideIrrelevant ? relevantEdges : this.props.edges)}
+          {this.state.hideIrrelevant ? <a onClick={this.showIrrelevant}>Show points below relevance threshold</a> :
+                                       <a onClick={this.hideIrrelevant}>Hide points below relevance threshold</a>}
+        </div>
+      } else {
+        return this.renderEdges(this.props.edges)
+      }
+    } else {
+      return this.renderEdges(this.props.edges)
+    }
+  }
+
 
   render(){
     if (this.props.point) {
@@ -131,9 +162,7 @@ class PointListComponent extends React.Component {
     } else if (this.props.data && this.props.data.point) {
       return this.renderPoint(this.props.data.point);
     } else if (this.props.edges) {
-      return <div>
-        {this.props.edges.map((edge, i) => this.renderEdge(edge))}
-        </div>
+      return this.renderRelevantEdges()
     } else {
       return <div>dunno what to do...</div>
     }

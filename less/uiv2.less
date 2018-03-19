@@ -56,6 +56,30 @@
   margin-left: 10%;
 }
 
+// INFINITE SCROLL
+
+.hideScrollbar {
+  overflow:hidden;
+}
+
+.infinite-scroll-component {
+  padding-top: 9px; // not sure why this is necessary, but it prevents a weird crop on the top
+   -ms-overflow-style: none; // IE 10+
+   overflow: -moz-scrollbars-none;  // Old Firefox versions, but doesn't work for new Firefox
+}
+::-webkit-scrollbar {
+    //display:none;
+}
+
+.pointListEndMessage {
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-bottom: 90px;
+    display: block;
+    font-size: 14px;
+    color: grey;
+}
+
 /////////////////////////////
 
 
@@ -317,8 +341,8 @@ body {
   //margin-top:-2 * @marginVerticalStandard;
 }
 
-.evidenceBlockNudgeAlignment {
-  left: -9px;
+.evidenceBlockFirstColAlignment {
+  left: -9px !important;
 }
 
 .supportHeading, .counterHeading {

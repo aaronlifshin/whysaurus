@@ -105,10 +105,12 @@ class PointListComponent extends React.Component {
   renderPoints = (points) => this.props.points.map((point, i) => this.renderPoint(point))
 
   renderInfinitePoints = (points) => (
-    <InfiniteScroll next={this.props.loadMorePoints} hasMore={this.props.hasMore}
-                    loader={<Spinner />} endMessage="No more points...">
-      {this.renderPoints(points)}
-    </InfiniteScroll>
+    <div className="hideScrollbar">
+      <InfiniteScroll next={this.props.loadMorePoints} hasMore={this.props.hasMore}
+                      loader={<Spinner />} endMessage={<span className="pointListEndMessage">End of list</span>}>
+        {this.renderPoints(points)}
+      </InfiniteScroll>
+    </div>
   )
 
   renderPointsWithMoreLink = (points) => <div>

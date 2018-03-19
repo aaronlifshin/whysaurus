@@ -768,7 +768,7 @@ export const PointCard = compose(
   graphql(DeletePointMutation, {
     props: ({ mutate }) => ({
       delete: (url) => mutate({variables: {url},
-                               refetchQueries: [{query: EditorsPicks}, {query: NewPoints}]})
+                               refetchQueries: [{query: EditorsPicks}, {query: NewPoints, variables: {limit: config.newPointsPageSize}}]})
     })
   }),
   graphql(UnlinkPointMutation, {

@@ -12,6 +12,7 @@ import { Carousel } from 'react-responsive-carousel';
 import MediaQuery from 'react-responsive';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import * as validations from './validations';
+import config from './config';
 import QuickCreateClaim from './components/QuickCreateClaim'
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
@@ -57,9 +58,10 @@ class Home extends React.Component {
       return this.props.mutate({
         variables: pointData,
         update: (proxy, {data: {newPoint: { point }}}) => {
-          const data = proxy.readQuery({ query: schema.NewPoints});
-          data.homePage.newPoints.unshift(point);
-          proxy.writeQuery({query: schema.NewPoints, data: data});
+          const variables = {limit: config.newPointsPageSize}
+          const data = proxy.readQuery({ query: schema.NewPoints, variables: variables});
+          data.newPoints.points.unshift(point);
+          proxy.writeQuery({query: schema.NewPoints, variables: variables, data: data});
         }
       });
     } else {
@@ -115,8 +117,6 @@ class Home extends React.Component {
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
-    let newPoints = homePage && homePage.newPoints;
-    let editorsPicks = homePage && homePage.editorsPicks;
     return <div className="infiniteWidth">
       {this.illustrations()}
       <div className="mainPageClaimCreationArea">
@@ -136,7 +136,7 @@ class Home extends React.Component {
               <Tab className="tabUX2">Editor's Picks</Tab>
             </TabList>
             <TabPanel>
-              <NewPoints pointsPerPage={10}/>
+              <NewPoints pointsPerPage={config.newPointsPageSize}/>
             </TabPanel>
             <TabPanel>
               <EditorsPicks/>

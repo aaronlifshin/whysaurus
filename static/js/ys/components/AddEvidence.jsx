@@ -89,6 +89,7 @@ class AddEvidence extends React.Component {
                          onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter}
                          onCancel={this.handleClickCancel}
                          addExistingClaim={this.addExistingClaim}
+                         point={this.point}
                          currentSupportingClaims={this.supportingClaims(evidenceType)}/> }
     </span>
   }
@@ -133,7 +134,7 @@ class AddEvidence extends React.Component {
   }
 
   renderSupportButton = () => this.renderAddEvidenceButton("supporting")
-  
+
   renderCounterButton = () => this.renderAddEvidenceButton("counter")
 
   renderDualButtons = () => <span>
@@ -141,7 +142,7 @@ class AddEvidence extends React.Component {
     {this.renderAddEvidenceButton("counter")}
   </span>
 
-  
+
   renderEvidenceArrow = (color) => {
     let arrowGrpClass = `arrowEvidence ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
     let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
@@ -175,7 +176,7 @@ class AddEvidence extends React.Component {
         { this.renderEvidenceArrow("red") }
         <span className={controlsAreaClass}>
           { this.state.addingCounter ? this.renderAddEvidenceForm("counter") : this.renderCounterButton() }
-        </span>       
+        </span>
       </div>
     default:
       console.log("AddEvidenceCard : render() : something's wrong!")

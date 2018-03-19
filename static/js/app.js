@@ -7,7 +7,7 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
-import {PostListWithPoints, PointListWithPoints, PointListWithPoint} from './ys/point_list';
+import {PointListWithPoint} from './ys/components/PointList';
 import {HomePage} from './ys/home';
 
 const client = new ApolloClient({

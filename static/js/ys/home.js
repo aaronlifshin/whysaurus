@@ -5,7 +5,7 @@ const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { PointList } from './point_list';
+import { PointList } from './components/PointList';
 import * as schema from './schema';
 import { Form, Text } from 'react-form';
 import { Carousel } from 'react-responsive-carousel';

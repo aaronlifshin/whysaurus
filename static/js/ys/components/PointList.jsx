@@ -8,10 +8,10 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import PropTypes from 'prop-types';
 
 
-import Spinner from './components/Spinner'
-import { GetPoint } from './schema.js';
-import { PointCard } from './point';
-import config from './config'
+import Spinner from './Spinner'
+import { GetPoint } from '../schema';
+import { PointCard } from './Point';
+import config from '../config'
 
 class PointListComponent extends React.Component {
   constructor(props) {

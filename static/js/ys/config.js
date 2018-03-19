@@ -3,5 +3,6 @@ export default {
     key: "AinmHvEQdOt6M2iFVrYowz"
   },
 
-  relevanceThreshold: 33
+  relevanceThreshold: 33,
+  newPointsPageSize: 3
 }

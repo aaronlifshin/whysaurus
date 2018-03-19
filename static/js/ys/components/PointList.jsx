@@ -31,7 +31,6 @@ class PointListComponent extends React.Component {
   }
 
   expandedIndex2Param = (index) => {
-    console.log(index)
     return JSON.stringify(Object.keys(index).filter(key => index[key]))
   }
 

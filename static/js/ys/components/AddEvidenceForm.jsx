@@ -20,10 +20,12 @@ class AddEvidenceForm extends React.Component {
 
   constructor(props) {
     super(props)
-    this.currentSupportingClaimURLs = new Set(this.props.currentSupportingClaims.map(claim => claim.url))
+    this.invalidEvidenceURLs = new Set([props.point.url, ...props.currentSupportingClaims.map(claim => claim.url)])
   }
 
   static propTypes = {
+    point: PropTypes.object.isRequired,
+    currentSupportingClaims: PropTypes.array.isRequired,
     addExistingClaim: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
@@ -34,21 +36,21 @@ class AddEvidenceForm extends React.Component {
   selectExistingClaim = (claim) =>
     this.props.addExistingClaim(this.props.evidenceType, claim)
 
-  filterCurrentSupport = (claims) =>
-    this.props.currentSupportingClaims ? claims.filter(claim => !this.currentSupportingClaimURLs.has(claim.url)) : claims
+  filterEvidenceCandidates = (claims) =>
+    claims.filter(claim => !this.invalidEvidenceURLs.has(claim.url))
 
   existingClaimPicker = (titleValue, searchResults, searching) => {
       if (titleValue && (titleValue != '')){
         if (searching) {
           return <div className="">Searching...</div>
         } else {
-          return <ExistingClaimPicker claims={this.filterCurrentSupport(searchResults)} onSelectClaim={this.selectExistingClaim}/>
+          return <ExistingClaimPicker claims={this.filterEvidenceCandidates(searchResults)} onSelectClaim={this.selectExistingClaim}/>
         }
       } else if (this.props.user) {
-        return <ExistingClaimPicker claims={this.filterCurrentSupport(this.props.user.recentlyViewed)} onSelectClaim={this.selectExistingClaim}/>
+        return <ExistingClaimPicker claims={this.filterEvidenceCandidates(this.props.user.recentlyViewed)} onSelectClaim={this.selectExistingClaim}/>
       }
   }
-  
+
   // if (this.state.titleTextFocused) {
   existingClaimPickerDropdown = (titleValue, searchResults, searching) => {
     if (this.state.titleTextFocused) {
@@ -57,18 +59,18 @@ class AddEvidenceForm extends React.Component {
         {this.existingClaimPicker(titleValue, searchResults, searching)}
       </div>
     }
-  }  
- 
+  }
+
   // TODO: add multiple options for each type and randomize to give it some fun magic!
   generatePlaceholderText(evidenceType) {
     let placeholderSupport = `Make a claim, eg "Dogs can learn more tricks than cats."`
     let placeholderCounter= `Make a claim, eg "Cats are funnier than dogs."`
     if (this.props.evidenceType=="counter") {
-        return placeholderCounter 
+        return placeholderCounter
     } else {
         return placeholderSupport
     }
-  } 
+  }
 
   render(){
     const {userLoading, user} = this.props

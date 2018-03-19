@@ -4,5 +4,5 @@ export default {
   },
 
   relevanceThreshold: 33,
-  newPointsPageSize: 3
+  newPointsPageSize: 10
 }

@@ -6,13 +6,15 @@ import { Form, Text } from 'react-form';
 import MediaQuery from 'react-responsive';
 import { CSSTransitionGroup } from 'react-transition-group' // ES6
 import AnimateOnChange from 'react-animate-on-change';
-import * as validations from './validations';
-import { UnlinkPointMutation, DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from './schema.js';
-import {PointList} from './point_list.js'
-import AddEvidence from './components/AddEvidence'
-import EditPoint from './components/EditPoint'
-import RelevanceRater from './components/RelevanceRater'
-import config from './config'
+
+import * as validations from '../validations';
+import { UnlinkPointMutation, DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from '../schema';
+import config from '../config'
+
+import {PointList} from './PointList'
+import AddEvidence from './AddEvidence'
+import EditPoint from './EditPoint'
+import RelevanceRater from './RelevanceRater'
 
 // TODO: make work
 //import Arrow from '@elsdoerfer/react-arrow';

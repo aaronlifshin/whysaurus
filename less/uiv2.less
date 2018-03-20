@@ -63,9 +63,10 @@
 }
 
 .infinite-scroll-component {
-  padding-top: 18px; // not sure why this is necessary, but it prevents a weird crop on the top
-   -ms-overflow-style: none; // IE 10+
-   overflow: -moz-scrollbars-none;  // Old Firefox versions, but doesn't work for new Firefox
+  overflow: unset !important; // removes scrollbar, but doesn't seem to remove infiniteScroll behavior -JF
+  //padding-top: 18px; // not sure why this is necessary, but it prevents a weird crop on the top
+   //-ms-overflow-style: none; // IE 10+
+   //overflow: -moz-scrollbars-none;  // Old Firefox versions, but doesn't work for new Firefox
 }
 ::-webkit-scrollbar {
     //display:none;

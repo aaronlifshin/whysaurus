@@ -4,6 +4,8 @@ import { graphql, compose } from 'react-apollo';
 
 import * as schema from '../schema';
 import AddEvidenceForm from './AddEvidenceForm'
+import Spinner from './Spinner'
+
 
 class AddEvidence extends React.Component {
   state = {addingSupport: false, addingCounter: false }
@@ -82,15 +84,17 @@ class AddEvidence extends React.Component {
 
   renderAddEvidenceForm = (evidenceType) => {
     console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
-    let groupClass = `${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrowForm"}`
-    return <span className={groupClass}>
-      { this.state.saving ? <span className="addEvidenceFormSaving"><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</span> :
+    let progressFeedbackClasses = `progressStateFeedback ${evidenceType=="counter" && "counter"}`
+    return <span>
+      { this.state.saving ? <div className={progressFeedbackClasses}><Spinner />Saving...</div> :
+      <span className={(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrowForm"}>
         <AddEvidenceForm evidenceType={evidenceType}
-                         onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter}
-                         onCancel={this.handleClickCancel}
-                         addExistingClaim={this.addExistingClaim}
-                         point={this.point}
-                         currentSupportingClaims={this.supportingClaims(evidenceType)}/> }
+                           onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter}
+                           onCancel={this.handleClickCancel}
+                           addExistingClaim={this.addExistingClaim}
+                           point={this.point}
+                           currentSupportingClaims={this.supportingClaims(evidenceType)}/> 
+      </span>}
     </span>
   }
 

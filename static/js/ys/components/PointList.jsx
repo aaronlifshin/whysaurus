@@ -122,15 +122,18 @@ class PointListComponent extends React.Component {
   hideIrrelevant = () => this.setState({hideIrrelevant: true})
 
   relevanceThreshold = () => this.props.relevanceThreshold
-
+  
   renderRelevantEdges = () => {
     const threshold = this.relevanceThreshold()
     if (threshold) {
       let relevantEdges = this.props.edges.filter(({link: {relevance}}) => relevance > threshold)
       if (relevantEdges.length != this.props.edges.length) {
-        return <div>{this.renderEdges(this.state.hideIrrelevant ? relevantEdges : this.props.edges)}
-          {this.state.hideIrrelevant ? <a className="toggleLowRelClaims" onClick={this.showIrrelevant}>Show claims below <span className="number">{threshold}%</span> Relevance</a> :
-                                       <a className="toggleLowRelClaims" onClick={this.hideIrrelevant}>Hide claims below <span className="number">{threshold}%</span> Relevance</a>}
+        return <div>
+          {this.renderEdges(this.state.hideIrrelevant ? relevantEdges : this.props.edges)}
+          {(this.state.hideIrrelevant && relevantEdges.length == 0) && <span className="toggleLowRelClaims noRelevantClaims">No Relevant Claims.</span>}       
+          {this.state.hideIrrelevant ? 
+            <a className="toggleLowRelClaims" onClick={this.showIrrelevant}>Show Claims Below <span className="number">{threshold}%</span> Relevance</a> :
+            <a className="toggleLowRelClaims" onClick={this.hideIrrelevant}>Hide Claims Below <span className="number">{threshold}%</span> Relevance</a>}
         </div>
       } else {
         return this.renderEdges(this.props.edges)

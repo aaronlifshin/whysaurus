@@ -700,13 +700,21 @@ a:hover .perctSignSmall {
   margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   margin-top: 16px;
   font-size: @fontSizeActionsUX2;
-  color: @nearBlack;
+  //color: @nearBlack;
 }
-.toggleLowRelClaims:hover {
-  //text-decoration: underline;
+ a.toggleLowRelClaims {
+  color: @blue
+}
+ a.toggleLowRelClaims:hover {
+  text-decoration: underline;
+  //background-color: pink;
 }
 .toggleLowRelClaims .number {
-  font-size: 94%;
+  //font-size: 94%;
+}
+.noRelevantClaims {
+  color: @nearBlack;
+  margin-bottom: -12px;
 }
 
 // FOR TESTING CSSTRANSITIONGROUP

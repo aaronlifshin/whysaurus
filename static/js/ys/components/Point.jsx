@@ -490,8 +490,8 @@ class PointCardComponent extends React.Component {
       }
       else {
         return <div className={classesEvidenceBlock}>
+         {this.renderDottedLinesEvidenceHeaderOrMargin()}
          <MediaQuery minWidth={singleColumnThreshold}>
-          {this.hasSupportingEvidence() && this.hasCounterEvidence() && this.renderDottedLinesSplitEvidenceHeader()}
           {this.hasSupportingEvidence() && this.supportingPoints()}
           {this.hasCounterEvidence() && this.counterPoints()}
          </MediaQuery>
@@ -502,13 +502,19 @@ class PointCardComponent extends React.Component {
       }
     }
   }
-
-  renderDottedLinesSplitEvidenceHeader() {
+ 
+  renderDottedLinesEvidenceHeaderOrMargin() {
     return <div className="dottedLinesSplitEvidenceHeader">
-      <div className="dottedLinesSplitEvidenceSupport"></div>
-      <div className="dottedLinesSplitEvidenceCounter"></div>
-    </div>
-  }
+      <MediaQuery minWidth={singleColumnThreshold}>
+        {this.hasSupportingEvidence() && this.hasCounterEvidence() && 
+          <div>
+            <div className="dottedLinesSplitEvidenceSupport"></div>
+            <div className="dottedLinesSplitEvidenceCounter"></div>
+          </div>
+        }
+      </MediaQuery>
+    </div>    
+  } 
 
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {

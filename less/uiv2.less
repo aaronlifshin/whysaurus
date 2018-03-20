@@ -4,9 +4,12 @@
 // Positioning Grid setup
 @cardWidth: 420px;
 @indent: 45px;
-@cardListWidth: @cardWidth + ( 4 * @indent);
-
+@stackCardOffset: 3px;
 @cardBorderWidth: 1px;
+@cardStackWidth: (4 * @stackCardOffset) + (3 * @cardBorderWidth);
+//@cardListWidth: @cardWidth + ( 4 * @indent); // currently unused
+
+
 @cardPadding: 14px;
 @cardPaddingRight: 12px;
 @cardPaddingTop: @cardPaddingRight * .75;
@@ -16,6 +19,7 @@
 
 
 // Colors
+@nearBlack: hsl(0, 0%, 20%);
 @darkerGreyColor: #5d5d5d;
 @smallGreyLinkColor: #a9a9a9;
 @smallGreyLinkSize: 12px;
@@ -348,7 +352,7 @@ body {
 
 .supportHeading, .counterHeading {
   //margin-top: 20px;
-  margin-left: @indent + @cardBorderWidth + @cardPadding + 15; //the extra covers the width of the cardstack
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   margin-bottom: @marginVerticalStandard;
   color: @darkerGreyColor;
   text-transform: uppercase;
@@ -382,7 +386,7 @@ body {
 }
 
 .evidenceBlockCounter {
-  left: -32px;
+  left: -16px; //if we go more than this, we step on the X in the relevance voting widget; would be nice to figure out how to remove this
 }
 
 .evidenceBlockEmpty {
@@ -691,6 +695,20 @@ a:hover .perctSignSmall {
   top: -4px;
 }
 
+.toggleLowRelClaims {
+  display: block;
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
+  margin-top: 16px;
+  font-size: @fontSizeActionsUX2;
+  color: @nearBlack;
+}
+.toggleLowRelClaims:hover {
+  //text-decoration: underline;
+}
+.toggleLowRelClaims .number {
+  font-size: 94%;
+}
+
 // FOR TESTING CSSTRANSITIONGROUP
 .example-enter {
   opacity: 0.01;
@@ -783,8 +801,8 @@ a:hover .perctSignSmall {
   background-color: white;
   width: @cardWidth;
   position: relative;
-  left: 3px;
-  top: -3px;
+  left: @stackCardOffset;
+  top: -1 * @stackCardOffset;
   box-sizing: border-box;
   transform-origin: top left;
 }

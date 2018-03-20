@@ -129,8 +129,8 @@ class PointListComponent extends React.Component {
       let relevantEdges = this.props.edges.filter(({link: {relevance}}) => relevance > threshold)
       if (relevantEdges.length != this.props.edges.length) {
         return <div>{this.renderEdges(this.state.hideIrrelevant ? relevantEdges : this.props.edges)}
-          {this.state.hideIrrelevant ? <a onClick={this.showIrrelevant}>Show points below relevance threshold</a> :
-                                       <a onClick={this.hideIrrelevant}>Hide points below relevance threshold</a>}
+          {this.state.hideIrrelevant ? <a className="toggleLowRelClaims" onClick={this.showIrrelevant}>Show claims below <span className="number">{threshold}%</span> Relevance</a> :
+                                       <a className="toggleLowRelClaims" onClick={this.hideIrrelevant}>Hide claims below <span className="number">{threshold}%</span> Relevance</a>}
         </div>
       } else {
         return this.renderEdges(this.props.edges)

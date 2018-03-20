@@ -108,7 +108,6 @@
                   <a class="userControls dropdown-toggle" data-toggle="dropdown">
                     <span id="aboutIcon"  class="headerLinkIcon fa fa-question-circle"></span>
                     <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">About</span>
-                    <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span>
                   </a>
                   <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                           <li><a id="help1" href="/manifesto" >Manifesto </a></li>
@@ -125,7 +124,6 @@
 
         	  {% if user %}
                 <div class="userMenuArea headerUserName pull-right">
-                        <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>
                         <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
                             <span class="responsiveLabel">
                                 {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}

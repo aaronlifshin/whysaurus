@@ -154,20 +154,64 @@ a:focus, a:hover {
 //////////////////////////////////////////////
 // HEADER
 
+@defaultHeaderMarginH: 24px;
+
 .headerLinkIcon {
   font-size: 18px;
   top: 1px;
   margin-right: 5px;
 }
 
+.headerLinks {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.headerColorDefault {
+  background:#F0F0F0;
+  //background-color: pink;
+}
+
+#headerLogo {
+  display: inline-block;
+  margin-left: @defaultHeaderMarginH / 2;
+  margin-top: 3px;
+}
+
+#CreatePoint {
+  margin-left: @defaultHeaderMarginH;
+}
+
 #makePointIcon {
   margin-right: 2px;
+}
+#searchArea {
+  height: 48px;
+  line-height: 48px;
+  position: relative;
+  width: 300px;
+  display: inline-block;
+  margin-left: @defaultHeaderMarginH;
+  vertical-align: top;
 }
 
 #searchArea .searchIcon {
   background-image: none;
   right: 8px;
   width: auto;
+}
+
+#aboutMenu {
+  margin-left: @defaultHeaderMarginH - 4px; // needed to keep spacing consistent, not sure where this 4px is coming from
+}
+
+#notifications {
+  right: 0;
+}
+
+.userMenuArea {
+  margin-left: @defaultHeaderMarginH;
+  margin-right: @defaultHeaderMarginH / 2;
 }
 
 a.feedbackFooterLink {
@@ -1902,8 +1946,24 @@ a:hover .arrowAddEvidenceButton {
   }
 }
 
+@headerMarginNarrow: 12px;
+
 @media (max-width: 979px) and (min-width: 768px) {
 
+  .navbar .container {
+      width: unset;
+  }
+
+  #searchArea {
+    width: -moz-calc(~"100% - 520px");
+    width: -webkit-calc(~"100% - 520px");
+    width: calc(~"100% - 520px");
+  }
+
+  .userMenuArea {
+    margin-left: @headerMarginNarrow;
+  }
+  
   .explanationBlock {
     margin-left: 0;
     margin-right: 32px;
@@ -1921,11 +1981,38 @@ a:hover .arrowAddEvidenceButton {
     padding-left:10px;
   }
 
+  
   #header {
   position: fixed;
   width: 100vw; // viewport-width units
   }
-
+  
+  #header .container {
+    //padding-right: 24px; // account for scrollbars and phones
+  }
+  
+  .headerLinks {
+    float: none;
+    margin-right: 0;
+  }
+  
+  #CreatePoint, #aboutMenu, #searchArea  {
+    margin-left: @headerMarginNarrow; 
+  }
+  
+  .userMenuArea {
+    margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
+    right: 0;
+    margin-right: @defaultHeaderMarginH;
+  }
+  
+  #searchArea {
+    float: none;
+    width: -moz-calc(~"100% - 290px");
+    width: -webkit-calc(~"100% - 290px");
+    width: calc(~"100% - 290px");
+  }
+  
   #mainContainer {
     margin-left: 0;
   }

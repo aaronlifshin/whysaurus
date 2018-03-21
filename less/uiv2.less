@@ -16,26 +16,28 @@
 
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
-
+@addEvidenceUI_marginV: 52px;
 
 // Colors
 @nearBlack: hsl(0, 0%, 20%);
 @darkerGreyColor: #5d5d5d;
 @smallGreyLinkColor: #a9a9a9;
-@smallGreyLinkSize: 12px;
 @blue: hsl(196, 100%, 42%);
 @blueLight: hsl(196, 100%, 60%);
 @redLight: hsl(0, 100%, 48%);
 
+h1, h2, h3, h4, h5, h6, body {
+  color: @nearBlack; // save black for claims
+}
 
 // Typography
 @baseFontSizeUX2: 16px;
 
-@fontSizeActionsUX2: @baseFontSizeUX2 * 0.875; // ~14px
-@fontSizeStatsUX2: @baseFontSizeUX2 * 0.875; // ~14px
-@fontSizeButtonsUX2: @baseFontSizeUX2 * 0.875; // ~14px
-@fontSizePointTitle: @baseFontSizeUX2 * 1.063; // ~17px
-@arrowFontSizeUX2: @baseFontSizeUX2 * 1.125; // ~18px
+@fontSizeTertiaryUX2:  @baseFontSizeUX2 * 0.750; // ~12px;
+@fontSizeSecondaryUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeButtonsUX2:   @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizePointTitle:   @baseFontSizeUX2 * 1.063; // ~17px
+@arrowFontSizeUX2:     @baseFontSizeUX2 * 1.125; // ~18px
 
 
 // Animation
@@ -152,14 +154,45 @@ a:focus, a:hover {
 //////////////////////////////////////////////
 // HEADER
 
+@defaultHeaderMarginH: 24px;
+
 .headerLinkIcon {
   font-size: 18px;
   top: 1px;
   margin-right: 5px;
 }
 
+.headerLinks {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.headerColorDefault {
+  background:#F0F0F0;
+  //background-color: pink;
+}
+
+#headerLogo {
+  display: inline-block;
+  margin-left: @defaultHeaderMarginH / 2;
+  margin-top: 3px;
+}
+
+#CreatePoint {
+  margin-left: @defaultHeaderMarginH;
+}
+
 #makePointIcon {
   margin-right: 2px;
+}
+#searchArea {
+  height: 48px;
+  line-height: 48px;
+  position: relative;
+  width: 300px;
+  display: inline-block;
+  margin-left: @defaultHeaderMarginH;
+  vertical-align: top;
 }
 
 #searchArea .searchIcon {
@@ -168,6 +201,24 @@ a:focus, a:hover {
   width: auto;
 }
 
+#aboutMenu {
+  margin-left: @defaultHeaderMarginH - 4px; // needed to keep spacing consistent, not sure where this 4px is coming from
+}
+
+#notifications {
+  right: 0;
+}
+
+.userMenuArea {
+  margin-left: @defaultHeaderMarginH;
+  margin-right: @defaultHeaderMarginH / 2;
+}
+
+a.feedbackFooterLink {
+  font-size: @fontSizeSecondaryUX2;
+  color: @darkerGreyColor;
+  font-weight: 500;
+}
 
 //////////////////////////////////////////////
 // DROPDOWNS
@@ -209,6 +260,7 @@ a:focus, a:hover {
   padding-top:6px;
   display: inline-block;
   width: 100%;
+  font-weight: 500;
 }
 
 .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover,
@@ -329,6 +381,7 @@ body {
 }
 
 .evidenceBlock {
+  margin-left: @indent; 
   display: inline-block;
   transform-origin: top left;
   animation-name: evidenceBlockReveal;
@@ -337,8 +390,9 @@ body {
   //animation-timing-function: ease-out;
   animation-iteration-count: 1;
   background-color: #0000ff50;
-  //position: relative;
+  position: relative;
   //z-index:-1;
+  top: -1 * ((2 * @stackCardOffset) + (2 * @cardBorderWidth)); // nudge up to account for the empty space taken up by invisible stack cards
 }
 
 .evidenceBlockEmpty {
@@ -356,7 +410,8 @@ body {
   margin-bottom: @marginVerticalStandard;
   color: @darkerGreyColor;
   text-transform: uppercase;
-    font-size: @baseFontSize * 0.813; // ~13px
+  font-size: @fontSizeTertiaryUX2; //@baseFontSize * 0.813; // ~13px
+  font-weight: 500;
 }
 
 .counterHeading {
@@ -386,7 +441,7 @@ body {
 }
 
 .evidenceBlockCounter {
-  left: -16px; //if we go more than this, we step on the X in the relevance voting widget; would be nice to figure out how to remove this
+  margin-left: 6px; 
 }
 
 .evidenceBlockEmpty {
@@ -395,7 +450,6 @@ body {
 
 @evidenceListMarginTop: @marginVerticalStandard - 6px; // subtract some for the arrow
 .evidenceList {
-  margin-left: @indent; // Handled by relevanceLinkArea
   margin-top: @evidenceListMarginTop;
 }
 
@@ -495,6 +549,9 @@ body {
   width: -moz-max-content;
 }
 
+.relCtrlAndLinkAndStackCards {
+  //margin-bottom: -8px;
+}
 .relCtrlAndLinkAndStackCards:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
     //transform: scale(1.085) ;
   //font-weight: bold;
@@ -695,11 +752,17 @@ a:hover .perctSignSmall {
   top: -4px;
 }
 
+.noRelevantClaimsArea {
+  font-size: @fontSizeSecondaryUX2;
+  font-weight: 500;
+  margin-bottom: 55px; // to counter-act the vertical offset on the long Add Evidence arrow
+  display: block;
+}
 .toggleLowRelClaims {
   display: block;
   margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   margin-top: 16px;
-  font-size: @fontSizeActionsUX2;
+  margin-bottom: 50px;
   //color: @nearBlack;
 }
  a.toggleLowRelClaims {
@@ -712,7 +775,9 @@ a:hover .perctSignSmall {
 .toggleLowRelClaims .number {
   //font-size: 94%;
 }
-.noRelevantClaims {
+.noRelevantClaimsMessage {
+  display: block;
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   color: @nearBlack;
   margin-bottom: -12px;
 }
@@ -907,7 +972,7 @@ a:hover .perctSignSmall {
 }
 
 .cardTopRow {
-    font-size: @smallGreyLinkSize;
+    font-size: @fontSizeTertiaryUX2;
     color: @smallGreyLinkColor;
   margin-bottom: 6px;
 }
@@ -1005,7 +1070,7 @@ li .iconWithStat {
 .vote-stats p{
   padding: 6px;
   margin-bottom:4px;
-  font-size: @fontSizeStatsUX2;
+  font-size: @fontSizeSecondaryUX2;
 }
 
 .pointCardImageContainer {
@@ -1031,14 +1096,14 @@ li .iconWithStat {
 .source a {
   //padding-left: 4px;
   //padding-right: 4px;
-  font-size: @smallGreyLinkSize;
+  font-size: @fontSizeTertiaryUX2;
     color: @smallGreyLinkColor; // !important;
   //font-style: italic;
 }
 
 
 .cardBottomAction {
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
     color: black; // @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
   //margin-bottom:2px;
@@ -1237,7 +1302,7 @@ li .iconWithStat {
 .cancelButton {
   background: none;
   border: none;
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
   outline-style: none;
   display: inline-block;
   padding: 0;
@@ -1405,10 +1470,15 @@ li .iconWithStat {
   font-style: italic;
 }
 
-.addEvidenceFormSaving {
-  margin-left: 27px;
-  position: relative;
-  top: 4px;
+.progressStateFeedback {
+  //margin-left: 27px;
+  //position: relative;
+  //top: 4px;
+  font-size: @fontSizeSecondaryUX2;
+  color: @nearBlack;
+}
+.progressStateFeedback.counter{
+  color: @red;
 }
 
 .existingClaimPickerDropdown {
@@ -1464,8 +1534,8 @@ li .iconWithStat {
   height: 106px;
   margin-left: (@arrowHeadWidth/2) + 0.8px; // not sure why the 0.8 is whats needed to look right
   border-style: none;
-  border-left: @arrowStemWidth solid black;
-  border-bottom: @arrowStemWidth solid black;
+  border-left: @arrowStemWidth solid @nearBlack;
+  border-bottom: @arrowStemWidth solid @nearBlack;
 }
 .arrowStemEvidenceShort {
   height: 20px;
@@ -1547,12 +1617,20 @@ a:hover .arrowAddEvidenceButton {
 
 @dottedLineWidth: 1px;
 .dottedLine {
-    //color: #acacac;
+    color: @nearBlack;
     width: 1px;
     border-left-style: dotted;
     border-width: @dottedLineWidth;
     position: absolute;
 }
+
+.dottedLineExpansionIndicator {
+    height: calc(~"100% + 8px"); // TODO: set this more programmatically; eg calc(100% ~"-" @addEvidenceUI_marginV); 
+    color: hsla(0, 0%, 80%, 1); // orange;
+    margin-left: -21px; // @cardStackWidth;
+    bottom: 42px;
+}
+
 @dottedLineElbowIndent:  24px;
 .dottedLineRelevanceLink {
     height: 32px;
@@ -1564,20 +1642,26 @@ a:hover .arrowAddEvidenceButton {
   height: 10px;
   border-bottom-style: dotted;
   border-left-style: dotted;
-  
   position: absolute;
-  top: 17px;
+  //top: 17px;
   margin-left: @dottedLineElbowIndent;
+}
+.evidenceBlockCounter .dottedLineElbow {
+  color: @red;
+}
+.evidenceBlockSupport .dottedLineElbow {
+  color: @nearBlack;
 }
 
 .dottedLinesSplitEvidenceHeader {  
-    position: relative;
-    left: 60px;
-    top: -8px;
-    margin-bottom: -22px;
+  position: relative;
+  left: @cardStackWidth;
+  //top: -8px;
+  margin-bottom: -22px;
+  height: 33px; // equal to height of children to create equal spacing when they are hidden
 }
 .dottedLinesSplitEvidenceSupport {
-  height: 27px; 
+  height: 20px; 
   border-left-style: dotted;
   border-bottom-style: dotted; // to keep height consistant
   border-width: @dottedLineWidth;  
@@ -1586,8 +1670,8 @@ a:hover .arrowAddEvidenceButton {
   display: inline-block;
 }
 .dottedLinesSplitEvidenceCounter {
-  width: 12px;
-  height: 18px;
+  width: 8px;
+  height: 12px;
   border-bottom-style: dotted;
   border-left-style: dotted;
   border-width: @dottedLineWidth;  
@@ -1603,8 +1687,8 @@ a:hover .arrowAddEvidenceButton {
   border-top-style: dotted; // solid; // dotted;
   border-right-style: dotted; // solid; // dotted;
   position: absolute;
-  top: 0.5px; // to align perfectly with .dottedLinesSplitEvidenceCounter
-  left: 57.5px;
+  top: 1px; // to align perfectly with .dottedLinesSplitEvidenceCounter
+  left: 12.5px; // TODO make this programmatic
   margin-left: 0;
   color: @red;
 }
@@ -1612,6 +1696,7 @@ a:hover .arrowAddEvidenceButton {
 .counter .dottedLine {
   color: @red;
 }
+
 
 .relCtrlAndLinkAndStackCards:hover .dottedLineRelevanceLink,
 .relCtrlAndLinkAndStackCards:hover .dottedLineElbow,
@@ -1634,8 +1719,9 @@ a:hover .arrowAddEvidenceButton {
   transition: @hoverTransitionDuration;
 }
 
+
 .addEvidenceUI {
-  margin-bottom: 52px;
+  margin-bottom: @addEvidenceUI_marginV;
 }
 
 .addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {
@@ -1691,7 +1777,7 @@ a:hover .arrowAddEvidenceButton {
 
 .titleTextErrorArea {
   display: block;
-  font-size: @fontSizeActionsUX2; // @fontSizePointTitle;
+  font-size: @fontSizeSecondaryUX2; // @fontSizePointTitle;
 }
 
 .titleTextErrorAreaContent {
@@ -1729,7 +1815,7 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .explanationTextCentered {
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
   //font-weight: 700;
   display: inline-block;
   text-align: left;
@@ -1860,8 +1946,24 @@ a:hover .arrowAddEvidenceButton {
   }
 }
 
+@headerMarginNarrow: 12px;
+
 @media (max-width: 979px) and (min-width: 768px) {
 
+  .navbar .container {
+      width: unset;
+  }
+
+  #searchArea {
+    width: -moz-calc(~"100% - 520px");
+    width: -webkit-calc(~"100% - 520px");
+    width: calc(~"100% - 520px");
+  }
+
+  .userMenuArea {
+    margin-left: @headerMarginNarrow;
+  }
+  
   .explanationBlock {
     margin-left: 0;
     margin-right: 32px;
@@ -1879,11 +1981,38 @@ a:hover .arrowAddEvidenceButton {
     padding-left:10px;
   }
 
+  
   #header {
   position: fixed;
   width: 100vw; // viewport-width units
   }
-
+  
+  #header .container {
+    //padding-right: 24px; // account for scrollbars and phones
+  }
+  
+  .headerLinks {
+    float: none;
+    margin-right: 0;
+  }
+  
+  #CreatePoint, #aboutMenu, #searchArea  {
+    margin-left: @headerMarginNarrow; 
+  }
+  
+  .userMenuArea {
+    margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
+    right: 0;
+    margin-right: @defaultHeaderMarginH;
+  }
+  
+  #searchArea {
+    float: none;
+    width: -moz-calc(~"100% - 290px");
+    width: -webkit-calc(~"100% - 290px");
+    width: calc(~"100% - 290px");
+  }
+  
   #mainContainer {
     margin-left: 0;
   }

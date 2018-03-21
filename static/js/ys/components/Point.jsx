@@ -79,6 +79,14 @@ const VoteStats = ({point}) => (
     </div>
 )
 
+
+// used in PointCard and in PointList for the irrelevant claims links
+export const LinkedItemBullet = () => ( 
+  <div className={"dottedLine dottedLineElbow"}></div>
+)
+
+       
+
 class PointComponent extends React.Component {
   constructor(props) {
     super(props)
@@ -366,6 +374,7 @@ class PointCardComponent extends React.Component {
     return this.props.link && this.props.link.voteCount
   }
 
+  // toggle Relevance Rater
   handleRelClick(e) {
     //console.log("toggle relevance ui");
     e.stopPropagation();
@@ -405,11 +414,11 @@ class PointCardComponent extends React.Component {
   relevanceLinkUI() {
     if (this.props.parentPoint) {
       let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
-      return <a className={classesRelevanceLink} onClick={this.showRelevanceRater}>
+      return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
         <div className="relevanceLinkArea">
           <div className="dottedLine dottedLineRelevanceLink"></div>
           <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
-          <div className="dottedLine dottedLineElbow"></div>
+          <LinkedItemBullet />
         </div>
       </a>
     } else {
@@ -490,8 +499,9 @@ class PointCardComponent extends React.Component {
       }
       else {
         return <div className={classesEvidenceBlock}>
+         {this.props.parentPoint && <div className="dottedLine dottedLineExpansionIndicator"></div>} 
+         {this.renderDottedLinesEvidenceHeaderOrMargin()}
          <MediaQuery minWidth={singleColumnThreshold}>
-          {this.hasSupportingEvidence() && this.hasCounterEvidence() && this.renderDottedLinesSplitEvidenceHeader()}
           {this.hasSupportingEvidence() && this.supportingPoints()}
           {this.hasCounterEvidence() && this.counterPoints()}
          </MediaQuery>
@@ -502,13 +512,19 @@ class PointCardComponent extends React.Component {
       }
     }
   }
-
-  renderDottedLinesSplitEvidenceHeader() {
+ 
+  renderDottedLinesEvidenceHeaderOrMargin() {
     return <div className="dottedLinesSplitEvidenceHeader">
-      <div className="dottedLinesSplitEvidenceSupport"></div>
-      <div className="dottedLinesSplitEvidenceCounter"></div>
-    </div>
-  }
+      <MediaQuery minWidth={singleColumnThreshold}>
+        {this.hasSupportingEvidence() && this.hasCounterEvidence() && 
+          <div>
+            <div className="dottedLinesSplitEvidenceSupport"></div>
+            <div className="dottedLinesSplitEvidenceCounter"></div>
+          </div>
+        }
+      </MediaQuery>
+    </div>    
+  } 
 
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {

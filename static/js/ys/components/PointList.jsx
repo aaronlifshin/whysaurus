@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import Spinner from './Spinner'
 import { GetPoint } from '../schema';
-import { PointCard } from './Point';
+import { PointCard, LinkedItemBullet } from './Point';
 import config from '../config'
 
 class PointListComponent extends React.Component {
@@ -123,6 +123,16 @@ class PointListComponent extends React.Component {
 
   relevanceThreshold = () => this.props.relevanceThreshold
   
+  renderShowIrrelevantLink = () => <div className="listedClaimGroup"> 
+    <LinkedItemBullet />
+    <a className="toggleLowRelClaims" onClick={this.showIrrelevant}>Show Claims Below <span className="number">{this.relevanceThreshold()}%</span> Relevance</a>
+  </div>
+  
+  renderHideIrrelevantLink = () => <div className="listedClaimGroup"> 
+    <LinkedItemBullet />
+    <a className="toggleLowRelClaims" onClick={this.hideIrrelevant}>Hide Claims Below <span className="number">{this.relevanceThreshold()}%</span> Relevance</a>   
+  </div>
+  
   renderRelevantEdges = () => {
     const threshold = this.relevanceThreshold()
     if (threshold) {
@@ -130,10 +140,10 @@ class PointListComponent extends React.Component {
       if (relevantEdges.length != this.props.edges.length) {
         return <div>
           {this.renderEdges(this.state.hideIrrelevant ? relevantEdges : this.props.edges)}
-          {(this.state.hideIrrelevant && relevantEdges.length == 0) && <span className="toggleLowRelClaims noRelevantClaims">No Relevant Claims.</span>}       
-          {this.state.hideIrrelevant ? 
-            <a className="toggleLowRelClaims" onClick={this.showIrrelevant}>Show Claims Below <span className="number">{threshold}%</span> Relevance</a> :
-            <a className="toggleLowRelClaims" onClick={this.hideIrrelevant}>Hide Claims Below <span className="number">{threshold}%</span> Relevance</a>}
+          <span className="noRelevantClaimsArea">
+            {(this.state.hideIrrelevant && relevantEdges.length == 0) && <span className="noRelevantClaimsMessage">No Relevant Claims.</span>}       
+            {this.state.hideIrrelevant ? this.renderShowIrrelevantLink() : this.renderHideIrrelevantLink()}
+          </span>
         </div>
       } else {
         return this.renderEdges(this.props.edges)

@@ -76,39 +76,39 @@
   </head>
 
   <body>
-    <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}grayBackground{% endif %}">
+    <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}headerColorDefault{% endif %}">
       <div class="container">
-         <div class="row">
-          <div class="span2">
-            <a id="logoNav" href="/">
-                <span class="pull-left" id="logoImage" src="/static/img/whysaurus_logo.png">
-                    <img class="hidden-xxs" src="/static/img/whysaurus_logo.png"/>
-                    <img class="visible-xxs" src="/static/img/whysaurus_logo_v02_ys_32px.png"/>
-                </span>
-            </a>
-          </div>
+
+          <a id="headerLogo" href="/">
+              <span id="logoImage" src="/static/img/whysaurus_logo.png">
+                  <img class="hidden-xs hidden-phone" src="/static/img/whysaurus_logo.png"/>
+                  <img class="visible-xs visible-phone" src="/static/img/whysaurus_logo_v02_ys_32px.png"/>
+              </span>
+          </a>
+
           {% if headerHideActions != 1 %}
-              <div class="span3 headerLinks Heading_Black_Caps">
-                <a id="homeNav" href="/">
-                  <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
-                  <!--<img id="homeIcon" class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
-                  <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>-->
-                </a>
+              <span class="headerLinks Heading_Black_Caps">
+                <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
+                <!--
+                  <a id="homeNav" href="/">
+                    <img id="homeIcon" class="headerLinkIcon" src="/static/img/icon_home_32px.png"/>
+                    <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>
+                  </a>
+                -->
                 <a id="CreatePoint" href='javascript:;' alt="Make a Point">
                   <span id="makePointIcon"  class="headerLinkIcon fa fa-edit"></span>
                   <span class="hidden-xs hidden-phone">Make Argument</span>
                 </a>
-              </div>
-              <div id="searchArea" class="span3">
+              </span>
+              <div id="searchArea" >
                   <input id="searchBox" type="text" name="searchTerms" placeholder="Find Argument..." results="0" />
                   <span class="searchIcon pull-right fa fa-search"></span>
               </div>
-              <div class="headerLinks Heading_Black_Caps pull-left">
-                <span class="aboutMenu">
+              <span class="headerLinks Heading_Black_Caps">
+                <span id="aboutMenu">
                   <a class="userControls dropdown-toggle" data-toggle="dropdown">
                     <span id="aboutIcon"  class="headerLinkIcon fa fa-question-circle"></span>
-                    <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">About</span>
-                    <span class="caret vertalignmiddle hidden-tablet hidden-sm hidden-phone hidden-xs"></span>
+                    <!--<span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">About</span>-->
                   </a>
                   <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                           <li><a id="help1" href="/manifesto" >Manifesto </a></li>
@@ -121,11 +121,10 @@
                           <li><a href="/contact">Give us Feedback</a></li>
                   </ul>
                 </span>
-              </div>
+              </span>
 
         	  {% if user %}
                 <div class="userMenuArea headerUserName pull-right">
-                        <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>
                         <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
                             <span class="responsiveLabel">
                                 {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}
@@ -208,7 +207,6 @@
                 </div>
         	  {% endif %}
     	  {% endif %} <!-- headerhideactions -->
-        </div>
       </div>
     </div>
 

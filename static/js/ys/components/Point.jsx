@@ -79,6 +79,14 @@ const VoteStats = ({point}) => (
     </div>
 )
 
+
+// used in PointCard and in PointList for the irrelevant claims links
+export const LinkedItemBullet = () => ( 
+  <div className={"dottedLine dottedLineElbow"}></div>
+)
+
+       
+
 class PointComponent extends React.Component {
   constructor(props) {
     super(props)
@@ -410,7 +418,7 @@ class PointCardComponent extends React.Component {
         <div className="relevanceLinkArea">
           <div className="dottedLine dottedLineRelevanceLink"></div>
           <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
-          <div className="dottedLine dottedLineElbow"></div>
+          <LinkedItemBullet />
         </div>
       </a>
     } else {

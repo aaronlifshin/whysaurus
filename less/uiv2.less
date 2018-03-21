@@ -708,12 +708,17 @@ a:hover .perctSignSmall {
   top: -4px;
 }
 
+.noRelevantClaimsArea {
+  font-size: @fontSizeSecondaryUX2;
+  font-weight: 500;
+  margin-bottom: 55px; // to counter-act the vertical offset on the long Add Evidence arrow
+  display: block;
+}
 .toggleLowRelClaims {
   display: block;
   margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   margin-top: 16px;
-  font-size: @fontSizeSecondaryUX2;
-  font-weight: 500;
+  margin-bottom: 50px;
   //color: @nearBlack;
 }
  a.toggleLowRelClaims {
@@ -726,7 +731,9 @@ a:hover .perctSignSmall {
 .toggleLowRelClaims .number {
   //font-size: 94%;
 }
-.noRelevantClaims {
+.noRelevantClaimsMessage {
+  display: block;
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   color: @nearBlack;
   margin-bottom: -12px;
 }
@@ -1591,10 +1598,15 @@ a:hover .arrowAddEvidenceButton {
   height: 10px;
   border-bottom-style: dotted;
   border-left-style: dotted;
-  
   position: absolute;
-  top: 17px;
+  //top: 17px;
   margin-left: @dottedLineElbowIndent;
+}
+.evidenceBlockCounter .dottedLineElbow {
+  color: @red;
+}
+.evidenceBlockSupport .dottedLineElbow {
+  color: @nearBlack;
 }
 
 .dottedLinesSplitEvidenceHeader {  
@@ -1614,8 +1626,8 @@ a:hover .arrowAddEvidenceButton {
   display: inline-block;
 }
 .dottedLinesSplitEvidenceCounter {
-  width: 9px;
-  height: 14px;
+  width: 8px;
+  height: 12px;
   border-bottom-style: dotted;
   border-left-style: dotted;
   border-width: @dottedLineWidth;  
@@ -1631,7 +1643,7 @@ a:hover .arrowAddEvidenceButton {
   border-top-style: dotted; // solid; // dotted;
   border-right-style: dotted; // solid; // dotted;
   position: absolute;
-  top: 3px; // to align perfectly with .dottedLinesSplitEvidenceCounter
+  top: 1px; // to align perfectly with .dottedLinesSplitEvidenceCounter
   left: 12.5px; // TODO make this programmatic
   margin-left: 0;
   color: @red;
@@ -1640,6 +1652,7 @@ a:hover .arrowAddEvidenceButton {
 .counter .dottedLine {
   color: @red;
 }
+
 
 .relCtrlAndLinkAndStackCards:hover .dottedLineRelevanceLink,
 .relCtrlAndLinkAndStackCards:hover .dottedLineElbow,

@@ -491,6 +491,7 @@ class PointCardComponent extends React.Component {
       }
       else {
         return <div className={classesEvidenceBlock}>
+         {this.props.parentPoint && <div className="dottedLine dottedLineExpansionIndicator"></div>} 
          {this.renderDottedLinesEvidenceHeaderOrMargin()}
          <MediaQuery minWidth={singleColumnThreshold}>
           {this.hasSupportingEvidence() && this.supportingPoints()}

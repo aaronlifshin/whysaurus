@@ -16,7 +16,7 @@
 
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
-
+@addEvidenceUI_marginV: 52px;
 
 // Colors
 @nearBlack: hsl(0, 0%, 20%);
@@ -1572,6 +1572,14 @@ a:hover .arrowAddEvidenceButton {
     border-width: @dottedLineWidth;
     position: absolute;
 }
+
+.dottedLineExpansionIndicator {
+    height: calc(~"100% + 10px"); // TODO: set this more programmatically; eg calc(100% ~"-" @addEvidenceUI_marginV); 
+    color: hsla(0, 0%, 85%, 1); // orange;
+    margin-left: -21px; // @cardStackWidth;
+    margin-top: -48px;
+}
+
 @dottedLineElbowIndent:  24px;
 .dottedLineRelevanceLink {
     height: 32px;
@@ -1654,8 +1662,9 @@ a:hover .arrowAddEvidenceButton {
   transition: @hoverTransitionDuration;
 }
 
+
 .addEvidenceUI {
-  margin-bottom: 52px;
+  margin-bottom: @addEvidenceUI_marginV;
 }
 
 .addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {

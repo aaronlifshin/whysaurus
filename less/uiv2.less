@@ -22,20 +22,22 @@
 @nearBlack: hsl(0, 0%, 20%);
 @darkerGreyColor: #5d5d5d;
 @smallGreyLinkColor: #a9a9a9;
-@smallGreyLinkSize: 12px;
 @blue: hsl(196, 100%, 42%);
 @blueLight: hsl(196, 100%, 60%);
 @redLight: hsl(0, 100%, 48%);
 
+h1, h2, h3, h4, h5, h6, body {
+  color: @nearBlack; // save black for claims
+}
 
 // Typography
 @baseFontSizeUX2: 16px;
 
-@fontSizeActionsUX2: @baseFontSizeUX2 * 0.875; // ~14px
-@fontSizeStatsUX2: @baseFontSizeUX2 * 0.875; // ~14px
-@fontSizeButtonsUX2: @baseFontSizeUX2 * 0.875; // ~14px
-@fontSizePointTitle: @baseFontSizeUX2 * 1.063; // ~17px
-@arrowFontSizeUX2: @baseFontSizeUX2 * 1.125; // ~18px
+@fontSizeTertiaryUX2:  @baseFontSizeUX2 * 0.750; // ~12px;
+@fontSizeSecondaryUX2: @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeButtonsUX2:   @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizePointTitle:   @baseFontSizeUX2 * 1.063; // ~17px
+@arrowFontSizeUX2:     @baseFontSizeUX2 * 1.125; // ~18px
 
 
 // Animation
@@ -168,6 +170,11 @@ a:focus, a:hover {
   width: auto;
 }
 
+a.feedbackFooterLink {
+  font-size: @fontSizeSecondaryUX2;
+  color: @darkerGreyColor;
+  font-weight: 500;
+}
 
 //////////////////////////////////////////////
 // DROPDOWNS
@@ -209,6 +216,7 @@ a:focus, a:hover {
   padding-top:6px;
   display: inline-block;
   width: 100%;
+  font-weight: 500;
 }
 
 .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover,
@@ -356,7 +364,8 @@ body {
   margin-bottom: @marginVerticalStandard;
   color: @darkerGreyColor;
   text-transform: uppercase;
-    font-size: @baseFontSize * 0.813; // ~13px
+  font-size: @fontSizeTertiaryUX2; //@baseFontSize * 0.813; // ~13px
+  font-weight: 500;
 }
 
 .counterHeading {
@@ -699,7 +708,8 @@ a:hover .perctSignSmall {
   display: block;
   margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   margin-top: 16px;
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
+  font-weight: 500;
   //color: @nearBlack;
 }
  a.toggleLowRelClaims {
@@ -907,7 +917,7 @@ a:hover .perctSignSmall {
 }
 
 .cardTopRow {
-    font-size: @smallGreyLinkSize;
+    font-size: @fontSizeTertiaryUX2;
     color: @smallGreyLinkColor;
   margin-bottom: 6px;
 }
@@ -1005,7 +1015,7 @@ li .iconWithStat {
 .vote-stats p{
   padding: 6px;
   margin-bottom:4px;
-  font-size: @fontSizeStatsUX2;
+  font-size: @fontSizeSecondaryUX2;
 }
 
 .pointCardImageContainer {
@@ -1031,14 +1041,14 @@ li .iconWithStat {
 .source a {
   //padding-left: 4px;
   //padding-right: 4px;
-  font-size: @smallGreyLinkSize;
+  font-size: @fontSizeTertiaryUX2;
     color: @smallGreyLinkColor; // !important;
   //font-style: italic;
 }
 
 
 .cardBottomAction {
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
     color: black; // @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
   //margin-bottom:2px;
@@ -1237,7 +1247,7 @@ li .iconWithStat {
 .cancelButton {
   background: none;
   border: none;
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
   outline-style: none;
   display: inline-block;
   padding: 0;
@@ -1409,7 +1419,7 @@ li .iconWithStat {
   //margin-left: 27px;
   //position: relative;
   //top: 4px;
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
   color: @nearBlack;
 }
 .progressStateFeedback.counter{
@@ -1469,8 +1479,8 @@ li .iconWithStat {
   height: 106px;
   margin-left: (@arrowHeadWidth/2) + 0.8px; // not sure why the 0.8 is whats needed to look right
   border-style: none;
-  border-left: @arrowStemWidth solid black;
-  border-bottom: @arrowStemWidth solid black;
+  border-left: @arrowStemWidth solid @nearBlack;
+  border-bottom: @arrowStemWidth solid @nearBlack;
 }
 .arrowStemEvidenceShort {
   height: 20px;
@@ -1552,7 +1562,7 @@ a:hover .arrowAddEvidenceButton {
 
 @dottedLineWidth: 1px;
 .dottedLine {
-    //color: #acacac;
+    color: @nearBlack;
     width: 1px;
     border-left-style: dotted;
     border-width: @dottedLineWidth;
@@ -1697,7 +1707,7 @@ a:hover .arrowAddEvidenceButton {
 
 .titleTextErrorArea {
   display: block;
-  font-size: @fontSizeActionsUX2; // @fontSizePointTitle;
+  font-size: @fontSizeSecondaryUX2; // @fontSizePointTitle;
 }
 
 .titleTextErrorAreaContent {
@@ -1735,7 +1745,7 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .explanationTextCentered {
-  font-size: @fontSizeActionsUX2;
+  font-size: @fontSizeSecondaryUX2;
   //font-weight: 700;
   display: inline-block;
   text-align: left;

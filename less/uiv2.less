@@ -337,6 +337,7 @@ body {
 }
 
 .evidenceBlock {
+  margin-left: @indent; 
   display: inline-block;
   transform-origin: top left;
   animation-name: evidenceBlockReveal;
@@ -345,8 +346,9 @@ body {
   //animation-timing-function: ease-out;
   animation-iteration-count: 1;
   background-color: #0000ff50;
-  //position: relative;
+  position: relative;
   //z-index:-1;
+  top: -1 * ((2 * @stackCardOffset) + (2 * @cardBorderWidth)); // nudge up to account for the empty space taken up by invisible stack cards
 }
 
 .evidenceBlockEmpty {
@@ -395,7 +397,7 @@ body {
 }
 
 .evidenceBlockCounter {
-  left: -16px; //if we go more than this, we step on the X in the relevance voting widget; would be nice to figure out how to remove this
+  margin-left: 6px; 
 }
 
 .evidenceBlockEmpty {
@@ -404,7 +406,6 @@ body {
 
 @evidenceListMarginTop: @marginVerticalStandard - 6px; // subtract some for the arrow
 .evidenceList {
-  margin-left: @indent; // Handled by relevanceLinkArea
   margin-top: @evidenceListMarginTop;
 }
 
@@ -504,6 +505,9 @@ body {
   width: -moz-max-content;
 }
 
+.relCtrlAndLinkAndStackCards {
+  //margin-bottom: -8px;
+}
 .relCtrlAndLinkAndStackCards:hover .relevanceLinkArea, .listedClaim:focus .relevanceLinkArea  {
     //transform: scale(1.085) ;
   //font-weight: bold;
@@ -1586,14 +1590,14 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .dottedLinesSplitEvidenceHeader {  
-    position: relative;
-    left: 60px;
-    top: -8px;
-    margin-bottom: -22px;
-    height: 31.333px; // equal to height of children to create equal spacing when they are hidden
+  position: relative;
+  left: @cardStackWidth;
+  //top: -8px;
+  margin-bottom: -22px;
+  height: 33px; // equal to height of children to create equal spacing when they are hidden
 }
 .dottedLinesSplitEvidenceSupport {
-  height: 27px; 
+  height: 20px; 
   border-left-style: dotted;
   border-bottom-style: dotted; // to keep height consistant
   border-width: @dottedLineWidth;  
@@ -1602,8 +1606,8 @@ a:hover .arrowAddEvidenceButton {
   display: inline-block;
 }
 .dottedLinesSplitEvidenceCounter {
-  width: 12px;
-  height: 18px;
+  width: 9px;
+  height: 14px;
   border-bottom-style: dotted;
   border-left-style: dotted;
   border-width: @dottedLineWidth;  
@@ -1619,8 +1623,8 @@ a:hover .arrowAddEvidenceButton {
   border-top-style: dotted; // solid; // dotted;
   border-right-style: dotted; // solid; // dotted;
   position: absolute;
-  top: 0.5px; // to align perfectly with .dottedLinesSplitEvidenceCounter
-  left: 57.5px;
+  top: 3px; // to align perfectly with .dottedLinesSplitEvidenceCounter
+  left: 12.5px; // TODO make this programmatic
   margin-left: 0;
   color: @red;
 }

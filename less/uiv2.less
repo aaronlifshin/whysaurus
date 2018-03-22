@@ -203,6 +203,11 @@ a:focus, a:hover {
 
 #aboutMenu {
   margin-left: @defaultHeaderMarginH - 4px; // needed to keep spacing consistent, not sure where this 4px is coming from
+  position: relative;
+}
+
+#aboutDropdown {
+  left: -152px;
 }
 
 #notifications {
@@ -2017,6 +2022,10 @@ a:hover .arrowAddEvidenceButton {
     margin-left: 0;
   }
 
+  a.feedbackFooterLink {
+    display: none;
+  }
+  
   .infiniteWidth {
     margin-left: 0;
   }

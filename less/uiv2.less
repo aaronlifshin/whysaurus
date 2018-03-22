@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6, body {
   width: auto;
   // FOR FINITE WIDTH COMMENT THIS LINE OUT
   /////////////////
-  margin-left: 10%;
+  margin-left: 169px; // eye match to the Make Argument icon
 }
 
 // INFINITE SCROLL
@@ -189,7 +189,7 @@ a:focus, a:hover {
   height: 48px;
   line-height: 48px;
   position: relative;
-  width: 300px;
+  width: 400px;
   display: inline-block;
   margin-left: @defaultHeaderMarginH;
   vertical-align: top;
@@ -212,8 +212,9 @@ a:focus, a:hover {
 
 #notifications {
   display: inline-block;
-  right: 0;
+  right: 150px;
   vertical-align: top;
+  position: fixed;
 }
 
 @headerFooterRightMargin: @defaultHeaderMarginH / 3;
@@ -235,7 +236,7 @@ a:focus, a:hover {
 
 a.feedbackFooterLink {
   font-size: @fontSizeSecondaryUX2;
-  color: @darkerGreyColor;
+  color: @nearBlack;
   font-weight: 500;
 }
 
@@ -380,7 +381,7 @@ body {
   // FOR INFINITE WIDTH:
   width: max-content;
   width: -moz-max-content;
-  margin-left: 72px;
+  //margin-left: 72px;
 }
 
 .listedClaimGroup {
@@ -1226,8 +1227,8 @@ li .iconWithStat {
 // BUTTONS
 
 @buttonUX2_paddingTop: 5px;
-@buttonUX2_paddingLeft: 11px;
-@buttonUX2_paddingRight: 12px;
+@buttonUX2_paddingLeft: @cardPadding;
+@buttonUX2_paddingRight: @cardPadding;
 @buttonUX2_borderRadius: 2px;
 @buttonUX2_fontWeight: 700;
 
@@ -1829,9 +1830,17 @@ a:hover .arrowAddEvidenceButton {
 
 #explanationRowHomepage {
   //border-bottom-style: none;
+  //margin-left: @cardStackWidth;
   margin-bottom: 32px;
   padding-bottom: 21px;
+  width: 101%; // stick out a bit further to align with the right edge of the about icon
 }
+
+.explanationBlock {
+    margin-right: 36px;
+    margin-left: @cardStackWidth + @cardPadding - 3px;
+}
+
 
 .explanationTextCentered {
   font-size: @fontSizeSecondaryUX2;
@@ -1937,6 +1946,7 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .react-tabs__tab-list {
+  margin-left: @cardStackWidth;
   margin-bottom: 16px;
 }
 
@@ -1952,6 +1962,13 @@ a:hover .arrowAddEvidenceButton {
     zoom: .8;
   }
 }
+
+@media (min-width: 1200px) {
+  .container, .navbar-fixed-top .container {
+    width: auto; // removing bootstrap's responsive left margin on wide screens to leave more real estate for argument content
+  }
+}
+
 
 @media (max-device-width: 1024px) {
   #header {
@@ -1972,29 +1989,44 @@ a:hover .arrowAddEvidenceButton {
   .navbar .container {
       width: unset;
   }
+  
+  #mainContainer {
+    margin-left: 72px;
+  }
 
   #searchArea {
     width: -moz-calc(~"100% - 520px");
     width: -webkit-calc(~"100% - 520px");
     width: calc(~"100% - 520px");
   }
+  #notifications {
+    right: 112px;
+  }
 
   .userMenuArea {
     margin-left: @headerMarginNarrow;
   }
   
+  #explanationRowHomepage {
+    margin-left: -27px; // since the main content block no longer aligns to the header, lets offset this as well
+    width: auto;
+  }
   .explanationBlock {
-    margin-left: 0;
-    margin-right: 32px;
+    //margin-left: 0;
+    //margin-right: 32px;
   }
   .explanationTextCentered {
     width: unset;
+  }
+  
+  .control-arrow .control-next {
+    margin-right: 20%;
   }
 }
 
 @media (max-width: 767px) {
 
- @cardWidthSmallScreens: 80vw;
+ @cardWidthSmallScreens: 69vw;
 
   body {
     padding-left:10px;
@@ -2032,13 +2064,42 @@ a:hover .arrowAddEvidenceButton {
     width: calc(~"100% - 290px");
   }
   
+  #notifications {
+    right: 65px;
+  }
+  
+  .control-arrow .control-next {
+    margin-right: 10%;
+  }
+  
   #mainContainer {
-    margin-left: 0;
+    margin-left: 2%;
   }
 
   a.feedbackFooterLink {
     display: none;
   }
+  
+  #explanationRowHomepage {
+    width: 90vw;
+    position: relative;
+    left: -12px;
+  }
+  .control-prev {
+    //position: relative;
+    //left: -2px !important;
+    margin-left: 20%;
+  }
+  .control-next {
+    margin-right: 20%;
+  }
+  
+  .explanationBlock {
+    //margin-left: 38px;
+    float: none;
+    margin: auto;
+  }
+
   
   .infiniteWidth {
     margin-left: 0;
@@ -2050,10 +2111,6 @@ a:hover .arrowAddEvidenceButton {
     //position: absolute;
   }
 
-  .explanationBlock {
-    margin: auto;
-    float: none;
-  }
 
   .mainPageClaimCreationArea {
     width: @cardWidthSmallScreens;
@@ -2076,16 +2133,36 @@ a:hover .arrowAddEvidenceButton {
   .point-card {
   //background-color: red;
   display: inline-block;
-  width: @cardWidthSmallScreens; // viewport-width units
+  width: @cardWidthSmallScreens; 
   }
 
   .stackCard {
-    width: @cardWidthSmallScreens; // viewport-width units
+    width: @cardWidthSmallScreens; 
   }
 
   .pointCardImage {
   margin-top: @marginVerticalStandard;
   }
 
+}
+@media (max-width: 640px) {
+  @cardWidthExtraSmallScreens: 85vw;
+  .mainPageClaimCreationArea {
+    width: @cardWidthExtraSmallScreens;
+  }
+  .stackCard {
+    width: @cardWidthExtraSmallScreens; 
+  }
+  .point-card {
+  //background-color: red;
+    width: @cardWidthExtraSmallScreens;
+  }  
+  
+  .control-prev {
+    margin-left: 10%;
+  }
+  .control-next {
+    margin-right: 10%;
+  }
 
 }

@@ -211,12 +211,26 @@ a:focus, a:hover {
 }
 
 #notifications {
+  display: inline-block;
   right: 0;
+  vertical-align: top;
 }
 
+@headerFooterRightMargin: @defaultHeaderMarginH / 3;
 .userMenuArea {
   margin-left: @defaultHeaderMarginH;
-  margin-right: @defaultHeaderMarginH / 2;
+  padding-right: @headerFooterRightMargin;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+#userMenuSignedIn {
+  position: absolute;
+  left: -78px;
+}
+
+#footer {
+  padding-right: @headerFooterRightMargin;
 }
 
 a.feedbackFooterLink {
@@ -2006,9 +2020,9 @@ a:hover .arrowAddEvidenceButton {
   }
   
   .userMenuArea {
-    margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
-    right: 0;
-    margin-right: @defaultHeaderMarginH;
+    //margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
+    //right: 0;
+    //margin-right: @defaultHeaderMarginH;
   }
   
   #searchArea {

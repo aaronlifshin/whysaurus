@@ -212,17 +212,17 @@ a:focus, a:hover {
 
 #notifications {
   display: inline-block;
-  right: 150px;
+  right: 0px; //150px;
   vertical-align: top;
-  position: fixed;
+  //position: fixed;
 }
 
 @headerFooterRightMargin: @defaultHeaderMarginH / 3;
 .userMenuArea {
-  margin-left: @defaultHeaderMarginH;
+  margin-left: @defaultHeaderMarginH * .6666;
   padding-right: @headerFooterRightMargin;
-  position: fixed;
-  right: 0;
+  //position: fixed;
+  //right: 0;
   top: 0;
 }
 #userMenuSignedIn {
@@ -409,7 +409,7 @@ body {
   animation-timing-function: ease;
   //animation-timing-function: ease-out;
   animation-iteration-count: 1;
-  background-color: #0000ff50;
+  //background-color: rgba(0, 0, 255, 0.3);
   position: relative;
   //z-index:-1;
   top: -1 * ((2 * @stackCardOffset) + (2 * @cardBorderWidth)); // nudge up to account for the empty space taken up by invisible stack cards
@@ -1995,16 +1995,16 @@ a:hover .arrowAddEvidenceButton {
   }
 
   #searchArea {
-    width: -moz-calc(~"100% - 520px");
-    width: -webkit-calc(~"100% - 520px");
-    width: calc(~"100% - 520px");
+    width: -moz-calc(~"100% - 575px");
+    width: -webkit-calc(~"100% - 575px");
+    width: calc(~"100% - 575px");
   }
   #notifications {
-    right: 112px;
+    //right: 112px;
   }
 
   .userMenuArea {
-    margin-left: @headerMarginNarrow;
+    //margin-left: @headerMarginNarrow;
   }
   
   #explanationRowHomepage {
@@ -2052,20 +2052,21 @@ a:hover .arrowAddEvidenceButton {
   }
   
   .userMenuArea {
-    //margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
+    margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
     //right: 0;
     //margin-right: @defaultHeaderMarginH;
+    
   }
   
   #searchArea {
     float: none;
-    width: -moz-calc(~"100% - 290px");
-    width: -webkit-calc(~"100% - 290px");
-    width: calc(~"100% - 290px");
+    width: -moz-calc(~"100% - 265px");
+    width: -webkit-calc(~"100% - 265px");
+    width: calc(~"100% - 265px");
   }
   
   #notifications {
-    right: 65px;
+    //right: 65px;
   }
   
   .control-arrow .control-next {

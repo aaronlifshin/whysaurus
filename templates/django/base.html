@@ -6,6 +6,7 @@
     <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="/static/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
     <link href="/static/css/new.css" rel="stylesheet" media="screen">
+    <link href="/static/css/uiv2.css" rel="stylesheet" media="screen">
     <link href="/static/js/chosen/chosen.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="/static/js/tinymce/tiny_mce.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js" ></script>
@@ -124,37 +125,7 @@
               </span>
 
         	  {% if user %}
-              <div id="notifications" class="">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                    <img id="notificationIcon" src="/static/img/notificationIcon.png"/>
-                </a>
-                <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>
-                    {{ user.newNotificationCount }}
-                </div>
-                <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
-                   <li id="notificationMenuHeader" class="Heading_GreyMid_Caps"
-                  {% if user.notifications %}
-                      data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
-                      {% if user.notifications|length == 11 %}
-                          data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
-                      {% endif %}
-                  {% endif %}
-                      >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
-
-                  {% if user.notifications %}
-                   {% for notification in user.notifications %}
-                          {% include 'notificationMenu.html' %}
-                   {% endfor %}
-                 {% endif %}
-
-                 {% if user.moreNotificationsExist  %}
-                    <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
-                        More notifications... Click here to view all
-                    </li>
-                  {% endif %}
-                </ul>
-              </div>
-              <div class="userMenuArea headerUserName">
+              <div class="userMenuArea headerUserName pull-right">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
                       <span class="responsiveLabel">
                           {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}
@@ -200,6 +171,36 @@
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                   </ul>
                 </div>
+                <div id="notifications" class="pull-right">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    <img id="notificationIcon" src="/static/img/notificationIcon.png"/>
+                </a>
+                <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>
+                    {{ user.newNotificationCount }}
+                </div>
+                <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
+                   <li id="notificationMenuHeader" class="Heading_GreyMid_Caps"
+                  {% if user.notifications %}
+                      data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                      {% if user.notifications|length == 11 %}
+                          data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                      {% endif %}
+                  {% endif %}
+                      >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
+
+                  {% if user.notifications %}
+                   {% for notification in user.notifications %}
+                          {% include 'notificationMenu.html' %}
+                   {% endfor %}
+                 {% endif %}
+
+                 {% if user.moreNotificationsExist  %}
+                    <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
+                        More notifications... Click here to view all
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
 
 
         	  {% else %}

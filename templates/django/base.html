@@ -105,7 +105,7 @@
                   <span class="searchIcon pull-right fa fa-search"></span>
               </div>
               <span class="headerLinks Heading_Black_Caps">
-                <span id="aboutMenu">
+                <div id="aboutMenu">
                   <a class="userControls dropdown-toggle" data-toggle="dropdown">
                     <span id="aboutIcon"  class="headerLinkIcon fa fa-question-circle"></span>
                     <!--<span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">About</span>-->
@@ -120,86 +120,87 @@
                           <li class="divider"></li>
                           <li><a href="/contact">Give us Feedback</a></li>
                   </ul>
-                </span>
+                </div>
               </span>
 
         	  {% if user %}
-                <div class="userMenuArea headerUserName pull-right">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
-                            <span class="responsiveLabel">
-                                {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}
-                            </span>
-                            <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/>
-                        </a>
-                        <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                        {% if user and user.anyPrivateAreas %}
-                            {% if currentArea %}
-                                   <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>
-                                   <li class="divider"></li>
-                            {% endif %}
-
-                            {% if not user.manyPrivateAreas %}
-                                {% if not currentArea %}
-                                   <li class="menuHeading">Go to Classroom:</li>
-                                   <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
-                                   <li class="divider"></li>
-                                 {% endif %}
-                            {% else %}
-                                   <li class="menuHeading">Change Classroom:</li>
-                                   {% for area in user.privateAreas %}
-                                       {% if area != currentArea %}
-                                         <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
-                                       {% endif %}
-                                   {% endfor %}
-                                   <li class="divider"></li>
-                            {% endif %}
-                        {% endif %}
-                          {% if currentArea and currentArea != '' %}
-                              {% if user.isAdmin or user.isTeacher %}
-                                <li><a tabindex="-1" href="/roster">Roster</a></li>
-                                <li class="divider"></li>
-                              {% endif %}
-                          {% endif %}
-                          {% if user.isAdmin %}
-                              <li><a tabindex="-1" href="/admin"> Admin </a></li>
-                          {% endif %}
-                          <li><a tabindex="-1" href="/user/{{user.url}}" onclick="ga('send', 'event', 'UserMenu', 'Profile')"> Profile </a></li>
-                          {% if user.emailUser %}
-                              <li><a tabindex="-1" href="/changePassword" onclick="ga('send', 'event', 'UserMenu', 'Change Password')">Change Password</a></li>
-                          {% endif %}
-                          <li><a tabindex="-1" href="/logout"> Logout </a></li>
-                        </ul>
+              <div id="notifications" class="">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    <img id="notificationIcon" src="/static/img/notificationIcon.png"/>
+                </a>
+                <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>
+                    {{ user.newNotificationCount }}
                 </div>
-                <div id="notifications" class="pull-right">
-                            <a class="dropdown-toggle" data-toggle="dropdown">
-                                <img id="notificationIcon" src="/static/img/notificationIcon.png"/>
-                            </a>
-                            <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>
-                                {{ user.newNotificationCount }}
-                            </div>
-                          <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
-                             <li id="notificationMenuHeader" class="Heading_GreyMid_Caps"
-                            {% if user.notifications %}
-                                data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
-                                {% if user.notifications|length == 11 %}
-                                    data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
-                                {% endif %}
-                            {% endif %}
-                                >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
+                <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
+                   <li id="notificationMenuHeader" class="Heading_GreyMid_Caps"
+                  {% if user.notifications %}
+                      data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                      {% if user.notifications|length == 11 %}
+                          data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                      {% endif %}
+                  {% endif %}
+                      >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
 
-                            {% if user.notifications %}
-                             {% for notification in user.notifications %}
-                                    {% include 'notificationMenu.html' %}
-                             {% endfor %}
+                  {% if user.notifications %}
+                   {% for notification in user.notifications %}
+                          {% include 'notificationMenu.html' %}
+                   {% endfor %}
+                 {% endif %}
+
+                 {% if user.moreNotificationsExist  %}
+                    <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
+                        More notifications... Click here to view all
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+              <div class="userMenuArea headerUserName">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
+                      <span class="responsiveLabel">
+                          {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}
+                      </span>
+                      <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/>
+                  </a>
+                  <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                  {% if user and user.anyPrivateAreas %}
+                      {% if currentArea %}
+                             <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>
+                             <li class="divider"></li>
+                      {% endif %}
+
+                      {% if not user.manyPrivateAreas %}
+                          {% if not currentArea %}
+                             <li class="menuHeading">Go to Classroom:</li>
+                             <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
+                             <li class="divider"></li>
                            {% endif %}
-
-                           {% if user.moreNotificationsExist  %}
-    	                        <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
-    	                            More notifications... Click here to view all
-    	                        </li>
-                            {% endif %}
-                          </ul>
+                      {% else %}
+                             <li class="menuHeading">Change Classroom:</li>
+                             {% for area in user.privateAreas %}
+                                 {% if area != currentArea %}
+                                   <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
+                                 {% endif %}
+                             {% endfor %}
+                             <li class="divider"></li>
+                      {% endif %}
+                  {% endif %}
+                    {% if currentArea and currentArea != '' %}
+                        {% if user.isAdmin or user.isTeacher %}
+                          <li><a tabindex="-1" href="/roster">Roster</a></li>
+                          <li class="divider"></li>
+                        {% endif %}
+                    {% endif %}
+                    {% if user.isAdmin %}
+                        <li><a tabindex="-1" href="/admin"> Admin </a></li>
+                    {% endif %}
+                    <li><a tabindex="-1" href="/user/{{user.url}}" onclick="ga('send', 'event', 'UserMenu', 'Profile')"> Profile </a></li>
+                    {% if user.emailUser %}
+                        <li><a tabindex="-1" href="/changePassword" onclick="ga('send', 'event', 'UserMenu', 'Change Password')">Change Password</a></li>
+                    {% endif %}
+                    <li><a tabindex="-1" href="/logout"> Logout </a></li>
+                  </ul>
                 </div>
+
 
         	  {% else %}
                 <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">

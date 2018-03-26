@@ -43,8 +43,8 @@ const NewPoints = graphql(schema.NewPoints, {
   })
 })(PointList);
 
-  // For Responsive
-  const singleColumnThresholdForCarousel = 768;
+// For Responsive
+const singleColumnThresholdForCarousel = 768;
 
 class Home extends React.Component {
 
@@ -99,7 +99,7 @@ class Home extends React.Component {
         </div>
       </MediaQuery>
       <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
-      <Carousel autoPlay={false} interval={2500} infiniteLoop={false} showIndicators={true} showArrows={true} showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
+      <Carousel autoPlay={false} interval={2500} infiniteLoop={true} showIndicators={true} showArrows={true} showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
           <div>
             {this.renderIllustration1()}
           </div>

@@ -27,7 +27,13 @@
 @redLight: hsl(0, 100%, 48%);
 
 h1, h2, h3, h4, h5, h6, body {
-  color: @nearBlack; // save black for claims
+  color: @nearBlack; // save black for claims on argument content pages
+}
+
+.fullPageText {
+  &>h1, &>h2, &>h3, &>h4, &>h5, &>body {
+    color: black; //  no need to "save black" on pages that are just text 
+  }
 }
 
 // Typography
@@ -238,6 +244,25 @@ a.feedbackFooterLink {
   font-size: @fontSizeSecondaryUX2;
   color: @nearBlack;
   font-weight: 500;
+}
+
+//////////////////////////////////////////////
+
+
+.fullPageText {
+  margin-left: 12px; // eye match to header
+}
+
+.contactForm input, .contactForm textarea {
+  width: 400px;
+}
+
+.contactForm input.buttonUX2 {
+  width: auto !important; // bc currently the contact form button is an <input>, not a <button> (TO DO: fix this)
+}
+
+textarea {
+  resize: none;
 }
 
 //////////////////////////////////////////////

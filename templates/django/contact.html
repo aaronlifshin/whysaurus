@@ -2,7 +2,7 @@
 
 {% block mainPageContent %}
 <div id="content">
-  <div class="offset4 span4 contactForm">
+  <div class="fullPageText contactForm">
      <h2 class="contactTitle">We want to hear from you!</h2>
      <form action="/contactSend" method="post" onsubmit="return validateForm(this);">
       
@@ -31,7 +31,7 @@
       <textarea name="message" cols="50" rows="10"></textarea>
       <br/>
          
-      <input type="submit" name="submit" value="Send"/>
+      <input type="submit" name="submit" value="Send" class="buttonUX2"/>
      </form>
   </div>
  </div>

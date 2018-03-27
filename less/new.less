@@ -1870,14 +1870,14 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }*/
 
 
-.redVote, .redVote:hover, .redVote:focus {
-        color:@red;
-        font-weight:bold;
+.redVote, .redVote:hover, .redVote:focus, .redVote a {
+  color:@red;
+  font-weight:bold;
 }
 
-.greenVote, .greenVote:hover, .greenVote:focus {
-        color:@green;
-        font-weight:bold;
+.greenVote, .greenVote:hover, .greenVote:focus, .greenVote a {
+  color:@green;
+  font-weight:bold;
 }
 
 .selectedVote, .selectedVote:hover, .selected:focus {
@@ -3370,6 +3370,14 @@ a[name="profileEdit"] {
     margin-bottom: 8px;
 }
 
+#profileDisclaimer {
+    margin-top: 42px;
+}
+
+#recentlyViewed {
+  margin-top: 40px;
+}
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    COMMENTS AREA OF POINT PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -3662,13 +3670,13 @@ h2.idLinkOffset:before {
     right:0;
     //margin-bottom:18px;
     //background-color: #f0f0f0;
-    padding: 8px;
+    padding: 12px;
     width: 72px;
 }
 
 a.feedbackFooterLink {
     //color: black;
-    font-size: 14px;
+    font-size: 15px;
     display: inline-block;
     text-align: right;
     font-weight: 500;

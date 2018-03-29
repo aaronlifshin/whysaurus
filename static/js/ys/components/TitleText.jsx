@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Form, Text, Field } from 'react-form'
+import { Form, Text, TextArea, Field } from 'react-form'
 import CharCount from './CharCount'
 import * as validations from '../validations'
 
@@ -17,7 +17,7 @@ const TitleText = props => (
           <CharCount countedValue={value.title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
             <span>
               <span className={classesErrorArea}>{error && error.title}</span>
-              <Text field="title" {...rest}/>
+              <TextArea field="title" {...rest}/>
               <span className={classesCharCounterDefault + (charsLeft && charsLeft < 0 ? ' overMaxChars' : '')}>{charsLeft}</span>              
             </span>
           )}/>

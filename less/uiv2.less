@@ -1427,9 +1427,6 @@ li .iconWithStat {
   float: right;
 }
 
-.claimTextButtonsArea {
-  width: 100%;
-}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1498,14 +1495,14 @@ li .iconWithStat {
   width: 100%; 
   box-sizing: border-box;
   overflow: hidden;
-  height: 50px;
+  height: 64px;
   font-size: @fontSizePointTitle;
   line-height: @lineHeightExtra;
   color: black;
   padding-left: @cardPadding;
   padding-right: @cardPadding;
   padding-bottom: @cardPadding * 2;
-  padding-top: 12px;
+  padding-top: 10px;
   display: block;
   margin-bottom: 0; //8px;
   position: relative;
@@ -1835,7 +1832,9 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .claimTitleField {
-  margin-bottom: 12px;
+  //margin-bottom: 12px;
+  display: inline-block;
+  width: 100%;
 }
 
 .titleTextErrorArea {
@@ -1855,14 +1854,16 @@ a:hover .arrowAddEvidenceButton {
     color: @grayTextLight;
     //margin-left: 310px;
     margin-right: 12px;
-    text-align: right;
-    display: block;
-    // cheat position up into the text input area
-    z-index: 100;
+    //text-align: right;
+    //display: block;
+    //z-index: 100;
     position: relative;
     width: 24px;
-    background-color: pink;
+    //background-color: pink;
     //margin-top: -24px; //top: -24px;
+    float: right;
+    // cheat position up into the text input area
+    transform: translateY(-24px);
 }
 
 .overMaxChars {
@@ -1938,9 +1939,9 @@ a:hover .arrowAddEvidenceButton {
 // HOME PAGE
 
 
+@mainPageClaimCreationButtonCalculatedWidth: 84px;
 .mainPageClaimCreationArea {
   margin-left: 14px;
-  width: @cardWidth;
   margin-bottom: 48px; // not sure why this needs to be so big, something about the floats I think -JF
 }
 
@@ -1948,6 +1949,17 @@ a:hover .arrowAddEvidenceButton {
   margin-left: 12px;
   font-size: 24px;
   //margin-bottom: 0px;
+}
+
+.mainPageClaimCreationFormFieldBlock {
+  display: inline-block;
+  width: @cardWidth;
+  margin-right: 4px;
+}
+.mainPageClaimCreationFormButtonBlock {
+  //width: 100%;
+  display: inline-block;
+  vertical-align: top;
 }
 
 

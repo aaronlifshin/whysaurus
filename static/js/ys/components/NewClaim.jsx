@@ -10,20 +10,20 @@ const filestack = client.init(config.filestack.key)
 
 function saveBigSummary(file) {
   const transformURL = filestack.transform(file.url, {resize: {width: 112, height: 112, fit: 'clip'}})
-  const filename = "SummaryBig-" + file.handle
-  return filestack.storeURL(transformURL, {filename: filename, path: filename, access: 'public'})
+  const filename = "SummaryBig-" + file.key
+  return filestack.storeURL(transformURL, {filename: filename, path: filename, access: 'public', location: 's3'})
 }
 
 function saveMediumSummary(file) {
   const transformURL = filestack.transform(file.url, {resize: {width: 54, height: 54, fit: 'clip'}})
-  const filename = "SummaryMedium-" + file.handle
-  return filestack.storeURL(transformURL, {filename: filename, path: filename, access: 'public'})
+  const filename = "SummaryMedium-" + file.key
+  return filestack.storeURL(transformURL, {filename: filename, path: filename, access: 'public', location: 's3'})
 }
 
 function saveFullPoint(file) {
   const transformURL = filestack.transform(file.url, {resize: {width: 760, fit: 'clip'}})
-  const filename = "FullPoint-" + file.handle
-  return filestack.storeURL(transformURL, {filename: filename, path: filename, access: 'public'})
+  const filename = "FullPoint-" + file.key
+  return filestack.storeURL(transformURL, {filename: filename, path: filename, access: 'public', location: 's3'})
 }
 
 export default class NewClaim extends React.Component {
@@ -42,12 +42,15 @@ export default class NewClaim extends React.Component {
           <ReactFilestack
             mode="pick"
             apikey={config.filestack.key}
+            options={{storeTo: { location: 's3', access: 'public'}}}
             buttonText="Upload Image"
             buttonClass="classname"
             onSuccess={(response) => {
               const file = response.filesUploaded[0]
               if (file) {
-                this.setState({imageURL: file.handle})
+                console.log("saving and transforming:")
+                console.log(file)
+                this.setState({imageURL: file.key})
 
                 Promise.all([saveBigSummary(file),
                              saveMediumSummary(file),

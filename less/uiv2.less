@@ -1439,10 +1439,12 @@ li .iconWithStat {
 
 .editPointTextForm {
   display: inline-block;
-    width: calc(~"100% - 48px"); // full width minus space for cancel button
+  width: calc(~"100% - 48px"); // full width minus space for cancel button
   width: -moz-calc(~"100% - 48px");
-    width: -webkit-calc(~"100% - 48px");
+  width: -webkit-calc(~"100% - 48px");
   margin-top: 6px;
+  z-index: 1;
+  position: relative;
 }
 
 #editPointTextField {
@@ -1856,7 +1858,9 @@ a:hover .arrowAddEvidenceButton {
     // cheat position up into the text input area
     z-index: 100;
     position: relative;
-    margin-top: -24px; //top: -24px;
+    width: 24px;
+    background-color: pink;
+    //margin-top: -24px; //top: -24px;
 }
 
 .overMaxChars {

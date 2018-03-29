@@ -441,6 +441,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             else:
                 logging.info('Creating a brand new user. Auth_id: %s ', str(auth_id))  
                 _attrs['url'] = WhysaurusUser.constructURL(_attrs['name'])
+                _attrs['gaId'] = WhysaurusUser.generateUniqueUserGaid(True)
                 currentArea = self.session.get('currentArea')
                 currentAreaDisplayName = self.session.get('currentAreaDisplayName')
                 if currentArea:                    

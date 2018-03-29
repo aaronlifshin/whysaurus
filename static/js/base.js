@@ -1566,8 +1566,8 @@ function activateHeaderAndDialogs() {
                         {width: 54, height: 54, fit: 'clip'}, 
                         {path: 'SummaryMedium-' + file.key}, 
                         function(medium){
-                            $('.filepicker-placeholder').attr('src', 'http://d3uk4hxxzbq81e.cloudfront.net/' + encodeURIComponent(medium.key));                                                               
-                            stopSpinner();                            
+                          $('.filepicker-placeholder').attr('src', 'http://d38pzqn4b9ae2a.cloudfront.net/' + encodeURIComponent(medium.key));
+                            stopSpinner();
                             resetSubmitButton('#submit_pointDialog');
                             //$('.filepicker-placeholder').removeClass('spinnerAddImagePosition');
                         });

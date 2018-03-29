@@ -39,13 +39,13 @@ function toggleUnlink(elem, linkType) {
 
 function insertImage(imageURL, author, description) {
 	if ($('#mainPointImageArea').length) {
-	    $('.pointDisplay').attr('src', "//d3uk4hxxzbq81e.cloudfront.net/FullPoint-" + encodeURIComponent(imageURL))
+	    $('.pointDisplay').attr('src', "//d38pzqn4b9ae2a.cloudfront.net/FullPoint-" + encodeURIComponent(imageURL))
 		$('.mainPointImageURL').html(imageURL);
 		$('.mainPointImageAuthor').html(author);
 		$('.mainPointImageCaption').html(description);
 	} else { // no image yet, insert the main point image area
 		$('#pointSummary').after('<div id="mainPointImageArea" class="span3"> \
-	            <img class="pointDisplay" src="' + '//d3uk4hxxzbq81e.cloudfront.net/FullPoint-' + encodeURIComponent(imageURL) +
+	            <img class="pointDisplay" src="' + '//d38pzqn4b9ae2a.cloudfront.net/FullPoint-' + encodeURIComponent(imageURL) +
 				'" /><div class="mainPointImageCaption">' + description + '</div> \
 	            <div class="mainPointImageAuthor">' + author + '</div> \
 		    </div>');
@@ -416,7 +416,7 @@ function populateEditFields() {
         if(url.match("https?://")) {
             $('.filepicker-placeholder').attr('src', url);
         } else {
-            $('.filepicker-placeholder').attr('src', '//d3uk4hxxzbq81e.cloudfront.net/SummaryMedium-'+encodeURIComponent(url));
+            $('.filepicker-placeholder').attr('src', '//d38pzqn4b9ae2a.cloudfront.net/SummaryMedium-'+encodeURIComponent(url));
         }
     }
 }

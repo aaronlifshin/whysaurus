@@ -1448,10 +1448,10 @@ li .iconWithStat {
 }
 
 #editPointTextField {
-  width: 81%;
-  margin-right: 4px;
-  height: 30px;
-  padding: 4px;
+  //width: 81%;
+  //margin-right: 4px;
+  //height: 30px;
+  //padding: 4px;
 }
 
 .addEvidenceFormGroup {
@@ -1468,6 +1468,7 @@ li .iconWithStat {
   display: inline-block;
   position: relative;
   top: -8px;
+  width: @cardWidth;
 }
 
 .arrowAddEvidenceForm {
@@ -1494,15 +1495,17 @@ li .iconWithStat {
 
 .titleTextField {
   //height: 28px;
-  width: @cardWidth - 20px; // I don't know why this subtraction is needed visually, but it seems to be -JF
-  height: 28px;
+  width: 100%; 
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 50px;
   font-size: @fontSizePointTitle;
   line-height: @lineHeightExtra;
   color: black;
   padding-left: @cardPadding;
   padding-right: @cardPadding;
   padding-bottom: @cardPadding * 2;
-  padding-top: @cardPadding;
+  padding-top: 12px;
   display: block;
   margin-bottom: 0; //8px;
   position: relative;
@@ -1833,7 +1836,6 @@ a:hover .arrowAddEvidenceButton {
 
 .claimTitleField {
   margin-bottom: 12px;
-
 }
 
 .titleTextErrorArea {
@@ -1947,6 +1949,8 @@ a:hover .arrowAddEvidenceButton {
   font-size: 24px;
   //margin-bottom: 0px;
 }
+
+
 
 /* DEPRECATED
 .newPointInputRowFieldArea {

@@ -9,11 +9,6 @@
           <div id="display_userName" class="columnHeading columnHeadingBig" style="line-height:25px">
               {{profileUser.name}}
           </div>  
-              {% if viewingOwnPage %}                
-                <a name=profileEdit class="profileBodyText profileEditButton">EDIT</a>                  
-              {% endif %} 
- 
-
         </div>        
         {% if profileUser.avatar_url %}   
              <img class="profilePic" src='{{profileUser.avatar_url}}'/>                            
@@ -43,33 +38,23 @@
         
         
         <div id="display_userWebsite" class="profileBodyText userInfoAreaTempWidth" >
-          <p class="profileInfoHeading">Bio</p>
+          <p class="profileInfoHeading">About</p>
           {% if profileUser.websiteURL %}
-              <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>
-          {% else %}
-            {% if viewingOwnPage %}           
-                <a  name="profileEdit">Link to your website</a>
-            {% endif %}            
+              <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>           
           {% endif %}
         </div>
+        <!--
         <div id="display_userAreas" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.areasOfExpertise %}
               Areas of Expertise: {{profileUser.areasOfExpertise}}
-          {% else %}
-            {% if viewingOwnPage %}                     
-                <a  name="profileEdit">Share your areas of expertise</a>
-            {% endif %}
           {% endif %}
         </div>        
         <div id="display_userProfession" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.currentProfession %}
-              Current Profession: {{profileUser.currentProfession}}
-          {% else %}
-            {% if viewingOwnPage %}           
-                <a  name="profileEdit">Add your profession</a>
-            {% endif %}            
+              Current Profession: {{profileUser.currentProfession}}            
           {% endif %}
         </div>
+        -->
         <div id="display_userBio" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.bio %}
               Bio: {{profileUser.bio}}
@@ -82,7 +67,7 @@
     </div>
     {% if viewingOwnPage %}              
       <div class="modal hide fade" data-keyboard="true" id="profileDialog" role="dialog" aria-hidden="true">
-         <form id='frm_profileDialog' class="form-horizontal" action="./{{user.url}}" method="POST">          
+         <form id='frm_profileDialog' class="" action="./{{user.url}}" method="POST">          
             <div class="modal-header"><h3>Edit Profile Info</h3></div>    
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">       
@@ -92,13 +77,36 @@
                     <input id="userName" name="userName"  type="text" value="{{profileUser.name}}"></input>
                 </div>
               </div>  -->     
-                <div class="control-group">            
+                <div class="control-group"> 
                     <label class="control-label" for="userEmail">Email</label>
                     <div class="controls">            
-                        <input id="userEmail" name="userEmail" type="text" value="{% if profileUser.email %}{{profileUser.email}}{% endif %}"></input>
+                        <input id="userEmail" class="fieldEdit" name="userEmail" type="text" value="{% if profileUser.email %}{{profileUser.email}}{% endif %}"></input>
                     </div>
+                </div>    
+              <div class="control-group">            
+                <label class="control-label" for="userWebsite">Website URL</label>
+                <div class="controls">            
+                    <input id="userWebsite" class="fieldEdit" name="userWebsite" type="text" value="{% if profileUser.websiteURL %}{{profileUser.websiteURL}}{% endif %}"></input>
                 </div>
-                
+              </div>
+              <!--<div class="control-group">
+                <label class="control-label" for="userAreas">Areas of Expertise</label>                            
+                <div class="controls">            
+                    <input id="userAreas" name="userAreas" type="text" value="{% if profileUser.areasOfExpertise %}{{profileUser.areasOfExpertise}}{% endif %}"></input>
+                </div>
+              </div>
+              <div class="control-group">
+                <label  class="control-label" for="userProfession">Current Profession</label>                                      
+                <div class="controls">            
+                    <input id="userProfession" name="userProfession" type="text" value="{% if profileUser.currentProfession %}{{profileUser.currentProfession}}{% endif %}"></input>
+                </div>
+              </div>-->
+              <div class="control-group">
+                <label  class="control-label" for="userBio">Short Bio </label>                                                
+                <div class="controls">            
+                    <textarea id="userBio" class="fieldEdit" name="userBio" type="text" rows="3">{% if profileUser.bio %}{{profileUser.bio}}{% endif %}</textarea>   
+                </div>
+              </div> 
                 <div id="notificationFrequencyGroup" class="control-group">    
                     <label id="notificationFrequencyGroupLabel" class="control-label" for="notificationFrequency">Email Notifications</label>   
                     <div class="radioButtonGrpDefault" data-toggle="buttons">
@@ -115,32 +123,7 @@
                             {% if profileUser.notificationFrequencyText == 'Never' %}checked {% endif %}>Never
                         </label>
                     </div>                    
-                </div>
-                    
-              <div class="control-group">            
-                <label class="control-label" for="userWebsite">Website URL</label>
-                <div class="controls">            
-                    <input id="userWebsite" name="userWebsite" type="text" value="{% if profileUser.websiteURL %}{{profileUser.websiteURL}}{% endif %}"></input>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="userAreas">Areas of Expertise</label>                            
-                <div class="controls">            
-                    <input id="userAreas" name="userAreas" type="text" value="{% if profileUser.areasOfExpertise %}{{profileUser.areasOfExpertise}}{% endif %}"></input>
-                </div>
-              </div>
-              <div class="control-group">
-                <label  class="control-label" for="userProfession">Current Profession</label>                                      
-                <div class="controls">            
-                    <input id="userProfession" name="userProfession" type="text" value="{% if profileUser.currentProfession %}{{profileUser.currentProfession}}{% endif %}"></input>
-                </div>
-              </div>
-              <div class="control-group">
-                <label  class="control-label" for="userBio">Short Biography </label>                                                
-                <div class="controls">            
-                    <textarea id="userBio" name="userBio" type="text" rows="3">{% if profileUser.bio %}{{profileUser.bio}}{% endif %}</textarea>   
-                </div>
-              </div>        
+                </div>              
             </div>    
             <div class="modal-footer">
                 <a  id="submit_profileDialog" class="btn btn-primary">Save changes</a>            
@@ -151,9 +134,11 @@
     {% endif %}          
    
     <div id="profileTabbedArea" class="span6 profileAreaColumn">
-        <div id="profileDisclaimer">
-          Disclaimer: Whysaurus contributors don't always agree with the claims they make!
-        </div>
+        {% if viewingOwnPage != 1 %}                     
+          <div id="profileDisclaimer">
+            Disclaimer: Whysaurus contributors don't always agree with claims they create!
+          </div>
+         {% endif %}
         <div class="columnHeading">
                 {% if viewingOwnPage %}                    
                     <button class="tab" id="notificationView" >

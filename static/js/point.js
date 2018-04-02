@@ -612,17 +612,17 @@ function setUpMenuAreas() {
     // Edit the current point
     $( "#editPoint" ).off('.ys').on('click.ys', function() {
         populateEditFields();
-        showPointDialog("edit", "Edit Point");        
+        showPointDialog("edit", "Edit Claim");        
     });
     
     $( "#addImage" ).off('.ys').on('click.ys', function() {
         populateEditFields();
-        showPointDialog("edit", "Edit Point");
+        showPointDialog("edit", "Edit Claim");
     });
     
     $( "#changeImage" ).off('.ys').on('click.ys', function() {
         populateEditFields();
-        showPointDialog("edit", "Edit Point");
+        showPointDialog("edit", "Edit Claim");
         
     });
 

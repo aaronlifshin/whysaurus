@@ -21,7 +21,7 @@ import RelevanceRater from './RelevanceRater'
 
 
 // For Responsive
-// TODO : this is also declared in home.js, lets set it up to live in a single place
+// TODO : move to config.js (also declared in home.js, and QuickCreateClaim.jsx)
 const singleColumnThreshold = 960;
 
 export const EvidenceType = Object.freeze({

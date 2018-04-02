@@ -2172,7 +2172,7 @@ a:hover .arrowAddEvidenceButton {
   }
 
 
-  .mainPageClaimCreationArea {
+  .mainPageClaimCreationFormFieldBlock {
     width: @cardWidthSmallScreens;
   }
 
@@ -2206,9 +2206,20 @@ a:hover .arrowAddEvidenceButton {
 
 }
 @media (max-width: 640px) {
+
+  @buttonPaddingExtraSmallScreens: 9px;
+  .buttonUX2 {
+    padding-left: @buttonPaddingExtraSmallScreens;
+    padding-right: @buttonPaddingExtraSmallScreens;
+  }
+  
+  .buttonUX2RespIcon {
+    padding-right: @buttonPaddingExtraSmallScreens - 2px; 
+  }
+
   @cardWidthExtraSmallScreens: 85vw;
-  .mainPageClaimCreationArea {
-    width: @cardWidthExtraSmallScreens;
+  .mainPageClaimCreationFormFieldBlock {
+    width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
   }
   .stackCard {
     width: @cardWidthExtraSmallScreens; 

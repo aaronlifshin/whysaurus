@@ -24,8 +24,11 @@ export default class QuickCreateClaim extends React.Component {
   }
 
   // TODO
-  // replace <span className="">Pub.</span> with <span className="fa fa-edit"></span>
-  // and figure out why it breaks when browser window expands width
+  // replace <span className="">Pub.</span> with <span className="fa fa-edit"></span> for desired look
+  // but this also makes the bug reappear:
+  // when browser width goes from narrow to wide, errors are thrown and page is blank
+  // (seems to work fine going from wide to narrow)
+  // make work!
   submitButtonLabel = () => {
     return <span>
         <MediaQuery minWidth={extraSmallScreenThreshold}>
@@ -41,7 +44,7 @@ export default class QuickCreateClaim extends React.Component {
     if (this.state.submitting) {
       return <span>Adding your point...</span>;
     } else {
-      return <button onClick={this.props.onClick}className="buttonUX2 buttonUX2Blue buttonUX2RespIcon homePageNewPointCallButton pull-right" type="submit">{this.submitButtonLabel()}</button>;
+      return <button onClick={this.props.onClick}className="buttonUX2 buttonUX2Blue buttonUX2RespIcon createClaimFormButton" type="submit">{this.submitButtonLabel()}</button>;
     }
   }
 
@@ -51,10 +54,10 @@ export default class QuickCreateClaim extends React.Component {
                  validate={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
           <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
-            <div className="mainPageClaimCreationFormFieldBlock">
+            <div className="claimCreationFormFieldBlock">
               <TitleText id="newPointTextField" className="titleTextField" placeholder='Make a claim, eg "Dogs are better than cats."' />
             </div>
-            <div className="mainPageClaimCreationFormButtonBlock">
+            <div className="claimCreationFormButtonBlock">
               {this.submitButton()}
             </div>
           </form>

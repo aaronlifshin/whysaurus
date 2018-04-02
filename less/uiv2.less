@@ -1417,15 +1417,11 @@ li .iconWithStat {
     transform: scale(@buttonUX2ScaleUpOnHover * @buttonUX2ScaleDownOnClick) !important;
 }
 
-.addEvidenceFormButton {
-  margin-left: 4px;
-  //margin-top: 8px;
-  //height: 36px;
-    //width: 24px;
-  font-size: @baseFontSizeUX2 * 1.13125; // ~18px
-  padding-bottom: 7px;
-  float: right;
+.createClaimFormButton {
+  font-size: @fontSizePointTitle;
+  top: 0;
 }
+
 
 
 
@@ -1465,7 +1461,7 @@ li .iconWithStat {
   display: inline-block;
   position: relative;
   top: -8px;
-  width: @cardWidth;
+  //width: @cardWidth;
 }
 
 .arrowAddEvidenceForm {
@@ -1951,12 +1947,12 @@ a:hover .arrowAddEvidenceButton {
   //margin-bottom: 0px;
 }
 
-.mainPageClaimCreationFormFieldBlock {
+.claimCreationFormFieldBlock {
   display: inline-block;
   width: @cardWidth;
   margin-right: 4px;
 }
-.mainPageClaimCreationFormButtonBlock {
+.claimCreationFormButtonBlock {
   //width: 100%;
   display: inline-block;
   vertical-align: top;
@@ -1978,12 +1974,6 @@ a:hover .arrowAddEvidenceButton {
 
 .mainPageInput {
   margin-bottom: 8px;
-}
-
-.homePageNewPointCallButton {
-    font-size: @fontSizePointTitle;
-    //padding: 8px 13px;
-    top: 0;
 }
 
 .mainPageContentArea {
@@ -2172,10 +2162,10 @@ a:hover .arrowAddEvidenceButton {
   }
 
 
-  .mainPageClaimCreationFormFieldBlock {
+  .claimCreationFormFieldBlock {
     width: @cardWidthSmallScreens;
   }
-
+  
   .pointPageContainer {
   margin-top: 24px;
   //margin-left: 0;
@@ -2218,9 +2208,13 @@ a:hover .arrowAddEvidenceButton {
   }
 
   @cardWidthExtraSmallScreens: 85vw;
-  .mainPageClaimCreationFormFieldBlock {
+  .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
   }
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: ~"calc(@{cardWidthExtraSmallScreens} - 48px - 36px)"; // subtract width of button + an extra amount for the indent
+  }  
+  
   .stackCard {
     width: @cardWidthExtraSmallScreens; 
   }

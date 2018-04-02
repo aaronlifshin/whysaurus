@@ -74,7 +74,7 @@ class AddEvidenceForm extends React.Component {
 
   render(){
     const {userLoading, user} = this.props
-    let submitClasses = `buttonUX2 addEvidenceFormButton ${this.props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
+    let submitClasses = `buttonUX2 createClaimFormButton ${this.props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
     return <Form onSubmit={this.props.onSubmit}
                  validate={values => ({title: validations.validateTitle(values.title)})}>
       { ({submitForm, values: {title}}) => (
@@ -82,7 +82,8 @@ class AddEvidenceForm extends React.Component {
           query={title}
           render={({results, searching}) =>
                   <form onSubmit={submitForm} className="addEvidenceForm">
-                      <TitleText id="title" className="titleTextField"
+                      <div className="claimCreationFormFieldBlock">
+                        <TitleText id="title" className="titleTextField"
                                    autoComplete='off'
                                    placeholder={this.generatePlaceholderText(this.props.evidenceType)}
                                    onFocus={() => {this.setState({titleTextFocused: true})}}
@@ -90,10 +91,13 @@ class AddEvidenceForm extends React.Component {
                                    // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired
                                    // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
                                    onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
-                          />
-                      {this.existingClaimPickerDropdown(title, results, searching)}
-                      <button type="submit" className={submitClasses}>Add</button>
-                      <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
+                        />
+                        {this.existingClaimPickerDropdown(title, results, searching)}
+                      </div>
+                      <div className="claimCreationFormButtonBlock">
+                        <button type="submit" className={submitClasses}>Add</button>
+                        <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
+                      </div>
                     </form>
                   }/>
       )}

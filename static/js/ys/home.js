@@ -114,6 +114,7 @@ class Home extends React.Component {
     </div>;
   }
 
+  // TODO: obscure "Featured Argument not found" until loading is complete, or go back to {featuredPoint && <PointList point={featuredPoint}/>}
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
@@ -124,11 +125,10 @@ class Home extends React.Component {
         <QuickCreateClaim onSubmit={this.createNewPoint}/>
       </div>
       <div className="mainPageContentArea">
-        <div id="mainPageFeaturedArea">
+        <div id="mainPageFeaturedArea" className="mainPageContentArea">
           <h1 className="mainPageHeading indentToClaimText">Featured Argument</h1>
-          {featuredPoint && <PointList point={featuredPoint}/>}
+          {featuredPoint ? <PointList point={featuredPoint}/> : <div className="indentToClaimText">Featured Argument not found</div> }
         </div>
-
         <div id="mainPageMainArea">
           <Tabs selectedTabClassName="tabUX2_selected">
             <TabList>

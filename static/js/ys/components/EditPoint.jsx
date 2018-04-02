@@ -12,8 +12,12 @@ const EditTitleForm = ({point, onSubmit, onClick}) => {
           validate={values => ({title: validations.validateTitle(values.title)})}>
       { formApi => (
         <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
-          <TitleText onClick={onClick} id="editPointTextField" className="titleTextField"/>
-          <button onClick={onClick} className="buttonUX2" type="submit">Save</button>
+          <div className="claimCreationFormFieldBlock">
+            <TitleText onClick={onClick} id="editPointTextField" className="titleTextField"/>
+          </div>
+          <div className="claimCreationFormButtonBlock">
+            <button onClick={onClick} className="buttonUX2 createClaimFormButton" type="submit">Save</button>
+          </div>            
         </form>
       )}
     </Form>

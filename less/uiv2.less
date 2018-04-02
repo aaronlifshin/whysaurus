@@ -1432,9 +1432,10 @@ li .iconWithStat {
 
 .editPointTextForm {
   display: inline-block;
-  width: calc(~"100% - 48px"); // full width minus space for cancel button
-  width: -moz-calc(~"100% - 48px");
-  width: -webkit-calc(~"100% - 48px");
+  //width: calc(~"100% - 48px"); // full width minus space for cancel button
+  //width: -moz-calc(~"100% - 48px");
+  //width: -webkit-calc(~"100% - 48px");
+  width: 100%;
   margin-top: 6px;
   z-index: 1;
   position: relative;
@@ -1952,6 +1953,11 @@ a:hover .arrowAddEvidenceButton {
   width: @cardWidth;
   margin-right: 4px;
 }
+
+.editPointTextForm .claimCreationFormFieldBlock {
+  width: ~"calc(100% - 68px)"; // subtract enough for button
+}
+
 .claimCreationFormButtonBlock {
   //width: 100%;
   display: inline-block;

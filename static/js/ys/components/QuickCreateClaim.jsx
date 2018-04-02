@@ -24,7 +24,7 @@ export default class QuickCreateClaim extends React.Component {
   }
 
   // TODO
-  // replace <span className="">Pub.</span> with <span className="fa fa-edit"></span> for desired look
+  // replace <span className="">Add</span> with <span className="fa fa-edit"></span> for desired look
   // but this also makes the bug reappear:
   // when browser width goes from narrow to wide, errors are thrown and page is blank
   // (seems to work fine going from wide to narrow)
@@ -35,7 +35,7 @@ export default class QuickCreateClaim extends React.Component {
           Publish
         </MediaQuery>
         <MediaQuery maxWidth={extraSmallScreenThreshold}>
-          <span className="">Pub.</span>
+          <span className="">Add</span>
         </MediaQuery> 
       </span>      
   }

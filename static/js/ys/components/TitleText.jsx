@@ -7,7 +7,7 @@ import * as validations from '../validations'
 import * as schema from '../schema';
 
 import CharCount from './CharCount'
-import ClaimSearch from './ClaimSearch'
+import ClaimSuggestor from './ClaimSuggestor'
 
 // use onmousedown here to try to get in before blur hides the UI (see note in TitleText onBlur below)
 // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
@@ -18,76 +18,56 @@ const ExistingClaimPicker = ({claims, onSelectClaim}) => <ul className="Existing
 </ul>
 
 class TitleText extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.invalidEvidenceURLs = new Set([props.point.url, ...this.evidence().map(claim => claim.url)])
-  }
-
   static propTypes = {
     point: PropTypes.object,
     evidenceType: PropTypes.string,
-    currentEvidence: PropTypes.array,
     addExistingClaim: PropTypes.func
   }
 
-  state = {titleTextFocused: false}
+  constructor(props) {
+    super(props)
+    this.state = {titleTextFocused: false}
+  }
 
   selectExistingClaim = (claim) =>
     this.props.addExistingClaim(this.props.evidenceType, claim)
 
-  evidence = () => {
-    let connections = this.props.point[this.props.evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
-    return connections ? connections.edges.map(edge => edge.node) : []
-  }
-
- filterEvidenceCandidates = (claims) =>
-    claims.filter(claim => !this.invalidEvidenceURLs.has(claim.url))
-
-  existingClaimPicker = (titleValue, searchResults, searching) => {
-    if (titleValue && (titleValue != '')){
-      if (searching) {
-        return <div className="">Searching...</div>
-      } else {
-        return <ExistingClaimPicker claims={this.filterEvidenceCandidates(searchResults)} onSelectClaim={this.selectExistingClaim}/>
-      }
-    } else if (this.props.user) {
-      return <ExistingClaimPicker claims={this.filterEvidenceCandidates(this.props.user.recentlyViewed)} onSelectClaim={this.selectExistingClaim}/>
-    }
-  }
-
-  existingClaimPickerDropdown = (titleValue, searchResults, searching) => {
-    if (this.state.titleTextFocused) {
-      return <div className="existingClaimPickerDropdown">
-        <div className="existingClaimPickerHeading">Existing Claims:</div>
-        {this.existingClaimPicker(titleValue, searchResults, searching)}
-      </div>
-    }
+  feedbackArea = (error, suggestions, searching) => {
+    let errorClasses = `titleTextErrorArea ${error && "titleTextErrorAreaContent"}`
+    return <div className="existingClaimPickerDropdown">
+      <span className={errorClasses}>{error}</span>
+      <div className="existingClaimPickerHeading">Existing Claims:</div>
+      <ExistingClaimPicker claims={suggestions} onSelectClaim={this.selectExistingClaim}/>
+    </div>
   }
 
   render(){
-    const { field, ...restOfProps } = this.props
-    return <Field field={field}>
+    // `field` is here to strip out the field prop since we set it manually
+    const { field, point, evidenceType, addExistingClaim, ...restOfProps } = this.props
+    // add focused prop here to make Field.shouldComponentUpdate return true when focus changes
+    return <Field field="title" focused={this.state.titleTextFocused}>
       {fieldApi => {
-        const { value: { title }, error, warning, success, setValue, setTouched } = fieldApi
+        const { value, error, warning, success, setValue, setTouched } = fieldApi
+        let title = value
         let classesCharCounterDefault = "charCounter "
-        let classesErrorArea = `titleTextErrorArea ${(error && error.title) ? "titleTextErrorAreaContent" : "" }`
         return (
           <div className="claimTitleField">
-            <ClaimSearch
+            <ClaimSuggestor
               query={title}
-              render={({results, searching}) => (
+              point={point}
+              evidenceType={evidenceType}
+              render={({suggestions, searching}) => (
                 <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
                   <span>
-                    <span className={classesErrorArea}>{error && error.title}</span>
                     <Text field="title" {...restOfProps}
-                          onFocus={() => {this.setState({titleTextFocused: true})}}
+                          onFocus={() => {this.setState({titleTextFocused: true})
+                      }}
                           // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
                           // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired
                           // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
-                          onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
+                      onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
                       />
-                    {this.existingClaimPickerDropdown(title, results, searching)}
+                      {this.state.titleTextFocused && this.feedbackArea(error, suggestions, searching)}
                     <span className={classesCharCounterDefault + (charsLeft && charsLeft < 0 ? ' overMaxChars' : '')}>{charsLeft}</span>
                   </span>
                 )}/>
@@ -99,10 +79,4 @@ class TitleText extends React.Component {
   }
 }
 
-export default graphql(schema.CurrentUserQuery, {
-  props: ({ownProps, data: {loading, currentUser, refetch}}) => ({
-    userLoading: loading,
-    user: currentUser,
-    refetchUser: refetch
-  })
-})(TitleText)
+export default TitleText

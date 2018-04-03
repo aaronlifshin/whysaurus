@@ -68,7 +68,6 @@ class AddEvidence extends React.Component {
       })
   }
 
-
   handleClickSaveSupport = (values, e, formApi) => {
     this.handleClickSave("supporting", values, e, formApi)
   }
@@ -77,23 +76,17 @@ class AddEvidence extends React.Component {
     this.handleClickSave("counter", values, e, formApi)
   }
 
-  supportingClaims = (evidenceType) => {
-    let connections = this.point[evidenceType == "supporting" ? "supportingPoints" : "counterPoints"]
-    return connections ? connections.edges.map(edge => edge.node) : []
-  }
-
   renderAddEvidenceForm = (evidenceType) => {
     console.log("AddEvidenceCard : renderAddEvidenceForm : " + evidenceType)
     let progressFeedbackClasses = `progressStateFeedback ${evidenceType=="counter" && "counter"}`
     return <span>
       { this.state.saving ? <div className={progressFeedbackClasses}><Spinner />Saving...</div> :
       <span className={(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrowForm"}>
-        <AddEvidenceForm evidenceType={evidenceType}
-                           onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter}
-                           onCancel={this.handleClickCancel}
-                           addExistingClaim={this.addExistingClaim}
-                           point={this.point}
-                           currentSupportingClaims={this.supportingClaims(evidenceType)}/> 
+        <AddEvidenceForm point={this.point}
+                         evidenceType={evidenceType}
+                         addExistingClaim={this.addExistingClaim}
+                         onSubmit={evidenceType=="supporting" ? this.handleClickSaveSupport : this.handleClickSaveCounter}
+                         onCancel={this.handleClickCancel}/>
       </span>}
     </span>
   }

@@ -39,6 +39,7 @@ class AddEvidenceForm extends React.Component {
           <TitleText id="title" className="titleTextField"
                      autoComplete='off'
                      placeholder={this.generatePlaceholderText(evidenceType)}
+                     suggestExistingClaims={true}
                      point={point}
                      evidenceType={evidenceType}
                      addExistingClaim={addExistingClaim}/>

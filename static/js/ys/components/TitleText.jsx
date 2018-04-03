@@ -19,6 +19,7 @@ const ExistingClaimPicker = ({claims, onSelectClaim}) => <ul className="Existing
 
 class TitleText extends React.Component {
   static propTypes = {
+    suggestExistingClaims: PropTypes.bool,
     point: PropTypes.object,
     evidenceType: PropTypes.string,
     addExistingClaim: PropTypes.func
@@ -41,6 +42,25 @@ class TitleText extends React.Component {
     </div>
   }
 
+  showFeedbackArea = (error) => this.state.titleTextFocused && (error || this.props.suggestExistingClaims)
+
+
+  renderCountedTextField = (title, textProps, error, suggestions, searching) =>
+    <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
+      <span>
+        <Text field="title" {...textProps}
+              onFocus={() => {this.setState({titleTextFocused: true})}}
+              // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
+              // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired
+              // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
+              onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
+          />
+
+          {this.showFeedbackArea(error) && this.feedbackArea(error, suggestions, searching)}
+          <span className={"charCounter " + (charsLeft && charsLeft < 0 ? ' overMaxChars' : '')}>{charsLeft}</span>
+                  </span>
+    )}/>
+
   render(){
     // `field` is here to strip out the field prop since we set it manually
     const { field, point, evidenceType, addExistingClaim, ...restOfProps } = this.props
@@ -49,29 +69,14 @@ class TitleText extends React.Component {
       {fieldApi => {
         const { value, error, warning, success, setValue, setTouched } = fieldApi
         let title = value
-        let classesCharCounterDefault = "charCounter "
         return (
           <div className="claimTitleField">
-            <ClaimSuggestor
-              query={title}
-              point={point}
-              evidenceType={evidenceType}
-              render={({suggestions, searching}) => (
-                <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
-                  <span>
-                    <Text field="title" {...restOfProps}
-                          onFocus={() => {this.setState({titleTextFocused: true})
-                      }}
-                          // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
-                          // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired
-                          // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
-                      onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
-                      />
-                      {this.state.titleTextFocused && this.feedbackArea(error, suggestions, searching)}
-                    <span className={classesCharCounterDefault + (charsLeft && charsLeft < 0 ? ' overMaxChars' : '')}>{charsLeft}</span>
-                  </span>
-                )}/>
-              )}/>
+            {this.props.suggestExistingClaims ? <ClaimSuggestor
+                                                    query={title}
+                                                    point={point}
+                                                    evidenceType={evidenceType}
+                                                    render={({suggestions, searching}) => this.renderCountedTextField(title, restOfProps, error, suggestions, searching)}/> :
+              this.renderCountedTextField(title, restOfProps, error)}
           </div>
         )
       }}

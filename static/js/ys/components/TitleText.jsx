@@ -11,11 +11,17 @@ import ClaimSuggestor from './ClaimSuggestor'
 
 // use onmousedown here to try to get in before blur hides the UI (see note in TitleText onBlur below)
 // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
-const ExistingClaimPicker = ({claims, onSelectClaim}) => <ul className="ExistingClaimList">
-      {claims && claims.map((claim) => <li onMouseDown={e => onSelectClaim(claim, e)} key={claim.id}>
-                            {claim.title}
-                            </li>)}
-</ul>
+// <li>example claim</li>
+const ExistingClaimPicker = ({claims, onSelectClaim}) => 
+  <div className="existingClaimPicker">
+    <div className="existingClaimPickerHeading">Existing Claims:</div>
+    <ul className="existingClaimList">
+          {claims && claims.map((claim) => <li onMouseDown={e => onSelectClaim(claim, e)} key={claim.id}>
+                                {claim.title}
+                                </li>)}
+
+    </ul>   
+  </div>
 
 class TitleText extends React.Component {
   static propTypes = {
@@ -35,15 +41,13 @@ class TitleText extends React.Component {
 
   feedbackArea = (error, suggestions, searching) => {
     let errorClasses = `titleTextErrorArea ${error && "titleTextErrorAreaContent"}`
-    return <div className="existingClaimPickerDropdown">
-      <span className={errorClasses}>{error}</span>
-      <div className="existingClaimPickerHeading">Existing Claims:</div>
+    return <div className="claimFeedbackArea">
+      <div className={errorClasses}>{error}</div>
       <ExistingClaimPicker claims={suggestions} onSelectClaim={this.selectExistingClaim}/>
     </div>
   }
 
   showFeedbackArea = (error) => this.state.titleTextFocused && (error || this.props.suggestExistingClaims)
-
 
   renderCountedTextField = (title, textProps, error, suggestions, searching) =>
     <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
@@ -53,14 +57,18 @@ class TitleText extends React.Component {
               // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
               // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired
               // TODO: think about ways to make the "suggestion UI hide" condition be "clicking on anything that is not the text input or suggestion ui itself"
+              
+              // comment this out to make FeedbackArea persistant for styling
               onBlur={() => {setTimeout(() => this.setState({titleTextFocused: false}), 100)}}
           />
-
-          {this.showFeedbackArea(error) && this.feedbackArea(error, suggestions, searching)}
           <span className={"charCounter " + (charsLeft && charsLeft < 0 ? ' overMaxChars' : '')}>{charsLeft}</span>
-                  </span>
+          {this.showFeedbackArea(error) && this.feedbackArea(error, suggestions, searching)}
+          
+      </span>
     )}/>
 
+    
+  // To make error area persistant change "const { value,..." to "let { value,..." and add below it: error = "THIS IS AN ERROR"
   render(){
     // `field` is here to strip out the field prop since we set it manually
     const { field, point, evidenceType, addExistingClaim, ...restOfProps } = this.props

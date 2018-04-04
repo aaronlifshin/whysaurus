@@ -63,7 +63,7 @@ class TitleText extends React.Component {
 
   render(){
     // `field` is here to strip out the field prop since we set it manually
-    const { field, point, evidenceType, addExistingClaim, ...restOfProps } = this.props
+    const { field, point, evidenceType, addExistingClaim, suggestExistingClaims, ...restOfProps } = this.props
     // add focused prop here to make Field.shouldComponentUpdate return true when focus changes
     return <Field field="title" focused={this.state.titleTextFocused}>
       {fieldApi => {

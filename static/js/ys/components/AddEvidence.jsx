@@ -81,7 +81,7 @@ class AddEvidence extends React.Component {
     let progressFeedbackClasses = `progressStateFeedback ${evidenceType=="counter" && "counter"}`
     return <span>
       { this.state.saving ? <div className={progressFeedbackClasses}><Spinner />Saving...</div> :
-      <span className={(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrowForm"}>
+      <span className={(this.numSupportingPlusCounter() > 0) ? "verticalOffsetForLongEvidenceArrowForm" : ""}>
         <AddEvidenceForm point={this.point}
                          evidenceType={evidenceType}
                          addExistingClaim={this.addExistingClaim}

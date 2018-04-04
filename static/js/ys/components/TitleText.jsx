@@ -48,7 +48,7 @@ class TitleText extends React.Component {
   renderCountedTextField = (title, textProps, error, suggestions, searching) =>
     <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
       <span>
-        <Text field="title" {...textProps}
+        <TextArea field="title" {...textProps}
               onFocus={() => {this.setState({titleTextFocused: true})}}
               // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
               // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired

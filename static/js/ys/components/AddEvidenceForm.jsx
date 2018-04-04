@@ -30,7 +30,7 @@ class AddEvidenceForm extends React.Component {
   }
 
   render(){
-    let submitClasses = `buttonUX2 addEvidenceFormButton ${this.props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
+    let submitClasses = `buttonUX2 createClaimFormButton ${this.props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
     let {point, evidenceType, addExistingClaim} = this.props
     return <Form onSubmit={this.props.onSubmit}
                  validate={values => ({title: validations.validateTitle(values.title)})}>

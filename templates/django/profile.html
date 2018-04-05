@@ -16,9 +16,9 @@
             <img class="profilePic" src='/static/img/avatar_profilePage_default.png'/>
         {% endif %} 
         <div class="profileStatsArea profileBodyText userInfoAreaTempWidth">        
-            <p class="profileInfoHeading">Stats</p>
-            <div>Created: {{profileUser.createdCount }}</div>
-            <div>Edited: {{profileUser.editedCount }}</div>
+            <!--<p class="profileInfoHeading">Stats</p>-->
+            <div>{{profileUser.createdCount }} Claims created</div>
+            <div>{{profileUser.editedCount }} Claims contributed to</div>
         </div>
         {% if viewingOwnPage %}       
                 
@@ -38,7 +38,7 @@
         
         
         <div id="display_userWebsite" class="profileBodyText userInfoAreaTempWidth" >
-          <p class="profileInfoHeading">About</p>
+          <!--<p class="profileInfoHeading">About</p>-->
           {% if profileUser.websiteURL %}
               <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>           
           {% endif %}
@@ -136,7 +136,7 @@
     <div id="profileTabbedArea" class="span6 profileAreaColumn">
         {% if viewingOwnPage != 1 %}                     
           <div id="profileDisclaimer">
-            Disclaimer: Whysaurus contributors don't always agree with claims they create!
+            Remember, Whysaurus users don't always agree with claims they create!
           </div>
          {% endif %}
         <div class="columnHeading">
@@ -149,7 +149,7 @@
                     CREATED
                 </button>
                 <button class="tab" id="editedPoints">
-                    EDITED
+                    CONTRIBUTED TO
                 </button>               
         </div>
         {% if viewingOwnPage %}                            

@@ -22,7 +22,7 @@ import RelevanceRater from './RelevanceRater'
 
 // For Responsive
 // TODO : move to config.js (also declared in home.js, and QuickCreateClaim.jsx)
-const singleColumnThreshold = 960;
+const singleColumnThreshold = 960.01;
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),

@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, h6, body {
 @fontSizeTertiaryUX2:  @baseFontSizeUX2 * 0.750; // ~12px;
 @fontSizeSecondaryUX2: @baseFontSizeUX2 * 0.875; // ~14px
 @fontSizeButtonsUX2:   @baseFontSizeUX2 * 0.875; // ~14px
+@fontSizeHeaderUX2:    @baseFontSizeUX2 * 0.938; // ~15px
 @fontSizePointTitle:   @baseFontSizeUX2 * 1.063; // ~17px
 @arrowFontSizeUX2:     @baseFontSizeUX2 * 1.125; // ~18px
 
@@ -162,32 +163,45 @@ a:focus, a:hover {
 //////////////////////////////////////////////
 // HEADER
 
-@defaultHeaderMarginH: 24px;
-
-.headerLinkIcon {
-  font-size: 18px;
-  top: 1px;
-  margin-right: 5px;
-}
-
-.headerLinks {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.headerColorDefault {
+.headerBGColorDefault {
   background:#F0F0F0;
   //background-color: pink;
 }
 
+@defaultHeaderMarginH: 24px;
+
+.headerItem {
+  display: inline-block;   
+  //float: none;
+  color: black !important;
+  //font-family: "ff-meta-web-pro-condensed", sans-serif;
+  font-size: @fontSizeHeaderUX2;
+  font-weight: 700;
+  line-height: 120%;
+  margin-right: 0;  
+  //margin-top: 14px;   
+  vertical-align: middle;  
+}
+.headerItem > a {
+   color: black !important; 
+}
+  
+.headerLinkIcon {
+  font-size: 18px;
+  top: 1px;
+  margin-right: 5px;
+  color: black !important;
+}
+
 #headerLogo {
-  display: inline-block;
   margin-left: 2%; //@defaultHeaderMarginH / 2;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 #CreatePoint {
   margin-left: @defaultHeaderMarginH;
+  position: relative;
+  top: 1px;
 }
 
 #makePointIcon {
@@ -212,6 +226,7 @@ a:focus, a:hover {
 #aboutMenu {
   margin-left: @defaultHeaderMarginH - 4px; // needed to keep spacing consistent, not sure where this 4px is coming from
   position: relative;
+  top: 2px;
 }
 
 #aboutDropdown {
@@ -219,20 +234,25 @@ a:focus, a:hover {
 }
 
 #notifications {
-  display: inline-block;
-  right: 0px; //150px;
-  vertical-align: top;
-  //position: fixed;
+  right: 0px; 
+  margin-top: 11px;
 }
 
 @headerFooterRightMargin: @defaultHeaderMarginH / 3;
-.userMenuArea {
+#userMenuArea {
   margin-left: @defaultHeaderMarginH * .6666;
   padding-right: @headerFooterRightMargin;
+  margin-top: 6px;
   //position: fixed;
   //right: 0;
-  top: 0;
+  //top: 0;
 }
+
+#userMenuArea .username {
+  position: relative;
+  top: 1px;
+}
+
 #userMenuSignedIn {
   position: absolute;
   left: -78px;
@@ -2069,7 +2089,7 @@ a:hover .arrowAddEvidenceButton {
 
 @headerMarginNarrow: 12px;
 
-@media (max-width: 979px) and (min-width: 768px) {
+@media (max-width: 979px) and (min-width: 767.01px) {
 
   .navbar .container {
       width: unset;
@@ -2088,7 +2108,7 @@ a:hover .arrowAddEvidenceButton {
     //right: 112px;
   }
 
-  .userMenuArea {
+  #userMenuArea {
     //margin-left: @headerMarginNarrow;
   }
   
@@ -2127,16 +2147,12 @@ a:hover .arrowAddEvidenceButton {
     //padding-right: 24px; // account for scrollbars and phones
   }
   
-  .headerLinks {
-    float: none;
-    margin-right: 0;
-  }
   
   #CreatePoint, #aboutMenu, #searchArea  {
     margin-left: @headerMarginNarrow; 
   }
   
-  .userMenuArea {
+  #userMenuArea {
     margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
     //right: 0;
     //margin-right: @defaultHeaderMarginH;

@@ -44,7 +44,7 @@ const NewPoints = graphql(schema.NewPoints, {
 })(PointList);
 
 // For Responsive
-const singleColumnThresholdForCarousel = 768;
+const singleColumnThresholdForCarousel = 767.01;
 
 class Home extends React.Component {
 

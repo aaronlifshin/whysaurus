@@ -77,10 +77,10 @@
   </head>
 
   <body>
-    <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}headerColorDefault{% endif %}">
+    <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}headerBGColorDefault{% endif %}">
       <div class="container">
 
-          <a id="headerLogo" href="/home">
+          <a id="headerLogo" class="headerItem" href="/home">
               <span id="logoImage" src="/static/img/whysaurus_logo.png">
                   <img class="hidden-xs hidden-phone" src="/static/img/whysaurus_logo.png"/>
                   <img class="visible-xs visible-phone" src="/static/img/whysaurus_logo_v02_ys_32px.png"/>
@@ -88,7 +88,7 @@
           </a>
 
           {% if headerHideActions != 1 %}
-              <span class="headerLinks Heading_Black_Caps">
+              <span class="headerItem">
                 <!-- In Bootstrap 3 the responsive utilities' hidden classes get renamed; using the class names from both bootstrap 2 & 3 here.-->
                 <!--
                   <a id="homeNav" href="/">
@@ -101,11 +101,11 @@
                   <span class="hidden-xs hidden-phone">Make Argument</span>
                 </a>
               </span>
-              <div id="searchArea" >
+              <div id="searchArea" class="headerItem">
                   <input id="searchBox" type="text" name="searchTerms" placeholder="Find Argument..." results="0" />
                   <span class="searchIcon pull-right fa fa-search"></span>
               </div>
-              <span class="headerLinks Heading_Black_Caps">
+              <span class="headerItem">
                 <div id="aboutMenu">
                   <a class="userControls dropdown-toggle" data-toggle="dropdown">
                     <span id="aboutIcon"  class="headerLinkIcon fa fa-question-circle"></span>
@@ -125,9 +125,9 @@
               </span>
 
         	  {% if user %}
-              <div class="userMenuArea headerUserName pull-right">
+              <div id="userMenuArea" class="headerItem headerUserName pull-right">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
-                      <span class="responsiveLabel">
+                      <span class="username hidden-xs hidden-phone">
                           {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}
                       </span>
                       <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/>
@@ -171,7 +171,7 @@
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                   </ul>
                 </div>
-                <div id="notifications" class="pull-right">
+              <div id="notifications" class="headerItem pull-right">
                 <a class="dropdown-toggle" data-toggle="dropdown">
                     <img id="notificationIcon" src="/static/img/notificationIcon.png"/>
                 </a>

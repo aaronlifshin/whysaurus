@@ -81,11 +81,11 @@ const VoteStats = ({point}) => (
 
 
 // used in PointCard and in PointList for the irrelevant claims links
-export const LinkedItemBullet = () => ( 
+export const LinkedItemBullet = () => (
   <div className={"dottedLine dottedLineElbow"}></div>
 )
 
-       
+
 
 class PointComponent extends React.Component {
   constructor(props) {
@@ -499,10 +499,9 @@ class PointCardComponent extends React.Component {
         return <div className={classesEvidenceBlock + " evidenceBlockEmpty"}>
           <AddEvidence point={this.point} type={"DUAL"}/>
         </div>
-      }
-      else {
+      } else {
         return <div className={classesEvidenceBlock}>
-         {this.props.parentPoint && <div className="dottedLine dottedLineExpansionIndicator"></div>} 
+         {this.props.parentPoint && <div className="dottedLine dottedLineExpansionIndicator"></div>}
          {this.renderDottedLinesEvidenceHeaderOrMargin()}
          <MediaQuery minWidth={singleColumnThreshold}>
           {this.hasSupportingEvidence() && this.supportingPoints()}
@@ -515,19 +514,19 @@ class PointCardComponent extends React.Component {
       }
     }
   }
- 
+
   renderDottedLinesEvidenceHeaderOrMargin() {
     return <div className="dottedLinesSplitEvidenceHeader">
       <MediaQuery minWidth={singleColumnThreshold}>
-        {this.hasSupportingEvidence() && this.hasCounterEvidence() && 
+        {this.hasSupportingEvidence() && this.hasCounterEvidence() &&
           <div>
             <div className="dottedLinesSplitEvidenceSupport"></div>
             <div className="dottedLinesSplitEvidenceCounter"></div>
           </div>
         }
       </MediaQuery>
-    </div>    
-  } 
+    </div>
+  }
 
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {

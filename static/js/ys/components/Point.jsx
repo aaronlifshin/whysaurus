@@ -195,7 +195,11 @@ class EvidenceLink extends React.Component {
   evidenceButton = () => {
     if (this.hasEvidence()) {
       if (this.props.expanded) {
-        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
+        if (this.props.expansionLoading) {
+          return <span>Loading...</span>
+        } else {
+          return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
+        }
       } else {
         return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee} onMouseOver={this.props.mouseOverPreload}>See Evidence</a>
       }
@@ -285,7 +289,6 @@ class PointCardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: props.expanded,
       relevanceRater: false
     }
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
@@ -457,7 +460,7 @@ class PointCardComponent extends React.Component {
   }
 
   expanded() {
-    return this.props.expanded;
+    return this.props.expanded && !this.props.expansionLoading;
   }
 
   contentWidth() {
@@ -729,7 +732,7 @@ class PointCardComponent extends React.Component {
         {this.sources()}
         <div className="row-fluid">
         <div className="cardBottomActionRow" >
-        <span><EvidenceLink point={point} expanded={this.expanded()}
+        <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
                             onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
                             mouseOverPreload={this.preloadPoint}/>
         </span>
@@ -772,7 +775,12 @@ class PointCardComponent extends React.Component {
 export const PointCard = compose(
   withApollo,
   graphql(GetPoint, {
-    skip: ({expanded}) => !expanded
+    skip: ({expanded}) => !expanded,
+    props: ({ownProps, data: { loading, ...rest }}) => ({
+      expansionLoading: loading,
+      ...rest
+    })
+
   }),
   graphql(CurrentUserQuery, {
     name: 'CurrentUserQuery',

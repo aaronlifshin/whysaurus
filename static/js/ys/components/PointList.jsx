@@ -26,9 +26,11 @@ class PointListComponent extends React.Component {
     return this.props.parentPoint;
   }
 
-  isPointExpanded = (point) => {
-    return !!this.state.expandedIndex[point.url]
-  }
+  expansionIndexKey = (point) =>
+    point.url + this.depth()
+
+  isPointExpanded = (point) =>
+    !!this.state.expandedIndex[this.expansionIndexKey(point)]
 
   expandedIndex2Param = (index) => {
     return JSON.stringify(Object.keys(index).filter(key => index[key]))
@@ -70,21 +72,23 @@ class PointListComponent extends React.Component {
   }
 
   handleSeeEvidence = (point) => {
-    this.modifyStateAndURL(point, index => index[point.url] = true)
+    this.modifyStateAndURL(point, index => index[this.expansionIndexKey(point)] = true)
   }
 
   handleHideEvidence = (point) => {
-    this.modifyStateAndURL(point, index => delete index[point.url])
+    this.modifyStateAndURL(point, index => delete index[this.expansionIndexKey(point)])
   }
+
+  depth = () => this.props.depth || 0
 
   renderPoint = (point) => {
     if (this.isPointExpanded(point)) {
       return <PointCard key={point.url} url={point.url} point={point} expanded={true}
-                        parentPoint={this.parentPoint}
+                        parentPoint={this.parentPoint} depth={this.depth()}
                         onDelete={this.props.onDelete} onCollapse={() => this.handleHideEvidence(point)}/>
     } else {
       return <PointCard key={point.url} point={point} url={point.url} expanded={false}
-                        parentPoint={this.parentPoint}
+                        parentPoint={this.parentPoint} depth={this.depth()}
                         onDelete={this.props.onDelete} onExpand={() => this.handleSeeEvidence(point)}/>
     }
   }
@@ -92,11 +96,11 @@ class PointListComponent extends React.Component {
   renderEdge = (edge) => {
     if (this.isPointExpanded(edge.node)) {
       return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} expanded={true}
-                        link={edge.link} parentPoint={this.parentPoint}
+                        link={edge.link} parentPoint={this.parentPoint} depth={this.depth()}
                         onDelete={this.props.onDelete} onCollapse={() => this.handleHideEvidence(edge.node)}/>
     } else {
       return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} expanded={false}
-                        link={edge.link} parentPoint={this.parentPoint}
+                        link={edge.link} parentPoint={this.parentPoint} depth={this.depth()}
                         onDelete={this.props.onDelete} onExpand={() => this.handleSeeEvidence(edge.node)}/>
     }
   }
@@ -104,7 +108,7 @@ class PointListComponent extends React.Component {
   renderPoints = (points) => this.props.points.map((point, i) => this.renderPoint(point))
 
   renderInfinitePoints = (points) => (
-      <InfiniteScroll next={this.props.loadMorePoints} hasMore={this.props.hasMore} 
+      <InfiniteScroll next={this.props.loadMorePoints} hasMore={this.props.hasMore}
                       loader={<div className="spinnerPointList"><Spinner /></div>} endMessage={<span className="pointListEndMessage">You've reached the end. Time to start a new argument!</span>}>
         {this.renderPoints(points)}
       </InfiniteScroll>
@@ -122,17 +126,17 @@ class PointListComponent extends React.Component {
   hideIrrelevant = () => this.setState({hideIrrelevant: true})
 
   relevanceThreshold = () => this.props.relevanceThreshold
-  
-  renderShowIrrelevantLink = () => <div className="listedClaimGroup"> 
+
+  renderShowIrrelevantLink = () => <div className="listedClaimGroup">
     <LinkedItemBullet />
     <a className="toggleLowRelClaims" onClick={this.showIrrelevant}>Show Claims Below <span className="number">{this.relevanceThreshold()}%</span> Relevance</a>
   </div>
-  
-  renderHideIrrelevantLink = () => <div className="listedClaimGroup"> 
+
+  renderHideIrrelevantLink = () => <div className="listedClaimGroup">
     <LinkedItemBullet />
-    <a className="toggleLowRelClaims" onClick={this.hideIrrelevant}>Hide Claims Below <span className="number">{this.relevanceThreshold()}%</span> Relevance</a>   
+    <a className="toggleLowRelClaims" onClick={this.hideIrrelevant}>Hide Claims Below <span className="number">{this.relevanceThreshold()}%</span> Relevance</a>
   </div>
-  
+
   renderRelevantEdges = () => {
     const threshold = this.relevanceThreshold()
     if (threshold) {
@@ -141,7 +145,7 @@ class PointListComponent extends React.Component {
         return <div>
           {this.renderEdges(this.state.hideIrrelevant ? relevantEdges : this.props.edges)}
           <span className="noRelevantClaimsArea">
-            {(this.state.hideIrrelevant && relevantEdges.length == 0) && <span className="noRelevantClaimsMessage">No Relevant Claims.</span>}       
+            {(this.state.hideIrrelevant && relevantEdges.length == 0) && <span className="noRelevantClaimsMessage">No Relevant Claims.</span>}
             {this.state.hideIrrelevant ? this.renderShowIrrelevantLink() : this.renderHideIrrelevantLink()}
           </span>
         </div>

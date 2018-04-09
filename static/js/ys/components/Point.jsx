@@ -527,12 +527,16 @@ class PointCardComponent extends React.Component {
     </div>
   }
 
+  depth = () => this.props.depth || 0
+
+  childDepth = () => this.depth() + 1
+
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport evidenceBlockFirstColAlignment">
         <div className="evidenceList">
           <div className="supportHeading">Evidence For</div>
-          <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold}/>
+          <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
           {this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/> }
         </div>
       </div>
@@ -546,7 +550,7 @@ class PointCardComponent extends React.Component {
         {this.point.supportingPoints.edges.length > 0 ? <div className="dottedLineCounterConnector"></div> : "" }
         <div className="evidenceList">
           <div className="counterHeading">Evidence Against</div>
-          <PointList edges={this.point.counterPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold}/>
+          <PointList edges={this.point.counterPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
           {this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/> }
         </div>
       </div>
@@ -559,7 +563,7 @@ class PointCardComponent extends React.Component {
       return <div className="evidenceBlockBoth evidenceBlockFirstColAlignment">
         <div className="evidenceList">
           {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence</div>}
-        <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold}xb/>
+        <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
         <AddEvidence point={this.point} type={"DUAL"}/>
         </div>
       </div>

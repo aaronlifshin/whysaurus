@@ -168,7 +168,7 @@ a:focus, a:hover {
   //background-color: pink;
 }
 
-@defaultHeaderMarginH: 24px;
+@defaultHeaderMarginH: 20px;
 
 .headerItem {
   display: inline-block;   
@@ -179,6 +179,7 @@ a:focus, a:hover {
   font-weight: 700;
   line-height: 120%;
   margin-right: 0;  
+  margin-left: @defaultHeaderMarginH;
   //margin-top: 14px;   
   vertical-align: middle;  
 }
@@ -186,11 +187,40 @@ a:focus, a:hover {
    color: black !important; 
 }
   
+@headerLinkIconSize: 18px;  
 .headerLinkIcon {
-  font-size: 18px;
-  top: 1px;
-  margin-right: 5px;
+  font-size: @headerLinkIconSize;
+  top: 3px;
+  //margin-right: 5px;
   color: black !important;
+}
+.headerSocialMediaIconArea {
+  //margin-left:  @defaultHeaderMarginH;
+  margin-top: 13px;
+}
+
+.headerSocialMediaIcon {
+  font-size: @headerLinkIconSize * .85;
+  top: 4px;
+  margin-left: @defaultHeaderMarginH;// * .66;
+  //color: #a9a9a9 !important;
+}
+.dropdownSocialMediaIcon {
+  font-size: @headerLinkIconSize * .85;
+  color: black !important;
+  margin-right: @defaultHeaderMarginH * .8;
+}
+.headerSocialMediaIcon:hover {
+  color: black !important;
+}
+  
+#headerIconAbout  {
+  font-size: @headerLinkIconSize * 1.1;
+}
+  
+#headerIconFb {
+  font-size: @headerLinkIconSize * .78;
+  top: 3px;
 }
 
 #headerLogo {
@@ -199,21 +229,23 @@ a:focus, a:hover {
 }
 
 #CreatePoint {
-  margin-left: @defaultHeaderMarginH;
+  //margin-left: @defaultHeaderMarginH;
   position: relative;
   top: 1px;
+  margin-left: 0;
 }
 
 #makePointIcon {
   margin-right: 2px;
+  top: 1px;
 }
 #searchArea {
   height: 48px;
   line-height: 48px;
   position: relative;
-  width: 400px;
+  width: 30%; //400px;
   display: inline-block;
-  margin-left: @defaultHeaderMarginH;
+  //margin-left: @defaultHeaderMarginH;
   vertical-align: top;
 }
 
@@ -224,15 +256,17 @@ a:focus, a:hover {
 }
 
 #aboutMenu {
-  margin-left: @defaultHeaderMarginH - 4px; // needed to keep spacing consistent, not sure where this 4px is coming from
+  //margin-left: @defaultHeaderMarginH - 4px; // needed to keep spacing consistent, not sure where this 4px is coming from
   position: relative;
-  top: 2px;
+  //top: 2px;
 }
 
 #aboutDropdown {
   left: -152px;
   margin-top: 14px
 }
+
+
 
 #notifications {
   right: 0px; 
@@ -241,7 +275,7 @@ a:focus, a:hover {
 
 @headerFooterRightMargin: @defaultHeaderMarginH / 3;
 #userMenuArea {
-  margin-left: @defaultHeaderMarginH * .6666;
+  //margin-left: @defaultHeaderMarginH * .6666;
   padding-right: @headerFooterRightMargin;
   margin-top: 6px;
   //position: fixed;
@@ -2064,6 +2098,15 @@ a:hover .arrowAddEvidenceButton {
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 
+// display utilities
+.hidden-wideDisplays { display: none !important; }
+.hidden-mediumWidthDisplays { display: inherit !important; }
+@media (max-width: 979px) {
+  .hidden-mediumWidthDisplays { display: none !important; }
+  .hidden-wideDisplays { display: inherit !important; }
+}
+
+
 // zoom out a bit for smaller monitors
 // using height because the purpose here is to be able to fit more evidence on screen
 @media (max-device-height: 680px) {
@@ -2093,6 +2136,7 @@ a:hover .arrowAddEvidenceButton {
 
 @headerMarginNarrow: 12px;
 
+
 @media (max-width: 979px) and (min-width: 767.01px) {
 
   .navbar .container {
@@ -2104,9 +2148,9 @@ a:hover .arrowAddEvidenceButton {
   }
 
   #searchArea {
-    width: -moz-calc(~"100% - 575px");
-    width: -webkit-calc(~"100% - 575px");
-    width: calc(~"100% - 575px");
+    width: -moz-calc(~"100% - 545px");
+    width: -webkit-calc(~"100% - 545px");
+    width: calc(~"100% - 545px");
   }
   #notifications {
     //right: 112px;
@@ -2152,9 +2196,9 @@ a:hover .arrowAddEvidenceButton {
   }
   
   
-  #CreatePoint, #aboutMenu, #searchArea  {
+  /*#CreatePoint, #aboutMenu, #searchArea  {
     margin-left: @headerMarginNarrow; 
-  }
+  }*/
   
   #userMenuArea {
     margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
@@ -2162,16 +2206,18 @@ a:hover .arrowAddEvidenceButton {
     //margin-right: @defaultHeaderMarginH;
     
   }
-  
+
+  @searchAreaNarrow: 305px;    
   #searchArea {
     float: none;
-    width: -moz-calc(~"100% - 265px");
-    width: -webkit-calc(~"100% - 265px");
-    width: calc(~"100% - 265px");
+    width: ~"-moz-calc(100% - @{searchAreaNarrow})";    
+    width: ~"-webkit-calc(100% - @{searchAreaNarrow})";
+    width: ~"calc(100% - @{searchAreaNarrow})";
   }
   
   #notifications {
-    //right: 65px;
+    margin-right: 10px;
+    margin-left: 0;
   }
   
   .control-arrow .control-next {

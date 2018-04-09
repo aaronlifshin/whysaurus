@@ -108,7 +108,7 @@
               <span class="headerItem">
                 <div id="aboutMenu">
                   <a class="userControls dropdown-toggle" data-toggle="dropdown">
-                    <span id="aboutIcon"  class="headerLinkIcon fa fa-question-circle"></span>
+                    <span id="headerIconAbout"  class="headerLinkIcon fa fa-question-circle"></span>
                     <!--<span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">About</span>-->
                   </a>
                   <ul id="aboutDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
@@ -116,13 +116,26 @@
                           <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>
                           <li><a id="help3" href="/education" >Education</a></li>
                           <li class="divider"></li>
-                          <li><a href="https://twitter.com/Whysaurus" target="_blank">Follow us on Twitter</a></li>
-                          <li><a href="https://www.facebook.com/Whysaurus" target="_blank">Follow us on Facebook</a></li>
-                          <li class="divider"></li>
-                          <li><a href="/contact">Give us Feedback</a></li>
+                          <li><a href="/contact">Give us Feedback</a></li>  
+                          <li class="divider hidden-wideDisplays"></li>                                                   
+                          <li>                          
+                              <span class="dropdownSocialMediaIconArea hidden-wideDisplays">
+                                <a target="_blank" href="https://twitter.com/Whysaurus" >
+                                  <span id="" class="dropdownSocialMediaIcon fab fa-twitter"></span>
+                                </a>
+                                <a target="_blank" href="https://www.facebook.com/Whysaurus" >
+                                  <span id="headerIconFb" class="dropdownSocialMediaIcon fab fa-facebook-f"></span>
+                                </a>
+                                <a target="_blank" href="https://medium.com/whysaurus" >
+                                  <span id="" class="dropdownSocialMediaIcon fab fa-medium-m"></span>
+                                </a>
+                              </span>                           
+                          </li>
                   </ul>
                 </div>
               </span>
+
+
 
         	  {% if user %}
               <div id="userMenuArea" class="headerItem headerUserName pull-right">
@@ -171,43 +184,53 @@
                     <li><a tabindex="-1" href="/logout"> Logout </a></li>
                   </ul>
                 </div>
-              <div id="notifications" class="headerItem pull-right">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                    <img id="notificationIcon" src="/static/img/notificationIcon.png"/>
-                </a>
-                <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>
-                    {{ user.newNotificationCount }}
+                <div id="notifications" class="headerItem pull-right">
+                  <a class="dropdown-toggle" data-toggle="dropdown">
+                      <img id="notificationIcon" src="/static/img/notificationIcon.png"/>
+                  </a>
+                  <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>
+                      {{ user.newNotificationCount }}
+                  </div>
+                  <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
+                     <li id="notificationMenuHeader" class="Heading_GreyMid_Caps"
+                    {% if user.notifications %}
+                        data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                        {% if user.notifications|length == 11 %}
+                            data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
+                        {% endif %}
+                    {% endif %}
+                        >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
+
+                    {% if user.notifications %}
+                     {% for notification in user.notifications %}
+                            {% include 'notificationMenu.html' %}
+                     {% endfor %}
+                   {% endif %}
+
+                   {% if user.moreNotificationsExist  %}
+                      <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
+                          More notifications... Click here to view all
+                      </li>
+                    {% endif %}
+                  </ul>
                 </div>
-                <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
-                   <li id="notificationMenuHeader" class="Heading_GreyMid_Caps"
-                  {% if user.notifications %}
-                      data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"
-                      {% if user.notifications|length == 11 %}
-                          data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
-                      {% endif %}
-                  {% endif %}
-                      >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
-
-                  {% if user.notifications %}
-                   {% for notification in user.notifications %}
-                          {% include 'notificationMenu.html' %}
-                   {% endfor %}
-                 {% endif %}
-
-                 {% if user.moreNotificationsExist  %}
-                    <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
-                        More notifications... Click here to view all
-                    </li>
-                  {% endif %}
-                </ul>
-              </div>
-
 
         	  {% else %}
                 <div class="userMenuArea Heading_Black_Caps headerUserName pull-right">
                   <a id="signInFromHeader">Sign In</a>
                 </div>
         	  {% endif %}
+              <span class="headerItem headerSocialMediaIconArea pull-right hidden-mediumWidthDisplays">
+                <a target="_blank" href="https://twitter.com/Whysaurus" >
+                  <span id="" class="headerLinkIcon headerSocialMediaIcon fab fa-twitter"></span>
+                </a>
+                <a target="_blank" href="https://www.facebook.com/Whysaurus" >
+                  <span id="headerIconFb" class="headerLinkIcon headerSocialMediaIcon fab fa-facebook-f"></span>
+                </a>
+                <a target="_blank" href="https://medium.com/whysaurus" >
+                  <span id="" class="headerLinkIcon headerSocialMediaIcon fab fa-medium-m"></span>
+                </a>
+              </span>
     	  {% endif %} <!-- headerhideactions -->
       </div>
     </div>

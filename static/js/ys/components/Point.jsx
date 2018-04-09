@@ -411,7 +411,6 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  // TODO: rebuild arrow using css in order to control stroke width and cross-browser display, instead of unicode &#x21B3;
   // TODO: make animation only occur on the claim being manipulated (rather than on all relevance)
   //  code with animation:  <AnimateOnChange baseClassName="relevanceDisplay" animationClassName="Score--bounce" animate={this.relevance != -1}>{this.relevance}%</AnimateOnChange>
   relevanceLinkUI() {

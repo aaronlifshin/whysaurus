@@ -36,15 +36,15 @@ export default class QuickCreateClaim extends React.Component {
         </MediaQuery>
         <MediaQuery maxWidth={extraSmallScreenThreshold}>
           <span className="">Add</span>
-        </MediaQuery> 
-      </span>      
+        </MediaQuery>
+      </span>
   }
-  
-  submitButton = () => {
+
+  submitButton = ({...rest}) => {
     if (this.state.submitting) {
       return <span>Adding your point...</span>;
     } else {
-      return <button onClick={this.props.onClick}className="buttonUX2 buttonUX2Blue buttonUX2RespIcon createClaimFormButton" type="submit">{this.submitButtonLabel()}</button>;
+      return <button onClick={this.props.onClick}className="buttonUX2 buttonUX2Blue buttonUX2RespIcon createClaimFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>;
     }
   }
 
@@ -52,13 +52,13 @@ export default class QuickCreateClaim extends React.Component {
     let props = this.props;
     return <Form onSubmit={this.submit}
                  validate={values => ({title: validations.validateTitle(values.title)})}>
-      { formApi => (
-          <form onSubmit={formApi.submitForm} id="mainPageClaimCreationForm">
+      { ({validationFailures, values: {title}, submitForm}) => (
+          <form onSubmit={submitForm} id="mainPageClaimCreationForm">
             <div className="claimCreationFormFieldBlock">
               <TitleText id="newPointTextField" className="titleTextField" placeholder='Make a claim, eg "Dogs are better than cats."' />
             </div>
             <div className="claimCreationFormButtonBlock">
-              {this.submitButton()}
+              {this.submitButton({disabled: (!title || (title == "")) || (validationFailures > 0)})}
             </div>
           </form>
       )}

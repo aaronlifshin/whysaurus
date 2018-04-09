@@ -34,7 +34,7 @@ class AddEvidenceForm extends React.Component {
     let {point, evidenceType, addExistingClaim} = this.props
     return <Form onSubmit={this.props.onSubmit}
                  validate={values => ({title: validations.validateTitle(values.title)})}>
-      { ({submitForm, values: {title}}) => (
+      { ({submitForm, values: {title}, validationFailures}) => (
         <form onSubmit={submitForm} className="addEvidenceForm">
           <div className="claimCreationFormFieldBlock">
             <TitleText id="title" className="titleTextField"
@@ -44,11 +44,11 @@ class AddEvidenceForm extends React.Component {
                      point={point}
                      evidenceType={evidenceType}
                      addExistingClaim={addExistingClaim}/>
-          </div> 
+          </div>
           <div className="claimCreationFormButtonBlock">
-            <button type="submit" className={submitClasses}>Add</button>
+            <button type="submit" className={submitClasses} disabled={(!title || (title == "")) || (validationFailures > 0)}>Add</button>
             <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
-          </div>  
+          </div>
         </form>
       )}
     </Form>

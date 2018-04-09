@@ -14,6 +14,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import * as validations from './validations';
 import config from './config';
 import QuickCreateClaim from './components/QuickCreateClaim'
+import NewClaim from './components/NewClaim'
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
   props: ({ownProps, data: { loading, homePage }}) => ({
@@ -119,6 +120,7 @@ class Home extends React.Component {
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
     return <div className="infiniteWidth">
+      <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
       {this.illustrations()}
       <div className="mainPageClaimCreationArea">
         <h3 className="mainPageClaimCreationLabel">Make an Argument You Want to Prove</h3>

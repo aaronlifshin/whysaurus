@@ -26,6 +26,16 @@ function saveFullPoint(file) {
   return filestack.storeURL(transformURL, {filename: filename, path: filename, access: 'public', location: 's3'})
 }
 
+// maxSize limited to 10mb for now
+const filestackOptions = {
+    accept: 'image/*',
+    fromSources: ["imagesearch", "url", "local_file_system"],
+    minFiles: 1,
+    maxFiles: 1,
+    maxSize:10485760,
+    storeTo: {location: 's3', access: 'public'},
+};
+
 export default class NewClaim extends React.Component {
   constructor(props) {
     super(props)
@@ -42,7 +52,7 @@ export default class NewClaim extends React.Component {
           <ReactFilestack
             mode="pick"
             apikey={config.filestack.key}
-            options={{storeTo: { location: 's3', access: 'public'}}}
+            options={filestackOptions}
             buttonText="Upload Image"
             buttonClass="classname"
             onSuccess={(response) => {

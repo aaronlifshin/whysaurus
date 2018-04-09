@@ -205,7 +205,7 @@ class EvidenceLink extends React.Component {
       }
     } else {
       if (this.props.expanded) {
-        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Close</a>
+        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Buttons</a>
       } else {
         return <a className="cardBottomAction" onClick={this.handleClickSee}>Add Evidence</a>
       }
@@ -492,7 +492,7 @@ class PointCardComponent extends React.Component {
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
-      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : null}`
+      let classesEvidenceBlock = `evidenceBlock ${(!this.props.parentPoint && this.numSupportingPlusCounter() > 0 ) ? "removeOneIndent" : ""}`
       //old idea:  <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
       //console.log("pointCard : evidence() ")
       if (this.numSupportingPlusCounter() == 0) {

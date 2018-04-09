@@ -504,10 +504,6 @@ body {
   top: -1 * ((2 * @stackCardOffset) + (2 * @cardBorderWidth)); // nudge up to account for the empty space taken up by invisible stack cards
 }
 
-.evidenceBlockEmpty {
-  //position: relative;
-  //margin-top:-2 * @marginVerticalStandard;
-}
 
 .evidenceBlockFirstColAlignment {
   left: -9px !important;
@@ -554,7 +550,7 @@ body {
 }
 
 .evidenceBlockEmpty {
-  margin-left: @indent + 9px; // not sure why the 9px is nec
+  margin-left: -9px; //@indent + 9px; // not sure why the 9px is nec
 }
 
 @evidenceListMarginTop: @marginVerticalStandard - 6px; // subtract some for the arrow
@@ -1695,6 +1691,7 @@ li .iconWithStat {
 .arrowStemEvidenceShort {
   height: 20px;
 }
+@arrowEvidenceMarginL: 21px;
 .arrowEvidence {
   display: inline-block;
   margin-left: 21px;

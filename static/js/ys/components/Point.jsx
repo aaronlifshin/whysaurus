@@ -53,7 +53,7 @@ function SupportingCount(props){
         Code to check if current user is the point Author
           {this.props.data.currentUser &&
           this.props.data.currentUser.url == this.point.authorURL &&
-          <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
+          <a onClick={this.handleClickEditClaimText} className="editLink" >Edit</a>}
 */
 
 
@@ -173,6 +173,18 @@ class Sources extends React.Component {
         <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name}</a></div>
       )}
     </div>
+  }
+}
+
+class ImageEditor extends React.Component {
+    constructor(props) {
+    super(props);
+  }
+
+  render(){
+      return <div className="row-fluid pointCardArea imageEditor ">
+        Here is where you edit images!
+      </div>
   }
 }
 
@@ -296,7 +308,8 @@ class PointCardComponent extends React.Component {
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
-    this.handleClickEdit = this.handleClickEdit.bind(this);
+    this.handleClickEditClaimText = this.handleClickEditClaimText.bind(this);
+    this.handleClickEditClaimImage = this.handleClickEditClaimImage.bind(this);
     this.handleClickMore = this.handleClickMore.bind(this);
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
@@ -306,10 +319,16 @@ class PointCardComponent extends React.Component {
     e.stopPropagation();
   }
 
-  handleClickEdit(e) {
+  handleClickEditClaimText(e) {
     e.stopPropagation();
     this.setState({editing: true})
   }
+  handleClickEditClaimImage(e) {
+    e.stopPropagation();
+    this.setState({editingImage: true})
+     console.log("pointCard: editing image");
+  }  
+  
 
    //Assign focus - WIP
 
@@ -642,7 +661,8 @@ class PointCardComponent extends React.Component {
       <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
-        <li><a onClick={this.handleClickEdit} className="" ><span className="iconWithStat fas fa-pencil-alt"></span>Edit Claim</a></li>
+        <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat fas fa-pencil-alt"></span>Edit Claim</a></li>
+        <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat far fa-image"></span>Edit Image</a></li>
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat fas fa-external-link-alt"></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="dropdownMenuCategory">Admin</li>}
         { this.currentUserIsAdmin() && this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat fa fa-unlink"></span>Unlink</a></li>  }
@@ -658,7 +678,7 @@ class PointCardComponent extends React.Component {
         Code to check if current user is the point Author
           {this.props.data.currentUser &&
           this.props.data.currentUser.url == this.point.authorURL &&
-          <a onClick={this.handleClickEdit} className="editLink" >Edit</a>}
+          <a onClick={this.handleClickEditClaimText} className="editLink" >Edit</a>}
 */
 
  pointTextComponent() {
@@ -702,68 +722,61 @@ class PointCardComponent extends React.Component {
 
       return <div className="listedClaimGroup">
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-
-        <div className="relCtrlAndLinkAndStackCards">
-        <div className={classesListedClaim} tabIndex="-1" >
-        {this.relevanceCtrlUI()}
-
-        <div className="relLinkAndStackCards">
-        {this.relevanceLinkUI()}
-
-        <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
-
-        <div className={classesStackCard1} tabIndex="-1">
-        <div className={classesStackCard2} tabIndex="-1">
-        <div className={classesStackCard3} tabIndex="-1">
-
-        <div className={classesPointCard} tabIndex="-1">
-        <div className={ this.contentWidth()  }>
-        <div className="row-fluid">
-        <div className="cardTopRow span12">
-          <Byline point={point}/>
-          <CommentCount point={point}/>
-          <ShareIcon point={point}/>
-          { this.moreMenu() }
-        </div>
-        </div>
-        <div className="row-fluid">
-        <div className="pointText span12">
-          { this.pointTextComponent() }
-        </div>
-        </div>
-        {this.sources()}
-        <div className="row-fluid">
-        <div className="cardBottomActionRow" >
-        <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
-                            onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
-                            mouseOverPreload={this.preloadPoint}/>
-        </span>
-          <span className="cardBottomAction bottomActionDot">·</span>
-                  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-                  <span className={classesRelevanceDot}>·</span>
-                  <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+          <div className="relCtrlAndLinkAndStackCards">
+            <div className={classesListedClaim} tabIndex="-1" >
+              {this.relevanceCtrlUI()}
+               <div className="relLinkAndStackCards">
+                {this.relevanceLinkUI()}
+                <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
+                  <div className={classesStackCard1} tabIndex="-1">
+                    <div className={classesStackCard2} tabIndex="-1">
+                       <div className={classesStackCard3} tabIndex="-1">
+                          <div className={classesPointCard} tabIndex="-1">
+                            <div className={ this.contentWidth()  }>
+                              { this.state.editingImage && <ImageEditor /> } 
+                              <div className="pointCardArea">
+                                <div className="row-fluid">         
+                                  <div className="cardTopRow span12">
+                                    <Byline point={point}/>
+                                    <CommentCount point={point}/>
+                                    <ShareIcon point={point}/>
+                                    { this.moreMenu() }
+                                  </div>
+                                 </div>
+                                 <div className="row-fluid">
+                                  <div className="pointText span12">
+                                    { this.pointTextComponent() }
+                                  </div>
+                                 </div>
+                                 {this.sources()}
+                                 <div className="row-fluid">
+                                  <div className="cardBottomActionRow" >
+                                    <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
+                                                      onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
+                                                      mouseOverPreload={this.preloadPoint}/>
+                                    </span>
+                                    <span className="cardBottomAction bottomActionDot">·</span>
+                                    <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+                                    <span className={classesRelevanceDot}>·</span>
+                                    <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+                                  </div>
+                                 </div>
+                                </div>
+                               </div>
+                              {this.image()}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <div className="evidenceRow row-fluid">
+                {this.evidence()}
               </div>
             </div>
-            {this.image()}
-            </div>
           </div>
-          </div>
-          </div>
-
-          </div>
-
-          </div>
-
-          </div>
-          </div>
-
-      <div className="evidenceRow row-fluid">
-      {this.evidence()}
-      </div>
-
-      </div>
-      </div>
     }
     else if (this.props.data && this.props.data.loading) {
       return <div>Loading...</div>

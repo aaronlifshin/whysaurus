@@ -2,9 +2,9 @@ export const titleMaxCharacterCount = 200;
 
 export function validateTitle(title){
   if (!title || title.trim() === '') {
-    return 'Point text is required.';
+    return "This claim doesn't seem to have any words.";
   } else if (title.length > titleMaxCharacterCount){
-    return 'Point text too long.';
+    return "You're over the character limit. Try dividing this idea into multiple claims.";
   } else {
     return null;
   }

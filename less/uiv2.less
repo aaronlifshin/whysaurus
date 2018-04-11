@@ -1387,16 +1387,20 @@ li .iconWithStat {
   border-radius: @borderRadiusUX2;
   outline: none !important;
 }
+.buttonUX2:disabled {
+  //color: lightgrey;
+  background-color: grey;
+}
 
-.buttonUX2:focus {
+.buttonUX2:focus:enabled {
     //border: 2px solid @blueLight;
     box-shadow: inset 0 0 0px 2px @blueLight; // using this instead of border bc it doesn't repo
 }
-.buttonUX2:hover {
+.buttonUX2:hover:enabled {
     background-color: black;
 }
 @buttonUX2ScaleDownOnClick: 0.975;
-.buttonUX2:active {
+.buttonUX2:active:enabled {
   transform: scale(@buttonUX2ScaleDownOnClick);
   outline-style: none;
 }
@@ -1407,17 +1411,17 @@ li .iconWithStat {
     box-shadow: @blueLight;
     outline: none;
 }
-.buttonUX2Blue:hover {
-    background-color: @blueLight;
+.buttonUX2Blue:hover:enabled {
+    background-color: pink;//@blueLight;
 }
 .buttonUX2Red {
   background-color: @red;
 }
-.buttonUX2Red:focus {
+.buttonUX2Red:focus:enabled {
     box-shadow: @redLight;
     outline: none;
 }
-.buttonUX2Red:hover {
+.buttonUX2Red:hover:enabled {
     background-color: @redLight;
 }
 .cancelButton {
@@ -2045,7 +2049,7 @@ a:hover .arrowAddEvidenceButton {
 @mainPageClaimCreationButtonCalculatedWidth: 84px;
 .mainPageClaimCreationArea {
   margin-left: 14px;
-  margin-bottom: 12px; 
+  margin-bottom: 16px; 
 }
 
 .mainPageClaimCreationLabel {

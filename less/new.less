@@ -90,33 +90,33 @@ a:hover {
     -moz-border-radius: 2px;
     border-radius: 2px;
 }
-.buttonUX2:focus {
+.buttonUX2:focus:enabled {
     outline: 2px solid @blue;
 }
-.buttonUX2:hover {
+.buttonUX2:hover:enabled {
     background-color: black;
 }
 @buttonUX2ScaleDownOnClick: 0.975;
-.buttonUX2:active {
+.buttonUX2:active:enabled {
     transform: scale(@buttonUX2ScaleDownOnClick);
         outline-style: none;
 }
 .buttonUX2Blue {
         background-color: @blue;
 }
-.buttonUX2Blue:focus {
+.buttonUX2Blue:focus:enabled {
     outline-color: @blueLight;
 }
-.buttonUX2Blue:hover {
+.buttonUX2Blue:hover:enabled {
     background-color: @blueLight;
 }
 .buttonUX2Red {
     background-color: @red;
 }
-.buttonUX2Blue:focus {
+.buttonUX2Blue:focus:enabled {
     outline-color: @redLight;
 }
-.buttonUX2Red:hover {
+.buttonUX2Red:hover:enabled {
     background-color: @redLight;
 }
 .cancelGreyButton {
@@ -129,14 +129,14 @@ display: inline-block;
         padding-left: 6px;*/
 
 }
-.cancelButton:hover {
+.cancelButton:hover:enabled {
     text-decoration:underline;
 }
-.cancelButton:focus {
+.cancelButton:focus:enabled {
     text-decoration:underline;
     outline-style: none;
 }
-.cancelButton:active {
+.cancelButton:active:enabled {
     transform: scale(@buttonUX2ScaleDownOnClick);
 }
 

@@ -362,6 +362,7 @@ textarea {
 
 .dropdown-menu>li>a, .dropdown-menu>li>span {
   padding-top:6px;
+  padding-bottom:6px;
   display: inline-block;
   width: 100%;
   font-weight: 500;
@@ -509,14 +510,17 @@ body {
   left: -9px !important;
 }
 
-.supportHeading, .counterHeading {
-  //margin-top: 20px;
-  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
-  margin-bottom: @marginVerticalStandard;
+.heading {
   color: @darkerGreyColor;
   text-transform: uppercase;
   font-size: @fontSizeTertiaryUX2; //@baseFontSize * 0.813; // ~13px
   font-weight: 500;
+}
+
+.supportHeading, .counterHeading {
+  //margin-top: 20px;
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
+  margin-bottom: @marginVerticalStandard;
 }
 
 .counterHeading {
@@ -615,25 +619,32 @@ body {
    100% { opacity: 1; }
 }
 
+@editAreaPaddingV: 12px;
 .relCtrlLabel {
   margin-bottom: @marginVerticalInsideCards;
-  padding-top: 10px;
+  padding-top: @editAreaPaddingV;
+}
+
+.editAreaClose {
+  float: right;
+  font-size: 24px;
+  position: relative;
+  cursor: pointer;
+  font-family: serif;
+}
+.editAreaClose a {
+  color: @smallGreyLinkColor;
+}
+.editAreaClose a:hover {
+  color: @blue;
 }
 
 .relCtrlClose {
-  float: right;
-  font-size: 27px;
-  position: relative;
   margin-top: 6px;
   margin-right: 10px;
-  cursor: pointer;
-  font-family: serif;
-  font-size: 24px;
 }
 
-.relCtrlClose a {
-  color: @smallGreyLinkColor;
-}
+
 
 .relevanceLinkArea {
   display: inline-block;
@@ -716,7 +727,7 @@ body {
   background-color: inherit;
   border: none;
   color: @blue;
-  margin-right: 0px;
+  margin-right: 4px;
   display: inline-block;
   //border: solid;
   //border-color: @editingAreaBG; // prevents offset when border appears
@@ -1005,14 +1016,18 @@ a:hover .perctSignSmall {
   vertical-align: top;
   overflow-wrap: break-word;
   //margin-bottom: -2px; // overlap bottom border with top border of the next point down, for now
-}
-
-.pointCardArea {
-  padding-left: @cardPadding;
-  padding-right: @cardPaddingRight;
   padding-top: @cardPaddingTop;
   padding-bottom: @cardPaddingTop;
 }
+
+.pointCardPaddingH {
+  padding-left: @cardPadding;
+  padding-right: @cardPaddingRight;
+}
+.pointCardPaddingHExtra {
+  padding-right: @cardPaddingRight + 4px;
+}
+
 
 .relExtraMarginBottom {
   margin-bottom: @marginVerticalStandard *.5;
@@ -1080,9 +1095,9 @@ a:hover .perctSignSmall {
 }
 
 .cardTopRow {
-    font-size: @fontSizeTertiaryUX2;
-    color: @smallGreyLinkColor;
-  margin-bottom: 6px;
+  font-size: @fontSizeTertiaryUX2;
+  color: @smallGreyLinkColor;
+  margin-bottom: 7px;
 }
 
 .cardTopRowItem {
@@ -1121,7 +1136,7 @@ li .iconWithStat {
 
 .pointText {
   margin-bottom: @marginVerticalInsideCards;
-  padding-right: 2%;
+  //padding-right: 2%;
 }
 
 .pointTitle {
@@ -1314,10 +1329,20 @@ li .iconWithStat {
 .imageEditor {
   width: 100%;
   height: 60px;
-  background-color: @editingAreaBG;
 }
 
+.claimEditArea {
+  background-color: @editingAreaBG;
+  width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
+}
 
+.claimEditAreaHeading {
+  width: 100%;
+  display: block;  
+  padding-top: @editAreaPaddingV;
+  padding-bottom: @editAreaPaddingV;
+
+}
 
 ///////////////////////////////////////////////////////
 
@@ -1511,7 +1536,8 @@ li .iconWithStat {
   //width: -moz-calc(~"100% - 48px");
   //width: -webkit-calc(~"100% - 48px");
   width: 100%;
-  margin-top: 6px;
+  margin-top: 2px;
+  margin-bottom: 0;
   z-index: 1;
   position: relative;
 }
@@ -2072,11 +2098,11 @@ a:hover .arrowAddEvidenceButton {
 .claimCreationFormFieldBlock {
   display: inline-block;
   width: @cardWidth;
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
 .editPointTextForm .claimCreationFormFieldBlock {
-  width: ~"calc(100% - 68px)"; // subtract enough for button
+  width: ~"calc(100% - 72px)"; // subtract enough for button
 }
 
 .claimCreationFormButtonBlock {

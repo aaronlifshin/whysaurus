@@ -113,7 +113,7 @@ class PointComponent extends React.Component {
   // TODO: make it not animate when card redraws
   render(){
     const score = this.point.pointValue
-    return <div>
+    return <div className="pointCardPaddingH pointCardPaddingHExtra">
       {this.titleUI()}
         <span className="scoreAnimContainerMax score">
           <span className="scoreAnimContainerReset">
@@ -182,7 +182,7 @@ class ImageEditor extends React.Component {
   }
 
   render(){
-      return <div className="row-fluid pointCardArea imageEditor ">
+      return <div className="row-fluid claimEditArea pointCardPaddingH imageEditor ">
         Here is where you edit images!
       </div>
   }
@@ -554,7 +554,7 @@ class PointCardComponent extends React.Component {
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport evidenceBlockFirstColAlignment">
         <div className="evidenceList">
-          <div className="supportHeading">Evidence For</div>
+          <div className="heading supportHeading">Evidence For</div>
           <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
           {this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/> }
         </div>
@@ -568,7 +568,7 @@ class PointCardComponent extends React.Component {
       return <div className={evidenceBlockCounterClasses}>
         {this.point.supportingPoints.edges.length > 0 ? <div className="dottedLineCounterConnector"></div> : "" }
         <div className="evidenceList">
-          <div className="counterHeading">Evidence Against</div>
+          <div className="heading counterHeading">Evidence Against</div>
           <PointList edges={this.point.counterPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
           {this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/> }
         </div>
@@ -581,7 +581,7 @@ class PointCardComponent extends React.Component {
     if (this.expanded() && this.point.relevantPoints){
       return <div className="evidenceBlockBoth evidenceBlockFirstColAlignment">
         <div className="evidenceList">
-          {this.point.relevantPoints.edges.length > 0 && <div className="supportHeading">Evidence</div>}
+          {this.point.relevantPoints.edges.length > 0 && <div className="heading supportHeading">Evidence</div>}
         <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
         <AddEvidence point={this.point} type={"DUAL"}/>
         </div>
@@ -734,34 +734,37 @@ class PointCardComponent extends React.Component {
                           <div className={classesPointCard} tabIndex="-1">
                             <div className={ this.contentWidth()  }>
                               { this.state.editingImage && <ImageEditor /> } 
-                              <div className="pointCardArea">
+                                
                                 <div className="row-fluid">         
-                                  <div className="cardTopRow span12">
+                                  <div className="cardTopRow pointCardPaddingH span12">
                                     <Byline point={point}/>
                                     <CommentCount point={point}/>
                                     <ShareIcon point={point}/>
                                     { this.moreMenu() }
                                   </div>
                                  </div>
+                                 
                                  <div className="row-fluid">
                                   <div className="pointText span12">
                                     { this.pointTextComponent() }
                                   </div>
                                  </div>
+                                 
                                  {this.sources()}
-                                 <div className="row-fluid">
-                                  <div className="cardBottomActionRow" >
-                                    <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
-                                                      onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
-                                                      mouseOverPreload={this.preloadPoint}/>
-                                    </span>
-                                    <span className="cardBottomAction bottomActionDot">·</span>
-                                    <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-                                    <span className={classesRelevanceDot}>·</span>
-                                    <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+                                 
+                                  <div className="row-fluid">
+                                    <div className="cardBottomActionRow pointCardPaddingH" >
+                                      <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
+                                                        onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
+                                                        mouseOverPreload={this.preloadPoint}/>
+                                      </span>
+                                      <span className="cardBottomAction bottomActionDot">·</span>
+                                      <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+                                      <span className={classesRelevanceDot}>·</span>
+                                      <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+                                    </div>
                                   </div>
-                                 </div>
-                                </div>
+                                
                                </div>
                               {this.image()}
                             </div>

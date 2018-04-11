@@ -45,14 +45,20 @@ class EditPointComponent extends React.Component {
   }
 
   render(){
+    let editClaimTextClasses = `claimEditArea pointCardPaddingH`
     if (this.state.saving) {
-      return <div><img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...</div>;
+      return <div className={editClaimTextClasses}>
+        <img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...
+      </div>;
     } else {
-      return <div>
-        <span>
+      return <div className={editClaimTextClasses}>
+        <span className="claimEditAreaHeading">
+          <span className="heading">Edit Claim Text</span>
+          <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
+        </span>        
         <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title}/>
-        </span>
-        <button onClick={this.props.onCancel} type="cancel" className="cancelButton">Cancel</button>
+
+        
       </div>;
     }
   }

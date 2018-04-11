@@ -50,6 +50,7 @@ class TitleText extends React.Component {
   showFeedbackArea = (error, suggestions) =>
     this.state.titleTextFocused && (error || (this.props.suggestExistingClaims && suggestions && suggestions.length > 0 ))
 
+  // To make feedbackArea persistant change {titleTextFocused: false} to {titleTextFocused: true}  
   renderCountedTextField = (title, textProps, error, suggestions, searching) =>
     <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
       <span>
@@ -69,14 +70,18 @@ class TitleText extends React.Component {
     )}/>
 
 
-  // To make error area persistant change "const { value,..." to "let { value,..." and add below it: error = "THIS IS AN ERROR"
+  // To make error area persistant change this line:
+  //   const { value, error, warning, success, setValue, setTouched } = fieldApi
+  // to:
+  //   let { value, error, warning, success, setValue, setTouched } = fieldApi
+  //   error = "THIS IS AN ERORR"
   render(){
     // `field` is here to strip out the field prop since we set it manually
     const { field, point, evidenceType, addExistingClaim, suggestExistingClaims, ...restOfProps } = this.props
     // add focused prop here to make Field.shouldComponentUpdate return true when focus changes
     return <Field field="title" focused={this.state.titleTextFocused}>
       {fieldApi => {
-        const { value, error, warning, success, setValue, setTouched } = fieldApi
+        const { value, error, warning, success, setValue, setTouched } = fieldApi        
         let title = value
         return (
           <div className="claimTitleField">

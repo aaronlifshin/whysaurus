@@ -116,11 +116,11 @@ class Home extends React.Component {
   }
 
   // TODO: obscure "Featured Argument not found" until loading is complete, or go back to {featuredPoint && <PointList point={featuredPoint}/>}
+  //   <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
     return <div className="infiniteWidth">
-      <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
       {this.illustrations()}
       <div className="mainPageClaimCreationArea">
         <h3 className="mainPageClaimCreationLabel">Make an Argument You Want to Prove</h3>

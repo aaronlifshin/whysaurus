@@ -1553,13 +1553,13 @@ li .iconWithStat {
 }
 
 .addEvidenceControlsArea {
-    vertical-align: bottom;
+    vertical-align: top;
     display: inline-block;
     position: relative;
-    bottom: 30px;
+    top: (-1 * @offsetForLongEvidenceArrow) + 11px; // add a little to center the text on the arrow stem
 }
 .addEvidenceControlsAreaNoEvidence {
-    bottom: -16px;
+    top: 18px;
 }
 
 .titleTextField {
@@ -1644,6 +1644,7 @@ li .iconWithStat {
   //min-height: 60px;
   margin: 0;
   margin-top: -8px; // bc of the positioning cheat on charCount
+  margin-bottom: 16px;
 }
 
 .existingClaimPicker {
@@ -1740,9 +1741,10 @@ li .iconWithStat {
 // it is placed multiple times on a few individual controls, rather than just once on a parent, to prevent
 // its vertical offset from getting in the way of clicking on the controls in the pointcard above
 // perhaps there is a better way do accomplish that...
+@offsetForLongEvidenceArrow: -45px;
 .verticalOffsetForLongEvidenceArrow {
   position: relative;
-  top: -45px;
+  top: @offsetForLongEvidenceArrow;
 }
 .verticalOffsetForLongEvidenceArrowForm {
   top: 81px;

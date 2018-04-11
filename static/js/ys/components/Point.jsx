@@ -208,7 +208,7 @@ class EvidenceLink extends React.Component {
     if (this.hasEvidence()) {
       if (this.props.expanded) {
         if (this.props.expansionLoading) {
-          return <span>Loading...</span>
+          return <span className="cardBottomAction">Loading...</span>
         } else {
           return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
         }

@@ -176,6 +176,18 @@ class Sources extends React.Component {
   }
 }
 
+class ImageEditor extends React.Component {
+    constructor(props) {
+    super(props);
+  }
+
+  render(){
+      return <div className="row-fluid pointCardArea imageEditor ">
+        Here is where you edit images!
+      </div>
+  }
+}
+
 class EvidenceLink extends React.Component {
   hasEvidence = () => {
     const {point} = this.props;
@@ -313,7 +325,8 @@ class PointCardComponent extends React.Component {
   }
   handleClickEditClaimImage(e) {
     e.stopPropagation();
-    this.setState({editing: true})
+    this.setState({editingImage: true})
+     console.log("pointCard: editing image");
   }  
   
 
@@ -705,68 +718,61 @@ class PointCardComponent extends React.Component {
 
       return <div className="listedClaimGroup">
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-
-        <div className="relCtrlAndLinkAndStackCards">
-        <div className={classesListedClaim} tabIndex="-1" >
-        {this.relevanceCtrlUI()}
-
-        <div className="relLinkAndStackCards">
-        {this.relevanceLinkUI()}
-
-        <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
-
-        <div className={classesStackCard1} tabIndex="-1">
-        <div className={classesStackCard2} tabIndex="-1">
-        <div className={classesStackCard3} tabIndex="-1">
-
-        <div className={classesPointCard} tabIndex="-1">
-        <div className={ this.contentWidth()  }>
-        <div className="row-fluid">
-        <div className="cardTopRow span12">
-          <Byline point={point}/>
-          <CommentCount point={point}/>
-          <ShareIcon point={point}/>
-          { this.moreMenu() }
-        </div>
-        </div>
-        <div className="row-fluid">
-        <div className="pointText span12">
-          { this.pointTextComponent() }
-        </div>
-        </div>
-        {this.sources()}
-        <div className="row-fluid">
-        <div className="cardBottomActionRow" >
-        <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
-                            onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
-                            mouseOverPreload={this.preloadPoint}/>
-        </span>
-          <span className="cardBottomAction bottomActionDot">·</span>
-                  <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-                  <span className={classesRelevanceDot}>·</span>
-                  <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+          <div className="relCtrlAndLinkAndStackCards">
+            <div className={classesListedClaim} tabIndex="-1" >
+              {this.relevanceCtrlUI()}
+               <div className="relLinkAndStackCards">
+                {this.relevanceLinkUI()}
+                <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
+                  <div className={classesStackCard1} tabIndex="-1">
+                    <div className={classesStackCard2} tabIndex="-1">
+                       <div className={classesStackCard3} tabIndex="-1">
+                          <div className={classesPointCard} tabIndex="-1">
+                            <div className={ this.contentWidth()  }>
+                              { this.state.editingImage && <ImageEditor /> } 
+                              <div className="pointCardArea">
+                                <div className="row-fluid">         
+                                  <div className="cardTopRow span12">
+                                    <Byline point={point}/>
+                                    <CommentCount point={point}/>
+                                    <ShareIcon point={point}/>
+                                    { this.moreMenu() }
+                                  </div>
+                                 </div>
+                                 <div className="row-fluid">
+                                  <div className="pointText span12">
+                                    { this.pointTextComponent() }
+                                  </div>
+                                 </div>
+                                 {this.sources()}
+                                 <div className="row-fluid">
+                                  <div className="cardBottomActionRow" >
+                                    <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
+                                                      onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
+                                                      mouseOverPreload={this.preloadPoint}/>
+                                    </span>
+                                    <span className="cardBottomAction bottomActionDot">·</span>
+                                    <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+                                    <span className={classesRelevanceDot}>·</span>
+                                    <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+                                  </div>
+                                 </div>
+                                </div>
+                               </div>
+                              {this.image()}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <div className="evidenceRow row-fluid">
+                {this.evidence()}
               </div>
             </div>
-            {this.image()}
-            </div>
           </div>
-          </div>
-          </div>
-
-          </div>
-
-          </div>
-
-          </div>
-          </div>
-
-      <div className="evidenceRow row-fluid">
-      {this.evidence()}
-      </div>
-
-      </div>
-      </div>
     }
     else if (this.props.data && this.props.data.loading) {
       return <div>Loading...</div>

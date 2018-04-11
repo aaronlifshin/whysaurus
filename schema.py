@@ -422,7 +422,7 @@ class Query(graphene.ObjectType):
     def resolve_search(self, info, **args):
         searchResultsFuture = PointModel.search(
             user=info.context.current_user,
-            searchTerms=args['query']
+            searchTerms="\"" + (args['query'] or "") + "\""
         )
         searchResults = searchResultsFuture.get_result() if searchResultsFuture else []
         return searchResults

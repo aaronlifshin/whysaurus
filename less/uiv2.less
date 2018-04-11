@@ -1051,16 +1051,19 @@ a:hover .perctSignSmall {
   outline-style: none;
 }
 
-.stackCardGroup:hover .stackCard {
+// stackCardGroupActive gets removed when the pointCard is in an editing state
+.stackCardGroupActive:hover .stackCard {
   background-color: hsla(0, 0%, 97%, 1);
 }
+
+
 /*
 .point-card:hover {
   background-color: hsla(0, 0%, 96%, 1);
   outline-style: none;
 }
 */
-.stackCardGroup:focus .stackCard {
+.stackCardGroupActive:focus .stackCard {
 /*.listedClaim:focus .stackCard {*/
   //background-color:green !important; // for testing
   //background-color:white; // for testing
@@ -1073,12 +1076,12 @@ a:hover .perctSignSmall {
   border-color: #f6a3a3 ;
   background-color: hsla(348, 100%, 96%, 1)
 }
-.stackCardGroup:focus .stackCard.counter {
+.stackCardGroupActive:focus .stackCard.counter {
 /*.listedClaim:focus .stackCard.counter {*/
   //background-color: hsla(330,50%, 97%, 1);
   background-color: hsla(348, 100%, 94%, 1);
 }
-.stackCardGroup:hover .stackCard.counter {
+.stackCardGroupActive:hover .stackCard.counter {
 /*.listedClaim:focus .stackCard.counter {*/
   background-color: hsla(348, 100%, 92%, 1);
 }
@@ -1120,7 +1123,7 @@ li .iconWithStat {
 
 .byline:hover {
   //color: @grayTextLighter;
-  text-decoration: underline;
+  //text-decoration: underline;
 }
 
 .moreMenu {
@@ -1238,7 +1241,7 @@ li .iconWithStat {
     z-index:1000;
     //font-weight: bold
 }
-.cardBottomAction:hover {
+.pointCardActive .cardBottomAction:hover {
   text-decoration: underline;
 }
 
@@ -1270,7 +1273,7 @@ li .iconWithStat {
   transition:@hoverTransitionDuration;
   transform-origin: bottom left;
 }
-.stackCardGroup:focus .cardBottomActionRow, .stackCardGroup:focus .cardBottomAction  {
+.stackCardGroupActive:focus .cardBottomActionRow, .stackCardGroupActive:focus .cardBottomAction  {
 /*.listedClaim:focus .cardBottomActionRow, .listedClaim:focus .cardBottomAction  {*/
   font-weight: bold;
   color: @blue ;
@@ -1280,8 +1283,10 @@ li .iconWithStat {
   font-weight: bold;
   color: @blue ;
 }*/
-.point-card:hover .cardBottomActionRow, .point-card:hover .cardBottomAction  {
-    transform: scale(@cardBottomActionScaleUpOnHover) ;
+
+// pointCardActive gets removed when the pointCard is in an editing state
+.pointCardActive:hover .cardBottomActionRow, .pointCardActive:hover .cardBottomAction  {
+  transform: scale(@cardBottomActionScaleUpOnHover) ;
   font-weight: bold;
   color: @blue ;
 }

@@ -14,7 +14,7 @@ import ClaimSuggestor from './ClaimSuggestor'
 // <li>example claim</li>
 const ExistingClaimPicker = ({claims, onSelectClaim}) =>
   <div className="existingClaimPicker">
-    <div className="existingClaimPickerHeading">Existing Claims:</div>
+    <div className="existingClaimPickerHeading">Or, link an existing claim:</div>
     <ul className="existingClaimList">
           {claims && claims.map((claim) => <li onMouseDown={e => onSelectClaim(claim, e)} key={claim.id}>
                                 {claim.title}

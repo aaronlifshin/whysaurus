@@ -50,7 +50,7 @@ class TitleText extends React.Component {
   showFeedbackArea = (error, suggestions) =>
     this.state.titleTextFocused && (error || (this.props.suggestExistingClaims && suggestions && suggestions.length > 0 ))
 
-  // To make feedbackArea persistant change {titleTextFocused: false} to {titleTextFocused: true}  
+  // To make feedbackArea persistent change {titleTextFocused: false} to {titleTextFocused: true}  
   renderCountedTextField = (title, textProps, error, suggestions, searching) =>
     <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
       <span>

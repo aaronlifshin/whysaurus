@@ -554,7 +554,10 @@ body {
 }
 
 .evidenceBlockEmpty {
-  margin-left: -9px; //@indent + 9px; // not sure why the 9px is nec
+  margin-left: @indent - 7px; // not sure why the 7px is nec
+}
+.removeOneIndent.evidenceBlockEmpty {
+  margin-left: @indent - 9px; // not sure why this wants to be different when its at the top level
 }
 
 @evidenceListMarginTop: @marginVerticalStandard - 6px; // subtract some for the arrow

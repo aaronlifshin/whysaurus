@@ -513,7 +513,7 @@ class PointCardComponent extends React.Component {
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
-      let classesEvidenceBlock = `evidenceBlock ${(!this.props.parentPoint && this.numSupportingPlusCounter() > 0 ) ? "removeOneIndent" : ""}`
+      let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : ""}`
       //old idea:  <div className="arrowPointToSupport">{this.numSupportingPlusCounter() > 0 ? "↓" : null}</div>
       //console.log("pointCard : evidence() ")
       if (this.numSupportingPlusCounter() == 0) {

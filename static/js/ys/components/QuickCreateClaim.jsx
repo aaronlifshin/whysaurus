@@ -62,7 +62,7 @@ export default class QuickCreateClaim extends React.Component {
               <TitleText id="newPointTextField" className="titleTextField" onSubmit={submitForm} placeholder='Make a claim, eg "Dogs are better than cats."' />
             </div>
             <div className="claimCreationFormButtonBlock">
-              {this.submitButton({disabled: (!title || (title == "")) || (validationFailures > 0)})}
+              {this.submitButton({disabled: (!title || (title == "") || (title.length > validations.titleMaxCharacterCount) ) || (validationFailures > 0)})}
             </div>
           </form>
       )}

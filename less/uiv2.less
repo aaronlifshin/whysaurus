@@ -1118,15 +1118,24 @@ li .iconWithStat {
   margin-right: 6px;
 }
 
-.pointBadge {
+.claimBadge {
   display: block;
   margin-bottom: 4px;
   color: @blue;
-  font-weight: bold;
   //background-color: grey;
  // -webkit-border-radius: @borderRadiusUX2;
   //-moz-border-radius: @borderRadiusUX2;
   //border-radius: @borderRadiusUX2;
+}
+.claimBadgeIcon {
+  //color: @blue;
+  //font-weight: bold;
+  margin-right: 3px;
+  font-size: 90%;
+}
+.claimBadgeLabel {
+  //color: @blue;
+  font-weight: bold;
 }
 
 .byline {
@@ -2105,7 +2114,7 @@ a:hover .arrowAddEvidenceButton {
 @mainPageClaimCreationButtonCalculatedWidth: 84px;
 .mainPageClaimCreationArea {
   margin-left: 14px;
-  margin-bottom: 16px; 
+  margin-bottom: 18px; 
 }
 
 .mainPageClaimCreationLabel {
@@ -2164,6 +2173,7 @@ a:hover .arrowAddEvidenceButton {
 #mainPageMainArea {
   padding-left: 0;
   min-height: 960px; // prevents vertical scroll jumping in databases with few claims
+  margin-top: 44px;
 }
 
 .react-tabs__tab-list {

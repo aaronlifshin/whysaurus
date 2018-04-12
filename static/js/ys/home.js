@@ -128,7 +128,6 @@ class Home extends React.Component {
       </div>
       <div className="mainPageContentArea">
         <div id="mainPageFeaturedArea" className="mainPageContentArea">
-          <h1 className="mainPageHeading indentToClaimText">Featured Argument</h1>
           {featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="indentToClaimText">Featured Argument not found</div> }
         </div>
         <div id="mainPageMainArea">

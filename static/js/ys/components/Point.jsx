@@ -742,7 +742,12 @@ class PointCardComponent extends React.Component {
                                 
                                 <div className="row-fluid">         
                                   <div className="cardTopRow pointCardPaddingH span12">
-                                    { this.hasBadge() && <div className="fullWidth"><span className="pointBadge">{this.props.badge}</span></div> }
+                                    { this.hasBadge() && 
+                                      <div className="fullWidth">
+                                        <span className="claimBadge">
+                                          <span className="claimBadgeIcon fas fa-star"></span><span className="claimBadgeLabel">{this.props.badge}</span>
+                                        </span>
+                                      </div> }
                                     <Byline point={point}/>
                                     <CommentCount point={point}/>
                                     <ShareIcon point={point}/>

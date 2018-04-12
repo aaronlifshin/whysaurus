@@ -4,6 +4,8 @@ import { Form, Text } from 'react-form';
 import * as schema from '../schema';
 import { graphql, compose } from 'react-apollo';
 import TitleText from './TitleText'
+import Spinner from './Spinner'
+
 
 const EditTitleForm = ({point, onSubmit, onClick}) => {
   return (
@@ -48,7 +50,7 @@ class EditPointComponent extends React.Component {
     let editClaimTextClasses = `claimEditArea pointCardPaddingH`
     if (this.state.saving) {
       return <div className={editClaimTextClasses}>
-        <img id="spinnerImage" className="spinnerPointSubmitButtonPosition" src="/static/img/ajax-loader.gif"/>Saving...
+        <span className="claimEditAreaSavingFeedback"><Spinner /><span className="spinnerLabel">Saving...</span></span>
       </div>;
     } else {
       return <div className={editClaimTextClasses}>

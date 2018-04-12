@@ -1343,6 +1343,7 @@ li .iconWithStat {
 .claimEditArea {
   background-color: @editingAreaBG;
   width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
+  min-height: 64px; // sets height for the saving state with the spinner
 }
 
 .claimEditAreaHeading {
@@ -1350,8 +1351,13 @@ li .iconWithStat {
   display: block;  
   padding-top: @editAreaPaddingV;
   padding-bottom: @editAreaPaddingV;
-
 }
+.claimEditAreaSavingFeedback {
+  margin-top: 8px;
+  display: inline-block;
+  margin-left: -6px;
+}
+
 
 ///////////////////////////////////////////////////////
 
@@ -1991,6 +1997,12 @@ a:hover .arrowAddEvidenceButton {
 }
 .spinnerPointList {
   margin-left: 24px;
+}
+.spinnerLabel {
+  color: @nearBlack;
+  line-height: @lineHeightBigger;
+  letter-spacing: @letterSpacingSubtle;
+  font-size: @fontSizePointTitle;
 }
 
 .claimTitleField {

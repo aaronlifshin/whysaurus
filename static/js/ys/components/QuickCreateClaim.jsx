@@ -3,6 +3,8 @@ import MediaQuery from 'react-responsive';
 import * as validations from '../validations';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
+import Spinner from './Spinner'
+
 
 // For Responsive
 // TODO : move to config.js (also declared in home.js, and QuickCreateClaim.jsx)
@@ -42,7 +44,9 @@ export default class QuickCreateClaim extends React.Component {
 
   submitButton = ({...rest}) => {
     if (this.state.submitting) {
-      return <span>Adding your point...</span>;
+      return <span className="quickCreateClaimFeedback">
+        <Spinner /><span className="spinnerLabel">Adding your claim...</span>
+      </span>;
     } else {
       return <button onClick={this.props.onClick}className="buttonUX2 buttonUX2Blue buttonUX2RespIcon createClaimFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>;
     }

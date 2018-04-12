@@ -326,7 +326,7 @@ class PointCardComponent extends React.Component {
   handleClickEditClaimImage(e) {
     e.stopPropagation();
     this.setState({editingImage: true})
-     console.log("pointCard: editing image");
+    console.log("pointCard: editing image");
   }  
   
 
@@ -468,10 +468,14 @@ class PointCardComponent extends React.Component {
     this.collapse();
   }
 
+  editingSomething() {
+    return (this.state.editing || this.state.editingImage)
+  }
+  
   // When user clicks on the pointTitle or the stackGroup
   // Disabled when the claim is being edited
   handleToggleEvidence() {
-    if (!this.state.editing) {
+    if (!this.editingSomething()) {
       if (this.expanded()) {
         this.collapse()
       } else {
@@ -712,11 +716,11 @@ class PointCardComponent extends React.Component {
       const point = this.point;
 //      console.log("rendering " + point.url)
       let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-      let classesStackCardGroup = `stackCardGroup ${!this.state.editing && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
+      let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
       let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
       let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-      let classesPointCard = `point-card ${!this.state.editing && "pointCardActive"} stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
+      let classesPointCard = `point-card ${!this.editingSomething() && "pointCardActive"} stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )

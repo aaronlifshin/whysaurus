@@ -52,6 +52,10 @@ export default class QuickCreateClaim extends React.Component {
     }
   }
 
+  // TO DO: there is bug around validationFailures - its returning 0 when it shouldn't be
+  //   for now, adding the condition (title.length > validations.titleMaxCharacterCount) to make the button disable when it should
+  //   but really we should fix the bug
+  //   see PR here: https://github.com/aaronlifshin/whysaurus/pull/82#pullrequestreview-111369929
   render(){
     let props = this.props;
     return <Form onSubmit={this.submit}

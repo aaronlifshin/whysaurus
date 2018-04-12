@@ -28,7 +28,11 @@ class AddEvidenceForm extends React.Component {
         return placeholderSupport
     }
   }
-
+  
+  // TO DO: there is bug around validationFailures - its returning 0 when it shouldn't be
+  //   for now, adding the condition (title.length > validations.titleMaxCharacterCount) to make the button disable when it should
+  //   but really we should fix the bug
+  //   see PR here: https://github.com/aaronlifshin/whysaurus/pull/82#pullrequestreview-111369929
   render(){
     let submitClasses = `buttonUX2 createClaimFormButton ${this.props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
     let {point, evidenceType, addExistingClaim} = this.props
@@ -47,7 +51,7 @@ class AddEvidenceForm extends React.Component {
                      onSubmit={submitForm}/>
           </div>
           <div className="claimCreationFormButtonBlock">
-            <button type="submit" className={submitClasses} disabled={(!title || (title == "")) || (validationFailures > 0)}>Add</button>
+            <button type="submit" className={submitClasses} disabled={(!title || (title == "")) ||  (title.length > validations.titleMaxCharacterCount) || (validationFailures > 0)}>Add</button>
             <button type="cancel" className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
           </div>
         </form>

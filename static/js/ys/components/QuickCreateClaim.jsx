@@ -44,7 +44,7 @@ export default class QuickCreateClaim extends React.Component {
     if (this.state.submitting) {
       return <span>Adding your point...</span>;
     } else {
-      return <button onClick={this.props.onClick}className="buttonUX2 buttonUX2Blue buttonUX2RespIcon createClaimFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>;
+      return <button className="buttonUX2 buttonUX2Blue buttonUX2RespIcon createClaimFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>;
     }
   }
 
@@ -55,7 +55,7 @@ export default class QuickCreateClaim extends React.Component {
       { ({validationFailures, values: {title}, submitForm}) => (
           <form onSubmit={submitForm} id="mainPageClaimCreationForm">
             <div className="claimCreationFormFieldBlock">
-              <TitleText id="newPointTextField" className="titleTextField" placeholder='Make a claim, eg "Dogs are better than cats."' />
+              <TitleText id="newPointTextField" className="titleTextField" onSubmit={submitForm} placeholder='Make a claim, eg "Dogs are better than cats."' />
             </div>
             <div className="claimCreationFormButtonBlock">
               {this.submitButton({disabled: (!title || (title == "")) || (validationFailures > 0)})}

@@ -630,6 +630,8 @@ class PointCardComponent extends React.Component {
   )
 
   hasParent = () => (this.props.parentPoint)
+  
+  hasBadge = () => (this.props.badge)
 
   handleClickDelete = (e) => {
     e.stopPropagation();
@@ -740,6 +742,7 @@ class PointCardComponent extends React.Component {
                                 
                                 <div className="row-fluid">         
                                   <div className="cardTopRow pointCardPaddingH span12">
+                                    { this.hasBadge() && <div className="fullWidth"><span className="pointBadge">{this.props.badge}</span></div> }
                                     <Byline point={point}/>
                                     <CommentCount point={point}/>
                                     <ShareIcon point={point}/>

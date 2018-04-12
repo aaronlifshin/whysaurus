@@ -81,15 +81,17 @@ class PointListComponent extends React.Component {
 
   depth = () => this.props.depth || 0
 
-  renderPoint = (point) => {
+  renderPoint = (point, badge) => {
     if (this.isPointExpanded(point)) {
       return <PointCard key={point.url} url={point.url} point={point} expanded={true}
                         parentPoint={this.parentPoint} depth={this.depth()}
-                        onDelete={this.props.onDelete} onCollapse={() => this.handleHideEvidence(point)}/>
+                        onDelete={this.props.onDelete} onCollapse={() => this.handleHideEvidence(point)}
+                        badge={badge} />
     } else {
       return <PointCard key={point.url} point={point} url={point.url} expanded={false}
                         parentPoint={this.parentPoint} depth={this.depth()}
-                        onDelete={this.props.onDelete} onExpand={() => this.handleSeeEvidence(point)}/>
+                        onDelete={this.props.onDelete} onExpand={() => this.handleSeeEvidence(point)}
+                        badge={badge} />
     }
   }
 
@@ -160,7 +162,7 @@ class PointListComponent extends React.Component {
 
   render(){
     if (this.props.point) {
-      return this.renderPoint(this.props.point);
+      return this.renderPoint(this.props.point, this.props.badge);
     } else if (this.props.points) {
       if (this.props.loadMorePoints) {
         if (this.props.infiniteScroll) {

@@ -15,7 +15,7 @@ const EditTitleForm = ({point, onSubmit, onClick}) => {
       { formApi => (
         <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
           <div className="claimCreationFormFieldBlock">
-            <TitleText onClick={onClick} id="editPointTextField" className="titleTextField"/>
+            <TitleText onClick={onClick} id="editPointTextField" className="titleTextField" onSubmit={formApi.submitForm}/>
           </div>
           <div className="claimCreationFormButtonBlock">
             <button onClick={onClick} className="buttonUX2 createClaimFormButton" type="submit">Save</button>

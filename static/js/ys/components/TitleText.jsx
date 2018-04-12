@@ -50,11 +50,18 @@ class TitleText extends React.Component {
   showFeedbackArea = (error, suggestions) =>
     this.state.titleTextFocused && (error || (this.props.suggestExistingClaims && suggestions && suggestions.length > 0 ))
 
+  onEnterPress = (e) => {
+    if(e.keyCode == 13) {
+      e.preventDefault();
+      this.props.onSubmit();
+    }
+  }  
+    
   // To make feedbackArea persistent change {titleTextFocused: false} to {titleTextFocused: true}  
   renderCountedTextField = (title, textProps, error, suggestions, searching) =>
     <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
       <span>
-        <TextArea field="title" {...textProps}
+        <TextArea field="title" {...textProps} onKeyDown={this.onEnterPress}
               onFocus={() => {this.setState({titleTextFocused: true})}}
               // use the setTimeout here to allow the mousedown event in existingclaimpicker to fire consistently
               // right now this fires before the onClick in ExistingClaimPIcker and hides that UI before the click event can be fired

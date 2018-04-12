@@ -43,7 +43,8 @@ class AddEvidenceForm extends React.Component {
                      suggestExistingClaims={true}
                      point={point}
                      evidenceType={evidenceType}
-                     addExistingClaim={addExistingClaim}/>
+                     addExistingClaim={addExistingClaim}
+                     onSubmit={submitForm}/>
           </div>
           <div className="claimCreationFormButtonBlock">
             <button type="submit" className={submitClasses} disabled={(!title || (title == "")) || (validationFailures > 0)}>Add</button>

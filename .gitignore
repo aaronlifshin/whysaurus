@@ -14,3 +14,5 @@ static/css/new.css
 node_modules
 
 /gae.auth
+webpack-stats.json
+/static/dist

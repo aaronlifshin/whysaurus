@@ -19,7 +19,7 @@ from handlers import MainPage, About, Help, Contact, Manifesto, ListSignUp, \
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
-    NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage
+    NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage, PointCard
 
 # Map URLs to handlers
 routes = [
@@ -51,6 +51,10 @@ routes = [
     Route('/refreshTopStatus', handler='WhySaurus.EditPoint:refreshTopStatus', name='refreshTopStatus'),
     Route('/unlinkPoint', UnlinkPoint),
     Route('/point/<pointURL>', ViewPoint),
+    Route('/pointCard/<pointURL>', PointCard),
+    Route('/api/point/<pointURL>',
+          handler='WhySaurus.PointCard:apiPointGET',
+          name='apiPointGET'),
     Route('/getPointContent', 
           handler='WhySaurus.ViewPoint:getPointContent', 
           name='getPointContent'),

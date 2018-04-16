@@ -16,6 +16,7 @@ __all__ = [
 	'Search',
 	'AjaxSearch',
 	'PointHistory',
+	'PointCard',
 	'GetPointsList',
 	'AuthHandler',
 	'SetEditorPickSort',
@@ -51,6 +52,7 @@ from testpage import TestPage
 from search import Search
 from ajaxsearch import AjaxSearch
 from pointhistory import PointHistory
+from pointcard import PointCard
 from getPointsList import GetPointsList
 from authhandler import AuthHandler
 from seteditorpicksort import SetEditorPickSort

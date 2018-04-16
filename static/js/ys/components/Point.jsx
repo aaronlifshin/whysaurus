@@ -321,11 +321,11 @@ class PointCardComponent extends React.Component {
 
   handleClickEditClaimText(e) {
     e.stopPropagation();
-    this.setState({editing: true})
+    this.setState({editingClaimText: true})
   }
   handleClickEditClaimImage(e) {
     e.stopPropagation();
-    this.setState({editingImage: true})
+    this.setState({editingClaimImage: true})
     console.log("pointCard: editing image");
   }  
   
@@ -449,7 +449,7 @@ class PointCardComponent extends React.Component {
 
   handleCancelEdit(e) {
     e.stopPropagation()
-    this.setState({editing: false})
+    this.setState({editingClaimText: false})
   }
 
   expand(){
@@ -469,7 +469,7 @@ class PointCardComponent extends React.Component {
   }
 
   editingSomething() {
-    return (this.state.editing || this.state.editingImage)
+    return (this.state.editingClaimText || this.state.editingClaimImage)
   }
   
   // When user clicks on the pointTitle or the stackGroup
@@ -692,7 +692,7 @@ class PointCardComponent extends React.Component {
 
  pointTextComponent() {
     const point = this.point;
-    if (this.state.editing){
+    if (this.state.editingClaimText){
       return <EditPoint point={point} onCancel={this.handleCancelEdit}/>
     } else {
       return <Point point={point} onClick={this.handleToggleEvidence}/>
@@ -742,7 +742,7 @@ class PointCardComponent extends React.Component {
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
                             <div className={ this.contentWidth()  }>
-                              { this.state.editingImage && <ImageEditor /> } 
+                              { this.state.editingClaimImage && <ImageEditor /> } 
                                 
                                 <div className="row-fluid">         
                                   <div className="cardTopRow pointCardPaddingH span12">

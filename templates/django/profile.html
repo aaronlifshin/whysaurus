@@ -139,53 +139,47 @@
             Remember, Whysaurus users don't always agree with claims they create!
           </div>
          {% endif %}
-        <div class="columnHeading">
-                {% if viewingOwnPage %}                    
-                    <button class="tab" id="notificationView" >
-                        NOTIFICATIONS
-                    </button>
-                {% endif %}                          
+        <div class="columnHeading">                                         
                 <button class="tab selectedTab" id="createdPoints">
                     CREATED
                 </button>
                 <button class="tab" id="editedPoints">
                     CONTRIBUTED TO
-                </button>               
-        </div>
-        {% if viewingOwnPage %}                            
-            <div id="notificationsArea" class="tabbedArea">
-                {% for notification in notifications %}
-                    {% include 'notificationMenu.html' %}            
-                {% endfor %}
-            </div>  
-        {% endif %}                          
-                 
+                </button>
+                {% if viewingOwnPage %}                    
+                    <button class="tab" id="recentlyViewedTab">
+                    RECENTLY VIEWED
+                    </button>
+                    <button class="tab" id="notificationView" >
+                        NOTIFICATIONS
+                    </button>
+                {% endif %}                 
+        </div>                                       
         <div id="createdPointsArea" class="tabbedArea">
           {% for point in createdPoints %}
              {% include 'pointBox.html' %}            
           {% endfor %}               
-        </div>
-        
+        </div>        
         <div id="editedPointsArea" class="tabbedArea">
           {% for point in editedPoints %}
              {% include 'pointBox.html' %}            
           {% endfor %}               
         </div>
-    </div>
-    <div id="recentlyViewed" class="span3 profileAreaColumn">
-          {% if viewingOwnPage %}  
-            <script>var viewingOwnPage = true;</script>      
-            <div class="columnHeading">
-            <button id="recentlyViewed" class="tab">
-            YOUR RECENTLY VIEWED
-            </button>
+        {% if viewingOwnPage %}                            
+            <script>var viewingOwnPage = true;</script>
+            <div id="recentlyViewedArea" class="tabbedArea">
+                {% for point in recentlyViewed %}
+                    {% include 'pointBox.html' %}            
+                {% endfor %}
             </div>
-            {% for point in recentlyViewed %}
-                {% include 'smallPointBox.html' %}
-            {% endfor %}
-          {% else %}
+            <div id="notificationsArea" class="tabbedArea">
+                {% for notification in notifications %}
+                    {% include 'notificationMenu.html' %}            
+                {% endfor %}
+            </div>
+        {% else %}
             <script>var viewingOwnPage = false;</script>      
-          {% endif %}          
+        {% endif %}            
     </div> 
   </div>
     

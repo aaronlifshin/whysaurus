@@ -8,6 +8,11 @@ import * as schema from '../schema';
 class RelevanceComponent extends React.Component {
 
   state = {rating: false}
+  componentUnmounting = false
+
+  componentWillUnmount() {
+    this.componentUnmounting = true
+  }
 
   static propTypes = {
     point: PropTypes.object.isRequired,
@@ -34,7 +39,8 @@ class RelevanceComponent extends React.Component {
       this.setState({rating: true})
       this.props.rate(point, parentPoint, link.type, vote).
         then( res => {
-          this.setState({rating: false})
+          if (!this.componentUnmounting)
+            this.setState({rating: false})
         });
     } else {
       $("#loginDialog").modal("show");

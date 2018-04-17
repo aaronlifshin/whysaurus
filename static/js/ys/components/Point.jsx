@@ -43,7 +43,7 @@ function ShareIcon(props){
   return <span className="cardTopRowItem"><span className="fa fa-share-alt"></span></span>
 }
 function SupportingCount(props){
-  return <span className="cardTopRowItem"><span className="iconWithStat fa fa-level-up"></span>{props.point.supportedCount}</span>
+  return <span className="cardTopRowItem"><span className="iconWithStat fas fa-level-up-alt"></span>{props.point.supportedCount}</span>
 }
 
 /*
@@ -741,6 +741,7 @@ class PointCardComponent extends React.Component {
         { this.currentUserIsAdmin() && <li className="dropdownMenuCategory">Admin</li>}
         { this.currentUserIsAdmin() && this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat fa fa-unlink"></span>Unlink</a></li>  }
         { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}><span className="iconWithStat far fa-trash-alt"></span>Delete</a></li>  }
+        { this.currentUserIsAdmin() &&  <li><SupportingCount point={this.point} /></li> }
       </ul>
     </span>
   }

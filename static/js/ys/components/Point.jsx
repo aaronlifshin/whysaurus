@@ -39,9 +39,6 @@ function Byline(props){
 }
 
 // TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
-function CommentCount(props){
-  return <span className="cardTopRowItem"><span className="iconWithStat far fa-comment"></span>{props.point.numComments}</span>
-}
 function ShareIcon(props){
   return <span className="cardTopRowItem"><span className="fa fa-share-alt"></span></span>
 }
@@ -55,7 +52,6 @@ function SupportingCount(props){
           this.props.data.currentUser.url == this.point.authorURL &&
           <a onClick={this.handleClickEditClaimText} className="editLink" >Edit</a>}
 */
-
 
 // thanks, https://stackoverflow.com/questions/29981236/how-do-you-hover-in-reactjs-onmouseleave-not-registered-during-fast-hover-ove
 const Hover = ({ onHover, children }) => (
@@ -189,6 +185,35 @@ class EditImage extends React.Component {
   }
 }
 
+class CommentsLink extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+ 
+  render(){
+    return <span className="cardTopRowItem">
+      <a className="" onClick={this.props.onClick}><span className="iconWithStat far fa-comment"></span>{this.props.point.numComments}</a>
+    </span>
+  }
+}
+
+class Comments extends React.Component {
+    constructor(props) {
+    super(props);
+  }
+
+  render(){
+      return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
+        <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
+        Here is where you comment!
+      </div>
+  }
+}
+
+
+
+
+
 class EvidenceLink extends React.Component {
   hasEvidence = () => {
     const {point} = this.props;
@@ -310,8 +335,10 @@ class PointCardComponent extends React.Component {
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEditClaimText = this.handleClickEditClaimText.bind(this);
     this.handleClickEditClaimImage = this.handleClickEditClaimImage.bind(this);
+    this.handleClickEditComments = this.handleClickEditComments.bind(this);
     this.handleCancelEditClaimText = this.handleCancelEditClaimText.bind(this);
-    this.handleCancelEditClaimImage = this.handleCancelEditClaimImage.bind(this);    
+    this.handleCancelEditClaimImage = this.handleCancelEditClaimImage.bind(this);
+    this.handleCloseComments = this.handleCloseComments.bind(this);    
     this.handleClickMore = this.handleClickMore.bind(this);
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
@@ -328,8 +355,12 @@ class PointCardComponent extends React.Component {
   handleClickEditClaimImage(e) {
     e.stopPropagation();
     this.setState({editingClaimImage: true})
-    //console.log("pointCard: editing image");
-  }    
+  }  
+  handleClickEditComments(e) {
+    e.stopPropagation();
+    this.setState({editingComments: true})
+  }  
+  
   handleCancelEditClaimText(e) {
     e.stopPropagation()
     this.setState({editingClaimText: false})
@@ -337,9 +368,12 @@ class PointCardComponent extends React.Component {
   handleCancelEditClaimImage(e) {
     e.stopPropagation()
     this.setState({editingClaimImage: false})
-    //console.log("pointCard: cancel editing image");
   }
-  
+  handleCloseComments(e) {
+    e.stopPropagation()
+    this.setState({editingComments: false})
+  }
+    
 
    //Assign focus - WIP
 
@@ -723,12 +757,12 @@ class PointCardComponent extends React.Component {
     } else if (this.point){
       const point = this.point;
 //      console.log("rendering " + point.url)
-      let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`;
-      let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
+      let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`
+      let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}  ${this.state.editingComments && "commentsMarginBottom"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
       let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
       let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-      let classesPointCard = `point-card ${!this.editingSomething() && "pointCardActive"} stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`;
+      let classesPointCard = `point-card ${!this.editingSomething() && "pointCardActive"} stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
       //console.log("linksRatio " + this.linksRatio() )
@@ -759,7 +793,7 @@ class PointCardComponent extends React.Component {
                                         </span>
                                       </div> }
                                     <Byline point={point}/>
-                                    <CommentCount point={point}/>
+                                    <CommentsLink point={point} onClick={this.handleClickEditComments}/>
                                     <ShareIcon point={point}/>
                                     { this.moreMenu() }
                                   </div>
@@ -785,6 +819,7 @@ class PointCardComponent extends React.Component {
                                       <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
                                     </div>
                                   </div>
+                                  { this.state.editingComments && <Comments point={point} onCancel={this.handleCloseComments}/> }
                                 
                                </div>
                               {this.image()}

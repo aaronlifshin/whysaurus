@@ -39,8 +39,8 @@ function Byline(props){
 }
 
 // TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
-function ShareIcon(props){
-  return <span className="cardTopRowItem"><span className="fa fa-share-alt"></span></span>
+function ShareIconArea(props){
+  return <span className="shareIconArea"><span className="fa fa-share-alt"></span></span>
 }
 function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat fas fa-level-up-alt"></span>{props.point.supportedCount}</span>
@@ -822,8 +822,7 @@ class PointCardComponent extends React.Component {
                                         </span>
                                       </div> }
                                     <Byline point={point}/>
-                                    <CommentsLink point={point} onClick={this.handleClickEditComments}/>
-                                    <ShareIcon point={point}/>
+                                    <CommentsLink point={point} onClick={this.handleClickEditComments}/>                                    
                                     { this.moreMenu() }
                                   </div>
                                  </div>
@@ -860,6 +859,7 @@ class PointCardComponent extends React.Component {
                   </div>
                 </div>
               </div>
+              { this.expanded() && <ShareIconArea point={point}/> }
               <div className="evidenceRow row-fluid">
                 {this.evidence()}
               </div>

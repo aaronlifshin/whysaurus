@@ -398,7 +398,10 @@ class PointCardComponent extends React.Component {
     e.stopPropagation()
     this.setState({editingComments: false})
   }
-    
+  
+  editingSomething() {
+    return (this.state.editingClaimText || this.state.editingClaimSources || this.state.editingClaimImage || this.state.editingComments)
+  }  
 
    //Assign focus - WIP
 
@@ -531,10 +534,6 @@ class PointCardComponent extends React.Component {
 
   handleHideEvidence() {
     this.collapse();
-  }
-
-  editingSomething() {
-    return (this.state.editingClaimText || this.state.editingClaimImage)
   }
   
   // When user clicks on the pointTitle or the stackGroup

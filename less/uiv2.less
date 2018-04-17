@@ -1025,8 +1025,6 @@ a:hover .perctSignSmall {
   vertical-align: top;
   overflow-wrap: break-word;
   //margin-bottom: -2px; // overlap bottom border with top border of the next point down, for now
-  padding-top: @cardPaddingTop;
-  padding-bottom: @cardPaddingTop;
 }
 
 .pointCardPaddingH {
@@ -1110,6 +1108,7 @@ a:hover .perctSignSmall {
   font-size: @fontSizeTertiaryUX2;
   color: @smallGreyLinkColor;
   margin-bottom: 7px;
+  padding-top: @cardPaddingTop;
 }
 
 .cardTopRowItem {
@@ -1299,6 +1298,7 @@ li .iconWithStat {
 
 .cardBottomActionRow {
   margin-top: 5px;
+  padding-bottom: @cardPaddingTop;
   -o-transition:@hoverTransitionDuration;
   -ms-transition:@hoverTransitionDuration;
   -moz-transition:@hoverTransitionDuration;
@@ -1375,6 +1375,7 @@ li .iconWithStat {
   background-color: @editingAreaBG;
   width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
   min-height: 64px; // sets height for the saving state with the spinner
+  padding-top: @cardPaddingTop;
 }
 
 .claimEditAreaHeading {

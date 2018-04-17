@@ -864,7 +864,7 @@ class PointCardComponent extends React.Component {
                   </div>
                 </div>
               </div>
-              { this.expanded() && <ShareIconArea point={point}/> }
+              { this.expanded() && this.numSupportingPlusCounter() > 0 && <ShareIconArea point={point}/> }
               <div className="evidenceRow row-fluid">
                 {this.evidence()}
               </div>

@@ -185,6 +185,21 @@ class EditImage extends React.Component {
   }
 }
 
+class EditSources extends React.Component {
+    constructor(props) {
+    super(props);
+  }
+
+  render(){
+      return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
+        <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
+        Here is where you edit sources!
+      </div>
+  }
+}
+
+
+
 class CommentsLink extends React.Component {
   constructor(props) {
     super(props)
@@ -334,9 +349,11 @@ class PointCardComponent extends React.Component {
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEditClaimText = this.handleClickEditClaimText.bind(this);
+    this.handleClickEditClaimSources = this.handleClickEditClaimSources.bind(this);    
     this.handleClickEditClaimImage = this.handleClickEditClaimImage.bind(this);
     this.handleClickEditComments = this.handleClickEditComments.bind(this);
     this.handleCancelEditClaimText = this.handleCancelEditClaimText.bind(this);
+    this.handleCancelEditClaimSources = this.handleCancelEditClaimSources.bind(this);
     this.handleCancelEditClaimImage = this.handleCancelEditClaimImage.bind(this);
     this.handleCloseComments = this.handleCloseComments.bind(this);    
     this.handleClickMore = this.handleClickMore.bind(this);
@@ -352,6 +369,10 @@ class PointCardComponent extends React.Component {
     e.stopPropagation();
     this.setState({editingClaimText: true})
   }
+  handleClickEditClaimSources(e) {
+    e.stopPropagation();
+    this.setState({editingClaimSources: true})
+  }  
   handleClickEditClaimImage(e) {
     e.stopPropagation();
     this.setState({editingClaimImage: true})
@@ -365,6 +386,10 @@ class PointCardComponent extends React.Component {
     e.stopPropagation()
     this.setState({editingClaimText: false})
   }
+  handleCancelEditClaimSources(e) {
+    e.stopPropagation()
+    this.setState({editingClaimSources: false})
+  }  
   handleCancelEditClaimImage(e) {
     e.stopPropagation()
     this.setState({editingClaimImage: false})
@@ -711,6 +736,7 @@ class PointCardComponent extends React.Component {
       <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat fas fa-pencil-alt"></span>Edit Claim</a></li>
+        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat fas fa-book"></span>Edit Sources</a></li>
         <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat far fa-image"></span>Edit Image</a></li>
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat fas fa-external-link-alt"></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="dropdownMenuCategory">Admin</li>}
@@ -805,7 +831,7 @@ class PointCardComponent extends React.Component {
                                   </div>
                                  </div>
                                  
-                                 {this.sources()}
+                                 { !this.state.editingClaimSources ? this.sources() : <EditSources point={point} onCancel={this.handleCancelEditClaimSources}/> }
                                  
                                   <div className="row-fluid">
                                     <div className="cardBottomActionRow pointCardPaddingH" >

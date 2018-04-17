@@ -86,7 +86,12 @@ export const LinkedItemBullet = () => (
   <div className={"dottedLine dottedLineElbow"}></div>
 )
 
-
+// used in a variety of components; this is the character for the multiplication X 
+export default class CloseLinkX extends React.Component {
+  render(){ 
+    return <span>&#xd7;</span> 
+  }
+}
 
 class PointComponent extends React.Component {
   constructor(props) {
@@ -184,7 +189,7 @@ class EditImage extends React.Component {
 
   render(){
       return <div className="row-fluid claimEditArea pointCardPaddingH EditImage ">
-        <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
+        <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
         Here is where you edit images!
       </div>
   }
@@ -197,7 +202,7 @@ class EditSources extends React.Component {
 
   render(){
       return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
-        <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
+        <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
         Here is where you edit sources!
       </div>
   }
@@ -224,7 +229,7 @@ class Comments extends React.Component {
 
   render(){
       return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
-        <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
+        <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
         Here is where you comment!
       </div>
   }

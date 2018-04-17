@@ -5,6 +5,7 @@ import * as schema from '../schema';
 import { graphql, compose } from 'react-apollo';
 import TitleText from './TitleText'
 import Spinner from './Spinner'
+import CloseLinkX from './Point'
 
 
 const EditTitleForm = ({point, onSubmit, onClick}) => {
@@ -56,7 +57,7 @@ class EditPointComponent extends React.Component {
       return <div className={editClaimTextClasses}>
         <span className="claimEditAreaHeading">
           <span className="heading">Edit Claim Text</span>
-          <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
+          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
         </span>        
         <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title}/>
 

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 
 import Spinner from './Spinner'
 import * as schema from '../schema';
+import CloseLinkX from './Point'
+
 
 class RelevanceComponent extends React.Component {
 
@@ -62,7 +64,7 @@ class RelevanceComponent extends React.Component {
   // TODO: add number of Votes so far to relevanceStats
   render(){
     return <div className="relCtrlGroup" >
-      <span className="editAreaClose relCtrlClose"><a onClick={this.props.onClose}>&#xd7;</a></span>
+      <span className="editAreaClose relCtrlClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
       <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
        <div className="relCtrlVoteOptions">
          {this.voteButton(100)}

@@ -85,9 +85,8 @@ class DBIntegrityCheck(AuthHandler):
             'user': self.current_user,
             'currentArea':self.session.get('currentArea')
         }
-        self.response.out.write(self.template_render('message.html', template_values))        
-                                                 
-
+        self.response.out.write(self.template_render('message.html', template_values))
+        
     def cleanEmptyLinks(self, pointURL):
         point, pointRoot = Point.getCurrentByUrl(pointURL)
         if pointRoot:

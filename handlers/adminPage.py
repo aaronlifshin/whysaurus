@@ -131,11 +131,9 @@ class AdminPage(AuthHandler):
 
         user = self.current_user
 
-        if user.canSendUserEmail():
-            logging.info('Sending Admin Test Email: %s' % user.name)
-            user.sendUserNotificationEmailTest()
-        else:
-            logging.info('Unable To Send User Email For Admin Test: %s' % user.name)
+        logging.info('Admin Test: %s' % user.name)
+        
+        # No current test
 
     def uploadUserPage(self):
 

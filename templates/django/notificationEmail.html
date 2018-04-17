@@ -18,7 +18,7 @@ The community has been jumping into your arguments:<br>
             {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} Someone {% endif %} 
             {{notification.notificationReasonText}}           
             <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
-            (a claim you {{notification.followReason}}).            
+            (a claim you {{notification.followReason}})            
         {% else %}
             {% if notification.additionalUserCount > 0 %} 
                 {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
@@ -37,9 +37,9 @@ The community has been jumping into your arguments:<br>
 
 {% endfor %}
 <br>
-Your accomplishments on Whysaurus, so far:
-{{user.createdCount }} Claims created
-{{user.editedCount }} Claims contributed to
+Your accomplishments on Whysaurus, so far:<br>
+{{user.createdCount }} Claims created<br>
+{{user.editedCount }} Claims contributed to<br>
 <br>
 Whysaurus is a work-in-progress. If you have suggestions, we'd love to hear them.<br>
 <br>
@@ -49,7 +49,7 @@ Whysaurus<br>
 <br>
 <span style="font-weight:400;	font-size:0.75em;	color:#6D6E70;	line-height:120%;">
 You can adjust the frequency of these emails by clicking "Edit Email Settings" on <a target="_blank" href="http://www.whysaurus.com/user/{{user.url}}">your profile page.</a><br>
-Follow Whysaurus on <a target="_blank" href="https://twitter.com/Whysaurus">Twitter</a> and <a target="_blank" href="https://www.facebook.com/Whysaurus">Facebook</a>
+Follow Whysaurus on <a target="_blank" href="https://twitter.com/Whysaurus">Twitter</a>, <a target="_blank" href="https://www.facebook.com/Whysaurus">Facebook</a> and <a target="_blank" href="https://medium.com/whysaurus">Medium</a>
 </span>
 <br>
 <br>

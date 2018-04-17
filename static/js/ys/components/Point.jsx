@@ -176,13 +176,14 @@ class Sources extends React.Component {
   }
 }
 
-class ImageEditor extends React.Component {
+class EditImage extends React.Component {
     constructor(props) {
     super(props);
   }
 
   render(){
-      return <div className="row-fluid claimEditArea pointCardPaddingH imageEditor ">
+      return <div className="row-fluid claimEditArea pointCardPaddingH EditImage ">
+        <span className="editAreaClose"><a onClick={this.props.onCancel}>&#xd7;</a></span>
         Here is where you edit images!
       </div>
   }
@@ -303,13 +304,14 @@ class PointCardComponent extends React.Component {
     this.state = {
       relevanceRater: false
     }
-    this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
     this.handleHideEvidence = this.handleHideEvidence.bind(this);
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEditClaimText = this.handleClickEditClaimText.bind(this);
     this.handleClickEditClaimImage = this.handleClickEditClaimImage.bind(this);
+    this.handleCancelEditClaimText = this.handleCancelEditClaimText.bind(this);
+    this.handleCancelEditClaimImage = this.handleCancelEditClaimImage.bind(this);    
     this.handleClickMore = this.handleClickMore.bind(this);
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
@@ -326,8 +328,17 @@ class PointCardComponent extends React.Component {
   handleClickEditClaimImage(e) {
     e.stopPropagation();
     this.setState({editingClaimImage: true})
-    console.log("pointCard: editing image");
-  }  
+    //console.log("pointCard: editing image");
+  }    
+  handleCancelEditClaimText(e) {
+    e.stopPropagation()
+    this.setState({editingClaimText: false})
+  }
+  handleCancelEditClaimImage(e) {
+    e.stopPropagation()
+    this.setState({editingClaimImage: false})
+    //console.log("pointCard: cancel editing image");
+  }
   
 
    //Assign focus - WIP
@@ -446,12 +457,7 @@ class PointCardComponent extends React.Component {
       return null
     }
   }
-
-  handleCancelEdit(e) {
-    e.stopPropagation()
-    this.setState({editingClaimText: false})
-  }
-
+  
   expand(){
     this.props.onExpand()
   }
@@ -693,7 +699,7 @@ class PointCardComponent extends React.Component {
  pointTextComponent() {
     const point = this.point;
     if (this.state.editingClaimText){
-      return <EditPoint point={point} onCancel={this.handleCancelEdit}/>
+      return <EditPoint point={point} onCancel={this.handleCancelEditClaimText}/>
     } else {
       return <Point point={point} onClick={this.handleToggleEvidence}/>
     }
@@ -742,7 +748,7 @@ class PointCardComponent extends React.Component {
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
                             <div className={ this.contentWidth()  }>
-                              { this.state.editingClaimImage && <ImageEditor /> } 
+                              { this.state.editingClaimImage && <EditImage point={point} onCancel={this.handleCancelEditClaimImage}/> } 
                                 
                                 <div className="row-fluid">         
                                   <div className="cardTopRow pointCardPaddingH span12">

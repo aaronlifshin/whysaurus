@@ -15,6 +15,8 @@ import * as validations from './validations';
 import config from './config';
 import QuickCreateClaim from './components/QuickCreateClaim'
 import NewClaim from './components/NewClaim'
+import Spinner from './components/Spinner'
+
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
   props: ({ownProps, data: { loading, homePage }}) => ({
@@ -115,7 +117,7 @@ class Home extends React.Component {
     </div>;
   }
 
-  // TODO: obscure "Featured Argument not found" until loading is complete, or go back to {featuredPoint && <PointList point={featuredPoint}/>}
+  // TODO: display a message like "Featured Argument not found" if there is none, currently using a spinner so user doesn't see a "not found" message before the element loads
   //   <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
   render(){
     let homePage = this.props.data.homePage;
@@ -128,7 +130,7 @@ class Home extends React.Component {
       </div>
       <div className="mainPageContentArea">
         <div id="mainPageFeaturedArea" className="mainPageContentArea">
-          {featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="indentToClaimText">Featured Argument not found</div> }
+          { featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="spinnerPointList"><Spinner /></div> }
         </div>
         <div id="mainPageMainArea">
           <Tabs selectedTabClassName="tabUX2_selected">

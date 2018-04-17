@@ -40,7 +40,12 @@ function Byline(props){
 
 // TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
 function ShareIconArea(props){
-  return <span className="shareIconArea"><span className="fa fa-share-alt"></span></span>
+  return <span className="shareIconArea">
+    <div className="claimShareIcon fas fa-link"></div>
+    <div className="claimShareIcon fab fa-facebook-square"></div>
+    <div className="claimShareIcon fab fa-twitter"></div>
+    <div className="claimShareIcon far fa-envelope"></div>
+  </span>
 }
 function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat fas fa-level-up-alt"></span>{props.point.supportedCount}</span>

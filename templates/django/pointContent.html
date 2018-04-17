@@ -48,14 +48,14 @@
                     <span class="scoreAnimContainerReset">
                         <span class="scoreAnimContainerAnim">
                         <!--Elif not working?-->
-                        {% if point.pointValue > 0 %}
-                        <span id="pointScoreSpan" name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                        {% if point.pointValueCached > 0 %}
+                        <span id="pointScoreSpan" name="pointValueArea" class="positiveScore" data-myvalue="{{point.pointValueCached}}">+{{ point.pointValueCached }}</span>
                         {% endif %}
-                        {% if point.pointValue < 0 %}
-                        <span id="pointScoreSpan" name="pointValueArea" class="redScore" data-myvalue="{{point.pointValue}}">{{ point.pointValue }}</span>
+                        {% if point.pointValueCached < 0 %}
+                        <span id="pointScoreSpan" name="pointValueArea" class="redScore" data-myvalue="{{point.pointValueCached}}">{{ point.pointValueCached }}</span>
                         {% endif %}
-                        {% if point.pointValue == 0 %}
-                        <span id="pointScoreSpan" name="pointValueArea" class="noScore" data-myvalue="{{point.pointValue}}">+{{ point.pointValue }}</span>
+                        {% if point.pointValueCached == 0 %}
+                        <span id="pointScoreSpan" name="pointValueArea" class="noScore" data-myvalue="{{point.pointValueCached}}">+{{ point.pointValueCached }}</span>
                         {% endif %}
                         </span>
                     </span>
@@ -127,7 +127,8 @@
                     <li><a href='/job/cleanDeadBacklinks/{{point.url}}'>Root Backlink Clean</a></li>
                     <li><a href='/job/cleanEmptyLinks/{{point.url}}'>Clean Empty Links</a></li>
                     <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>
-                    <li><a href='/job/DBcheckPoint/{{point.url}}'>DB Check This Point</a></li>  
+                    <li><a href='/job/DBcheckPoint/{{point.url}}'>DB Check This Point</a></li>
+                    <li><a href='/job/updateCachedValues/{{point.url}}'>Update Cached Values</a></li>
                     <li><a href='/job/cleanCurrents/{{point.url}}'>Clean Multiple Current Versions</a></li>                      
                     <li><a id='changeEditorsPickTrigger'>
                         Editors Pick: 
@@ -164,9 +165,11 @@
                     <li>Agreed: <span id='upVoteStat'>{{ point.upVotes }}</span> </li>
                     <li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
                     <li>Viewed: {{ pointRoot.viewCount }}</li>
-                    <li>Score: {{point.pointValue}}</li>
+                    <li>Score: {{point.pointValueCached}}</li>
                     {% if user.isAdmin %}
-                        <li>Engagement: {{point.engagementScore}}</li>
+                        <li>Score Cache: {{point.cachedPointValue}}</li>
+                        <li>Engagement: {{point.engagementScoreCached}}</li>
+                        <li>Engagement Cache: {{point.cachedEngagementScore}}</li>
                     {% endif %}
                 </ul>  
             </div>

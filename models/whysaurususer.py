@@ -497,6 +497,9 @@ class WhysaurusUser(auth_models.User):
                 point.downVotes = point.downVotes + 1
                 point.upVotes = point.upVotes - 1
             point.voteTotal = point.upVotes - point.downVotes
+            
+            point.updateCachedValues(doPutOnUpdate=False)
+            
             point.put()
 
         return vote
@@ -819,9 +822,7 @@ class WhysaurusUser(auth_models.User):
 
         shouldEmail = False
 
-        if user.email == 'eebyrne@ymail.com':
-            shouldEmail = True
-        elif user.notificationFrequency == "Daily" and daysDiff >= 1:
+        if user.notificationFrequency == "Daily" and daysDiff >= 1:
             shouldEmail = True
         elif user.notificationFrequency == "Weekly" and daysDiff >= 7:
             shouldEmail = True
@@ -844,11 +845,11 @@ class WhysaurusUser(auth_models.User):
 
                 points = [(n.referencePoint.title if n.referencePoint else '') + '\n' for n in notifications]
                 points = list(set(points))
-                # text = handler.template_render(
-                #     'notificationEmailText.html',
-                #     {'user': user, 'pointTitles': points}
-                # )
-                text = 'Notification Stub for %d points' % len(points)
+                text = handler.template_render(
+                    'notificationEmailText.html',
+                    {'user': user, 'pointTitles': points}
+                )
+                # text = 'Notification Stub for %d points' % len(points)
 
                 self.sendUserEmail(
                     subject=user.name + ', People are reacting to your views on Whysaurus!',
@@ -876,6 +877,91 @@ class WhysaurusUser(auth_models.User):
         #     # error_reporting.Client().report_exception()
         #     return
 
+    def sendSingleNotificationEmail(self, handler):
+        user = self
+        
+        # TODO: Renable exception handling once comfortable with reporting
+        # try:
+        
+        lastSentTime = user.lastEmailSent if user.lastEmailSent else datetime.datetime(2000, 1, 1)
+        now = datetime.datetime.now()
+        today = datetime.datetime(now.year, now.month, now.day)
+        lastDaySent = datetime.datetime(lastSentTime.year, lastSentTime.month, lastSentTime.day)
+        timeDelta = today - lastDaySent
+        daysDiff = timeDelta.days
+    
+        shouldEmail = False
+    
+        if user.notificationFrequency == "Daily" and daysDiff >= 1:
+            shouldEmail = True
+        elif user.notificationFrequency == "Weekly" and daysDiff >= 7:
+            shouldEmail = True
+    
+        if shouldEmail:
+            if not user.canSendUserEmail():
+                logging.info('User %s has unread notifications but email unavailable' % user.name)
+                return
+        
+            logging.info('Checking for active notifications for user %s' % user.name)
+            notifications = user.getUnreadNotificationsAfter(lastSentTime)
+            if notifications:
+                logging.info('Sending %d notifications to user %s' % (len(notifications), user.name))
+            
+                # generate the email body from the notifications
+                html = handler.template_render(
+                    'notificationEmail.html',
+                    {'user': user, 'notifications': notifications}
+                )
+            
+                points = [(n.referencePoint.title if n.referencePoint else '') + '\n' for n in notifications]
+                points = list(set(points))
+                text = handler.template_render(
+                    'notificationEmailText.html',
+                    {'user': user, 'pointTitles': points}
+                )
+            
+                # old version, delete once the new version is working:
+                # mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
+                #    to=[user.email, 'notification.copies@whysaurus.com'],
+                #    subject=user.name + ', People are reacting to your views on Whysaurus!',
+                #    body=text,
+                #    html=html,
+                #    reply_to="community@whysaurus.com"
+                # )
+            
+                # new version:
+                message = mail.EmailMessage(
+                    sender='Whysaurus <community@whysaurus.com>',
+                    to=user.email,
+                    bcc='notification.copies@whysaurus.com',
+                    subject=user.name + ' people are reacting to your arguments on Whysaurus!',
+                    body=text,
+                    reply_to="community@whysaurus.com"
+                )
+                if html:
+                    message.html = html
+                message.send()
+                # (end of new version)
+            
+                logging.info('Sent mail to user %s' % user.name)
+                # write the time the last notification was sent
+                user.lastEmailSent = datetime.datetime.now()
+                user.put()
+    
+        else:
+            logging.info('User %s has no unread notifications or was emailed recently' % user.name)
+    
+        # except:
+        #     logging.error('Exception processing notifications for user: %s' % user.name)
+        #     # TODO: Support full error reporting  (Needs google-cloud imports)
+        #     # error_reporting.Client().report_exception()
+        #     cntErrors += 1
+        #     cntErrorsConsecutive += 1
+        #     if cntErrorsConsecutive >= 3 or cntErrors >= 10:
+        #         logging.error('Too Many Exceptions Processing User Notifications - Abort!')
+        #     continue
+        
+
     @classmethod
     def sendNotificationEmails(cls, handler):
         # retrieve and iterate all users where the frequency is daily or weekly
@@ -883,86 +969,7 @@ class WhysaurusUser(auth_models.User):
         cntErrorsConsecutive = 0
         qry = cls.query(WhysaurusUser.notificationFrequency.IN(['Daily', 'Weekly']))
         for user in qry.iter():        
-            # TODO: Renable exception handling once comfortable with reporting
-            # try:
-
-            lastSentTime = user.lastEmailSent if user.lastEmailSent else datetime.datetime(2000,1,1)
-            now = datetime.datetime.now() 
-            today = datetime.datetime(now.year, now.month, now.day)
-            lastDaySent = datetime.datetime(lastSentTime.year, lastSentTime.month, lastSentTime.day)            
-            timeDelta = today - lastDaySent            
-            daysDiff = timeDelta.days
-        
-            shouldEmail = False
-
-            if user.notificationFrequency == "Daily" and daysDiff >= 1:
-                shouldEmail = True
-            elif user.notificationFrequency == "Weekly" and daysDiff >= 7:
-                shouldEmail = True
-
-            if shouldEmail:
-                if not user.canSendUserEmail():
-                    logging.info('User %s has unread notifications but email unavailable' % user.name)
-                    continue
-
-                logging.info('Checking for active notifications for user %s' % user.name)
-                notifications = user.getUnreadNotificationsAfter(lastSentTime)
-                if notifications:
-                    logging.info('Sending %d notifications to user %s' % (len(notifications), user.name))
-
-                    # generate the email body from the notifications
-                    html = handler.template_render(
-                        'notificationEmail.html',
-                        {'user':user, 'notifications':notifications}
-                    )
-
-                    points = [(n.referencePoint.title if n.referencePoint else '') + '\n' for n in notifications]
-                    points = list(set(points))
-                    text = handler.template_render(
-                        'notificationEmailText.html',
-                        {'user':user, 'pointTitles':points}
-                    )
-
-                    # old version, delete once the new version is working:
-                    # mail.send_mail(sender='Whysaurus <community@whysaurus.com>',
-                    #    to=[user.email, 'notification.copies@whysaurus.com'],
-                    #    subject=user.name + ', People are reacting to your views on Whysaurus!',
-                    #    body=text,
-                    #    html=html,
-                    #    reply_to="community@whysaurus.com"
-                    # )
-                    
-                    # new version:
-                    message = mail.EmailMessage(
-                        sender='Whysaurus <community@whysaurus.com>',
-                        to=user.email,
-                        bcc='notification.copies@whysaurus.com',
-                        subject=user.name + ' people are reacting to your arguments on Whysaurus!',
-                        body=text,
-                        reply_to="community@whysaurus.com"
-                    )                    
-                    if html:
-                        message.html = html
-                    message.send()
-                    # (end of new version)                                    
-
-                    logging.info('Sent mail to user %s' % user.name)
-                    # write the time the last notification was sent
-                    user.lastEmailSent = datetime.datetime.now()
-                    user.put()
-
-            else:
-                logging.info('User %s has no unread notifications or was emailed recently' % user.name)
-
-            # except:
-            #     logging.error('Exception processing notifications for user: %s' % user.name)
-            #     # TODO: Support full error reporting  (Needs google-cloud imports)
-            #     # error_reporting.Client().report_exception()
-            #     cntErrors += 1
-            #     cntErrorsConsecutive += 1
-            #     if cntErrorsConsecutive >= 3 or cntErrors >= 10:
-            #         logging.error('Too Many Exceptions Processing User Notifications - Abort!')
-            #     continue
+            user.sendSingleNotificationEmail(handler)
 
 
     def addToSearchIndex(self):

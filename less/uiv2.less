@@ -1145,7 +1145,14 @@ li .iconWithStat {
 
 .byline {
   width: inherit;
+  max-width: 48px;
+  display: inline-block;
+  vertical-align: bottom;
   float: none;
+  text-overflow: ellipsis;
+  white-space: nowrap; // needed for text-overflow: ellipsis;
+  overflow: hidden; // needed for text-overflow: ellipsis;
+  margin-bottom: 2px; // don't know why this is necessary
 }
 
 .byline:hover {

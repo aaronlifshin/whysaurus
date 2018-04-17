@@ -117,7 +117,6 @@ class Home extends React.Component {
     </div>;
   }
 
-  // TODO: display a message like "Featured Argument not found" if there is none, currently using a spinner so user doesn't see a "not found" message before the element loads
   //   <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
   render(){
     let homePage = this.props.data.homePage;
@@ -130,7 +129,7 @@ class Home extends React.Component {
       </div>
       <div className="mainPageContentArea">
         <div id="mainPageFeaturedArea" className="mainPageContentArea">
-          { featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="spinnerPointList"><Spinner /></div> }
+          { featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="spinnerPointList">Loading Featured Claim...</div> }
         </div>
         <div id="mainPageMainArea">
           <Tabs selectedTabClassName="tabUX2_selected">

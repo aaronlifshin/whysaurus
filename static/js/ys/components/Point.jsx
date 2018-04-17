@@ -379,7 +379,10 @@ class PointCardComponent extends React.Component {
   }  
   handleClickEditComments(e) {
     e.stopPropagation();
-    this.setState({editingComments: true})
+    if (this.state.editingComments)
+      this.setState({editingComments: false})
+    else
+      this.setState({editingComments: true})
   }  
   
   handleCancelEditClaimText(e) {

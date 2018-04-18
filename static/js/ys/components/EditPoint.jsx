@@ -48,7 +48,7 @@ class EditPointComponent extends React.Component {
   }
 
   render(){
-    let editClaimTextClasses = `claimEditArea pointCardPaddingH`
+    let editClaimTextClasses = `claimEditArea pointCardPaddingH editClaimText`
     if (this.state.saving) {
       return <div className={editClaimTextClasses}>
         <span className="claimEditAreaSavingFeedback"><Spinner /><span className="spinnerLabel">Saving...</span></span>

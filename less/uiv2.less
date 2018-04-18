@@ -488,6 +488,7 @@ body {
 // EVIDENCE BLOCK REVEAL ANIMATION:
 // See also: DEALING CARDS ANIMATION
 
+@evidenceBlockRevealDuration: .36s;
 @keyframes evidenceBlockReveal {
    0% { max-height: 20px; opacity: 0;  }
    40% { opacity: 0; transform: translateY(-20px); } //  transform: scaleY(.5)
@@ -500,7 +501,7 @@ body {
   display: inline-block;
   transform-origin: top left;
   animation-name: evidenceBlockReveal;
-    animation-duration: .36s;
+  animation-duration: @evidenceBlockRevealDuration;
   animation-timing-function: ease;
   //animation-timing-function: ease-out;
   animation-iteration-count: 1;
@@ -590,7 +591,7 @@ body {
   left: -1 * @indent;
 }
 
-@relevanceRevealDuration: .33s;
+@editAreaRevealDuration: .33s;
 @editingAreaBG: hsla(178, 85%, 91%, 1); // light yellow: #fffbd1;   
 @keyframes relGroupHiliteReveal {
    0% {background-color: #fffbd100;  }
@@ -599,7 +600,7 @@ body {
 
 .relGroupHilite {
   animation-name: relGroupHiliteReveal;
-  animation-duration: @relevanceRevealDuration;
+  animation-duration: @editAreaRevealDuration;
   animation-timing-function: ease;
   animation-iteration-count: 1;
   margin-bottom: @marginVerticalStandard * 1.3;
@@ -614,16 +615,15 @@ body {
   padding-bottom: 4px;
   margin-top: 11px; // needs to be pretty big to account for the possibility of a cardstack above it
   animation-name: relevanceCtrlAreaReveal;
-  animation-duration: @relevanceRevealDuration;
+  animation-duration: @editAreaRevealDuration;
   animation-timing-function: ease;
   animation-iteration-count: 1;
 }
 
-
 @keyframes relevanceCtrlAreaReveal {
    0% { max-height: 0; opacity: 0;  }
    25% { opacity: 0; }
-   60% { max-height: 160px; } // Needs to be set manually to match the height of the block, afaik, -JF
+   60% { max-height: 160px; } // max-height needs to be set manually to be >= height of the block-JF
    100% { opacity: 1; }
 }
 
@@ -631,6 +631,11 @@ body {
 .relCtrlLabel {
   margin-bottom: @marginVerticalInsideCards;
   padding-top: @editAreaPaddingV;
+}
+
+.relCtrlClose {
+  margin-top: 6px;
+  margin-right: 10px;
 }
 
 .editAreaClose {
@@ -647,13 +652,6 @@ body {
 .editAreaClose a:hover {
   color: @blue;
 }
-
-.relCtrlClose {
-  margin-top: 6px;
-  margin-right: 10px;
-}
-
-
 
 .relevanceLinkArea {
   display: inline-block;
@@ -933,7 +931,7 @@ a:hover .perctSignSmall {
 
 @stackDealY: 320px;
 @stackDealX: 0;
-@stackDealDuration: .18s; 
+@stackDealDuration: @evidenceBlockRevealDuration * .5;
 @stackDealTimingFunction: cubic-bezier(.25, 0, .9, .4);  // ease-out and accelerate
 @stackDealNumberOfCards: 3;
 
@@ -1176,9 +1174,8 @@ li .iconWithStat {
   text-decoration:none;
 }
 
-
 .pointText {
-  margin-bottom: @marginVerticalInsideCards;
+  //margin-bottom: @marginVerticalInsideCards;
   //padding-right: 2%;
 }
 
@@ -1303,7 +1300,7 @@ li .iconWithStat {
 }*/
 
 .cardBottomActionRow {
-  margin-top: 5px;
+  margin-top: 16px;
   padding-bottom: @cardPaddingTop;
   -o-transition:@hoverTransitionDuration;
   -ms-transition:@hoverTransitionDuration;
@@ -1372,15 +1369,32 @@ li .iconWithStat {
 ////////////////////////////////////////////////////////
 
 
-.EditImage {
-  width: 100%;
-  height: 60px;
+
+
+@keyframes editAreaReveal {
+   0% { max-height: 0; opacity: 0; padding-top: 0; }
+   75% { max-height: 132px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   100% { opacity: 1;  }
 }
+
+
+.editClaimText, .editImage, .editSources, .commentsArea {
+  //width: 100%;
+  animation-name: editAreaReveal;
+  animation-duration: @editAreaRevealDuration;
+  animation-timing-function: ease;
+  animation-iteration-count: 1;
+}
+.editImage, .editSources, .commentsArea {
+  height: 64px;
+}
+
+
 
 .claimEditArea {
   background-color: @editingAreaBG;
   width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
-  min-height: 64px; // sets height for the saving state with the spinner
+  //min-height: 64px; // sets height for the saving state with the spinner
   padding-top: @cardPaddingTop;
 }
 
@@ -1394,6 +1408,7 @@ li .iconWithStat {
   margin-top: 8px;
   display: inline-block;
   margin-left: -6px;
+  padding-bottom: 14px;
 }
 
 .commentsMarginBottom {
@@ -1405,6 +1420,13 @@ li .iconWithStat {
   display: inline-block;
 }
 
+@keyframes shareIconAreaReveal {
+   0% { opacity: 0; left: -24px; }
+   25% { opacity: 0; }
+   75% { left: -2px; } 
+   100% { opacity: 1;  }
+}
+
 .shareIconArea {
   display: inline-block;
   color: @smallGreyLinkColor;
@@ -1414,6 +1436,10 @@ li .iconWithStat {
   font-size: 14px;
   vertical-align: top;
   padding-top: 4px;
+  animation-name: shareIconAreaReveal;
+  animation-duration: @evidenceBlockRevealDuration * .6; // complete before evidence reveal so that the eye lands on the evidence
+  animation-timing-function: ease;
+  animation-iteration-count: 1;
 }
 
 .claimShareIcon {

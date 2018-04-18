@@ -188,7 +188,7 @@ class EditImage extends React.Component {
   }
 
   render(){
-      return <div className="row-fluid claimEditArea pointCardPaddingH EditImage ">
+      return <div className="row-fluid claimEditArea pointCardPaddingH editImage ">
         <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
         Here is where you edit images!
       </div>

@@ -41,7 +41,7 @@ function ShareIconArea(props){
 }
 
 function SupportingCount(props){
-  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>{props.point.supportedCount} Other Links</span>
+  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span><span className="number">{props.point.supportedCount}</span> Other Links</span>
 }
 
 /*
@@ -223,7 +223,12 @@ class CommentsLink extends React.Component {
  
   render(){
     return <span className="cardTopRowItem">
-      <a className="" onClick={this.props.onClick}><span className="iconWithStat far fa-comment"></span>{this.props.point.numComments}</a>
+      <a className="" onClick={this.props.onClick}>
+        <span className="iconWithStat commentLink">
+          <span className="far fa-comment"></span>
+        </span>
+        { (this.props.point.numComments > 0) && <span className="number">{this.props.point.numComments}</span> }
+      </a>
     </span>
   }
 }
@@ -236,7 +241,7 @@ class Comments extends React.Component {
   render(){
       return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
         <span className="claimEditAreaHeading">
-          <span className="heading">Comments</span>
+          <span className="heading">Meta</span>
           <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
         </span>  
         Here is where you comment!

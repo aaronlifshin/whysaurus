@@ -127,7 +127,7 @@
                         <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
                         <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
                             <span class="responsiveLabel">
-                                {{ user.name|escape|slice:"14" }}{% if user.name|length > 14 %}...{% endif %}                       
+                                {{ user.name }}                       
                             </span> 
                             <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
                         </a>

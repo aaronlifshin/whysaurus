@@ -778,26 +778,32 @@ a:visited {
     padding-top: 4px;
 }
 
-.notificationMargin {
+.notification-menu li {
+  margin-left: 0;
+}
+
+
+.notificationLeft {
     width: 21px;
-    display: block;
+    display: inline-block;
     min-height: 30px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    float: left;
+    //float: left;
+    vertical-align: top;
 }
 
 .notificationText {
-    display: block;
+    display: inline-block;
     min-height: 30px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    float: left;
-    margin-left: 4px;
+    //float: left;
+    margin-left: 6px;
     padding-left: 3px;
-    width: 285px;
+    width: 270px;
     margin-top: -1px;
     white-space: normal;   
 }
@@ -828,15 +834,25 @@ a:visited {
 	font-size:0.75em;
 	color:#bdbdbd;
 	line-height:120%;
+  position: relative;
+  top: 3px;
+  margin-right: 16px;
 }
 
 .notificationMenuItem, #notificationMenuHeader, #notificationMenuFooter {
 	cursor:pointer;	
-    padding:4px 4px 4px 4px;
+  padding:4px;
+  padding-top: 6px !important;
 	border-bottom: 1px solid #d7d7d7;
 	width:auto;
+  display: block;
 }
-
+#notificationMenuHeader {
+  margin-left: 4px;
+  padding-left: 42px;
+  padding-bottom: 8px;
+  padding-top: 2px !important;
+}
 
 .notificationAvatar {
 	float:right;

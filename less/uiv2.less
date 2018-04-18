@@ -262,7 +262,7 @@ a:focus, a:hover {
 }
 
 #aboutDropdown {
-  left: -152px;
+  left: -134px;
   margin-top: 14px
 }
 
@@ -290,8 +290,9 @@ a:focus, a:hover {
 
 #userMenuSignedIn {
   position: absolute;
-  left: -78px;
+  left: -72px;
   right: unset;
+  min-width: unset; // over-riding new.less
 }
 
 #signInFromHeader {
@@ -333,6 +334,7 @@ textarea {
 
 @dropdownBorderColor: rgba(0,0,0,.1);
 .dropdown-menu {
+  min-width: unset; // over-riding bootstrap defaults
   padding: 6px;
   margin-top: 4px;
   padding-bottom: 12px;
@@ -351,17 +353,18 @@ textarea {
 
 .dropdown-menu .divider {
   border: none;
+  height: 0.75px; // this seems to render better on high-res retina-style displays
   //height: 2px;
  // margin: 0;
   //background-color: rgba(0,0,0,.09);
 }
 
 .dropdownMenuCategory {
-  border-bottom: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: rgba(0,0,0,.09);
-  padding-top: 12px;
-  padding-left: 26px;
+  //border-bottom: solid;
+  //border-bottom-width: 1px;
+  //border-bottom-color: rgba(0,0,0,.09);
+  padding-top: 2px;
+  padding-left: 28px;
   padding-bottom: 6px;
 }
 
@@ -412,14 +415,14 @@ textarea {
   position: absolute;
 }
 .dropdown-caret .caret-inner {
-  top: 1.5px;
-    left: 0.5px;
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    border-bottom: 9px solid #fff;
-    border-bottom-color: #fff;
+  top: 1.75px;
+  left: 0.5px;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #fff;
+  border-bottom-color: #fff;
   display: inline-block;
-    margin-left: -1px;
+  margin-left: -1px;
   position: absolute;
 }
 
@@ -1120,6 +1123,8 @@ a:hover .perctSignSmall {
   margin-right: 2px;
 }
 li .iconWithStat {
+  width: 12px;
+  display: inline-block;
   margin-right: 6px;
 }
 
@@ -1174,9 +1179,18 @@ li .iconWithStat {
   text-decoration:none;
 }
 
+.cardTopRowItem .dropdown-menu {
+  width: max-content;
+}
+
 .pointText {
   //margin-bottom: @marginVerticalInsideCards;
   //padding-right: 2%;
+}
+
+.claimTextDisplay {
+  display: block;
+  margin-bottom: 10px; // for when editSources is open (and editClaimText is not)
 }
 
 .pointTitle {
@@ -1300,7 +1314,7 @@ li .iconWithStat {
 }*/
 
 .cardBottomActionRow {
-  margin-top: 16px;
+  margin-top: 14px;
   padding-bottom: @cardPaddingTop;
   -o-transition:@hoverTransitionDuration;
   -ms-transition:@hoverTransitionDuration;

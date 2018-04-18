@@ -48,7 +48,7 @@ function ShareIconArea(props){
   </span>
 }
 function SupportingCount(props){
-  return <span className="cardTopRowItem"><span className="iconWithStat fas fa-level-up-alt"></span>{props.point.supportedCount}</span>
+  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>{props.point.supportedCount} Other Links</span>
 }
 
 /*
@@ -119,7 +119,7 @@ class PointComponent extends React.Component {
   // TODO: make it not animate when card redraws
   render(){
     const score = this.point.pointValue
-    return <div className="pointCardPaddingH pointCardPaddingHExtra">
+    return <div className="claimTextDisplay pointCardPaddingH pointCardPaddingHExtra">
       {this.titleUI()}
         <span className="scoreAnimContainerMax score">
           <span className="scoreAnimContainerReset">
@@ -740,28 +740,28 @@ class PointCardComponent extends React.Component {
                              })
   }
 
-  // TODO: add code to link to other "upstream" claims
-  // <li><span className=""><span className="iconWithStat fa fa-level-up"></span>Linked to {this.point.supportedCount} other claims</span></li>
+  // TODO: make SupportingCount work and move out of admin
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
-        <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat fas fa-pencil-alt"></span>Edit Claim</a></li>
-        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat fas fa-book"></span>Edit Sources</a></li>
-        <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat far fa-image"></span>Edit Image</a></li>
-        <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat fas fa-external-link-alt"></span>Open in new tab</a></li>
+        <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
+        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book"></span></span>Edit Sources</a></li>
+        <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat"><span className="far fa-image"></span></span>Edit Image</a></li>
+        <li className="divider"></li>
+        { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
+        <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
+        { this.currentUserIsAdmin() && <li className="divider"></li> }
         { this.currentUserIsAdmin() && <li className="dropdownMenuCategory">Admin</li>}
-        { this.currentUserIsAdmin() && this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat fa fa-unlink"></span>Unlink</a></li>  }
-        { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}><span className="iconWithStat far fa-trash-alt"></span>Delete</a></li>  }
+        { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
         { this.currentUserIsAdmin() &&  <li><SupportingCount point={this.point} /></li> }
       </ul>
     </span>
   }
-/*
-         <li><span className="moreMenuHeading">More Actions</span></li>
-         <li className="divider"></li>
-*/
+
+  
+
 /*
         Code to check if current user is the point Author
           {this.props.data.currentUser &&

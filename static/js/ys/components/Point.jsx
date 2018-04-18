@@ -38,7 +38,6 @@ function Byline(props){
   return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" tabIndex="-1" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a>{othersBlock}</span>
 }
 
-// TODO: should we localize these icons instead of relying on fontawesome (the fa class)? -JF
 function ShareIconArea(props){
   return <span className="shareIconArea">
     <div className="claimShareIcon fas fa-link"></div>
@@ -47,6 +46,7 @@ function ShareIconArea(props){
     <div className="claimShareIcon far fa-envelope"></div>
   </span>
 }
+
 function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>{props.point.supportedCount} Other Links</span>
 }
@@ -366,7 +366,6 @@ class PointCardComponent extends React.Component {
     this.handleCancelEditClaimSources = this.handleCancelEditClaimSources.bind(this);
     this.handleCancelEditClaimImage = this.handleCancelEditClaimImage.bind(this);
     this.handleCloseComments = this.handleCloseComments.bind(this);    
-    this.handleClickMore = this.handleClickMore.bind(this);
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
 
@@ -701,11 +700,6 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  handleClickMore(e) {
-    e.stopPropagation();
-    //console.log("pointCard : handleClickMore(e) ")
-  }
-
   currentUserIsAdmin = () => (
     this.props.currentUser && this.props.currentUser.admin
   )
@@ -740,10 +734,11 @@ class PointCardComponent extends React.Component {
                              })
   }
 
-  // TODO: make SupportingCount work and move out of admin
+  // TODO: Make SupportingCount work and move out of admin
+  // using ascii &#9776; instead of font-awesome "bars" icon bc its more elegant
   moreMenu() {
     return <span className="cardTopRowItem dropdown">
-      <a onClick={this.handleClickMore} className="moreMenu dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+      <a onClick={this.handleClickNoProp} className="moreMenuLink dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
@@ -760,8 +755,6 @@ class PointCardComponent extends React.Component {
     </span>
   }
 
-  
-
 /*
         Code to check if current user is the point Author
           {this.props.data.currentUser &&
@@ -769,6 +762,19 @@ class PointCardComponent extends React.Component {
           <a onClick={this.handleClickEditClaimText} className="editLink" >Edit</a>}
 */
 
+  shareMenu() {
+    return <span className="cardTopRowItem dropdown">
+      <a onClick={this.handleClickNoProp} className="shareMenuLink dropdown-toggle"  data-toggle="dropdown"><i className="fas fa-share-alt"></i></a>
+      <ul id="" className="dropdown-menu dropdown-menu-with-caret shareMenu" role="menu" aria-labelledby="dropdownMenu">
+        <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
+        <li><a className="" ><span className="iconWithStat"><span className="fas fa-link"></span></span></a></li>
+        <li><a className="" ><span className="iconWithStat"><span className="fab fa-facebook-square"></span></span></a></li>
+        <li><a className="" ><span className="iconWithStat"><span className="fab fa-twitter"></span></span></a></li>
+        <li><a className="" ><span className="iconWithStat"><span className="far fa-envelope"></span></span></a></li>
+      </ul>
+    </span>
+  }
+  
  pointTextComponent() {
     const point = this.point;
     if (this.state.editingClaimText){
@@ -834,6 +840,9 @@ class PointCardComponent extends React.Component {
                                     <Byline point={point}/>
                                     <CommentsLink point={point} onClick={this.handleClickEditComments}/>                                    
                                     { this.moreMenu() }
+                                    <MediaQuery maxWidth={config.extraextraSmallScreenThreshold}>
+                                      { this.expanded() && this.numSupportingPlusCounter() > 0 && this.shareMenu() }
+                                    </MediaQuery>  
                                   </div>
                                  </div>
                                  
@@ -869,7 +878,9 @@ class PointCardComponent extends React.Component {
                   </div>
                 </div>
               </div>
-              { this.expanded() && this.numSupportingPlusCounter() > 0 && <ShareIconArea point={point}/> }
+              <MediaQuery minWidth={config.extraextraSmallScreenThreshold}>
+                { this.expanded() && this.numSupportingPlusCounter() > 0 && <ShareIconArea point={point}/> }
+              </MediaQuery> 
               <div className="evidenceRow row-fluid">
                 {this.evidence()}
               </div>

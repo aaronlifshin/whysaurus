@@ -376,6 +376,11 @@ textarea {
   font-weight: 500;
 }
 
+.shareMenu {
+  max-width: 50px; // haven't taken the time to figure out why this is necessary
+  display: none; // override new.less
+}
+
 .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover,
 .dropdown-submenu:focus>a, .dropdown-submenu:hover>a {
   //color: @blue;
@@ -1127,6 +1132,9 @@ li .iconWithStat {
   display: inline-block;
   margin-right: 6px;
 }
+.shareMenu .iconWithStat {
+  font-size: 133%;
+}
 
 .claimBadge {
   display: block;
@@ -1168,14 +1176,14 @@ li .iconWithStat {
   color: @blue;
 }
 
-.moreMenu {
+.moreMenuLink {
   color: @grayTextLighter;
   font-weight: 800;
     font-size: 13px;
     position: relative;
     top: 1px;
 }
-.moreMenu:hover {
+.moreMenuLink:hover {
   text-decoration:none;
 }
 
@@ -2492,7 +2500,7 @@ a:hover .arrowAddEvidenceButton {
     padding-right: @buttonPaddingExtraSmallScreens - 2px; 
   }
 
-  @cardWidthExtraSmallScreens: 85vw;
+  @cardWidthExtraSmallScreens: 82vw;
   .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
   }

@@ -6,5 +6,8 @@ export default {
     baseURL: "https://d38pzqn4b9ae2a.cloudfront.net/"
   },
   relevanceThreshold: 35,
-  newPointsPageSize: 10
+  newPointsPageSize: 10,
+  // Responsive:
+  extraSmallScreenThreshold: 640,
+  extraextraSmallScreenThreshold: 480
 }

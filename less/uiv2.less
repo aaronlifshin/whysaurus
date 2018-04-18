@@ -200,6 +200,7 @@ a:focus, a:hover {
 .headerSocialMediaIconArea {
   //margin-left:  @defaultHeaderMarginH;
   margin-top: 13px;
+  margin-left: 0;
 }
 
 .headerSocialMediaIcon {
@@ -288,12 +289,17 @@ a:focus, a:hover {
 
 #userMenuArea .username {
   position: relative;
-  top: 1px;
+  top: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 60px;
+  display: inline-block;
 }
 
 #userMenuSignedIn {
   position: absolute;
-  left: -72px;
+  left: -34px;
   right: unset;
   min-width: unset; // over-riding new.less
 }
@@ -2318,6 +2324,13 @@ a:hover .arrowAddEvidenceButton {
   .container, .navbar-fixed-top .container {
     width: auto; // removing bootstrap's responsive left margin on wide screens to leave more real estate for argument content
   }
+  #userMenuArea .username {
+    width: unset;
+    max-width: 150px;
+  }
+  #userMenuSignedIn {
+    left: 4px;
+  }
 }
 
 
@@ -2347,9 +2360,9 @@ a:hover .arrowAddEvidenceButton {
   }
 
   #searchArea {
-    width: -moz-calc(~"100% - 545px");
-    width: -webkit-calc(~"100% - 545px");
-    width: calc(~"100% - 545px");
+    width: -moz-calc(~"100% - 565px");
+    width: -webkit-calc(~"100% - 565px");
+    width: calc(~"100% - 565px");
   }
   #notifications {
     //right: 112px;
@@ -2405,6 +2418,11 @@ a:hover .arrowAddEvidenceButton {
     //margin-right: @defaultHeaderMarginH;
     
   }
+  
+  #userMenuSignedIn {
+    left: -42px;
+  }
+
 
   @searchAreaNarrow: 305px;    
   #searchArea {
@@ -2497,6 +2515,7 @@ a:hover .arrowAddEvidenceButton {
 
 }
 @media (max-width: 640px) {
+
 
   @buttonPaddingExtraSmallScreens: 9px;
   .buttonUX2 {

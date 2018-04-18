@@ -211,12 +211,12 @@ def callForAllPointsAllNamespace(pointUpdate, pointIsEligible=None):
 
     callForAllPoints(pointUpdate, pointIsEligible, namespaces=namespaces)
    
+   
+def singlePointUpdate(point):
+    point.updateCachedValues(doPutOnUpdate=True)
+
 
 class BatchJobs(AuthHandler):
-    @staticmethod
-    def singlePointUpdate(point):
-        point.updateCachedValues(doPutOnUpdate=False)
-        
     def dailyBatchJobs(self):
         logging.info('Running Daily Batch Jobs..')
         

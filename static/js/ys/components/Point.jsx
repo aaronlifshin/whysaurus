@@ -565,10 +565,14 @@ class PointCardComponent extends React.Component {
       return "span12 fullWidthContent"
     }
   }
-
-  image() {
+  
   // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
-  if (this.point.imageURL)
+  hasImage() {
+    return this.point.imageURL   
+  }
+  
+  image() {
+  if (this.hasImage())
     return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
 
@@ -683,6 +687,7 @@ class PointCardComponent extends React.Component {
     }
   }
 
+  // TODO: this could be removed by moving its logic into render() and its DOM into <Sources>
   sources(){
     if (this.point.sources){
       return <div className="row-fluid">
@@ -730,13 +735,15 @@ class PointCardComponent extends React.Component {
   // TODO: Make SupportingCount work and move out of admin
   // using ascii &#9776; instead of font-awesome "bars" icon bc its more elegant
   moreMenu() {
+    let moreMenuSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
+    let moreMenuImageLabel = `${this.hasImage() ? "Edit Image" : "Add Image"}`
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickNoProp} className="moreMenuLink dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
-        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book"></span></span>Edit Sources</a></li>
-        <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat"><span className="far fa-image"></span></span>Edit Image</a></li>
+        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book"></span></span>{moreMenuSourcesLabel}</a></li>
+        <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat"><span className="far fa-image"></span></span>{moreMenuImageLabel}</a></li>
         <li className="divider"></li>
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>

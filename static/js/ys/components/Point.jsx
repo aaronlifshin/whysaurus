@@ -16,13 +16,6 @@ import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
 import RelevanceRater from './RelevanceRater'
 
-// TODO: make work
-//import Arrow from '@elsdoerfer/react-arrow';
-
-
-// For Responsive
-// TODO : move to config.js (also declared in home.js, and QuickCreateClaim.jsx)
-const singleColumnThreshold = 960.01;
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -604,11 +597,11 @@ class PointCardComponent extends React.Component {
         return <div className={classesEvidenceBlock}>
          {this.props.parentPoint && <div className="dottedLine dottedLineExpansionIndicator"></div>}
          {this.renderDottedLinesEvidenceHeaderOrMargin()}
-         <MediaQuery minWidth={singleColumnThreshold}>
+         <MediaQuery minWidth={config.singleColumnThreshold}>
           {this.hasSupportingEvidence() && this.supportingPoints()}
           {this.hasCounterEvidence() && this.counterPoints()}
          </MediaQuery>
-         <MediaQuery maxWidth={singleColumnThreshold}>
+         <MediaQuery maxWidth={config.singleColumnThreshold}>
           {this.point.relevantPoints && this.relevantPoints()}
          </MediaQuery>
         </div>
@@ -618,7 +611,7 @@ class PointCardComponent extends React.Component {
 
   renderDottedLinesEvidenceHeaderOrMargin() {
     return <div className="dottedLinesSplitEvidenceHeader">
-      <MediaQuery minWidth={singleColumnThreshold}>
+      <MediaQuery minWidth={config.singleColumnThreshold}>
         {this.hasSupportingEvidence() && this.hasCounterEvidence() &&
           <div>
             <div className="dottedLinesSplitEvidenceSupport"></div>

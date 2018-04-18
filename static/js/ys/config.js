@@ -8,6 +8,7 @@ export default {
   relevanceThreshold: 35,
   newPointsPageSize: 10,
   // Responsive:
+  singleColumnThreshold: 960.01,
   extraSmallScreenThreshold: 640,
   extraextraSmallScreenThreshold: 480
 }

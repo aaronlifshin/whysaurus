@@ -1,14 +1,11 @@
 import React from 'react'
 import MediaQuery from 'react-responsive';
+import config from '../config'
 import * as validations from '../validations';
 import { Form, Text } from 'react-form';
 import TitleText from './TitleText'
 import Spinner from './Spinner'
 
-
-// For Responsive
-// TODO : move to config.js (also declared in home.js, and QuickCreateClaim.jsx)
-const extraSmallScreenThreshold = 640;
 
 export default class QuickCreateClaim extends React.Component {
   state = {submitting: false}
@@ -33,10 +30,10 @@ export default class QuickCreateClaim extends React.Component {
   // make work!
   submitButtonLabel = () => {
     return <span>
-        <MediaQuery minWidth={extraSmallScreenThreshold}>
+        <MediaQuery minWidth={config.extraSmallScreenThreshold}>
           Publish
         </MediaQuery>
-        <MediaQuery maxWidth={extraSmallScreenThreshold}>
+        <MediaQuery maxWidth={config.extraSmallScreenThreshold}>
           <span className="">Add</span>
         </MediaQuery>
       </span>

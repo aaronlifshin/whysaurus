@@ -175,31 +175,44 @@ class Sources extends React.Component {
   }
 }
 
+class EditSources extends React.Component {
+    constructor(props) {
+    super(props);
+  }
+  
+  get point() {
+    return this.props.point;
+  }
+  
+  render(){
+      let editSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
+      return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
+        <span className="claimEditAreaHeading">
+          <span className="heading">{editSourcesLabel}</span>
+          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
+        </span>  
+        Here is where you edit sources!
+      </div>
+  }
+}
+
 class EditImage extends React.Component {
     constructor(props) {
     super(props);
   }
-
+  
   render(){
+      let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
       return <div className="row-fluid claimEditArea pointCardPaddingH editImage ">
-        <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
+        <span className="claimEditAreaHeading">
+          <span className="heading">{editImageLabel}</span>
+          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
+        </span>         
         Here is where you edit images!
       </div>
   }
 }
 
-class EditSources extends React.Component {
-    constructor(props) {
-    super(props);
-  }
-
-  render(){
-      return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
-        <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        Here is where you edit sources!
-      </div>
-  }
-}
 
 
 
@@ -222,14 +235,14 @@ class Comments extends React.Component {
 
   render(){
       return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
-        <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
+        <span className="claimEditAreaHeading">
+          <span className="heading">Comments</span>
+          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
+        </span>  
         Here is where you comment!
       </div>
   }
 }
-
-
-
 
 
 class EvidenceLink extends React.Component {
@@ -827,7 +840,7 @@ class PointCardComponent extends React.Component {
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
                             <div className={ this.contentWidth()  }>
-                              { this.state.editingClaimImage && <EditImage point={point} onCancel={this.handleCancelEditClaimImage}/> } 
+                              { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> } 
                                 
                                 <div className="row-fluid">         
                                   <div className="cardTopRow pointCardPaddingH span12">

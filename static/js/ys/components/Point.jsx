@@ -845,7 +845,7 @@ class PointCardComponent extends React.Component {
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
                             { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> } 
-                            <div className="row-fluid">
+                            <div className="row-fluid inlineflexBox">
                             <div className={ this.textContentWidth()  }>                                
                                 <div className="row-fluid">         
                                   <div className="cardTopRow pointCardPaddingH span12">

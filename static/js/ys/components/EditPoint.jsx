@@ -13,14 +13,14 @@ const EditTitleForm = ({point, onSubmit, onClick}) => {
     <Form onSubmit={onSubmit}
           defaultValues={{title: point.title}}
           validate={values => ({title: validations.validateTitle(values.title)})}>
-      { formApi => (
-        <form onSubmit={formApi.submitForm} id="form1" className="editPointTextForm">
+      { ({submitForm, values: {title}, validationFailures}) => (
+        <form onSubmit={submitForm} id="form1" className="editPointTextForm">
           <div className="claimCreationFormFieldBlock">
-            <TitleText onClick={onClick} id="editPointTextField" className="titleTextField" onSubmit={formApi.submitForm}/>
+            <TitleText onClick={onClick} id="editPointTextField" className="titleTextField" onSubmit={submitForm}/>
           </div>
           <div className="claimCreationFormButtonBlock">
-            <button onClick={onClick} className="buttonUX2 createClaimFormButton" type="submit">Save</button>
-          </div>            
+            <button onClick={onClick} disabled={(!title || (title == "") || (title.length > validations.titleMaxCharacterCount) ) || (validationFailures > 0)} className="buttonUX2 createClaimFormButton" type="submit">Save</button>
+          </div>
         </form>
       )}
     </Form>
@@ -58,10 +58,10 @@ class EditPointComponent extends React.Component {
         <span className="claimEditAreaHeading">
           <span className="heading">Edit Claim Text</span>
           <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>        
+        </span>
         <EditTitleForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title}/>
 
-        
+
       </div>;
     }
   }

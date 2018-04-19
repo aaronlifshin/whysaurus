@@ -574,24 +574,24 @@ class PointCardComponent extends React.Component {
   expanded() {
     return this.props.expanded && !this.props.expansionLoading;
   }
-
-  contentWidth() {
   // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
-    if (this.point.imageURL) {
+  hasImage() {
+    //console.log("hasImage() : " + this.point.imageURL  )
+    return this.point.imageURL   
+  }
+  displayImage() {
+    return (this.hasImage() && !this.state.editingClaimText && !this.state.editingClaimSources)
+  }
+  image() {
+  if (this.displayImage())
+    return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
+  }
+  textContentWidth() {
+    if (this.displayImage()) {
       return "span9"
     } else {
       return "span12 fullWidthContent"
     }
-  }
-  
-  // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
-  hasImage() {
-    return this.point.imageURL   
-  }
-  
-  image() {
-  if (this.hasImage())
-    return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
   }
 
   // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
@@ -844,9 +844,9 @@ class PointCardComponent extends React.Component {
                     <div className={classesStackCard2} tabIndex="-1">
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
-                            <div className={ this.contentWidth()  }>
-                              { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> } 
-                                
+                            { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> } 
+                            <div className="row-fluid">
+                            <div className={ this.textContentWidth()  }>                                
                                 <div className="row-fluid">         
                                   <div className="cardTopRow pointCardPaddingH span12">
                                     { this.hasBadge() && 
@@ -884,10 +884,11 @@ class PointCardComponent extends React.Component {
                                       <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
                                     </div>
                                   </div>
-                                  { this.state.editingComments && <Comments point={point} onCancel={this.handleCloseComments}/> }
                                 
                                </div>
                               {this.image()}
+                            </div>
+                            { this.state.editingComments && <Comments point={point} onCancel={this.handleCloseComments}/> }
                             </div>
                           </div>
                         </div>

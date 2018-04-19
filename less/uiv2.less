@@ -1027,9 +1027,7 @@ a:hover .perctSignSmall {
 
 .point-card {
   //background-color: red;
-  display: inline-flex;
-  -webkit-inline-flex: 1;
-  -ms-inline-flexbox: 1;
+  display: block; 
 
   //display: flex;
   //-webkit-flex: 1; /* Safari 6.1+ */
@@ -1273,7 +1271,10 @@ li .iconWithStat {
 }
 
 .pointCardImageContainer {
-  //display: flex;
+  display: inline-flex;
+  -webkit-inline-flex: 1;
+  -ms-inline-flexbox: 1;
+
   //-webkit-flex: 1; /* Safari 6.1+ */
     //-ms-flex: 1;  /* IE 10 */
   //background-color: blue;
@@ -1282,7 +1283,7 @@ li .iconWithStat {
 }
 
 .pointCardImage {
-    width: 100%;
+  //width: 100%;
   height: 100%;
   max-height: 140px;
   object-fit: cover;
@@ -2511,6 +2512,7 @@ a:hover .arrowAddEvidenceButton {
 
   .pointCardImage {
   margin-top: @marginVerticalStandard;
+  width: 100%;
   }
 
 }

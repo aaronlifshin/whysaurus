@@ -23,6 +23,7 @@ const ExistingClaimPicker = ({claims, onSelectClaim}) =>
     </ul>
   </div>
 
+
 class TitleText extends React.Component {
   static propTypes = {
     suggestExistingClaims: PropTypes.bool,
@@ -41,7 +42,8 @@ class TitleText extends React.Component {
 
   feedbackArea = (error, suggestions, searching) => {
     let errorClasses = `titleTextErrorArea ${error && "titleTextErrorAreaContent"}`
-    return <div className="claimFeedbackArea">
+    let claimFeedbackAreaClasses = `claimFeedbackArea ${this.props.evidenceType=="counter" && "counter" }`
+    return <div className={claimFeedbackAreaClasses}>
       <div className={errorClasses}>{error}</div>
       {suggestions && suggestions.length > 0 && <ExistingClaimPicker claims={suggestions} onSelectClaim={this.selectExistingClaim}/>}
     </div>
@@ -56,7 +58,6 @@ class TitleText extends React.Component {
       this.props.onSubmit();
     }
   }  
-    
   // To make feedbackArea persistent change {titleTextFocused: false} to {titleTextFocused: true}  
   renderCountedTextField = (title, textProps, error, suggestions, searching) =>
     <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (

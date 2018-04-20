@@ -34,14 +34,15 @@ class AddEvidenceForm extends React.Component {
   //   but really we should fix the bug
   //   see PR here: https://github.com/aaronlifshin/whysaurus/pull/82#pullrequestreview-111369929
   render(){
-    let submitClasses = `buttonUX2 createClaimFormButton ${this.props.evidenceType=="counter" ? "buttonUX2Red" : ""}`
+    let submitClasses = `buttonUX2 createClaimFormButton ${this.props.evidenceType=="counter" && "buttonUX2Red" }`
+    let titleTextClasses = `titleTextField ${this.props.evidenceType=="counter" && "counter" }`
     let {point, evidenceType, addExistingClaim} = this.props
     return <Form onSubmit={this.props.onSubmit}
                  validate={values => ({title: validations.validateTitle(values.title)})}>
       { ({submitForm, values: {title}, validationFailures}) => (
         <form onSubmit={submitForm} className="addEvidenceForm">
           <div className="claimCreationFormFieldBlock">
-            <TitleText id="title" className="titleTextField"
+            <TitleText id="title" className={titleTextClasses}
                      autoComplete='off'
                      placeholder={this.generatePlaceholderText(evidenceType)}
                      suggestExistingClaims={true}

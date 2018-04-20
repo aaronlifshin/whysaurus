@@ -1096,9 +1096,11 @@ a:hover .perctSignSmall {
 }
 
 // red styling on CPs
+@stackCardCounterBG: hsla(348, 100%, 96%, 1);
+@stackCardCounterBorderColor: #f6a3a3 ;
 .stackCard.counter {
-  border-color: #f6a3a3 ;
-  background-color: hsla(348, 100%, 96%, 1)
+  border-color: @stackCardCounterBorderColor ;
+  background-color: @stackCardCounterBG;
 }
 .stackCardGroupActive:focus .stackCard.counter {
 /*.listedClaim:focus .stackCard.counter {*/
@@ -1559,8 +1561,12 @@ li .iconWithStat {
 }
 .buttonUX2:disabled {
   //color: lightgrey;
-  background-color: grey;
+  background-color: #a4a4a4; //@stackCardDefaultBorderColor; //grey;
 }
+.buttonUX2Red:disabled {
+  background-color: @stackCardCounterBorderColor ;
+}
+
 
 .buttonUX2:focus:enabled {
     //border: 2px solid @blueLight;
@@ -1618,7 +1624,7 @@ li .iconWithStat {
 .cancelButtonAddEvidence {
   padding-right: 0;
   float: right;
-  margin-top: 6px;
+  margin-top: 5px;
   margin-right: 12px;
 }
 
@@ -1752,7 +1758,7 @@ li .iconWithStat {
   height: 64px;
   font-size: @fontSizePointTitle;
   line-height: @lineHeightExtra;
-  color: black;
+  color: @nearBlack;
   padding-left: @cardPadding;
   padding-right: @cardPadding;
   padding-bottom: @cardPadding * 2;
@@ -1765,6 +1771,13 @@ li .iconWithStat {
   border-width: 1px;
   border-style: solid;
   border-radius: @borderRadiusUX2;
+  //background-color: hsla(169, 100%, 97%, 1);
+}
+.titleTextField.counter {
+  border-color: @stackCardCounterBorderColor ;
+}
+.titleTextField.counter:focus {
+  border-color: @red ;
 }
 .titleTextField::placeholder {
   color: grey;
@@ -1788,13 +1801,15 @@ li .iconWithStat {
   height: 92px;
   //box-shadow: inset 0 0 0px 2px @blueLight;
   box-shadow: none;
-  border-color: @blue; //@blueLight;
+  border-color: black; //@blue; //@blueLight;
   border-width: @titleTextFieldActiveBorderWidth;
   outline: none;
   //padding-top: 0;
   //border-bottom-right-radius: 0;
   //border-bottom-left-radius: 0;
 }
+
+
 .titleTextField:active::placeholder, .titleTextField:focus::placeholder {
   //top: -12px; // to prevent placeholder text from changing position when the field gets taller; using this approach bc vertical-align isn't working on the placeholder
 }
@@ -1811,11 +1826,12 @@ li .iconWithStat {
 }
 
 @titleTextFieldActiveBorderWidth: 2px;
+@claimFeedbackAreaVerticalCheat: -8px;
 .claimFeedbackArea {
   //display: inline-block;
   font-size: @fontSizePointTitle;
-  background-color: @editingAreaBG; //white
-  border-color: @blue; //@blueLight; // @stackCardDefaultBorderColor;
+  background-color: white; //hsla(0, 0%, 96%, 1); //@editingAreaBG; //white
+  border-color: @nearBlack; //@blue; //@blueLight; // @stackCardDefaultBorderColor;
   border-width: @titleTextFieldActiveBorderWidth;
   border-style: solid;
   border-bottom-right-radius: @borderRadiusUX2;
@@ -1825,12 +1841,17 @@ li .iconWithStat {
   padding: 0px;
   //min-height: 60px;
   margin: 0;
-  margin-top: -8px; // bc of the positioning cheat on charCount
+  margin-top: @claimFeedbackAreaVerticalCheat; // bc of the positioning cheat on charCount
   margin-bottom: 16px;
+}
+
+.claimFeedbackArea.counter {
+  border-color: @red;
 }
 
 .existingClaimPicker {
   padding: @cardPadding;
+  padding-top:  @cardPadding + (-0.5 * @claimFeedbackAreaVerticalCheat);
 }
 
 .existingClaimList {
@@ -2260,7 +2281,7 @@ a:hover .arrowAddEvidenceButton {
 .claimCreationFormFieldBlock {
   display: inline-block;
   width: @cardWidth;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 
 .editPointTextForm .claimCreationFormFieldBlock {

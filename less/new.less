@@ -745,29 +745,36 @@ a:visited {
     max-height: 600px;
     top:53px;
     width: 360px;
-    padding-top: 4px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
-.notificationMargin {
+.notification-menu li {
+  margin-left: 0;
+}
+
+
+.notificationLeft {
     width: 21px;
-    display: block;
+    display: inline-block;
     min-height: 30px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    float: left;
+    //float: left;
+    vertical-align: top;
 }
 
 .notificationText {
-    display: block;
+    display: inline-block;
     min-height: 30px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    float: left;
-    margin-left: 4px;
+    //float: left;
+    margin-left: 6px;
     padding-left: 3px;
-    width: 285px;
+    width: 270px;
     margin-top: -1px;
     white-space: normal;
 }
@@ -798,15 +805,28 @@ a:visited {
     font-size:0.75em;
     color:#bdbdbd;
     line-height:120%;
+  position: relative;
+  top: 3px;
+  margin-right: 16px;
+}
+li:hover .Submenu_SmallText {
+  color: hsla(0, 0%, 40%, 1);
 }
 
 .notificationMenuItem, #notificationMenuHeader, #notificationMenuFooter {
     cursor:pointer;
-    padding:4px 4px 4px 4px;
+  padding:4px;
+  padding-top: 6px !important;
     border-bottom: 1px solid #d7d7d7;
     width:auto;
+  display: block;
 }
-
+#notificationMenuHeader, #notificationMenuFooter {
+  //margin-left: 4px;
+  padding-left: 42px;
+  padding-bottom: 8px;
+  //padding-top: 2px !important;
+}
 
 .notificationAvatar {
     float:right;
@@ -815,6 +835,7 @@ a:visited {
 
 .notificationMenuItem:hover, #notificationMenuHeader:hover, #notificationMenuFooter:hover {
     background-color:@blueLight;
+  color: black;
 }
 
 .notificationCleared {
@@ -829,8 +850,8 @@ a:visited {
    NOTIFICATION AREA IN PROFILE PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #notificationsArea li {
-    list-style:none;
-    border-bottom: 1px solid #B9BBBD;
+	list-style:none;
+  // border-bottom: 1px solid #B9BBBD;	
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++
@@ -3056,7 +3077,7 @@ fieldset { padding:0; border:0; margin-top:25px;}
 
 .fieldEdit {
   float:left;
-  padding: 2px;
+  //padding: 2px;
   width:97%;
 }
 
@@ -3345,7 +3366,8 @@ fieldset { padding:0; border:0; margin-top:25px;}
         width:80%; // TEMPORARY: remove this class once we have full size profile pics
 }
 .profileStatsArea {
-    margin-bottom:8px;
+    margin-bottom: 24px;
+    margin-top: 24px;
 }
 
 a[name="profileEdit"] {
@@ -3372,7 +3394,11 @@ a[name="profileEdit"] {
 
 #profileDisclaimer {
     margin-top: 42px;
+    background-color: pink;
+    padding: 12px;
+    border-radius: 4px;
 }
+
 
 #recentlyViewed {
   margin-top: 40px;
@@ -3653,6 +3679,11 @@ h2.idLinkOffset:before {
 }
 .infoToggle, .subInfoToggle, .infoNonToggle, li {
     margin-left:8px;
+}
+
+#notificationsArea>li>a {
+  padding-left: 10px;
+  padding-top: 8px !important;
 }
 
 .infoToggle {

@@ -6,8 +6,8 @@ function validateProfileDialog() {
     valid = true;
     //userName = $("#userName").val();    
     websiteVal = $("#userWebsite").val();
-    areasVal = $("#userAreas").val();
-    professionVal = $("#userProfession").val();
+    //areasVal = $("#userAreas").val();
+    //professionVal = $("#userProfession").val();
     bioVal = $("#userBio").val();
     email = $("#userEmail").val();
     notificationFrequency = $('input[type="radio"]:checked').val();
@@ -21,23 +21,22 @@ function validateProfileDialog() {
         profileDialogAlert('Please supply an email address if you wish to receive ' + notificationFrequency + ' notifications.');
         valid = false;  
     } 
-    
     /*if (userName.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Username (500 characters)');
         valid = false;
     } */
-    if (professionVal.length >= 500) {
+    /*if (professionVal.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Current Profession (500 characters)');
         valid = false;        
-    }  
+    }  */
     if (websiteVal.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Website URL (500 characters)');
         valid = false;        
     }  
-    if (areasVal.length >= 500) {
+    /*if (areasVal.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Areas of Expertise (500 characters).  Wow, you must have a lot of expertise!');
         valid = false;        
-    } 
+    } */
     if (bioVal.length >= 500) {
         profileDialogAlert('Please do not exceed maximum length for Username (500 characters)');
         valid = false;
@@ -50,7 +49,10 @@ function validateProfileDialog() {
 }
 
 function saveProfileInfo() {
-    if (validateProfileDialog()) $('#frm_profileDialog').submit();
+    //console.log('saveProfileInfo');
+    if (validateProfileDialog()) {
+      $('#frm_profileDialog').submit();
+    }
 }
 
 $(document).ready(function() {

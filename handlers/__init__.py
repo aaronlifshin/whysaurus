@@ -22,6 +22,7 @@ __all__ = [
 	'SetEditorPickSort',
 	'UpdateSupportingPointsSchema',
 	'AaronTask',
+	'BatchJobs',
 	'RebuildSearchIndex',
 	'DBIntegrityCheck',
 	'SetRibbon',
@@ -58,6 +59,7 @@ from authhandler import AuthHandler
 from seteditorpicksort import SetEditorPickSort
 from updateSupportingPointsSchema import UpdateSupportingPointsSchema
 from aaronTask import AaronTask
+from batchJobs import BatchJobs
 from rebuildSearchIndex import RebuildSearchIndex
 from dbIntegrityCheck import DBIntegrityCheck
 from outliner import Outliner

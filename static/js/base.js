@@ -1685,7 +1685,7 @@ function activateHeaderAndDialogs() {
     } else {
         $( "#CreatePoint" ).on('click', function() {
             ga('send', 'event', 'Header Menu', 'Header Make A Point', 'Header Make A Point');
-            showPointDialog("new", "New Point");
+            showPointDialog("new", "New Claim");
         });
 
         $('#mainPagePublish').off('.ys').on('click.ys', createPointFromMainPage );

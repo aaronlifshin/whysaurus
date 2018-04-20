@@ -18,7 +18,7 @@
 		{% endfor %}
 	{% endif %}
     <div id="{{linkType}}_showBelowArea" class="hide">
-        <a id="{{linkType}}_showBelowThreshold" class="pointAreaActions pointListFooter" href="javascript:;">Toggle points below the relevance threshold</a>
+        <a id="{{linkType}}_showBelowThreshold" class="pointAreaActions pointListFooter" href="javascript:;">Toggle Claims below the relevance threshold</a>
     </div>
 </div>
 
@@ -33,25 +33,25 @@
 				<button id="{{linkType}}_addPointWhenNonZero" name="{{linkType}}_addPointWhenNonZero"
 					data-toggle="dropdown"
 					class="btn dropdown-toggle pointActionButton">
-					Add a {{linkType|title}} Point
+					Add a {{linkType|title}} Claim
 				</button>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenNonZero">
 					<li>
 						<a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenNonZero"
 							name="createLinked" data-linktype="{{linkType}}"
 							alt="Make a New {{linkType}} Point"
-							>Make a new point
+							>Make a new Claim
 						</a>
 				  	</li>
 					<li>
 						<a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenNonZero" 
 							name="{{linkType}}_searchForPoint" alt="Search for a {{linkType|title}} Point"
 							data-linktype="{{linkType}}"                    
-							>Search for an existing point
+							>Search for an existing Claim
 						</a>
 					</li>
 					{% if recentlyViewedPoints %}
-						<li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed point</a>
+						<li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed Claim</a>
 							<ul class="dropdown-menu">
 							  {% for RVpoint in recentlyViewedPoints %}
 							      <li><a tabindex="-1" aria-labelledby="add{{linkType}}PointWhenNonZero" 
@@ -65,7 +65,7 @@
 						</li>
 					{% else %}
 					  <li class="dropdown-submenu disabled"><a tabindex="-1" >
-						  Use a Recently viewed point
+						  Use a Recently viewed Claim
 					  </a>                             
 					{% endif %}                              
 				</ul>				
@@ -85,19 +85,19 @@
 		<div class="dropdown">
 		    <button name="{{linkType}}_linkPoint" class="btn dropdown-toggle pointActionButton" 
 		    id="{{linkType}}_addPointWhenZero" data-toggle="dropdown">
-				Add a {{linkType|title}} Point
+				Add a {{linkType|title}} Claim
 		    </button>                    
 		    <ul class="dropdown-menu" role="menu" aria-labelledby="{{linkType}}_addPointWhenZero">
 		      <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
-		        name="createLinked" data-linktype="{{linkType}}" alt="Make a New {{linkType|title}} Point"
-		        >Make a new point</a></li>
+		        name="createLinked" data-linktype="{{linkType}}" alt="Make a New {{linkType|title}} Claim"
+		        >Make a new Claim</a></li>
 		      <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
-		        name="{{linkType}}_searchForPoint" alt="Search for a {{linkType|title}} Point"
+		        name="{{linkType}}_searchForPoint" alt="Search for a {{linkType|title}} Claim"
 		        data-linktype="{{linkType}}"                         
-		        >Search for an existing point</a>
+		        >Search for an existing Claim</a>
 		      </li>
 		      {% if recentlyViewedPoints %}
-		        <li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed point</a>
+		        <li class="dropdown-submenu"><a tabindex="-1" >Use a Recently viewed Claim</a>
 		          <ul class="dropdown-menu">
 		            {% for RVpoint in recentlyViewedPoints %}
 		                <li><a tabindex="-1" aria-labelledby="{{linkType}}_addPointWhenZero" 
@@ -110,7 +110,7 @@
 		          </ul>
 		        </li>
 		      {% else %}
-		        <li class="dropdown-submenu disabled"><a tabindex="-1" >Use a Recently viewed point</a>                             
+		        <li class="dropdown-submenu disabled"><a tabindex="-1" >Use a Recently viewed Claim</a>                             
 		      {% endif %}                              
 		    </ul>			
 		</div>

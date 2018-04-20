@@ -155,7 +155,13 @@ class Point(ndb.Model):
     isTop = ndb.BooleanProperty(default=True)
     isLowQualityAdmin = ndb.BooleanProperty(default=False)
     engagementScoreBase = ndb.IntegerProperty(default=0) # accrued engagement score - access via engagementScore prop
-    # pointValueCached = ndb.FloatProperty(indexed=False)  # cache of pointValue for indexing
+
+    # Cached versions of the scoring - hardcoded to invalid defaults - not to be used directly
+    # xxxScoreCached is the propety to use to include caching
+    INVALID_CACHED_FLOAT = -9999.9999
+    INVALID_CACHED_INT = -9999
+    cachedPointValue = ndb.IntegerProperty(indexed=True, default=INVALID_CACHED_INT)  # cache of pointValue for indexing
+    cachedEngagementScore = ndb.IntegerProperty(indexed=True, default=INVALID_CACHED_INT)
 
     ENGAGEMENT_PER_VOTE = 1
     ENGAGEMENT_PER_COMMENT = 2
@@ -184,6 +190,13 @@ class Point(ndb.Model):
         return (min(1, len(self.sources))
                 + self.upVotes - self.downVotes
                 + self.getChildrenPointRating())
+    
+    @property
+    def pointValueCached(self):
+        """The last cached pointValue, or if not set, will call pointValue directly"""
+        if self.cachedPointValue != self.INVALID_CACHED_INT:
+            return self.cachedPointValue
+        return self.pointValue()
 
     @property
     def engagementScore(self):
@@ -193,6 +206,13 @@ class Point(ndb.Model):
                + len(self.supportingLinks) * self.ENGAGEMENT_PER_LINK \
                + len(self.counterLinks) * self.ENGAGEMENT_PER_LINK \
                + len(self.usersContributed) * self.ENGAGEMENT_PER_CONTRIBUTOR
+    
+    @property
+    def engagementScoreCached(self):
+        """The last cached engagement score, or if not set, will call engagementScore directly"""
+        if self.cachedEngagementScore != self.INVALID_CACHED_INT:
+            return self.cachedEngagementScore
+        return self.engagementScore
 
     @property
     def linksRatio(self):
@@ -751,7 +771,7 @@ class Point(ndb.Model):
             linkPoints = self.getLinkedPointsForLinks(links)
             # will sort on first item in tuple, then second...
             # adding lp._linkInfo at the end so it can be returned
-            sortingList = sorted([(lp._linkInfo.rating, lp.pointValue(), lp._linkInfo)
+            sortingList = sorted([(lp._linkInfo.rating, lp.pointValueCached, lp._linkInfo)
                                   for lp in linkPoints],
                                  reverse=True)
             sortedLinks = [p[2] for p in sortingList]
@@ -764,12 +784,37 @@ class Point(ndb.Model):
         for linkType in linkTypes:
             pointsAndRoots = pointRoot.getBacklinkPointRootPairs(linkType)
             for point,root in pointsAndRoots:
+                point.updateCachedValues(doPutOnUpdate=False, recurse=False)
                 point.sortLinks(linkType)
                 point.put()
                 if recurseUp:
                     # only go up one level, because further *sorting* is unaffected
                     # WARNING: if we DO recurse up, then must watch out for cycles!!
                     point.updateBacklinkedSorts(root, recurseUp=False)
+                    
+    def updateCachedValues(self, doPutOnUpdate=True, recurse=False):
+        hasUpdate = False
+        
+        pv = self.pointValue()
+        if pv != self.cachedPointValue:
+            self.cachedPointValue = pv
+            hasUpdate = True
+            
+        es = self.engagementScore
+        if es != self.cachedEngagementScore:
+            logging.info('Updating cachedEngagementScore: %d -> %d' % (self.cachedEngagementScore, es))
+            self.cachedEngagementScore = es
+            hasUpdate = True
+        
+        if not hasUpdate:
+            return
+        
+        if doPutOnUpdate:
+            self.put()
+            
+        # TODO: Recurse up? Just call updateBacklinks?
+        # (Right now we're doing the recursion in updateBacklinkedSorts, triggered by the initial update)
+        
 
     def removeLink(self, linkRoot, linkType):
         links = self.getStructuredLinkCollection(linkType)
@@ -819,6 +864,7 @@ class Point(ndb.Model):
             possiblyNewCurrent.current = False
             possiblyNewCurrent.put()"""
 
+        newPoint.updateCachedValues(doPutOnUpdate=False, recurse=False)
         newPoint.put()
         theRoot.current = newPoint.key
         theRoot.put()
@@ -864,7 +910,9 @@ class Point(ndb.Model):
             newPoint.upVotes = self.upVotes # number of agrees
             newPoint.downVotes = self.downVotes # number of disagrees
             newPoint.voteTotal = self.voteTotal
+            # newPoint.cachedPointValue = self.cachedPointValue
             newPoint.engagementScoreBase = self.engagementScoreBase
+            newPoint.updateCachedValues(doPutOnUpdate=False, recurse=False)
             newPoint.imageURL = self.imageURL if imageURL is None else imageURL
             newPoint.imageDescription = self.imageDescription if imageDescription is None else imageDescription
             newPoint.imageAuthor = self.imageAuthor if imageAuthor is None else imageAuthor
@@ -980,6 +1028,7 @@ class Point(ndb.Model):
             newPoint.upVotes = self.upVotes
             newPoint.downVotes = self.downVotes
             newPoint.voteTotal = self.voteTotal
+            # newPoint.cachedPointValue = self.cachedPointValue
             newPoint.engagementScoreBase = self.engagementScoreBase
             newPoint.ribbonTotal = self.ribbonTotal
             newPoint.imageURL = self.imageURL
@@ -990,6 +1039,7 @@ class Point(ndb.Model):
             newPoint.creatorName = self.creatorName
             newPoint.creatorURL = self.creatorURL
             newPoint.usersContributed = list(self.usersContributed)
+            newPoint.updateCachedValues(doPutOnUpdate=False, recurse=False)
             self.current = False
             newPoint.current = True
             self.put()
@@ -1116,6 +1166,7 @@ class Point(ndb.Model):
                     break
             if ourLink:
                 ourLink.updateRelevanceData(oldRelVote, newRelVote)
+                self.updateCachedValues(doPutOnUpdate=False,recurse=False)
                 self.sortLinks(newRelVote.linkType, links)
                 self.put()
                 retVal = True, ourLink.rating, ourLink.voteCount
@@ -1567,6 +1618,7 @@ class PointRoot(ndb.Model):
                 cur.addContributingUser(root_user)
 
             cur.engagementScoreBase += Point.ENGAGEMENT_PER_COMMENT
+            cur.updateCachedValues(doPutOnUpdate=False, recurse=False)
             cur.put()
 
     # shift this comment and all its childern into the archived array

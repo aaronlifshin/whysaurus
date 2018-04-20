@@ -136,3 +136,22 @@ class EditPoint(AuthHandler):
         resultJSON = json.dumps(result)    
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
+
+    def updateCachedValues(self, pointURL):
+        point, pointRoot = Point.getCurrentByUrl(pointURL)
+        if pointRoot:
+            eValue = point.cachedPointValue
+            point.updateCachedValues(doPutOnUpdate=True, recurse=False)
+            pValue = point.cachedPointValue
+            if (eValue == pValue):
+                message = 'Updated Cached Value - No Change (%d): %s' % (pValue, point.title)
+            else:
+                message = 'Updated Cached Values (%d -> %d): %s' % (eValue, pValue, point.title)
+        else:
+            message = 'Could not find point'
+        template_values = {
+            'message': message,
+            'user': self.current_user,
+            'currentArea': self.session.get('currentArea')
+        }
+        self.response.out.write(self.template_render('message.html', template_values))

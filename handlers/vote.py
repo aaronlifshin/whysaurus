@@ -48,7 +48,7 @@ class Vote(AuthHandler):
                 if parentPoint:
                     parentNewScore = parentPoint.pointValue()
                 else:
-                    parentNewScore = 17
+                    parentNewScore = -999
                 resultJSON = json.dumps({
                     'result': True, 
                     'newVote': vote,

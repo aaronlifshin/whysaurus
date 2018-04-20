@@ -71,6 +71,12 @@ class NotificationHandler(AuthHandler):
             return
         WhysaurusUser.sendNotificationEmails(self)
         self.response.out.write('') # succeed!
+
+    def sendSingleNotificationEmail(self):
+        user = self.current_user
+        logging.info('Sending notification email for user %s' % user.name)
+        user.sendSingleNotificationEmail(self)
+        self.response.out.write('')  # succeed!
         
         
         

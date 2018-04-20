@@ -2,7 +2,7 @@
     <div class="row-fluid">
         <div class="commentInstruction">
             <!-- header is obscuring id links so I'm being hacky and linking to the previous id -->
-            Discuss how to make this point <a id="commentHintLink">stronger</a> - <br>
+            Discuss how to make this Claim <a id="commentHintLink">stronger</a> - <br>
             <span id="commentHint" class="hide"><br>Is the point unclear?<br>Should it be more specific?<br>Does it need evidence?<br><br></span>
             <a id="showAddComment">Add a Comment.</a> 
         </div> 
@@ -54,7 +54,7 @@
     </div>   
         {% if pointRoot.numArchivedComments > 0 %}
         <div id="archivedComments" class="commentArea">   
-            This point has <span id="numArchivedComments">{{pointRoot.numArchivedComments}}</span> archived comment{%if pointRoot.numArchivedComments > 1%}s{% endif%}.                     
+            This claim has <span id="numArchivedComments">{{pointRoot.numArchivedComments}}</span> archived comment{%if pointRoot.numArchivedComments > 1%}s{% endif%}.                     
             <a id="commentViewArchived" alt="Show Archived Comments">Show</a>
         </div>
         {% endif %}

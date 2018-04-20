@@ -97,7 +97,6 @@
                   </a>
                 -->
                 <a id="CreatePoint" href='javascript:;' alt="Make a Point">
-<<<<<<< .merge_file_a08812
                   <span id="makePointIcon"  class="headerLinkIcon fa fa-edit"></span>
                   <span class="hidden-xs hidden-phone">Make Argument</span>
                 </a>
@@ -105,15 +104,7 @@
               <div id="searchArea" class="headerItem">
                   <input id="searchBox" type="text" name="searchTerms" placeholder="Find Argument..." results="0" />
                   <span class="searchIcon pull-right fa fa-search"></span>
-=======
-                  <img id="makePointIcon" class="headerLinkIcon" src="/static/img/icon_pointPen_32px.png"/>
-                  <span class="hidden-xs hidden-phone">MAKE A CLAIM</span>
-                </a> 
-              </div>       
-              <div id="searchArea" class="span3">
-                  <input id="searchBox" type="text" name="searchTerms" placeholder="Find Claims..." results="0" />
-                  <div class="searchIcon pull-right"></div>
->>>>>>> .merge_file_a12128
+
               </div>
               <span class="headerItem">
                 <div id="aboutMenu">
@@ -142,11 +133,8 @@
                               </span>                           
                           </li>
                   </ul>
-<<<<<<< .merge_file_a08812
                 </div>
               </span>
-
-
 
         	  {% if user %}
               <div id="userMenuArea" class="headerItem headerUserName pull-right">
@@ -174,32 +162,7 @@
                              {% for area in user.privateAreas %}
                                  {% if area != currentArea %}
                                    <li><a class="areaChoose" data-area="{{area}}">{{area}}</a></li>
-=======
-                </span>  
-              </div>     
-                   
-        	  {% if user %}              
-                <div class="userMenuArea headerUserName pull-right">
-                        <span class="caret vertalignmiddle hidden-phone hidden-xs"></span>                    
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}"> 
-                            <span class="responsiveLabel">
-                                {{ user.name }}                       
-                            </span> 
-                            <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/> 
-                        </a>
-                        <ul id="userMenuSignedIn" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                        {% if user and user.anyPrivateAreas %}
-                            {% if currentArea %}
-                                   <li><a class="areaChoose" data-area="public">Go to Public Space</a></li>       
-                                   <li class="divider"></li>                                            
-                            {% endif %}                          
 
-                            {% if not user.manyPrivateAreas %}
-                                {% if not currentArea %}
-                                   <li class="menuHeading">Go to Classroom:</li>                                
-                                   <li><a class="areaChoose" data-area="{{user.privateAreas.0}}">{{user.privateAreas.0}}</a></li>
-                                   <li class="divider"></li>                                   
->>>>>>> .merge_file_a12128
                                  {% endif %}
                              {% endfor %}
                              <li class="divider"></li>
@@ -210,7 +173,6 @@
                           <li><a tabindex="-1" href="/roster">Roster</a></li>
                           <li class="divider"></li>
                         {% endif %}
-<<<<<<< .merge_file_a08812
                     {% endif %}
                     {% if user.isAdmin %}
                         <li><a tabindex="-1" href="/admin"> Admin </a></li>
@@ -253,55 +215,7 @@
                   </ul>
                 </div>
 
-=======
-                          {% if currentArea and currentArea != '' %}
-                              {% if user.isAdmin or user.isTeacher %}
-                                <li><a tabindex="-1" href="/roster">Roster</a></li>
-                                <li class="divider"></li>
-                              {% endif %}
-                          {% endif %}
-                          {% if user.isAdmin %}
-                              <li><a tabindex="-1" href="/admin"> Admin </a></li>                   
-                          {% endif %}
-                          <li><a tabindex="-1" href="/user/{{user.url}}" onclick="ga('send', 'event', 'UserMenu', 'Profile')"> Profile </a></li>
-                          {% if user.emailUser %}
-                              <li><a tabindex="-1" href="/changePassword" onclick="ga('send', 'event', 'UserMenu', 'Change Password')">Change Password</a></li>
-                          {% endif %}                 
-                          <li><a tabindex="-1" href="/logout"> Logout </a></li>
-                        </ul>
-                </div>                      
-                <div id="notifications" class="pull-right">                    
-                            <a class="dropdown-toggle" data-toggle="dropdown">                      
-                                <img id="notificationIcon" src="/static/img/notificationIcon.png"/>  
-                            </a>                                                                         
-                            <div id="notificationCount" {% if user.newNotificationCount == 0 %}class="hide"{%endif%}>                       
-                                {{ user.newNotificationCount }} 
-                            </div>
-                          <ul class="dropdown-menu notification-menu" role="menu" aria-labelledby="dropdownMenu">
-                             <li id="notificationMenuHeader" class="Heading_GreyMid_Caps" 
-                            {% if user.notifications %} 
-                                data-latest="{% with user.notifications|first as n %}{{ n.raisedDateSecs }}{% endwith %}"                                                                         
-                                {% if user.notifications|length == 11 %}                            
-                                    data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"                            
-                                {% endif %}                                                                                                                    
-                            {% endif %}                            
-                                >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
-                            
-                            {% if user.notifications %}                      
-                             {% for notification in user.notifications %}
-                                    {% include 'notificationMenu.html' %} 
-                             {% endfor %} 
-                           {% endif %}
-                       
-                           {% if user.moreNotificationsExist  %}
-    	                        <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
-    	                            View all notifications
-    	                        </li>  
-                            {% endif %}                                     
-                          </ul> 
-                </div>          
-                                                                                                                                          
->>>>>>> .merge_file_a12128
+
         	  {% else %}
                 <div id="userMenuArea" class="headerItem pull-right">
                   <a id="signInFromHeader">Sign In</a>

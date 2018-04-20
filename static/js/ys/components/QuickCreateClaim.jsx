@@ -45,7 +45,7 @@ export default class QuickCreateClaim extends React.Component {
         <Spinner /><span className="spinnerLabel">Adding your claim...</span>
       </span>;
     } else {
-      return <button className="buttonUX2 buttonUX2Blue buttonUX2RespIcon createClaimFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>;
+      return <button className="buttonUX2 buttonUX2RespIcon createClaimFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>;
     }
   }
 

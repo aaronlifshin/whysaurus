@@ -1504,45 +1504,11 @@ li .iconWithStat {
 @tabUX2_color: @blue; // hsl(0, 0%, 25%);
 @tabUX2_colorHover: @blueLight; // black;
 
-
-.tabUX2 {
-  padding: @buttonUX2_paddingTop;
+.buttonUX2, .tabUX2 {
+  padding-top: @buttonUX2_paddingTop;
   padding-left: @buttonUX2_paddingLeft;
   padding-right: @buttonUX2_paddingRight;
-  margin-bottom: 0;
-  //font-family: ff-meta-web-pro-condensed,sans-serif;
-  font-weight: @buttonUX2_fontWeight;
-  font-size: @fontSizePointTitle;
-  font-style: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  color: @tabUX2_color;
-  background-color: none;
-  border: none;
-  -webkit-border-radius: @borderRadiusUX2;
-  -moz-border-radius: @borderRadiusUX2;
-  border-radius: @borderRadiusUX2;
-  display: inline-block;
-  margin-right: 4px;
-}
-
-.tabUX2_selected {
-  background-color: @tabUX2_color;
-  color: white;
-}
-
-.tabUX2:hover {
-  background-color: @tabUX2_colorHover;
-  color: white;
-}
-
-.buttonUX2 {
-  padding: @buttonUX2_paddingTop;
-  padding-left: @buttonUX2_paddingLeft;
-  padding-right: @buttonUX2_paddingRight;
-  position: relative;
-  top:-2px;
+  padding-bottom: @buttonUX2_paddingTop + 2px;
   margin-bottom: 0;
   //font-family: ff-meta-web-pro-condensed,sans-serif;
   font-weight: @buttonUX2_fontWeight;
@@ -1550,13 +1516,33 @@ li .iconWithStat {
   font-style: normal;
   text-align: center;
   vertical-align: middle;
-  cursor: pointer;
-  color: white;
-  background-color: hsl(0, 0%, 25%);
+  cursor: pointer;  
   border: none;
   -webkit-border-radius: @borderRadiusUX2;
   -moz-border-radius: @borderRadiusUX2;
-  border-radius: @borderRadiusUX2;
+  border-radius: @borderRadiusUX2;  
+}
+
+.tabUX2 {
+  color: @tabUX2_color;
+  background-color: none;
+  display: inline-block;
+  margin-right: 4px;
+}
+.tabUX2_selected {
+  background-color: @tabUX2_color;
+  color: white;
+}
+.tabUX2:hover {
+  background-color: @tabUX2_colorHover;
+  color: white;
+}
+
+.buttonUX2 {
+  position: relative;
+  top:-2px;
+  color: white;
+  background-color: hsl(0, 0%, 25%);
   outline: none !important;
 }
 .buttonUX2:disabled {
@@ -1624,8 +1610,10 @@ li .iconWithStat {
 .cancelButtonAddEvidence {
   padding-right: 0;
   float: right;
-  margin-top: 5px;
   margin-right: 12px;
+  margin-top: 7px;
+  margin-left: 2px;
+  color: grey;
 }
 
 .addEvidenceButton {
@@ -1669,6 +1657,7 @@ li .iconWithStat {
 }
 
 .createClaimFormButton {
+  display: block;
   font-size: @fontSizePointTitle;
   top: 0;
 }
@@ -1803,7 +1792,7 @@ li .iconWithStat {
   //border-bottom-right-radius: 0;
   //border-bottom-left-radius: 0;
 }
-.addEvidenceForm .titleTextField {
+.addEvidenceForm .titleTextField, #editPointTextField.titleTextField {
   border-color: @nearBlack; 
   border-width: @titleTextFieldActiveBorderWidth;
 }
@@ -2191,7 +2180,7 @@ a:hover .arrowAddEvidenceButton {
     //display: block;
     //z-index: 100;
     position: relative;
-    width: 24px;
+    max-width: 24px;
     //background-color: pink;
     //margin-top: -24px; //top: -24px;
     float: right;

@@ -87,6 +87,12 @@ class Home extends React.Component {
   }
   renderIllustration3(){
      return  <div className="explanationBlock">
+       <img className="explanationImageCentered flip" src="/static/img/homePageIllustration_UX2_v02_2x_Reuse.png"/>
+       <div className="explanationTextCentered lessWidth">Re-use Claims in<br/>New Arguments</div>
+     </div>
+  }
+  renderIllustration4(){
+     return  <div className="explanationBlock">
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_FindUseful.png"/>
        <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
      </div>
@@ -99,6 +105,7 @@ class Home extends React.Component {
             {this.renderIllustration1()}
             {this.renderIllustration2()}
             {this.renderIllustration3()}
+            {this.renderIllustration4()}
         </div>
       </MediaQuery>
       <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
@@ -111,6 +118,9 @@ class Home extends React.Component {
           </div>
           <div>
             {this.renderIllustration3()}
+          </div>
+          <div>
+            {this.renderIllustration4()}
           </div>
         </Carousel>
       </MediaQuery>

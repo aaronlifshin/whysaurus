@@ -137,6 +137,11 @@ a:focus, a:hover {
   width: 100%;
 }
 
+.flip {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
 .inlineflexBox {
   display: inline-flex;
   vertical-align: top;
@@ -2214,9 +2219,10 @@ a:hover .arrowAddEvidenceButton {
 #explanationRowHomepage {
   //border-bottom-style: none;
   //margin-left: @cardStackWidth;
-  margin-bottom: 32px;
+  margin-bottom: 42px;
   padding-bottom: 21px;
-  width: 101%; // stick out a bit further to align with the right edge of the about icon
+  margin-top: 23px;
+  margin-left: -3px;
 }
 
 .explanationBlock {
@@ -2338,7 +2344,7 @@ a:hover .arrowAddEvidenceButton {
 #mainPageMainArea {
   padding-left: 0;
   min-height: 960px; // prevents vertical scroll jumping in databases with few claims
-  margin-top: 27px;
+  margin-top: 32px;
 }
 
 .react-tabs__tab-list {

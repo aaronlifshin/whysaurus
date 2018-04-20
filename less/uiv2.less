@@ -42,8 +42,8 @@ h1, h2, h3, h4, h5, h6, body {
 
 @fontSizeTertiaryUX2:  @baseFontSizeUX2 * 0.750; // ~12px;
 @fontSizeSecondaryUX2: @baseFontSizeUX2 * 0.875; // ~14px
-@fontSizeButtonsUX2:   @baseFontSizeUX2 * 0.875; // ~14px
 @fontSizeHeaderUX2:    @baseFontSizeUX2 * 0.938; // ~15px
+@fontSizeButtonsUX2:   @baseFontSizeUX2 * 0.938; // ~15px // @baseFontSizeUX2 * 1.00; // ~16px
 @fontSizePointTitle:   @baseFontSizeUX2 * 1.063; // ~17px
 @arrowFontSizeUX2:     @baseFontSizeUX2 * 1.125; // ~18px
 
@@ -1465,9 +1465,9 @@ li .iconWithStat {
 }
 
 @keyframes shareIconAreaReveal {
-   0% { opacity: 0; left: -24px; }
+   0% { opacity: 0; }// left: -24px; }
    25% { opacity: 0; }
-   75% { left: -2px; } 
+   //75% { left: -2px; } 
    100% { opacity: 1;  }
 }
 
@@ -1475,9 +1475,9 @@ li .iconWithStat {
   display: inline-block;
   color: @smallGreyLinkColor;
   position: relative;
-  left: -2px;
-  top: -9px;
-  font-size: 14px;
+  left: -3px;
+  top: -1px;
+  font-size: 15px;
   vertical-align: top;
   padding-top: 4px;
   animation-name: shareIconAreaReveal;
@@ -1488,7 +1488,7 @@ li .iconWithStat {
 
 .claimShareIcon {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
 
 ///////////////////////////////////////////////////////
@@ -1508,7 +1508,7 @@ li .iconWithStat {
   padding-top: @buttonUX2_paddingTop;
   padding-left: @buttonUX2_paddingLeft;
   padding-right: @buttonUX2_paddingRight;
-  padding-bottom: @buttonUX2_paddingTop + 2px;
+  padding-bottom: @buttonUX2_paddingTop + 1px;
   margin-bottom: 0;
   //font-family: ff-meta-web-pro-condensed,sans-serif;
   font-weight: @buttonUX2_fontWeight;
@@ -1542,7 +1542,7 @@ li .iconWithStat {
   position: relative;
   top:-2px;
   color: white;
-  background-color: hsl(0, 0%, 25%);
+  background-color: hsl(0, 0%, 21%); // a bit lighter tan @nearBlack to help :hover be more different
   outline: none !important;
 }
 .buttonUX2:disabled {
@@ -1633,7 +1633,7 @@ li .iconWithStat {
   margin-bottom: @marginVerticalStandard *2.5;
   margin-top: @marginVerticalStandard * 3;
   margin-left: 14px;
-  color: black;
+  color:@nearBlack;
   display: inline-block;
   //width: max-content;
   //width: -moz-max-content;
@@ -1658,7 +1658,7 @@ li .iconWithStat {
 
 .createClaimFormButton {
   display: block;
-  font-size: @fontSizePointTitle;
+  //font-size: @fontSizePointTitle;
   top: 0;
 }
 
@@ -1905,7 +1905,7 @@ li .iconWithStat {
   height: 0;
   border-left: @arrowHeadWidth solid transparent;
   border-right: @arrowHeadWidth solid transparent;
-  border-bottom: 8px solid black;
+  border-bottom: 8px solid@nearBlack;
 }
 .arrowHeadUp.counter {
   border-bottom-color: @red !important;

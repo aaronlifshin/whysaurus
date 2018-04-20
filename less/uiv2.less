@@ -1417,7 +1417,7 @@ li .iconWithStat {
 
 @keyframes editAreaReveal {
    0% { max-height: 0; opacity: 0; padding-top: 0; }
-   75% { max-height: 190px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   75% { max-height: 240px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
 
@@ -1684,20 +1684,35 @@ li .iconWithStat {
 
 @keyframes editPointTextFieldReveal {
    0% { max-height: 0; opacity: 0; }
-   75% { max-height: 120px; } // max-height needs to be set manually to be >= height of the block
+   75% { max-height: 172px; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
 
 #editPointTextField {
-  height: 120px;
-  padding-top: 16px;
+  //height: 120px;
+  padding-top: 10px;
   animation-name: editPointTextFieldReveal;
   animation-duration: @editAreaRevealDuration * 1;
   animation-timing-function: ease;
   animation-iteration-count: 1;
 }
 #editPointTextField:focus {
-  height: 120px;
+  //height: 120px;
+}
+.twoLines {
+  height: 82px !important;
+}
+.threeLines {
+  height: 110px !important;
+}
+.fourLines {
+  height: 128px !important;
+}
+.fiveLines {
+  height: 148px !important;
+}
+.sixLines {
+  height: 164px !important;
 }
 
 .addEvidenceFormGroup {

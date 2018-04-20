@@ -140,10 +140,11 @@ class AddEvidence extends React.Component {
   </span>
 
 
-  renderEvidenceArrow = (color) => {
+  renderEvidenceArrow = () => {
+    let isCounter = (this.state.addingCounter || this.uiType == "COUNTER")
     let arrowGrpClass = `arrowEvidence ${(this.numSupportingPlusCounter() > 0) && "verticalOffsetForLongEvidenceArrow"}`
-    let arrowHeadClass = `arrowHeadUp ${color == "red" && "arrowHeadUpRed"}`
-    let arrowStemClass = `arrowStemEvidence ${(this.numSupportingPlusCounter() == 0) && "arrowStemEvidenceShort" } ${color == "red" && "arrowStemRed"}`
+    let arrowHeadClass = `arrowHeadUp ${isCounter && "counter"}`
+    let arrowStemClass = `arrowStemEvidence ${(this.numSupportingPlusCounter() == 0) && "arrowStemEvidenceShort" } ${isCounter && "counter"}`
     return <div className={arrowGrpClass}>
       <div className={arrowHeadClass}></div>
       <div className={arrowStemClass}></div>
@@ -170,7 +171,7 @@ class AddEvidence extends React.Component {
       </div>
     case "COUNTER":
       return <div className={topDivClass}>
-        { this.renderEvidenceArrow("red") }
+        { this.renderEvidenceArrow() }
         <span className={controlsAreaClass}>
           { this.state.addingCounter ? this.renderAddEvidenceForm("counter") : this.renderCounterButton() }
         </span>

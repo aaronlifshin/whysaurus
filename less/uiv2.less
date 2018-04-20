@@ -1773,12 +1773,7 @@ li .iconWithStat {
   border-radius: @borderRadiusUX2;
   //background-color: hsla(169, 100%, 97%, 1);
 }
-.titleTextField.counter {
-  border-color: @stackCardCounterBorderColor ;
-}
-.titleTextField.counter:focus {
-  border-color: @red ;
-}
+
 .titleTextField::placeholder {
   color: grey;
   font-style: italic;
@@ -1801,12 +1796,23 @@ li .iconWithStat {
   height: 92px;
   //box-shadow: inset 0 0 0px 2px @blueLight;
   box-shadow: none;
-  border-color: black; //@blue; //@blueLight;
+  border-color: @nearBlack; //@blue; //@blueLight;
   border-width: @titleTextFieldActiveBorderWidth;
   outline: none;
   //padding-top: 0;
   //border-bottom-right-radius: 0;
   //border-bottom-left-radius: 0;
+}
+.addEvidenceForm .titleTextField {
+  border-color: @nearBlack; 
+  border-width: @titleTextFieldActiveBorderWidth;
+}
+.titleTextField.counter {
+  border-color: @red; 
+  border-width: @titleTextFieldActiveBorderWidth;
+}
+.titleTextField.counter:focus {
+  border-color: @red ;
 }
 
 
@@ -1912,7 +1918,7 @@ li .iconWithStat {
   border-right: @arrowHeadWidth solid transparent;
   border-bottom: 8px solid black;
 }
-.arrowHeadUpRed {
+.arrowHeadUp.counter {
   border-bottom-color: @red !important;
 }
 
@@ -1926,6 +1932,10 @@ li .iconWithStat {
   border-left: @arrowStemWidth solid @nearBlack;
   border-bottom: @arrowStemWidth solid @nearBlack;
 }
+.arrowStemEvidence.counter {
+  border-bottom-color: @red !important;
+  border-left-color: @red !important;
+}
 .arrowStemEvidenceShort {
   height: 20px;
 }
@@ -1933,13 +1943,9 @@ li .iconWithStat {
 .arrowEvidence {
   display: inline-block;
   margin-left: 21px;
-  margin-right: 2px;
   vertical-align: top;
 }
-.arrowStemRed {
-  border-bottom-color: @red !important;
-  border-left-color: @red !important;
-}
+
 // this class cheats the add evidence arrow up, to overlap with the pointcard above it
 // it is placed multiple times on a few individual controls, rather than just once on a parent, to prevent
 // its vertical offset from getting in the way of clicking on the controls in the pointcard above

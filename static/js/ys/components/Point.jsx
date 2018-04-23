@@ -167,7 +167,7 @@ class Sources extends React.Component {
   }
 
   render(){
-    return <div className="sources">
+    return <div className="sources pointCardPaddingH">
       {this.point.sources && this.point.sources.map(({name, url}, i) =>
         <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name}</a></div>
       )}

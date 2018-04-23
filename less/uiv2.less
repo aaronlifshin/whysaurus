@@ -276,7 +276,7 @@ a:focus, a:hover {
 }
 
 #aboutDropdown {
-  left: -134px;
+  left: -129px;
   margin-top: 14px
 }
 
@@ -309,7 +309,7 @@ a:focus, a:hover {
 
 #userMenuSignedIn {
   position: absolute;
-  left: -34px;
+  left: -64px;
   right: unset;
   min-width: unset; // over-riding new.less
 }
@@ -354,9 +354,9 @@ textarea {
 @dropdownBorderColor: rgba(0,0,0,.1);
 .dropdown-menu {
   min-width: unset; // over-riding bootstrap defaults
-  padding: 6px;
+  //padding: 6px; // build padding into drop-down menu componants rather than the menu itself
+  //padding-bottom: 12px; 
   margin-top: 4px;
-  padding-bottom: 12px;
   border-radius: @borderRadiusUX2;
     //background-color: #e1ffff;
   border: 1px solid @dropdownBorderColor;
@@ -2383,7 +2383,7 @@ a:hover .arrowAddEvidenceButton {
     max-width: 150px;
   }
   #userMenuSignedIn {
-    left: 4px;
+    //left: -64px;
   }
 }
 

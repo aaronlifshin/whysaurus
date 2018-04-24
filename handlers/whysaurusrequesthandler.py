@@ -3,6 +3,7 @@ import logging
 from webapp2_extras import auth, sessions
 from jinja2 import exceptions
 from google.appengine.api import namespace_manager
+from google.appengine.api import app_identity
 from models.privateArea import PrivateArea
 
 class WhysaurusRequestHandler(webapp2.RequestHandler):
@@ -87,12 +88,19 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
         """Returns true if a user is currently logged in, false otherwise"""
         return self.auth.get_user_by_session() is not None
 
+    @webapp2.cached_property
+    def is_prod_instance(self):
+        """Returns true if this is the production instance id"""
+        app_id = app_identity.get_application_id()
+        return app_id == 'whysaurus'
+
     def render(self, template_name, template_vars={}):
         # Preset values for the template
         values = {
             'url_for': self.uri_for,
             'logged_in': self.logged_in,
-            'flashes': self.session.get_flashes()
+            'flashes': self.session.get_flashes(),
+            'is_prod': self.is_prod_instance
         }
 
         # Add manually supplied template values

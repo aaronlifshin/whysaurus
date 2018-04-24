@@ -40,20 +40,23 @@
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        // YsTest
-        //ga('create', 'UA-42013841-2', 'auto', {
-        // Whysaurus
-        ga('create', 'UA-42013841-1', 'auto', {
-            {% if user.gaId %}userId: '{{user.gaId}}'{% endif %}
-        });
-
-        {% if user.isInternal %}
-          ga('set', 'dimension1', 'internal');
+        {% if is_prod %}
+            // Whysaurus
+            ga('create', 'UA-42013841-1', 'auto', {
+                {% if user.gaId %}userId: '{{user.gaId}}'{% endif %}
+            });
         {% else %}
-          ga('set', 'dimension1', 'user');
+            // YsTest
+            ga('create', 'UA-42013841-2', 'auto', {
+                {% if user.gaId %}userId: '{{user.gaId}}'{% endif %}
+            });
         {% endif %}
-
-        ga('send', 'pageview');
+        {% if user.isInternal %}
+            ga('set', 'dimension1', 'internal');
+        {% else %}
+            ga('set', 'dimension1', 'user');
+        {% endif %}
+            ga('send', 'pageview');
     </script>
 
       <!--

@@ -11,6 +11,8 @@ import {PointListWithPoint} from './ys/components/PointList';
 import History from './ys/components/History';
 import {HomePage} from './ys/home';
 import {ExpandedIndexProvider} from './ys/components/ExpandedIndex'
+import {SearchBox} from './ys/components/SearchBox'
+import {SearchResults} from './ys/components/SearchResults'
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: '/graphql', credentials: 'same-origin' }),
@@ -51,12 +53,13 @@ class HistoryPage extends React.Component {
 
 class App extends React.Component {
   render() {
+    $("#searchArea").get(0).id = "searchAreaReact";
     return (
-        <Switch>
+      <Switch>
         <Route exact path={homeURL} component={HomePage} />
         <Route exact path="/claim/:url" component={PointPage} />
         <Route exact path="/history/:url" component={HistoryPage} />
-        </Switch>
+      </Switch>
     )
   }
 }
@@ -65,9 +68,16 @@ ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
       <ExpandedIndexProvider>
-        <App/>
+      <App/>
       </ExpandedIndexProvider>
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root')
+);
+
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <SearchBox/>
+  </ApolloProvider>,
+  document.getElementById('searchAreaReact')
 );

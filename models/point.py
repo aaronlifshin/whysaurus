@@ -190,7 +190,7 @@ class Point(ndb.Model):
         return (min(1, len(self.sources))
                 + self.upVotes - self.downVotes
                 + self.getChildrenPointRating())
-    
+
     @property
     def pointValueCached(self):
         """The last cached pointValue, or if not set, will call pointValue directly"""
@@ -206,7 +206,7 @@ class Point(ndb.Model):
                + len(self.supportingLinks) * self.ENGAGEMENT_PER_LINK \
                + len(self.counterLinks) * self.ENGAGEMENT_PER_LINK \
                + len(self.usersContributed) * self.ENGAGEMENT_PER_CONTRIBUTOR
-    
+
     @property
     def engagementScoreCached(self):
         """The last cached engagement score, or if not set, will call engagementScore directly"""
@@ -791,30 +791,30 @@ class Point(ndb.Model):
                     # only go up one level, because further *sorting* is unaffected
                     # WARNING: if we DO recurse up, then must watch out for cycles!!
                     point.updateBacklinkedSorts(root, recurseUp=False)
-                    
+
     def updateCachedValues(self, doPutOnUpdate=True, recurse=False):
         hasUpdate = False
-        
+
         pv = self.pointValue()
         if pv != self.cachedPointValue:
             self.cachedPointValue = pv
             hasUpdate = True
-            
+
         es = self.engagementScore
         if es != self.cachedEngagementScore:
             logging.info('Updating cachedEngagementScore: %d -> %d' % (self.cachedEngagementScore, es))
             self.cachedEngagementScore = es
             hasUpdate = True
-        
+
         if not hasUpdate:
             return
-        
+
         if doPutOnUpdate:
             self.put()
-            
+
         # TODO: Recurse up? Just call updateBacklinks?
         # (Right now we're doing the recursion in updateBacklinkedSorts, triggered by the initial update)
-        
+
 
     def removeLink(self, linkRoot, linkType):
         links = self.getStructuredLinkCollection(linkType)

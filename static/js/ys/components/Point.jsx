@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { graphql, compose, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
@@ -15,7 +14,7 @@ import {PointList} from './PointList'
 import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
 import RelevanceRater from './RelevanceRater'
-
+import Comments from './Comments'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -232,23 +231,6 @@ class CommentsLink extends React.Component {
     </span>
   }
 }
-
-class Comments extends React.Component {
-    constructor(props) {
-    super(props);
-  }
-
-  render(){
-      return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
-        <span className="claimEditAreaHeading">
-          <span className="heading">Meta</span>
-          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>
-        Here is where you comment!
-      </div>
-  }
-}
-
 
 class EvidenceLink extends React.Component {
   hasEvidence = () => {

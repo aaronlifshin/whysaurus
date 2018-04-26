@@ -5,7 +5,7 @@ import * as schema from '../schema';
 import { graphql, compose } from 'react-apollo';
 import TitleText from './TitleText'
 import Spinner from './Spinner'
-import CloseLinkX from './Point'
+import { CloseLinkX } from './common'
 
 const EditTitleForm = ({point, onSubmit, onClick, heightClass}) => {
   let titleTextClasses = `titleTextField ${heightClass}`

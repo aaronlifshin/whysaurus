@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo';
-import CloseLinkX from './Point'
+import { CloseLinkX } from './common'
 import * as schema from '../schema';
 
 class Comments extends React.Component {
   static propTypes = {
-    render: PropTypes.func.isRequired
   }
 
   render(){

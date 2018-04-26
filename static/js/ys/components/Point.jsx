@@ -15,6 +15,7 @@ import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
+import { CloseLinkX } from './common'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -77,13 +78,6 @@ const VoteStats = ({point}) => (
 export const LinkedItemBullet = () => (
   <div className={"dottedLine dottedLineElbow"}></div>
 )
-
-// used in a variety of components; this is the character for the multiplication X
-export default class CloseLinkX extends React.Component {
-  render(){
-    return <span>&#xd7;</span>
-  }
-}
 
 class PointComponent extends React.Component {
   constructor(props) {

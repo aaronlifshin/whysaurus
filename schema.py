@@ -6,6 +6,7 @@ import graphene
 from graphene import relay
 from graphene_gae import NdbObjectType, NdbConnectionField
 
+from models.comment import Comment as CommentModel
 from models.point import Point as PointModel
 from models.point import PointRoot
 from models.point import FeaturedPoint
@@ -23,6 +24,10 @@ class User(graphene.ObjectType):
 class Source(NdbObjectType):
     class Meta:
         model = SourceModel
+
+class Comment(NdbObjectType):
+    class Meta:
+        model = CommentModel
 
 class Point(NdbObjectType):
     class Meta:
@@ -401,6 +406,11 @@ class Query(graphene.ObjectType):
     def resolve_point(self, info, **args):
         point, pointRoot = PointModel.getCurrentByUrl(args['url'])
         return point
+
+    comments = graphene.List(Comment, pointID=graphene.String())
+    def resolve_comments(self, info, **args):
+        point, point_root = PointModel.getCurrentByRootKey(args['pointID'])
+        return point_root.getComments()
 
     homePage = graphene.Field(HomePage)
     def resolve_homePage(self, info):

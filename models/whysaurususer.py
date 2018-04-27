@@ -21,6 +21,7 @@ from google.appengine.api import channel
 from models.notification import Notification
 from models.chatUser import ChatUser
 from models.point import getCurrent_async
+from models.point import PointRoot
 from models.areauser import AreaUser
 
 from whysaurusexception import WhysaurusException
@@ -40,14 +41,14 @@ class WhysaurusUser(auth_models.User):
     admin = ndb.BooleanProperty(default=False)
     internal = ndb.BooleanProperty(default=False)
     role = ndb.StringProperty(default="")
-    recentlyViewedRootKeys = ndb.KeyProperty(repeated=True)
+    recentlyViewedRootKeys = ndb.KeyProperty(repeated=True, kind=PointRoot)
     viewCount = ndb.IntegerProperty(default=0)
     lastViewed = ndb.DateTimeProperty()
     lastVisitDate = ndb.DateTimeProperty()
     lastVisitCount = ndb.IntegerProperty(default=0)
     lastVisitAvgIntervalDays = ndb.FloatProperty(default=0)
-    createdPointRootKeys = ndb.KeyProperty(repeated=True)
-    editedPointRootKeys = ndb.KeyProperty(repeated=True)
+    createdPointRootKeys = ndb.KeyProperty(repeated=True, kind=PointRoot)
+    editedPointRootKeys = ndb.KeyProperty(repeated=True, kind=PointRoot)
     websiteURL = ndb.StringProperty()
     areasOfExpertise = ndb.StringProperty()
     currentProfession = ndb.StringProperty()

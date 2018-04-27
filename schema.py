@@ -14,12 +14,17 @@ from models.uservote import RelevanceVote as RelevanceVoteModel
 from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
 
-# ideally we could use NdbObjectType here too, but I was running into funny errors.
-class User(graphene.ObjectType):
-    url = graphene.String()
-    role = graphene.String()
+class User(NdbObjectType):
+    class Meta:
+        model = WhysaurusUser
+
     admin = graphene.Boolean()
+    def resolve_admin(self, info):
+        return self.isAdmin
+
     recentlyViewed = graphene.List(lambda: Point)
+    def resolve_recentlyViewed(self, info):
+        return self.getRecentlyViewed()
 
 class Source(NdbObjectType):
     class Meta:
@@ -444,10 +449,7 @@ class Query(graphene.ObjectType):
 
     currentUser = graphene.Field(User)
     def resolve_currentUser(self, info):
-        user = info.context.current_user
-        if (user):
-            # TODO: this is really not ideal, but I can't figure out how to get WhysaurusUser working as a Meta-defined model :-( TV
-            return User(url=user.url, admin=user.isAdmin, role=user.role, recentlyViewed=user.getRecentlyViewed())
+        return info.context.current_user
 
     search = graphene.List(Point, query=graphene.String(required=True))
     def resolve_search(self, info, **args):

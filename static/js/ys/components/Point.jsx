@@ -220,7 +220,7 @@ class CommentsLink extends React.Component {
         <span className="iconWithStat commentLink">
           <span className="far fa-comment"></span>
         </span>
-        { (this.props.point.numComments > 0) && <span className="number">{this.props.point.numComments}</span> }
+        { (this.props.point.root.numComments > 0) && <span className="number">{this.props.point.root.numComments}</span> }
       </a>
     </span>
   }

@@ -19,12 +19,14 @@ fragment pointFields on Point {
   pointValue,
   numSupporting,
   numCounter,
-  numComments,
   numUsersContributed,
   supportedCount,
   sources {url, name},
   rootURLsafe,
-  currentUserVote
+  currentUserVote,
+  root {
+    numComments
+  }
 }
 `
 

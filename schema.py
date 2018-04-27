@@ -8,7 +8,7 @@ from graphene_gae import NdbObjectType, NdbConnectionField
 
 from models.comment import Comment as CommentModel
 from models.point import Point as PointModel
-from models.point import PointRoot
+from models.point import PointRoot as PointRootModel
 from models.point import FeaturedPoint
 from models.uservote import RelevanceVote as RelevanceVoteModel
 from models.source import Source as SourceModel
@@ -29,6 +29,14 @@ class Comment(NdbObjectType):
     class Meta:
         model = CommentModel
 
+class PointRoot(NdbObjectType):
+    class Meta:
+        model = PointRootModel
+
+    numComments = graphene.Int()
+    def resolve_numComments(self, info):
+        return self.numComments
+
 class Point(NdbObjectType):
     class Meta:
         model = PointModel
@@ -37,6 +45,10 @@ class Point(NdbObjectType):
     id = graphene.NonNull(graphene.ID)
     def resolve_id(self, info):
         return self.rootURLsafe
+
+    root = graphene.Field(PointRoot)
+    def resolve_root(self, info):
+        return PointRootModel.getByUrlsafe(self.rootURLsafe)
 
     numSupporting = graphene.Int()
     def resolve_numSupporting(self, info):
@@ -65,11 +77,6 @@ class Point(NdbObjectType):
     numUsersContributed = graphene.Int()
     def resolve_numUsersContributed(self, info):
         return self.numUsersContributed
-
-    numComments = graphene.Int()
-    def resolve_numComments(self, info):
-        # TODO: need to get a link to the point root and then get numComments from that
-        return 42
 
     supportedCount = graphene.Int()
     def resolve_supportedCount(self, info):
@@ -391,11 +398,11 @@ class HomePage(graphene.ObjectType):
 
     newPoints = graphene.List(Point)
     def resolve_newPoints(self, info, **args):
-        return PointRoot.getRecentCurrentPoints(info.context.current_user)
+        return PointRootModel.getRecentCurrentPoints(info.context.current_user)
 
     editorsPicks = graphene.List(Point)
     def resolve_editorsPicks(self, info, **args):
-        return PointRoot.getEditorsPicks(info.context.current_user)
+        return PointRootModel.getEditorsPicks(info.context.current_user)
 
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
@@ -418,7 +425,7 @@ class Query(graphene.ObjectType):
 
     newPoints = graphene.Field(PagedPoints, cursor=graphene.String(), limit=graphene.Int())
     def resolve_newPoints(self, info, **args):
-        results, nextCursor, more = PointRoot.getRecentCurrentPointsPage(user=info.context.current_user, cursor=args.get('cursor', None), limit=args.get('limit', 5))
+        results, nextCursor, more = PointRootModel.getRecentCurrentPointsPage(user=info.context.current_user, cursor=args.get('cursor', None), limit=args.get('limit', 5))
         return PagedPoints(cursor=nextCursor.urlsafe(), points=results, hasMore=more)
 
     currentUser = graphene.Field(User)

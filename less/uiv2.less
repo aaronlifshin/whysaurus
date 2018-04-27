@@ -142,6 +142,10 @@ a:focus, a:hover {
     transform: scaleX(-1);
 }
 
+.inlineBlock {
+  display: inline-block;
+}
+
 .inlineflexBox {
   display: inline-flex;
   vertical-align: top;
@@ -1204,12 +1208,23 @@ li .iconWithStat {
   color: @blue;
 }
 
+// add extra padding to make small icons easier to click on
+.easierToClickOn {
+  position: relative;
+  //background-color: pink;
+  padding: 4px; 
+  padding-left: 6px;
+  padding-right: 6px;
+  right: 4px; // compensate position for extra padding
+}
+
 .moreMenuLink {
   color: @grayTextLighter;
   font-weight: 800;
-    font-size: 13px;
-    position: relative;
-    top: 1px;
+  font-size: 13px;
+  position: relative;
+  top: 1px;
+  right: 12px; // don't know why this is necessary... the commentsLink div is rendering too wide for some mysterious reason -JF
 }
 .moreMenuLink:hover {
   text-decoration:none;

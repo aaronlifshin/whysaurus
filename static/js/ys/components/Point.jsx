@@ -217,11 +217,9 @@ class CommentsLink extends React.Component {
 
   render(){
     return <span className="cardTopRowItem">
-      <a className="" onClick={this.props.onClick}>
-        <span className="iconWithStat commentLink">
-          <span className="far fa-comment"></span>
-        </span>
-        { (this.props.point.root.numComments > 0) && <span className="number">{this.props.point.root.numComments}</span> }
+      <a className="commentLink easierToClickOn" onClick={this.props.onClick}>
+          <span className="iconWithStat far fa-comment"></span>
+          { (this.props.point.root.numComments > 0) && <span className="number inlineBlock">{this.props.point.root.numComments}</span> }      
       </a>
     </span>
   }
@@ -733,7 +731,7 @@ class PointCardComponent extends React.Component {
     let moreMenuSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
     let moreMenuImageLabel = `${this.hasImage() ? "Edit Image" : "Add Image"}`
     return <span className="cardTopRowItem dropdown">
-      <a onClick={this.handleClickNoProp} className="moreMenuLink dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+      <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>

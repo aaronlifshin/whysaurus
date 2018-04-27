@@ -7,12 +7,18 @@ import NewComment from './NewComment'
 
 class Comment extends React.Component {
   static propTypes = {
-    comment: PropTypes.object.isRequired
+    comment: PropTypes.object.isRequired,
+    addReply: PropTypes.func.isRequired
   }
 
   render(){
-    const {comment: {id, text}} = this.props
-    return <div>{text}</div>
+    const {comment, point, addReply} = this.props
+    const {id, text, parentID} = comment
+    return <div>
+      <span>{text}</span>
+      <span>{parentID}</span>
+      <NewComment parent={this.props.comment} onSubmit={({text}) => addReply(text)}/>
+    </div>
   }
 }
 
@@ -21,6 +27,7 @@ class Comments extends React.Component {
     point: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     add: PropTypes.func.isRequired,
+    parentComment: PropTypes.object,
     comments: PropTypes.array
   }
 
@@ -33,7 +40,7 @@ class Comments extends React.Component {
         <span className="heading">Meta</span>
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
-      {comments && comments.map(comment => <Comment key={comment.id} comment={comment}/>)}
+      {comments && comments.map(comment => <Comment key={comment.id} comment={comment} addReply={text => add(point.id, text, comment.id)}/>)}
       <NewComment onSubmit={({text}) => add(point.id, text)}/>
     </div>
   }
@@ -54,8 +61,8 @@ export default compose(
   }),
   graphql(schema.NewComment, {
     props: ({ mutate }) => ({
-      add: (pointID, text) =>
-        mutate({variables: {pointID, text},
+      add: (pointID, text, parentCommentID) =>
+        mutate({variables: {pointID, text, parentCommentID},
                 refetchQueries: [{query: schema.Comments, variables: {pointID: pointID}}]})
     })
 

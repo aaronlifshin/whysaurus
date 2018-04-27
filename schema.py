@@ -36,11 +36,16 @@ class Comment(NdbObjectType):
 
     id = graphene.NonNull(graphene.ID)
     def resolve_id(self, info):
-        return self.key
+        return self.key.urlsafe()
+
+    parentID = graphene.ID()
+    def resolve_parentID(self, info):
+        return self.parentComment and self.parentComment.urlsafe()
 
 class CommentInput(graphene.InputObjectType):
     pointID = graphene.String(required=True)
     text = graphene.String(required=True)
+    parentCommentID = graphene.String()
 
 class NewComment(graphene.Mutation):
     class Arguments:
@@ -49,7 +54,7 @@ class NewComment(graphene.Mutation):
     comment = graphene.Field(Comment)
 
     def mutate(self, info, comment_data):
-        comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), None)
+        comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), comment_data.parentCommentID)
         return NewComment(comment=comment)
 
 class PointRoot(NdbObjectType):

@@ -218,13 +218,14 @@ query Comments($pointID: String) {
   comments(pointID: $pointID) {
     id
     text
+    parentID
   }
 }
 `
 
 export const NewComment = gql`
-mutation NewComment($pointID: String!, $text: String!) {
-  newComment(commentData: {pointID: $pointID, text: $text}) {
+mutation NewComment($pointID: String!, $text: String!, $parentCommentID: String) {
+  newComment(commentData: {pointID: $pointID, text: $text, parentCommentID: $parentCommentID}) {
     comment { text }
   }
 }

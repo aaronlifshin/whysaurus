@@ -29,6 +29,20 @@ class Comment(NdbObjectType):
     class Meta:
         model = CommentModel
 
+class CommentInput(graphene.InputObjectType):
+    pointID = graphene.String(required=True)
+    text = graphene.String(required=True)
+
+class NewComment(graphene.Mutation):
+    class Arguments:
+        comment_data = CommentInput(required=True)
+
+    comment = graphene.Field(Comment)
+
+    def mutate(self, info, comment_data):
+        comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), None)
+        return NewComment(comment=comment)
+
 class PointRoot(NdbObjectType):
     class Meta:
         model = PointRootModel
@@ -454,6 +468,7 @@ class Mutation(graphene.ObjectType):
     vote = Vote.Field()
     relevanceVote = RelevanceVote.Field()
     new_point = NewPoint.Field()
+    new_comment = NewComment.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

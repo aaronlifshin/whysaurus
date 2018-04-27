@@ -220,3 +220,11 @@ query Comments($pointID: String) {
   }
 }
 `
+
+export const NewComment = gql`
+mutation NewComment($pointID: String!, $text: String!) {
+  newComment(commentData: {pointID: $pointID, text: $text}) {
+    comment { text }
+  }
+}
+`

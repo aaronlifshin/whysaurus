@@ -2,7 +2,7 @@ import React from 'react'
 import MediaQuery from 'react-responsive';
 import config from '../config'
 import * as validations from '../validations';
-import { Form, Text } from 'react-form';
+import { Form, Text, TextArea } from 'react-form';
 import Spinner from './Spinner'
 
 

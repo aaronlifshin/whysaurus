@@ -16,6 +16,7 @@ import EditPoint from './EditPoint'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
+import Spinner from './Spinner'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -216,11 +217,9 @@ class CommentsLink extends React.Component {
 
   render(){
     return <span className="cardTopRowItem">
-      <a className="" onClick={this.props.onClick}>
-        <span className="iconWithStat commentLink">
-          <span className="far fa-comment"></span>
-        </span>
-        { (this.props.point.root.numComments > 0) && <span className="number">{this.props.point.root.numComments}</span> }
+      <a className="commentLink easierToClickOn" onClick={this.props.onClick}>
+          <span className="iconWithStat far fa-comment"></span>
+          { (this.props.point.root.numComments > 0) && <span className="number inlineBlock">{this.props.point.root.numComments}</span> }      
       </a>
     </span>
   }
@@ -732,7 +731,7 @@ class PointCardComponent extends React.Component {
     let moreMenuSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
     let moreMenuImageLabel = `${this.hasImage() ? "Edit Image" : "Add Image"}`
     return <span className="cardTopRowItem dropdown">
-      <a onClick={this.handleClickNoProp} className="moreMenuLink dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+      <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
       <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
@@ -741,10 +740,8 @@ class PointCardComponent extends React.Component {
         <li className="divider"></li>
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
-        { this.currentUserIsAdmin() && <li className="divider"></li> }
-        { this.currentUserIsAdmin() && <li className="dropdownMenuCategory">Admin</li>}
-        { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
-        { this.currentUserIsAdmin() &&  <li><SupportingCount point={this.point} /></li> }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><SupportingCount point={this.point} /></li> }
       </ul>
     </span>
   }
@@ -790,7 +787,7 @@ class PointCardComponent extends React.Component {
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
   render(){
     if (this.state.deleting) {
-      return <div>Deleting...</div>
+      return <div className="progressStateFeedback"><Spinner />Deleting...</div>
     } else if (this.state.unlinking) {
       return <div>Unlinking...</div>
     } else if (this.point){

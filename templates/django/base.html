@@ -170,12 +170,12 @@
                   {% endif %}
                     {% if currentArea and currentArea != '' %}
                         {% if user.isAdmin or user.isTeacher %}
-                          <li><a tabindex="-1" href="/roster">Roster</a></li>
+                          <li><a tabindex="-1" href="/roster" class="admin">Roster</a></li>
                           <li class="divider"></li>
                         {% endif %}
                     {% endif %}
                     {% if user.isAdmin %}
-                        <li><a tabindex="-1" href="/admin"> Admin </a></li>
+                        <li><a tabindex="-1" href="/admin" class="admin"> Admin </a></li>
                     {% endif %}
                     <li><a tabindex="-1" href="/user/{{user.url}}" onclick="ga('send', 'event', 'UserMenu', 'Profile')"> Profile </a></li>
                     {% if user.emailUser %}

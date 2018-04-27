@@ -742,10 +742,8 @@ class PointCardComponent extends React.Component {
         <li className="divider"></li>
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
-        { this.currentUserIsAdmin() && <li className="divider"></li> }
-        { this.currentUserIsAdmin() && <li className="dropdownMenuCategory">Admin</li>}
-        { this.currentUserIsAdmin() && <li><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
-        { this.currentUserIsAdmin() &&  <li><SupportingCount point={this.point} /></li> }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><SupportingCount point={this.point} /></li> }
       </ul>
     </span>
   }

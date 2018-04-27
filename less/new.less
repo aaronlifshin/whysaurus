@@ -1532,9 +1532,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
     //margin-top:160px;
 }
 
-#userInfoArea {
-    margin-top:21px;    
-}
+
 
 .bottomBorder {
 	border-bottom: 1px solid #d7d7d7;
@@ -3358,14 +3356,15 @@ fieldset { padding:0; border:0; margin-top:25px;}
     font-family: @sansFontFamily;
     font-size: @fontSizeMedium;
     font-weight:normal;
-    line-height: @lineHeightDefault;
+    line-height: @lineHeightBig;
     
 }   
    
 #display_userName {
-    width: 80%; // TEMPORARY: remove this once we have full size profile pics
-    display: inline;
-    margin-right:5px;
+  display: inline-block;
+  margin-right:5px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 }
  
 #display_userEmail {
@@ -3389,9 +3388,15 @@ fieldset { padding:0; border:0; margin-top:25px;}
     cursor:pointer;
 }
 
+#userInfoArea {
+  margin-top: @profilePageMarginTop;
+  padding-left: 40px;
+  box-sizing: border-box;
+}
+
 .profilePic {
-	width:80%; // TEMPORARY: remove this once we have full size profile pics
-    margin-top:2px;
+	width:70%; 
+  margin-top: 0;
 }
  
 .userInfoAreaTempWidth {
@@ -3399,7 +3404,17 @@ fieldset { padding:0; border:0; margin-top:25px;}
 }
 .profileStatsArea {
     margin-bottom: 24px;
-    margin-top: 24px;
+    margin-top: 8px;
+}
+
+.profileItem {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.editProfileLink {
+  display:block;
+  margin-top: 32px;
 }
 
 a[name="profileEdit"] {
@@ -3424,8 +3439,9 @@ a[name="profileEdit"] {
     margin-bottom: 8px;
 }
 
+@profilePageMarginTop: 42px;
 #profileDisclaimer {
-    margin-top: 42px;
+    margin-top: @profilePageMarginTop;
     background-color: pink;
     padding: 12px;
     border-radius: 4px;

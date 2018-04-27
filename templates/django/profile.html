@@ -5,44 +5,35 @@
 
   <div class="row {% if user and user.privateArea %}privateAreaContentOffset{% endif %}">
     <div id="userInfoArea" class="span3 profileAreaColumn" >
-        <div class="row-fluid">
-          <div id="display_userName" class="columnHeading columnHeadingBig" style="line-height:25px">
-              {{profileUser.name}}
-          </div>  
-        </div>        
+       
         {% if profileUser.avatar_url %}   
              <img class="profilePic" src='{{profileUser.avatar_url}}'/>                            
         {% else %}
             <img class="profilePic" src='/static/img/avatar_profilePage_default.png'/>
         {% endif %} 
+        <div class="row-fluid">
+          <div id="display_userName" class="columnHeading columnHeadingBig" style="line-height:25px">
+              {{profileUser.name}}
+          </div>  
+        </div> 
         <div class="profileStatsArea profileBodyText userInfoAreaTempWidth">        
             <!--<p class="profileInfoHeading">Stats</p>-->
             <div>{{profileUser.createdCount }} Claims created</div>
             <div>{{profileUser.editedCount }} Claims contributed to</div>
         </div>
-        {% if viewingOwnPage %}       
-                
-            <div id="display_userEmail" class="profileBodyText userInfoAreaTempWidth" >
-                <p class="profileInfoHeading">Email Settings</p>
-                {% if profileUser.email %}
-                    {{profileUser.email}} <br> 
-                    Email Notifications: {{profileUser.notificationFrequencyText}}<br> 
-                    <a name=profileEdit class="profileBodyText profileEditButton">Edit Email Settings</a> 
-                {% else %}        
-                    <a name="profileEdit">Add your email</a><br> 
-                {% endif %}            
- 
-                </div>
-            
-        {% endif %}
-        
-        
-        <div id="display_userWebsite" class="profileBodyText userInfoAreaTempWidth" >
-          <!--<p class="profileInfoHeading">About</p>-->
+        <div id="display_userBio" class="profileBodyText userInfoAreaTempWidth" >
+          {% if profileUser.bio %}
+              <div class="profileItem">{{profileUser.bio}}</div>
+          {% endif %} 
           {% if profileUser.websiteURL %}
-              <a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a>           
+              <div class="profileItem"><a href="{{profileUser.websiteURL}}" target="_blank">{{profileUser.websiteURL}}</a></div>           
           {% endif %}
-        </div>
+          {% if viewingOwnPage %}                     
+              <a  name="profileEdit" class="profileItem editProfileLink">Edit profile and settings</a>
+          {% endif %}                
+        </div> 
+
+
         <!--
         <div id="display_userAreas" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.areasOfExpertise %}
@@ -54,16 +45,7 @@
               Current Profession: {{profileUser.currentProfession}}            
           {% endif %}
         </div>
-        -->
-        <div id="display_userBio" class="profileBodyText userInfoAreaTempWidth" >
-          {% if profileUser.bio %}
-              Bio: {{profileUser.bio}}
-          {% else %}
-            {% if viewingOwnPage %}                     
-                <a  name="profileEdit">Add a short bio</a>
-            {% endif %}                
-          {% endif %}
-        </div>             
+        -->            
     </div>
     {% if viewingOwnPage %}              
       <div class="modal hide fade" data-keyboard="true" id="profileDialog" role="dialog" aria-hidden="true">

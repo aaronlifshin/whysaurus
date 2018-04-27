@@ -5,8 +5,23 @@ import { CloseLinkX } from './common'
 import * as schema from '../schema';
 import NewComment from './NewComment'
 
+class Comment extends React.Component {
+  static propTypes = {
+    comment: PropTypes.object.isRequired
+  }
+
+  render(){
+    const {comment: {id, text}} = this.props
+    return <div>{text}</div>
+  }
+}
+
 class Comments extends React.Component {
   static propTypes = {
+    point: PropTypes.object.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    add: PropTypes.func.isRequired,
+    comments: PropTypes.array
   }
 
   state = {}
@@ -18,7 +33,7 @@ class Comments extends React.Component {
         <span className="heading">Meta</span>
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
-      {comments && comments.map(({text}) => <div>{text}</div>)}
+      {comments && comments.map(comment => <Comment key={comment.id} comment={comment}/>)}
       <NewComment onSubmit={({text}) => add(point.id, text)}/>
     </div>
   }

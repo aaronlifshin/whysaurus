@@ -216,6 +216,7 @@ mutation NewPoint($title: String!, $imageURL: String, $imageAuthor: String, $ima
 export const Comments = gql`
 query Comments($pointID: String) {
   comments(pointID: $pointID) {
+    id
     text
   }
 }

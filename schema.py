@@ -34,6 +34,10 @@ class Comment(NdbObjectType):
     class Meta:
         model = CommentModel
 
+    id = graphene.NonNull(graphene.ID)
+    def resolve_id(self, info):
+        return self.key
+
 class CommentInput(graphene.InputObjectType):
     pointID = graphene.String(required=True)
     text = graphene.String(required=True)

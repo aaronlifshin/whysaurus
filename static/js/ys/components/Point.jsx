@@ -16,6 +16,7 @@ import EditPoint from './EditPoint'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
+import Spinner from './Spinner'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -790,7 +791,7 @@ class PointCardComponent extends React.Component {
   // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
   render(){
     if (this.state.deleting) {
-      return <div>Deleting...</div>
+      return <div className="progressStateFeedback"><Spinner />Deleting...</div>
     } else if (this.state.unlinking) {
       return <div>Unlinking...</div>
     } else if (this.point){

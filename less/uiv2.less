@@ -9,7 +9,7 @@
 @cardStackWidth: (4 * @stackCardOffset) + (3 * @cardBorderWidth);
 //@cardListWidth: @cardWidth + ( 4 * @indent); // currently unused
 
-@cardPadding: 14px;
+@cardPadding: 15px;
 @cardPaddingRight: 12px;
 @cardPaddingTop: @cardPaddingRight * .75;
 
@@ -1350,7 +1350,7 @@ li .iconWithStat {
 
 .cardBottomActionRow {
   margin-top: 14px;
-  padding-bottom: @cardPaddingTop;
+  padding-bottom: @cardPaddingTop + 3px;
   -o-transition:@hoverTransitionDuration;
   -ms-transition:@hoverTransitionDuration;
   -moz-transition:@hoverTransitionDuration;
@@ -1835,6 +1835,10 @@ li .iconWithStat {
   //top: 4px;
   font-size: @fontSizeSecondaryUX2;
   color: @nearBlack;
+  min-height: 56px;
+  display: block;
+  //background-color: pink;
+  margin-bottom:0;
 }
 .progressStateFeedback.counter{
   color: @red;

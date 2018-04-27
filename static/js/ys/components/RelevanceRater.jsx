@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import Spinner from './Spinner'
 import * as schema from '../schema';
-import CloseLinkX from './Point'
+import { CloseLinkX } from './common'
 
 
 class RelevanceComponent extends React.Component {
@@ -53,8 +53,8 @@ class RelevanceComponent extends React.Component {
     "relVoteLink number relVoteLink" + vote + ((this.myRelevanceVote == vote) ? (" myRelevanceVote" + vote) : "")
 
   isDisabled = () =>
-    this.state.rating 
-    
+    this.state.rating
+
   voteButton= (vote) =>
     <button disabled={this.isDisabled()} className={this.linkClassFor(vote)} onClick={this.handleClickFn(vote)}>{vote}<span className="perctSignSmall">%</span></button>
 

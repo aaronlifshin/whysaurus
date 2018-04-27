@@ -190,7 +190,7 @@ class Point(ndb.Model):
         return (min(1, len(self.sources))
                 + self.upVotes - self.downVotes
                 + self.getChildrenPointRating())
-    
+
     @property
     def pointValueCached(self):
         """The last cached pointValue, or if not set, will call pointValue directly"""
@@ -206,7 +206,7 @@ class Point(ndb.Model):
                + len(self.supportingLinks) * self.ENGAGEMENT_PER_LINK \
                + len(self.counterLinks) * self.ENGAGEMENT_PER_LINK \
                + len(self.usersContributed) * self.ENGAGEMENT_PER_CONTRIBUTOR
-    
+
     @property
     def engagementScoreCached(self):
         """The last cached engagement score, or if not set, will call engagementScore directly"""
@@ -791,30 +791,30 @@ class Point(ndb.Model):
                     # only go up one level, because further *sorting* is unaffected
                     # WARNING: if we DO recurse up, then must watch out for cycles!!
                     point.updateBacklinkedSorts(root, recurseUp=False)
-                    
+
     def updateCachedValues(self, doPutOnUpdate=True, recurse=False):
         hasUpdate = False
-        
+
         pv = self.pointValue()
         if pv != self.cachedPointValue:
             self.cachedPointValue = pv
             hasUpdate = True
-            
+
         es = self.engagementScore
         if es != self.cachedEngagementScore:
             logging.info('Updating cachedEngagementScore: %d -> %d' % (self.cachedEngagementScore, es))
             self.cachedEngagementScore = es
             hasUpdate = True
-        
+
         if not hasUpdate:
             return
-        
+
         if doPutOnUpdate:
             self.put()
-            
+
         # TODO: Recurse up? Just call updateBacklinks?
         # (Right now we're doing the recursion in updateBacklinkedSorts, triggered by the initial update)
-        
+
 
     def removeLink(self, linkRoot, linkType):
         links = self.getStructuredLinkCollection(linkType)
@@ -1205,16 +1205,16 @@ class Point(ndb.Model):
 class PointRoot(ndb.Model):
     url = ndb.StringProperty()
     numCopies = ndb.IntegerProperty(indexed=False)
-    current = ndb.KeyProperty(indexed=False)
-    pointsSupportedByMe = ndb.KeyProperty(repeated=True, indexed=False)
-    supportedArchiveForDelete = ndb.KeyProperty(repeated=True, indexed=False)
-    pointsCounteredByMe = ndb.KeyProperty(repeated=True, indexed=False)
-    counteredArchiveForDelete = ndb.KeyProperty(repeated=True, indexed=False)
+    current = ndb.KeyProperty(indexed=False, kind=Point)
+    pointsSupportedByMe = ndb.KeyProperty(repeated=True, indexed=False, kind=Point)
+    supportedArchiveForDelete = ndb.KeyProperty(repeated=True, indexed=False, kind=Point)
+    pointsCounteredByMe = ndb.KeyProperty(repeated=True, indexed=False, kind=Point)
+    counteredArchiveForDelete = ndb.KeyProperty(repeated=True, indexed=False, kind=Point)
     editorsPick = ndb.BooleanProperty(default=False)
     editorsPickSort = ndb.IntegerProperty(default=100000)
     viewCount = ndb.IntegerProperty()
-    comments = ndb.KeyProperty(repeated=True, indexed=False)
-    archivedComments = ndb.KeyProperty(repeated=True, indexed=False)
+    comments = ndb.KeyProperty(repeated=True, indexed=False, kind=Comment)
+    archivedComments = ndb.KeyProperty(repeated=True, indexed=False, kind=Comment)
     supportedCount = ndb.ComputedProperty(lambda e: len(e.pointsSupportedByMe))
     # A top point is not used as a support for other points, aka the root of an argument tree
     isTop = ndb.BooleanProperty(default=True)

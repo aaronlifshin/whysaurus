@@ -19,12 +19,14 @@ fragment pointFields on Point {
   pointValue,
   numSupporting,
   numCounter,
-  numComments,
   numUsersContributed,
   supportedCount,
   sources {url, name},
   rootURLsafe,
-  currentUserVote
+  currentUserVote,
+  root {
+    numComments
+  }
 }
 `
 
@@ -200,13 +202,21 @@ query NewPoints($cursor: String, $limit: Int) {
     hasMore
   }
 }
-`;
+`
 
 export const NewPoint = gql`
 ${pointFieldsFragment}
 mutation NewPoint($title: String!, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
   newPoint(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames}) {
     point { ...pointFields }
+  }
+}
+`
+
+export const Comments = gql`
+query Comments($pointID: String) {
+  comments(pointID: $pointID) {
+    text
   }
 }
 `

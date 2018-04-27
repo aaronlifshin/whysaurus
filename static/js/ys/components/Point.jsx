@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { graphql, compose, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Form, Text } from 'react-form';
@@ -15,7 +14,8 @@ import {PointList} from './PointList'
 import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
 import RelevanceRater from './RelevanceRater'
-
+import Comments from './Comments'
+import { CloseLinkX } from './common'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -78,13 +78,6 @@ const VoteStats = ({point}) => (
 export const LinkedItemBullet = () => (
   <div className={"dottedLine dottedLineElbow"}></div>
 )
-
-// used in a variety of components; this is the character for the multiplication X 
-export default class CloseLinkX extends React.Component {
-  render(){ 
-    return <span>&#xd7;</span> 
-  }
-}
 
 class PointComponent extends React.Component {
   constructor(props) {
@@ -179,18 +172,18 @@ class EditSources extends React.Component {
     constructor(props) {
     super(props);
   }
-  
+
   get point() {
     return this.props.point;
   }
-  
+
   render(){
       let editSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
       return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
         <span className="claimEditAreaHeading">
           <span className="heading">{editSourcesLabel}</span>
           <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>  
+        </span>
         Here is where you edit sources!
       </div>
   }
@@ -200,14 +193,14 @@ class EditImage extends React.Component {
     constructor(props) {
     super(props);
   }
-  
+
   render(){
       let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
       return <div className="row-fluid claimEditArea pointCardPaddingH editImage ">
         <span className="claimEditAreaHeading">
           <span className="heading">{editImageLabel}</span>
           <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>         
+        </span>
         Here is where you edit images!
       </div>
   }
@@ -220,35 +213,18 @@ class CommentsLink extends React.Component {
   constructor(props) {
     super(props)
   }
- 
+
   render(){
     return <span className="cardTopRowItem">
       <a className="" onClick={this.props.onClick}>
         <span className="iconWithStat commentLink">
           <span className="far fa-comment"></span>
         </span>
-        { (this.props.point.numComments > 0) && <span className="number">{this.props.point.numComments}</span> }
+        { (this.props.point.root.numComments > 0) && <span className="number">{this.props.point.root.numComments}</span> }
       </a>
     </span>
   }
 }
-
-class Comments extends React.Component {
-    constructor(props) {
-    super(props);
-  }
-
-  render(){
-      return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
-        <span className="claimEditAreaHeading">
-          <span className="heading">Meta</span>
-          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>  
-        Here is where you comment!
-      </div>
-  }
-}
-
 
 class EvidenceLink extends React.Component {
   hasEvidence = () => {
@@ -370,13 +346,13 @@ class PointCardComponent extends React.Component {
     this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
     this.handleRelClick = this.handleRelClick.bind(this);
     this.handleClickEditClaimText = this.handleClickEditClaimText.bind(this);
-    this.handleClickEditClaimSources = this.handleClickEditClaimSources.bind(this);    
+    this.handleClickEditClaimSources = this.handleClickEditClaimSources.bind(this);
     this.handleClickEditClaimImage = this.handleClickEditClaimImage.bind(this);
     this.handleClickEditComments = this.handleClickEditComments.bind(this);
     this.handleCancelEditClaimText = this.handleCancelEditClaimText.bind(this);
     this.handleCancelEditClaimSources = this.handleCancelEditClaimSources.bind(this);
     this.handleCancelEditClaimImage = this.handleCancelEditClaimImage.bind(this);
-    this.handleCloseComments = this.handleCloseComments.bind(this);    
+    this.handleCloseComments = this.handleCloseComments.bind(this);
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
 
@@ -392,19 +368,19 @@ class PointCardComponent extends React.Component {
   handleClickEditClaimSources(e) {
     e.stopPropagation();
     this.setState({editingClaimSources: true})
-  }  
+  }
   handleClickEditClaimImage(e) {
     e.stopPropagation();
     this.setState({editingClaimImage: true})
-  }  
+  }
   handleClickEditComments(e) {
     e.stopPropagation();
     if (this.state.editingComments)
       this.setState({editingComments: false})
     else
       this.setState({editingComments: true})
-  }  
-  
+  }
+
   handleCancelEditClaimText(e) {
     e.stopPropagation()
     this.setState({editingClaimText: false})
@@ -412,7 +388,7 @@ class PointCardComponent extends React.Component {
   handleCancelEditClaimSources(e) {
     e.stopPropagation()
     this.setState({editingClaimSources: false})
-  }  
+  }
   handleCancelEditClaimImage(e) {
     e.stopPropagation()
     this.setState({editingClaimImage: false})
@@ -421,10 +397,10 @@ class PointCardComponent extends React.Component {
     e.stopPropagation()
     this.setState({editingComments: false})
   }
-  
+
   editingSomething() {
     return (this.state.editingClaimText || this.state.editingClaimSources || this.state.editingClaimImage || this.state.editingComments)
-  }  
+  }
 
    //Assign focus - WIP
 
@@ -542,7 +518,7 @@ class PointCardComponent extends React.Component {
       return null
     }
   }
-  
+
   expand(){
     this.props.onExpand()
   }
@@ -558,7 +534,7 @@ class PointCardComponent extends React.Component {
   handleHideEvidence() {
     this.collapse();
   }
-  
+
   // When user clicks on the pointTitle or the stackGroup
   // Disabled when the claim is being edited
   handleToggleEvidence() {
@@ -577,7 +553,7 @@ class PointCardComponent extends React.Component {
   // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
   hasImage() {
     //console.log("hasImage() : " + this.point.imageURL  )
-    return this.point.imageURL   
+    return this.point.imageURL
   }
   displayImage() {
     return (this.hasImage() && !this.state.editingClaimText && !this.state.editingClaimSources)
@@ -721,7 +697,7 @@ class PointCardComponent extends React.Component {
   )
 
   hasParent = () => (this.props.parentPoint)
-  
+
   hasBadge = () => (this.props.badge)
 
   handleClickDelete = (e) => {
@@ -792,7 +768,7 @@ class PointCardComponent extends React.Component {
       </ul>
     </span>
   }
-  
+
  pointTextComponent() {
     const point = this.point;
     if (this.state.editingClaimText){
@@ -844,34 +820,35 @@ class PointCardComponent extends React.Component {
                     <div className={classesStackCard2} tabIndex="-1">
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
-                            { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> } 
+                            { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> }
                             <div className="row-fluid inlineflexBox">
-                            <div className={ this.textContentWidth()  }>                                
-                                <div className="row-fluid">         
+                            <div className={ this.textContentWidth()  }>
+                                <div className="row-fluid">
                                   <div className="cardTopRow pointCardPaddingH span12">
-                                    { this.hasBadge() && 
+                                    { this.hasBadge() &&
                                       <div className="fullWidth">
                                         <span className="claimBadge">
                                           <span className="claimBadgeIcon fas fa-star"></span><span className="claimBadgeLabel">{this.props.badge}</span>
                                         </span>
                                       </div> }
                                     <Byline point={point}/>
-                                    <CommentsLink point={point} onClick={this.handleClickEditComments}/>                                    
+                                    <CommentsLink point={point} onClick={this.handleClickEditComments}/>
                                     { this.moreMenu() }
                                     <MediaQuery maxWidth={config.extraextraSmallScreenThreshold}>
                                       { this.expanded() && this.numSupportingPlusCounter() > 0 && this.shareMenu() }
-                                    </MediaQuery>  
+                                    </MediaQuery>
                                   </div>
                                  </div>
-                                 
+
+
                                  <div className="row-fluid">
                                   <div className="pointText span12">
                                     { this.pointTextComponent() }
                                   </div>
                                  </div>
-                                 
+
                                  { !this.state.editingClaimSources ? this.sources() : <EditSources point={point} onCancel={this.handleCancelEditClaimSources}/> }
-                                 
+
                                   <div className="row-fluid">
                                     <div className="cardBottomActionRow pointCardPaddingH" >
                                       <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
@@ -884,7 +861,7 @@ class PointCardComponent extends React.Component {
                                       <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
                                     </div>
                                   </div>
-                                
+
                                </div>
                               {this.image()}
                             </div>
@@ -899,7 +876,7 @@ class PointCardComponent extends React.Component {
               </div>
               <MediaQuery minWidth={config.extraextraSmallScreenThreshold}>
                 { this.expanded() && this.numSupportingPlusCounter() > 0 && <ShareIconArea point={point}/> }
-              </MediaQuery> 
+              </MediaQuery>
               <div className="evidenceRow row-fluid">
                 {this.evidence()}
               </div>

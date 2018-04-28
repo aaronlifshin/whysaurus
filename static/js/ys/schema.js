@@ -213,20 +213,31 @@ mutation NewPoint($title: String!, $imageURL: String, $imageAuthor: String, $ima
 }
 `
 
+const commentFieldsFragment = gql`
+fragment commentFields on Comment {
+  id
+  text
+  parentID
+  level
+}
+`
+
 export const Comments = gql`
+${commentFieldsFragment}
 query Comments($pointID: String) {
   comments(pointID: $pointID) {
-    id
-    text
-    parentID
+    ...commentFields
   }
 }
 `
 
+
 export const NewComment = gql`
 mutation NewComment($pointID: String!, $text: String!, $parentCommentID: String) {
   newComment(commentData: {pointID: $pointID, text: $text, parentCommentID: $parentCommentID}) {
-    comment { text }
+    comment {
+      ...commentFields
+    }
   }
 }
 `

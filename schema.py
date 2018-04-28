@@ -14,12 +14,17 @@ from models.uservote import RelevanceVote as RelevanceVoteModel
 from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
 
-# ideally we could use NdbObjectType here too, but I was running into funny errors.
-class User(graphene.ObjectType):
-    url = graphene.String()
-    role = graphene.String()
+class User(NdbObjectType):
+    class Meta:
+        model = WhysaurusUser
+
     admin = graphene.Boolean()
+    def resolve_admin(self, info):
+        return self.isAdmin
+
     recentlyViewed = graphene.List(lambda: Point)
+    def resolve_recentlyViewed(self, info):
+        return self.getRecentlyViewed()
 
 class Source(NdbObjectType):
     class Meta:
@@ -29,9 +34,18 @@ class Comment(NdbObjectType):
     class Meta:
         model = CommentModel
 
+    id = graphene.NonNull(graphene.ID)
+    def resolve_id(self, info):
+        return self.key.urlsafe()
+
+    parentID = graphene.ID()
+    def resolve_parentID(self, info):
+        return self.parentComment and self.parentComment.urlsafe()
+
 class CommentInput(graphene.InputObjectType):
     pointID = graphene.String(required=True)
     text = graphene.String(required=True)
+    parentCommentID = graphene.String()
 
 class NewComment(graphene.Mutation):
     class Arguments:
@@ -40,7 +54,7 @@ class NewComment(graphene.Mutation):
     comment = graphene.Field(Comment)
 
     def mutate(self, info, comment_data):
-        comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), None)
+        comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), comment_data.parentCommentID)
         return NewComment(comment=comment)
 
 class PointRoot(NdbObjectType):
@@ -444,10 +458,7 @@ class Query(graphene.ObjectType):
 
     currentUser = graphene.Field(User)
     def resolve_currentUser(self, info):
-        user = info.context.current_user
-        if (user):
-            # TODO: this is really not ideal, but I can't figure out how to get WhysaurusUser working as a Meta-defined model :-( TV
-            return User(url=user.url, admin=user.isAdmin, role=user.role, recentlyViewed=user.getRecentlyViewed())
+        return info.context.current_user
 
     search = graphene.List(Point, query=graphene.String(required=True))
     def resolve_search(self, info, **args):

@@ -12,13 +12,27 @@ class Comment extends React.Component {
     replies: PropTypes.array
   }
 
+  state = {replying: false}
+
+  newReply = () => {
+    const {comment, replies, point, addReply} = this.props
+    if (this.props.comment.level == 0){
+      if (this.state.replying) {
+        return <NewComment parent={comment} onSubmit={({text}) => addReply(text).then(() => this.setState({replying: false}))}/>
+      } else {
+        return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton"
+                       onClick={() => this.setState({replying: true})}>Reply</button>
+      }
+    }
+  }
+
   render(){
     const {comment, replies, point, addReply} = this.props
     const {id, text, parentID} = comment
     return <div>
       <span>{text}</span>
       {replies && replies.map(reply => <Comment key={reply.id} comment={reply}/>)}
-      {comment.level == 0 && <NewComment parent={this.props.comment} onSubmit={({text}) => addReply(text)}/>}
+      {this.newReply()}
     </div>
   }
 }

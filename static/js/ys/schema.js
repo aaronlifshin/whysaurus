@@ -233,6 +233,7 @@ query Comments($pointID: String) {
 
 
 export const NewComment = gql`
+${commentFieldsFragment}
 mutation NewComment($pointID: String!, $text: String!, $parentCommentID: String) {
   newComment(commentData: {pointID: $pointID, text: $text, parentCommentID: $parentCommentID}) {
     comment {

@@ -234,7 +234,6 @@ query Comments($pointID: String) {
 }
 `
 
-
 export const NewComment = gql`
 ${commentFieldsFragment}
 mutation NewComment($pointID: String!, $text: String!, $parentCommentID: String) {
@@ -242,6 +241,14 @@ mutation NewComment($pointID: String!, $text: String!, $parentCommentID: String)
     comment {
       ...commentFields
     }
+  }
+}
+`
+
+export const ArchiveComment = gql`
+mutation ArchiveComment($pointID: String!, $commentID: String!) {
+  archiveComment(pointID: $pointID, commentID: $commentID) {
+    numArchived
   }
 }
 `

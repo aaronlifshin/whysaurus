@@ -4,8 +4,9 @@ import { graphql, compose } from 'react-apollo';
 import { CloseLinkX } from './common'
 import * as schema from '../schema';
 import NewComment from './NewComment'
+import TimeAgo from 'react-timeago'
 
-class Comment extends React.Component {
+class CommentComponent extends React.Component {
   static propTypes = {
     comment: PropTypes.object.isRequired,
     addReply: PropTypes.func,
@@ -15,27 +16,38 @@ class Comment extends React.Component {
   state = {replying: false}
 
   newReply = () => {
-    const {comment, replies, point, addReply} = this.props
+    const {user, comment, replies, point, addReply, archive} = this.props
     if (this.props.comment.level == 0){
       if (this.state.replying) {
-        return <NewComment parent={comment} onSubmit={({text}) => addReply(text).then(() => this.setState({replying: false}))}/>
+        return <NewComment parent={comment} onSubmit={({text}) => addReply(text).then(() => this.setState({replying: false}))} onCancel={() => this.setState({replying: false})}/>
       } else {
-        return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton"
-                       onClick={() => this.setState({replying: true})}>Reply</button>
+        return <div>
+          <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" onClick={() => this.setState({replying: true})}>Reply</button>
+          {user && user.admin && <a onClick={archive}>Archive</a>}
+        </div>
       }
     }
   }
 
   render(){
     const {comment, replies, point, addReply} = this.props
-    const {id, text, parentID} = comment
+    const {id, userName, userUrl, date, text, parentID} = comment
     return <div>
-      <span>{text}</span>
-      {replies && replies.map(reply => <Comment key={reply.id} comment={reply}/>)}
+      <a href={userUrl}>@{userName}</a> - <TimeAgo date={date + "Z"}/>
+      <p>{text}</p>
+      {replies && replies.sort((a, b) => a.date > b.date).map(reply => <Comment key={reply.id} comment={reply}/>)}
       {this.newReply()}
     </div>
   }
 }
+
+const Comment = graphql(schema.CurrentUserQuery, {
+  props: ({ownProps, data: {loading, currentUser, refetch}}) => ({
+    userLoading: loading,
+    user: currentUser,
+    refetchUser: refetch
+  })
+})(CommentComponent)
 
 class Comments extends React.Component {
   static propTypes = {
@@ -46,7 +58,7 @@ class Comments extends React.Component {
     comments: PropTypes.array
   }
 
-  state = {}
+  state = {commenting: false}
 
   buildRepliesIndex = (comments) => comments && comments.reduce((a, c) => {
     const parentID = c.parentID
@@ -58,16 +70,25 @@ class Comments extends React.Component {
     return a
   }, {})
 
+  newComment = () => {
+    const {point, add} = this.props
+    if (this.state.commenting) {
+      return <NewComment onSubmit={({text}) => add(point.id, text).then(() => this.setState({commenting: false}))} onCancel={() => this.setState({commenting: false})}/>
+    } else {
+      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" onClick={() => this.setState({commenting: true})}>New Comment</button>
+    }
+  }
+
   render(){
-    const {comments, point, add, onCancel} = this.props
+    const {comments, point, add, onCancel, archive} = this.props
     const replies = this.buildRepliesIndex(comments)
     return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
       <span className="claimEditAreaHeading">
         <span className="heading">Meta</span>
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
-      {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)}/>)}
-      <NewComment onSubmit={({text}) => add(point.id, text)}/>
+      {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
+      {this.newComment()}
     </div>
   }
 }
@@ -89,6 +110,14 @@ export default compose(
     props: ({ mutate }) => ({
       add: (pointID, text, parentCommentID) =>
         mutate({variables: {pointID, text, parentCommentID},
+                refetchQueries: [{query: schema.Comments, variables: {pointID: pointID}}]})
+    })
+
+  }),
+  graphql(schema.ArchiveComment, {
+    props: ({ mutate }) => ({
+      archive: (pointID, commentID) =>
+        mutate({variables: {pointID, commentID},
                 refetchQueries: [{query: schema.Comments, variables: {pointID: pointID}}]})
     })
 

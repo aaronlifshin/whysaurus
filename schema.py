@@ -57,6 +57,20 @@ class NewComment(graphene.Mutation):
         comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), comment_data.parentCommentID)
         return NewComment(comment=comment)
 
+class ArchiveComment(graphene.Mutation):
+    class Arguments:
+        pointID = graphene.String(required=True)
+        commentID = graphene.String(required=True)
+
+    numArchived = graphene.Int()
+
+    def mutate(self, info, pointID, commentID):
+        user = info.context.current_user
+        if user and user.isAdmin:
+            pointRoot = PointRootModel.getByUrlsafe(pointID)
+            numArchived = pointRoot.archiveComments(commentID)
+            return ArchiveComment(numArchived=numArchived)
+
 class PointRoot(NdbObjectType):
     class Meta:
         model = PointRootModel
@@ -480,6 +494,7 @@ class Mutation(graphene.ObjectType):
     relevanceVote = RelevanceVote.Field()
     new_point = NewPoint.Field()
     new_comment = NewComment.Field()
+    archive_comment = ArchiveComment.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

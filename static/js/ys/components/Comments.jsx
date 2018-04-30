@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import { CloseLinkX } from './common'
 import * as schema from '../schema';
 import NewComment from './NewComment'
+import TimeAgo from 'react-timeago'
 
 class Comment extends React.Component {
   static propTypes = {
@@ -28,10 +29,11 @@ class Comment extends React.Component {
 
   render(){
     const {comment, replies, point, addReply} = this.props
-    const {id, text, parentID} = comment
+    const {id, userName, userUrl, date, text, parentID} = comment
     return <div>
-      <span>{text}</span>
-      {replies && replies.map(reply => <Comment key={reply.id} comment={reply}/>)}
+      <a href={userUrl}>@{userName}</a> - <TimeAgo date={date + "Z"}/>
+      <p>{text}</p>
+      {replies && replies.sort((a, b) => a.date > b.date).map(reply => <Comment key={reply.id} comment={reply}/>)}
       {this.newReply()}
     </div>
   }

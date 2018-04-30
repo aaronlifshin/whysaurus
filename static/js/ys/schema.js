@@ -219,6 +219,9 @@ fragment commentFields on Comment {
   text
   parentID
   level
+  date
+  userName
+  userUrl
 }
 `
 

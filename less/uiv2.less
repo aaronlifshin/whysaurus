@@ -324,7 +324,7 @@ a:focus, a:hover {
 
 #signInFromHeader {
   position:relative;
-  top: 9px;
+  top: 10px;
 }
 
 #footer {
@@ -2242,7 +2242,7 @@ a:hover .arrowAddEvidenceButton {
 #explanationRowHomepage {
   //border-bottom-style: none;
   //margin-left: @cardStackWidth;
-  margin-bottom: 42px;
+  margin-bottom: 27px;
   padding-bottom: 21px;
   margin-top: 23px;
   margin-left: -3px;
@@ -2376,6 +2376,24 @@ a:hover .arrowAddEvidenceButton {
 }
 
 
+// ZOOM
+
+// maybe we need to be able to fit more content on the page
+@bgGridWidth: 5px;
+body  {
+  zoom: .9;
+  background-size: @bgGridWidth @bgGridWidth; // compensating for zoom
+}
+
+// zoom out a bit for smaller monitors
+// using height because the purpose here is to be able to fit more evidence on screen
+@media (max-device-height: 680px) {
+  body  {
+    zoom: .85;
+  }
+}
+
+//////////////////////////////////////////////////////
 
 
 // RESPONSIVE -- TO DO: move this to a separate css file
@@ -2389,13 +2407,7 @@ a:hover .arrowAddEvidenceButton {
 }
 
 
-// zoom out a bit for smaller monitors
-// using height because the purpose here is to be able to fit more evidence on screen
-@media (max-device-height: 680px) {
-  #mainContainer {
-    zoom: .8;
-  }
-}
+
 
 @media (min-width: 1200px) {
   .container, .navbar-fixed-top .container {
@@ -2448,6 +2460,9 @@ a:hover .arrowAddEvidenceButton {
   #userMenuArea {
     //margin-left: @headerMarginNarrow;
   }
+  #signInFromHeader {
+    right: 18px;
+  }
 
   #explanationRowHomepage {
     margin-left: -27px; // since the main content block no longer aligns to the header, lets offset this as well
@@ -2493,11 +2508,11 @@ a:hover .arrowAddEvidenceButton {
     margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with
     //right: 0;
     //margin-right: @defaultHeaderMarginH;
-
   }
 
   #signInFromHeader {
     right: 18px;
+    //background-color: pink;
   }
   
   #userMenuSignedIn {

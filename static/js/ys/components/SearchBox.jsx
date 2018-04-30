@@ -45,8 +45,8 @@ export class SearchBox extends React.Component {
   componentDidMount() {
     const $this = $(ReactDOM.findDOMNode(this));
     setTimeout(() => {  //the "real" DOM isn't quite ready yet... window.requestAnimationFrame() didn't work, either
-      $(".searchIcon", $this).click(event => this.getSearchResults());
-    }, 500);
+      $(".searchIcon", $this).click(this.getSearchResults);
+    }, 1000);
     console.log("searchBox: componentDidMount() - click event set up");
   }
 

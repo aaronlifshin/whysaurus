@@ -74,7 +74,7 @@ class Point(NdbObjectType):
 
     pointValue = graphene.Int()
     def resolve_pointValue(self, info):
-        return self.pointValue()
+        return self.pointValueCached
 
     fullPointImage = graphene.String()
     def resolve_fullPointImage(self, info):

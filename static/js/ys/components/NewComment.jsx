@@ -38,7 +38,10 @@ export default class NewComment extends React.Component {
         <Spinner /><span className="spinnerLabel">Adding your comment...</span>
       </span>;
     } else {
-      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>;
+      return <div>
+        <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>
+        <button className="" onClick={this.props.onCancel}>Cancel</button>
+      </div>
     }
   }
 

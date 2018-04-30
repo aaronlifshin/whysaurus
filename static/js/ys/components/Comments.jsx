@@ -18,7 +18,7 @@ class Comment extends React.Component {
     const {comment, replies, point, addReply} = this.props
     if (this.props.comment.level == 0){
       if (this.state.replying) {
-        return <NewComment parent={comment} onSubmit={({text}) => addReply(text).then(() => this.setState({replying: false}))}/>
+        return <NewComment parent={comment} onSubmit={({text}) => addReply(text).then(() => this.setState({replying: false}))} onCancel={() => this.setState({replying: false})}/>
       } else {
         return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton"
                        onClick={() => this.setState({replying: true})}>Reply</button>
@@ -46,7 +46,7 @@ class Comments extends React.Component {
     comments: PropTypes.array
   }
 
-  state = {}
+  state = {commenting: false}
 
   buildRepliesIndex = (comments) => comments && comments.reduce((a, c) => {
     const parentID = c.parentID
@@ -58,6 +58,15 @@ class Comments extends React.Component {
     return a
   }, {})
 
+  newComment = () => {
+    const {point, add} = this.props
+    if (this.state.commenting) {
+      return <NewComment onSubmit={({text}) => add(point.id, text)} onCancel={() => this.setState({commenting: false})}/>
+    } else {
+      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" onClick={() => this.setState({commenting: true})}>New Comment</button>
+    }
+  }
+
   render(){
     const {comments, point, add, onCancel} = this.props
     const replies = this.buildRepliesIndex(comments)
@@ -67,7 +76,7 @@ class Comments extends React.Component {
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
       {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)}/>)}
-      <NewComment onSubmit={({text}) => add(point.id, text)}/>
+      {this.newComment()}
     </div>
   }
 }

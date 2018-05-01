@@ -227,8 +227,8 @@ fragment commentFields on Comment {
 
 export const Comments = gql`
 ${commentFieldsFragment}
-query Comments($pointID: String) {
-  comments(pointID: $pointID) {
+query Comments($pointID: String!, $showArchived: Boolean) {
+  comments(pointID: $pointID, showArchived: $showArchived) {
     ...commentFields
   }
 }

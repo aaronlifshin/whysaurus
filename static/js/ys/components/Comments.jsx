@@ -49,16 +49,16 @@ const Comment = graphql(schema.CurrentUserQuery, {
   })
 })(CommentComponent)
 
-class Comments extends React.Component {
+class CommentsListComponent extends React.Component {
   static propTypes = {
     point: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     add: PropTypes.func.isRequired,
-    parentComment: PropTypes.object,
     comments: PropTypes.array
   }
 
-  state = {commenting: false}
+  state = {commenting: false,
+           showArchived: false}
 
   buildRepliesIndex = (comments) => comments && comments.reduce((a, c) => {
     const parentID = c.parentID
@@ -94,10 +94,10 @@ class Comments extends React.Component {
 }
 
 
-export default compose(
+const CommentsList = compose(
   graphql(schema.Comments, {
-    options: ({point}) => ({
-      variables: {pointID: point.id}
+    options: ({point, showArchived}) => ({
+      variables: {pointID: point.id, showArchived}
     }),
     props: ({ownProps, data: {loading, comments, refetch}}) => ({
       ...ownProps,
@@ -122,4 +122,28 @@ export default compose(
     })
 
   })
-)(Comments)
+)(CommentsListComponent)
+
+export default class Comments extends React.Component {
+  static propTypes = {
+    point: PropTypes.object.isRequired,
+    onCancel: PropTypes.func.isRequired
+  }
+
+  state = {showArchived: false}
+
+  showArchived = () => {
+    if (this.state.showArchived) {
+        return <button onClick={() => this.setState({showArchived: false})}>Hide Archived</button>
+    } else {
+        return <button onClick={() => this.setState({showArchived: true})}>Show Archived</button>
+    }
+  }
+
+  render(){
+    return <div>
+      {this.showArchived()}
+      <CommentsList point={this.props.point} onCancel={this.props.onCancel} showArchived={this.state.showArchived}/>
+    </div>
+  }
+}

@@ -22,7 +22,8 @@ export class SearchBox extends React.Component {
     });
   }
 
-  getSearchResults() {
+  // using public class fields syntax for this handler, to ensure proper binding of `this`
+  getSearchResults = () => {
     console.log(`searchBox: getSearchResults (${this.state.inputValue})`);
   //   searchTerms = $("#searchBox").val();
   //   if (searchTerms == "") {
@@ -64,7 +65,7 @@ export class SearchBox extends React.Component {
                onChange={(event) => this.updateInputValue(event.target.value)}
                onKeyUp={ (event) => {if (event.keyCode == 13) this.getSearchResults();} }
         />
-        <span onClick={() => this.getSearchResults()}>
+        <span onClick={this.getSearchResults}>
           <span className="searchIcon pull-right fa fa-search"></span>
         </span>
       </div>

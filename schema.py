@@ -458,7 +458,7 @@ class Query(graphene.ObjectType):
         return point
 
     comments = graphene.List(Comment, pointID=graphene.String(required=True), showArchived=graphene.Boolean())
-    def resolve_comments(self, info, pointID, showArchived):
+    def resolve_comments(self, info, pointID, showArchived=False):
         point, point_root = PointModel.getCurrentByRootKey(pointID)
         comments = point_root.getComments()
         if showArchived:

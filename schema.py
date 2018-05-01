@@ -67,6 +67,7 @@ class ArchiveComment(graphene.Mutation):
     def mutate(self, info, pointID, commentID):
         user = info.context.current_user
         if user and user.isAdmin:
+
             pointRoot = PointRootModel.getByUrlsafe(pointID)
             numArchived = pointRoot.archiveComments(commentID)
             return ArchiveComment(numArchived=numArchived)
@@ -456,10 +457,13 @@ class Query(graphene.ObjectType):
         point, pointRoot = PointModel.getCurrentByUrl(args['url'])
         return point
 
-    comments = graphene.List(Comment, pointID=graphene.String())
-    def resolve_comments(self, info, **args):
-        point, point_root = PointModel.getCurrentByRootKey(args['pointID'])
-        return point_root.getComments()
+    comments = graphene.List(Comment, pointID=graphene.String(required=True), showArchived=graphene.Boolean())
+    def resolve_comments(self, info, pointID, showArchived):
+        point, point_root = PointModel.getCurrentByRootKey(pointID)
+        comments = point_root.getComments()
+        if showArchived:
+            comments = comments + point_root.getArchivedComments()
+        return comments
 
     homePage = graphene.Field(HomePage)
     def resolve_homePage(self, info):

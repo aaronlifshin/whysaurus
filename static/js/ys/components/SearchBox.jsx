@@ -7,10 +7,23 @@ import { ApolloClient } from 'apollo-client';
 export class SearchBox extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      inputValue: '',
+    };
+  }
+
+  componentDidMount() {
+  }
+
+  updateInputValue(val) {
+    this.setState({
+      inputValue: val
+    });
   }
 
   getSearchResults() {
-    console.log('searchBox: getSearchResults');
+    console.log(`searchBox: getSearchResults (${this.state.inputValue})`);
   //   searchTerms = $("#searchBox").val();
   //   if (searchTerms == "") {
   //       return;
@@ -42,21 +55,18 @@ export class SearchBox extends React.Component {
   //   $.ajax();
   }
 
-  componentDidMount() {
-    const $this = $(ReactDOM.findDOMNode(this));
-    setTimeout(() => {  //the "real" DOM isn't quite ready yet... window.requestAnimationFrame() didn't work, either
-      $(".searchIcon", $this).click(this.getSearchResults);
-    }, 1000);
-    console.log("searchBox: componentDidMount() - click event set up");
-  }
-
   render() {
+    // the searchIcon's click handler needs to be defined in an enclosing <span>, b/c the <svg> element 
+    // that gets generated in span.searchIcon does not correctly receive an onClick function
     return (
       <div>
         <input id="searchBoxReact" type="text" name="searchTerms" placeholder="Find Argument..." results="0"
-               onKeyUp={ (event) => {if (event.keyCode == 13) this.getSearchResults(); } }
+               onChange={(event) => this.updateInputValue(event.target.value)}
+               onKeyUp={ (event) => {if (event.keyCode == 13) this.getSearchResults();} }
         />
-        <span className="searchIcon pull-right fa fa-search"></span>
+        <span onClick={() => this.getSearchResults()}>
+          <span className="searchIcon pull-right fa fa-search"></span>
+        </span>
       </div>
     )
   }

@@ -97,7 +97,7 @@ class CommentsListComponent extends React.Component {
 const CommentsList = compose(
   graphql(schema.Comments, {
     options: ({point, showArchived}) => ({
-      variables: {pointID: point.id, showArchived}
+      variables: {pointID: point.id, showArchived: !!showArchived}
     }),
     props: ({ownProps, data: {loading, comments, refetch}}) => ({
       ...ownProps,
@@ -107,18 +107,19 @@ const CommentsList = compose(
     })
   }),
   graphql(schema.NewComment, {
-    props: ({ mutate }) => ({
-      add: (pointID, text, parentCommentID) =>
-        mutate({variables: {pointID, text, parentCommentID},
-                refetchQueries: [{query: schema.Comments, variables: {pointID: pointID}}]})
+    props: ({ mutate, ownProps: {showArchived} }) => ({
+      add: (pointID, text, parentCommentID) => {
+        return mutate({variables: {pointID, text, parentCommentID},
+                       refetchQueries: [{query: schema.Comments, variables: {pointID, showArchived: !!showArchived}}]})
+      }
     })
 
   }),
   graphql(schema.ArchiveComment, {
-    props: ({ mutate }) => ({
+    props: ({ mutate, ownProps: {showArchived} }) => ({
       archive: (pointID, commentID) =>
         mutate({variables: {pointID, commentID},
-                refetchQueries: [{query: schema.Comments, variables: {pointID: pointID}}]})
+                refetchQueries: [{query: schema.Comments, variables: {pointID, showArchived: !!showArchived}}]})
     })
 
   })

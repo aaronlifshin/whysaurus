@@ -28,7 +28,7 @@ class AddEvidenceForm extends React.Component {
         return placeholderSupport
     }
   }
-  
+
   // TO DO: there is bug around validationFailures - its returning 0 when it shouldn't be
   //   for now, adding the condition (title.length > validations.titleMaxCharacterCount) to make the button disable when it should
   //   but really we should fix the bug

@@ -33,7 +33,7 @@ class CommentComponent extends React.Component {
     const {comment, replies, point, addReply} = this.props
     const {id, userName, userUrl, date, text, parentID} = comment
     return <div>
-      <a href={userUrl}>@{userName}</a> - <TimeAgo date={date + "Z"}/>
+      <a href={userUrl}>@{userName}</a> - <TimeAgo date={date + "Z"} minPeriod={300}/>
       <p>{text}</p>
       {replies && replies.sort((a, b) => a.date > b.date).map(reply => <Comment key={reply.id} comment={reply}/>)}
       {this.newReply()}

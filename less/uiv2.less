@@ -1163,6 +1163,16 @@ li .iconWithStat {
   font-size: 133%;
 }
 
+.pointBylineOtherUsers .iconWithStat {
+  font-size: 80%;
+  margin-left: 4px;
+}
+
+.pointBylineOtherUsers {
+  margin-left: 2px;
+
+}
+
 .commentLink {
   position: relative;
   top: 1px;
@@ -1190,18 +1200,21 @@ li .iconWithStat {
 
 .byline {
   width: inherit;
-  max-width: 112px; // need to leave room for number of contributors and number of comments
   display: inline-block;
   vertical-align: bottom;
   float: none;
-  text-overflow: ellipsis;
-  white-space: nowrap; // needed for text-overflow: ellipsis;
-  overflow: hidden; // needed for text-overflow: ellipsis;
   margin-bottom: 2px; // don't know why this is necessary
+  //margin-right: 8px;
 }
 
 .byline:hover {
   text-decoration: underline;
+}
+.bylineAuthor {
+  max-width: 112px; // need to leave room for number of contributors and number of comments
+  text-overflow: ellipsis;
+  white-space: nowrap; // needed for text-overflow: ellipsis;
+  overflow: hidden; // needed for text-overflow: ellipsis;
 }
 
 .cardTopRowItem a:hover {

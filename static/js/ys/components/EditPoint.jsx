@@ -5,9 +5,7 @@ import * as schema from '../schema';
 import { graphql, compose } from 'react-apollo';
 import TitleText from './TitleText'
 import Spinner from './Spinner'
-import CloseLinkX from './Point'
-
-
+import { CloseLinkX } from './common'
 
 const EditTitleForm = ({point, onSubmit, onClick, heightClass}) => {
   let titleTextClasses = `titleTextField ${heightClass}`
@@ -49,7 +47,7 @@ class EditPointComponent extends React.Component {
     }).then(null, (err) => this.setState({saving: false}))
   }
 
-  // TODO: this algorithm is a sketch, might not be ideal 
+  // TODO: this algorithm is a sketch, might not be ideal
   getEditTextFormHeightClass(title){
     if (title.length > 160 )
       return "sixLines";
@@ -58,11 +56,11 @@ class EditPointComponent extends React.Component {
     if (title.length > 100 )
       return "fourLines";
     if (title.length > 65 )
-      return "threeLines";    
-    else 
+      return "threeLines";
+    else
       return "twoLines";
-  }  
-  
+  }
+
   render(){
     let editClaimTextClasses = `claimEditArea pointCardPaddingH editClaimText`
     if (this.state.saving) {

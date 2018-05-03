@@ -1047,7 +1047,7 @@ function validateSignupDialog() {
     } else if (userName.length <= 3) {
         dialogAlert('#signupDialog','Please specify a username at least four characters long.');
         valid = false;
-    }
+    }/*
     if (professionVal.length >= 500) {
         dialogAlert('#signupDialog','Please do not exceed maximum length for Current Profession (500 characters)');
         valid = false;        
@@ -1059,7 +1059,7 @@ function validateSignupDialog() {
     if (areasVal.length >= 500) {
         dialogAlert('#signupDialog','Please do not exceed maximum length for Areas of Expertise (500 characters).  Wow, you must have a lot of expertise!');
         valid = false;        
-    } 
+    }*/ 
     if (bioVal.length >= 500) {
         dialogAlert('#signupDialog','Please do not exceed maximum length for Username (500 characters)');
         valid = false;

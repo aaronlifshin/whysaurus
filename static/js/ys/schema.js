@@ -19,12 +19,14 @@ fragment pointFields on Point {
   pointValue,
   numSupporting,
   numCounter,
-  numComments,
   numUsersContributed,
   supportedCount,
   sources {url, name},
   rootURLsafe,
-  currentUserVote
+  currentUserVote,
+  root {
+    numComments
+  }
 }
 `
 
@@ -201,13 +203,53 @@ query NewPoints($cursor: String, $limit: Int) {
     hasMore
   }
 }
-`;
+`
 
 export const NewPoint = gql`
 ${pointFieldsFragment}
 mutation NewPoint($title: String!, $imageURL: String, $imageAuthor: String, $imageDescription: String, $sourceURLs: [String], $sourceNames: [String]) {
   newPoint(pointData: {title: $title, content: $title, summaryText: $title, imageURL: $imageURL, imageAuthor: $imageAuthor, imageDescription: $imageDescription, sourceURLs: $sourceURLs, sourceNames: $sourceNames}) {
     point { ...pointFields }
+  }
+}
+`
+
+const commentFieldsFragment = gql`
+fragment commentFields on Comment {
+  id
+  text
+  parentID
+  level
+  date
+  userName
+  userUrl
+}
+`
+
+export const Comments = gql`
+${commentFieldsFragment}
+query Comments($pointID: String!, $showArchived: Boolean) {
+  comments(pointID: $pointID, showArchived: $showArchived) {
+    ...commentFields
+  }
+}
+`
+
+export const NewComment = gql`
+${commentFieldsFragment}
+mutation NewComment($pointID: String!, $text: String!, $parentCommentID: String) {
+  newComment(commentData: {pointID: $pointID, text: $text, parentCommentID: $parentCommentID}) {
+    comment {
+      ...commentFields
+    }
+  }
+}
+`
+
+export const ArchiveComment = gql`
+mutation ArchiveComment($pointID: String!, $commentID: String!) {
+  archiveComment(pointID: $pointID, commentID: $commentID) {
+    numArchived
   }
 }
 `

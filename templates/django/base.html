@@ -170,12 +170,12 @@
                   {% endif %}
                     {% if currentArea and currentArea != '' %}
                         {% if user.isAdmin or user.isTeacher %}
-                          <li><a tabindex="-1" href="/roster">Roster</a></li>
+                          <li><a tabindex="-1" href="/roster" class="admin">Roster</a></li>
                           <li class="divider"></li>
                         {% endif %}
                     {% endif %}
                     {% if user.isAdmin %}
-                        <li><a tabindex="-1" href="/admin"> Admin </a></li>
+                        <li><a tabindex="-1" href="/admin" class="admin"> Admin </a></li>
                     {% endif %}
                     <li><a tabindex="-1" href="/user/{{user.url}}" onclick="ga('send', 'event', 'UserMenu', 'Profile')"> Profile </a></li>
                     {% if user.emailUser %}
@@ -338,13 +338,14 @@
                     placeholder="http://..."></input>
                 </div>
               </div>
+              <!--
               <div class="control-group">
                 <label class="control-label" for="signup_userAreas">Expertise</label>
                 <div class="controls">
                     <input id="signup_userAreas" name="signup_userAreas" type="text" value=""
                     placeholder="Stuff you know about"></input>
                 </div>
-              </div>
+              </div>            
               <div class="control-group">
                 <label  class="control-label" for="signup_userProfession">Profession</label>
                 <div class="controls">
@@ -352,6 +353,7 @@
                     placeholder="Your day job"></input>
                 </div>
               </div>
+              -->
               <div class="control-group">
                 <label  class="control-label" for="signup_userBio">Bio</label>
                 <div class="controls">

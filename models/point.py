@@ -102,6 +102,16 @@ class Link(ndb.Model):
     @property
     def rating(self):
         return int(round(self.fRating, 0)) if self.fRating else 0
+    
+    @staticmethod
+    def calcSortScore(linkRating, pointValueCached):
+        score = linkRating * pointValueCached
+        return int(round(score, 0)) if score else 0
+    
+    def sortScore(self, point):
+        if point is None:
+            return -1
+        return Link.calcSortScore(self.fRating, point.pointValueCached)
 
     def updateRelevanceData(self, oldRelVote, newRelVote):
         startingRating = self.fRating if self.fRating else 0
@@ -268,6 +278,10 @@ class Point(ndb.Model):
     def relevance(self):
         if self._linkInfo:
             return self._linkInfo.rating
+        
+    @property
+    def sortScore(self):
+        return 16 if self._linkInfo is None else self._linkInfo.sortScore(self)
 
     @property
     def relevancePercent(self):

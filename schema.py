@@ -7,6 +7,7 @@ from graphene import relay
 from graphene_gae import NdbObjectType, NdbConnectionField
 
 from models.point import Point as PointModel
+from models.point import Link as LinkModel
 from models.point import PointRoot
 from models.point import FeaturedPoint
 from models.uservote import RelevanceVote as RelevanceVoteModel
@@ -122,13 +123,14 @@ class Point(NdbObjectType):
                 point.parent = self
                 point.link_type = 'counter'
         # TODO: sort by relevance, or do a more efficient query that just returns the most relevant points
-        return sorted((supportingPoints or []) + (counterPoints or []), key=lambda point: -point.relevance)
+        return sorted((supportingPoints or []) + (counterPoints or []), key=lambda point: -point.sortScore)
 
 
 class Link(graphene.ObjectType):
     voteCount = graphene.Int()
     type = graphene.String()
     relevance = graphene.Float()
+    sortScore = graphene.Float()
     relevanceVote = graphene.Int()
     parentURLsafe = graphene.String()
     childURLsafe = graphene.String()
@@ -145,7 +147,7 @@ class SubPointConnection(relay.Connection):
     class Edge:
         link = graphene.Field(Link)
         def resolve_link(self, info):
-            return Link(type=self.node.link_type, relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe, relevanceVote=self.node.myVoteValue, voteCount=self.node._linkInfo.voteCount)
+            return Link(type=self.node.link_type, sortScore=self.node._linkInfo.sortScore(self.node), relevance=self.node._linkInfo.rating, childURLsafe=self.node._linkInfo.root.urlsafe(), parentURLsafe=self.node.parent.rootURLsafe, relevanceVote=self.node.myVoteValue, voteCount=self.node._linkInfo.voteCount)
 
 class ExpandPoint(graphene.Mutation):
     class Arguments:
@@ -198,7 +200,7 @@ class LinkPoint(graphene.Mutation):
                         'pointCurrentVersion':supportingPoint,
                         'linkType':linkType,
                         'voteCount': voteCount,
-                        'fRating':rating }
+                        'fRating':rating}
             ]
             newVersion = oldPoint.update(
                 pointsToLink=newLink,
@@ -366,7 +368,7 @@ class RelevanceVote(graphene.Mutation):
             if user:
                 result, newRelevance, newVoteCount = user.addRelevanceVote(parentRootURLsafe, rootURLsafe, linkType, vote)
                 if result:
-                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, relevanceVote=vote, voteCount=newVoteCount, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
+                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, sortScore=LinkModel.calcSortScore(newRelevance, point.pointValueCached), relevanceVote=vote, voteCount=newVoteCount, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
                 else:
                     raise Exception(str('vote failed: ' + str(vote)))
             else:

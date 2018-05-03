@@ -488,6 +488,10 @@ class PointCardComponent extends React.Component {
     return this.props.link && this.props.link.relevance
   }
 
+  get sortScore() {
+    return this.props.link && this.props.link.sortScore
+  }
+
   get relevanceVoteCount() {
     return this.props.link && this.props.link.voteCount
   }

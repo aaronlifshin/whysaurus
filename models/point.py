@@ -281,7 +281,7 @@ class Point(ndb.Model):
         
     @property
     def sortScore(self):
-        return 16 if self._linkInfo is None else self._linkInfo.sortScore(self)
+        return self._linkInfo.sortScore(self)
 
     @property
     def relevancePercent(self):

@@ -91,7 +91,7 @@ class AdminPage(AuthHandler):
             self.response.out.write('User not authorized.')
             return
 
-        queryUsr = WhysaurusUser.query().order(-WhysaurusUser.lastLogin)
+        queryUsr = WhysaurusUser.query().order(-WhysaurusUser.lastViewed)
         areas = PrivateArea.query()
         users = []
         i = 0

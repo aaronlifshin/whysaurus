@@ -89,8 +89,13 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
             t = self.jinja2_env.get_template(templateName)
             html = t.render(templateVals)
         elif engine == 'django':
+            # Preset values for the template
+            values = {
+                'is_prod': self.is_prod_instance
+            }
+            values.update(templateVals)
             path = os.path.join(constants.ROOT, "templates/django/" + templateName)
-            html = template.render(path, templateVals)
+            html = template.render(path, values)
         else:
             raise WhysaurusException("Unknown template engine specified" )
         endTime = int(time.time() * 1000)

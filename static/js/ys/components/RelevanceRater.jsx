@@ -73,6 +73,7 @@ class RelevanceComponent extends React.Component {
   // TODO: add number of Votes so far to relevanceStats
   // TODO: Gene: Remove the sortScore display (or ideally make it admin?)
   render(){
+    const {user} = this.props
     return <div className="relCtrlGroup" >
       <span className="editAreaClose relCtrlClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
       <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
@@ -84,7 +85,7 @@ class RelevanceComponent extends React.Component {
          {this.state.rating && <Spinner />}
        </div>
       <div className="relevanceExplanation">
-        <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} {this.relevanceVoteCount == 1 ? 'vote' : 'votes'} so far ({this.sortScore})</div>
+        <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} {this.relevanceVoteCount == 1 ? 'vote' : 'votes'} so far {user && user.admin && <div>({this.sortScore})</div>}</div>
         <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>
       </div>
     </div>

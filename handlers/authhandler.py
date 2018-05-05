@@ -91,7 +91,8 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
         elif engine == 'django':
             # Preset values for the template
             values = {
-                'is_prod': self.is_prod_instance
+                'is_prod': self.is_prod_instance,
+                'app_id': self.app_id
             }
             values.update(templateVals)
             path = os.path.join(constants.ROOT, "templates/django/" + templateName)

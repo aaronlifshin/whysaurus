@@ -149,7 +149,7 @@ class Point(NdbObjectType):
             for point in points:
                 point.parent = self
                 point.link_type = 'supporting'
-        return points or []
+        return sorted((points or []), key=lambda x: -x.sortScore)
 
     counterPoints = relay.ConnectionField(lambda: SubPointConnection)
     def resolve_counterPoints(self, info, **args):
@@ -160,7 +160,7 @@ class Point(NdbObjectType):
             for point in points:
                 point.parent = self
                 point.link_type = 'counter'
-        return points or []
+        return sorted((points or []), key=lambda x: -x.sortScore)
 
     # a list of the most relevant supporting and counter points
     # introduced for single column views

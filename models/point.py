@@ -105,7 +105,7 @@ class Link(ndb.Model):
     
     @staticmethod
     def calcSortScore(linkRating, pointValueCached):
-        score = linkRating * pointValueCached
+        score = (10 * linkRating) + pointValueCached
         return int(round(score, 0)) if score else 0
     
     def sortScore(self, point):

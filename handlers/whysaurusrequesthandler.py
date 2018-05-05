@@ -93,6 +93,11 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
         """Returns true if this is the production instance id"""
         app_id = app_identity.get_application_id()
         return app_id == 'whysaurus'
+    
+    # TODO: Gene: Used for instance debugging, can be removed once finished along with template values
+    @webapp2.cached_property
+    def app_id(self):
+        return app_identity.get_application_id()
 
     def render(self, template_name, template_vars={}):
         # Preset values for the template
@@ -100,7 +105,8 @@ class WhysaurusRequestHandler(webapp2.RequestHandler):
             'url_for': self.uri_for,
             'logged_in': self.logged_in,
             'flashes': self.session.get_flashes(),
-            'is_prod': self.is_prod_instance
+            'is_prod': self.is_prod_instance,
+            'app_id': self.app_id
         }
 
         # Add manually supplied template values

@@ -7,9 +7,6 @@ archive/
 .rvmrc
 constants.py
 bin/bulkloader*
-static/css/bootstrap.css
-static/css/bootstrap-responsive.css
-static/css/new.css
 .vagrant/
 node_modules
 

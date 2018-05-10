@@ -11,7 +11,7 @@ import config from '../config'
 
 class EditImageForm  extends React.Component {
 
-  state = {}
+  state = {imageUpdated: false}
 
   render() {
     const {point, onSubmit, onClick, heightClass} = this.props
@@ -19,12 +19,13 @@ class EditImageForm  extends React.Component {
     <Form onSubmit={onSubmit}
           defaultValues={{imageURL: point.imageURL, imageDescription: point.imageDescription}}
           validate={values => ({imageDescription: validations.validateCaption(values.imageDescription)})}>
-      { ({submitForm, values: {imageDescription, imageURL}, validationFailures}) => (
+      { ({submitForm, values: {imageDescription, imageURL}, touched, validationFailures}) => (
         <form onSubmit={submitForm} id="form1" className="editPointTextForm">
-          {imageURL && <img src={config.cdn.baseURL + imageURL}/>}
+          {console.log("FOO") || console.log(touched)}
+          {imageURL && <img src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}
           <ImagePicker field="imageURL"
             onUploaded={(file) => {
-              this.setState({imageURL: file.key})
+              this.setState({imageUpdated: true})
             }}
             onTransformed={(result) => {
               console.log("Saved transformed versions of image:")
@@ -32,10 +33,10 @@ class EditImageForm  extends React.Component {
             }}
             />
             <div className="claimCreationFormFieldBlock">
-              <Text field="imageDescription" onClick={onClick} onSubmit={submitForm}/>
+              <Text field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption - credit the image, add a description, etc"/>
             </div>
             <div className="claimCreationFormButtonBlock">
-              <button onClick={onClick} className="buttonUX2 createClaimFormButton" type="submit">Update Image</button>
+              <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 createClaimFormButton" type="submit">Update Image</button>
             </div>
 
         </form>
@@ -61,7 +62,10 @@ class EditImageComponent extends React.Component {
     values.url = this.point.url
     this.setState({saving: true})
     this.props.save(values).
-      then((result) => this.setState({saving: false}),
+      then((result) => {
+        this.setState({saving: false})
+        this.props.onClose(e)
+      },
            (err) => this.setState({saving: false}))
   }
 
@@ -79,7 +83,7 @@ class EditImageComponent extends React.Component {
       return "twoLines";
   }
 
-  render(){
+  renderForm = () => {
     let editClaimTextClasses = `claimEditArea pointCardPaddingH editClaimText`
     if (this.state.saving) {
       return <div className={editClaimTextClasses}>
@@ -90,6 +94,18 @@ class EditImageComponent extends React.Component {
         <EditImageForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title} heightClass={this.getEditTextFormHeightClass(this.point.title)}/>
       </div>;
     }
+  }
+
+  render() {
+    let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
+    return <div className="row-fluid claimEditArea pointCardPaddingH editImage ">
+      <span className="claimEditAreaHeading">
+      <span className="heading">{editImageLabel}</span>
+      <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
+      </span>
+      {this.renderForm()}
+    </div>
+
   }
 }
 

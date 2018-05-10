@@ -13,6 +13,7 @@ fragment pointFields on Point {
   authorName,
   authorURL,
   imageURL,
+  imageDescription,
   fullPointImage,
   upVotes,
   downVotes,
@@ -53,7 +54,8 @@ mutation EditPoint($url: String!, $title: String, $imageDescription: String, $im
       title,
       url,
       imageURL,
-      imageDescription
+      imageDescription,
+      fullPointImage
     }
   }
 }

@@ -332,6 +332,8 @@ class NewPoint(graphene.Mutation):
 class EditPointInput(graphene.InputObjectType):
     url = graphene.String(required=True)
     title = graphene.String()
+    imageDescription = graphene.String()
+    imageURL = graphene.String()
 
 class EditPoint(graphene.Mutation):
     class Arguments:
@@ -341,7 +343,11 @@ class EditPoint(graphene.Mutation):
 
     def mutate(self, info, point_data):
         point, pointRoot = PointModel.getCurrentByUrl(point_data.url)
-        newPointVersion = point.update(user=info.context.current_user, newTitle=point_data.title)
+        newPointVersion = point.update(user=info.context.current_user,
+                                       newTitle=(point_data.title or point.title),
+                                       imageURL=point_data.imageURL or point.imageURL,
+                                       imageDescription=point_data.imageDescription or point.imageDescription,
+        )
         return EditPoint(point=newPointVersion)
 
 class Vote(graphene.Mutation):

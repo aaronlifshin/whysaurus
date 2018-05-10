@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactFilestack from 'filestack-react'
+import { Text, Field } from 'react-form'
 import { client } from 'filestack-react';
 import config from '../config'
 
@@ -42,26 +43,30 @@ export default class ImagePicker extends React.Component {
   }
 
   render(){
-    const {onUploaded, onTransformed} = this.props
-    return <ReactFilestack
-      mode="pick"
-      apikey={config.filestack.key}
-      options={filestackOptions}
-      buttonText="Upload Image"
-      buttonClass="classname"
-      onSuccess={(response) => {
-        const file = response.filesUploaded[0]
-        if (file) {
-          onUploaded && onUploaded(file)
-          Promise.all([saveBigSummary(file),
-                     saveMediumSummary(file),
-                     saveFullPoint(file)]).
+    const {onUploaded, onTransformed, ...rest} = this.props
+    return <Field {...rest}>
+      { ({value, setValue}) =>
+        <ReactFilestack
+        mode="pick"
+        apikey={config.filestack.key}
+        options={filestackOptions}
+        buttonText="Upload Image"
+        buttonClass="classname"
+        onSuccess={(response) => {
+          const file = response.filesUploaded[0]
+          if (file) {
+            setValue(file.key)
+            onUploaded && onUploaded(file)
+            Promise.all([saveBigSummary(file),
+                         saveMediumSummary(file),
+                         saveFullPoint(file)]).
             then(onTransformed)
-        } else {
-          console.log("file upload seemed to fail, here's what I got:")
-          console.log(response)
-        }
-      }}
-      />
+          } else {
+            console.log("file upload seemed to fail, here's what I got:")
+            console.log(response)
+          }
+        }}/>
+    }
+    </Field>
   }
 }

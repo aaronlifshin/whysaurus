@@ -13,6 +13,7 @@ import config from '../config'
 import {PointList} from './PointList'
 import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
+import EditImage from './EditImage'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
@@ -153,8 +154,7 @@ class Sources extends React.Component {
     values.url = this.point.url
     this.props.mutate({
       variables: values
-    })
-      .then( res => {
+    }).then( res => {
         console.log(res)
       });
     this.setState({editing: false})
@@ -190,11 +190,7 @@ class EditSources extends React.Component {
   }
 }
 
-class EditImage extends React.Component {
-    constructor(props) {
-    super(props);
-  }
-
+class EditPointImage extends React.Component {
   render(){
       let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
       return <div className="row-fluid claimEditArea pointCardPaddingH editImage ">
@@ -202,8 +198,8 @@ class EditImage extends React.Component {
           <span className="heading">{editImageLabel}</span>
           <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
         </span>
-        Here is where you edit images!
-      </div>
+        <EditImage point={this.props.point}/>
+    </div>
   }
 }
 
@@ -219,7 +215,7 @@ class CommentsLink extends React.Component {
     return <span className="cardTopRowItem">
       <a className="commentLink easierToClickOn" onClick={this.props.onClick}>
           <span className="iconWithStat far fa-comment"></span>
-          { (this.props.point.root.numComments > 0) && <span className="number inlineBlock">{this.props.point.root.numComments}</span> }      
+          { (this.props.point.root.numComments > 0) && <span className="number inlineBlock">{this.props.point.root.numComments}</span> }
       </a>
     </span>
   }
@@ -821,7 +817,7 @@ class PointCardComponent extends React.Component {
                     <div className={classesStackCard2} tabIndex="-1">
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
-                            { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> }
+                            { this.state.editingClaimImage && <EditPointImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> }
                             <div className="row-fluid inlineflexBox">
                             <div className={ this.textContentWidth()  }>
                                 <div className="row-fluid">

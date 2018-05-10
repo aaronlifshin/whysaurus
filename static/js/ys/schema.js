@@ -13,6 +13,7 @@ fragment pointFields on Point {
   authorName,
   authorURL,
   imageURL,
+  imageDescription,
   fullPointImage,
   upVotes,
   downVotes,
@@ -46,12 +47,15 @@ fragment evidenceFields on Point {
 }`
 
 export const EditPointQuery = gql`
-mutation EditPoint($url: String!, $title: String) {
-  editPoint(pointData: {url: $url, title: $title}) {
+mutation EditPoint($url: String!, $title: String, $imageDescription: String, $imageURL: String) {
+  editPoint(pointData: {url: $url, title: $title, imageDescription: $imageDescription, imageURL: $imageURL}) {
     point {
       id,
       title,
-      url
+      url,
+      imageURL,
+      imageDescription,
+      fullPointImage
     }
   }
 }

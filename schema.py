@@ -31,6 +31,10 @@ class Source(NdbObjectType):
     class Meta:
         model = SourceModel
 
+    id = graphene.NonNull(graphene.ID)
+    def resolve_id(self, info):
+        return self.key.urlsafe()
+
 class Comment(NdbObjectType):
     class Meta:
         model = CommentModel
@@ -350,6 +354,33 @@ class EditPoint(graphene.Mutation):
         )
         return EditPoint(point=newPointVersion)
 
+class AddSource(graphene.Mutation):
+    class Arguments:
+        pointID = graphene.String(required=True)
+        url = graphene.String(required=True)
+        name = graphene.String(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, pointID, url, name):
+        point, pointRoot = PointModel.getCurrentByRootKey(pointID)
+        newPointVersion = point.update(user=info.context.current_user,
+                                       sourcesToAdd=[SourceModel(parent=point.key, url=url, name=name)])
+        return AddSource(point=newPointVersion)
+
+class DeleteSource(graphene.Mutation):
+    class Arguments:
+        pointID = graphene.String(required=True)
+        id = graphene.String(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, pointID, id):
+        point, pointRoot = PointModel.getCurrentByRootKey(pointID)
+        newPointVersion = point.update(user=info.context.current_user,
+                                       sourceKeysToRemove=[id])
+        return AddSource(point=newPointVersion)
+
 class Vote(graphene.Mutation):
     class Arguments:
         url = graphene.String(required=True)
@@ -507,6 +538,8 @@ class Mutation(graphene.ObjectType):
     new_point = NewPoint.Field()
     new_comment = NewComment.Field()
     archive_comment = ArchiveComment.Field()
+    add_source = AddSource.Field()
+    delete_source = DeleteSource.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -14,6 +14,7 @@ import {PointList} from './PointList'
 import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
 import EditImage from './EditImage'
+import EditSources from './EditSources'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
@@ -131,64 +132,16 @@ const Point = compose(
 )(PointComponent)
 
 class Sources extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {editing: false}
-    this.handleClickEdit = this.handleClickEdit.bind(this);
-    this.handleClickSave = this.handleClickSave.bind(this);
-  }
-
-  get point() {
-    return this.props.point;
-  }
-
-  handleClickEdit(e) {
-    // TODO: not working, make work
-    console.log("edit");
-    this.setState({editing: true})
-  }
-
-  handleClickSave(values, e, formApi) {
-    // TODO: not working, make work
-    console.log("saving edits")
-    values.url = this.point.url
-    this.props.mutate({
-      variables: values
-    }).then( res => {
-        console.log(res)
-      });
-    this.setState({editing: false})
-  }
-
   render(){
+    const sources = this.props.point.sources
     return <div className="sources pointCardPaddingH">
-      {this.point.sources && this.point.sources.map(({name, url}, i) =>
+      {sources && sources.map(({name, url}, i) =>
         <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name}</a></div>
       )}
     </div>
   }
 }
 
-class EditSources extends React.Component {
-    constructor(props) {
-    super(props);
-  }
-
-  get point() {
-    return this.props.point;
-  }
-
-  render(){
-      let editSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
-      return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
-        <span className="claimEditAreaHeading">
-          <span className="heading">{editSourcesLabel}</span>
-          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>
-        Here is where you edit sources!
-      </div>
-  }
-}
 
 class CommentsLink extends React.Component {
   constructor(props) {

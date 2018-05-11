@@ -22,3 +22,11 @@ export function validateCaption(caption){
     return null;
   }
 }
+
+export function validateSourceName(name){
+  return null
+}
+
+export function validateSourceURL(url){
+  return null;
+}

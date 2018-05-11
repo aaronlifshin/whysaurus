@@ -22,7 +22,7 @@ fragment pointFields on Point {
   numCounter,
   numUsersContributed,
   supportedCount,
-  sources {url, name},
+  sources { id, url, name },
   rootURLsafe,
   currentUserVote,
   root {
@@ -105,6 +105,28 @@ export const DeletePointMutation = gql`
 mutation Delete($url: String!) {
   delete(url: $url) {
     url
+  }
+}
+`
+
+export const AddSource = gql`
+mutation AddSource($pointID: String!, $url: String!, $name: String!) {
+  addSource(pointID: $pointID, url: $url, name: $name) {
+    point {
+      id
+      sources { id, name, url }
+    }
+  }
+}
+
+`
+export const DeleteSource = gql`
+mutation DeleteSource($pointID: String!, $id: String!) {
+  deleteSource(pointID: $pointID, id: $id) {
+    point {
+      id
+      sources { id, name, url }
+    }
   }
 }
 `

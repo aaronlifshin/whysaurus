@@ -47,6 +47,14 @@ function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span><span className="number">{props.point.supportedCount}</span> Other Links</span>
 }
 
+function RawScore(props){
+  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>Raw Score: <span className="number">{props.point.pointValueRaw}</span></span>
+}
+
+function EngagementScore(props){
+  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>Engagment: <span className="number">{props.point.engagementScore}</span></span>
+}
+
 /*
         Code to check if current user is the point Author
           {this.props.data.currentUser &&
@@ -678,6 +686,7 @@ class PointCardComponent extends React.Component {
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
         { this.currentUserIsAdmin() && <li className="admin"><SupportingCount point={this.point} /></li> }
+        { this.currentUserIsAdmin() && <li className="admin"><EngagementScore point={this.point} /></li> }
       </ul>
     </span>
   }

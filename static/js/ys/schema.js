@@ -22,6 +22,7 @@ fragment pointFields on Point {
   numCounter,
   numUsersContributed,
   supportedCount,
+  engagementScore,
   sources { id, url, name },
   rootURLsafe,
   currentUserVote,
@@ -145,6 +146,11 @@ mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURL
   relevanceVote(linkType: $linkType, rootURLsafe: $rootURLsafe, parentRootURLsafe: $parentRootURLsafe, url: $url, vote: $vote) {
     point {
       id
+    }
+    
+    parentPoint {
+      id
+      pointValue
     }
 
     link {

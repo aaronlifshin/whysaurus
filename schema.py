@@ -109,6 +109,10 @@ class Point(NdbObjectType):
     pointValue = graphene.Int()
     def resolve_pointValue(self, info):
         return self.pointValueCached
+    
+    pointValueRaw = graphene.Int()
+    def resolve_pointValueRaw(self, info):
+        return self.pointValue
 
     fullPointImage = graphene.String()
     def resolve_fullPointImage(self, info):
@@ -130,6 +134,10 @@ class Point(NdbObjectType):
     def resolve_supportedCount(self, info):
         # TODO: need to get a link to the point root and then get supportedCount from that
         return 42
+    
+    engagementScore = graphene.Int()
+    def resolve_engagementScore(self, info):
+        return self.engagementScoreCached
 
     rootURLsafe = graphene.String()
     def resolve_rootURLsafe(self, info):
@@ -452,6 +460,7 @@ class RelevanceVote(graphene.Mutation):
         vote = graphene.Int(required=True)
 
     point = graphene.Field(Point)
+    parentPoint = graphene.Field(Point)
     link = graphene.Field(Link)
 
     def mutate(self, info, linkType, url, parentRootURLsafe, rootURLsafe, vote):
@@ -459,9 +468,11 @@ class RelevanceVote(graphene.Mutation):
         point, pointRoot = PointModel.getCurrentByUrl(url)
         if point:
             if user:
+                pp, ppr = PointModel.getCurrentByRootKey(parentRootURLsafe)
+                
                 result, newRelevance, newVoteCount = user.addRelevanceVote(parentRootURLsafe, rootURLsafe, linkType, vote)
                 if result:
-                    return RelevanceVote(point=point, link=Link(type=linkType, relevance=newRelevance, sortScore=LinkModel.calcSortScore(newRelevance, point.pointValueCached), relevanceVote=vote, voteCount=newVoteCount, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
+                    return RelevanceVote(point=point, parentPoint=pp, link=Link(type=linkType, relevance=newRelevance, sortScore=LinkModel.calcSortScore(newRelevance, point.pointValueCached), relevanceVote=vote, voteCount=newVoteCount, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
                 else:
                     raise Exception(str('vote failed: ' + str(vote)))
             else:

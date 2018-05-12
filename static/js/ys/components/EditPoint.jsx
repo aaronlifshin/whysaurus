@@ -42,9 +42,8 @@ class EditPointComponent extends React.Component {
   handleClickSave = (values, e, formApi) => {
     values.url = this.point.url
     this.setState({saving: true})
-    this.props.mutate({
-      variables: values
-    }).then(null, (err) => this.setState({saving: false}))
+    this.props.save(values).
+      then(null, (err) => this.setState({saving: false}))
   }
 
   // TODO: this algorithm is a sketch, might not be ideal
@@ -82,5 +81,11 @@ class EditPointComponent extends React.Component {
 }
 
 export default compose(
-  graphql(schema.EditPointQuery),
+  graphql(schema.EditPointQuery, {
+    props: ({mutate}) => ({
+      save: (values) => mutate({
+        variables: values
+      })
+    })
+  }),
 )(EditPointComponent)

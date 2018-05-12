@@ -13,6 +13,8 @@ import config from '../config'
 import {PointList} from './PointList'
 import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
+import EditImage from './EditImage'
+import EditSources from './EditSources'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
@@ -130,84 +132,15 @@ const Point = compose(
 )(PointComponent)
 
 class Sources extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {editing: false}
-    this.handleClickEdit = this.handleClickEdit.bind(this);
-    this.handleClickSave = this.handleClickSave.bind(this);
-  }
-
-  get point() {
-    return this.props.point;
-  }
-
-  handleClickEdit(e) {
-    // TODO: not working, make work
-    console.log("edit");
-    this.setState({editing: true})
-  }
-
-  handleClickSave(values, e, formApi) {
-    // TODO: not working, make work
-    console.log("saving edits")
-    values.url = this.point.url
-    this.props.mutate({
-      variables: values
-    })
-      .then( res => {
-        console.log(res)
-      });
-    this.setState({editing: false})
-  }
-
   render(){
+    const sources = this.props.point.sources
     return <div className="sources pointCardPaddingH">
-      {this.point.sources && this.point.sources.map(({name, url}, i) =>
+      {sources && sources.map(({name, url}, i) =>
         <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name}</a></div>
       )}
     </div>
   }
 }
-
-class EditSources extends React.Component {
-    constructor(props) {
-    super(props);
-  }
-
-  get point() {
-    return this.props.point;
-  }
-
-  render(){
-      let editSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
-      return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
-        <span className="claimEditAreaHeading">
-          <span className="heading">{editSourcesLabel}</span>
-          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>
-        Here is where you edit sources!
-      </div>
-  }
-}
-
-class EditImage extends React.Component {
-    constructor(props) {
-    super(props);
-  }
-
-  render(){
-      let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
-      return <div className="row-fluid claimEditArea pointCardPaddingH editImage ">
-        <span className="claimEditAreaHeading">
-          <span className="heading">{editImageLabel}</span>
-          <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
-        </span>
-        Here is where you edit images!
-      </div>
-  }
-}
-
-
 
 
 class CommentsLink extends React.Component {
@@ -219,7 +152,7 @@ class CommentsLink extends React.Component {
     return <span className="cardTopRowItem">
       <a className="commentLink easierToClickOn" onClick={this.props.onClick}>
           <span className="iconWithStat far fa-comment"></span>
-          { (this.props.point.root.numComments > 0) && <span className="number inlineBlock">{this.props.point.root.numComments}</span> }      
+          { (this.props.point.root.numComments > 0) && <span className="number inlineBlock">{this.props.point.root.numComments}</span> }
       </a>
     </span>
   }
@@ -350,7 +283,6 @@ class PointCardComponent extends React.Component {
     this.handleClickEditComments = this.handleClickEditComments.bind(this);
     this.handleCancelEditClaimText = this.handleCancelEditClaimText.bind(this);
     this.handleCancelEditClaimSources = this.handleCancelEditClaimSources.bind(this);
-    this.handleCancelEditClaimImage = this.handleCancelEditClaimImage.bind(this);
     this.handleCloseComments = this.handleCloseComments.bind(this);
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
@@ -388,7 +320,7 @@ class PointCardComponent extends React.Component {
     e.stopPropagation()
     this.setState({editingClaimSources: false})
   }
-  handleCancelEditClaimImage(e) {
+  handleCloseEditClaimImage = (e) => {
     e.stopPropagation()
     this.setState({editingClaimImage: false})
   }
@@ -563,7 +495,7 @@ class PointCardComponent extends React.Component {
   }
   image() {
   if (this.displayImage())
-    return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt="an image"></img></div>
+    return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img></div>
   }
   textContentWidth() {
     if (this.displayImage()) {
@@ -821,7 +753,7 @@ class PointCardComponent extends React.Component {
                     <div className={classesStackCard2} tabIndex="-1">
                        <div className={classesStackCard3} tabIndex="-1">
                           <div className={classesPointCard} tabIndex="-1">
-                            { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onCancel={this.handleCancelEditClaimImage}/> }
+                            { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
                             <div className="row-fluid inlineflexBox">
                             <div className={ this.textContentWidth()  }>
                                 <div className="row-fluid">

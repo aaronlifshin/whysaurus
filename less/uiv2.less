@@ -1500,11 +1500,11 @@ li .iconWithStat {
   display: inline-block;
   color: @smallGreyLinkColor;
   position: relative;
-  left: -3px;
-  top: -1px;
+  left: -9px;
+  top: -6px;
   font-size: 15px;
   vertical-align: top;
-  padding-top: 4px;
+  //padding-top: 4px;
   animation-name: shareIconAreaReveal;
   animation-duration: @evidenceBlockRevealDuration * .6; // complete before evidence reveal so that the eye lands on the evidence
   animation-timing-function: ease;
@@ -1513,8 +1513,19 @@ li .iconWithStat {
 
 .claimShareIcon {
   display: block;
-  margin-bottom: 10px;
+  //margin-bottom: 10px;
+  padding: 6px; // makes the hover target bigger
 }
+
+.claimShareIcon:hover {
+  color: @blue;
+  cursor: pointer;
+  transform: scale(1.33);
+}
+.claimShareIcon:active {
+  transform: scale(1.15);
+}
+
 
 ///////////////////////////////////////////////////////
 

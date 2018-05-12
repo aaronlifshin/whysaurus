@@ -360,6 +360,7 @@ class Vote(graphene.Mutation):
             if user:
                 voteResult = user.addVote(point, vote)
                 if voteResult:
+                    point.updateBacklinkedSorts(pointRoot)
                     if parentURL:
                         pp, ppr = PointModel.getCurrentByUrl(parentURL)
                         return Vote(point=point, parentPoint=pp)

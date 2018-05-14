@@ -29,9 +29,14 @@ export const EvidenceType = Object.freeze({
 function Byline(props){
   let othersBlock = null;
   if (props.point.numUsersContributed > 0) {
-    othersBlock = <span name="pointBylineOtherUsers"> &  {props.point.numUsersContributed} other{props.point.numUsersContributed > 1 && 's'}</span>;
+    othersBlock = <span className="pointBylineOtherUsers"><span className="bylineAnd">&</span><i className="fas fa-user iconWithStat"></i>{props.point.numUsersContributed}</span>;
   }
-  return <span className="cardTopRowItem"><span>By </span><a className="byline" target="_blank" tabIndex="-1" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a>{othersBlock}</span>
+  return <span className="cardTopRowItem">
+    <span className="byline">
+      <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a>{othersBlock}
+      </span>
+    </span>
+  </span>
 }
 
 function ShareIconArea(props){

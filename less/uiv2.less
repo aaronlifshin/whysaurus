@@ -1165,7 +1165,7 @@ li .iconWithStat {
 
 .pointBylineOtherUsers .iconWithStat {
   font-size: 80%;
-  margin-left: 4px;
+  //margin-left: 4px;
 }
 
 .pointBylineOtherUsers {
@@ -1206,17 +1206,19 @@ li .iconWithStat {
   margin-bottom: 2px; // don't know why this is necessary
   //margin-right: 8px;
 }
-
-.byline:hover {
-  text-decoration: underline;
-}
 .bylineAuthor {
   max-width: 112px; // need to leave room for number of contributors and number of comments
   text-overflow: ellipsis;
   white-space: nowrap; // needed for text-overflow: ellipsis;
   overflow: hidden; // needed for text-overflow: ellipsis;
 }
-
+.bylineAuthor:hover {
+  text-decoration: underline;
+}
+.bylineAnd {
+  padding-right: 8px;
+  padding-left: 5px;
+}
 .cardTopRowItem a:hover {
   color: @blue;
 }
@@ -2624,7 +2626,7 @@ body  {
   }
 
   .byline {
-    max-width: 20%;
+    //max-width: 20%;
   }
 
   .pointCardImageContainer {

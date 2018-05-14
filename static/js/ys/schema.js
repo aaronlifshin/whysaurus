@@ -211,6 +211,14 @@ query Search($query: String!) {
   }
 }`
 
+export const FullPointSearch = gql`
+${pointFieldsFragment}
+query FullPointSearch($query: String!) {
+  search(query: $query) {
+    ...pointFields
+  }
+}`
+
 export const HomePage = gql`
 ${pointFieldsFragment}
 query HomePage {

@@ -1,8 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ApolloProvider, graphql, compose, withApollo } from 'react-apollo';
-import gql from 'graphql-tag';
-import { ApolloClient } from 'apollo-client';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { ApolloProvider, graphql, compose, withApollo } from 'react-apollo'
+import gql from 'graphql-tag'
+import { ApolloClient } from 'apollo-client'
+import { SearchResults } from './SearchResults'
 
 export class SearchBox extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export class SearchBox extends React.Component {
 
     this.state = {
       inputValue: '',
+      readyToSearch: false,
     };
   }
 
@@ -18,42 +20,18 @@ export class SearchBox extends React.Component {
 
   updateInputValue(val) {
     this.setState({
-      inputValue: val
+      inputValue: val,
     });
+    if (val && val.length == 0) {
+      this.setState({readyToSearch: false})
+    }
   }
 
   // using public class fields syntax for this handler, to ensure proper binding of `this`
   getSearchResults = () => {
-    console.log(`searchBox: getSearchResults (${this.state.inputValue})`);
-  //   searchTerms = $("#searchBox").val();
-  //   if (searchTerms == "") {
-  //       return;
-  //   }
-  //   startSpinnerOnButton('.searchIcon');
-    
-  //   $.ajaxSetup({
-  //     url: "/search",
-  //     global: false,
-  //     type: "POST",
-  //     data: {
-  //       'searchTerms': searchTerms,   
-  //     },
-  //     success: function(obj) {
-  //       if (obj.result == 0) {
-  //         showAlert("No results found for: <strong>" + obj.searchString + "</strong>");
-  //       } else {
-  //         $("#mainContainer").children().remove();
-  //         $("#mainContainer").append(obj.html);
-  //         makePointsCardsClickable();                 
-  //       }
-  //       stopSpinnerOnButton('.searchIcon', getSearchResults);                        
-  //     },
-  //     error: function(xhr, textStatus, error){
-  //       showAlert('<strong>Oops!</strong> There was a problem during the search.  Refreshing and searching again might help.');            
-  //         stopSpinnerOnButton('.searchIcon', getSearchResults);            
-  //       }
-  //   });
-  //   $.ajax();
+    console.log(`searchBox: getSearchResults (${this.state.inputValue})`)
+    this.setState({readyToSearch: true})
+    setTimeout(() => { this.setState({readyToSearch: false})}, 1000)
   }
 
   render() {
@@ -68,6 +46,9 @@ export class SearchBox extends React.Component {
         <span onClick={this.getSearchResults}>
           <span className="searchIcon pull-right fa fa-search"></span>
         </span>
+        {this.state.readyToSearch && 
+          <SearchResults searchValue={this.state.inputValue}/>
+        }
       </div>
     )
   }

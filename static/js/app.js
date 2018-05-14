@@ -53,7 +53,9 @@ class HistoryPage extends React.Component {
 
 class App extends React.Component {
   render() {
-    $("#searchArea").get(0).id = "searchAreaReact";
+    if ($("#searchArea").length) {
+      $("#searchArea").get(0).id = "searchAreaReact";
+    }
     return (
       <Switch>
         <Route exact path={homeURL} component={HomePage} />

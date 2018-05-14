@@ -7,6 +7,7 @@ import { CSSTransitionGroup } from 'react-transition-group' // ES6
 import AnimateOnChange from 'react-animate-on-change';
 
 import * as validations from '../validations';
+import * as schema from '../schema';
 import { UnlinkPointMutation, DeletePointMutation, CurrentUserQuery, EditPointQuery, AddEvidenceQuery, VoteQuery, RelevanceVoteQuery, GetPoint, GetCollapsedPoint, EditorsPicks, NewPoints } from '../schema';
 import config from '../config'
 
@@ -62,7 +63,7 @@ const Hover = ({ onHover, children }) => (
     </span>
 )
 
-const VoteStats = ({point}) => (
+const VoteStatsComponent = ({point, user}) => (
     <div className="vote-stats">
       <p>
         {point.upVotes} Agrees<br/>
@@ -73,9 +74,19 @@ const VoteStats = ({point}) => (
         {point.numSupporting} Supporting Claim{point.numSupporting != 1 ? "s" : null}<br/>
         {point.numCounter} Counter Claim{point.numCounter != 1 ? "s" : null}<br/>
       </p>
+      {user && user.admin && <p>
+        <div>Admin stuff here.</div>
+        </p>}
     </div>
 )
 
+const VoteStats = graphql(schema.CurrentUserQuery, {
+  props: ({ownProps, data: {loading, currentUser, refetch}}) => ({
+    userLoading: loading,
+    user: currentUser,
+    refetchUser: refetch
+  })
+})(VoteStatsComponent)
 
 // used in PointCard and in PointList for the irrelevant claims links
 export const LinkedItemBullet = () => (

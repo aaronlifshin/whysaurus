@@ -20,7 +20,7 @@ class EditImageForm  extends React.Component {
           defaultValues={{imageURL: point.imageURL, imageDescription: point.imageDescription}}
           validate={values => ({imageDescription: validations.validateCaption(values.imageDescription)})}>
       { ({submitForm, values: {imageDescription, imageURL}, touched, validationFailures}) => (
-        <form onSubmit={submitForm} id="form1" className="editPointTextForm">
+        <form onSubmit={submitForm} id="form1" className="">
           {console.log("FOO") || console.log(touched)}
           {imageURL && <img src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}
           <ImagePicker field="imageURL"
@@ -32,11 +32,11 @@ class EditImageForm  extends React.Component {
               console.log(result)
             }}
             />
-            <div className="claimCreationFormFieldBlock">
-              <Text field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption - credit the image, add a description, etc"/>
+            <div className="">
+              <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption, credit, description, etc"/>
             </div>
-            <div className="claimCreationFormButtonBlock">
-              <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 createClaimFormButton" type="submit">Update Image</button>
+            <div className="">
+              <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 pull-right" type="submit">Update Image</button>
             </div>
 
         </form>
@@ -69,29 +69,15 @@ class EditImageComponent extends React.Component {
            (err) => this.setState({saving: false}))
   }
 
-  // TODO: this algorithm is a sketch, might not be ideal
-  getEditTextFormHeightClass(title){
-    if (title.length > 160 )
-      return "sixLines";
-    if (title.length > 130 )
-      return "fiveLines";
-    if (title.length > 100 )
-      return "fourLines";
-    if (title.length > 65 )
-      return "threeLines";
-    else
-      return "twoLines";
-  }
-
   renderForm = () => {
-    let editClaimTextClasses = `claimEditArea editClaimText`
+    let editImageFormClasses = ""
     if (this.state.saving) {
-      return <div className={editClaimTextClasses}>
+      return <div className={editImageFormClasses}>
         <span className="claimEditAreaSavingFeedback"><Spinner /><span className="spinnerLabel">Saving...</span></span>
       </div>;
     } else {
-      return <div className={editClaimTextClasses}>
-        <EditImageForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} countedValue={this.point.title} heightClass={this.getEditTextFormHeightClass(this.point.title)}/>
+      return <div className={editImageFormClasses}>
+        <EditImageForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} />
       </div>;
     }
   }
@@ -100,8 +86,8 @@ class EditImageComponent extends React.Component {
     let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
     return <div className="row-fluid claimEditArea editImage ">
       <span className="claimEditAreaHeading">
-      <span className="heading">{editImageLabel}</span>
-      <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
+        <span className="heading">{editImageLabel}</span>
+        <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
       </span>
       {this.renderForm()}
     </div>

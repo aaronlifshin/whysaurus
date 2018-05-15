@@ -50,8 +50,8 @@ export default class ImagePicker extends React.Component {
         mode="pick"
         apikey={config.filestack.key}
         options={filestackOptions}
-        buttonText="Upload Image"
-        buttonClass="classname"
+        buttonText="Choose Image"
+        buttonClass="buttonUX2 imagePickerButton"
         onSuccess={(response) => {
           const file = response.filesUploaded[0]
           if (file) {

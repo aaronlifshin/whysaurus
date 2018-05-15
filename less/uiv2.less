@@ -15,6 +15,7 @@
 
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
+@marginVerticalForms: 10px;
 @addEvidenceUI_marginV: 52px;
 
 @borderRadiusUX2: 5px;
@@ -1747,7 +1748,10 @@ li .iconWithStat {
   top: 0;
 }
 
-
+.imagePickerButton {
+  margin-bottom: @marginVerticalForms;
+  margin-top: 4px;
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1855,9 +1859,8 @@ li .iconWithStat {
   border-radius: @borderRadiusUX2;
 }
 
-@inputFieldUX2multiMargin: 8px;
 .inputFieldUX2multi {
-  margin-bottom: @inputFieldUX2multiMargin;
+  margin-bottom: @marginVerticalForms;
 }
 
 .titleTextField {
@@ -1897,7 +1900,7 @@ li .iconWithStat {
   height: 92px;
 }
 .inputFieldUX2multi:active, .inputFieldUX2multi:focus {
-  margin-bottom: @inputFieldUX2multiMargin - @titleTextFieldActiveBorderWidth;
+  margin-bottom: @marginVerticalForms - @titleTextFieldActiveBorderWidth;
 
 }
 

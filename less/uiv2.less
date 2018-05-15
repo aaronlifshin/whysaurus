@@ -108,7 +108,7 @@ h1, h2, h3, h4, h5, h6, body {
 .number {
   font-family: "usual", sans-serif !important;
 }
-.cardTopRow .number {
+.cardTopRow .number, .vote-stats .number {
   font-size: 85%;
 }
 
@@ -180,6 +180,10 @@ a:focus, a:hover {
 .admin {
   background-color: hsl(60, 100%, 75%);
   width: max-content;
+}
+
+.vote-stats .admin {
+  width: 100%;
 }
 
 //////////////////////////////////////////////
@@ -1312,8 +1316,8 @@ li .iconWithStat {
 }
 
 .vote-stats p{
-  padding: 6px;
-  margin-bottom:4px;
+  padding: 8px;
+  margin-bottom:0;
   font-size: @fontSizeSecondaryUX2;
 }
 

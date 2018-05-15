@@ -53,14 +53,6 @@ function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span><span className="number">{props.point.supportedCount}</span> Other Links</span>
 }
 
-function RawScore(props){
-  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>Raw Score: <span className="number">{props.point.pointValueRaw}</span></span>
-}
-
-function EngagementScore(props){
-  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>Engagment: <span className="number">{props.point.engagementScore}</span></span>
-}
-
 /*
         Code to check if current user is the point Author
           {this.props.data.currentUser &&
@@ -76,19 +68,29 @@ const Hover = ({ onHover, children }) => (
     </span>
 )
 
+function RawScore(props){
+  return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span>Raw Score: <span className="number">{props.point.pointValueRaw}</span></span>
+}
+
+function EngagementScore(props){
+  return <span><span className="number">{props.point.engagementScore}</span><span> Engagement</span></span>
+}
+
+// Perhaps we should rename this to StatsCompontent? -JF
 const VoteStatsComponent = ({point, user}) => (
     <div className="vote-stats">
       <p>
-        {point.upVotes} Agrees<br/>
-        {point.downVotes} Disagrees<br/>
+        <span className="number">{point.upVotes}</span> Agrees<br/>
+        <span className="number">{point.downVotes}</span> Disagrees<br/>
       </p>
       <div className="menuDivider"></div>
       <p>
-        {point.numSupporting} Supporting Claim{point.numSupporting != 1 ? "s" : null}<br/>
-        {point.numCounter} Counter Claim{point.numCounter != 1 ? "s" : null}<br/>
+        <span className="number">{point.numSupporting}</span> Supporting Claim{point.numSupporting != 1 ? "s" : null}<br/>
+        <span className="number">{point.numCounter}</span> Counter Claim{point.numCounter != 1 ? "s" : null}<br/>
       </p>
-      {user && user.admin && <p>
-        <div>Admin stuff here.</div>
+      {user && user.admin && <p className="admin">
+          <span><EngagementScore point={point} /></span>
+          { }
         </p>}
     </div>
 )
@@ -702,7 +704,6 @@ class PointCardComponent extends React.Component {
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
         { this.currentUserIsAdmin() && <li className="admin"><SupportingCount point={this.point} /></li> }
-        { this.currentUserIsAdmin() && <li className="admin"><EngagementScore point={this.point} /></li> }
       </ul>
     </span>
   }

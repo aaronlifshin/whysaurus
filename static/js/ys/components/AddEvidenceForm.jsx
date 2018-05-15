@@ -35,7 +35,7 @@ class AddEvidenceForm extends React.Component {
   //   see PR here: https://github.com/aaronlifshin/whysaurus/pull/82#pullrequestreview-111369929
   render(){
     let submitClasses = `buttonUX2 createClaimFormButton ${this.props.evidenceType=="counter" && "buttonUX2Red" }`
-    let titleTextClasses = `titleTextField ${this.props.evidenceType=="counter" && "counter" }`
+    let titleTextClasses = `inputFieldUX2 titleTextField ${this.props.evidenceType=="counter" && "counter" }`
     let {point, evidenceType, addExistingClaim} = this.props
     return <Form onSubmit={this.props.onSubmit}
                  validate={values => ({title: validations.validateTitle(values.title)})}>

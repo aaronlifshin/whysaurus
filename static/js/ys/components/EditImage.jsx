@@ -84,7 +84,7 @@ class EditImageComponent extends React.Component {
   }
 
   renderForm = () => {
-    let editClaimTextClasses = `claimEditArea pointCardPaddingH editClaimText`
+    let editClaimTextClasses = `claimEditArea editClaimText`
     if (this.state.saving) {
       return <div className={editClaimTextClasses}>
         <span className="claimEditAreaSavingFeedback"><Spinner /><span className="spinnerLabel">Saving...</span></span>
@@ -98,7 +98,7 @@ class EditImageComponent extends React.Component {
 
   render() {
     let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
-    return <div className="row-fluid claimEditArea pointCardPaddingH editImage ">
+    return <div className="row-fluid claimEditArea editImage ">
       <span className="claimEditAreaHeading">
       <span className="heading">{editImageLabel}</span>
       <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>

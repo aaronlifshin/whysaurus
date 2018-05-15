@@ -8,7 +8,7 @@ import Spinner from './Spinner'
 import { CloseLinkX } from './common'
 
 const EditTitleForm = ({point, onSubmit, onClick, heightClass}) => {
-  let titleTextClasses = `titleTextField ${heightClass}`
+  let titleTextClasses = `inputFieldUX2 titleTextField ${heightClass}`
   return (
     <Form onSubmit={onSubmit}
           defaultValues={{title: point.title}}
@@ -61,7 +61,7 @@ class EditPointComponent extends React.Component {
   }
 
   render(){
-    let editClaimTextClasses = `claimEditArea pointCardPaddingH editClaimText`
+    let editClaimTextClasses = `claimEditArea editClaimText`
     if (this.state.saving) {
       return <div className={editClaimTextClasses}>
         <span className="claimEditAreaSavingFeedback"><Spinner /><span className="spinnerLabel">Saving...</span></span>

@@ -20,9 +20,9 @@ class EditSourceComponent extends React.Component {
       return "saving..."
     } else {
       const {id, url, name} = this.props.source
-      return <div className="source">
-        <span onClick={() => this.deleteSource(id)}>X</span>
-        <a tabIndex="-1" target="_blank" href={url}>{name}</a>
+      return <div>
+          <a className="removeSourceLink easierToClickOn" onClick={() => this.deleteSource(id)}><CloseLinkX/></a>
+          <a className="source" tabIndex="-1" target="_blank" href={url}>{name}</a>
         </div>
     }
   }
@@ -50,19 +50,21 @@ class EditSourcesComponent extends React.Component {
   render(){
     const sources = this.props.point.sources
     let editSourcesLabel = `${sources ? "Edit Sources" : "Add Sources"}`
-    return <div className="row-fluid claimEditArea pointCardPaddingH editSources ">
+    return <div className="row-fluid claimEditArea editSources ">
       <span className="claimEditAreaHeading">
       <span className="heading">{editSourcesLabel}</span>
       <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
       </span>
-      {sources && sources.map((source, i) => <EditSource key={i} point={this.props.point} source={source}/>)}
+      <div className="editSourcesList">
+        {sources && sources.map((source, i) => <EditSource key={i} point={this.props.point} source={source}/>)}
+      </div>
       <Form onSubmit={this.onSubmit}
             validate={values => ({name: validations.validateSourceName(values.name),
                                   url: validations.validateSourceURL(values.url)})}>
       {formApi => <form onSubmit={formApi.submitForm}>
-         <Text field="url" placeholder="URL"/>
-         <Text field="name" placeholder="Title"/>
-         {this.state.saving ? "saving..." : <button disabled={false} className="buttonUX2 createClaimFormButton" type="submit">Add Source</button>}
+         <Text field="url" className="inputFieldUX2 inputFieldUX2multi" placeholder="URL"/>
+         <Text field="name" className="inputFieldUX2 inputFieldUX2multi" placeholder="Title"/>
+         {this.state.saving ? "saving..." : <button disabled={false} className="buttonUX2 createClaimFormButton pull-right" type="submit">Add Source</button>}
 
        </form>}
       </Form>

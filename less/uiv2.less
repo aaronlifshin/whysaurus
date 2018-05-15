@@ -1164,6 +1164,7 @@ a:hover .perctSignSmall {
 .iconWithStat {
   margin-right: 2px;
 }
+
 li .iconWithStat {
   width: 12px;
   display: inline-block;
@@ -1173,14 +1174,14 @@ li .iconWithStat {
   font-size: 133%;
 }
 
-.pointBylineOtherUsers .iconWithStat {
-  font-size: 80%;
+.bylineOtherUsers .iconWithStat {
+  font-size: 90%;
   //margin-left: 4px;
 }
 
-.pointBylineOtherUsers {
-  margin-left: 2px;
-
+.bylineOtherUsers {
+    //margin-right: -6px; // not totally clear on why this is needed
+    margin-left: 8px;
 }
 
 .commentLink {
@@ -1253,6 +1254,12 @@ li .iconWithStat {
 }
 .moreMenuLink:hover {
   text-decoration:none;
+}
+.moreMenu {
+  left: -18px;
+}
+.contributorsMenu {
+  width: max-content;
 }
 
 .cardTopRowItem .dropdown-menu {

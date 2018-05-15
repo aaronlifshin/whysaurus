@@ -27,18 +27,50 @@ export const EvidenceType = Object.freeze({
     COUNTER: Symbol("counter")
 });
 
-function Byline(props){
-  let othersBlock = null;
-  if (props.point.numUsersContributed > 0) {
-    othersBlock = <span className="pointBylineOtherUsers"><span className="bylineAnd">&</span><i className="fas fa-user iconWithStat"></i>{props.point.numUsersContributed}</span>;
+
+class Byline extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleClickNoProp = this.handleClickNoProp.bind(this);
+  }  
+  
+  handleClickNoProp(e) {
+    e.stopPropagation();
   }
-  return <span className="cardTopRowItem">
-    <span className="byline">
-      <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + props.point.authorURL}>@{props.point.authorName}</a>{othersBlock}
+
+  get point() {
+    return this.props.point;
+  }
+  
+  contributorsPlusAuthor() {
+    let contributorsPlusAuthor = this.point.numUsersContributed + 1
+    return contributorsPlusAuthor;
+  }
+  
+  contributorsDropdown() {       
+    return <span>
+      { (this.contributorsPlusAuthor() > 1) && <span className="bylineOtherUsers dropdown">
+          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i></a> 
+          <ul id="" className="contributorsMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
+            <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
+            <li><span><span className="number">{this.contributorsPlusAuthor()}</span> Contributors</span></li>
+          </ul>
+        </span>    
+      } 
+      </span>
+  }
+  
+  render(){
+    let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
+    return <span className={topClass}>
+      <span className="byline">
+        <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + this.point.authorURL}>@{this.point.authorName}</a>{this.contributorsDropdown()}
+        </span>
       </span>
     </span>
-  </span>
+  }
 }
+
 
 function ShareIconArea(props){
   return <span className="shareIconArea">
@@ -694,7 +726,7 @@ class PointCardComponent extends React.Component {
     let moreMenuImageLabel = `${this.hasImage() ? "Edit Image" : "Add Image"}`
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
-      <ul id="" className="dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
+      <ul id="" className="moreMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
         <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book"></span></span>{moreMenuSourcesLabel}</a></li>

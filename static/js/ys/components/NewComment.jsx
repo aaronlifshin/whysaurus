@@ -40,7 +40,7 @@ export default class NewComment extends React.Component {
     } else {
       return <div>
         <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>
-        <button className="" onClick={this.props.onCancel}>Cancel</button>
+        <button className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
       </div>
     }
   }
@@ -51,7 +51,7 @@ export default class NewComment extends React.Component {
       { ({validationFailures, values: {text}, submitForm}) => (
           <form onSubmit={submitForm} id="newCommentCreationForm">
             <div className="newCommentFormFieldBlock">
-              <TextArea field="text" id="newCommentTextField" className="commentTextField" placeholder='Tell us how you really feel' />
+              <TextArea field="text" id="newCommentTextField" className="inputFieldUX2" placeholder='Suggest a clarification, or another way to improve this claim' />
             </div>
             <div className="newCommentFormButtonBlock">
               {this.submitButton({disabled: (!text || (text == ""))})}

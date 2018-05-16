@@ -1505,7 +1505,35 @@ li .iconWithStat {
   //min-height: 64px;
 }
 
+.commentsList {
+  width: 100%;
+}
 
+.commentText {
+  font-size: @fontSizeSecondaryUX2;
+  color: @nearBlack;
+  margin-top: @marginVerticalForms * 0.5;
+  margin-bottom: @marginVerticalForms * 2;
+}
+.commentsArea .divider {
+  border: none;
+  height: 0.75px; // this seems to render better on high-res retina-style displays
+  //width: 80%;
+  overflow: hidden;
+  background-color: hsl(0, 0%, 75%);
+  margin-top: @marginVerticalInsideCards;
+  margin-bottom: @marginVerticalInsideCards;  
+}
+
+.newCommentFormButton {
+  margin-top:@marginVerticalForms;
+  margin-bottom: @marginVerticalForms;
+}
+
+.editAreaLink {
+  font-size: @fontSizeSecondaryUX2;
+  margin-right: 8px;
+}
 
 .claimEditArea {
   background-color: @editingAreaBG;
@@ -1532,6 +1560,7 @@ li .iconWithStat {
 
 .claimEditAreaNote {
   display: inline-block;
+  color: @nearBlack;
   width: 100%;
   margin-bottom: @marginVerticalStandard;
   font-style: italic;

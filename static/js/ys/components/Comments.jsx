@@ -32,9 +32,10 @@ class CommentComponent extends React.Component {
   render(){
     const {comment, replies, point, addReply} = this.props
     const {id, userName, userUrl, date, text, parentID} = comment
-    return <div>
-      <a href={userUrl}>@{userName}</a> - <TimeAgo date={date + "Z"} minPeriod={300}/>
-      <p>{text}</p>
+    return <div className="comment">
+      <div className="divider"></div>
+      <div className="byline"><a href={userUrl}>@{userName}</a> · <TimeAgo date={date + "Z"} minPeriod={300}/></div>
+      <div className="commentText">{text}</div>
       {replies && replies.sort((a, b) => a.date > b.date).map(reply => <Comment key={reply.id} comment={reply}/>)}
       {this.newReply()}
     </div>
@@ -58,7 +59,7 @@ class CommentsListComponent extends React.Component {
   }
 
   state = {commenting: false,
-           showArchived: false}
+           showArchived: false}          
 
   buildRepliesIndex = (comments) => comments && comments.reduce((a, c) => {
     const parentID = c.parentID
@@ -75,19 +76,23 @@ class CommentsListComponent extends React.Component {
     if (this.state.commenting) {
       return <NewComment onSubmit={({text}) => add(point.id, text).then(() => this.setState({commenting: false}))} onCancel={() => this.setState({commenting: false})}/>
     } else {
-      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" onClick={() => this.setState({commenting: true})}>New Comment</button>
+      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton pull-right" onClick={() => this.setState({commenting: true})}>New Comment</button>
     }
   }
 
   render(){
     const {comments, point, add, onCancel, archive} = this.props
     const replies = this.buildRepliesIndex(comments)
-    return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea ">
+    return <div className="">
       <span className="claimEditAreaHeading">
         <span className="heading">Meta</span>
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
-      {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
+      <div className="claimEditAreaNote">Discuss how to improve this claim.</div>
+      <div className="commentsList">      
+        {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
+      </div>
+      <div className="divider"></div>      
       {this.newComment()}
     </div>
   }
@@ -135,16 +140,16 @@ export default class Comments extends React.Component {
 
   showArchived = () => {
     if (this.state.showArchived) {
-        return <button onClick={() => this.setState({showArchived: false})}>Hide Archived</button>
+        return <a className="editAreaLink" onClick={() => this.setState({showArchived: false})}>Hide Archived</a>
     } else {
-        return <button onClick={() => this.setState({showArchived: true})}>Show Archived</button>
+        return <a className="editAreaLink" onClick={() => this.setState({showArchived: true})}>Show Archived</a>
     }
   }
 
   render(){
-    return <div>
-      {this.showArchived()}
+    return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea" >
       <CommentsList point={this.props.point} onCancel={this.props.onCancel} showArchived={this.state.showArchived}/>
+      {this.showArchived()}
     </div>
   }
 }

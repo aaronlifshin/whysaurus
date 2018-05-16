@@ -1564,11 +1564,17 @@ li .iconWithStat {
   padding: 15px;
   padding-top: 19px;
 }
+.existingClaimPickerHeading {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
 .existingClaimList {
   margin: 0;
 }
 .existingClaimList li {
   line-height: 125%;
+  margin-bottom: 10px;
 }
 .existingClaimList li:hover {
   text-decoration: underline;
@@ -1579,11 +1585,6 @@ li .iconWithStat {
   content: "- add this"
 }
 */
-.existingClaimPickerHeading {
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 6px;
-}
 .titleTextErrorAreaContent {
   background-color: #ffff9e;
   display: block;

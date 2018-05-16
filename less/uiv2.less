@@ -2055,12 +2055,20 @@ li .iconWithStat {
   padding-top:  @cardPadding + (-0.5 * @claimFeedbackAreaVerticalCheat);
 }
 
+@existingClaimMargin: 10px;
+.existingClaimPickerHeading {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: @existingClaimMargin;
+}
+
 .existingClaimList {
   margin: 0;
 }
 
 .existingClaimList li {
-  line-height: 125%;
+  line-height: @lineHeightExtra;
+  margin-bottom: @existingClaimMargin;
 }
 .existingClaimList li:hover {
   text-decoration: underline;
@@ -2072,11 +2080,7 @@ li .iconWithStat {
 }
 */
 
-.existingClaimPickerHeading {
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 6px;
-}
+
 
 .titleTextErrorArea {
 }

@@ -223,10 +223,12 @@ a:hover {
 #footer {
   padding-right: 6.66666667px;
 }
-a.feedbackFooterLink {
-  font-size: 14px;
-  color: #2e2e2e;
-  font-weight: 500;
+.feedbackFooterLink {
+  display: block;
+  width: 114px;
+  right: 64px;
+  padding-bottom: 20px!important;
+  top: 22px !important;
 }
 .fullPageText {
   margin-left: 12px;
@@ -1295,6 +1297,16 @@ li .iconWithStat {
 }
 .buttonUX2:hover:enabled {
   background-color: black;
+}
+a.buttonUX2:hover,
+a.buttonUX2:focus {
+  color: white;
+}
+a.buttonUX2:active,
+a.buttonUX2:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 .buttonUX2:active:enabled {
   transform: scale(0.975);

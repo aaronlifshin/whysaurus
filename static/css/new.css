@@ -2924,13 +2924,15 @@ li {
   padding: 12px;
   width: 72px;
 }
+/*
 a.feedbackFooterLink {
-  font-size: 15px;
-  display: inline-block;
-  text-align: right;
-  font-weight: 500;
-  color: #999999;
-}
+    //color: black;
+    font-size: 15px;
+    display: inline-block;
+    text-align: right;
+    font-weight: 500;
+    color: hsl(0, 0%, 60%);
+}*/
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    FEEDBACK PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */

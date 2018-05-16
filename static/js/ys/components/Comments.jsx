@@ -76,7 +76,7 @@ class CommentsListComponent extends React.Component {
     if (this.state.commenting) {
       return <NewComment onSubmit={({text}) => add(point.id, text).then(() => this.setState({commenting: false}))} onCancel={() => this.setState({commenting: false})}/>
     } else {
-      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton pull-right" onClick={() => this.setState({commenting: true})}>New Comment</button>
+      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" onClick={() => this.setState({commenting: true})}>New Comment</button>
     }
   }
 
@@ -89,11 +89,11 @@ class CommentsListComponent extends React.Component {
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
       <div className="claimEditAreaNote">Discuss how to improve this claim.</div>
+      {this.newComment()}
       <div className="commentsList">      
         {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
       </div>
       <div className="divider"></div>      
-      {this.newComment()}
     </div>
   }
 }
@@ -140,9 +140,9 @@ export default class Comments extends React.Component {
 
   showArchived = () => {
     if (this.state.showArchived) {
-        return <a className="editAreaLink" onClick={() => this.setState({showArchived: false})}>Hide Archived</a>
+        return <a className="editAreaLink" onClick={() => this.setState({showArchived: false})}>Hide Archived Comments</a>
     } else {
-        return <a className="editAreaLink" onClick={() => this.setState({showArchived: true})}>Show Archived</a>
+        return <a className="editAreaLink" onClick={() => this.setState({showArchived: true})}>Show Archived Comments</a>
     }
   }
 

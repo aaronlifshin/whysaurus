@@ -1489,7 +1489,7 @@ li .iconWithStat {
 
 @keyframes editAreaReveal {
    0% { max-height: 0; opacity: 0; padding-top: 0; }
-   75% { max-height: 290px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   75% { max-height: 315px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
 
@@ -1528,6 +1528,13 @@ li .iconWithStat {
   display: inline-block;
   margin-left: -6px;
   padding-bottom: 14px;
+}
+
+.claimEditAreaNote {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: @marginVerticalStandard;
+  font-style: italic;
 }
 
 .commentsMarginBottom {

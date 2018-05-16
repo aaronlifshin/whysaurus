@@ -51,10 +51,11 @@ class EditSourcesComponent extends React.Component {
     const sources = this.props.point.sources
     let editSourcesLabel = `${sources ? "Edit Sources" : "Add Sources"}`
     return <div className="row-fluid claimEditArea editSources ">
-      <span className="claimEditAreaHeading">
-      <span className="heading">{editSourcesLabel}</span>
-      <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
+        <span className="claimEditAreaHeading">
+        <span className="heading">{editSourcesLabel}</span>
+        <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
       </span>
+      <div className="claimEditAreaNote">Tip! Make this argument more effective by expressing the ideas in the sources as claims.</div>
       <div className="editSourcesList">
         {sources && sources.map((source, i) => <EditSource key={i} point={this.props.point} source={source}/>)}
       </div>
@@ -64,7 +65,7 @@ class EditSourcesComponent extends React.Component {
       {formApi => <form onSubmit={formApi.submitForm}>
          <Text field="url" className="inputFieldUX2 inputFieldUX2multi" placeholder="URL"/>
          <Text field="name" className="inputFieldUX2 inputFieldUX2multi" placeholder="Title"/>
-         {this.state.saving ? "saving..." : <button disabled={false} className="buttonUX2 createClaimFormButton pull-right" type="submit">Add Source</button>}
+         {this.state.saving ? "saving..." : <button disabled={false} className="buttonUX2 pull-right" type="submit">Add Source</button>}
 
        </form>}
       </Form>

@@ -55,7 +55,7 @@ class EditSourcesComponent extends React.Component {
         <span className="heading">{editSourcesLabel}</span>
         <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
       </span>
-      <div className="claimEditAreaNote">Tip! Make this argument more effective by expressing the ideas in the sources as claims.</div>
+      <div className="claimEditAreaNote hotTip">Tip! Make this argument more effective by expressing the ideas in the sources as claims.</div>
       <div className="editSourcesList">
         {sources && sources.map((source, i) => <EditSource key={i} point={this.props.point} source={source}/>)}
       </div>

@@ -39,8 +39,8 @@ export default class NewComment extends React.Component {
       </span>;
     } else {
       return <div>
-        <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>
-        <button className="cancelButton cancelButtonAddEvidence" onClick={this.props.onCancel}>Cancel</button>
+        <button className="buttonUX2 newCommentPublishButton" type="submit" {...rest}>{this.submitButtonLabel()}</button>
+        <button className="cancelButton cancelButtonNewComment" onClick={this.props.onCancel}>Cancel</button>
       </div>
     }
   }

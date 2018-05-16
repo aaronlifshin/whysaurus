@@ -15,15 +15,16 @@ class CommentComponent extends React.Component {
 
   state = {replying: false}
 
-  newReply = () => {
+  commentActions = () => {
     const {user, comment, replies, point, addReply, archive} = this.props
     if (this.props.comment.level == 0){
       if (this.state.replying) {
         return <NewComment parent={comment} onSubmit={({text}) => addReply(text).then(() => this.setState({replying: false}))} onCancel={() => this.setState({replying: false})}/>
       } else {
-        return <div>
-          <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" onClick={() => this.setState({replying: true})}>Reply</button>
-          {user && user.admin && <a onClick={archive}>Archive</a>}
+        let classes = `commentBottomRowActions ${replies ? "commentIndent" : ""}`
+        return <div className={classes}>
+          <a className="editAreaLink" onClick={() => this.setState({replying: true})}>Reply</a>
+          {user && user.admin && <a className="editAreaLink admin" onClick={archive}>Archive</a>}
         </div>
       }
     }
@@ -32,12 +33,13 @@ class CommentComponent extends React.Component {
   render(){
     const {comment, replies, point, addReply} = this.props
     const {id, userName, userUrl, date, text, parentID} = comment
-    return <div className="comment">
-      <div className="divider"></div>
+    let classes = `comment ${(this.props.comment.level > 0) ? "commentIndent" : ""}`
+    return <div className={classes}>
+      { (this.props.comment.level == 0) && <div className="divider"></div> }
       <div className="byline"><a href={userUrl}>@{userName}</a> · <TimeAgo date={date + "Z"} minPeriod={300}/></div>
       <div className="commentText">{text}</div>
       {replies && replies.sort((a, b) => a.date > b.date).map(reply => <Comment key={reply.id} comment={reply}/>)}
-      {this.newReply()}
+      {this.commentActions()}
     </div>
   }
 }
@@ -76,7 +78,7 @@ class CommentsListComponent extends React.Component {
     if (this.state.commenting) {
       return <NewComment onSubmit={({text}) => add(point.id, text).then(() => this.setState({commenting: false}))} onCancel={() => this.setState({commenting: false})}/>
     } else {
-      return <button className="buttonUX2 buttonUX2RespIcon newCommentFormButton" onClick={() => this.setState({commenting: true})}>New Comment</button>
+      return <button className="buttonUX2 newCommentButton" onClick={() => this.setState({commenting: true})}>New Comment</button>
     }
   }
 
@@ -92,8 +94,7 @@ class CommentsListComponent extends React.Component {
       {this.newComment()}
       <div className="commentsList">      
         {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
-      </div>
-      <div className="divider"></div>      
+      </div>      
     </div>
   }
 }
@@ -140,9 +141,9 @@ export default class Comments extends React.Component {
 
   showArchived = () => {
     if (this.state.showArchived) {
-        return <a className="editAreaLink" onClick={() => this.setState({showArchived: false})}>Hide Archived Comments</a>
+        return <span><div className="divider"></div><a className="editAreaLink" onClick={() => this.setState({showArchived: false})}>Hide Archived Comments</a></span>
     } else {
-        return <a className="editAreaLink" onClick={() => this.setState({showArchived: true})}>Show Archived Comments</a>
+        return <span><div className="divider"></div><a className="editAreaLink" onClick={() => this.setState({showArchived: true})}>Show Archived Comments</a></span>
     }
   }
 

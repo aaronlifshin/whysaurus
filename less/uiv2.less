@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6, body {
 @fontSizePointTitle:   @baseFontSizeUX2 * 1.063; // ~17px
 @arrowFontSizeUX2:     @baseFontSizeUX2 * 1.125; // ~18px
 
-@lineHeightExtra: 133%;
+@lineHeightExtra: 125%;
 
 // Animation
 @hoverTransitionDuration: .08s;
@@ -181,6 +181,9 @@ a:focus, a:hover {
 .admin {
   background-color: hsl(60, 100%, 75%);
   width: max-content;
+}
+.dropdown-menu .admin {
+  width: 100%;
 }
 
 .vote-stats .admin {
@@ -1492,15 +1495,31 @@ li .iconWithStat {
    75% { max-height: 315px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
-
+@keyframes commentsAreaReveal {
+   0% { max-height: 0; opacity: 0; padding-top: 0; }
+   75% { max-height: 1024px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   100% { opacity: 1;  }
+}
 
 .editClaimText, .editImage, .editSources, .commentsArea {
   //width: 100%;
-  animation-name: editAreaReveal;
   animation-duration: @editAreaRevealDuration;
   animation-timing-function: ease;
   animation-iteration-count: 1;
 }
+.editClaimText, .editImage, .editSources {
+  //width: 100%;
+  animation-name: editAreaReveal;
+}
+.commentsArea {
+  //width: 100%;
+  animation-name: commentsAreaReveal;
+}
+
+
+
+
+
 .editImage, .editSources, .commentsArea {
   //min-height: 64px;
 }
@@ -1509,30 +1528,52 @@ li .iconWithStat {
   width: 100%;
 }
 
+.comment .byline {
+  margin-top: @marginVerticalForms * 0.5;
+}
+
+@indentCommentReplies: 12%;
+.commentIndent {
+  width: 100% - @indentCommentReplies;
+  margin-left: @indentCommentReplies;
+}
+
 .commentText {
   font-size: @fontSizeSecondaryUX2;
   color: @nearBlack;
-  margin-top: @marginVerticalForms * 0.5;
-  margin-bottom: @marginVerticalForms * 2;
+  margin-top: @marginVerticalForms * 0.75;
+  margin-bottom: @marginVerticalForms * 1.5;
 }
+
 .commentsArea .divider {
   border: none;
   height: 0.75px; // this seems to render better on high-res retina-style displays
   //width: 80%;
   overflow: hidden;
   background-color: hsl(0, 0%, 75%);
-  margin-top: @marginVerticalInsideCards;
-  margin-bottom: @marginVerticalInsideCards;  
+  margin-top: @marginVerticalInsideCards * 1.75;
+  margin-bottom: @marginVerticalInsideCards * 1.33;  
 }
 
-.newCommentFormButton {
-  margin-top:@marginVerticalForms;
-  margin-bottom: @marginVerticalForms;
+.commentBottomRowActions {
+  margin-bottom: @marginVerticalForms * 2.4;
+}
+
+.newCommentButton {
+  margin-top:@marginVerticalForms * 1.2;
+  margin-bottom: @marginVerticalForms !important;
+}
+.newCommentPublishButton {
+  margin-top:0;
+  margin-bottom: 0 !important;
 }
 
 .editAreaLink {
   font-size: @fontSizeSecondaryUX2;
-  margin-right: 8px;
+  margin-right: 14px;
+}
+.editAreaLink:hover {
+  text-decoration: underline;
 }
 
 .claimEditArea {
@@ -1563,6 +1604,10 @@ li .iconWithStat {
   color: @nearBlack;
   width: 100%;
   margin-bottom: @marginVerticalStandard;
+  //font-style: italic;
+}
+
+.hotTip {
   font-style: italic;
 }
 
@@ -1737,6 +1782,12 @@ li .iconWithStat {
   margin-left: 2px;
   color: grey;
 }
+.cancelButtonNewComment {
+  margin-left: 8px;
+  position: relative;
+  top: -2px;
+  color: grey;
+}
 
 .addEvidenceButton {
     display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
@@ -1889,6 +1940,8 @@ li .iconWithStat {
   line-height: @lineHeightExtra;
   color: @nearBlack;
   padding: @cardPadding;
+  padding-top: @cardPadding - 1px; // dunno why this is visualy necessary
+  padding-bottom: @cardPadding + 1px;
   border-color: @stackCardDefaultBorderColor;
   border-width: 1px;
   border-style: solid;

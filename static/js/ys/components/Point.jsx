@@ -94,9 +94,9 @@ function SupportingCount(props){
 
 // thanks, https://stackoverflow.com/questions/29981236/how-do-you-hover-in-reactjs-onmouseleave-not-registered-during-fast-hover-ove
 const Hover = ({ onHover, children }) => (
-    <span className="hover bringToFront">
+    <span className="hover">
       <span className="hover__no-hover">{children}</span>
-      <span className="hover__hover">{onHover}</span>
+      <span className="hover__hover bringToFront">{onHover}</span>
     </span>
 )
 

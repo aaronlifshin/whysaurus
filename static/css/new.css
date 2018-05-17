@@ -29,7 +29,6 @@ h1 {
 h2 {
   font-size: 36.1152px;
   margin: 48px 0 0px 0;
-  -webkit-text-stroke: 0.5px;
 }
 h3 {
   font-size: 31.55328px;
@@ -37,7 +36,6 @@ h3 {
 h4 {
   font-size: 18px;
   margin: 28px 0 8px 0;
-  -webkit-text-stroke: 0.2px;
 }
 h5 {
   font-size: 12.54528px;
@@ -2936,9 +2934,6 @@ a.feedbackFooterLink {
 }
 .contactForm {
   margin-top: 32px;
-}
-.contactForm input {
-  height: 28px;
 }
 .contactForm label {
   font-size: 1em;

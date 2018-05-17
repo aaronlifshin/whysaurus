@@ -99,19 +99,19 @@
                     <span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">HOME</span>
                   </a>
                 -->
-                <a id="CreatePoint" href='javascript:;' alt="Make a Point">
+                <a id="CreatePoint" class="blackLink" href='javascript:;' alt="Make a Point">
                   <span id="makePointIcon"  class="headerLinkIcon fa fa-edit"></span>
-                  <span class="hidden-xs hidden-phone">Make Argument</span>
+                  <span class="headerLinkLabel hidden-xs hidden-phone">Make Argument</span>
                 </a>
               </span>
               <div id="searchArea" class="headerItem">
                   <input id="searchBox" type="text" name="searchTerms" placeholder="Find Argument..." results="0" />
-                  <span class="searchIcon pull-right fa fa-search"></span>
+                  <a><span class="headerLinkIcon searchIcon pull-right fa fa-search"></span></a>
 
               </div>
               <span class="headerItem">
                 <div id="aboutMenu">
-                  <a class="userControls dropdown-toggle" data-toggle="dropdown">
+                  <a class="userControls blackLink dropdown-toggle" data-toggle="dropdown">
                     <span id="headerIconAbout"  class="headerLinkIcon fa fa-question-circle"></span>
                     <!--<span class="nudgeLeft hidden-tablet hidden-sm hidden-phone hidden-xs">About</span>-->
                   </a>
@@ -141,8 +141,8 @@
 
         	  {% if user %}
               <div id="userMenuArea" class="headerItem headerUserName pull-right">
-                  <a class="userMenuLink dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
-                      <span class="username hidden-xs hidden-phone">
+                  <a class="userMenuLink blackLink dropdown-toggle" data-toggle="dropdown" href="/user/{{ user.url }}">
+                      <span class="username headerLinkLabel hidden-xs hidden-phone">
                           {{ user.name }}
                       </span>
                       <img id="avatar" src="{%if user.avatar_url %}{{user.avatar_url}}{% else %}/static/img/icon_triceratops_black_faceL_48px.png{% endif %}"/>
@@ -445,7 +445,7 @@
     {% block mainPageContent %}
     {% endblock %}
     <div id="footer">
-        <a href="/contact" target="_blank" class="buttonUX2 feedbackFooterLink">Give us Feedback</a>
+        <a href="/contact" target="_blank" class="feedbackFooterLink blackLink">Feedback</a>
     </div>
     </div>
     {% profiler_includes %}

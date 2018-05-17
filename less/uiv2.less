@@ -50,6 +50,7 @@ h1, h2, h3, h4, h5, h6, body {
 
 @lineHeightExtra: 125%;
 
+
 // Animation
 @hoverTransitionDuration: .08s;
 
@@ -126,14 +127,20 @@ a:hover {
     color: @blue ;
 }
 
-a:focus, a:hover {
-  text-decoration: unset;
-}
-
 a:focus {
   outline-offset: 4px;
   outline: thin dotted #333;
+  text-decoration: unset;
 }
+
+a .blackLink {
+  color: black;
+}
+a .blackLink:hover {
+  color: @blue;
+  text-decoration: underline;
+}
+
 
 
 .bringToFront {
@@ -220,16 +227,25 @@ a:focus {
   vertical-align: middle;
 }
 .headerItem > a {
-   color: black !important;
+   color: black ;
 }
+.headerItem > a:hover {
+   color: @blue ;
+}
+
+
 
 @headerLinkIconSize: 18px;
 .headerLinkIcon {
   font-size: @headerLinkIconSize;
   top: 3px;
   //margin-right: 5px;
-  color: black !important;
+  color: black;
 }
+.headerLinkIcon:hover, a:hover .headerLinkIcon {
+   color: @blue ;
+}
+
 .headerSocialMediaIconArea {
   //margin-left:  @defaultHeaderMarginH;
   margin-top: 13px;
@@ -271,6 +287,14 @@ a:focus {
   top: 1px;
   margin-left: 0;
 }
+#CreatePoint:hover, .userMenuLink:hover {
+  text-decoration: none; // prevent underline in blank spaces bt labels and icons
+}
+#CreatePoint:hover .headerLinkLabel, .userMenuLink:hover .headerLinkLabel {
+  text-decoration: underline;
+}
+
+
 
 #makePointIcon {
   margin-right: 2px;
@@ -342,7 +366,7 @@ a:focus {
 
 #userMenuSignedIn {
   position: absolute;
-  left: -64px;
+  left: -72px;
   right: unset;
   min-width: unset; // over-riding new.less
 }
@@ -357,11 +381,15 @@ a:focus {
 }
 
 .feedbackFooterLink {
-    display: block;
-    width: 114px;
-    right: 64px;
-    padding-bottom: 20px!important;
-    top: 22px !important;
+  display: block;
+  //width: 114px;
+  right: 16px;
+  //padding-bottom: 20px!important;
+  //top: 22px !important;
+  font-weight: @buttonUX2_fontWeight;
+  font-size: @fontSizeButtonsUX2;
+  font-style: normal;
+  color: black;
 }
 
 //////////////////////////////////////////////
@@ -1688,6 +1716,15 @@ li .iconWithStat {
 @tabUX2_color: @blue; // hsl(0, 0%, 25%);
 @tabUX2_colorHover: @blueLight; // black;
 
+.headerLinks {
+  font-size: @fontSizeButtonsUX2;
+}
+.headerUserName {
+  font-family: @sansCondFontFamily;
+  font-size: @baseFontSizeUX2;
+}
+
+
 .buttonUX2, .tabUX2, .buttonSecondaryUX2blue {
   margin-bottom: 0;
   //font-family: ff-meta-web-pro-condensed,sans-serif;
@@ -2760,8 +2797,8 @@ body  {
     margin-left: 2%;
   }
 
-  a.feedbackFooterLink {
-    display: none;
+  .feedbackFooterLink {
+    //display: none;
   }
 
   #explanationRowHomepage {

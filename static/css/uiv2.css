@@ -58,13 +58,17 @@ body {
 a:hover {
   color: #009dd6;
 }
-a:focus,
-a:hover {
-  text-decoration: unset;
-}
 a:focus {
   outline-offset: 4px;
   outline: thin dotted #333;
+  text-decoration: unset;
+}
+a .blackLink {
+  color: black;
+}
+a .blackLink:hover {
+  color: #009dd6;
+  text-decoration: underline;
 }
 .bringToFront {
   z-index: 1000;
@@ -127,12 +131,19 @@ a:focus {
   vertical-align: middle;
 }
 .headerItem > a {
-  color: black !important;
+  color: black ;
+}
+.headerItem > a:hover {
+  color: #009dd6;
 }
 .headerLinkIcon {
   font-size: 18px;
   top: 3px;
-  color: black !important;
+  color: black;
+}
+.headerLinkIcon:hover,
+a:hover .headerLinkIcon {
+  color: #009dd6;
 }
 .headerSocialMediaIconArea {
   margin-top: 13px;
@@ -166,6 +177,14 @@ a:focus {
   position: relative;
   top: 1px;
   margin-left: 0;
+}
+#CreatePoint:hover,
+.userMenuLink:hover {
+  text-decoration: none;
+}
+#CreatePoint:hover .headerLinkLabel,
+.userMenuLink:hover .headerLinkLabel {
+  text-decoration: underline;
 }
 #makePointIcon {
   margin-right: 2px;
@@ -220,7 +239,7 @@ a:focus {
 }
 #userMenuSignedIn {
   position: absolute;
-  left: -64px;
+  left: -72px;
   right: unset;
   min-width: unset;
 }
@@ -233,10 +252,11 @@ a:focus {
 }
 .feedbackFooterLink {
   display: block;
-  width: 114px;
-  right: 64px;
-  padding-bottom: 20px!important;
-  top: 22px !important;
+  right: 16px;
+  font-weight: 700;
+  font-size: 15.008px;
+  font-style: normal;
+  color: black;
 }
 .fullPageText {
   margin-left: 12px;
@@ -1256,6 +1276,13 @@ li .iconWithStat {
 .claimShareIcon:active {
   transform: scale(1.15);
 }
+.headerLinks {
+  font-size: 15.008px;
+}
+.headerUserName {
+  font-family: "ff-meta-web-pro-condensed", sans-serif;
+  font-size: 16px;
+}
 .buttonUX2,
 .tabUX2,
 .buttonSecondaryUX2blue {
@@ -2067,9 +2094,6 @@ body {
   }
   #mainContainer {
     margin-left: 2%;
-  }
-  a.feedbackFooterLink {
-    display: none;
   }
   #explanationRowHomepage {
     width: 90vw;

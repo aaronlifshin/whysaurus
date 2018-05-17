@@ -337,8 +337,6 @@ a:visited {
   right: -2px;
   height: 16px;
   width: 25px;
-  background-image: url("/static/img/icon_magnifyingGlass.png");
-  background-repeat: no-repeat;
 }
 .newPointInputRowFieldArea {
   width: -moz-calc(100% - 165px);
@@ -411,10 +409,6 @@ a:visited {
   margin-left: auto;
   margin-right: auto;
   padding-left: 0px;
-}
-#searchArea .searchIcon:hover {
-  background-image: url("/static/img/icon_magnifyingGlass.png");
-  background-position: 0 -16px;
 }
 #newPointTitle::-webkit-input-placeholder,
 #searchBox::-webkit-input-placeholder {

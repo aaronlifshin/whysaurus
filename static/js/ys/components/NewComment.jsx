@@ -51,7 +51,7 @@ export default class NewComment extends React.Component {
       { ({validationFailures, values: {text}, submitForm}) => (
           <form onSubmit={submitForm} id="newCommentCreationForm">
             <div className="newCommentFormFieldBlock">
-              <TextArea field="text" id="newCommentTextField" className="inputFieldUX2" placeholder='Suggest a clarification, or another way to improve this claim' />
+              <TextArea field="text" id="newCommentTextField" className="inputFieldUX2" placeholder='Suggest a clarification, or another way to improve this claim — and start by saying something nice!' />
             </div>
             <div className="newCommentFormButtonBlock">
               {this.submitButton({disabled: (!text || (text == ""))})}

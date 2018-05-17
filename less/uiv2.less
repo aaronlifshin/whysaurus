@@ -1562,7 +1562,7 @@ li .iconWithStat {
 }
 
 .newCommentButton {
-  margin-top:@marginVerticalForms * 1.2;
+  margin-top:@marginVerticalForms * 1;
   margin-bottom: @marginVerticalForms !important;
   margin-right: 4px;
 }
@@ -1666,19 +1666,18 @@ li .iconWithStat {
 
 // BUTTONS
 
-@buttonUX2_paddingTop: 5px;
-@buttonUX2_paddingLeft: @cardPadding;
-@buttonUX2_paddingRight: @cardPadding;
+@buttonUX2_paddingTop: 4px;
+@buttonUX2_paddingLeft: @cardPadding - 2px;
+@buttonUX2_paddingRight: @buttonUX2_paddingLeft;
+@buttonUX2_paddingBottom: @buttonUX2_paddingTop + 1px;
+@buttonUX2_paddingLeftRightLongLabel: @buttonUX2_paddingLeft + 2px;
 @buttonUX2_fontWeight: 700;
+@buttonUX2_borderWidth: 2px;
 
 @tabUX2_color: @blue; // hsl(0, 0%, 25%);
 @tabUX2_colorHover: @blueLight; // black;
 
-.buttonUX2, .tabUX2 {
-  padding-top: @buttonUX2_paddingTop;
-  padding-left: @buttonUX2_paddingLeft;
-  padding-right: @buttonUX2_paddingRight;
-  padding-bottom: @buttonUX2_paddingTop + 1px;
+.buttonUX2, .tabUX2, .buttonSecondaryUX2blue {
   margin-bottom: 0;
   //font-family: ff-meta-web-pro-condensed,sans-serif;
   font-weight: @buttonUX2_fontWeight;
@@ -1687,15 +1686,27 @@ li .iconWithStat {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  border: none;
+  border-style: solid !important;
+  border-width: @buttonUX2_borderWidth;
   -webkit-border-radius: @borderRadiusUX2;
   -moz-border-radius: @borderRadiusUX2;
   border-radius: @borderRadiusUX2;
 }
+.buttonUX2, .buttonSecondaryUX2blue {
+  padding-top: @buttonUX2_paddingTop;
+  padding-left: @buttonUX2_paddingLeft;
+  padding-right: @buttonUX2_paddingRight;
+  padding-bottom: @buttonUX2_paddingBottom;
+}
 
 .tabUX2 {
+  padding-top: @buttonUX2_paddingTop + @buttonUX2_borderWidth;
+  padding-left: @buttonUX2_paddingLeft + @buttonUX2_borderWidth;
+  padding-right: @buttonUX2_paddingRight + @buttonUX2_borderWidth;
+  padding-bottom: @buttonUX2_paddingBottom + @buttonUX2_borderWidth;
   color: @tabUX2_color;
-  background-color: none;
+  border: none !important;
+  background: none;
   display: inline-block;
   margin-right: 4px;
 }
@@ -1705,31 +1716,35 @@ li .iconWithStat {
 }
 .tabUX2:hover {
   background-color: @tabUX2_colorHover;
+  border-color: @tabUX2_colorHover;
   color: white;
 }
 
+@nearBlackButton:  hsl(0, 0%, 21%); // a bit lighter than @nearBlack to help :hover be more different
 .buttonUX2 {
   position: relative;
-  top:-2px;
+  //top:-2px;
   color: white;
-  background-color: hsl(0, 0%, 21%); // a bit lighter tan @nearBlack to help :hover be more different
+  background-color: @nearBlackButton;
+  border-color: @nearBlackButton;
   outline: none !important;
 }
 .buttonUX2:disabled {
-  //color: lightgrey;
+  color: hsla(0, 0%, 90%, 1);
   background-color: #a4a4a4; //@stackCardDefaultBorderColor; //grey;
+  border-color: #a4a4a4; //@stackCardDefaultBorderColor; //grey;
 }
 .buttonUX2Red:disabled {
-  background-color: @stackCardCounterBorderColor ;
+  background-color: @stackCardCounterBorderColor;
+  border-color: @stackCardCounterBorderColor;
 }
-
-
 .buttonUX2:focus:enabled {
-    //border: 2px solid @blueLight;
-    box-shadow: inset 0 0 0px 2px @blueLight; // using this instead of border bc it doesn't repo
+  //border: 2px solid @blueLight;
+  box-shadow: inset 0 0 0px 2px @blueLight; // using this instead of border bc it doesn't repo
 }
 .buttonUX2:hover:enabled {
-    background-color: black;
+  background-color: black;
+  border-color:  black;
 }
 a.buttonUX2:hover, a.buttonUX2:focus {
   color: white;
@@ -1741,30 +1756,48 @@ a.buttonUX2:active, a.buttonUX2:focus {
 }
 
 @buttonUX2ScaleDownOnClick: 0.975;
-.buttonUX2:active:enabled {
+.buttonUX2:active:enabled, .buttonSecondaryUX2blue:active:enabled, {
   transform: scale(@buttonUX2ScaleDownOnClick);
   outline-style: none;
 }
 .buttonUX2Blue {
   background-color: @blue;
+  border-color:  @blue;
+}
+.buttonUX2Blue:hover:enabled, .buttonSecondaryUX2blue:hover:enabled {
+  background-color: @blueLight;
+  border-color: @blueLight;
+  color: white;
 }
 .buttonUX2Blue:focus {
-    box-shadow: @blueLight;
-    outline: none;
+  box-shadow: @blueLight;
+  outline: none;
 }
-.buttonUX2Blue:hover:enabled {
-    background-color: @blueLight;
-}
+
 .buttonUX2Red {
   background-color: @red;
-}
-.buttonUX2Red:focus:enabled {
-    box-shadow: @redLight;
-    outline: none;
+  border-color:  @red;
 }
 .buttonUX2Red:hover:enabled {
-    background-color: @redLight;
+  background-color: @redLight;
+  border-color: @redLight;
 }
+.buttonUX2Red:focus:enabled {
+  box-shadow: @redLight;
+  outline: none;
+}
+
+.buttonSecondaryUX2blue {
+  position: relative;
+  color: @blue;
+  border-color: @blue; 
+  outline: none !important;
+  background: none;
+}
+
+
+
+
 .cancelButton {
   background: none;
   border: none;
@@ -1802,12 +1835,11 @@ a.buttonUX2:active, a.buttonUX2:focus {
 }
 
 .addEvidenceButton {
-    display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
-    //top: 2px;
-    //left: 4px;
-    //position: relative;
-    width: auto;
-    margin-right: 4px;
+  display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
+  width: auto;
+  margin-right: 4px;
+  padding-left: @buttonUX2_paddingLeftRightLongLabel;
+  padding-right: @buttonUX2_paddingLeftRightLongLabel;
 }
 
 .buttonUX2Red.addEvidenceButton {

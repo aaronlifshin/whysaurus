@@ -1163,7 +1163,7 @@ li .iconWithStat {
   margin-bottom: 24px;
 }
 .newCommentButton {
-  margin-top: 12px;
+  margin-top: 10px;
   margin-bottom: 10px !important;
   margin-right: 4px;
 }
@@ -1249,11 +1249,8 @@ li .iconWithStat {
   transform: scale(1.15);
 }
 .buttonUX2,
-.tabUX2 {
-  padding-top: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 6px;
+.tabUX2,
+.buttonSecondaryUX2blue {
   margin-bottom: 0;
   font-weight: 700;
   font-size: 15.008px;
@@ -1261,14 +1258,27 @@ li .iconWithStat {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  border: none;
+  border-style: solid !important;
+  border-width: 2px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
+.buttonUX2,
+.buttonSecondaryUX2blue {
+  padding-top: 4px;
+  padding-left: 13px;
+  padding-right: 13px;
+  padding-bottom: 5px;
+}
 .tabUX2 {
+  padding-top: 6px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 7px;
   color: #009dd6;
-  background-color: none;
+  border: none !important;
+  background: none;
   display: inline-block;
   margin-right: 4px;
 }
@@ -1278,26 +1288,31 @@ li .iconWithStat {
 }
 .tabUX2:hover {
   background-color: #33c9ff;
+  border-color: #33c9ff;
   color: white;
 }
 .buttonUX2 {
   position: relative;
-  top: -2px;
   color: white;
   background-color: #363636;
+  border-color: #363636;
   outline: none !important;
 }
 .buttonUX2:disabled {
+  color: #e6e6e6;
   background-color: #a4a4a4;
+  border-color: #a4a4a4;
 }
 .buttonUX2Red:disabled {
   background-color: #f6a3a3;
+  border-color: #f6a3a3;
 }
 .buttonUX2:focus:enabled {
   box-shadow: inset 0 0 0px 2px #33c9ff;
 }
 .buttonUX2:hover:enabled {
   background-color: black;
+  border-color: black;
 }
 a.buttonUX2:hover,
 a.buttonUX2:focus {
@@ -1309,29 +1324,43 @@ a.buttonUX2:focus {
   border: none !important;
   box-shadow: none !important;
 }
-.buttonUX2:active:enabled {
+.buttonUX2:active:enabled,
+.buttonSecondaryUX2blue:active:enabled {
   transform: scale(0.975);
   outline-style: none;
 }
 .buttonUX2Blue {
   background-color: #009dd6;
+  border-color: #009dd6;
+}
+.buttonUX2Blue:hover:enabled,
+.buttonSecondaryUX2blue:hover:enabled {
+  background-color: #33c9ff;
+  border-color: #33c9ff;
+  color: white;
 }
 .buttonUX2Blue:focus {
   box-shadow: #33c9ff;
   outline: none;
 }
-.buttonUX2Blue:hover:enabled {
-  background-color: #33c9ff;
-}
 .buttonUX2Red {
   background-color: #cc0008;
+  border-color: #cc0008;
+}
+.buttonUX2Red:hover:enabled {
+  background-color: #f50000;
+  border-color: #f50000;
 }
 .buttonUX2Red:focus:enabled {
   box-shadow: #f50000;
   outline: none;
 }
-.buttonUX2Red:hover:enabled {
-  background-color: #f50000;
+.buttonSecondaryUX2blue {
+  position: relative;
+  color: #009dd6;
+  border-color: #009dd6;
+  outline: none !important;
+  background: none;
 }
 .cancelButton {
   background: none;
@@ -1370,6 +1399,8 @@ a.buttonUX2:focus {
   display: inline-block;
   width: auto;
   margin-right: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .buttonUX2Red.addEvidenceButton {
   left: 0;

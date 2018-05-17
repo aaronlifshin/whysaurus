@@ -78,7 +78,11 @@ class CommentsListComponent extends React.Component {
     if (this.state.commenting) {
       return <NewComment onSubmit={({text}) => add(point.id, text).then(() => this.setState({commenting: false}))} onCancel={() => this.setState({commenting: false})}/>
     } else {
-      return <button className="buttonUX2 newCommentButton" onClick={() => this.setState({commenting: true})}>New Comment</button>
+      return <span className="newCommentButons">
+          <button className="buttonUX2 newCommentButton" onClick={() => this.setState({commenting: true})}>Clarification</button>
+          <button className="buttonUX2 newCommentButton" onClick={() => this.setState({commenting: true})}>Needs Evidence</button>
+          <button className="buttonUX2 newCommentButton" onClick={() => this.setState({commenting: true})}>Comment</button>
+        </span>
     }
   }
 

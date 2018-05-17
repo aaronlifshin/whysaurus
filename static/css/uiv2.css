@@ -62,6 +62,10 @@ a:focus,
 a:hover {
   text-decoration: unset;
 }
+a:focus {
+  outline-offset: 4px;
+  outline: thin dotted #333;
+}
 .bringToFront {
   z-index: 1000;
 }
@@ -200,6 +204,10 @@ a:hover {
 #userMenuArea {
   padding-right: 6.66666667px;
   margin-top: 6px;
+}
+.userMenuLink {
+  display: block;
+  overflow: auto;
 }
 #userMenuArea .username {
   position: relative;
@@ -1286,10 +1294,12 @@ li .iconWithStat {
   background-color: #009dd6;
   color: white;
 }
-.tabUX2:hover {
+.tabUX2:hover,
+.tabUX2:focus {
   background-color: #33c9ff;
   border-color: #33c9ff;
   color: white;
+  outline: none;
 }
 .buttonUX2 {
   position: relative;
@@ -1307,19 +1317,17 @@ li .iconWithStat {
   background-color: #f6a3a3;
   border-color: #f6a3a3;
 }
+.buttonUX2:hover:enabled,
 .buttonUX2:focus:enabled {
-  box-shadow: inset 0 0 0px 2px #33c9ff;
-}
-.buttonUX2:hover:enabled {
   background-color: black;
   border-color: black;
 }
-a.buttonUX2:hover,
-a.buttonUX2:focus {
+a.buttonUX2:hover:enabled,
+a.buttonUX2:focus:enabled {
   color: white;
 }
-a.buttonUX2:active,
-a.buttonUX2:focus {
+a.buttonUX2:active:enabled,
+a.buttonUX2:focus:enabled {
   outline: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -1334,27 +1342,31 @@ a.buttonUX2:focus {
   border-color: #009dd6;
 }
 .buttonUX2Blue:hover:enabled,
-.buttonSecondaryUX2blue:hover:enabled {
+.buttonSecondaryUX2blue:hover:enabled,
+.buttonUX2Blue:focus:enabled {
   background-color: #33c9ff;
   border-color: #33c9ff;
   color: white;
 }
+/*
 .buttonUX2Blue:focus {
-  box-shadow: #33c9ff;
+  box-shadow: @blueLight;
   outline: none;
-}
+}*/
 .buttonUX2Red {
   background-color: #cc0008;
   border-color: #cc0008;
 }
-.buttonUX2Red:hover:enabled {
+.buttonUX2Red:hover:enabled,
+.buttonUX2Red:focus:enabled {
   background-color: #f50000;
   border-color: #f50000;
 }
+/*
 .buttonUX2Red:focus:enabled {
-  box-shadow: #f50000;
+  box-shadow: @redLight;
   outline: none;
-}
+}*/
 .buttonSecondaryUX2blue {
   position: relative;
   color: #009dd6;
@@ -1371,10 +1383,8 @@ a.buttonUX2:focus {
   padding: 0;
   padding-left: 6px;
 }
-.cancelButton:hover {
-  text-decoration: underline;
-}
-.cancelButton:focus {
+.cancelButton:hover:enabled,
+.cancelButton:focus:enabled {
   text-decoration: underline;
   outline-style: none;
 }

@@ -130,6 +130,12 @@ a:focus, a:hover {
   text-decoration: unset;
 }
 
+a:focus {
+  outline-offset: 4px;
+  outline: thin dotted #333;
+}
+
+
 .bringToFront {
   z-index: 1000;
 }
@@ -317,6 +323,11 @@ a:focus, a:hover {
   //position: fixed;
   //right: 0;
   //top: 0;
+}
+
+.userMenuLink {
+  display: block;
+  overflow: auto;
 }
 
 #userMenuArea .username {
@@ -1714,10 +1725,11 @@ li .iconWithStat {
   background-color: @tabUX2_color;
   color: white;
 }
-.tabUX2:hover {
+.tabUX2:hover, .tabUX2:focus {
   background-color: @tabUX2_colorHover;
   border-color: @tabUX2_colorHover;
   color: white;
+  outline: none;
 }
 
 @nearBlackButton:  hsl(0, 0%, 21%); // a bit lighter than @nearBlack to help :hover be more different
@@ -1740,16 +1752,16 @@ li .iconWithStat {
 }
 .buttonUX2:focus:enabled {
   //border: 2px solid @blueLight;
-  box-shadow: inset 0 0 0px 2px @blueLight; // using this instead of border bc it doesn't repo
+  //box-shadow: 0 0 0px 2px @blueLight; // using this instead of border bc it doesn't repo
 }
-.buttonUX2:hover:enabled {
+.buttonUX2:hover:enabled, .buttonUX2:focus:enabled {
   background-color: black;
   border-color:  black;
 }
-a.buttonUX2:hover, a.buttonUX2:focus {
+a.buttonUX2:hover:enabled, a.buttonUX2:focus:enabled {
   color: white;
 }
-a.buttonUX2:active, a.buttonUX2:focus {
+a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   outline: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -1764,28 +1776,30 @@ a.buttonUX2:active, a.buttonUX2:focus {
   background-color: @blue;
   border-color:  @blue;
 }
-.buttonUX2Blue:hover:enabled, .buttonSecondaryUX2blue:hover:enabled {
+.buttonUX2Blue:hover:enabled, .buttonSecondaryUX2blue:hover:enabled, .buttonUX2Blue:focus:enabled {
   background-color: @blueLight;
   border-color: @blueLight;
   color: white;
 }
+/*
 .buttonUX2Blue:focus {
   box-shadow: @blueLight;
   outline: none;
-}
+}*/
 
 .buttonUX2Red {
   background-color: @red;
   border-color:  @red;
 }
-.buttonUX2Red:hover:enabled {
+.buttonUX2Red:hover:enabled, .buttonUX2Red:focus:enabled {
   background-color: @redLight;
   border-color: @redLight;
 }
+/*
 .buttonUX2Red:focus:enabled {
   box-shadow: @redLight;
   outline: none;
-}
+}*/
 
 .buttonSecondaryUX2blue {
   position: relative;
@@ -1794,9 +1808,6 @@ a.buttonUX2:active, a.buttonUX2:focus {
   outline: none !important;
   background: none;
 }
-
-
-
 
 .cancelButton {
   background: none;
@@ -1808,10 +1819,7 @@ a.buttonUX2:active, a.buttonUX2:focus {
   padding-left: 6px;
 
 }
-.cancelButton:hover {
-  text-decoration:underline;
-}
-.cancelButton:focus {
+.cancelButton:hover:enabled, .cancelButton:focus:enabled {
   text-decoration:underline;
   outline-style: none;
 }

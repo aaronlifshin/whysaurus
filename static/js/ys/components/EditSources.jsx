@@ -22,7 +22,7 @@ class EditSourceComponent extends React.Component {
       const {id, url, name} = this.props.source
       return <div>
           <a className="removeSourceLink easierToClickOn" onClick={() => this.deleteSource(id)}><CloseLinkX/></a>
-          <a className="source" tabIndex="-1" target="_blank" href={url}>{name}</a>
+          <a className="source" tabIndex="-1" target="_blank" href={url}>{name || url}</a>
         </div>
     }
   }
@@ -62,8 +62,9 @@ class EditSourcesComponent extends React.Component {
       <Form onSubmit={this.onSubmit}
             validate={values => ({name: validations.validateSourceName(values.name),
                                   url: validations.validateSourceURL(values.url)})}>
-      {formApi => <form onSubmit={formApi.submitForm}>
+      {({errors, submitForm}) => <form onSubmit={submitForm}>
          <Text field="url" className="inputFieldUX2 inputFieldUX2multi" placeholder="URL"/>
+         {errors && errors.url && <div className="error">{errors.url}</div>}
          <Text field="name" className="inputFieldUX2 inputFieldUX2multi" placeholder="Title"/>
          {this.state.saving ? "saving..." : <button disabled={false} className="buttonUX2 pull-right" type="submit">Add Source</button>}
 

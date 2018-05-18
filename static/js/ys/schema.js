@@ -111,7 +111,7 @@ mutation Delete($url: String!) {
 `
 
 export const AddSource = gql`
-mutation AddSource($pointID: String!, $url: String!, $name: String!) {
+mutation AddSource($pointID: String!, $url: String!, $name: String) {
   addSource(pointID: $pointID, url: $url, name: $name) {
     point {
       id

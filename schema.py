@@ -367,11 +367,11 @@ class AddSource(graphene.Mutation):
     class Arguments:
         pointID = graphene.String(required=True)
         url = graphene.String(required=True)
-        name = graphene.String(required=True)
+        name = graphene.String()
 
     point = graphene.Field(Point)
 
-    def mutate(self, info, pointID, url, name):
+    def mutate(self, info, pointID, url, name=None):
         point, pointRoot = PointModel.getCurrentByRootKey(pointID)
         newPointVersion = point.update(user=info.context.current_user,
                                        sourcesToAdd=[SourceModel(parent=point.key, url=url, name=name)])

@@ -141,13 +141,33 @@ mutation Unlink($parentURL: String!, $url: String!, $linkType: String!) {
 }
 `
 
+export const SetEditorsPick = gql`
+mutation SetEditorsPick($id: String!) {
+  setEditorsPick(id: $id) {
+    point {
+      id
+    }
+  }
+}
+`
+
+export const MakeFeatured = gql`
+mutation MakeFeatured($id: String!) {
+  makeFeatured(id: $id) {
+    point {
+      id
+    }
+  }
+}
+`
+
 export const RelevanceVoteQuery = gql`
 mutation RelevanceVote($linkType: String!, $parentRootURLsafe: String!, $rootURLsafe: String!, $url: String!, $vote: Int!) {
   relevanceVote(linkType: $linkType, rootURLsafe: $rootURLsafe, parentRootURLsafe: $parentRootURLsafe, url: $url, vote: $vote) {
     point {
       id
     }
-    
+
     parentPoint {
       id
       pointValue

@@ -1,6 +1,7 @@
 import logging
 import pprint
 from google.appengine.ext import ndb
+import time
 
 import graphene
 from graphene import relay
@@ -109,7 +110,7 @@ class Point(NdbObjectType):
     pointValue = graphene.Int()
     def resolve_pointValue(self, info):
         return self.pointValueCached
-    
+
     pointValueRaw = graphene.Int()
     def resolve_pointValueRaw(self, info):
         return self.pointValue
@@ -134,7 +135,7 @@ class Point(NdbObjectType):
     def resolve_supportedCount(self, info):
         # TODO: need to get a link to the point root and then get supportedCount from that
         return 42
-    
+
     engagementScore = graphene.Int()
     def resolve_engagementScore(self, info):
         return self.engagementScoreCached
@@ -451,6 +452,43 @@ class Unlink(graphene.Mutation):
         else:
             raise Exception(str('unlink failed:'))
 
+class SetEditorsPick(graphene.Mutation):
+    class Arguments:
+        id = graphene.String(required=True)
+
+    point = graphene.Field(Point)
+    point_root = graphene.Field(PointRoot)
+
+    def mutate(self, info, id):
+        user = info.context.current_user
+        point, point_root = PointModel.getCurrentByRootKey(id)
+        if user.isAdmin:
+            if point_root.updateEditorsPick(True, int(-time.time())):
+                return SetEditorsPick(point=point, point_root=point_root)
+            else:
+                raise Exception(str('set editors pick failed:'))
+        else:
+            raise Exception(str('non admin user tried to set editors pick'))
+
+class MakeFeatured(graphene.Mutation):
+    class Arguments:
+        id = graphene.String(required=True)
+
+    point = graphene.Field(Point)
+    point_root = graphene.Field(PointRoot)
+
+    def mutate(self, info, id):
+        user = info.context.current_user
+        point, point_root = PointModel.getCurrentByRootKey(id)
+        if user.isAdmin:
+            if FeaturedPoint.setFeatured(point_root.key):
+                return MakeFeatured(point=point, point_root=point_root)
+            else:
+                raise Exception(str('make featured failed:'))
+        else:
+            raise Exception(str('non admin user tried to set featured point'))
+
+
 class RelevanceVote(graphene.Mutation):
     class Arguments:
         linkType = graphene.String(required=True)
@@ -469,7 +507,7 @@ class RelevanceVote(graphene.Mutation):
         if point:
             if user:
                 pp, ppr = PointModel.getCurrentByRootKey(parentRootURLsafe)
-                
+
                 result, newRelevance, newVoteCount = user.addRelevanceVote(parentRootURLsafe, rootURLsafe, linkType, vote)
                 if result:
                     return RelevanceVote(point=point, parentPoint=pp, link=Link(type=linkType, relevance=newRelevance, sortScore=LinkModel.calcSortScore(newRelevance, point.pointValueCached), relevanceVote=vote, voteCount=newVoteCount, parentURLsafe=parentRootURLsafe, childURLsafe=rootURLsafe))
@@ -552,6 +590,8 @@ class Mutation(graphene.ObjectType):
     archive_comment = ArchiveComment.Field()
     add_source = AddSource.Field()
     delete_source = DeleteSource.Field()
+    set_editors_pick = SetEditorsPick.Field()
+    make_featured = MakeFeatured.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

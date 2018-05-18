@@ -21,11 +21,11 @@ class EditImageForm  extends React.Component {
           validate={values => ({imageDescription: validations.validateCaption(values.imageDescription)})}>
       { ({submitForm, values: {imageDescription, imageURL}, touched, validationFailures}) => (
         <form onSubmit={submitForm} id="form1" className="">
-          {console.log("FOO") || console.log(touched)}
           {imageURL && <img src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}
           <ImagePicker field="imageURL"
             onUploaded={(file) => {
               this.setState({imageUpdated: true})
+              submitForm()
             }}
             onTransformed={(result) => {
               console.log("Saved transformed versions of image:")

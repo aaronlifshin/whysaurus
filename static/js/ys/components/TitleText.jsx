@@ -57,8 +57,9 @@ class TitleText extends React.Component {
       e.preventDefault();
       this.props.onSubmit();
     }
-  }  
-  // To make feedbackArea persistent change {titleTextFocused: false} to {titleTextFocused: true}  
+  }
+
+  // To make feedbackArea persistent change {titleTextFocused: false} to {titleTextFocused: true}
   renderCountedTextField = (title, textProps, error, suggestions, searching) =>
     <CharCount countedValue={title || ""} maxChars={validations.titleMaxCharacterCount} render={({charsLeft}) => (
       <span>
@@ -89,7 +90,7 @@ class TitleText extends React.Component {
     // add focused prop here to make Field.shouldComponentUpdate return true when focus changes
     return <Field field="title" focused={this.state.titleTextFocused}>
       {fieldApi => {
-        const { value, error, warning, success, setValue, setTouched } = fieldApi        
+        const { value, error, warning, success, setValue, setTouched } = fieldApi
         let title = value
         return (
           <div className="claimTitleField">

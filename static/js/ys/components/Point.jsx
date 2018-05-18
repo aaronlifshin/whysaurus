@@ -193,7 +193,7 @@ class Sources extends React.Component {
     const sources = this.props.point.sources
     return <div className="sources pointCardPaddingH">
       {sources && sources.map(({name, url}, i) =>
-        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name}</a></div>
+        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name || url}</a></div>
       )}
     </div>
   }
@@ -378,11 +378,11 @@ class PointCardComponent extends React.Component {
     this.setState({editingClaimSources: false})
   }
   handleCloseEditClaimImage = (e) => {
-    e.stopPropagation()
+    e && e.stopPropagation()
     this.setState({editingClaimImage: false})
   }
   handleCloseComments(e) {
-    e.stopPropagation()
+    e && e.stopPropagation()
     this.setState({editingComments: false})
   }
 

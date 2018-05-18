@@ -32,8 +32,8 @@ class Byline extends React.Component {
   constructor(props) {
     super(props)
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
-  }  
-  
+  }
+
   handleClickNoProp(e) {
     e.stopPropagation();
   }
@@ -41,25 +41,25 @@ class Byline extends React.Component {
   get point() {
     return this.props.point;
   }
-  
+
   contributorsPlusAuthor() {
     let contributorsPlusAuthor = this.point.numUsersContributed + 1
     return contributorsPlusAuthor;
   }
-  
-  contributorsDropdown() {       
+
+  contributorsDropdown() {
     return <span>
       { (this.contributorsPlusAuthor() > 1) && <span className="bylineOtherUsers dropdown">
-          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i></a> 
+          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i></a>
           <ul id="" className="contributorsMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
             <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
             <li><span><span className="number">{this.contributorsPlusAuthor()}</span> Contributors</span></li>
           </ul>
-        </span>    
-      } 
+        </span>
+      }
       </span>
   }
-  
+
   render(){
     let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
     return <span className={topClass}>
@@ -122,7 +122,6 @@ const VoteStatsComponent = ({point, user}) => (
       </p>
       {user && user.admin && <p className="admin">
           <span><EngagementScore point={point} /></span>
-          { }
         </p>}
     </div>
 )
@@ -708,6 +707,16 @@ class PointCardComponent extends React.Component {
            })
   }
 
+  handleClickMakeFeatured = (e) => {
+    e.stopPropagation();
+    this.props.makeFeatured(this.point.id)
+  }
+
+  handleClickSetEditorsPick = (e) => {
+    e.stopPropagation();
+    this.props.setEditorsPick(this.point.id)
+  }
+
   handleClickUnlink = (e) => {
     e.stopPropagation()
     this.setState({unlinking: true})
@@ -735,6 +744,8 @@ class PointCardComponent extends React.Component {
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickMakeFeatured}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Make Featured</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickSetEditorsPick}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Set Editor's Pick</a></li>  }
         { this.currentUserIsAdmin() && <li className="admin"><SupportingCount point={this.point} /></li> }
       </ul>
     </span>
@@ -885,7 +896,7 @@ class PointCardComponent extends React.Component {
 
 export const PointCard = compose(
   withApollo,
-  graphql(GetPoint, {
+  graphql(schema.GetPoint, {
     skip: ({expanded}) => !expanded,
     props: ({ownProps, data: { loading, ...rest }}) => ({
       expansionLoading: loading,
@@ -893,7 +904,7 @@ export const PointCard = compose(
     })
 
   }),
-  graphql(CurrentUserQuery, {
+  graphql(schema.CurrentUserQuery, {
     name: 'CurrentUserQuery',
     props: ({ownProps, CurrentUserQuery: { loading, currentUser, refetch }}) => ({
       currentUserLoading: loading,
@@ -901,13 +912,25 @@ export const PointCard = compose(
       refetchCurrentUser: refetch
     })
   }),
-  graphql(DeletePointMutation, {
+  graphql(schema.DeletePointMutation, {
     props: ({ mutate }) => ({
       delete: (url) => mutate({variables: {url},
                                refetchQueries: [{query: EditorsPicks}, {query: NewPoints, variables: {limit: config.newPointsPageSize}}]})
     })
   }),
-  graphql(UnlinkPointMutation, {
+  graphql(schema.MakeFeatured, {
+    props: ({ mutate }) => ({
+      makeFeatured: (id) => mutate({variables: {id},
+                                   refetchQueries: [{query: schema.HomePage}]})
+    })
+  }),
+  graphql(schema.SetEditorsPick, {
+    props: ({ mutate }) => ({
+      setEditorsPick: (id) => mutate({variables: {id},
+                                     refetchQueries: [{query: EditorsPicks}]})
+    })
+  }),
+  graphql(schema.UnlinkPointMutation, {
     props: ({ mutate }) => ({
       unlink: (parentURL, url, linkType) => mutate({variables: {parentURL, url, linkType},
                                                     refetchQueries: [{query: GetPoint, variables: {url: parentURL}}]})

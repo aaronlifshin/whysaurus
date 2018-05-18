@@ -32,8 +32,8 @@ class Byline extends React.Component {
   constructor(props) {
     super(props)
     this.handleClickNoProp = this.handleClickNoProp.bind(this);
-  }  
-  
+  }
+
   handleClickNoProp(e) {
     e.stopPropagation();
   }
@@ -41,25 +41,25 @@ class Byline extends React.Component {
   get point() {
     return this.props.point;
   }
-  
+
   contributorsPlusAuthor() {
     let contributorsPlusAuthor = this.point.numUsersContributed + 1
     return contributorsPlusAuthor;
   }
-  
-  contributorsDropdown() {       
+
+  contributorsDropdown() {
     return <span>
       { (this.contributorsPlusAuthor() > 1) && <span className="bylineOtherUsers dropdown">
-          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i></a> 
+          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i></a>
           <ul id="" className="contributorsMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
             <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
             <li><span><span className="number">{this.contributorsPlusAuthor()}</span> Contributors</span></li>
           </ul>
-        </span>    
-      } 
+        </span>
+      }
       </span>
   }
-  
+
   render(){
     let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
     return <span className={topClass}>

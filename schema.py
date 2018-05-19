@@ -48,6 +48,8 @@ class Comment(NdbObjectType):
     def resolve_parentID(self, info):
         return self.parentComment and self.parentComment.urlsafe()
 
+    archived = graphene.Boolean()
+
 class CommentInput(graphene.InputObjectType):
     pointID = graphene.String(required=True)
     text = graphene.String(required=True)
@@ -536,6 +538,24 @@ class HomePage(graphene.ObjectType):
     def resolve_editorsPicks(self, info, **args):
         return PointRootModel.getEditorsPicks(info.context.current_user)
 
+class Comments(graphene.ObjectType):
+    point_root = graphene.Field(PointRoot)
+    show_archived = graphene.Boolean()
+
+    comments = graphene.List(Comment)
+    def resolve_comments(self, info):
+        comments = self.point_root.getComments()
+        if self.show_archived:
+            archived_comments = self.point_root.getArchivedComments()
+            for c in archived_comments:
+                c.archived = True
+            comments = comments + archived_comments
+        return comments
+
+    archived_count = graphene.Int()
+    def resolve_archived_count(self, info):
+        return self.point_root.numArchivedComments
+
 class Query(graphene.ObjectType):
     points = NdbConnectionField(Point)
     def resolve_points(self, info, **args):
@@ -546,13 +566,10 @@ class Query(graphene.ObjectType):
         point, pointRoot = PointModel.getCurrentByUrl(args['url'])
         return point
 
-    comments = graphene.List(Comment, pointID=graphene.String(required=True), showArchived=graphene.Boolean())
+    comments = graphene.Field(Comments, pointID=graphene.String(required=True), showArchived=graphene.Boolean())
     def resolve_comments(self, info, pointID, showArchived=False):
         point, point_root = PointModel.getCurrentByRootKey(pointID)
-        comments = point_root.getComments()
-        if showArchived:
-            comments = comments + point_root.getArchivedComments()
-        return comments
+        return Comments(point_root=point_root, show_archived=showArchived)
 
     homePage = graphene.Field(HomePage)
     def resolve_homePage(self, info):

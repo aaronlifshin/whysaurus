@@ -71,14 +71,64 @@ class Byline extends React.Component {
   }
 }
 
-
-function ShareIconArea(props){
-  return <span className="shareIconArea">
-    <div className="claimShareIcon fas fa-link"></div>
-    <div className="claimShareIcon fab fa-facebook-square"></div>
-    <div className="claimShareIcon fab fa-twitter"></div>
-    <div className="claimShareIcon far fa-envelope"></div>
-  </span>
+class ShareIconArea extends React.Component {
+  constructor(props) {
+    super(props)
+    //this.handleClickNoProp = this.handleClickNoProp.bind(this);
+  }
+  
+  postOnFacebook = (e) => {
+    var url = this.props.point.url;
+    var pointTitle = this.props.point.title;
+    var dialogParams = {
+        app_id: 144595249045851,
+        method: 'feed',
+        link: "https://www.whysaurus.com/point/" + url,
+        name: pointTitle,
+        description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?'
+    };
+    var imageUrl = this.props.point.imageURL || null;
+    if (!imageUrl) {
+        // if there is no image in the page, pass the logo
+        imageUrl = window.location.protocol + "//" + window.location.host + "/static/img/whysaurus_logo.png";
+        dialogParams['picture'] = imageUrl;
+    } else {
+        imageUrl = imageUrl.slice(2);
+    }
+    
+    FB.ui(dialogParams, function(response){});
+  }
+  
+  sharePointOnTwitter = (e) => {
+    var url = this.props.point.url;
+    var pointTitle = this.props.point.title;
+    var len = pointTitle.length;
+    var text = "";
+    if (len > 115) {
+        text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/point/" + url;
+    } else {
+        text = pointTitle + " https://www.whysaurus.com/point/" + url;
+    }
+    var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+    window.open(webUrl,'_blank');
+  }
+  
+  render(){
+    return <span className="shareIconArea">
+       <a href={"https://www.whysaurus.com/point/" + this.props.point.url + "/"}>
+        <div className="claimShareIcon fas fa-link"></div>
+       </a>
+      <a onClick={this.postOnFacebook}>
+        <div className="claimShareIcon fab fa-facebook-square"></div>
+      </a>
+      <a onClick={this.sharePointOnTwitter}>
+        <div className="claimShareIcon fab fa-twitter"></div>
+      </a>
+      <a href={"mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: " + this.props.point.title + ". %0D%0A View it here: (https://www.whysaurus.com/point/" + this.props.point.url + ")"}>
+        <div className="claimShareIcon far fa-envelope"></div>
+      </a>
+    </span>
+  }
 }
 
 function SupportingCount(props){

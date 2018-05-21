@@ -229,7 +229,7 @@ a .blackLink:hover {
 .headerItem > a {
    color: black ;
 }
-.headerItem > a:hover {
+.headerItem > a:hover, .headerItem > a:focus {
    color: @blue ;
 }
 
@@ -239,11 +239,12 @@ a .blackLink:hover {
 .headerLinkIcon {
   font-size: @headerLinkIconSize;
   top: 3px;
-  //margin-right: 5px;
+  margin-right: 0;
   color: black;
 }
-.headerLinkIcon:hover, a:hover .headerLinkIcon {
+.headerLinkIcon:hover, a:hover .headerLinkIcon, .headerLinkIcon:focus, a:focus .headerLinkIcon  {
    color: @blue ;
+   outline: none;
 }
 
 .headerSocialMediaIconArea {
@@ -258,13 +259,15 @@ a .blackLink:hover {
   margin-left: @defaultHeaderMarginH;// * .66;
   //color: #a9a9a9 !important;
 }
+a.headerSocialMediaIcon:hover {
+  //color: black !important;
+  text-decoration: none !important;
+}
+
 .dropdownSocialMediaIcon {
   font-size: @headerLinkIconSize * .85;
   color: black !important;
   margin-right: @defaultHeaderMarginH * .8;
-}
-.headerSocialMediaIcon:hover {
-  color: black !important;
 }
 
 #headerIconAbout  {

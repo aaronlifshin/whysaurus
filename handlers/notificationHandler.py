@@ -37,7 +37,7 @@ class NotificationHandler(AuthHandler):
         if not user:
             results = {'result': False, 'error': 'User not logged in'}
         else:
-            user.createChannel(saveUser=True)
+            # user.createChannel(saveUser=True)
             results = {'result': True, 'token': user.token}
         resultJSON = json.dumps(results)
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'

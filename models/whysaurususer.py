@@ -19,7 +19,7 @@ from google.appengine.api import channel
 #from google.cloud import error_reporting
 
 from models.notification import Notification
-from models.chatUser import ChatUser
+# from models.chatUser import ChatUser
 from models.point import getCurrent_async
 from models.areauser import AreaUser
 
@@ -56,6 +56,7 @@ class WhysaurusUser(auth_models.User):
     privateArea = ndb.StringProperty()
     privateAreas = ndb.StringProperty(repeated=True)
     password = ndb.StringProperty()
+    # Gene: token/tokenExpires can be removed - left over from
     token = ndb.StringProperty()  
     tokenExpires = ndb.DateTimeProperty()
     lastLogin = ndb.DateTimeProperty()
@@ -133,11 +134,11 @@ class WhysaurusUser(auth_models.User):
         return self._notifications
 
     # A small subset of user stuff to store the relevant information for chat
-    def makeChatUser(self):
-        return ChatUser(parent = self.key,
-                        token = self.token,
-                        tokenExpires=self.tokenExpires,
-                        )
+    # def makeChatUser(self):
+    #     return ChatUser(parent = self.key,
+    #                     token = self.token,
+    #                     tokenExpires=self.tokenExpires,
+    #                     )
 
     def clearNotifications(self, latest, earliest=None):
         Notification.clearNotifications(self.key, latest, earliest)
@@ -229,22 +230,22 @@ class WhysaurusUser(auth_models.User):
         # Update last login time
         self.lastLogin = now
         # Create And Store Token    
-        if not self.token or self.tokenExpires < now: 
-            self.createChannel()                 
+        # if not self.token or self.tokenExpires < now:
+        #     self.createChannel()
         self.put()
         
         ReportEvent.queueEventRecord(self.key.urlsafe(), None, None, "Login")    
                         
         return
     
-    def createChannel(self, saveUser=False):
-        now = datetime.datetime.now()
-        self.token = channel.create_channel(self.url, duration_minutes=1440)
-        self.tokenExpires = now + datetime.timedelta(days=1)
-        logging.info('Creating new token for user %s: %s' % (self.url, self.token))        
-        if saveUser:
-            self.put()
-        return self
+    # def createChannel(self, saveUser=False):
+    #     now = datetime.datetime.now()
+    #     self.token = channel.create_channel(self.url, duration_minutes=1440)
+    #     self.tokenExpires = now + datetime.timedelta(days=1)
+    #     logging.info('Creating new token for user %s: %s' % (self.url, self.token))
+    #     if saveUser:
+    #         self.put()
+    #     return self
 
     # OMG Django I hate you so much
     @property

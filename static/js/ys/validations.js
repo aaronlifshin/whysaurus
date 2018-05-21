@@ -32,7 +32,7 @@ export function validateSourceURL(url){
   if (!url) {
     return "URL is required."
   } else if (!validator.isURL(url)) {
-    return "URL must be a legal URL."
+    return "This doesn't look a valid URL."
   } else {
     return null;
   }

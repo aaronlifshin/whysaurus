@@ -124,7 +124,7 @@ class ShareIconArea extends React.Component {
       <a onClick={this.sharePointOnTwitter}>
         <div className="claimShareIcon fab fa-twitter"></div>
       </a>
-      <a href={"mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: " + this.props.point.title + ". %0D%0A View it here: (https://www.whysaurus.com/point/" + this.props.point.url + ")"}>
+      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Hi,%0D%0A%0D%0ACheck out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/point/" + this.props.point.url + ""}>
         <div className="claimShareIcon far fa-envelope"></div>
       </a>
     </span>
@@ -794,8 +794,8 @@ class PointCardComponent extends React.Component {
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
-        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickMakeFeatured}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Make Featured</a></li>  }
-        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickSetEditorsPick}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Set Editor's Pick</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickMakeFeatured}><span className="iconWithStat"><span className="fas fa-star"></span></span>Make Featured</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickSetEditorsPick}><span className="iconWithStat"><span className="fas fa-ribbon"></span></span>Set Editor's Pick</a></li>  }
         { this.currentUserIsAdmin() && <li className="admin"><SupportingCount point={this.point} /></li> }
       </ul>
     </span>

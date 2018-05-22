@@ -1258,7 +1258,6 @@ li .iconWithStat {
 }
 .shareIconArea {
   display: inline-block;
-  color: #a9a9a9;
   position: relative;
   left: -9px;
   top: -6px;
@@ -1269,9 +1268,10 @@ li .iconWithStat {
   animation-timing-function: ease;
   animation-iteration-count: 1;
 }
-.claimShareIcon {
+a .claimShareIcon {
   display: block;
   padding: 6px;
+  color: #a9a9a9;
 }
 .claimShareIcon:hover {
   color: #009dd6;

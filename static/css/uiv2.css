@@ -112,8 +112,11 @@ a .blackLink:hover {
   padding: 6px;
 }
 .admin {
-  background-color: #ffff80;
+  background-color: #fff2b3;
   width: max-content;
+}
+.relGroupHilite .admin {
+  background-color: #ffe14d;
 }
 .dropdown-menu .admin {
   width: 100%;
@@ -495,7 +498,7 @@ body {
     background-color: #fffbd100;
   }
   100% {
-    background-color: #d5fcfa;
+    background-color: #fefadc;
   }
 }
 .relGroupHilite {
@@ -504,7 +507,7 @@ body {
   animation-timing-function: ease;
   animation-iteration-count: 1;
   margin-bottom: 20.8px;
-  background-color: #d5fcfa;
+  background-color: #fefadc;
   max-width: 462px;
 }
 .relevanceCtrlArea {
@@ -524,7 +527,7 @@ body {
     opacity: 0;
   }
   60% {
-    max-height: 160px;
+    max-height: 240px;
   }
   100% {
     opacity: 1;
@@ -532,11 +535,6 @@ body {
 }
 .relCtrlLabel {
   margin-bottom: 14px;
-  padding-top: 12px;
-}
-.relCtrlClose {
-  margin-top: 6px;
-  margin-right: 10px;
 }
 .editAreaClose {
   float: right;
@@ -605,7 +603,8 @@ body {
 }
 .relCtrlGroup {
   margin-left: 76px;
-  width: 90%;
+  padding-top: 9px;
+  width: 88%;
 }
 .relCtrlVoteOptions {
   margin-bottom: 18px;
@@ -620,7 +619,7 @@ body {
   background-color: inherit;
   border: none;
   color: #009dd6;
-  margin-right: 4px;
+  margin-right: -2px;
   display: inline-block;
   padding-top: 8px;
   padding-bottom: 7px;
@@ -631,6 +630,8 @@ body {
   vertical-align: middle;
   text-align: center;
   border-radius: 5px;
+  border-width: 2px;
+  border-style: solid;
   outline: none;
 }
 .relVoteLink:hover {
@@ -694,7 +695,7 @@ body {
 */
 .relevanceExplanation {
   font-size: 12px;
-  color: #a9a9a9;
+  color: #2e2e2e;
   line-height: 125%;
   margin-bottom: 24px;
 }

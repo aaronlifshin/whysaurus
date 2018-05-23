@@ -200,9 +200,14 @@ a .blackLink:hover {
 }
 
 .admin {
-  background-color: hsl(60, 100%, 75%);
+  background-color: hsl(50, 100%, 85%); 
   width: max-content;
 }
+.relGroupHilite .admin {
+  background-color: hsl(50, 100%, 65%); 
+}
+
+
 .dropdown-menu .admin {
   width: 100%;
 }
@@ -706,10 +711,11 @@ body {
 }
 
 @editAreaRevealDuration: .33s;
-@editingAreaBG: hsla(178, 85%, 91%, 1); // light yellow: #fffbd1;
+@editingAreaBG: hsla(178, 85%, 91%, 1); 
+@relAreaBG: hsla(52, 95%, 93%, 1);
 @keyframes relGroupHiliteReveal {
    0% {background-color: #fffbd100;  }
-   100% { background-color: @editingAreaBG; }
+   100% { background-color: @relAreaBG; }
 }
 
 .relGroupHilite {
@@ -718,7 +724,7 @@ body {
   animation-timing-function: ease;
   animation-iteration-count: 1;
   margin-bottom: @marginVerticalStandard * 1.3;
-  background-color: @editingAreaBG;
+  background-color: @relAreaBG;
   max-width: @cardWidth * 1.1; // hacky - preventing this yellow area from expanding horizontally when evidence below it expands
 
 }
@@ -737,19 +743,13 @@ body {
 @keyframes relevanceCtrlAreaReveal {
    0% { max-height: 0; opacity: 0;  }
    25% { opacity: 0; }
-   60% { max-height: 160px; } // max-height needs to be set manually to be >= height of the block-JF
+   60% { max-height: 240px; } // max-height needs to be set manually to be >= height of the block-JF
    100% { opacity: 1; }
 }
 
 @editAreaPaddingV: 12px;
 .relCtrlLabel {
   margin-bottom: @marginVerticalInsideCards;
-  padding-top: @editAreaPaddingV;
-}
-
-.relCtrlClose {
-  margin-top: 6px;
-  margin-right: 10px;
 }
 
 .editAreaClose {
@@ -832,7 +832,8 @@ body {
 
 .relCtrlGroup {
   margin-left: @indent + @cardPadding + 16px; // + extra to account for the width of the cardStack
-  width: 90%;
+  padding-top: @cardPaddingTop;
+  width: 88%;
 }
 
 .relCtrlVoteOptions {
@@ -848,7 +849,7 @@ body {
   background-color: inherit;
   border: none;
   color: @blue;
-  margin-right: 4px;
+  margin-right: -2px;
   display: inline-block;
   //border: solid;
   //border-color: @editingAreaBG; // prevents offset when border appears
@@ -861,6 +862,8 @@ body {
   vertical-align: middle;
   text-align: center;
   border-radius: @borderRadiusUX2;
+  border-width: 2px;
+  border-style: solid;
   //color: black;
   //color: pink;
   outline: none; // TO DO: figure out :focus style
@@ -951,7 +954,7 @@ body {
 
 .relevanceExplanation {
   font-size: @fontSizeSmall;
-  color: @grayTextLighter; //@grayTextMedium;
+  color: @nearBlack; //@grayTextMedium;
     line-height: @lineHeightBig;
   margin-bottom: 24px;
   //float: left;

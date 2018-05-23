@@ -51,7 +51,7 @@ class EditSourcesComponent extends React.Component {
     const sources = this.props.point.sources
     let editSourcesLabel = `${sources ? "Edit Sources" : "Add Sources"}`
     return <div className="row-fluid claimEditArea editSources ">
-        <span className="claimEditAreaHeading">
+      <span className="claimEditAreaHeading">
         <span className="heading">{editSourcesLabel}</span>
         <span className="editAreaClose"><a onClick={this.props.onCancel}><CloseLinkX/></a></span>
       </span>

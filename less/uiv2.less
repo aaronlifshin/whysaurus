@@ -2734,7 +2734,7 @@ body  {
 @media (max-device-width: 1024px) {
   #header {
     position: fixed;
-    width: 100vw; // viewport-width units
+    //width: 100vw; // viewport-width units
   }
 
   #mainContainer {
@@ -2799,8 +2799,8 @@ body  {
 
 
   #header {
-  position: fixed;
-  //width: 100vw; // viewport-width units
+    position: fixed;
+    //width: 100vw; // viewport-width units
   }
 
   #header .container {
@@ -2955,7 +2955,12 @@ body  {
   //background-color: red;
     width: @cardWidthExtraSmallScreens;
   }
-
+  
+  .pointCardImageContainer {
+    width: 16% !important;
+  }
+  
+  
   .control-prev {
     margin-left: 10%;
   }

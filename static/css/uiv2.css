@@ -2069,7 +2069,6 @@ body {
 @media (max-device-width: 1024px) {
   #header {
     position: fixed;
-    width: 100vw;
   }
   #mainContainer {
     zoom: .8;
@@ -2198,6 +2197,9 @@ body {
   }
   .point-card {
     width: 82vw;
+  }
+  .pointCardImageContainer {
+    width: 16% !important;
   }
   .control-prev {
     margin-left: 10%;

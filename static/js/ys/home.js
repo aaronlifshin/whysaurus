@@ -51,16 +51,16 @@ const singleColumnThresholdForCarousel = 767.01;
 
 class Home extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.createNewPoint = this.createNewPoint.bind(this);
-  }
+  state = {tabIndex: 0}
 
-  createNewPoint(pointData) {
+  focusNewTab = () => this.setState({tabIndex: 0})
+
+  createNewPoint = (pointData) => {
     if (this.props.CurrentUserQuery.currentUser){
       return this.props.mutate({
         variables: pointData,
         update: (proxy, {data: {newPoint: { point }}}) => {
+          this.focusNewTab()
           const variables = {limit: config.newPointsPageSize}
           const data = proxy.readQuery({ query: schema.NewPoints, variables: variables});
           data.newPoints.points.unshift(point);
@@ -73,32 +73,32 @@ class Home extends React.Component {
     }
   }
 
-  renderIllustration1(){
+  renderIllustration1 = () => {
      return <div className="explanationBlock">
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_ClaimByClaim.png"/>
        <div className="explanationTextCentered">Make Arguments<br/>Claim-by-Claim</div>
      </div>
   }
-  renderIllustration2(){
+  renderIllustration2 = () => {
      return  <div className="explanationBlock">
       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_Collaborate.png"/>
       <div className="explanationTextCentered lessWidth">Collaborate to get<br/>other perspectives</div>
      </div>
   }
-  renderIllustration3(){
+  renderIllustration3 = () => {
      return  <div className="explanationBlock">
        <img className="explanationImageCentered flip" src="/static/img/homePageIllustration_UX2_v02_2x_Reuse.png"/>
        <div className="explanationTextCentered lessWidth">Re-use Claims in<br/>New Arguments</div>
      </div>
   }
-  renderIllustration4(){
+  renderIllustration4 = () => {
      return  <div className="explanationBlock">
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_FindUseful.png"/>
        <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
      </div>
   }
 
-  illustrations(){
+  illustrations = () => {
     return <div className="row" id="explanationRowHomepage">
       <MediaQuery minWidth={singleColumnThresholdForCarousel}>
         <div className="">
@@ -127,7 +127,6 @@ class Home extends React.Component {
     </div>;
   }
 
-  //   <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
@@ -142,7 +141,7 @@ class Home extends React.Component {
           { featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="spinnerPointList">Loading Featured Claim...</div> }
         </div>
         <div id="mainPageMainArea">
-          <Tabs selectedTabClassName="tabUX2_selected">
+          <Tabs selectedTabClassName="tabUX2_selected" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
             <TabList>
               <Tab className="tabUX2">New</Tab>
               <Tab className="tabUX2">Editor's Picks</Tab>

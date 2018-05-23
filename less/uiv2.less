@@ -1422,12 +1422,19 @@ li .iconWithStat {
   margin-bottom: 4px;
 }
 
-.source a {
-  //padding-left: 4px;
-  //padding-right: 4px;
+a.source {
   font-size: @fontSizeTertiaryUX2;
-  color: @smallGreyLinkColor; // !important;
-  //font-style: italic;
+  color: @smallGreyLinkColor; 
+  display: block;
+  margin-bottom: 4px;
+}
+
+.source:hover, a.source:hover {
+  color: @blue;
+}
+.iconSourcesSmall {
+  //font-size: 13.5px;
+  margin-right: 6px;
 }
 
 .editSourcesList {
@@ -1799,7 +1806,7 @@ a .claimShareIcon {
   border-color: @nearBlackButton;
   outline: none !important;
 }
-@buttonDisabledGrey: hsla(0, 0%, 55%, 1);
+@buttonDisabledGrey: hsla(0, 0%, 60%, 1);
 .buttonUX2:disabled {
   color: hsla(0, 0%, 94%, 1);
   background-color: @buttonDisabledGrey;

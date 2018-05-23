@@ -243,7 +243,12 @@ class Sources extends React.Component {
     const sources = this.props.point.sources
     return <div className="sources pointCardPaddingH">
       {sources && sources.map(({name, url}, i) =>
-        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name || url}</a></div>
+        <a key={i} className="source" tabIndex="-1" target="_blank" href={url}>
+          <span className="iconSourcesSmall">
+            <span className="fas fa-book"></span>
+          </span>
+          <span className="sourceLabel">{name || url}</span>
+        </a>
       )}
     </div>
   }

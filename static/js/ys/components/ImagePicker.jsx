@@ -32,7 +32,8 @@ const filestackOptions = {
     minFiles: 1,
     maxFiles: 1,
     maxSize:10485760,
-    storeTo: {location: 's3', access: 'public'}
+    storeTo: {location: 's3', access: 'public'},
+    transformations: {crop:true}
 };
 
 

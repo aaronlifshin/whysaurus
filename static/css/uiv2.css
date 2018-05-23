@@ -1035,6 +1035,10 @@ li .iconWithStat {
   display: block;
   padding: 9px;
   padding-left: 0;
+  width: 23%;
+  height: 100%;
+  position: absolute;
+  right: 0;
 }
 .pointCardImage {
   width: 100%;
@@ -2035,7 +2039,7 @@ body {
 }
 @media (max-device-height: 680px) {
   body {
-    zoom: .85;
+    zoom: .9;
   }
 }
 .hidden-wideDisplays {

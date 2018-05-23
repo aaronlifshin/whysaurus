@@ -18,6 +18,8 @@
 @marginVerticalForms: 10px;
 @addEvidenceUI_marginV: 52px;
 
+@defaultHeaderMarginH: 20px;
+
 @borderRadiusUX2: 5px;
 
 // Colors
@@ -191,6 +193,12 @@ a .blackLink:hover {
     }
 }
 
+// add extra padding to make small icons easier to click on
+.easierToClickOn {
+  position: relative;
+  padding: 6px; 
+}
+
 .admin {
   background-color: hsl(60, 100%, 75%);
   width: max-content;
@@ -211,7 +219,6 @@ a .blackLink:hover {
   //background-color: pink;
 }
 
-@defaultHeaderMarginH: 20px;
 
 .headerItem {
   display: inline-block;
@@ -232,6 +239,9 @@ a .blackLink:hover {
 .headerItem > a:hover, .headerItem > a:focus {
    color: @blue ;
 }
+#aboutMenu .easierToClickOn {
+  right: 6px;
+}
 
 
 
@@ -242,10 +252,12 @@ a .blackLink:hover {
   margin-right: 0;
   color: black;
 }
-.headerLinkIcon:hover, a:hover .headerLinkIcon, .headerLinkIcon:focus, a:focus .headerLinkIcon  {
+.headerLinkIcon:hover, a:hover .headerLinkIcon, .headerLinkIcon:focus, a:focus .headerLinkIcon {
    color: @blue ;
    outline: none;
+   text-decoration: none !important;
 }
+
 
 .headerSocialMediaIconArea {
   //margin-left:  @defaultHeaderMarginH;
@@ -255,20 +267,29 @@ a .blackLink:hover {
 
 .headerSocialMediaIcon {
   font-size: @headerLinkIconSize * .85;
-  top: 4px;
-  margin-left: @defaultHeaderMarginH;// * .66;
+  margin-left: @defaultHeaderMarginH * .5 ;
   //color: #a9a9a9 !important;
 }
+.dropdownSocialMediaIconArea .headerSocialMediaIcon {
+  margin-right: @defaultHeaderMarginH *.4;
+  margin-left: 0;
+}
+.dropdownSocialMediaIconArea .headerLinkIcon {
+  font-size: @headerLinkIconSize * .9;
+}
+.dropdownSocialMediaIconArea {
+  margin-bottom: 8px;
+}
+
+
 a.headerSocialMediaIcon:hover {
   //color: black !important;
   text-decoration: none !important;
 }
 
-.dropdownSocialMediaIcon {
-  font-size: @headerLinkIconSize * .85;
-  color: black !important;
-  margin-right: @defaultHeaderMarginH * .8;
-}
+
+
+
 
 #headerIconAbout  {
   font-size: @headerLinkIconSize * 1.1;
@@ -1203,7 +1224,7 @@ a:hover .perctSignSmall {
 }
 
 .cardTopRowItem {
-  margin-right: 10px;
+  margin-right: 9px;
 }
 .cardTopRowItem a {
  color: @smallGreyLinkColor;
@@ -1282,15 +1303,12 @@ li .iconWithStat {
   color: @blue;
 }
 
-// add extra padding to make small icons easier to click on
-.easierToClickOn {
-  position: relative;
-  //background-color: pink;
-  padding: 4px; 
-  padding-left: 6px;
-  padding-right: 6px;
-  right: 4px; // compensate position for extra padding
+.cardTopRowItem .easierToClickOn {
+  //right: 4px; // compensate position for extra padding
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
+
 
 .moreMenuLink {
   color: @grayTextLighter;
@@ -1298,13 +1316,13 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 12px; // don't know why this is necessary... the commentsLink div is rendering too wide for some mysterious reason -JF
+  right: 2px; // don't know why this is necessary... 
 }
 .moreMenuLink:hover {
   text-decoration:none;
 }
 .moreMenu {
-  left: -18px;
+  left: -8px;
 }
 .contributorsMenu {
   width: max-content;
@@ -1781,10 +1799,11 @@ a .claimShareIcon {
   border-color: @nearBlackButton;
   outline: none !important;
 }
+@buttonDisabledGrey: hsla(0, 0%, 55%, 1);
 .buttonUX2:disabled {
-  color: hsla(0, 0%, 90%, 1);
-  background-color: #a4a4a4; //@stackCardDefaultBorderColor; //grey;
-  border-color: #a4a4a4; //@stackCardDefaultBorderColor; //grey;
+  color: hsla(0, 0%, 94%, 1);
+  background-color: @buttonDisabledGrey;
+  border-color: @buttonDisabledGrey;
 }
 .buttonUX2Red:disabled {
   background-color: @stackCardCounterBorderColor;

@@ -107,6 +107,10 @@ a .blackLink:hover {
 .hover__no-hover {
   opacity: 1;
 }
+.easierToClickOn {
+  position: relative;
+  padding: 6px;
+}
 .admin {
   background-color: #ffff80;
   width: max-content;
@@ -137,6 +141,9 @@ a .blackLink:hover {
 .headerItem > a:focus {
   color: #009dd6;
 }
+#aboutMenu .easierToClickOn {
+  right: 6px;
+}
 .headerLinkIcon {
   font-size: 18px;
   top: 3px;
@@ -149,6 +156,7 @@ a:hover .headerLinkIcon,
 a:focus .headerLinkIcon {
   color: #009dd6;
   outline: none;
+  text-decoration: none !important;
 }
 .headerSocialMediaIconArea {
   margin-top: 13px;
@@ -156,16 +164,20 @@ a:focus .headerLinkIcon {
 }
 .headerSocialMediaIcon {
   font-size: 15.3px;
-  top: 4px;
-  margin-left: 20px;
+  margin-left: 10px;
+}
+.dropdownSocialMediaIconArea .headerSocialMediaIcon {
+  margin-right: 8px;
+  margin-left: 0;
+}
+.dropdownSocialMediaIconArea .headerLinkIcon {
+  font-size: 16.2px;
+}
+.dropdownSocialMediaIconArea {
+  margin-bottom: 8px;
 }
 a.headerSocialMediaIcon:hover {
   text-decoration: none !important;
-}
-.dropdownSocialMediaIcon {
-  font-size: 15.3px;
-  color: black !important;
-  margin-right: 16px;
 }
 #headerIconAbout {
   font-size: 19.8px;
@@ -880,7 +892,7 @@ a.toggleLowRelClaims:hover {
   padding-top: 9px;
 }
 .cardTopRowItem {
-  margin-right: 10px;
+  margin-right: 9px;
 }
 .cardTopRowItem a {
   color: #a9a9a9;
@@ -941,12 +953,9 @@ li .iconWithStat {
 .cardTopRowItem a:hover {
   color: #009dd6;
 }
-.easierToClickOn {
-  position: relative;
-  padding: 4px;
-  padding-left: 6px;
-  padding-right: 6px;
-  right: 4px;
+.cardTopRowItem .easierToClickOn {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 .moreMenuLink {
   color: #a9a9a9;
@@ -954,13 +963,13 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 12px;
+  right: 2px;
 }
 .moreMenuLink:hover {
   text-decoration: none;
 }
 .moreMenu {
-  left: -18px;
+  left: -8px;
 }
 .contributorsMenu {
   width: max-content;
@@ -1341,9 +1350,9 @@ a .claimShareIcon {
   outline: none !important;
 }
 .buttonUX2:disabled {
-  color: #e6e6e6;
-  background-color: #a4a4a4;
-  border-color: #a4a4a4;
+  color: #f0f0f0;
+  background-color: #8c8c8c;
+  border-color: #8c8c8c;
 }
 .buttonUX2Red:disabled {
   background-color: #f6a3a3;

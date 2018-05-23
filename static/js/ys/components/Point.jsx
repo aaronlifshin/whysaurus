@@ -629,6 +629,20 @@ class PointCardComponent extends React.Component {
     this.point.counterPoints && this.point.counterPoints.edges.length > 0
   )
 
+  isChildExpanded = (child) =>
+    !!this.props.expansion.isExpanded(child, this.childDepth())
+
+  allPossibleChildren = (point) => {
+    return [].concat((point.supportingPoints && point.supportingPoints.edges) || []).
+      concat((point.counterPoints && point.counterPoints.edges) || []).
+      concat((point.relevantPoints && point.relevantPoints.edges) || []).
+      map(edge => edge.node)
+  }
+
+  areAnyChildrenExpanded = (point) => {
+    return !!this.allPossibleChildren(point).find(child => this.isChildExpanded(child))
+  }
+
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -672,13 +686,17 @@ class PointCardComponent extends React.Component {
 
   childDepth = () => this.depth() + 1
 
+  childrenExpanded = () => {
+    return this.areAnyChildrenExpanded(this.props.point)
+  }
+
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport evidenceBlockFirstColAlignment">
         <div className="evidenceList">
           <div className="heading supportHeading">Evidence For</div>
           <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-          {this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/> }
+          {!this.childrenExpanded() && (this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/>)}
         </div>
       </div>
     }
@@ -692,7 +710,7 @@ class PointCardComponent extends React.Component {
         <div className="evidenceList">
           <div className="heading counterHeading">Evidence Against</div>
           <PointList edges={this.point.counterPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-          {this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/> }
+          {!this.childrenExpanded() && (this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/>) }
         </div>
       </div>
     }
@@ -705,7 +723,7 @@ class PointCardComponent extends React.Component {
         <div className="evidenceList">
           {this.point.relevantPoints.edges.length > 0 && <div className="heading supportHeading">Evidence</div>}
         <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-        <AddEvidence point={this.point} type={"DUAL"}/>
+        {!this.childrenExpanded() && <AddEvidence point={this.point} type={"DUAL"}/>}
         </div>
       </div>
     }

@@ -255,9 +255,6 @@ a:visited {
   background-color: #33c9ff;
   text-decoration: none;
 }
-#basics {
-  margin-top: 32px;
-}
 #helpHeading {
   margin-bottom: 16px;
 }
@@ -2929,8 +2926,7 @@ a.feedbackFooterLink {
    FEEDBACK PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .contactTitle {
-  margin-top: 18px;
-  margin-bottom: 36px;
+  margin-bottom: 42px;
 }
 .contactForm {
   margin-top: 32px;

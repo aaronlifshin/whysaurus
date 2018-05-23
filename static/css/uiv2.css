@@ -1131,7 +1131,7 @@ li .iconWithStat {
     padding-top: 0;
   }
   75% {
-    max-height: 315px;
+    max-height: 550px;
     padding-top: 9px;
   }
   100% {
@@ -1471,9 +1471,24 @@ a.buttonUX2:focus:enabled {
   display: block;
   top: 0;
 }
-.imagePickerButton {
+.imageEditForm {
+  margin-top: 10px;
   margin-bottom: 10px;
+  display: inline-block;
+  width: 100%;
+}
+.imagePickerButton {
+  margin-bottom: 27px;
   margin-top: 4px;
+  transform: scale(1.45);
+  position: relative;
+  left: 27px;
+}
+.imagePickerButton:hover {
+  transform: 1.41375;
+}
+.imageBigDisplay {
+  margin-bottom: 20px;
 }
 .editPointTextForm {
   display: inline-block;

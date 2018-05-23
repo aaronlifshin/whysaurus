@@ -1536,7 +1536,7 @@ li .iconWithStat {
 
 @keyframes editAreaReveal {
    0% { max-height: 0; opacity: 0; padding-top: 0; }
-   75% { max-height: 315px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   75% { max-height: 550px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
 @keyframes commentsAreaReveal {
@@ -1927,9 +1927,28 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   top: 0;
 }
 
-.imagePickerButton {
+.imageEditForm {
+  margin-top: @marginVerticalForms;
   margin-bottom: @marginVerticalForms;
+  display: inline-block;
+  width: 100%;
+}
+
+@buttonUX2Big:  1.45;
+.imagePickerButton {
+  margin-bottom: @marginVerticalForms * 2.7;
   margin-top: 4px;
+  transform: scale(@buttonUX2Big);
+  position: relative;
+  left: 27px;
+}
+.imagePickerButton:hover{
+  transform: @buttonUX2ScaleDownOnClick * @buttonUX2Big;
+
+}
+
+.imageBigDisplay {
+  margin-bottom: @marginVerticalForms * 2;
 }
 
 

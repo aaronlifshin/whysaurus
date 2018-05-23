@@ -9,39 +9,41 @@ import { CloseLinkX } from './common'
 import ImagePicker from './ImagePicker';
 import config from '../config'
 
+
 class EditImageForm  extends React.Component {
 
   state = {imageUpdated: false}
 
   render() {
     const {point, onSubmit, onClick, heightClass} = this.props
-  return (
-    <Form onSubmit={onSubmit}
-          defaultValues={{imageURL: point.imageURL, imageDescription: point.imageDescription}}
-          validate={values => ({imageDescription: validations.validateCaption(values.imageDescription)})}>
-      { ({submitForm, values: {imageDescription, imageURL}, touched, validationFailures}) => (
-        <form onSubmit={submitForm} id="form1" className="">
-          {imageURL && <img src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}
-          <ImagePicker field="imageURL"
-            onUploaded={(file) => {
-              this.setState({imageUpdated: true})
-              submitForm()
-            }}
-            onTransformed={(result) => {
-              console.log("Saved transformed versions of image:")
-              console.log(result)
-            }}
-            />
-            <div className="">
-              <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption, credit, description, etc"/>
-            </div>
-            <div className="">
-              <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 pull-right" type="submit">Update Image</button>
-            </div>
+    let captionButtonLabel = `${point.imageDescription ? "Update Caption" : "Add Caption" }`
+  return ( 
+      <Form onSubmit={onSubmit}
+            defaultValues={{imageURL: point.imageURL, imageDescription: point.imageDescription}}
+            validate={values => ({imageDescription: validations.validateCaption(values.imageDescription)})}>
+        { ({submitForm, values: {imageDescription, imageURL}, touched, validationFailures}) => (
+          <form onSubmit={submitForm} id="form1" className="">
+            <ImagePicker field="imageURL"
+              onUploaded={(file) => {
+                this.setState({imageUpdated: true})
+                submitForm()
+              }}
+              onTransformed={(result) => {
+                console.log("Saved transformed versions of image:")
+                console.log(result)
+              }}
+              />
+             {imageURL && <img className="imageBigDisplay" src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}           
+              <div className="">
+                <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption, credit, description, etc"/>
+              </div>
+              <div className="">
+                <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 pull-right" type="submit">{captionButtonLabel}</button>
+              </div>
 
-        </form>
-      )}
-    </Form>
+          </form>
+        )}
+      </Form>
   );
   }
 }
@@ -89,7 +91,9 @@ class EditImageComponent extends React.Component {
         <span className="heading">{editImageLabel}</span>
         <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
       </span>
-      {this.renderForm()}
+      <div className="imageEditForm">    
+        {this.renderForm()}
+      </div>
     </div>
 
   }

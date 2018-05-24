@@ -59,6 +59,8 @@ class WhysaurusUser(auth_models.User):
     password = ndb.StringProperty()
     token = ndb.StringProperty()
     tokenExpires = ndb.DateTimeProperty()
+    TERMS_AND_CONDITIONS_VERSION = 1
+    hasConfirmedTermsVersion = ndb.IntegerProperty(default=0)
     lastLogin = ndb.DateTimeProperty()
     loginCount = ndb.IntegerProperty(default=0)
     loginAvgIntervalDays = ndb.FloatProperty(default=0)
@@ -114,6 +116,10 @@ class WhysaurusUser(auth_models.User):
     @property
     def isModerator(self):
         return self.isAdmin
+    
+    @property
+    def hasConfirmedTermsAndConditions(self):
+        return self.hasConfirmedTermsVersion >= self.TERMS_AND_CONDITIONS_VERSION
 
     def getActiveNotifications(self):
         self._notifications, self._newNotificationCount, \
@@ -161,6 +167,10 @@ class WhysaurusUser(auth_models.User):
         self.put()
         return randomPassword
 
+    def setTermsAccepted(self):
+        self.hasConfirmedTermsAndConditions = self.TERMS_AND_CONDITIONS_VERSION
+        self.put()
+        return True
 
     def setUserGaid(self, newGaid):
         self.gaId = newGaid

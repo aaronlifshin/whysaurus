@@ -25,17 +25,17 @@ class PointListComponent extends React.Component {
     return this.props.parentPoint;
   }
 
-  depth = () => this.props.depth || 0
+  prefix = () => this.props.prefix || ''
 
   renderPoint = (point, badge) => {
     return <PointCard key={point.url} url={point.url} point={point}
-                      parentPoint={this.parentPoint} depth={this.depth()}
+                      parentPoint={this.parentPoint} prefix={this.prefix()}
                       onDelete={this.props.onDelete} badge={badge} />
   }
 
   renderEdge = (edge) => {
     return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url}
-                      link={edge.link} parentPoint={this.parentPoint} depth={this.depth()}
+                      link={edge.link} parentPoint={this.parentPoint} prefix={this.prefix()}
                       onDelete={this.props.onDelete}/>
   }
 

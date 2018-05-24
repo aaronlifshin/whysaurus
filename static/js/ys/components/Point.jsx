@@ -20,7 +20,7 @@ import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
 import Spinner from './Spinner'
-import { withExpandedIndex } from './ExpandedIndex'
+import { withExpandedIndexForPoint } from './ExpandedIndex'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -966,7 +966,7 @@ class PointCardComponent extends React.Component {
 
 export const PointCard = compose(
   withApollo,
-  withExpandedIndex,
+  withExpandedIndexForPoint,
   graphql(schema.GetPoint, {
     skip: ({expanded}) => !expanded,
     props: ({ownProps, data: { loading, ...rest }}) => ({

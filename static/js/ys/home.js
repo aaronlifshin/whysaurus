@@ -16,6 +16,7 @@ import config from './config';
 import QuickCreateClaim from './components/QuickCreateClaim'
 import NewClaim from './components/NewClaim'
 import Spinner from './components/Spinner'
+import {withExpandedIndex} from './components/ExpandedIndex.jsx'
 
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
@@ -25,6 +26,7 @@ const EditorsPicks = graphql(schema.EditorsPicks, {
   })
 })(PointList);
 
+const newSectionPrefix = "new"
 const newPointsDefaultPageSize = 7
 const NewPoints = graphql(schema.NewPoints, {
   options: ({pointsPerPage}) => ({variables: {limit: pointsPerPage || newPointsDefaultPageSize}}),
@@ -61,6 +63,7 @@ class Home extends React.Component {
         variables: pointData,
         update: (proxy, {data: {newPoint: { point }}}) => {
           this.focusNewTab()
+          this.props.expansion.expand(point, newSectionPrefix)
           const variables = {limit: config.newPointsPageSize}
           const data = proxy.readQuery({ query: schema.NewPoints, variables: variables});
           data.newPoints.points.unshift(point);
@@ -147,7 +150,7 @@ class Home extends React.Component {
               <Tab className="tabUX2">Editor's Picks</Tab>
             </TabList>
             <TabPanel>
-              <NewPoints pointsPerPage={config.newPointsPageSize} prefix="new"/>
+              <NewPoints pointsPerPage={config.newPointsPageSize} prefix={newSectionPrefix}/>
             </TabPanel>
             <TabPanel>
               <EditorsPicks/>
@@ -160,6 +163,7 @@ class Home extends React.Component {
 }
 
 export const HomePage = compose(
+  withExpandedIndex,
   graphql(schema.CurrentUserQuery, {name: 'CurrentUserQuery'}),
   graphql(schema.HomePage),
   graphql(schema.NewPoint)

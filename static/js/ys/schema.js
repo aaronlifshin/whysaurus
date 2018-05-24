@@ -283,6 +283,7 @@ fragment commentFields on Comment {
   date
   userName
   userUrl
+  archived
 }
 `
 
@@ -290,7 +291,10 @@ export const Comments = gql`
 ${commentFieldsFragment}
 query Comments($pointID: String!, $showArchived: Boolean) {
   comments(pointID: $pointID, showArchived: $showArchived) {
-    ...commentFields
+    comments {
+      ...commentFields
+    }
+    archivedCount
   }
 }
 `

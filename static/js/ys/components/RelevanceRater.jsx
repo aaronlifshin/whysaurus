@@ -75,7 +75,10 @@ class RelevanceComponent extends React.Component {
   render(){
     const {user} = this.props
     return <div className="relCtrlGroup" >
-      <span className="editAreaClose relCtrlClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
+      <span className="claimEditAreaHeading">
+        <span className="heading">RATE THIS LINK</span>
+        <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
+      </span>
       <div className="relCtrlLabel pointTitle">How Relevant is this claim for you?</div>
        <div className="relCtrlVoteOptions">
          {this.voteButton(100)}

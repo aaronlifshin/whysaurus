@@ -20,6 +20,7 @@ import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
 import Spinner from './Spinner'
+import { withExpandedIndexForPoint } from './ExpandedIndex'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -76,7 +77,7 @@ class ShareIconArea extends React.Component {
     super(props)
     //this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
-  
+
   postOnFacebook = (e) => {
     var url = this.props.point.url;
     var pointTitle = this.props.point.title;
@@ -95,10 +96,10 @@ class ShareIconArea extends React.Component {
     } else {
         imageUrl = imageUrl.slice(2);
     }
-    
+
     FB.ui(dialogParams, function(response){});
   }
-  
+
   sharePointOnTwitter = (e) => {
     var url = this.props.point.url;
     var pointTitle = this.props.point.title;
@@ -112,7 +113,7 @@ class ShareIconArea extends React.Component {
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');
   }
-  
+
   render(){
     return <span className="shareIconArea">
        <a href={"https://www.whysaurus.com/point/" + this.props.point.url + "/"}>
@@ -124,7 +125,7 @@ class ShareIconArea extends React.Component {
       <a onClick={this.sharePointOnTwitter}>
         <div className="claimShareIcon fab fa-twitter"></div>
       </a>
-      <a href={"mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: " + this.props.point.title + ". %0D%0A View it here: (https://www.whysaurus.com/point/" + this.props.point.url + ")"}>
+      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Hi,%0D%0A%0D%0ACheck out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/point/" + this.props.point.url + ""}>
         <div className="claimShareIcon far fa-envelope"></div>
       </a>
     </span>
@@ -243,7 +244,12 @@ class Sources extends React.Component {
     const sources = this.props.point.sources
     return <div className="sources pointCardPaddingH">
       {sources && sources.map(({name, url}, i) =>
-        <div key={i} className="source"><img className="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a tabIndex="-1" target="_blank" href={url}>{name || url}</a></div>
+        <a key={i} className="source" tabIndex="-1" target="_blank" href={url}>
+          <span className="iconSourcesSmall">
+            <span className="fas fa-book"></span>
+          </span>
+          <span className="sourceLabel">{name || url}</span>
+        </a>
       )}
     </div>
   }
@@ -624,6 +630,20 @@ class PointCardComponent extends React.Component {
     this.point.counterPoints && this.point.counterPoints.edges.length > 0
   )
 
+  isChildExpanded = (child) =>
+    !!this.props.expansion.isExpanded(child, this.childPrefix())
+
+  childrenExpanded = (edgeName) => {
+    const point = this.props.point
+    return point && point[edgeName] && !!point[edgeName].edges.find(edge => this.isChildExpanded(edge.node))
+  }
+
+  supportingChildrenExpanded = (point) => this.childrenExpanded('supportingPoints')
+
+  counterChildrenExpanded = (point) => this.childrenExpanded('counterPoints')
+
+  relevantChildrenExpanded = (point) => this.childrenExpanded('relevantPoints')
+
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -663,17 +683,17 @@ class PointCardComponent extends React.Component {
     </div>
   }
 
-  depth = () => this.props.depth || 0
+  prefix = () => this.props.prefix || ''
 
-  childDepth = () => this.depth() + 1
+  childPrefix = () => this.prefix() + this.props.point.url
 
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport evidenceBlockFirstColAlignment">
         <div className="evidenceList">
           <div className="heading supportHeading">Evidence For</div>
-          <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-          {this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/> }
+          <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} prefix={this.childPrefix()}/>
+          {!this.supportingChildrenExpanded() && (this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/>)}
         </div>
       </div>
     }
@@ -686,8 +706,8 @@ class PointCardComponent extends React.Component {
         {this.point.supportingPoints.edges.length > 0 ? <div className="dottedLineCounterConnector"></div> : "" }
         <div className="evidenceList">
           <div className="heading counterHeading">Evidence Against</div>
-          <PointList edges={this.point.counterPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-          {this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/> }
+          <PointList edges={this.point.counterPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} prefix={this.childPrefix()}/>
+          {!this.counterChildrenExpanded() && (this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/>) }
         </div>
       </div>
     }
@@ -699,8 +719,8 @@ class PointCardComponent extends React.Component {
       return <div className="evidenceBlockBoth evidenceBlockFirstColAlignment">
         <div className="evidenceList">
           {this.point.relevantPoints.edges.length > 0 && <div className="heading supportHeading">Evidence</div>}
-        <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-        <AddEvidence point={this.point} type={"DUAL"}/>
+        <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} prefix={this.childPrefix()}/>
+        {!this.relevantChildrenExpanded() && <AddEvidence point={this.point} type={"DUAL"}/>}
         </div>
       </div>
     }
@@ -795,8 +815,8 @@ class PointCardComponent extends React.Component {
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
-        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickMakeFeatured}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Make Featured</a></li>  }
-        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickSetEditorsPick}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Set Editor's Pick</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickMakeFeatured}><span className="iconWithStat"><span className="fas fa-star"></span></span>Make Featured</a></li>  }
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickSetEditorsPick}><span className="iconWithStat"><span className="fas fa-ribbon"></span></span>Set Editor's Pick</a></li>  }
         { this.currentUserIsAdmin() && <li className="admin"><SupportingCount point={this.point} /></li> }
       </ul>
     </span>
@@ -861,7 +881,7 @@ class PointCardComponent extends React.Component {
 
       //<div className="quickTestRect">Test rectangle!</div>
 
-      return <div className="listedClaimGroup">
+      return <div className={`listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'}`}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
           <div className="relCtrlAndLinkAndStackCards">
             <div className={classesListedClaim} tabIndex="-1" >
@@ -947,6 +967,7 @@ class PointCardComponent extends React.Component {
 
 export const PointCard = compose(
   withApollo,
+  withExpandedIndexForPoint,
   graphql(schema.GetPoint, {
     skip: ({expanded}) => !expanded,
     props: ({ownProps, data: { loading, ...rest }}) => ({

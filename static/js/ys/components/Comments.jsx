@@ -24,7 +24,7 @@ class CommentComponent extends React.Component {
         let classes = `commentBottomRowActions ${replies ? "commentIndent" : ""}`
         return <div className={classes}>
           <a className="editAreaLink" onClick={() => this.setState({replying: true})}>Reply</a>
-          {user && user.admin && <a className="editAreaLink admin" onClick={archive}>Archive</a>}
+          {user && user.admin && !comment.archived && <a className="editAreaLink admin" onClick={archive}>Archive</a>}
         </div>
       }
     }
@@ -57,11 +57,11 @@ class CommentsListComponent extends React.Component {
     point: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     add: PropTypes.func.isRequired,
+    toggleArchived: PropTypes.func.isRequired,
     comments: PropTypes.array
   }
 
-  state = {commenting: false,
-           showArchived: false}          
+  state = {commenting: false}
 
   buildRepliesIndex = (comments) => comments && comments.reduce((a, c) => {
     const parentID = c.parentID
@@ -86,8 +86,17 @@ class CommentsListComponent extends React.Component {
     }
   }
 
+  toggleArchivedControl = () => {
+    const {showArchived, toggleArchived} = this.props
+    if (showArchived) {
+      return <span><div className="divider"></div><a className="editAreaLink" onClick={toggleArchived}>Hide Archived Comments</a></span>
+    } else {
+      return <span><div className="divider"></div><a className="editAreaLink" onClick={toggleArchived}>Show Archived Comments</a></span>
+    }
+  }
+
   render(){
-    const {comments, point, add, onCancel, archive} = this.props
+    const {comments, point, add, onCancel, hasArchived, archive} = this.props
     const replies = this.buildRepliesIndex(comments)
     return <div className="">
       <span className="claimEditAreaHeading">
@@ -96,9 +105,10 @@ class CommentsListComponent extends React.Component {
       </span>
       <div className="claimEditAreaNote">Discuss how to improve this claim.</div>
       {this.newComment()}
-      <div className="commentsList">      
+      <div className="commentsList">
         {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
-      </div>      
+      </div>
+      {hasArchived && this.toggleArchivedControl()}
     </div>
   }
 }
@@ -112,7 +122,8 @@ const CommentsList = compose(
     props: ({ownProps, data: {loading, comments, refetch}}) => ({
       ...ownProps,
       loadingComments: loading,
-      comments: comments,
+      comments: comments && comments.comments,
+      hasArchived: comments && (comments.archivedCount > 0),
       refetchComments: refetch
     })
   }),
@@ -143,18 +154,15 @@ export default class Comments extends React.Component {
 
   state = {showArchived: false}
 
-  showArchived = () => {
-    if (this.state.showArchived) {
-        return <span><div className="divider"></div><a className="editAreaLink" onClick={() => this.setState({showArchived: false})}>Hide Archived Comments</a></span>
-    } else {
-        return <span><div className="divider"></div><a className="editAreaLink" onClick={() => this.setState({showArchived: true})}>Show Archived Comments</a></span>
-    }
+  toggleShowArchived = () => {
+    this.setState({showArchived: !this.state.showArchived})
   }
 
   render(){
     return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea" >
-      <CommentsList point={this.props.point} onCancel={this.props.onCancel} showArchived={this.state.showArchived}/>
-      {this.showArchived()}
+      <CommentsList point={this.props.point} onCancel={this.props.onCancel}
+                    showArchived={this.state.showArchived}
+                    toggleArchived={this.toggleShowArchived}/>
     </div>
   }
 }

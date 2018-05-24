@@ -16,7 +16,9 @@
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
 @marginVerticalForms: 10px;
-@addEvidenceUI_marginV: 52px;
+@addEvidenceUI_marginV: 88px;
+
+@defaultHeaderMarginH: 20px;
 
 @borderRadiusUX2: 5px;
 
@@ -191,10 +193,21 @@ a .blackLink:hover {
     }
 }
 
+// add extra padding to make small icons easier to click on
+.easierToClickOn {
+  position: relative;
+  padding: 6px; 
+}
+
 .admin {
-  background-color: hsl(60, 100%, 75%);
+  background-color: hsl(50, 100%, 85%); 
   width: max-content;
 }
+.relGroupHilite .admin {
+  background-color: hsl(50, 100%, 65%); 
+}
+
+
 .dropdown-menu .admin {
   width: 100%;
 }
@@ -211,7 +224,6 @@ a .blackLink:hover {
   //background-color: pink;
 }
 
-@defaultHeaderMarginH: 20px;
 
 .headerItem {
   display: inline-block;
@@ -229,8 +241,11 @@ a .blackLink:hover {
 .headerItem > a {
    color: black ;
 }
-.headerItem > a:hover {
+.headerItem > a:hover, .headerItem > a:focus {
    color: @blue ;
+}
+#aboutMenu .easierToClickOn {
+  right: 6px;
 }
 
 
@@ -239,12 +254,15 @@ a .blackLink:hover {
 .headerLinkIcon {
   font-size: @headerLinkIconSize;
   top: 3px;
-  //margin-right: 5px;
+  margin-right: 0;
   color: black;
 }
-.headerLinkIcon:hover, a:hover .headerLinkIcon {
+.headerLinkIcon:hover, a:hover .headerLinkIcon, .headerLinkIcon:focus, a:focus .headerLinkIcon {
    color: @blue ;
+   outline: none;
+   text-decoration: none !important;
 }
+
 
 .headerSocialMediaIconArea {
   //margin-left:  @defaultHeaderMarginH;
@@ -254,18 +272,29 @@ a .blackLink:hover {
 
 .headerSocialMediaIcon {
   font-size: @headerLinkIconSize * .85;
-  top: 4px;
-  margin-left: @defaultHeaderMarginH;// * .66;
+  margin-left: @defaultHeaderMarginH * .5 ;
   //color: #a9a9a9 !important;
 }
-.dropdownSocialMediaIcon {
-  font-size: @headerLinkIconSize * .85;
-  color: black !important;
-  margin-right: @defaultHeaderMarginH * .8;
+.dropdownSocialMediaIconArea .headerSocialMediaIcon {
+  margin-right: @defaultHeaderMarginH *.4;
+  margin-left: 0;
 }
-.headerSocialMediaIcon:hover {
-  color: black !important;
+.dropdownSocialMediaIconArea .headerLinkIcon {
+  font-size: @headerLinkIconSize * .9;
 }
+.dropdownSocialMediaIconArea {
+  margin-bottom: 8px;
+}
+
+
+a.headerSocialMediaIcon:hover {
+  //color: black !important;
+  text-decoration: none !important;
+}
+
+
+
+
 
 #headerIconAbout  {
   font-size: @headerLinkIconSize * 1.1;
@@ -396,7 +425,7 @@ a .blackLink:hover {
 
 
 .fullPageText {
-  margin-left: 12px; // eye match to header
+  margin-left: 32px; // eye match to header
 }
 
 .contactForm input, .contactForm textarea {
@@ -682,10 +711,11 @@ body {
 }
 
 @editAreaRevealDuration: .33s;
-@editingAreaBG: hsla(178, 85%, 91%, 1); // light yellow: #fffbd1;
+@editingAreaBG: hsla(178, 85%, 91%, 1); 
+@relAreaBG: hsla(52, 95%, 93%, 1);
 @keyframes relGroupHiliteReveal {
    0% {background-color: #fffbd100;  }
-   100% { background-color: @editingAreaBG; }
+   100% { background-color: @relAreaBG; }
 }
 
 .relGroupHilite {
@@ -694,7 +724,7 @@ body {
   animation-timing-function: ease;
   animation-iteration-count: 1;
   margin-bottom: @marginVerticalStandard * 1.3;
-  background-color: @editingAreaBG;
+  background-color: @relAreaBG;
   max-width: @cardWidth * 1.1; // hacky - preventing this yellow area from expanding horizontally when evidence below it expands
 
 }
@@ -713,19 +743,13 @@ body {
 @keyframes relevanceCtrlAreaReveal {
    0% { max-height: 0; opacity: 0;  }
    25% { opacity: 0; }
-   60% { max-height: 160px; } // max-height needs to be set manually to be >= height of the block-JF
+   60% { max-height: 240px; } // max-height needs to be set manually to be >= height of the block-JF
    100% { opacity: 1; }
 }
 
 @editAreaPaddingV: 12px;
 .relCtrlLabel {
   margin-bottom: @marginVerticalInsideCards;
-  padding-top: @editAreaPaddingV;
-}
-
-.relCtrlClose {
-  margin-top: 6px;
-  margin-right: 10px;
 }
 
 .editAreaClose {
@@ -808,7 +832,8 @@ body {
 
 .relCtrlGroup {
   margin-left: @indent + @cardPadding + 16px; // + extra to account for the width of the cardStack
-  width: 90%;
+  padding-top: @cardPaddingTop;
+  width: 88%;
 }
 
 .relCtrlVoteOptions {
@@ -824,7 +849,7 @@ body {
   background-color: inherit;
   border: none;
   color: @blue;
-  margin-right: 4px;
+  margin-right: -2px;
   display: inline-block;
   //border: solid;
   //border-color: @editingAreaBG; // prevents offset when border appears
@@ -837,6 +862,8 @@ body {
   vertical-align: middle;
   text-align: center;
   border-radius: @borderRadiusUX2;
+  border-width: 2px;
+  border-style: solid;
   //color: black;
   //color: pink;
   outline: none; // TO DO: figure out :focus style
@@ -927,7 +954,7 @@ body {
 
 .relevanceExplanation {
   font-size: @fontSizeSmall;
-  color: @grayTextLighter; //@grayTextMedium;
+  color: @nearBlack; //@grayTextMedium;
     line-height: @lineHeightBig;
   margin-bottom: 24px;
   //float: left;
@@ -1200,7 +1227,7 @@ a:hover .perctSignSmall {
 }
 
 .cardTopRowItem {
-  margin-right: 10px;
+  margin-right: 9px;
 }
 .cardTopRowItem a {
  color: @smallGreyLinkColor;
@@ -1279,15 +1306,12 @@ li .iconWithStat {
   color: @blue;
 }
 
-// add extra padding to make small icons easier to click on
-.easierToClickOn {
-  position: relative;
-  //background-color: pink;
-  padding: 4px; 
-  padding-left: 6px;
-  padding-right: 6px;
-  right: 4px; // compensate position for extra padding
+.cardTopRowItem .easierToClickOn {
+  //right: 4px; // compensate position for extra padding
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
+
 
 .moreMenuLink {
   color: @grayTextLighter;
@@ -1295,13 +1319,13 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 12px; // don't know why this is necessary... the commentsLink div is rendering too wide for some mysterious reason -JF
+  right: 2px; // don't know why this is necessary... 
 }
 .moreMenuLink:hover {
   text-decoration:none;
 }
 .moreMenu {
-  left: -18px;
+  left: -8px;
 }
 .contributorsMenu {
   width: max-content;
@@ -1388,6 +1412,10 @@ li .iconWithStat {
   //-webkit-flex: 1; /* Safari 6.1+ */
     //-ms-flex: 1;  /* IE 10 */
   //background-color: blue;
+  width: 23%;
+  height: 100%;
+  position: absolute;
+  right: 0;
 }
 
 .pointCardImage {
@@ -1401,12 +1429,19 @@ li .iconWithStat {
   margin-bottom: 4px;
 }
 
-.source a {
-  //padding-left: 4px;
-  //padding-right: 4px;
+a.source {
   font-size: @fontSizeTertiaryUX2;
-  color: @smallGreyLinkColor; // !important;
-  //font-style: italic;
+  color: @smallGreyLinkColor; 
+  display: block;
+  margin-bottom: 4px;
+}
+
+.source:hover, a.source:hover {
+  color: @blue;
+}
+.iconSourcesSmall {
+  //font-size: 13.5px;
+  margin-right: 6px;
 }
 
 .editSourcesList {
@@ -1533,7 +1568,7 @@ li .iconWithStat {
 
 @keyframes editAreaReveal {
    0% { max-height: 0; opacity: 0; padding-top: 0; }
-   75% { max-height: 315px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   75% { max-height: 550px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
 @keyframes commentsAreaReveal {
@@ -1671,7 +1706,6 @@ li .iconWithStat {
 
 .shareIconArea {
   display: inline-block;
-  color: @smallGreyLinkColor;
   position: relative;
   left: -9px;
   top: -6px;
@@ -1684,10 +1718,11 @@ li .iconWithStat {
   animation-iteration-count: 1;
 }
 
-.claimShareIcon {
+a .claimShareIcon {
   display: block;
   //margin-bottom: 10px;
   padding: 6px; // makes the hover target bigger
+  color: @smallGreyLinkColor;
 }
 
 .claimShareIcon:hover {
@@ -1778,10 +1813,11 @@ li .iconWithStat {
   border-color: @nearBlackButton;
   outline: none !important;
 }
+@buttonDisabledGrey: hsla(0, 0%, 60%, 1);
 .buttonUX2:disabled {
-  color: hsla(0, 0%, 90%, 1);
-  background-color: #a4a4a4; //@stackCardDefaultBorderColor; //grey;
-  border-color: #a4a4a4; //@stackCardDefaultBorderColor; //grey;
+  color: hsla(0, 0%, 94%, 1);
+  background-color: @buttonDisabledGrey;
+  border-color: @buttonDisabledGrey;
 }
 .buttonUX2Red:disabled {
   background-color: @stackCardCounterBorderColor;
@@ -1924,9 +1960,28 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   top: 0;
 }
 
-.imagePickerButton {
+.imageEditForm {
+  margin-top: @marginVerticalForms;
   margin-bottom: @marginVerticalForms;
+  display: inline-block;
+  width: 100%;
+}
+
+@buttonUX2Big:  1.45;
+.imagePickerButton {
+  margin-bottom: @marginVerticalForms * 2.7;
   margin-top: 4px;
+  transform: scale(@buttonUX2Big);
+  position: relative;
+  left: 27px;
+}
+.imagePickerButton:hover{
+  transform: @buttonUX2ScaleDownOnClick * @buttonUX2Big;
+
+}
+
+.imageBigDisplay {
+  margin-bottom: @marginVerticalForms * 2;
 }
 
 
@@ -2211,7 +2266,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 }
 
 @arrowStemWidth: 2px;
-
+@arrowStemEvidenceHeightDefault: 106px;
 .arrowStemEvidence {
   width: 12px;
   height: 106px;
@@ -2242,6 +2297,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 .verticalOffsetForLongEvidenceArrow {
   position: relative;
   top: @offsetForLongEvidenceArrow;
+  margin-bottom: @offsetForLongEvidenceArrow; // prevents div height from having extra space on the bottom caused by the reposition
 }
 .verticalOffsetForLongEvidenceArrowForm {
   top: 81px;
@@ -2407,23 +2463,31 @@ a:hover .arrowAddEvidenceButton {
 
 .addEvidenceUI {
   margin-bottom: @addEvidenceUI_marginV;
+  width: fit-content;
 }
 
-.addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {
-    //border-width: 3px;
-    //margin-left: 5px;
-    margin-top: -68px;
-  transition: @hoverTransitionDuration;
-  height: 72px;
-  //color: @blue;
+// extend arrow pointing up on hover
+// TO DO make work only when hovering on the buttons (currently hard bc CSS doesn't have a preceding sibling selector
+@arrowStemEvidenceHeightHoverAdd: 17px;
+@arrowStemEvidenceHeightHoverDuration:  @hoverTransitionDuration * 0.66;
+.addEvidenceUI:hover .arrowStemEvidence:not(.arrowStemEvidenceShort) {
+  transition: @arrowStemEvidenceHeightHoverDuration;
+  height: @arrowStemEvidenceHeightDefault + @arrowStemEvidenceHeightHoverAdd;
 }
+.addEvidenceUI:hover .verticalOffsetForLongEvidenceArrow {
+  top: @offsetForLongEvidenceArrow - @arrowStemEvidenceHeightHoverAdd;
+  transition: @arrowStemEvidenceHeightHoverDuration;
+}
+.addEvidenceUI:hover {
+  margin-bottom: @addEvidenceUI_marginV - @arrowStemEvidenceHeightHoverAdd;
+  transition: @arrowStemEvidenceHeightHoverDuration;
+}
+.evidenceBlockEmpty .addEvidenceUI:hover {
+  margin-bottom: @addEvidenceUI_marginV; // undos the hover effect above for evidenceBlockEmpty's
+}
+////////////////////////////////////
 
-.addEvidenceButtonGrp:hover .arrowAddEvidenceButton {
-  //transform: scale(1.3) translateY(1px);
-  //transform-origin: bottom;
-  //transition: @hoverTransitionDuration;
-  //color: @blue;
-}
+
 
 .dottedLineAddEvidenceButton {
     margin-left: 6px;
@@ -2645,7 +2709,7 @@ body  {
 // using height because the purpose here is to be able to fit more evidence on screen
 @media (max-device-height: 680px) {
   body  {
-    zoom: .85;
+    zoom: .9;
   }
 }
 
@@ -2682,7 +2746,7 @@ body  {
 @media (max-device-width: 1024px) {
   #header {
     position: fixed;
-    width: 100vw; // viewport-width units
+    //width: 100vw; // viewport-width units
   }
 
   #mainContainer {
@@ -2747,8 +2811,8 @@ body  {
 
 
   #header {
-  position: fixed;
-  //width: 100vw; // viewport-width units
+    position: fixed;
+    //width: 100vw; // viewport-width units
   }
 
   #header .container {
@@ -2903,7 +2967,12 @@ body  {
   //background-color: red;
     width: @cardWidthExtraSmallScreens;
   }
-
+  
+  .pointCardImageContainer {
+    width: 16% !important;
+  }
+  
+  
   .control-prev {
     margin-left: 10%;
   }

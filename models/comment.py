@@ -15,6 +15,8 @@ class Comment(ndb.Model):
     parentComment = ndb.KeyProperty(kind='Comment')
     level = ndb.IntegerProperty(default=0)
 
+    archived = False
+
     @property
     def PSTdateText(self):
         return PST.convert(self.date).strftime('%b. %d, %Y, %I:%M %p')

@@ -17,6 +17,7 @@ import config from './config';
 import QuickCreateClaim from './components/QuickCreateClaim'
 import NewClaim from './components/NewClaim'
 import Spinner from './components/Spinner'
+import {withExpandedIndex} from './components/ExpandedIndex.jsx'
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
   props: ({ownProps, data: { loading, homePage }}) => ({
@@ -25,6 +26,7 @@ const EditorsPicks = graphql(schema.EditorsPicks, {
   })
 })(PointList);
 
+const newSectionPrefix = "new"
 const newPointsDefaultPageSize = 7
 const NewPoints = graphql(schema.NewPoints, {
   options: ({pointsPerPage}) => ({variables: {limit: pointsPerPage || newPointsDefaultPageSize}}),
@@ -58,12 +60,18 @@ class Home extends React.Component {
       terms_open: true
     };
   }
+  state = {tabIndex: 0}
 
-  createNewPoint(pointData) {
+  focusNewTab = () => this.setState({tabIndex: 0})
+
+  createNewPoint = (pointData) => {
     if (this.props.CurrentUserQuery.currentUser){
       return this.props.mutate({
         variables: pointData,
         update: (proxy, {data: {newPoint: { point }}}) => {
+          this.focusNewTab()
+          this.props.expansion.expand(point, newSectionPrefix)
+          this.setState({latestQuickCreate: point.url})
           const variables = {limit: config.newPointsPageSize}
           const data = proxy.readQuery({ query: schema.NewPoints, variables: variables});
           data.newPoints.points.unshift(point);
@@ -76,32 +84,32 @@ class Home extends React.Component {
     }
   }
 
-  renderIllustration1(){
+  renderIllustration1 = () => {
      return <div className="explanationBlock">
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_ClaimByClaim.png"/>
        <div className="explanationTextCentered">Make Arguments<br/>Claim-by-Claim</div>
      </div>
   }
-  renderIllustration2(){
+  renderIllustration2 = () => {
      return  <div className="explanationBlock">
       <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_Collaborate.png"/>
       <div className="explanationTextCentered lessWidth">Collaborate to get<br/>other perspectives</div>
      </div>
   }
-  renderIllustration3(){
+  renderIllustration3 = () => {
      return  <div className="explanationBlock">
        <img className="explanationImageCentered flip" src="/static/img/homePageIllustration_UX2_v02_2x_Reuse.png"/>
        <div className="explanationTextCentered lessWidth">Re-use Claims in<br/>New Arguments</div>
      </div>
   }
-  renderIllustration4(){
+  renderIllustration4 = () => {
      return  <div className="explanationBlock">
        <img className="explanationImageCentered" src="/static/img/homePageIllustration_UX2_v02_2x_FindUseful.png"/>
        <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
      </div>
   }
 
-  illustrations(){
+  illustrations = () => {
     return <div className="row" id="explanationRowHomepage">
       <MediaQuery minWidth={singleColumnThresholdForCarousel}>
         <div className="">
@@ -173,7 +181,6 @@ class Home extends React.Component {
     }
   }
 
-  //   <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;
@@ -185,16 +192,16 @@ class Home extends React.Component {
       </div>
       <div className="mainPageContentArea">
         <div id="mainPageFeaturedArea" className="mainPageContentArea">
-          { featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="spinnerPointList">Loading Featured Claim...</div> }
+          { featuredPoint ? <PointList point={featuredPoint} badge="Featured" prefix="featured"/> : <div className="spinnerPointList">Loading Featured Claim...</div> }
         </div>
         <div id="mainPageMainArea">
-          <Tabs selectedTabClassName="tabUX2_selected">
+          <Tabs selectedTabClassName="tabUX2_selected" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
             <TabList>
               <Tab className="tabUX2">New</Tab>
               <Tab className="tabUX2">Editor's Picks</Tab>
             </TabList>
             <TabPanel>
-              <NewPoints pointsPerPage={config.newPointsPageSize}/>
+              <NewPoints pointsPerPage={config.newPointsPageSize} prefix={newSectionPrefix} latestQuickCreate={this.state.latestQuickCreate}/>
             </TabPanel>
             <TabPanel>
               <EditorsPicks/>
@@ -208,6 +215,7 @@ class Home extends React.Component {
 }
 
 export const HomePage = compose(
+  withExpandedIndex,
   graphql(schema.CurrentUserQuery, {name: 'CurrentUserQuery'}),
   graphql(schema.HomePage),
   graphql(schema.NewPoint),

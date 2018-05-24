@@ -17,7 +17,6 @@ class PointListComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expandedIndex: this.urlExpandedIndex(),
       hideIrrelevant: true
     }
   }
@@ -26,85 +25,20 @@ class PointListComponent extends React.Component {
     return this.props.parentPoint;
   }
 
-  expansionIndexKey = (point) =>
-    point.url + this.depth()
+  prefix = () => this.props.prefix || ''
 
-  isPointExpanded = (point) =>
-    !!this.state.expandedIndex[this.expansionIndexKey(point)]
-
-  expandedIndex2Param = (index) => {
-    return JSON.stringify(Object.keys(index).filter(key => index[key]))
-  }
-
-  expandedParam2Index = (param) => {
-    try {
-      return param ? JSON.parse(param).reduce((i, k) => {i[k] = true; return i}, {}) : {}
-    } catch (err) {
-      console.log("Error parsing URL expanded index:")
-      console.log(param)
-      console.log(err)
-      return {}
-    }
-  }
-
-  urlExpandedIndex = (urlSearchParams) => {
-    let params = urlSearchParams || new URLSearchParams(this.props.location.search)
-    return this.expandedParam2Index(params.get("expanded"))
-  }
-
-  updateURLExpandedIndex = (urlSearchParams, updatedIndex) => {
-    let params = urlSearchParams || new URLSearchParams(this.props.location.search)
-    if (Object.entries(updatedIndex).length > 0) {
-      params.set("expanded", this.expandedIndex2Param(updatedIndex))
-    } else {
-      params.delete("expanded")
-    }
-    const { location, history } = this.props
-    history.push({path: location.pathname, search: params.toString()})
-  }
-
-  modifyStateAndURL = (point, indexModifier) => {
-    let params = new URLSearchParams(this.props.location.search);
-    let index = this.urlExpandedIndex()
-    indexModifier(index)
-    this.setState({expandedIndex: index})
-    this.updateURLExpandedIndex(params, index)
-  }
-
-  handleSeeEvidence = (point) => {
-    this.modifyStateAndURL(point, index => index[this.expansionIndexKey(point)] = true)
-  }
-
-  handleHideEvidence = (point) => {
-    this.modifyStateAndURL(point, index => delete index[this.expansionIndexKey(point)])
-  }
-
-  depth = () => this.props.depth || 0
+  isLatestQuickCreate = (point) => (point.url == this.props.latestQuickCreate)
 
   renderPoint = (point, badge) => {
-    if (this.isPointExpanded(point)) {
-      return <PointCard key={point.url} url={point.url} point={point} expanded={true}
-                        parentPoint={this.parentPoint} depth={this.depth()}
-                        onDelete={this.props.onDelete} onCollapse={() => this.handleHideEvidence(point)}
-                        badge={badge} />
-    } else {
-      return <PointCard key={point.url} point={point} url={point.url} expanded={false}
-                        parentPoint={this.parentPoint} depth={this.depth()}
-                        onDelete={this.props.onDelete} onExpand={() => this.handleSeeEvidence(point)}
-                        badge={badge} />
-    }
+    return <PointCard key={point.url} url={point.url} point={point} latestQuickCreate={this.isLatestQuickCreate(point)}
+                      parentPoint={this.parentPoint} prefix={this.prefix()}
+                      onDelete={this.props.onDelete} badge={badge} />
   }
 
   renderEdge = (edge) => {
-    if (this.isPointExpanded(edge.node)) {
-      return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} expanded={true}
-                        link={edge.link} parentPoint={this.parentPoint} depth={this.depth()}
-                        onDelete={this.props.onDelete} onCollapse={() => this.handleHideEvidence(edge.node)}/>
-    } else {
-      return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} expanded={false}
-                        link={edge.link} parentPoint={this.parentPoint} depth={this.depth()}
-                        onDelete={this.props.onDelete} onExpand={() => this.handleSeeEvidence(edge.node)}/>
-    }
+    return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} latestQuickCreate={this.isLatestQuickCreate(edge.node)}
+                      link={edge.link} parentPoint={this.parentPoint} prefix={this.prefix()}
+                      onDelete={this.props.onDelete}/>
   }
 
   renderPoints = (points) => this.props.points.map((point, i) => this.renderPoint(point))

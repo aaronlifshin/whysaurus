@@ -8,7 +8,7 @@ import httplib2
 
 from google.appengine.ext import ndb
 from follow import Follow
-from google.appengine.api import channel
+# from google.appengine.api import channel
 from google.appengine.ext.webapp import template
 from oauth2client.client import GoogleCredentials
 

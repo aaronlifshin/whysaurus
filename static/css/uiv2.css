@@ -107,9 +107,16 @@ a .blackLink:hover {
 .hover__no-hover {
   opacity: 1;
 }
+.easierToClickOn {
+  position: relative;
+  padding: 6px;
+}
 .admin {
-  background-color: #ffff80;
+  background-color: #fff2b3;
   width: max-content;
+}
+.relGroupHilite .admin {
+  background-color: #ffe14d;
 }
 .dropdown-menu .admin {
   width: 100%;
@@ -133,17 +140,26 @@ a .blackLink:hover {
 .headerItem > a {
   color: black ;
 }
-.headerItem > a:hover {
+.headerItem > a:hover,
+.headerItem > a:focus {
   color: #009dd6;
+}
+#aboutMenu .easierToClickOn {
+  right: 6px;
 }
 .headerLinkIcon {
   font-size: 18px;
   top: 3px;
+  margin-right: 0;
   color: black;
 }
 .headerLinkIcon:hover,
-a:hover .headerLinkIcon {
+a:hover .headerLinkIcon,
+.headerLinkIcon:focus,
+a:focus .headerLinkIcon {
   color: #009dd6;
+  outline: none;
+  text-decoration: none !important;
 }
 .headerSocialMediaIconArea {
   margin-top: 13px;
@@ -151,16 +167,20 @@ a:hover .headerLinkIcon {
 }
 .headerSocialMediaIcon {
   font-size: 15.3px;
-  top: 4px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
-.dropdownSocialMediaIcon {
-  font-size: 15.3px;
-  color: black !important;
-  margin-right: 16px;
+.dropdownSocialMediaIconArea .headerSocialMediaIcon {
+  margin-right: 8px;
+  margin-left: 0;
 }
-.headerSocialMediaIcon:hover {
-  color: black !important;
+.dropdownSocialMediaIconArea .headerLinkIcon {
+  font-size: 16.2px;
+}
+.dropdownSocialMediaIconArea {
+  margin-bottom: 8px;
+}
+a.headerSocialMediaIcon:hover {
+  text-decoration: none !important;
 }
 #headerIconAbout {
   font-size: 19.8px;
@@ -259,7 +279,7 @@ a:hover .headerLinkIcon {
   color: black;
 }
 .fullPageText {
-  margin-left: 12px;
+  margin-left: 32px;
 }
 .contactForm input,
 .contactForm textarea {
@@ -478,7 +498,7 @@ body {
     background-color: #fffbd100;
   }
   100% {
-    background-color: #d5fcfa;
+    background-color: #fefadc;
   }
 }
 .relGroupHilite {
@@ -487,7 +507,7 @@ body {
   animation-timing-function: ease;
   animation-iteration-count: 1;
   margin-bottom: 20.8px;
-  background-color: #d5fcfa;
+  background-color: #fefadc;
   max-width: 462px;
 }
 .relevanceCtrlArea {
@@ -507,7 +527,7 @@ body {
     opacity: 0;
   }
   60% {
-    max-height: 160px;
+    max-height: 240px;
   }
   100% {
     opacity: 1;
@@ -515,11 +535,6 @@ body {
 }
 .relCtrlLabel {
   margin-bottom: 14px;
-  padding-top: 12px;
-}
-.relCtrlClose {
-  margin-top: 6px;
-  margin-right: 10px;
 }
 .editAreaClose {
   float: right;
@@ -588,7 +603,8 @@ body {
 }
 .relCtrlGroup {
   margin-left: 76px;
-  width: 90%;
+  padding-top: 9px;
+  width: 88%;
 }
 .relCtrlVoteOptions {
   margin-bottom: 18px;
@@ -603,7 +619,7 @@ body {
   background-color: inherit;
   border: none;
   color: #009dd6;
-  margin-right: 4px;
+  margin-right: -2px;
   display: inline-block;
   padding-top: 8px;
   padding-bottom: 7px;
@@ -614,6 +630,8 @@ body {
   vertical-align: middle;
   text-align: center;
   border-radius: 5px;
+  border-width: 2px;
+  border-style: solid;
   outline: none;
 }
 .relVoteLink:hover {
@@ -677,7 +695,7 @@ body {
 */
 .relevanceExplanation {
   font-size: 12px;
-  color: #a9a9a9;
+  color: #2e2e2e;
   line-height: 125%;
   margin-bottom: 24px;
 }
@@ -875,7 +893,7 @@ a.toggleLowRelClaims:hover {
   padding-top: 9px;
 }
 .cardTopRowItem {
-  margin-right: 10px;
+  margin-right: 9px;
 }
 .cardTopRowItem a {
   color: #a9a9a9;
@@ -936,12 +954,9 @@ li .iconWithStat {
 .cardTopRowItem a:hover {
   color: #009dd6;
 }
-.easierToClickOn {
-  position: relative;
-  padding: 4px;
-  padding-left: 6px;
-  padding-right: 6px;
-  right: 4px;
+.cardTopRowItem .easierToClickOn {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 .moreMenuLink {
   color: #a9a9a9;
@@ -949,13 +964,13 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 12px;
+  right: 2px;
 }
 .moreMenuLink:hover {
   text-decoration: none;
 }
 .moreMenu {
-  left: -18px;
+  left: -8px;
 }
 .contributorsMenu {
   width: max-content;
@@ -1021,6 +1036,10 @@ li .iconWithStat {
   display: block;
   padding: 9px;
   padding-left: 0;
+  width: 23%;
+  height: 100%;
+  position: absolute;
+  right: 0;
 }
 .pointCardImage {
   width: 100%;
@@ -1031,9 +1050,18 @@ li .iconWithStat {
 .sources {
   margin-bottom: 4px;
 }
-.source a {
+a.source {
   font-size: 12px;
   color: #a9a9a9;
+  display: block;
+  margin-bottom: 4px;
+}
+.source:hover,
+a.source:hover {
+  color: #009dd6;
+}
+.iconSourcesSmall {
+  margin-right: 6px;
 }
 .editSourcesList {
   margin-bottom: 15px;
@@ -1126,7 +1154,7 @@ li .iconWithStat {
     padding-top: 0;
   }
   75% {
-    max-height: 315px;
+    max-height: 550px;
     padding-top: 9px;
   }
   100% {
@@ -1253,7 +1281,6 @@ li .iconWithStat {
 }
 .shareIconArea {
   display: inline-block;
-  color: #a9a9a9;
   position: relative;
   left: -9px;
   top: -6px;
@@ -1264,9 +1291,10 @@ li .iconWithStat {
   animation-timing-function: ease;
   animation-iteration-count: 1;
 }
-.claimShareIcon {
+a .claimShareIcon {
   display: block;
   padding: 6px;
+  color: #a9a9a9;
 }
 .claimShareIcon:hover {
   color: #009dd6;
@@ -1336,9 +1364,9 @@ li .iconWithStat {
   outline: none !important;
 }
 .buttonUX2:disabled {
-  color: #e6e6e6;
-  background-color: #a4a4a4;
-  border-color: #a4a4a4;
+  color: #f0f0f0;
+  background-color: #999999;
+  border-color: #999999;
 }
 .buttonUX2Red:disabled {
   background-color: #f6a3a3;
@@ -1466,9 +1494,24 @@ a.buttonUX2:focus:enabled {
   display: block;
   top: 0;
 }
-.imagePickerButton {
+.imageEditForm {
+  margin-top: 10px;
   margin-bottom: 10px;
+  display: inline-block;
+  width: 100%;
+}
+.imagePickerButton {
+  margin-bottom: 27px;
   margin-top: 4px;
+  transform: scale(1.45);
+  position: relative;
+  left: 27px;
+}
+.imagePickerButton:hover {
+  transform: 1.41375;
+}
+.imageBigDisplay {
+  margin-bottom: 20px;
 }
 .editPointTextForm {
   display: inline-block;
@@ -1713,6 +1756,7 @@ a.buttonUX2:focus:enabled {
 .verticalOffsetForLongEvidenceArrow {
   position: relative;
   top: -45px;
+  margin-bottom: -45px;
 }
 .verticalOffsetForLongEvidenceArrowForm {
   top: 81px;
@@ -1842,12 +1886,23 @@ a:hover .arrowAddEvidenceButton {
   transition: 0.08s;
 }
 .addEvidenceUI {
-  margin-bottom: 52px;
+  margin-bottom: 88px;
+  width: fit-content;
 }
-.addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {
-  margin-top: -68px;
-  transition: 0.08s;
-  height: 72px;
+.addEvidenceUI:hover .arrowStemEvidence:not(.arrowStemEvidenceShort) {
+  transition: 0.0528s;
+  height: 123px;
+}
+.addEvidenceUI:hover .verticalOffsetForLongEvidenceArrow {
+  top: -62px;
+  transition: 0.0528s;
+}
+.addEvidenceUI:hover {
+  margin-bottom: 71px;
+  transition: 0.0528s;
+}
+.evidenceBlockEmpty .addEvidenceUI:hover {
+  margin-bottom: 88px;
 }
 .dottedLineAddEvidenceButton {
   margin-left: 6px;
@@ -1997,7 +2052,7 @@ body {
 }
 @media (max-device-height: 680px) {
   body {
-    zoom: .85;
+    zoom: .9;
   }
 }
 .hidden-wideDisplays {
@@ -2027,7 +2082,6 @@ body {
 @media (max-device-width: 1024px) {
   #header {
     position: fixed;
-    width: 100vw;
   }
   #mainContainer {
     zoom: .8;
@@ -2156,6 +2210,9 @@ body {
   }
   .point-card {
     width: 82vw;
+  }
+  .pointCardImageContainer {
+    width: 16% !important;
   }
   .control-prev {
     margin-left: 10%;

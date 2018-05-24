@@ -88,7 +88,7 @@ class ExpandedIndexProviderComponent extends React.Component {
 export const ExpandedIndexProvider =  withRouter(ExpandedIndexProviderComponent);
 
 
-export function withExpandedIndex(Component) {
+export function withExpandedIndexForPoint(Component) {
   return function ExpandedIndexComponent(props){
     const {point, prefix} = props
     return (
@@ -98,6 +98,16 @@ export function withExpandedIndex(Component) {
                                  onExpand={() => expansion.expand(point, prefix)}
                                  onCollapse={() => expansion.collapse(point, prefix)}
                                  expansion={expansion} />}
+      </Context.Consumer>
+    )
+  }
+}
+
+export function withExpandedIndex(Component) {
+  return function ExpandedIndexComponent(props){
+    return (
+      <Context.Consumer>
+        {expansion => <Component {...props} expansion={expansion} />}
       </Context.Consumer>
     )
   }

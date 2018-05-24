@@ -880,7 +880,7 @@ class PointCardComponent extends React.Component {
 
       //<div className="quickTestRect">Test rectangle!</div>
 
-      return <div className="listedClaimGroup">
+      return <div className={`listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'}`}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
           <div className="relCtrlAndLinkAndStackCards">
             <div className={classesListedClaim} tabIndex="-1" >

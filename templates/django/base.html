@@ -54,11 +54,18 @@
                 {% if user.gaId %}userId: '{{user.gaId}}'{% endif %}
             });
         {% endif %}
-        {% if user.isInternal %}
-            ga('set', 'dimension1', 'internal');
+
+        {% if user %}
+            {% if user.isInternal %}
+                ga('set', 'dimension1', 'internal');
+            {% else %}
+                ga('set', 'dimension1', 'user');
+            {% endif %}
+            ga('set', 'dimension2', 'loggedIn');
         {% else %}
-            ga('set', 'dimension1', 'user');
+            ga('set', 'dimension2', 'notLoggedIn');
         {% endif %}
+
             ga('send', 'pageview');
     </script>
 

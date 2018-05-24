@@ -20,6 +20,7 @@ import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
 import Spinner from './Spinner'
+import { withExpandedIndex } from './ExpandedIndex'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -76,7 +77,7 @@ class ShareIconArea extends React.Component {
     super(props)
     //this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
-  
+
   postOnFacebook = (e) => {
     var url = this.props.point.url;
     var pointTitle = this.props.point.title;
@@ -95,10 +96,10 @@ class ShareIconArea extends React.Component {
     } else {
         imageUrl = imageUrl.slice(2);
     }
-    
+
     FB.ui(dialogParams, function(response){});
   }
-  
+
   sharePointOnTwitter = (e) => {
     var url = this.props.point.url;
     var pointTitle = this.props.point.title;
@@ -112,7 +113,7 @@ class ShareIconArea extends React.Component {
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');
   }
-  
+
   render(){
     return <span className="shareIconArea">
        <a href={"https://www.whysaurus.com/point/" + this.props.point.url + "/"}>
@@ -951,6 +952,7 @@ class PointCardComponent extends React.Component {
 
 export const PointCard = compose(
   withApollo,
+  withExpandedIndex,
   graphql(schema.GetPoint, {
     skip: ({expanded}) => !expanded,
     props: ({ownProps, data: { loading, ...rest }}) => ({

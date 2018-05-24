@@ -9,6 +9,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 import {PointListWithPoint} from './ys/components/PointList';
 import {HomePage} from './ys/home';
+import {ExpandedIndexProvider} from './ys/components/ExpandedIndex'
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: '/graphql', credentials: 'same-origin' }),
@@ -49,7 +50,9 @@ class App extends React.Component {
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App/>
+      <ExpandedIndexProvider>
+        <App/>
+      </ExpandedIndexProvider>
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root')

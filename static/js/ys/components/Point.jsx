@@ -274,6 +274,7 @@ class EvidenceLink extends React.Component {
   handleClickSee = (e) => {
     e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
     this.props.onSee && this.props.onSee()
+    ga('send', 'event', 'Main Page', 'Expand Point', this.props.point.url);
   }
 
   handleClickHide = (e) => {

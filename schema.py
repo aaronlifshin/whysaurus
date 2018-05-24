@@ -24,6 +24,10 @@ class User(NdbObjectType):
     def resolve_admin(self, info):
         return self.isAdmin
 
+    hasConfirmedTermsAndConditions = graphene.Boolean()
+    def resolve_hasConfirmedTermsAndConditions(self, info):
+        return self.hasConfirmedTermsAndConditions
+
     recentlyViewed = graphene.List(lambda: Point)
     def resolve_recentlyViewed(self, info):
         return self.getRecentlyViewed()
@@ -489,6 +493,27 @@ class MakeFeatured(graphene.Mutation):
             raise Exception(str('non admin user tried to set featured point'))
 
 
+class AcceptTerms(graphene.Mutation):
+    class Arguments:
+        userUrl = graphene.String(required=True)
+        
+    success = graphene.Boolean()
+    
+    def mutate(self, info, userUrl):
+        user = info.context.current_user
+        if not user:
+            raise Exception("User Not Logged In")
+        
+        if user.url != userUrl:
+            raise Exception("Invalid User Url: Mismatches Current User")
+        
+        raise Exception('Test! Accepting Terms Here!')
+        
+        user.setTermsAccepted()
+
+        return AcceptTerms(success=True)
+
+
 class RelevanceVote(graphene.Mutation):
     class Arguments:
         linkType = graphene.String(required=True)
@@ -592,6 +617,7 @@ class Mutation(graphene.ObjectType):
     delete_source = DeleteSource.Field()
     set_editors_pick = SetEditorsPick.Field()
     make_featured = MakeFeatured.Field()
+    accept_terms = AcceptTerms.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

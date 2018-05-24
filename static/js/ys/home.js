@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Popup from "reactjs-popup";
 const { Map, List, Seq } = require('immutable');
 const prettyI = require("pretty-immutable");
 import gql from 'graphql-tag';
@@ -16,7 +17,6 @@ import config from './config';
 import QuickCreateClaim from './components/QuickCreateClaim'
 import NewClaim from './components/NewClaim'
 import Spinner from './components/Spinner'
-
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
   props: ({ownProps, data: { loading, homePage }}) => ({
@@ -54,6 +54,9 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.createNewPoint = this.createNewPoint.bind(this);
+    this.state = {
+      terms_open: true
+    };
   }
 
   createNewPoint(pointData) {
@@ -126,6 +129,49 @@ class Home extends React.Component {
       </MediaQuery>
     </div>;
   }
+  
+  confirmTerms = () => {
+    console.log('Terms Accepted')
+    this.setState({ terms_open: false })
+    this.props.acceptTerms(this.props.CurrentUserQuery.currentUser.url)
+  }
+  
+  declineTerms = () => {
+    console.log('Terms Declined')
+    this.setState({ terms_open: false })
+    window.location = '/logout';
+  }
+  
+  termsAndConditionsPopup() {
+    if (this.props.CurrentUserQuery.currentUser) {
+      if (this.props.CurrentUserQuery.currentUser.hasConfirmedTermsAndConditions) {
+      
+      }
+      else {
+        return <span>
+          <Popup modal open={!this.props.CurrentUserQuery.currentUser.hasConfirmedTermsAndConditions && this.state.terms_open}>
+            <div className="modal">
+              <h2 className="header"> Accept Terms & Conditions </h2>
+              <div className="content">
+                {" "}
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+                Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+                delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+                <br />
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+                commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+                explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+              </div>
+              <div className="actions">
+                <button className="button" onClick={this.confirmTerms}>Agree</button>
+                <button className="button" onClick={this.declineTerms}>Decline/Logout</button>
+              </div>
+            </div>
+          </Popup>
+        </span>;
+      }
+    }
+  }
 
   //   <NewClaim onSubmit={(a, b, c) => console.log("foo") || console.log(a)}/>
   render(){
@@ -155,6 +201,7 @@ class Home extends React.Component {
             </TabPanel>
           </Tabs>
         </div>
+        {this.termsAndConditionsPopup()}
       </div>
     </div>
   }
@@ -163,5 +210,10 @@ class Home extends React.Component {
 export const HomePage = compose(
   graphql(schema.CurrentUserQuery, {name: 'CurrentUserQuery'}),
   graphql(schema.HomePage),
-  graphql(schema.NewPoint)
+  graphql(schema.NewPoint),
+  graphql(schema.AcceptTerms, {
+    props: ({ mutate }) => ({
+      acceptTerms: (userUrl) => mutate({variables: {userUrl}})
+    })
+  })
 )(Home);

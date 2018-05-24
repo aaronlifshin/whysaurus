@@ -27,14 +27,16 @@ class PointListComponent extends React.Component {
 
   prefix = () => this.props.prefix || ''
 
+  isLatestQuickCreate = (point) => (point.url == this.props.latestQuickCreate)
+
   renderPoint = (point, badge) => {
-    return <PointCard key={point.url} url={point.url} point={point}
+    return <PointCard key={point.url} url={point.url} point={point} latestQuickCreate={this.isLatestQuickCreate(point)}
                       parentPoint={this.parentPoint} prefix={this.prefix()}
                       onDelete={this.props.onDelete} badge={badge} />
   }
 
   renderEdge = (edge) => {
-    return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url}
+    return <PointCard key={edge.node.url} point={edge.node} url={edge.node.url} latestQuickCreate={this.isLatestQuickCreate(edge.node)}
                       link={edge.link} parentPoint={this.parentPoint} prefix={this.prefix()}
                       onDelete={this.props.onDelete}/>
   }

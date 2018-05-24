@@ -20,6 +20,7 @@ import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
 import Spinner from './Spinner'
+import { withExpandedIndex } from './ExpandedIndex'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -76,7 +77,7 @@ class ShareIconArea extends React.Component {
     super(props)
     //this.handleClickNoProp = this.handleClickNoProp.bind(this);
   }
-  
+
   postOnFacebook = (e) => {
     var url = this.props.point.url;
     var pointTitle = this.props.point.title;
@@ -95,10 +96,10 @@ class ShareIconArea extends React.Component {
     } else {
         imageUrl = imageUrl.slice(2);
     }
-    
+
     FB.ui(dialogParams, function(response){});
   }
-  
+
   sharePointOnTwitter = (e) => {
     var url = this.props.point.url;
     var pointTitle = this.props.point.title;
@@ -112,7 +113,7 @@ class ShareIconArea extends React.Component {
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');
   }
-  
+
   render(){
     return <span className="shareIconArea">
        <a href={"https://www.whysaurus.com/point/" + this.props.point.url + "/"}>
@@ -628,6 +629,20 @@ class PointCardComponent extends React.Component {
     this.point.counterPoints && this.point.counterPoints.edges.length > 0
   )
 
+  isChildExpanded = (child) =>
+    !!this.props.expansion.isExpanded(child, this.childDepth())
+
+  childrenExpanded = (edgeName) => {
+    const point = this.props.point
+    return point && point[edgeName] && !!point[edgeName].edges.find(edge => this.isChildExpanded(edge.node))
+  }
+
+  supportingChildrenExpanded = (point) => this.childrenExpanded('supportingPoints')
+
+  counterChildrenExpanded = (point) => this.childrenExpanded('counterPoints')
+
+  relevantChildrenExpanded = (point) => this.childrenExpanded('relevantPoints')
+
   evidence() {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -677,7 +692,7 @@ class PointCardComponent extends React.Component {
         <div className="evidenceList">
           <div className="heading supportHeading">Evidence For</div>
           <PointList edges={this.point.supportingPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-          {this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/> }
+          {!this.supportingChildrenExpanded() && (this.point.counterPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"SUPPORT"}/>)}
         </div>
       </div>
     }
@@ -691,7 +706,7 @@ class PointCardComponent extends React.Component {
         <div className="evidenceList">
           <div className="heading counterHeading">Evidence Against</div>
           <PointList edges={this.point.counterPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-          {this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/> }
+          {!this.counterChildrenExpanded() && (this.point.supportingPoints.edges.length < 1 ? <AddEvidence point={this.point} type={"DUAL"}/> : <AddEvidence point={this.point} type={"COUNTER"}/>) }
         </div>
       </div>
     }
@@ -704,7 +719,7 @@ class PointCardComponent extends React.Component {
         <div className="evidenceList">
           {this.point.relevantPoints.edges.length > 0 && <div className="heading supportHeading">Evidence</div>}
         <PointList edges={this.point.relevantPoints.edges} parentPoint={this.point} relevanceThreshold={config.relevanceThreshold} depth={this.childDepth()}/>
-        <AddEvidence point={this.point} type={"DUAL"}/>
+        {!this.relevantChildrenExpanded() && <AddEvidence point={this.point} type={"DUAL"}/>}
         </div>
       </div>
     }
@@ -951,6 +966,7 @@ class PointCardComponent extends React.Component {
 
 export const PointCard = compose(
   withApollo,
+  withExpandedIndex,
   graphql(schema.GetPoint, {
     skip: ({expanded}) => !expanded,
     props: ({ownProps, data: { loading, ...rest }}) => ({

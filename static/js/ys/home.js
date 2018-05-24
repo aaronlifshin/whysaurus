@@ -64,6 +64,7 @@ class Home extends React.Component {
         update: (proxy, {data: {newPoint: { point }}}) => {
           this.focusNewTab()
           this.props.expansion.expand(point, newSectionPrefix)
+          this.setState({latestQuickCreate: point.url})
           const variables = {limit: config.newPointsPageSize}
           const data = proxy.readQuery({ query: schema.NewPoints, variables: variables});
           data.newPoints.points.unshift(point);
@@ -150,7 +151,7 @@ class Home extends React.Component {
               <Tab className="tabUX2">Editor's Picks</Tab>
             </TabList>
             <TabPanel>
-              <NewPoints pointsPerPage={config.newPointsPageSize} prefix={newSectionPrefix}/>
+              <NewPoints pointsPerPage={config.newPointsPageSize} prefix={newSectionPrefix} latestQuickCreate={this.state.latestQuickCreate}/>
             </TabPanel>
             <TabPanel>
               <EditorsPicks/>

@@ -1756,6 +1756,7 @@ a.buttonUX2:focus:enabled {
 .verticalOffsetForLongEvidenceArrow {
   position: relative;
   top: -45px;
+  margin-bottom: -45px;
 }
 .verticalOffsetForLongEvidenceArrowForm {
   top: 81px;
@@ -1885,12 +1886,23 @@ a:hover .arrowAddEvidenceButton {
   transition: 0.08s;
 }
 .addEvidenceUI {
-  margin-bottom: 52px;
+  margin-bottom: 88px;
+  width: fit-content;
 }
-.addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {
-  margin-top: -68px;
-  transition: 0.08s;
-  height: 72px;
+.addEvidenceUI:hover .arrowStemEvidence:not(.arrowStemEvidenceShort) {
+  transition: 0.0528s;
+  height: 123px;
+}
+.addEvidenceUI:hover .verticalOffsetForLongEvidenceArrow {
+  top: -62px;
+  transition: 0.0528s;
+}
+.addEvidenceUI:hover {
+  margin-bottom: 71px;
+  transition: 0.0528s;
+}
+.evidenceBlockEmpty .addEvidenceUI:hover {
+  margin-bottom: 88px;
 }
 .dottedLineAddEvidenceButton {
   margin-left: 6px;

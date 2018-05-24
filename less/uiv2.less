@@ -16,7 +16,7 @@
 @marginVerticalStandard: 16px;
 @marginVerticalInsideCards: 14px;
 @marginVerticalForms: 10px;
-@addEvidenceUI_marginV: 52px;
+@addEvidenceUI_marginV: 88px;
 
 @defaultHeaderMarginH: 20px;
 
@@ -2266,7 +2266,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 }
 
 @arrowStemWidth: 2px;
-
+@arrowStemEvidenceHeightDefault: 106px;
 .arrowStemEvidence {
   width: 12px;
   height: 106px;
@@ -2297,6 +2297,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 .verticalOffsetForLongEvidenceArrow {
   position: relative;
   top: @offsetForLongEvidenceArrow;
+  margin-bottom: @offsetForLongEvidenceArrow; // prevents div height from having extra space on the bottom caused by the reposition
 }
 .verticalOffsetForLongEvidenceArrowForm {
   top: 81px;
@@ -2462,23 +2463,31 @@ a:hover .arrowAddEvidenceButton {
 
 .addEvidenceUI {
   margin-bottom: @addEvidenceUI_marginV;
+  width: fit-content;
 }
 
-.addEvidenceButtonGrp:hover .dottedLineAddEvidenceButton {
-    //border-width: 3px;
-    //margin-left: 5px;
-    margin-top: -68px;
-  transition: @hoverTransitionDuration;
-  height: 72px;
-  //color: @blue;
+// extend arrow pointing up on hover
+// TO DO make work only when hovering on the buttons (currently hard bc CSS doesn't have a preceding sibling selector
+@arrowStemEvidenceHeightHoverAdd: 17px;
+@arrowStemEvidenceHeightHoverDuration:  @hoverTransitionDuration * 0.66;
+.addEvidenceUI:hover .arrowStemEvidence:not(.arrowStemEvidenceShort) {
+  transition: @arrowStemEvidenceHeightHoverDuration;
+  height: @arrowStemEvidenceHeightDefault + @arrowStemEvidenceHeightHoverAdd;
 }
+.addEvidenceUI:hover .verticalOffsetForLongEvidenceArrow {
+  top: @offsetForLongEvidenceArrow - @arrowStemEvidenceHeightHoverAdd;
+  transition: @arrowStemEvidenceHeightHoverDuration;
+}
+.addEvidenceUI:hover {
+  margin-bottom: @addEvidenceUI_marginV - @arrowStemEvidenceHeightHoverAdd;
+  transition: @arrowStemEvidenceHeightHoverDuration;
+}
+.evidenceBlockEmpty .addEvidenceUI:hover {
+  margin-bottom: @addEvidenceUI_marginV; // undos the hover effect above for evidenceBlockEmpty's
+}
+////////////////////////////////////
 
-.addEvidenceButtonGrp:hover .arrowAddEvidenceButton {
-  //transform: scale(1.3) translateY(1px);
-  //transform-origin: bottom;
-  //transition: @hoverTransitionDuration;
-  //color: @blue;
-}
+
 
 .dottedLineAddEvidenceButton {
     margin-left: 6px;

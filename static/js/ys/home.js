@@ -138,7 +138,7 @@ class Home extends React.Component {
       </div>
       <div className="mainPageContentArea">
         <div id="mainPageFeaturedArea" className="mainPageContentArea">
-          { featuredPoint ? <PointList point={featuredPoint} badge="Featured"/> : <div className="spinnerPointList">Loading Featured Claim...</div> }
+          { featuredPoint ? <PointList point={featuredPoint} badge="Featured" prefix="featured"/> : <div className="spinnerPointList">Loading Featured Claim...</div> }
         </div>
         <div id="mainPageMainArea">
           <Tabs selectedTabClassName="tabUX2_selected" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
@@ -147,7 +147,7 @@ class Home extends React.Component {
               <Tab className="tabUX2">Editor's Picks</Tab>
             </TabList>
             <TabPanel>
-              <NewPoints pointsPerPage={config.newPointsPageSize}/>
+              <NewPoints pointsPerPage={config.newPointsPageSize} prefix="new"/>
             </TabPanel>
             <TabPanel>
               <EditorsPicks/>

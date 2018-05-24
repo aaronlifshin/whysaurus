@@ -64,17 +64,17 @@ class ExpandedIndexProviderComponent extends React.Component {
     this.updateURLExpandedIndex(params, index)
   }
 
-  expansionIndexKey = (point, depth) => point.url + depth
+  expansionIndexKey = (point, prefix) => (prefix || "") + point.url
 
-  expand = (point, depth) => {
-    this.modifyStateAndURL(point, index => index[this.expansionIndexKey(point, depth)] = true)
+  expand = (point, prefix) => {
+    this.modifyStateAndURL(point, index => index[this.expansionIndexKey(point, prefix)] = true)
   }
 
-  collapse = (point, depth) => {
-    this.modifyStateAndURL(point, index => delete index[this.expansionIndexKey(point, depth)])
+  collapse = (point, prefix) => {
+    this.modifyStateAndURL(point, index => delete index[this.expansionIndexKey(point, prefix)])
   }
 
-  isExpanded = (point, depth) => !!this.state.index[this.expansionIndexKey(point, depth)]
+  isExpanded = (point, prefix) => !!this.state.index[this.expansionIndexKey(point, prefix)]
 
   render(){
     // IMPORTANT: value must always point at state so that the context has a consistent reference
@@ -90,13 +90,13 @@ export const ExpandedIndexProvider =  withRouter(ExpandedIndexProviderComponent)
 
 export function withExpandedIndex(Component) {
   return function ExpandedIndexComponent(props){
-    const {point, depth} = props
+    const {point, prefix} = props
     return (
       <Context.Consumer>
         {expansion => <Component {...props}
-                                 expanded={expansion.isExpanded(point, depth)}
-                                 onExpand={() => expansion.expand(point, depth)}
-                                 onCollapse={() => expansion.collapse(point, depth)}
+                                 expanded={expansion.isExpanded(point, prefix)}
+                                 onExpand={() => expansion.expand(point, prefix)}
+                                 onCollapse={() => expansion.collapse(point, prefix)}
                                  expansion={expansion} />}
       </Context.Consumer>
     )

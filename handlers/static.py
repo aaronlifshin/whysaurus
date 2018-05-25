@@ -50,7 +50,18 @@ class Manifesto(AuthHandler):
                 {'user': user,
                  'currentAreaDisplayName':self.session.get('currentAreaDisplayName'),
                 'currentArea':self.session.get('currentArea')}))
-                
+
+class PrivacyPolicy(AuthHandler):
+    def get(self):
+        user = self.current_user
+        if user:
+            user.getActiveNotifications()
+        self.response.out.write(
+            self.template_render('privacyPolicy.html',
+                                 {'user': user,
+                                  'currentAreaDisplayName': self.session.get('currentAreaDisplayName'),
+                                  'currentArea': self.session.get('currentArea')}))
+
 class Education(AuthHandler):
     def get(self):
         user = self.current_user

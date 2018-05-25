@@ -12,7 +12,7 @@ from webapp2 import Route, WSGIApplication
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from models.whysaurususer import WhysaurusUser
-from handlers import MainPage, About, Help, Contact, Manifesto, ListSignUp, \
+from handlers import MainPage, About, Help, Contact, Manifesto, PrivacyPolicy, ListSignUp, \
     Education, CommonCore, APUSH, Walkthrough, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
     LinkPoint, Vote, SetRibbon, TestPage, Search, \
@@ -31,7 +31,8 @@ routes = [
     Route('/getMainPageLeft', handler='WhySaurus.MainPage:getMainPageLeft', name='getMainPageLeft'),
     Route('/getMainPageRight', handler='WhySaurus.MainPage:getMainPageRight', name='getMainPageRight'),
     Route('/about', About),
-    Route('/manifesto', Manifesto),    
+    Route('/manifesto', Manifesto),
+    Route('/privacyPolicy', PrivacyPolicy),
     Route('/listSignUp', ListSignUp),
     Route('/education', Education),
     Route('/commonCore', CommonCore),

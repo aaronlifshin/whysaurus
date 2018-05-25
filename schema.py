@@ -509,6 +509,8 @@ class AcceptTerms(graphene.Mutation):
         if user.url != userUrl:
             raise Exception("Invalid User Url: Mismatches Current User")
         
+        logging.info('Accepting Terms For User: %s' % userUrl)
+        
         user.setTermsAccepted()
 
         return AcceptTerms(success=True)

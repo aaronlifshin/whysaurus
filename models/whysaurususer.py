@@ -169,8 +169,9 @@ class WhysaurusUser(auth_models.User):
         return randomPassword
 
     def setTermsAccepted(self):
-        self.hasConfirmedTermsAndConditions = self.TERMS_AND_CONDITIONS_VERSION
+        self.hasConfirmedTermsVersion = self.TERMS_AND_CONDITIONS_VERSION
         self.put()
+        logging.info('Terms Accepted: %s' % self.url)
         return True
 
     def setUserGaid(self, newGaid):

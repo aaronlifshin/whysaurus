@@ -56,11 +56,12 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.createNewPoint = this.createNewPoint.bind(this);
-    this.state = {
-      terms_open: true
-    };
   }
-  state = {tabIndex: 0}
+  
+  state = {
+    terms_open: true,
+    tabIndex: 0
+  }
 
   focusNewTab = () => this.setState({tabIndex: 0})
 
@@ -139,7 +140,7 @@ class Home extends React.Component {
   }
   
   confirmTerms = () => {
-    console.log('Terms Accepted')
+    console.log('Accepting Terms..')
     this.setState({ terms_open: false })
     this.props.acceptTerms(this.props.CurrentUserQuery.currentUser.url)
   }

@@ -6,6 +6,8 @@ import { ApolloProvider, graphql } from 'react-apollo';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
 
 import {PointListWithPoint} from './ys/components/PointList';
 import {HomePage} from './ys/home';
@@ -35,6 +37,12 @@ class PointPage extends React.Component {
   }
 }
 
+const alertOptions = {
+  position: 'bottom center',
+  timeout: 5000,
+  offset: '30px',
+  transition: 'scale'
+}
 
 class App extends React.Component {
   render() {
@@ -51,7 +59,9 @@ ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
       <ExpandedIndexProvider>
-        <App/>
+        <AlertProvider template={AlertTemplate} {...alertOptions}>
+          <App/>
+        </AlertProvider>
       </ExpandedIndexProvider>
     </ApolloProvider>
   </BrowserRouter>,

@@ -41,6 +41,8 @@
     "npm": "^6.0.1",
     "pretty-immutable": "^1.0.1",
     "react": "^16.4.0",
+    "react-alert": "^4.0.4",
+    "react-alert-template-basic": "^1.0.0",
     "react-animate-on-change": "^1.0.1",
     "react-apollo": "^2.0.1",
     "react-dom": "^16.4.0",

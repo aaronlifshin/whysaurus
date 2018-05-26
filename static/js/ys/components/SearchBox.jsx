@@ -4,6 +4,7 @@ import { ApolloProvider, graphql, compose, withApollo } from 'react-apollo'
 import gql from 'graphql-tag'
 import { ApolloClient } from 'apollo-client'
 import { SearchResults } from './SearchResults'
+import { Switch, Route, Redirect } from 'react-router-dom'
 
 export class SearchBox extends React.Component {
   constructor(props) {
@@ -11,7 +12,6 @@ export class SearchBox extends React.Component {
 
     this.state = {
       inputValue: '',
-      readyToSearch: false,
     };
   }
 
@@ -22,16 +22,15 @@ export class SearchBox extends React.Component {
     this.setState({
       inputValue: val,
     });
-    if (val && val.length == 0) {
-      this.setState({readyToSearch: false})
-    }
   }
 
   // using public class fields syntax for this handler, to ensure proper binding of `this`
   getSearchResults = () => {
     console.log(`searchBox: getSearchResults (${this.state.inputValue})`)
-    this.setState({readyToSearch: true})
-    setTimeout(() => { this.setState({readyToSearch: false})}, 1000)
+    console.log(`this.props.location = ${this.props.location}`)
+    //window.location = "/headerSearch?q=" + this.state.inputValue
+    let url = "/headerSearch?q=" + this.state.inputValue
+    fetch(url).then(
   }
 
   render() {
@@ -46,9 +45,6 @@ export class SearchBox extends React.Component {
         <span onClick={this.getSearchResults}>
           <span className="searchIcon pull-right fa fa-search"></span>
         </span>
-        {this.state.readyToSearch && 
-          <SearchResults searchValue={this.state.inputValue}/>
-        }
       </div>
     )
   }

@@ -9,10 +9,10 @@ from google.appengine.ext.webapp import template
 from authhandler import AuthHandler
 from models.point import Point
 
-class Search(AuthHandler):
+class SearchFromHeader(AuthHandler):
     @ndb.toplevel
-    def post(self):
-        searchString = self.query_string('q')
+    def get(self):
+        searchString = self.request.get('q')
         searchResultsFuture = Point.search(
             user=self.current_user, 
             searchTerms=searchString
@@ -33,4 +33,3 @@ class Search(AuthHandler):
                        'result':result
                        }
         self.response.out.write(json.dumps(json_values))
-        

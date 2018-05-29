@@ -1,7 +1,7 @@
 Hi {{user.name}},<br>
 Your arguments have stimulated activity:<br>
 
-<!-- other ideas, could be fun to randomize this 
+<!-- other ideas, could be fun to randomize this
 There's been activity in your arguments you've shown interest in:<br>
 People are contributing to your arguments:<br>
 Your arguments are on fire, (in a good way):<br>
@@ -11,21 +11,21 @@ The community has been jumping into your arguments:<br>
 
 <br>
 {% for notification in user.notifications %}
-    
+
         <div>
-        <!-- ReasonCode 1 = agree, ReasonCode 2 = ribbon --> 
+        <!-- ReasonCode 1 = agree, ReasonCode 2 = ribbon -->
         {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} Someone {% endif %} 
-            {{notification.notificationReasonText}}           
-            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
-            (a claim you {{notification.followReason}})            
+            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} Someone {% endif %}
+            {{notification.notificationReasonText}}
+            <a href="http://www.whysaurus.com/claim/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
+            (a claim you {{notification.followReason}})
         {% else %}
-            {% if notification.additionalUserCount > 0 %} 
+            {% if notification.additionalUserCount > 0 %}
                 {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
             {% else %}
-                {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
-            {% endif %}           
-            <a href="http://www.whysaurus.com/point/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
+                {{notification.sourceUserFull.name}} {{notification.notificationReasonText}}
+            {% endif %}
+            <a href="http://www.whysaurus.com/claim/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
             <span style="font-weight:400;	font-size:0.75em;	color:#5d5d5d;	line-height:120%;">
               a claim you {{notification.followReason}}.
             </span>

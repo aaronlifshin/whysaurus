@@ -1,32 +1,32 @@
 <li>
-    <a href="/point/{{notification.referencePoint.url}}" class="notificationMenuItem row-fluid Submenu_text_main {%if notification.cleared %}notificationCleared{% endif %}" 
-    data-refpoint="/point/{{notification.referencePoint.url}}"
+    <a href="/claim/{{notification.referencePoint.url}}" class="notificationMenuItem row-fluid Submenu_text_main {%if notification.cleared %}notificationCleared{% endif %}"
+    data-refpoint="/claim/{{notification.referencePoint.url}}"
     data-pointurl="{{notification.referencePoint.url}}"
     data-reason="{{notification.notificationReasonCode}}">
         <div class="notificationLeft">
             {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-                <img class="notificationAvatar" src="/static/img/icon_triceratops_black_47px.png"/>            
-            {% else %}            
+                <img class="notificationAvatar" src="/static/img/icon_triceratops_black_47px.png"/>
+            {% else %}
                 {% if notification.sourceUserFull.avatar_url %}
                     <img class="notificationAvatar" src="{{notification.sourceUserFull.avatar_url}}"/>
-                {% else %}            
-                    <img class="notificationAvatar" src="/static/img/icon_triceratops_black_47px.png"/>                               
-                {% endif %}                
+                {% else %}
+                    <img class="notificationAvatar" src="/static/img/icon_triceratops_black_47px.png"/>
+                {% endif %}
             {% endif %}
-            
+
         </div>
         <div class="notificationText">
           <div>
           {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-              {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %} 
+              {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %}
               {{notification.notificationReasonText}} a claim you {{notification.followReason}}:
               <em>{{notification.referencePoint.title}}</em>
           {% else %}
-              {% if notification.additionalUserCount > 0 %} 
+              {% if notification.additionalUserCount > 0 %}
                   {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
               {% else %}
-                  {{notification.sourceUserFull.name}} {{notification.notificationReasonText}} 
-              {% endif %} 
+                  {{notification.sourceUserFull.name}} {{notification.notificationReasonText}}
+              {% endif %}
               a claim you {{notification.followReason}}:
             <em>{{notification.referencePoint.title}}</em>
           {% endif %}
@@ -34,6 +34,6 @@
           <div class="Submenu_SmallText notificationTimeStamp">
               {{notification.timeText}}
           </div>
-        </div>                                   
+        </div>
     </a>
 </li>

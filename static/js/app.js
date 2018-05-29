@@ -16,7 +16,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-const homeURL = "/home"
+const homeURL = "/"
 
 class PointPage extends React.Component {
 
@@ -40,8 +40,8 @@ class App extends React.Component {
   render() {
     return (
         <Switch>
-        <Route exact path="/pointCard/:url" component={PointPage} />
         <Route exact path={homeURL} component={HomePage} />
+        <Route exact path="/claim/:url" component={PointPage} />
         </Switch>
     )
   }

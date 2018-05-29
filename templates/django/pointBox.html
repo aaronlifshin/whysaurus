@@ -1,11 +1,11 @@
 <div class="pointCard toggleChildVisOnHover {% if point.belowRelevanceThreshold %} belowThreshold{% endif %}" data-pointurl='{{point.url}}'>
 
-    <div class="pointCardChild {% if point.numSupportingPlusCounter > 2 %}pointCardDrawn{% else %}pointCardHidden{% endif %} 
+    <div class="pointCardChild {% if point.numSupportingPlusCounter > 2 %}pointCardDrawn{% else %}pointCardHidden{% endif %}
                                {% if point.linksRatio <= 75 %}pointCardRed{% else %}pointCardGrey{% endif %}">
-        <div class="pointCardChild {% if point.numSupportingPlusCounter > 1 %}pointCardDrawn{% else %}pointCardHidden{% endif %} 
-                                   {% if point.linksRatio <= 50 %}pointCardRed{% else %}pointCardGrey{% endif %}">                        
-            <div class="pointCardChild {% if point.numSupportingPlusCounter > 0 %}pointCardDrawn{% else %}pointCardHidden{% endif %} 
-                                       {% if point.linksRatio <= 20 %}pointCardRed{% else %}pointCardGrey{% endif %}">             
+        <div class="pointCardChild {% if point.numSupportingPlusCounter > 1 %}pointCardDrawn{% else %}pointCardHidden{% endif %}
+                                   {% if point.linksRatio <= 50 %}pointCardRed{% else %}pointCardGrey{% endif %}">
+            <div class="pointCardChild {% if point.numSupportingPlusCounter > 0 %}pointCardDrawn{% else %}pointCardHidden{% endif %}
+                                       {% if point.linksRatio <= 20 %}pointCardRed{% else %}pointCardGrey{% endif %}">
                 <div class="pointCardTop pointCardChild pointCardDrawn pointCardGrey">
    <div class="row-fluid pointTitleContainer" data-pointurl='{{point.url}}'>
        <div class="span{% if point.imageURL and point.imageURL.strip %}10{% else %}12{% endif %} {% if point.imageURL and point.imageURL.strip %}responsivePointBoxTitleWithImage{% endif %}">
@@ -13,7 +13,7 @@
             <!-- <a target="_blank" href="../user/{{point.authorURL}}">{{point.creatorOrAuthorName}}</a> -->
 			{% if point.creatorURL %}
 				By <a target="_blank" href="../user/{{point.creatorURL}}">{{point.creatorName}}</a>
-			{% else %} 
+			{% else %}
 				Most recent contributor: <a target="_blank" href="../user/{{point.authorURL}}">{{point.authorName}}</a>
 			{% endif %}
             {% if point.numUsersContributed > 0 %}
@@ -22,7 +22,7 @@
 			</div>
 
 		  <div class="pointTitle" data-pointurl='{{point.url}}'>
-              <a href="/point/{{ point.url }}" style="text-decoration:none">                  
+              <a href="/claim/{{ point.url }}" style="text-decoration:none">
                   <span>{{ point.title|escape }}</span>
 			  </a>
               <!--<span class="ux2ScoreInLine {% if point.voteTotal == 0 %}hidden{% endif %}">-->
@@ -47,35 +47,35 @@
                 </span>
                </span>
           </div>
-       </div>     
-    {% if point.imageURL and point.imageURL.strip %}                        
+       </div>
+    {% if point.imageURL and point.imageURL.strip %}
       <div class="span2 responsivePointBoxImage">
             <img class="listDisplay" src="{{ point.summaryBigImage }}" />
       </div>
-    {% endif %}                      
+    {% endif %}
    </div>
                     <div class="pointBoxBelowTitle">
-                        {% if point.getSources > 0 %}                    
+                        {% if point.getSources > 0 %}
                             <div class="pointBoxSourcesArea">
                                 {% for source in point.getSources %}
-                                <div name="mainPointSource" class="mainPointSourceEntry">                     
-                                    <img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a data-sourceKey={{source.key.urlsafe}}  href="{{source.url}}" target="_blank">{{source.name}}</a> 
-                                </div>                   
+                                <div name="mainPointSource" class="mainPointSourceEntry">
+                                    <img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/><a data-sourceKey={{source.key.urlsafe}}  href="{{source.url}}" target="_blank">{{source.name}}</a>
+                                </div>
                                 {% endfor %}
-                            </div>                                                        
+                            </div>
                             <!--
                             <div class="row-fluid sourceLine">
                                 <span class="stat showStatOnHover">
                                     <img class="iconSourcesSmall" src="/static/img/sourcesIconSmall_grey.png"/>{{ point.sources|length }}
                                 </span>
                             </div>
-                            -->                                                                       
+                            -->
                         {% endif %}
-                        <div class="pointBoxStatLine row-fluid" name="pointBoxActionLine">	
+                        <div class="pointBoxStatLine row-fluid" name="pointBoxActionLine">
                         <span class="seeEvidenceContainer stat">
                             {% if point.numSupporting > 0 or point.numCounter > 0 or point.getSources > 0 %}
-                                <span><a class="pointBoxActions seeEvidence" href="/point/{{ point.url }}">See Evidence</a></span>
-  
+                                <span><a class="pointBoxActions seeEvidence" href="/claim/{{ point.url }}">See Evidence</a></span>
+
                                 <!-- arrow icons
 				{% if point.numSupporting > 0 %}
 					<img class="arrowIcon" src="/static/img/arrowBent_small_black.png"/>
@@ -83,9 +83,9 @@
 				{% if point.numCounter > 0 %}
 					<img class="arrowIcon" src="/static/img/arrowBent_small_red.png"/>
 				{% endif %}
-                                -->                                                
-			{% else %} 
-                    <span ><a class="pointBoxActions needsEvidence" href="/point/{{ point.url }}">Add Evidence</a></span>                                
+                                -->
+			{% else %}
+                    <span ><a class="pointBoxActions needsEvidence" href="/claim/{{ point.url }}">Add Evidence</a></span>
 			{% endif %}
         </span>
                         <span class="">
@@ -100,23 +100,23 @@
 
 
 
-        <!-- arrow icons old	
+        <!-- arrow icons old
         <span class="stat showStatOnHover">
             <img class="arrowIcon" src="/static/img/arrowBent_small_black.png"/><span>{{ point.numSupporting }}</span><span class="hiddenStatTillRevealed"> Supporting Point{% if point.numSupporting != 1 %}s{% endif %}</span>
-        </span>		
-              
+        </span>
+
         <span class="stat showStatOnHover">
             <img class="arrowIcon" src="/static/img/arrowBent_small_red.png"/><span>{{ point.numCounter }}</span><span class="hiddenStatTillRevealed"> Counter Point{% if point.numCounter != 1 %}s{% endif %}</span>
         </span>
-		--> 
-        
+		-->
+
 		<!-- Old: handshake icon with score
         <span name="voteTotalArea" class="stat showStatOnHover {% if point.voteTotal == 0 %}hiddenForNow{% endif %} {% if point.voteTotal < 0 %}redScore{% endif %}  ">
             <img class="iconAgreesSmall" src="/static/img/agreesIconSmall_{% if point.voteTotal >= 0 %}grey{% else %}red{% endif %}.png"/><span name="voteTotal" data-myvote="{{point.vote}}">{{ point.voteTotal }}<span class="hiddenStatTillRevealed" name="netagreestext"> Net Agrees</span></span>
         </span>
 		-->
-		
-      </div>           
+
+      </div>
                     </div>
                 </div>
             </div>

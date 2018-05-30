@@ -498,19 +498,19 @@ class MakeFeatured(graphene.Mutation):
 class AcceptTerms(graphene.Mutation):
     class Arguments:
         userUrl = graphene.String(required=True)
-        
+
     success = graphene.Boolean()
-    
+
     def mutate(self, info, userUrl):
         user = info.context.current_user
         if not user:
             raise Exception("User Not Logged In")
-        
+
         if user.url != userUrl:
             raise Exception("Invalid User Url: Mismatches Current User")
-        
+
         logging.info('Accepting Terms For User: %s' % userUrl)
-        
+
         user.setTermsAccepted()
 
         return AcceptTerms(success=True)
@@ -563,6 +563,12 @@ class HomePage(graphene.ObjectType):
     def resolve_editorsPicks(self, info, **args):
         return PointRootModel.getEditorsPicks(info.context.current_user)
 
+class Version(graphene.ObjectType):
+    point = graphene.Field(Point)
+    supportingPoints = graphene.List(Point)
+    counterPoints = graphene.List(Point)
+    sources = graphene.List(Source)
+
 class Comments(graphene.ObjectType):
     point_root = graphene.Field(PointRoot)
     show_archived = graphene.Boolean()
@@ -590,6 +596,15 @@ class Query(graphene.ObjectType):
     def resolve_point(self, info, **args):
         point, pointRoot = PointModel.getCurrentByUrl(args['url'])
         return point
+
+    history = graphene.List(Version, url=graphene.String(required=True))
+    def resolve_history(self, info, url):
+        versions = PointModel.getFullHistory(url)
+        if (versions):
+            return [Version(point=version['point'], supportingPoints=version['supportingPoints'], counterPoints=version['counterPoints'], sources=version['sources'])
+                    for version in versions]
+        else:
+            return []
 
     comments = graphene.Field(Comments, pointID=graphene.String(required=True), showArchived=graphene.Boolean())
     def resolve_comments(self, info, pointID, showArchived=False):

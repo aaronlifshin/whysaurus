@@ -420,10 +420,11 @@ class PointCardComponent extends React.Component {
   }
   handleClickEditComments(e) {
     e.stopPropagation();
-    if (this.state.editingComments)
-      this.setState({editingComments: false})
+    const expansion = this.props.expansion
+    if (expansion.isExpanded(this.point, this.commentPrefix()))
+      expansion.collapse(this.point, this.commentPrefix())
     else
-      this.setState({editingComments: true})
+      expansion.expand(this.point, this.commentPrefix())
   }
 
   handleCancelEditClaimText(e) {
@@ -687,6 +688,8 @@ class PointCardComponent extends React.Component {
 
   childPrefix = () => this.prefix() + this.props.point.url
 
+  commentPrefix = () => 'comments-'
+
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport evidenceBlockFirstColAlignment">
@@ -939,7 +942,7 @@ class PointCardComponent extends React.Component {
                                </div>
                               {this.image()}
                             </div>
-                            { this.state.editingComments && <Comments point={point} onCancel={this.handleCloseComments}/> }
+        { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} onCancel={this.handleCloseComments}/> }
                             </div>
                           </div>
                         </div>

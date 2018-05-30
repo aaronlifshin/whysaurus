@@ -13,6 +13,7 @@ class SearchFromHeader(AuthHandler):
     @ndb.toplevel
     def get(self):
         searchString = self.request.get('q')
+        # print 'searchString = {0}'.format(searchString)
         searchResultsFuture = Point.search(
             user=self.current_user, 
             searchTerms=searchString

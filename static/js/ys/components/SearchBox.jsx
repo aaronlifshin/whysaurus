@@ -6,13 +6,15 @@ import { ApolloClient } from 'apollo-client'
 import { SearchResults } from './SearchResults'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
+const FETCH_TIMEOUT = 4000   // don't set this to less than 4 sec.
+
 export class SearchBox extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
       inputValue: '',
-    };
+    }
   }
 
   componentDidMount() {
@@ -21,16 +23,12 @@ export class SearchBox extends React.Component {
   updateInputValue(val) {
     this.setState({
       inputValue: val,
-    });
+    })
   }
-
   // using public class fields syntax for this handler, to ensure proper binding of `this`
   getSearchResults = () => {
     console.log(`searchBox: getSearchResults (${this.state.inputValue})`)
-    console.log(`this.props.location = ${this.props.location}`)
-    //window.location = "/headerSearch?q=" + this.state.inputValue
-    let url = "/headerSearch?q=" + this.state.inputValue
-    fetch(url).then(
+    window.location = "/headerSearch?q=" + this.state.inputValue
   }
 
   render() {
@@ -40,7 +38,7 @@ export class SearchBox extends React.Component {
       <div>
         <input id="searchBoxReact" type="text" name="searchTerms" placeholder="Find Argument..." results="0"
                onChange={(event) => this.updateInputValue(event.target.value)}
-               onKeyUp={ (event) => {if (event.keyCode == 13) this.getSearchResults();} }
+               onKeyUp={ (event) => {if (event.keyCode == 13) this.getSearchResults()} }
         />
         <span onClick={this.getSearchResults}>
           <span className="searchIcon pull-right fa fa-search"></span>

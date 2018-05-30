@@ -8,10 +8,18 @@ class HeaderSearch extends React.Component {
     render: PropTypes.func.isRequired
   }
 
+  renderMatchingPoints = () => {
+    
+  }
+
   render(){
     const {search, loading} = this.props.data || {}
     return (
-      this.props.render({results: search, searching: loading})
+      //this.props.render({results: search, searching: loading})
+      // but SearchBox can't send us a render prop, b/c it's loading this component via redirect!
+      // so, I need to render <SearchResults> and pass it a render prop as well as search and loading:
+      <SearchResults results={search} searching={loading} 
+                     render={({suggestions, searching}) => this.renderMatchingPoints(suggestions, searching)}/>
     )
   }
 }

@@ -32,7 +32,7 @@ export class SearchResults extends React.Component {
         <div className="evidenceBlockBoth evidenceBlockFirstColAlignment">
           <div>Search results for '{this.props.searchValue}':</div>
           <div className="evidenceList">
-            <PointList points={results}/>
+            <PointList points={results.html}/>
           </div>
         </div>
       )
@@ -40,9 +40,7 @@ export class SearchResults extends React.Component {
   }
 
   render() {
-    return (
-      <HeaderSearch query={this.props.searchValue} render={this.points}/>
-    )
+    return this.points
   }
 }
 

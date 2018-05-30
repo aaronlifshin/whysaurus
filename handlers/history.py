@@ -11,7 +11,7 @@ from models.point import Point
 from models.redirecturl import RedirectURL
 
 
-class Home(AuthHandler):
+class History(AuthHandler):
     # either url or rootKey needs to be passed in
     @ndb.toplevel
     def createTemplateValues(self, full=True, rootKey=None):
@@ -31,9 +31,9 @@ class Home(AuthHandler):
         self.response.headers["Pragma"]="no-cache"
         self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
         self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"
-        html = self.template_render('message.html' if 'message' in template_values else 'history.html', template_values)
+        html = self.template_render('message.html' if 'message' in template_values else 'home.html', template_values)
         self.response.out.write(html)
 
-    def get(self):
+    def get(self, pointURL):
         template_values = self.createTemplateValues()
         self.outputTemplateValues(template_values)

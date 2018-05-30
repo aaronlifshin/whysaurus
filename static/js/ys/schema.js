@@ -299,6 +299,38 @@ query Comments($pointID: String!, $showArchived: Boolean) {
 }
 `
 
+export const History = gql`
+query History($url: String!) {
+  history(url: $url) {
+    point{
+      version
+      url
+      title
+      authorName
+      authorURL
+      dateEdited
+      imageURL
+      imageDescription
+    }
+    supportingPoints {
+      url
+      title
+      version
+    }
+    counterPoints {
+      url
+      title
+      version
+    }
+    sources {
+      id
+      url
+      name
+    }
+  }
+}
+`
+
 export const NewComment = gql`
 ${commentFieldsFragment}
 mutation NewComment($pointID: String!, $text: String!, $parentCommentID: String) {

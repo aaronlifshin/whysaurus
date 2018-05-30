@@ -19,8 +19,9 @@ from handlers import MainPage, About, Help, Contact, Manifesto, PrivacyPolicy, L
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, BatchJobs, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
-    NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage, PointCard
-from handlers.home import Home
+    NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage, PointCard, \
+    Home, History
+
 from handlers.whysaurusgraphql import WhysaurusGraphQL
 import schema
 
@@ -53,6 +54,7 @@ routes = [
     Route('/unlinkPoint', UnlinkPoint),
     Route('/point/<pointURL>', ViewPoint),
     Route('/claim/<pointURL>', PointCard),
+    Route('/history/<pointURL>', History),
     Route('/oldhome', MainPage),
     Route('/api/point/<pointURL>',
           handler='WhySaurus.PointCard:apiPointGET',

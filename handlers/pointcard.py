@@ -12,10 +12,9 @@ from models.redirecturl import RedirectURL
 
 
 class PointCard(AuthHandler):
-    # either url or rootKey needs to be passed in
+
     @ndb.toplevel
-    def createTemplateValues(self, url=None, full=True, rootKey=None):
-        newURL = None
+    def createTemplateValues(self, url):
         templateValues = {}
         point = None
         pointRoot = None

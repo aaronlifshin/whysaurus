@@ -41,9 +41,6 @@ class PointCard(AuthHandler):
                'currentAreaDisplayName': self.session.get('currentAreaDisplayName')
             }
         else:   # we have a point!
-            voteValue = 0
-            ribbonValue = False
-            addedToRecentlyViewed = False
             user = self.current_user
 
             if user:

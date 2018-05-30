@@ -688,7 +688,7 @@ class PointCardComponent extends React.Component {
 
   childPrefix = () => this.prefix() + this.props.point.url
 
-  commentPrefix = () => 'comments-'
+  commentPrefix = () => this.prefix() + 'comments-'
 
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {

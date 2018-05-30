@@ -1,9 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
+import * as schema from '../schema'
 import { graphql, compose, withApollo } from 'react-apollo'
 import gql from 'graphql-tag'
 import { ApolloClient } from 'apollo-client'
-import HeaderSearch from './HeaderSearch'
 import { PointList } from './PointList'
 
 export class SearchResults extends React.Component {
@@ -15,7 +16,6 @@ export class SearchResults extends React.Component {
     console.log("searchResults: componentDidMount()")
   }
 
-  //this is the render-props rendering function that'll get called from HeaderSearch's render()
   points = ({results, searching}) => {
     if (searching) {
       return <div/>
@@ -40,7 +40,10 @@ export class SearchResults extends React.Component {
   }
 
   render() {
-    return this.points
+    return <div>this.props.match.params.q = {this.props.match.params.q}</div>     //this.points
   }
 }
 
+// export default graphql(schema.FullPointSearch, {
+//   skip: (ownProps) => !ownProps.query || (ownProps.query == '')
+// })(SearchResults)

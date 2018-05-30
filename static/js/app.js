@@ -61,7 +61,6 @@ class App extends React.Component {
         <Route exact path={homeURL} component={HomePage} />
         <Route exact path="/claim/:url" component={PointPage} />
         <Route exact path="/history/:url" component={HistoryPage} />
-        <Route exact path="/headerSearch/:q" component={SearchResults} />
       </Switch>
     )
   }
@@ -71,7 +70,7 @@ ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
       <ExpandedIndexProvider>
-      <App/>
+        <App/>
       </ExpandedIndexProvider>
     </ApolloProvider>
   </BrowserRouter>,

@@ -22,15 +22,7 @@ class SearchFromHeader(AuthHandler):
         if searchResultsFuture:
             searchResults = searchResultsFuture.get_result()
                         
-        result = len(searchResults) if searchResults else 0
-        template_values = {
-            'searchResults': searchResults,
-            'searchString': searchString,
-        }
-        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'        
-        html = self.template_render('searchResults.html', template_values)
-        json_values = {'html':html,
-                       'searchString': searchString,
-                       'result':result
-                       }
-        self.response.out.write(json.dumps(json_values))
+        print 'searchResults = {0}'.format(searchResults)
+        self.response.headers["Content-Type"] = 'text/html; charset=utf-8'
+        # self.response.out.write("<div>SearchFromHeader.py</div>")
+        # raise ndb.Return(searchResults)

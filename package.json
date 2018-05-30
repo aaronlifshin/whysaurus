@@ -38,7 +38,7 @@
     "grunt-shell": "0.3.x",
     "immutable": "^4.0.0-rc.9",
     "jquery.tabbable": "^1.0.1",
-    "npm": "^6.0.1",
+    "npm": "^6.1.0",
     "pretty-immutable": "^1.0.1",
     "react": "^16.4.0",
     "react-animate-on-change": "^1.0.1",

@@ -8,9 +8,7 @@ class HeaderSearch extends React.Component {
     render: PropTypes.func.isRequired
   }
 
-  renderMatchingPoints = () => {
-    
-  }
+  // THIS COMPONENT IS NOT BEING USED AT ALL - DELETE IT!
 
   render(){
     const {search, loading} = this.props.data || {}

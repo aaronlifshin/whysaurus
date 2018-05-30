@@ -4,9 +4,7 @@ import { ApolloProvider, graphql, compose, withApollo } from 'react-apollo'
 import gql from 'graphql-tag'
 import { ApolloClient } from 'apollo-client'
 import { SearchResults } from './SearchResults'
-import { Switch, Route, Redirect } from 'react-router-dom'
-
-const FETCH_TIMEOUT = 4000   // don't set this to less than 4 sec.
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 export class SearchBox extends React.Component {
   constructor(props) {
@@ -43,6 +41,9 @@ export class SearchBox extends React.Component {
         <span onClick={this.getSearchResults}>
           <span className="searchIcon pull-right fa fa-search"></span>
         </span>
+        <Switch>
+          <Route exact path="/headerSearch/:q" component={SearchResults} />
+        </Switch>
       </div>
     )
   }

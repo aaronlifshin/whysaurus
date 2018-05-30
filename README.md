@@ -18,7 +18,8 @@ Basic Setup Instructions:
 - Windows: try [WinLESS](http://www.winless.org), and only compile the files listed in bin/compilelessc.sh, and set their output (by right clicking on the files) to /static/css.
 5. Run `bin/compilelessc.sh` to compile CSS resources
    For Linux just run `npm install -g less`
-6. `bin/run.sh` or run in the Google App Engine Launcher and set to port 8081
+6. Set the data storage location for local development
+7. `bin/run.sh` or run in the Google App Engine Launcher and set to port 8081
 
 Detailed Setup Instructions:
 
@@ -58,3 +59,10 @@ Detailed Setup Instructions:
 * Change Admin to true
 * Scroll down to click save
 * Click Flush Memcache
+
+7. Data storage for local development environment
+* If you'd like to prevent your local database and search indexes from being truncated every few days, add the following option to the dev_appserver.py command in bin/run.sh:
+  * --storage_path=~/<directory_in_your_user_tree>
+* If at some point you need to clear your local database and/or search indexes, start dev_appserver.py with one or both of these options:
+  * --clear_datastore True
+  * --clear_search_indexes True

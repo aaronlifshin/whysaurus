@@ -22,6 +22,8 @@ class PointCard(AuthHandler):
 
         if url:
             point, pointRoot = yield Point.findCurrent_async(url)
+            if point.url != url:
+                self.redirect(str(point.url))
         else:
             templateValues = {
                'user': self.current_user,

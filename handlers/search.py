@@ -12,7 +12,7 @@ from models.point import Point
 class Search(AuthHandler):
     @ndb.toplevel
     def post(self):
-        searchString = self.query_string('q')
+        searchString = self.request.get('searchTerms')
         searchResultsFuture = Point.search(
             user=self.current_user, 
             searchTerms=searchString

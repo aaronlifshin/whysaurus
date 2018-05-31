@@ -86,7 +86,7 @@ class ShareIconArea extends React.Component {
         method: 'feed',
         link: "https://www.whysaurus.com/claim/" + url,
         name: pointTitle,
-        description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?'
+        description: 'Argument on Whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add?'
     };
     var imageUrl = this.props.point.imageURL || null;
     if (!imageUrl) {
@@ -108,7 +108,7 @@ class ShareIconArea extends React.Component {
     if (len > 115) {
         text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/claim/" + url;
     } else {
-        text = pointTitle + " https://www.whysaurus.com/claim/" + url;
+        text = pointTitle + " — here's why: https://www.whysaurus.com/claim/" + url;
     }
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');

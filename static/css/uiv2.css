@@ -399,6 +399,35 @@ body {
   background-color: #cff1fc;
 }
 */
+.policyHeader {
+  margin-left: 44px;
+}
+.policyContent h4 {
+  margin-bottom: 12px;
+}
+.policySection {
+  display: block;
+  width: 100%;
+}
+.policySectionNumber {
+  display: inline-block;
+  width: 30px;
+  margin-right: 16px;
+  vertical-align: top;
+}
+h4 .policySectionNumber {
+  margin-right: 16px;
+}
+li .policySectionNumber {
+  margin-right: 6px;
+}
+.policySectionCopy {
+  display: inline-block;
+  width: 90%;
+}
+.policyBulletList {
+  margin-left: 54px;
+}
 .pointPageContainer {
   margin-top: 32px;
   margin-bottom: 60px;
@@ -2219,5 +2248,8 @@ body {
   }
   .control-next {
     margin-right: 10%;
+  }
+  .policySectionCopy {
+    width: 85%;
   }
 }

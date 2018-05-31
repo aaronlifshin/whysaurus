@@ -84,7 +84,7 @@ class ShareIconArea extends React.Component {
     var dialogParams = {
         app_id: 144595249045851,
         method: 'feed',
-        link: "https://www.whysaurus.com/point/" + url,
+        link: "https://www.whysaurus.com/claim/" + url,
         name: pointTitle,
         description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?'
     };
@@ -106,9 +106,9 @@ class ShareIconArea extends React.Component {
     var len = pointTitle.length;
     var text = "";
     if (len > 115) {
-        text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/point/" + url;
+        text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/claim/" + url;
     } else {
-        text = pointTitle + " https://www.whysaurus.com/point/" + url;
+        text = pointTitle + " https://www.whysaurus.com/claim/" + url;
     }
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');
@@ -116,7 +116,7 @@ class ShareIconArea extends React.Component {
 
   render(){
     return <span className="shareIconArea">
-       <a href={"https://www.whysaurus.com/point/" + this.props.point.url + "/"}>
+       <a href={"https://www.whysaurus.com/claim/" + this.props.point.url + "/"}>
         <div className="claimShareIcon fas fa-link"></div>
        </a>
       <a onClick={this.postOnFacebook}>
@@ -125,7 +125,7 @@ class ShareIconArea extends React.Component {
       <a onClick={this.sharePointOnTwitter}>
         <div className="claimShareIcon fab fa-twitter"></div>
       </a>
-      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Hi,%0D%0A%0D%0ACheck out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/point/" + this.props.point.url + ""}>
+      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Hi,%0D%0A%0D%0ACheck out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/claim/" + this.props.point.url + ""}>
         <div className="claimShareIcon far fa-envelope"></div>
       </a>
     </span>

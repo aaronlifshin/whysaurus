@@ -732,10 +732,28 @@ li .policySectionNumber {
   top: -1 * ((2 * @stackCardOffset) + (2 * @cardBorderWidth)); // nudge up to account for the empty space taken up by invisible stack cards
 }
 
-
 .evidenceBlockFirstColAlignment {
   left: -9px !important;
 }
+
+@keyframes latestQuickCreateReveal {
+   0% { max-height: 20px; opacity: 0;  }
+   40% { opacity: 0; ; } //  transform: scaleY(.5)
+   85% {  max-height: 350px; } //  transform: scaleY(1
+   100% { max-height: 350px; opacity: 1; }
+}
+.latestQuickCreate {
+  transform-origin: top left;
+  animation-name: latestQuickCreateReveal;
+  animation-duration: (@evidenceBlockRevealDuration * .8);
+  animation-timing-function: ease;
+}
+
+
+
+
+
+
 
 .heading {
   color: @darkerGreyColor;

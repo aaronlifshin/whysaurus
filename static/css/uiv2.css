@@ -517,6 +517,28 @@ li .policySectionNumber {
 .evidenceBlockFirstColAlignment {
   left: -9px !important;
 }
+@keyframes latestQuickCreateReveal {
+  0% {
+    max-height: 20px;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  85% {
+    max-height: 350px;
+  }
+  100% {
+    max-height: 350px;
+    opacity: 1;
+  }
+}
+.latestQuickCreate {
+  transform-origin: top left;
+  animation-name: latestQuickCreateReveal;
+  animation-duration: 0.288s;
+  animation-timing-function: ease;
+}
 .heading {
   color: #5d5d5d;
   text-transform: uppercase;

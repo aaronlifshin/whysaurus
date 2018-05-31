@@ -18,7 +18,7 @@ class ExpandedIndexProviderComponent extends React.Component {
     // pass to the provider value - see the caveats here:
     // https://reactjs.org/docs/context.html
     this.state = {
-      index: {},
+      index: this.urlExpandedIndex(),
       expand: this.expand,
       collapse: this.collapse,
       isExpanded: this.isExpanded

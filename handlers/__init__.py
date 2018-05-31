@@ -17,6 +17,8 @@ __all__ = [
 	'AjaxSearch',
 	'PointHistory',
 	'PointCard',
+	'Home',
+	'History',
 	'GetPointsList',
 	'AuthHandler',
 	'SetEditorPickSort',
@@ -71,16 +73,5 @@ from notificationHandler import NotificationHandler
 from chat import Chat
 from eventRecorder import EventRecorder
 from createPrivateAreaPage import CreatePrivateAreaPage
-
-
-
-
-
-
-
-
-
-
-
-
-
+from home import Home
+from history import History

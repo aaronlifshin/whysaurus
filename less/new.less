@@ -396,13 +396,13 @@ a:visited {
     background:#b7e0fe;
 }
 
-#searchArea{
+#searchArea, #searchAreaReact {
     height: 48px;
     line-height:48px;
     position:relative;
 }
 
-#searchBox {
+#searchBox, #searchBoxReact {
     position:relative;
     top:3px;
     width:100%;
@@ -421,7 +421,7 @@ a:visited {
     font-size: 16px;
 }
 
-#searchArea .searchIcon {
+#searchArea .searchIcon, #searchAreaReact .searchIcon {
     position: relative;
     top: -32px;
     right: -2px;
@@ -528,28 +528,33 @@ a:visited {
     padding-left:0px;
 }
 
-#newPointTitle::-webkit-input-placeholder, #searchBox::-webkit-input-placeholder {
+#searchArea .searchIcon:hover, #searchAreaReact .searchIcon:hover  {
+    background-image: url("/static/img/icon_magnifyingGlass.png");
+    background-position: 0 -16px;
+}
+
+#newPointTitle::-webkit-input-placeholder, #searchBox::-webkit-input-placeholder, #searchBoxReact::-webkit-input-placeholder {
     font-size: 0.9375em;
     color:#6D6E70;
     font-style: italic;
     padding-top: 0.18em;
 }
 
-#newPointTitle::-webkit-input-placeholder, #searchBox:-moz-placeholder { /* Firefox 18- */
+#newPointTitle::-webkit-input-placeholder, #searchBox:-moz-placeholder, #searchBoxReact:-moz-placeholder { /* Firefox 18- */
     font-size: 0.9375em;
     color:#6D6E70;
     font-style: italic;
     padding-top: 0.18em;
 }
 
-#newPointTitle::-webkit-input-placeholder, #searchBox::-moz-placeholder {  /* Firefox 19+ */
+#newPointTitle::-webkit-input-placeholder, #searchBox::-moz-placeholder, #searchBoxReact:-moz-placeholder {  /* Firefox 19+ */
     font-size: 0.9375em;
     color:#6D6E70;
     font-style: italic;
         padding-top: 0.18em;
 }
 
-#newPointTitle::-webkit-input-placeholder, #searchBox:-ms-input-placeholder {
+#newPointTitle::-webkit-input-placeholder, #searchBox:-ms-input-placeholder, #searchBoxReact:-ms-input-placeholder {
     font-size: 0.9375em;
     font:Georgia, Garamond, serif;
     color:#6D6E70;
@@ -584,11 +589,11 @@ a:visited {
 }
 
 .headerUserName {
-  font-family: @sansCondFontFamily;
-  color: black;
-  font-size: @fontSizeMediumCond;
-  font-weight: bold;
-  position:relative;
+    font-family: @sansCondFontFamily;
+    color: black;
+    font-size: @fontSizeMediumCond;
+    font-weight: bold;
+    position:relative;
 }
 
 .headerLinks {

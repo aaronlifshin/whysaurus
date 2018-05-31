@@ -14,6 +14,7 @@ __all__ = [
 	'Vote',
 	'TestPage',
 	'Search',
+	'SearchFromHeader',
 	'AjaxSearch',
 	'PointHistory',
 	'PointCard',
@@ -53,6 +54,7 @@ from vote import Vote
 from setribbon import SetRibbon
 from testpage import TestPage
 from search import Search
+from searchFromHeader import SearchFromHeader
 from ajaxsearch import AjaxSearch
 from pointhistory import PointHistory
 from pointcard import PointCard

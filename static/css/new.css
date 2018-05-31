@@ -29,6 +29,7 @@ h1 {
 h2 {
   font-size: 36.1152px;
   margin: 48px 0 0px 0;
+  -webkit-text-stroke: 0.5px;
 }
 h3 {
   font-size: 31.55328px;
@@ -36,6 +37,7 @@ h3 {
 h4 {
   font-size: 18px;
   margin: 28px 0 8px 0;
+  -webkit-text-stroke: 0.2px;
 }
 h5 {
   font-size: 12.54528px;
@@ -68,7 +70,7 @@ a:hover {
   border-radius: 2px;
 }
 .buttonUX2:focus:enabled {
-  outline: 2px solid #00adee;
+  outline: 2px solid #00ADEE;
 }
 .buttonUX2:hover:enabled {
   background-color: black;
@@ -78,7 +80,7 @@ a:hover {
   outline-style: none;
 }
 .buttonUX2Blue {
-  background-color: #00adee;
+  background-color: #00ADEE;
 }
 .buttonUX2Blue:focus:enabled {
   outline-color: #33c9ff;
@@ -87,7 +89,7 @@ a:hover {
   background-color: #33c9ff;
 }
 .buttonUX2Red {
-  background-color: #cc0008;
+  background-color: #CC0008;
 }
 .buttonUX2Blue:focus:enabled {
   outline-color: #f50000;
@@ -244,16 +246,19 @@ a:visited {
   font-family: "ff-meta-web-pro-condensed", sans-serif;
   font-weight: 700;
   font-size: 15.008px;
-  color: #6d6e70;
+  color: #6D6E70;
   background: none;
   background-color: #FFFFFF;
-  border: 1px solid #d7d7d7;
+  border: 1px solid #D7D7D7;
   border-radius: 2px;
   padding: 9px 15px 4px;
 }
 .borderButton:hover {
   background-color: #33c9ff;
   text-decoration: none;
+}
+#basics {
+  margin-top: 32px;
 }
 #helpHeading {
   margin-bottom: 16px;
@@ -265,7 +270,7 @@ a:visited {
    DROPDOWNS
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .dropdown-menu {
-  padding-top: 8px;
+  padding-top: 7px;
   padding-bottom: 8px;
 }
 .dropdown-menu > li > a,
@@ -274,7 +279,7 @@ a:visited {
   padding-top: 3px;
   padding-right: 20px;
   padding-bottom: 3px;
-  padding-left: 16px;
+  padding-left: 10px;
 }
 .dropdown-heading {
   margin-bottom: 2px;
@@ -283,7 +288,7 @@ a:visited {
   padding-right: 3px;
 }
 .dropdown-menu .divider {
-  border-bottom-color: #d7d7d7;
+  border-bottom-color: #D7D7D7;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    HEADER BAR STUFF(MOSTLY)
@@ -303,12 +308,14 @@ a:visited {
 .blueBackground {
   background: #b7e0fe;
 }
-#searchArea {
+#searchArea,
+#searchAreaReact {
   height: 48px;
   line-height: 48px;
   position: relative;
 }
-#searchBox {
+#searchBox,
+#searchBoxReact {
   position: relative;
   top: 3px;
   width: 100%;
@@ -326,12 +333,15 @@ a:visited {
   border-radius: 2px;
   font-size: 16px;
 }
-#searchArea .searchIcon {
+#searchArea .searchIcon,
+#searchAreaReact .searchIcon {
   position: relative;
   top: -32px;
   right: -2px;
   height: 16px;
   width: 25px;
+  background-image: url("/static/img/icon_magnifyingGlass.png");
+  background-repeat: no-repeat;
 }
 .newPointInputRowFieldArea {
   width: -moz-calc(100% - 165px);
@@ -405,15 +415,22 @@ a:visited {
   margin-right: auto;
   padding-left: 0px;
 }
+#searchArea .searchIcon:hover,
+#searchAreaReact .searchIcon:hover {
+  background-image: url("/static/img/icon_magnifyingGlass.png");
+  background-position: 0 -16px;
+}
 #newPointTitle::-webkit-input-placeholder,
-#searchBox::-webkit-input-placeholder {
+#searchBox::-webkit-input-placeholder,
+#searchBoxReact::-webkit-input-placeholder {
   font-size: 0.9375em;
   color: #6D6E70;
   font-style: italic;
   padding-top: 0.18em;
 }
 #newPointTitle::-webkit-input-placeholder,
-#searchBox:-moz-placeholder {
+#searchBox:-moz-placeholder,
+#searchBoxReact:-moz-placeholder {
   /* Firefox 18- */
   font-size: 0.9375em;
   color: #6D6E70;
@@ -421,7 +438,8 @@ a:visited {
   padding-top: 0.18em;
 }
 #newPointTitle::-webkit-input-placeholder,
-#searchBox::-moz-placeholder {
+#searchBox::-moz-placeholder,
+#searchBoxReact:-moz-placeholder {
   /* Firefox 19+ */
   font-size: 0.9375em;
   color: #6D6E70;
@@ -429,7 +447,8 @@ a:visited {
   padding-top: 0.18em;
 }
 #newPointTitle::-webkit-input-placeholder,
-#searchBox:-ms-input-placeholder {
+#searchBox:-ms-input-placeholder,
+#searchBoxReact:-ms-input-placeholder {
   font-size: 0.9375em;
   font: Georgia, Garamond, serif;
   color: #6D6E70;
@@ -579,30 +598,27 @@ a:visited {
   max-height: 600px;
   top: 53px;
   width: 360px;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-top: 4px;
 }
-.notification-menu li {
-  margin-left: 0;
-}
-.notificationLeft {
+.notificationMargin {
   width: 21px;
-  display: inline-block;
+  display: block;
   min-height: 30px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  vertical-align: top;
+  float: left;
 }
 .notificationText {
-  display: inline-block;
+  display: block;
   min-height: 30px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  margin-left: 6px;
+  float: left;
+  margin-left: 4px;
   padding-left: 3px;
-  width: 270px;
+  width: 285px;
   margin-top: -1px;
   white-space: normal;
 }
@@ -629,27 +645,14 @@ a:visited {
   font-size: 0.75em;
   color: #bdbdbd;
   line-height: 120%;
-  position: relative;
-  top: 3px;
-  margin-right: 16px;
-}
-li:hover .Submenu_SmallText {
-  color: #666666;
 }
 .notificationMenuItem,
 #notificationMenuHeader,
 #notificationMenuFooter {
   cursor: pointer;
-  padding: 4px;
-  padding-top: 8px !important;
+  padding: 4px 4px 4px 4px;
   border-bottom: 1px solid #d7d7d7;
   width: auto;
-  display: block;
-}
-#notificationMenuHeader,
-#notificationMenuFooter {
-  padding-left: 42px;
-  padding-bottom: 8px;
 }
 .notificationAvatar {
   float: right;
@@ -659,7 +662,6 @@ li:hover .Submenu_SmallText {
 #notificationMenuHeader:hover,
 #notificationMenuFooter:hover {
   background-color: #33c9ff;
-  color: black;
 }
 .notificationCleared {
   background-color: #F0F0F0;
@@ -672,6 +674,7 @@ li:hover .Submenu_SmallText {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #notificationsArea li {
   list-style: none;
+  border-bottom: 1px solid #B9BBBD;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END NOTIFICATION AREA IN PROFILE PAGE
@@ -770,7 +773,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .pointCard .supportColor {
   border-color: #bdbdbd;
-  background-color: #f0f0f0;
+  background-color: #F0F0F0;
   border-width: 1px;
   border-style: solid;
   /* put the border on the inside of the box, in order to not mess up the gauge sizing math */
@@ -787,7 +790,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   position: absolute;
   font-size: 12px;
   letter-spacing: 0.02em;
-  color: #6d6e70;
+  color: #6D6E70;
   font-family: "ff-meta-web-pro-condensed", sans-serif;
   font-weight: 700;
   text-transform: Uppercase;
@@ -815,7 +818,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   /* background-color: #f8f8f8; */
   border-style: solid;
   border-width: 1px;
-  border-color: #f0f0f0;
+  border-color: #F0F0F0;
   word-wrap: break-word;
   cursor: pointer;
   padding: 5px;
@@ -834,7 +837,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin-bottom: 8px;
 }
 .pointSmall .smallStat {
-  color: #6d6e70;
+  color: #6D6E70;
   /*font-weight: bold;*/
   font-family: "ff-meta-web-pro", sans-serif;
   font-size: 12px;
@@ -846,25 +849,25 @@ JSON error related to displaying comments. But when I don't use this class, the 
   background-color: #EBC821;
 }
 .red .score {
-  color: #cc0008;
+  color: #CC0008;
 }
 .red:hover .title {
-  background-color: #cc0008;
+  background-color: #CC0008;
 }
 .green .score {
-  color: #0de000;
+  color: #0DE000;
 }
 .green:hover .title {
-  background-color: #0de000;
+  background-color: #0DE000;
 }
 .title a {
   color: #000;
 }
 .greenScore {
-  color: #0de000;
+  color: #0DE000;
 }
 .redScore {
-  color: #cc0008 !important;
+  color: #CC0008 !important;
   font-size: 1.05em;
 }
 .yellowScore {
@@ -880,7 +883,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .boxedElement {
   border-style: solid;
   border-width: 1px;
-  border-color: #f0f0f0;
+  border-color: #F0F0F0;
   word-wrap: break-word;
   -webkit-box-shadow: -2px 2px 8px rgba(50, 50, 50, 0.05);
   -moz-box-shadow: -2px 2px 8px rgba(50, 50, 50, 0.05);
@@ -909,7 +912,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   text-align: center;
   padding-top: 13px;
   padding-bottom: 20px;
-  border-bottom-color: #d7d7d7;
+  border-bottom-color: #D7D7D7;
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
@@ -934,7 +937,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 #manifestoText {
   color: black;
   background-color: white;
-  border-bottom-color: #d7d7d7;
+  border-bottom-color: #D7D7D7;
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
@@ -965,7 +968,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin-left: 0;
   padding-bottom: 16px;
   min-height: 1px;
-  border-bottom-color: #d7d7d7;
+  border-bottom-color: #D7D7D7;
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
@@ -975,10 +978,10 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin-bottom: 36px;
   padding-bottom: 16px;
   padding-top: 21px;
-  border-bottom-color: #d7d7d7;
+  border-bottom-color: #D7D7D7;
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  border-top-color: #d7d7d7;
+  border-top-color: #D7D7D7;
   border-top-width: 1px;
   border-top-style: solid;
 }
@@ -1017,7 +1020,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   background-color: #bdbdbd;
 }
 .carousel-indicators .active {
-  background-color: #d7d7d7;
+  background-color: #D7D7D7;
 }
 .glyphGrey {
   color: #bdbdbd;
@@ -1059,7 +1062,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin: auto;
 }
 .carousel-indicators li {
-  border-color: #d7d7d7;
+  border-color: #D7D7D7;
   border-width: 1px;
   border-style: solid;
 }
@@ -1075,7 +1078,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin-left: 0;
   font-weight: bold;
   font-size: 31px;
-  color: #d7d7d7;
+  color: #D7D7D7;
   font-family: "ff-meta-web-pro-condensed", sans-serif;
   line-height: 120%;
   text-transform: uppercase;
@@ -1089,7 +1092,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin-top: 20px;
   padding-bottom: 16px;
   padding-left: 9px;
-  border-bottom-color: #d7d7d7;
+  border-bottom-color: #D7D7D7;
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
@@ -1098,7 +1101,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   line-height: 400%;
 }
 .publicAreaColor {
-  background: #ffffff;
+  background: #fff;
 }
 .privateAreaContentOffset {
   margin-top: 16px;
@@ -1107,7 +1110,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   font-family: Georgia, Garamond, serif;
   font-size: 26px;
   font-weight: bold;
-  color: #000000;
+  color: #000;
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: center;
@@ -1127,7 +1130,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .columnHeading {
   font-weight: bold;
   font-size: 16px;
-  color: #5b5b5b;
+  color: #5B5B5B;
   font-family: "ff-meta-web-pro-condensed", sans-serif;
   line-height: 120%;
   margin-bottom: 10px;
@@ -1136,7 +1139,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .columnHeadingFeatured {
   font-weight: bold;
   font-size: 16px;
-  color: #5b5b5b;
+  color: #5B5B5B;
   font-family: "ff-meta-web-pro-condensed", sans-serif;
   line-height: 120%;
   margin-bottom: 8px;
@@ -1146,6 +1149,9 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .columnHeadingBig {
   font-size: 21.28px;
   color: black;
+}
+#userInfoArea {
+  margin-top: 21px;
 }
 .bottomBorder {
   border-bottom: 1px solid #d7d7d7;
@@ -1166,7 +1172,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   font-size: 1em;
 }
 .columnHeading .selectedTab {
-  color: #5b5b5b;
+  color: #5B5B5B;
 }
 .columnHeading .tab {
   padding-left: 0;
@@ -1228,12 +1234,12 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .pointAreaActions {
   font-family: "ff-meta-web-pro", sans-serif;
   font-size: 14px;
-  color: #00adee;
+  color: #00ADEE;
   margin-bottom: 10px;
 }
 .pointBoxActions {
   font-size: 14px;
-  color: #a9a9a9;
+  color: #A9A9A9;
   /*@blue ;*/
   /*font-weight: bold;*/
   margin-bottom: 2px;
@@ -1265,22 +1271,22 @@ JSON error related to displaying comments. But when I don't use this class, the 
   transform: scale(1.085);
 }
 .pointCard:hover .pointBoxActions {
-  color: #00adee;
+  color: #00ADEE;
 }
 .pointCard:hover .redVote {
-  color: #cc0008;
+  color: #CC0008;
 }
 .pointCard:hover .greenVote {
-  color: #0de000;
+  color: #0DE000;
 }
 .blue {
-  color: #00adee;
+  color: #00ADEE;
 }
 .fadeStatsWhenZero {
   color: #bdbdbd;
 }
 .fadeStatsWhenZero:hover {
-  color: #6d6e70;
+  color: #6D6E70;
 }
 .fadeArrowWhenZero {
   opacity: .6;
@@ -1289,7 +1295,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin: 0;
   padding: 0;
   font-size: 14px;
-  color: #00adee;
+  color: #00ADEE;
 }
 .noRightMargin {
   margin-right: 0;
@@ -1309,7 +1315,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   font-weight: bold;
 }
 .arrowCharSupporting {
-  color: #5b5b5b;
+  color: #5B5B5B;
 }
 .arrowCharAgainst {
   color: rgba(204, 0, 8, 0.7);
@@ -1432,7 +1438,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .pointBoxActions .inactiveVote,
 .pointBoxActions .inactiveVote a {
-  color: #a9a9a9;
+  color: #A9A9A9;
 }
 /*
 .inactiveVote:hover, .inactiveVote:hover a {
@@ -1442,14 +1448,14 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .redVote:hover,
 .redVote:focus,
 .redVote a {
-  color: #cc0008;
+  color: #CC0008;
   font-weight: bold;
 }
 .greenVote,
 .greenVote:hover,
 .greenVote:focus,
 .greenVote a {
-  color: #0de000;
+  color: #0DE000;
   font-weight: bold;
 }
 .selectedVote,
@@ -1478,7 +1484,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .pointListTitle {
   font-size: 16px;
-  color: #6d6e70;
+  color: #6D6E70;
   padding-top: 0px;
   padding-left: 12px;
 }
@@ -1542,9 +1548,9 @@ JSON error related to displaying comments. But when I don't use this class, the 
   font-size: 14px;
   margin-top: 0px;
   margin-bottom: -1px;
-  color: #00adee;
+  color: #00ADEE;
   border-width: 1px;
-  border-color: #f0f0f0;
+  border-color: #F0F0F0;
   padding: 12px;
   padding-top: 0;
   padding-bottom: 5px;
@@ -1560,7 +1566,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .pointStrength {
   font-size: 14px;
-  color: #00adee;
+  color: #00ADEE;
   margin-top: -2px;
   margin-bottom: 8px;
 }
@@ -1589,7 +1595,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 .relevanceVote {
   border-style: solid;
   border-width: 1px;
-  border-color: #f0f0f0;
+  border-color: #F0F0F0;
   padding: 12px;
   background-color: #fffddf;
   margin-bottom: -1px;
@@ -1629,7 +1635,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .relevanceTextLine {
   font-size: 12px;
-  color: #6d6e70;
+  color: #6D6E70;
   line-height: 120%;
   margin-top: 36px;
 }
@@ -1652,7 +1658,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   font-style: italic;
 }
 .mainPointSourceEntry a {
-  color: #a9a9a9;
+  color: #A9A9A9;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END: SOURCE ENTRIES IN MAINPOINTS
@@ -1730,7 +1736,7 @@ h4.mission {
 }
 .byline {
   font-size: 12px;
-  color: #a9a9a9;
+  color: #A9A9A9;
   line-height: 125%;
   float: left;
   margin-bottom: 7px;
@@ -1739,7 +1745,7 @@ h4.mission {
   /*padding-top:10px;*/
 }
 .byline a {
-  color: #a9a9a9;
+  color: #A9A9A9;
 }
 #pointSummary {
   margin-bottom: 12px;
@@ -2206,7 +2212,7 @@ button#counter_addPointWhenNonZero {
   font-size: 18px;
   line-height: 130%;
   padding: 6px;
-  color: #5b5b5b;
+  color: #5B5B5B;
 }
 #title_pointDialog::-webkit-input-placeholder {
   font-style: italic;
@@ -2236,7 +2242,7 @@ button#counter_addPointWhenNonZero {
 #additionalTextPlaceholderLabel {
   font-size: 12px;
   font-weight: normal;
-  color: #5b5b5b !important;
+  color: #5B5B5B !important;
   top: 141px !important;
   left: 18px !important;
   cursor: text;
@@ -2394,6 +2400,7 @@ fieldset {
 }
 .fieldEdit {
   float: left;
+  padding: 2px;
   width: 97%;
 }
 .dlgLabelName {
@@ -2532,7 +2539,7 @@ a.accordion-group-heading:hover {
   font-family: "ff-meta-web-pro", sans-serif;
   font-size: 0.9375em;
   font-style: italic;
-  color: #a9a9a9;
+  color: #A9A9A9;
 }
 .modal input:-moz-placeholder,
 .modal textarea:-moz-placeholder {
@@ -2563,7 +2570,7 @@ a.accordion-group-heading:hover {
 .modalSubheading {
   padding-top: 24px;
   margin-bottom: 12px;
-  color: #5b5b5b;
+  color: #5B5B5B;
   font-size: 15px;
   padding-left: 8px;
 }
@@ -2596,13 +2603,12 @@ a.accordion-group-heading:hover {
   font-family: "ff-meta-web-pro", sans-serif;
   font-size: 16px;
   font-weight: normal;
-  line-height: 125%;
+  line-height: 120%;
 }
 #display_userName {
-  display: inline-block;
+  width: 80%;
+  display: inline;
   margin-right: 5px;
-  margin-top: 18px;
-  margin-bottom: 18px;
 }
 #display_userEmail {
   margin-bottom: 18px;
@@ -2622,29 +2628,15 @@ a.accordion-group-heading:hover {
   background-position: 100% 100%;
   cursor: pointer;
 }
-#userInfoArea {
-  margin-top: 42px;
-  padding-left: 40px;
-  box-sizing: border-box;
-}
 .profilePic {
-  width: 70%;
-  margin-top: 0;
+  width: 80%;
+  margin-top: 2px;
 }
 .userInfoAreaTempWidth {
   width: 80%;
 }
 .profileStatsArea {
-  margin-bottom: 24px;
-  margin-top: 8px;
-}
-.profileItem {
-  display: block;
   margin-bottom: 8px;
-}
-.editProfileLink {
-  display: block;
-  margin-top: 32px;
 }
 a[name="profileEdit"] {
   cursor: pointer;
@@ -2662,9 +2654,6 @@ a[name="profileEdit"] {
 }
 #profileDisclaimer {
   margin-top: 42px;
-  background-color: pink;
-  padding: 12px;
-  border-radius: 4px;
 }
 #recentlyViewed {
   margin-top: 40px;
@@ -2674,7 +2663,7 @@ a[name="profileEdit"] {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .commentInstruction {
   font-size: 16px;
-  color: #6d6e70;
+  color: #6D6E70;
   padding: 0px;
   padding-left: 4px;
   margin-bottom: 18px;
@@ -2682,13 +2671,13 @@ a[name="profileEdit"] {
 .commentsHeading {
   font-size: 12px;
   font-weight: bold;
-  color: #a9a9a9;
+  color: #A9A9A9;
   padding: 0px;
   padding-left: 4px;
   margin-bottom: 12px;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  border-bottom-color: #f0f0f0;
+  border-bottom-color: #F0F0F0;
 }
 .commentsColumn {
   position: relative;
@@ -2718,7 +2707,7 @@ a[name="profileEdit"] {
 }
 .commentArea .cmmnt {
   list-style: none;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #F0F0F0;
   word-wrap: break-word;
   position: relative;
 }
@@ -2899,10 +2888,6 @@ h2.idLinkOffset:before {
 li {
   margin-left: 8px;
 }
-#notificationsArea > li > a {
-  padding-left: 10px;
-  padding-top: 8px !important;
-}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    FEEDBACK FOOTER LINK
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -2913,23 +2898,25 @@ li {
   padding: 12px;
   width: 72px;
 }
-/*
 a.feedbackFooterLink {
-    //color: black;
-    font-size: 15px;
-    display: inline-block;
-    text-align: right;
-    font-weight: 500;
-    color: hsl(0, 0%, 60%);
-}*/
+  font-size: 15px;
+  display: inline-block;
+  text-align: right;
+  font-weight: 500;
+  color: #999999;
+}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    FEEDBACK PAGE
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 .contactTitle {
-  margin-bottom: 42px;
+  margin-top: 18px;
+  margin-bottom: 36px;
 }
 .contactForm {
   margin-top: 32px;
+}
+.contactForm input {
+  height: 28px;
 }
 .contactForm label {
   font-size: 1em;
@@ -2938,7 +2925,7 @@ a.feedbackFooterLink {
   margin-top: 10px;
 }
 .error {
-  color: #cc0008;
+  color: #CC0008;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    ADMIN PAGE
@@ -3039,7 +3026,8 @@ a.feedbackFooterLink {
   #homeNav {
     margin-left: 8px;
   }
-  #searchArea {
+  #searchArea,
+  #searchAreaReact {
     float: left;
     width: -moz-calc(100% - 335px);
     width: -webkit-calc(100% - 335px);
@@ -3066,7 +3054,7 @@ a.feedbackFooterLink {
     margin-right: 0;
   }
   #notificationCount {
-    left: 87%;
+    left: 37%;
   }
   .notificationAvatar {
     max-width: 22px;
@@ -3297,7 +3285,11 @@ a.feedbackFooterLink {
   #homeNav {
     display: none;
   }
-  #searchArea {
+  #makePointIcon {
+    margin-left: 8px;
+  }
+  #searchArea,
+  #searchAreaReact {
     width: -moz-calc(100% - 295px);
     width: -webkit-calc(100% - 295px);
     width: calc(100% - 295px);
@@ -3315,7 +3307,7 @@ a.feedbackFooterLink {
   }
   #notificationCount {
     top: 25%;
-    left: 80%;
+    left: 29%;
     line-height: 125%;
   }
   .headerUserName {
@@ -3332,6 +3324,10 @@ a.feedbackFooterLink {
   }
   .notificationText {
     width: 290px;
+  }
+  #userMenuSignedIn {
+    margin-left: -55px;
+    margin-top: -8px;
   }
   .imageTextFieldsArea {
     width: 100%;
@@ -3377,7 +3373,8 @@ a.feedbackFooterLink {
   .responsiveRightMargin {
     margin-right: 14px !important;
   }
-  #searchArea {
+  #searchArea,
+  #searchAreaReact {
     width: -moz-calc(100% - 215px);
     width: -webkit-calc(100% - 215px);
     width: calc(100% - 215px);

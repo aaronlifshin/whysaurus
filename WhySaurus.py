@@ -15,7 +15,7 @@ from models.whysaurususer import WhysaurusUser
 from handlers import MainPage, About, Help, Contact, Manifesto, PrivacyPolicy, ListSignUp, \
     Education, CommonCore, APUSH, Walkthrough, ContactSend, NewPoint,\
     DeletePoint, EditPoint, UnlinkPoint, ViewPoint, AddSupportingPoint,\
-    LinkPoint, Vote, SetRibbon, TestPage, Search, \
+    LinkPoint, Vote, SetRibbon, TestPage, Search, SearchFromHeader, \
     AjaxSearch, PointHistory, GetPointsList, AuthHandler, SetEditorPickSort, \
     UpdateSupportingPointsSchema, AaronTask, BatchJobs, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
@@ -68,6 +68,7 @@ routes = [
     Route('/relVote', handler='WhySaurus.Vote:relevanceVote', name='relevanceVote'),
     Route('/setribbon', SetRibbon),
     Route('/search', Search),
+    Route('/headerSearch', SearchFromHeader),
     Route('/admin', AdminPage),
     Route('/roster', handler='WhySaurus.AdminPage:get_pa', name='get_pa'),
     Route('/dailyReport', handler='WhySaurus.AdminPage:dailyReport', name='dailyReport'),

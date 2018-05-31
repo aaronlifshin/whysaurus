@@ -36,7 +36,7 @@ h1, h2, h3, h4, h5, h6, body {
 
 .fullPageText {
   &>h1, &>h2, &>h3, &>h4, &>h5, &>body {
-    color: black; //  no need to "save black" on pages that are just text
+    color: black; //  no need to "save black" on pages that are just text 
   }
 }
 
@@ -226,17 +226,17 @@ a .blackLink:hover {
 
 
 .headerItem {
-  display: inline-block;
+  display: inline-block;   
   //float: none;
   color: black !important;
   //font-family: "ff-meta-web-pro-condensed", sans-serif;
   font-size: @fontSizeHeaderUX2;
   font-weight: 700;
   line-height: 120%;
-  margin-right: 0;
+  margin-right: 0;  
   margin-left: @defaultHeaderMarginH;
-  //margin-top: 14px;
-  vertical-align: middle;
+  //margin-top: 14px;   
+  vertical-align: middle;  
 }
 .headerItem > a {
    color: black ;
@@ -249,8 +249,8 @@ a .blackLink:hover {
 }
 
 
-
-@headerLinkIconSize: 18px;
+  
+@headerLinkIconSize: 18px;  
 .headerLinkIcon {
   font-size: @headerLinkIconSize;
   top: 3px;
@@ -295,11 +295,11 @@ a.headerSocialMediaIcon:hover {
 
 
 
-
+  
 #headerIconAbout  {
   font-size: @headerLinkIconSize * 1.1;
 }
-
+  
 #headerIconFb {
   font-size: @headerLinkIconSize * .78;
   top: 3px;
@@ -329,7 +329,7 @@ a.headerSocialMediaIcon:hover {
   margin-right: 2px;
   top: 1px;
 }
-#searchArea {
+#searchAreaReact {
   height: 48px;
   line-height: 48px;
   position: relative;
@@ -339,7 +339,7 @@ a.headerSocialMediaIcon:hover {
   vertical-align: top;
 }
 
-#searchArea .searchIcon {
+#searchAreaReact .searchIcon {
   background-image: none;
   right: 8px;
   width: auto;
@@ -357,7 +357,7 @@ a.headerSocialMediaIcon:hover {
 }
 
 #notifications {
-  right: 0px;
+  right: 0px; 
   margin-top: 11px;
 }
 
@@ -447,7 +447,7 @@ textarea {
 .dropdown-menu {
   min-width: unset; // over-riding bootstrap defaults
   //padding: 6px; // build padding into drop-down menu componants rather than the menu itself
-  //padding-bottom: 12px;
+  //padding-bottom: 12px; 
   margin-top: 4px;
   border-radius: @borderRadiusUX2;
     //background-color: #e1ffff;
@@ -616,7 +616,7 @@ body {
 }
 
 .evidenceBlock {
-  margin-left: @indent;
+  margin-left: @indent; 
   display: inline-block;
   transform-origin: top left;
   animation-name: evidenceBlockReveal;
@@ -644,7 +644,7 @@ body {
 
 .supportHeading, .counterHeading {
   //margin-top: 20px;
-  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth;
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   margin-bottom: @marginVerticalStandard;
 }
 
@@ -667,15 +667,15 @@ body {
   display: inline-block;
   position: relative;
   vertical-align: top;
-
+  
   //float: left; // was using this earlier... but doesn't seem necessary with the vertical-align
-
+    
   //transition: 1s;
   //width: @cardListWidth;
 }
 
 .evidenceBlockCounter {
-  margin-left: 6px;
+  margin-left: 6px; 
 }
 
 .evidenceBlockEmpty {
@@ -1000,7 +1000,7 @@ a:hover .perctSignSmall {
 }
 .toggleLowRelClaims {
   display: block;
-  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth;
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   margin-top: 16px;
   margin-bottom: 50px;
   //color: @nearBlack;
@@ -1017,7 +1017,7 @@ a:hover .perctSignSmall {
 }
 .noRelevantClaimsMessage {
   display: block;
-  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth;
+  margin-left: @indent + @cardBorderWidth + @cardPadding + @cardStackWidth; 
   color: @nearBlack;
   margin-bottom: -12px;
 }
@@ -1127,7 +1127,7 @@ a:hover .perctSignSmall {
 
 .point-card {
   //background-color: red;
-  display: block;
+  display: block; 
 
   //display: flex;
   //-webkit-flex: 1; /* Safari 6.1+ */
@@ -1316,9 +1316,9 @@ li .iconWithStat {
 .moreMenuLink {
   color: @grayTextLighter;
   font-weight: 800;
-  font-size: 13px;
-  position: relative;
-  top: 1px;
+    font-size: 13px;
+    position: relative;
+    top: 1px;
   right: 2px; // don't know why this is necessary... 
 }
 .moreMenuLink:hover {
@@ -1665,7 +1665,7 @@ a.source {
 
 .claimEditAreaHeading {
   width: 100%;
-  display: block;
+  display: block;  
   //padding-top: @editAreaPaddingV;
   margin-bottom: @cardPadding;
 }
@@ -1700,7 +1700,7 @@ a.source {
 @keyframes shareIconAreaReveal {
    0% { opacity: 0; }// left: -24px; }
    25% { opacity: 0; }
-   //75% { left: -2px; }
+   //75% { left: -2px; } 
    100% { opacity: 1;  }
 }
 
@@ -1768,12 +1768,12 @@ a .claimShareIcon {
   font-style: normal;
   text-align: center;
   vertical-align: middle;
-  cursor: pointer;
+  cursor: pointer;  
   border-style: solid !important;
   border-width: @buttonUX2_borderWidth;
   -webkit-border-radius: @borderRadiusUX2;
   -moz-border-radius: @borderRadiusUX2;
-  border-radius: @borderRadiusUX2;
+  border-radius: @borderRadiusUX2;  
 }
 .buttonUX2, .buttonSecondaryUX2blue {
   padding-top: @buttonUX2_paddingTop;
@@ -1820,15 +1820,15 @@ a .claimShareIcon {
   border-color: @buttonDisabledGrey;
 }
 .buttonUX2Red:disabled {
-  background-color: @stackCardCounterBorderColor;
+  background-color: @stackCardCounterBorderColor ;
   border-color: @stackCardCounterBorderColor;
 }
 .buttonUX2:focus:enabled {
-  //border: 2px solid @blueLight;
+    //border: 2px solid @blueLight;
   //box-shadow: 0 0 0px 2px @blueLight; // using this instead of border bc it doesn't repo
 }
 .buttonUX2:hover:enabled, .buttonUX2:focus:enabled {
-  background-color: black;
+    background-color: black;
   border-color:  black;
 }
 a.buttonUX2:hover:enabled, a.buttonUX2:focus:enabled {
@@ -1856,8 +1856,8 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 }
 /*
 .buttonUX2Blue:focus {
-  box-shadow: @blueLight;
-  outline: none;
+    box-shadow: @blueLight;
+    outline: none;
 }*/
 
 .buttonUX2Red {
@@ -1870,8 +1870,8 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 }
 /*
 .buttonUX2Red:focus:enabled {
-  box-shadow: @redLight;
-  outline: none;
+    box-shadow: @redLight;
+    outline: none;
 }*/
 
 .buttonSecondaryUX2blue {
@@ -1916,9 +1916,9 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 }
 
 .addEvidenceButton {
-  display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
-  width: auto;
-  margin-right: 4px;
+    display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
+    width: auto;
+    margin-right: 4px;
   padding-left: @buttonUX2_paddingLeftRightLongLabel;
   padding-right: @buttonUX2_paddingLeftRightLongLabel;
 }
@@ -2109,10 +2109,10 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   color: grey;
   font-style: italic;
   font-size: 16px; // temp; consider moving back up to 17 to match PointTitle once we move to a multi-line textarea
-  vertical-align: top; // why isn't this working?
+  vertical-align: top; // why isn't this working? 
   display: block;
   position: relative;
-  top: 0;
+  top: 0;   
 }
 .inputFieldUX2::-ms-input-placeholder { /* IE 10-11*/
   color: grey;
@@ -2139,11 +2139,11 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 
 
 .addEvidenceForm .titleTextField {
-  border-color: @nearBlack;
+  border-color: @nearBlack; 
   border-width: @titleTextFieldActiveBorderWidth;
 }
 .titleTextField.counter {
-  border-color: @red;
+  border-color: @red; 
   border-width: @titleTextFieldActiveBorderWidth;
 }
 .titleTextField.counter:focus {
@@ -2216,7 +2216,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 }
 .existingClaimList li:hover {
   text-decoration: underline;
-  cursor: pointer;
+  cursor: pointer; 
 }
 /*
 .existingClaimList li:hover::after {
@@ -2235,7 +2235,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   font-size: @fontSizeSecondaryUX2; // @fontSizePointTitle;
   width: 100%;
   padding: @cardPadding;
-  padding-top: @cardPadding + 3px; // to account for overlap
+  padding-top: @cardPadding + 3px; // to account for overlap 
 }
 
 //////////////////////////////////////////
@@ -2366,7 +2366,7 @@ a:hover .arrowAddEvidenceButton {
 }
 
 .dottedLineExpansionIndicator {
-    height: calc(~"100% + 8px"); // TODO: set this more programmatically; eg calc(100% ~"-" @addEvidenceUI_marginV);
+    height: calc(~"100% + 8px"); // TODO: set this more programmatically; eg calc(100% ~"-" @addEvidenceUI_marginV); 
     color: hsla(0, 0%, 80%, 1); // orange;
     margin-left: -21px; // @cardStackWidth;
     bottom: 42px;
@@ -2394,7 +2394,7 @@ a:hover .arrowAddEvidenceButton {
   color: @nearBlack;
 }
 
-.dottedLinesSplitEvidenceHeader {
+.dottedLinesSplitEvidenceHeader {  
   position: relative;
   left: @cardStackWidth;
   //top: -8px;
@@ -2402,10 +2402,10 @@ a:hover .arrowAddEvidenceButton {
   height: 33px; // equal to height of children to create equal spacing when they are hidden
 }
 .dottedLinesSplitEvidenceSupport {
-  height: 20px;
+  height: 20px; 
   border-left-style: dotted;
   border-bottom-style: dotted; // to keep height consistant
-  border-width: @dottedLineWidth;
+  border-width: @dottedLineWidth;  
   margin-right: 14px;
   width: 0.5px;
   display: inline-block;
@@ -2415,7 +2415,7 @@ a:hover .arrowAddEvidenceButton {
   height: 12px;
   border-bottom-style: dotted;
   border-left-style: dotted;
-  border-width: @dottedLineWidth;
+  border-width: @dottedLineWidth;  
   color: @red;
   display: inline-block;
   vertical-align: top;
@@ -2628,7 +2628,7 @@ a:hover .arrowAddEvidenceButton {
 @mainPageClaimCreationButtonCalculatedWidth: 84px;
 .mainPageClaimCreationArea {
   margin-left: 14px;
-  margin-bottom: 21px;
+  margin-bottom: 21px; 
 }
 
 .mainPageClaimCreationLabel {
@@ -2763,12 +2763,12 @@ body  {
   .navbar .container {
       width: unset;
   }
-
+  
   #mainContainer {
-    margin-left:  calc(~"2% + 54px");
+    margin-left:  calc(~"2% + 54px"); 
   }
 
-  #searchArea {
+  #searchAreaReact {
     width: -moz-calc(~"100% - 565px");
     width: -webkit-calc(~"100% - 565px");
     width: calc(~"100% - 565px");
@@ -2783,7 +2783,7 @@ body  {
   #signInFromHeader {
     right: 18px;
   }
-
+  
   #explanationRowHomepage {
     margin-left: -27px; // since the main content block no longer aligns to the header, lets offset this as well
     width: auto;
@@ -2795,7 +2795,7 @@ body  {
   .explanationTextCentered {
     width: unset;
   }
-
+  
   .control-arrow .control-next {
     margin-right: 20%;
   }
@@ -2809,27 +2809,27 @@ body  {
     padding-left:10px;
   }
 
-
+  
   #header {
-    position: fixed;
+  position: fixed;
     //width: 100vw; // viewport-width units
   }
-
+  
   #header .container {
     //padding-right: 24px; // account for scrollbars and phones
   }
-
-
-  /*#CreatePoint, #aboutMenu, #searchArea  {
-    margin-left: @headerMarginNarrow;
+  
+  
+  /*#CreatePoint, #aboutMenu, #searchAreaReact  {
+    margin-left: @headerMarginNarrow; 
   }*/
-
+  
   #userMenuArea {
-    margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with
+    margin-left: @headerMarginNarrow +  @defaultHeaderMarginH; // need some extra space to deal with 
     //right: 0;
     //margin-right: @defaultHeaderMarginH;
   }
-
+    
   #signInFromHeader {
     right: 18px;
     //background-color: pink;
@@ -2840,23 +2840,23 @@ body  {
   }
 
 
-  @searchAreaNarrow: 305px;
-  #searchArea {
+  @searchAreaNarrow: 305px;    
+  #searchAreaReact {
     float: none;
-    width: ~"-moz-calc(100% - @{searchAreaNarrow})";
+    width: ~"-moz-calc(100% - @{searchAreaNarrow})";    
     width: ~"-webkit-calc(100% - @{searchAreaNarrow})";
     width: ~"calc(100% - @{searchAreaNarrow})";
   }
-
+  
   #notifications {
     margin-right: 10px;
     margin-left: 0;
   }
-
+  
   .control-arrow .control-next {
     margin-right: 10%;
   }
-
+  
   #mainContainer {
     margin-left: 2%;
   }
@@ -2864,7 +2864,7 @@ body  {
   .feedbackFooterLink {
     //display: none;
   }
-
+  
   #explanationRowHomepage {
     width: 90vw;
     position: relative;
@@ -2878,14 +2878,14 @@ body  {
   .control-next {
     margin-right: 20%;
   }
-
+  
   .explanationBlock {
     //margin-left: 38px;
     float: none;
     margin: auto;
   }
 
-
+  
   .infiniteWidth {
     margin-left: 0;
   }
@@ -2900,40 +2900,40 @@ body  {
   .claimCreationFormFieldBlock {
     width: @cardWidthSmallScreens;
   }
-
+  
   .pointPageContainer {
-    margin-top: 24px;
+  margin-top: 24px;
   //margin-left: 0;
   }
 
   .listedClaimGroup {
-    width: @cardWidthSmallScreens + (2 * @indent);
+  width: @cardWidthSmallScreens + (2 * @indent);
   }
 
   .relGroupHilite {
-    width: 88vw;
-    max-width: unset;
+  width: 88vw;
+  max-width: unset;
   }
 
   .point-card {
-    //background-color: red;
-    display: inline-block;
-    width: @cardWidthSmallScreens;
+  //background-color: red;
+  display: inline-block;
+  width: @cardWidthSmallScreens; 
   }
 
   .stackCard {
-    width: @cardWidthSmallScreens;
+    width: @cardWidthSmallScreens; 
   }
 
   .pointCardImage {
-    //margin-top: @marginVerticalStandard;
-    //width: 100%;
+  //margin-top: @marginVerticalStandard;
+  //width: 100%;
   }
-
+  
   .byline {
     //max-width: 20%;
   }
-
+  
   .pointCardImageContainer {
     width: 25% !important;
   }
@@ -2947,9 +2947,9 @@ body  {
     padding-left: @buttonPaddingExtraSmallScreens;
     padding-right: @buttonPaddingExtraSmallScreens;
   }
-
+  
   .buttonUX2RespIcon {
-    padding-right: @buttonPaddingExtraSmallScreens - 2px;
+    padding-right: @buttonPaddingExtraSmallScreens - 2px; 
   }
 
   @cardWidthExtraSmallScreens: 82vw;
@@ -2958,15 +2958,15 @@ body  {
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px - 36px)"; // subtract width of button + an extra amount for the indent
-  }
-
+  }  
+  
   .stackCard {
-    width: @cardWidthExtraSmallScreens;
+    width: @cardWidthExtraSmallScreens; 
   }
   .point-card {
   //background-color: red;
     width: @cardWidthExtraSmallScreens;
-  }
+  }  
   
   .pointCardImageContainer {
     width: 16% !important;

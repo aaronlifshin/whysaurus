@@ -9,6 +9,11 @@ import Spinner from './Spinner'
 
 class AddEvidence extends React.Component {
   state = {addingSupport: false, addingCounter: false }
+  componentUnmounting = false
+
+  componentWillUnmount() {
+    this.componentUnmounting = true
+  }
 
   get point() {
     return this.props.point;
@@ -51,9 +56,10 @@ class AddEvidence extends React.Component {
     this.setState({saving: true})
     this.props.save(parentURL, evidenceType, values).
       then( res => {
-        this.setState({saving: false,
-                       addingSupport: false,
-                       addingCounter: false})
+        if (!this.componentUnmounting)
+          this.setState({saving: false,
+                         addingSupport: false,
+                         addingCounter: false})
       })
   }
 

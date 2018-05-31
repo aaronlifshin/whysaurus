@@ -19,6 +19,7 @@ __all__ = [
 	'PointCard',
 	'Home',
 	'History',
+        'HeaderSearch',
 	'GetPointsList',
 	'AuthHandler',
 	'SetEditorPickSort',
@@ -75,3 +76,4 @@ from eventRecorder import EventRecorder
 from createPrivateAreaPage import CreatePrivateAreaPage
 from home import Home
 from history import History
+from headerSearch import HeaderSearch

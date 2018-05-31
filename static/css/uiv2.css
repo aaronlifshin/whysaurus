@@ -124,6 +124,46 @@ a .blackLink:hover {
 .vote-stats .admin {
   width: 100%;
 }
+.popup-content {
+  background: rgba(0, 0, 0, 0) !important;
+  border: none !important;
+  width: 100% !important;
+}
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.8) !important;
+}
+#termsPopup {
+  position: absolute;
+  display: block;
+  width: 585px;
+  left: 50%;
+  top: 10%;
+  margin-left: -292.5px;
+  margin-top: -292.5px;
+}
+.modal-header,
+.modal-body,
+.modal-footer {
+  padding-top: 24px;
+  padding-bottom: 18px;
+  padding-left: 32px;
+  padding-right: 24px;
+}
+.modal-body,
+.modal-footer {
+  padding-top: 18px;
+}
+.modal-body.text-content {
+  padding-left: 32px;
+  padding-right: 32px;
+  max-width: 500px;
+}
+.modalBodySignInWith {
+  padding-right: 32px;
+}
+.modal-body.text-content li {
+  margin-bottom: 16px;
+}
 .headerBGColorDefault {
   background: #F0F0F0;
 }
@@ -402,6 +442,10 @@ body {
 .policyHeader {
   margin-left: 44px;
 }
+.policyContent {
+  position: relative;
+  left: -24px;
+}
 .policyContent h4 {
   margin-bottom: 12px;
 }
@@ -648,7 +692,7 @@ li .policySectionNumber {
   background-color: inherit;
   border: none;
   color: #009dd6;
-  margin-right: -2px;
+  margin-right: 6px;
   display: inline-block;
   padding-top: 8px;
   padding-bottom: 7px;
@@ -2188,6 +2232,11 @@ body {
   body {
     padding-left: 10px;
   }
+  #termsPopup {
+    width: 85%;
+    margin-left: -42.5%;
+    top: -8px;
+  }
   #header {
     position: fixed;
   }
@@ -2262,6 +2311,9 @@ body {
   }
 }
 @media (max-width: 640px) {
+  #signupDialog {
+    width: unset;
+  }
   .buttonUX2 {
     padding-left: 9px;
     padding-right: 9px;

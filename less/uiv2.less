@@ -218,6 +218,58 @@ a .blackLink:hover {
 }
 
 //////////////////////////////////////////////
+// MODALS
+
+// a div above the react modals. not sure why they are there
+.popup-content  {
+  background: rgba(0, 0, 0, 0) !important; // making it go away; using !important to step on style tags being added in the html by react-popup; is there a better way to do this?
+  border: none !important;
+  width: 100% !important;
+}
+
+// the dark overlay behind react modals
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.8) !important; // making it darker; using !important to step on style tags being added in the html by react-popup;  is there a better way to do this?
+}
+
+@termsPopupWidth: 585px;
+#termsPopup {
+  position: absolute;
+  display: block;
+  width: @termsPopupWidth;
+  left: 50%;
+  top: 10%;
+  margin-left: @termsPopupWidth / -2;
+  margin-top: @termsPopupWidth / -2;
+}
+
+.modal-header, .modal-body, .modal-footer {
+  padding-top: 24px;
+  padding-bottom: 18px;
+  padding-left: 32px;
+  padding-right: 24px;
+}
+.modal-body, .modal-footer {
+  padding-top: 18px;
+}
+
+.modal-body.text-content {
+  padding-left: 32px;
+  padding-right: 32px;
+  max-width: 500px;
+}
+.modalBodySignInWith {
+  padding-right: 32px;
+}
+
+
+
+.modal-body.text-content li {
+  margin-bottom: 16px;
+}
+
+
+//////////////////////////////////////////////
 // HEADER
 
 .headerBGColorDefault {
@@ -592,8 +644,8 @@ body {
 }
 
 .policyContent {
-  //position: relative;
-  //left: -32px;
+  position: relative;
+  left: -24px;
 }
 
 .policyContent h4 {
@@ -898,7 +950,7 @@ li .policySectionNumber {
   background-color: inherit;
   border: none;
   color: @blue;
-  margin-right: -2px;
+  margin-right: 6px;
   display: inline-block;
   //border: solid;
   //border-color: @editingAreaBG; // prevents offset when border appears
@@ -2912,6 +2964,14 @@ body  {
   body {
     padding-left:10px;
   }
+ 
+  @termsPopupWidth: 85%;
+  #termsPopup {
+    width: @termsPopupWidth;
+    margin-left: @termsPopupWidth / -2;
+    //margin-top: @termsPopupWidth / -2;
+    top: -8px;
+  }
 
 
   #header {
@@ -3046,6 +3106,10 @@ body  {
 @media (max-width: 640px) {
 
 
+  #signupDialog {
+    width: unset;
+  }
+  
   @buttonPaddingExtraSmallScreens: 9px;
   .buttonUX2 {
     padding-left: @buttonPaddingExtraSmallScreens;
@@ -3075,7 +3139,6 @@ body  {
   .pointCardImageContainer {
     width: 16% !important;
   }
-  
   
   .control-prev {
     margin-left: 10%;

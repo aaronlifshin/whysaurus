@@ -90,7 +90,7 @@
     <div id="header" class="navbar navbar-fixed-top {% if currentArea %}blueBackground {{currentArea}}{% else %}headerBGColorDefault{% endif %}">
       <div class="container">
 
-          <a id="headerLogo" class="headerItem" href="/home">
+          <a id="headerLogo" class="headerItem" href="/">
               <span id="logoImage" src="/static/img/whysaurus_logo.png">
                   <img class="hidden-xs hidden-phone" src="/static/img/whysaurus_logo.png"/>
                   <img class="visible-xs visible-phone" src="/static/img/whysaurus_logo_v02_ys_32px.png"/>
@@ -126,6 +126,7 @@
                           <li><a id="help1" href="/manifesto" >Manifesto </a></li>
                           <li><a id="help2" href="/WhatIsWhysaurus" >FAQ </a></li>
                           <li><a id="help3" href="/education" >Education</a></li>
+                          <li class="divider"></li>
                           <li><a id="help4" href="/privacyPolicy" >Privacy Policy </a></li>
                           <li class="divider"></li>
                           <li><a href="/contact">Give us Feedback</a></li>  
@@ -375,7 +376,7 @@
             </div>
 
             <div class="modal-footer">
-                <a  id="backToLogin">Got an account? Click here to sign in</a>
+                <div class="backToLoginArea"><a  id="backToLogin">Got an account? Click here to sign in</a></div>
                 <a  id="cancel_signupDialog" class="btn btn-cancel pull-right" data-dismiss="modal">Cancel</a>
                 <a  id="submit_signupDialog" class="btn btn-primary pull-right" onclick="ga('send', 'event', 'Login', 'Create Whysaurus User')">Create User</a>
             </div>

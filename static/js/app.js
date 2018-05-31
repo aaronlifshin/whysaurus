@@ -40,11 +40,10 @@ class HistoryPage extends React.Component {
 
   render(){
       return <div className="row pointPageContainer infiniteWidth">
-      <div id="infiniteOrFiniteWidth" className="">
-        <History url={this.props.match.params.url}/>
-        History!
+        <div id="content" className="fullPageText">
+          <History url={this.props.match.params.url}/>
         </div>
-        </div>
+       </div>
   }
 }
 

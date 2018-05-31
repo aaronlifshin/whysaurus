@@ -49,6 +49,7 @@ h1, h2, h3, h4, h5, h6, body {
 @fontSizeButtonsUX2:   @baseFontSizeUX2 * 0.938; // ~15px // @baseFontSizeUX2 * 1.00; // ~16px
 @fontSizePointTitle:   @baseFontSizeUX2 * 1.063; // ~17px
 @arrowFontSizeUX2:     @baseFontSizeUX2 * 1.125; // ~18px
+@fontSizeBigHeading:   @baseFontSizeUX2 * 1.5; // 24px;
 
 @lineHeightExtra: 125%;
 
@@ -2681,7 +2682,7 @@ a:hover .arrowAddEvidenceButton {
 
 .mainPageClaimCreationLabel {
   margin-left: 12px;
-  font-size: 24px;
+  font-size: @fontSizeBigHeading;
   //margin-bottom: 0px;
 }
 
@@ -2763,6 +2764,60 @@ body  {
 
 //////////////////////////////////////////////////////
 
+
+.historyContent {
+  margin-left: 16px;
+}
+
+.historyHeadline {
+  margin-top: 12px;
+  margin-bottom: 48px;
+}
+
+.historyVersion {
+  //margin-bottom: 64px;
+  width: 100%;
+}
+
+.historyClaimText {
+  font-size: @fontSizeBigHeading;
+  margin-top: 12px;
+  margin-bottom: 18px;
+}
+
+.historySection {
+  margin-bottom: 16px;
+}
+
+.historySubheading {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.historyItem {
+  margin: 0;
+  padding: 0;
+}
+
+.historyClaimVersionTag {
+  font-size: 66%;
+  color: @smallGreyLinkColor;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.historyDivision {
+  width: 75%;
+  height: 3px;
+  margin-top: 72px;
+  margin-bottom: 32px;
+  background-color: @nearBlack;
+}
+
+
+
+///////////////////////////////////////////////////////
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 

@@ -19,7 +19,7 @@
         <div class="profileStatsArea profileBodyText userInfoAreaTempWidth">        
             <!--<p class="profileInfoHeading">Stats</p>-->
             <div>{{profileUser.createdCount }} Claims created</div>
-            <div>{{profileUser.editedCount }} Claims contributed to</div>
+            <div>{{profileUser.editedCount }} Contributed to</div>
         </div>
         <div id="display_userBio" class="profileBodyText userInfoAreaTempWidth" >
           {% if profileUser.bio %}
@@ -50,7 +50,7 @@
     {% if viewingOwnPage %}              
       <div class="modal hide fade" data-keyboard="true" id="profileDialog" role="dialog" aria-hidden="true">
          <form id='frm_profileDialog' class="" action="./{{user.url}}" method="POST">          
-            <div class="modal-header"><h3>Edit Profile Info</h3></div>    
+            <div class="modal-header"><h3>Edit Settings</h3></div>    
             <div class="row-fluid" id="alertArea"></div>    
             <div class="modal-body">       
               <!-- <div class="control-group">

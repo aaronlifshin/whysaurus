@@ -230,6 +230,7 @@ a .blackLink:hover {
 // the dark overlay behind react modals
 .popup-overlay {
   background: rgba(0, 0, 0, 0.8) !important; // making it darker; using !important to step on style tags being added in the html by react-popup;  is there a better way to do this?
+  z-index: 1060 !important;
 }
 
 @termsPopupWidth: 585px;

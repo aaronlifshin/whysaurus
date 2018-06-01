@@ -191,7 +191,7 @@ class Home extends React.Component {
     return <div className="infiniteWidth">
       {this.illustrations()}
       <div className="mainPageClaimCreationArea">
-        <h3 className="mainPageClaimCreationLabel">Make an Argument You Want to Prove</h3>
+        <h3 className="mainPageClaimCreationLabel">We love good arguments</h3>
         <QuickCreateClaim onSubmit={this.createNewPoint}/>
       </div>
       <div className="mainPageContentArea">

@@ -989,7 +989,7 @@ a.toggleLowRelClaims:hover {
   padding-top: 9px;
 }
 .cardTopRowItem {
-  margin-right: 9px;
+  margin-right: 10px;
 }
 .cardTopRowItem a {
   color: #a9a9a9;
@@ -1060,7 +1060,7 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 2px;
+  right: 6px;
 }
 .moreMenuLink:hover {
   text-decoration: none;

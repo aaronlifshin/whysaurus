@@ -61,7 +61,7 @@ class SearchPage extends React.Component {
     console.log("rerendering searhc")
     return <div className="row pointPageContainer infiniteWidth">
       <div id="infiniteOrFiniteWidth" className="">
-        <SearchResults query={params.get("query")}/>
+        <SearchResults q={params.get("q")}/>
       </div>
     </div>
   }
@@ -74,7 +74,7 @@ class SearchBoxComponent extends React.Component {
   // once we convert the entire page to react this component should actually render the search box.
   render(){
     window.onSearch = (searchTerms) => {
-      var pageUrl = '/search?query=' + searchTerms;
+      var pageUrl = '/search?q=' + searchTerms;
       this.props.history.push(pageUrl);
 
     }

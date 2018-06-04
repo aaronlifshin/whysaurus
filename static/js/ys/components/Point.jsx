@@ -329,6 +329,12 @@ class AgreeDisagreeComponent extends React.Component {
   handleClickAgree(e) {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
     console.log("AgreeDisagreeComponent : agree");
+    if (this.props.point.currentUserVote == 1) {
+      ga('send', 'event', 'Vote', 'NeutralFromUp', this.props.point.url, 0);
+    }
+    else {
+      ga('send', 'event', 'Vote', 'Up', this.props.point.url, 1);
+    }
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -346,6 +352,12 @@ class AgreeDisagreeComponent extends React.Component {
   handleClickDisagree(e) {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
     console.log("AgreeDisagreeComponent : disagree");
+    if (this.props.point.currentUserVote == -1) {
+      ga('send', 'event', 'Vote', 'NeutralFromDown', this.props.point.url, 0);
+    }
+    else {
+      ga('send', 'event', 'Vote', 'Down', this.props.point.url, -1);
+    }
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -420,10 +432,14 @@ class PointCardComponent extends React.Component {
   }
   handleClickEditComments(e) {
     e.stopPropagation();
-    if (this.state.editingComments)
+    if (this.state.editingComments) {
       this.setState({editingComments: false})
-    else
+      ga('send', 'event', 'Comment', 'Hide Comments', this.point.url);
+    }
+    else {
       this.setState({editingComments: true})
+      ga('send', 'event', 'Comment', 'Show Comments', this.point.url);
+    }
   }
 
   handleCancelEditClaimText(e) {
@@ -441,6 +457,7 @@ class PointCardComponent extends React.Component {
   handleCloseComments(e) {
     e && e.stopPropagation()
     this.setState({editingComments: false})
+    ga('send', 'event', 'Comment', 'Hide Comments', this.point.url);
   }
 
   editingSomething() {

@@ -73,10 +73,16 @@ class CommentsListComponent extends React.Component {
     return a
   }, {})
 
+  onAddContinue = () => {
+    this.setState({commenting: false})
+    ga('send', 'event', 'Comment', 'Submit Comment', this.point.url);
+    console.log('GA Comment Event Sent')
+  }
+  
   newComment = () => {
     const {point, add} = this.props
     if (this.state.commenting) {
-      return <NewComment onSubmit={({text}) => add(point.id, text).then(() => this.setState({commenting: false}))} onCancel={() => this.setState({commenting: false})}/>
+      return <NewComment onSubmit={({text}) => add(point.id, text).then(this.onAddContinue)} onCancel={() => this.setState({commenting: false})}/>
     } else {
       return <span className="newCommentButons">
           <button className="buttonSecondaryUX2blue newCommentButton" onClick={() => this.setState({commenting: true})}>Clarification</button>

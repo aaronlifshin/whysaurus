@@ -49,6 +49,8 @@ class AddEvidence extends React.Component {
     values.parentURL = parentURL
     values.linkType = evidenceType
     this.setState({saving: true})
+    ga('send', 'event', 'Point', 'Add ' + evidenceType + ' point', 'Point Dialog Add ' + evidenceType + ' point');
+    ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Add ' + evidenceType + ' point');
     this.props.save(parentURL, evidenceType, values).
       then( res => {
         this.setState({saving: false,

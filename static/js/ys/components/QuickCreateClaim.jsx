@@ -12,6 +12,8 @@ export default class QuickCreateClaim extends React.Component {
 
   submit = (values, e, formApi) => {
     this.setState({submitting: true});
+    ga('send', 'event', 'Main Page Action', 'Quick Create Point', 'Main Page Make A Point');
+    ga('send', 'event', 'Point', 'Create Point', 'Create Point Main Page');
     this.props.onSubmit(values).then(
       (val) => {
         this.setState({submitting: false});

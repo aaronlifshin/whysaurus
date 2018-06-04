@@ -13,8 +13,6 @@ class HeaderSearch(AuthHandler):
     @ndb.toplevel
     def get(self):
         template_values = {
-            'searchString': self.request.get('q'),
-
         }
         self.response.headers["Pragma"]="no-cache"
         self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"

@@ -640,7 +640,7 @@ class Query(graphene.ObjectType):
             searchTerms="\"" + (args['q'] or "") + "\""
         )
         searchResults = searchResultsFuture.get_result() if searchResultsFuture else []
-        return PagedPoints(points=searchResults)
+        return PagedPoints(points=searchResults, hasMore=False)
 
 class Mutation(graphene.ObjectType):
     delete = Delete.Field()

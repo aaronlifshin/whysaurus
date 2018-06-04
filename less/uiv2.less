@@ -49,6 +49,7 @@ h1, h2, h3, h4, h5, h6, body {
 @fontSizeButtonsUX2:   @baseFontSizeUX2 * 0.938; // ~15px // @baseFontSizeUX2 * 1.00; // ~16px
 @fontSizePointTitle:   @baseFontSizeUX2 * 1.063; // ~17px
 @arrowFontSizeUX2:     @baseFontSizeUX2 * 1.125; // ~18px
+@fontSizeBigHeading:   @baseFontSizeUX2 * 1.5; // 24px;
 
 @lineHeightExtra: 125%;
 
@@ -215,6 +216,59 @@ a .blackLink:hover {
 .vote-stats .admin {
   width: 100%;
 }
+
+//////////////////////////////////////////////
+// MODALS
+
+// a div above the react modals. not sure why they are there
+.popup-content  {
+  background: rgba(0, 0, 0, 0) !important; // making it go away; using !important to step on style tags being added in the html by react-popup; is there a better way to do this?
+  border: none !important;
+  width: 100% !important;
+}
+
+// the dark overlay behind react modals
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.8) !important; // making it darker; using !important to step on style tags being added in the html by react-popup;  is there a better way to do this?
+  z-index: 1060 !important;
+}
+
+@termsPopupWidth: 585px;
+#termsPopup {
+  position: absolute;
+  display: block;
+  width: @termsPopupWidth;
+  left: 50%;
+  top: 10%;
+  margin-left: @termsPopupWidth / -2;
+  margin-top: @termsPopupWidth / -2;
+}
+
+.modal-header, .modal-body, .modal-footer {
+  padding-top: 24px;
+  padding-bottom: 18px;
+  padding-left: 32px;
+  padding-right: 24px;
+}
+.modal-body, .modal-footer {
+  padding-top: 18px;
+}
+
+.modal-body.text-content {
+  padding-left: 32px;
+  padding-right: 32px;
+  max-width: 500px;
+}
+.modalBodySignInWith {
+  padding-right: 32px;
+}
+
+
+
+.modal-body.text-content li {
+  margin-bottom: 16px;
+}
+
 
 //////////////////////////////////////////////
 // HEADER
@@ -462,6 +516,10 @@ textarea {
   overflow: hidden;
 }
 
+li {
+  //margin-bottom: 8px;
+}
+
 .dropdown-menu .divider {
   border: none;
   height: 0.75px; // this seems to render better on high-res retina-style displays
@@ -582,6 +640,50 @@ body {
 */
 //////////////////////////////////
 
+.policyHeader {
+  margin-left: 44px;
+}
+
+.policyContent {
+  position: relative;
+  left: -24px;
+}
+
+.policyContent h4 {
+  margin-bottom: 12px;
+}
+
+.policySection {
+  display: block;
+  width: 100%;
+}
+
+.policySectionNumber {
+  display: inline-block;
+  width: 30px;
+  margin-right: 16px;
+  vertical-align: top;
+}
+h4 .policySectionNumber {
+  margin-right: 16px;
+}
+li .policySectionNumber {
+  margin-right: 6px;
+}
+
+.policySectionCopy {
+  display: inline-block;
+  width: 90%;
+}
+
+.policyBulletList {
+  margin-left: 54px;
+}
+
+
+//////////////////////////////////
+
+
 
 // BLOCKS OF EVIDENCE
 
@@ -630,10 +732,28 @@ body {
   top: -1 * ((2 * @stackCardOffset) + (2 * @cardBorderWidth)); // nudge up to account for the empty space taken up by invisible stack cards
 }
 
-
 .evidenceBlockFirstColAlignment {
   left: -9px !important;
 }
+
+@keyframes latestQuickCreateReveal {
+   0% { max-height: 20px; opacity: 0;  }
+   40% { opacity: 0; ; } //  transform: scaleY(.5)
+   85% {  max-height: 350px; } //  transform: scaleY(1
+   100% { max-height: 350px; opacity: 1; }
+}
+.latestQuickCreate {
+  transform-origin: top left;
+  animation-name: latestQuickCreateReveal;
+  animation-duration: (@evidenceBlockRevealDuration * .8);
+  animation-timing-function: ease;
+}
+
+
+
+
+
+
 
 .heading {
   color: @darkerGreyColor;
@@ -849,7 +969,7 @@ body {
   background-color: inherit;
   border: none;
   color: @blue;
-  margin-right: -2px;
+  margin-right: 6px;
   display: inline-block;
   //border: solid;
   //border-color: @editingAreaBG; // prevents offset when border appears
@@ -1227,7 +1347,7 @@ a:hover .perctSignSmall {
 }
 
 .cardTopRowItem {
-  margin-right: 9px;
+  margin-right: 10px;
 }
 .cardTopRowItem a {
  color: @smallGreyLinkColor;
@@ -1319,7 +1439,7 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 2px; // don't know why this is necessary... 
+  right: 6px; // don't know why this is necessary... 
 }
 .moreMenuLink:hover {
   text-decoration:none;
@@ -1434,6 +1554,7 @@ a.source {
   color: @smallGreyLinkColor; 
   display: block;
   margin-bottom: 4px;
+  width: max-content;
 }
 
 .source:hover, a.source:hover {
@@ -2633,7 +2754,7 @@ a:hover .arrowAddEvidenceButton {
 
 .mainPageClaimCreationLabel {
   margin-left: 12px;
-  font-size: 24px;
+  font-size: @fontSizeBigHeading;
   //margin-bottom: 0px;
 }
 
@@ -2715,6 +2836,60 @@ body  {
 
 //////////////////////////////////////////////////////
 
+
+.historyContent {
+  margin-left: 16px;
+}
+
+.historyHeadline {
+  margin-top: 12px;
+  margin-bottom: 48px;
+}
+
+.historyVersion {
+  //margin-bottom: 64px;
+  width: 100%;
+}
+
+.historyClaimText {
+  font-size: @fontSizeBigHeading;
+  margin-top: 12px;
+  margin-bottom: 18px;
+}
+
+.historySection {
+  margin-bottom: 16px;
+}
+
+.historySubheading {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.historyItem {
+  margin: 0;
+  padding: 0;
+}
+
+.historyClaimVersionTag {
+  font-size: 66%;
+  color: @smallGreyLinkColor;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.historyDivision {
+  width: 50%;
+  height: 3px;
+  margin-top: 72px;
+  margin-bottom: 32px;
+  background-color: @nearBlack;
+}
+
+
+
+///////////////////////////////////////////////////////
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 
@@ -2807,6 +2982,14 @@ body  {
 
   body {
     padding-left:10px;
+  }
+ 
+  @termsPopupWidth: 85%;
+  #termsPopup {
+    width: @termsPopupWidth;
+    margin-left: @termsPopupWidth / -2;
+    //margin-top: @termsPopupWidth / -2;
+    top: -8px;
   }
 
 
@@ -2942,6 +3125,10 @@ body  {
 @media (max-width: 640px) {
 
 
+  #signupDialog {
+    width: unset;
+  }
+  
   @buttonPaddingExtraSmallScreens: 9px;
   .buttonUX2 {
     padding-left: @buttonPaddingExtraSmallScreens;
@@ -2972,12 +3159,15 @@ body  {
     width: 16% !important;
   }
   
-  
   .control-prev {
     margin-left: 10%;
   }
   .control-next {
     margin-right: 10%;
+  }
+  
+  .policySectionCopy {
+    width:85%;
   }
 
 }

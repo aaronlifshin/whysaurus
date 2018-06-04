@@ -8,6 +8,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 import {PointListWithPoint} from './ys/components/PointList';
+import History from './ys/components/History';
 import {HomePage} from './ys/home';
 import {ExpandedIndexProvider} from './ys/components/ExpandedIndex'
 
@@ -16,7 +17,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-const homeURL = "/home"
+const homeURL = "/"
 
 class PointPage extends React.Component {
 
@@ -35,13 +36,25 @@ class PointPage extends React.Component {
   }
 }
 
+class HistoryPage extends React.Component {
+
+  render(){
+      return <div className="row pointPageContainer infiniteWidth">
+        <div id="content" className="fullPageText">
+          <History url={this.props.match.params.url}/>
+        </div>
+       </div>
+  }
+}
+
 
 class App extends React.Component {
   render() {
     return (
         <Switch>
-        <Route exact path="/pointCard/:url" component={PointPage} />
         <Route exact path={homeURL} component={HomePage} />
+        <Route exact path="/claim/:url" component={PointPage} />
+        <Route exact path="/history/:url" component={HistoryPage} />
         </Switch>
     )
   }

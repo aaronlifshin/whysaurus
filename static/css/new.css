@@ -1964,9 +1964,9 @@ button#counter_addPointWhenNonZero {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #loginDialog {
   /* new custom width */
-  width: 632px;
+  width: 672px;
   /* must be half of the width, minus scrollbar on the left (30px) */
-  margin-left: -312px;
+  margin-left: -336px;
 }
 [id^=signInWith] {
   height: 2em;
@@ -2041,7 +2041,7 @@ button#counter_addPointWhenNonZero {
 }
 #login_userEmail,
 #login_userPassword {
-  width: 270px;
+  width: 93%;
   font-size: 16px;
   padding: 11px;
   margin-bottom: -4px;
@@ -2050,6 +2050,7 @@ button#counter_addPointWhenNonZero {
   margin-top: -4px;
   padding-right: 0;
   padding-bottom: 16px;
+  padding-right: 0 !important;
 }
 #loginDialog .alert {
   margin-bottom: 0;
@@ -2059,6 +2060,7 @@ button#counter_addPointWhenNonZero {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #signupDialog {
   position: absolute;
+  width: 520px;
 }
 #showSignupDialog {
   margin-top: 8px;
@@ -2074,6 +2076,10 @@ button#counter_addPointWhenNonZero {
 #cancel_emailLoginDialog {
   margin-left: 5px;
 }
+.modal input {
+  height: 32px;
+  margin-bottom: 8px;
+}
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    Create new User login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -2083,6 +2089,9 @@ button#counter_addPointWhenNonZero {
   font-size: 14px;
   position: relative;
   top: 8px;
+}
+.backToLoginArea {
+  display: inline-block;
 }
 #cancel_signupDialog {
   margin-right: 5px;
@@ -3100,6 +3109,9 @@ a.feedbackFooterLink {
   #edOverview {
     margin-top: 21px;
   }
+  #signupDialog {
+    width: unset;
+  }
   .profilePic {
     max-width: 64px;
   }
@@ -3236,7 +3248,7 @@ a.feedbackFooterLink {
 }
 @media (max-width: 675px) {
   #loginDialog {
-    width: 360px;
+    width: 400px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -3248,7 +3260,7 @@ a.feedbackFooterLink {
     padding-top: 8px;
   }
   [id^=signInWith] {
-    width: 260px !important;
+    width: 90.5% !important;
     text-align: center !important;
   }
   #signInWithEmail_Dlg {
@@ -3256,13 +3268,17 @@ a.feedbackFooterLink {
     padding-right: 0;
     margin-left: 0;
     margin-right: 0;
-    width: 293px !important;
+    width: 100% !important;
   }
   .dialogVerticalLine {
     display: none;
   }
+  .backToLoginArea {
+    max-width: 40%;
+  }
   .returningUserSignIn {
     margin-left: 0;
+    width: 100%;
   }
   .returningUsersHeading {
     text-align: center;
@@ -3271,9 +3287,6 @@ a.feedbackFooterLink {
   #login_userEmail,
   #login_userPassword {
     text-align: center;
-  }
-  #forgot_emailLoginDialog {
-    float: left;
   }
 }
 @media (max-width: 540px) {

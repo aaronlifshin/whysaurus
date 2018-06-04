@@ -17,6 +17,7 @@ import config from './config';
 import QuickCreateClaim from './components/QuickCreateClaim'
 import NewClaim from './components/NewClaim'
 import Spinner from './components/Spinner'
+import { CloseLinkX } from './components/common'
 import {withExpandedIndex} from './components/ExpandedIndex.jsx'
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
@@ -151,29 +152,31 @@ class Home extends React.Component {
     window.location = '/logout';
   }
   
+  // <button className="button" onClick={this.declineTerms}>Decline/Logout</button>
   termsAndConditionsPopup() {
-    if (this.props.CurrentUserQuery.currentUser) {
+  if (this.props.CurrentUserQuery.currentUser) {
       if (this.props.CurrentUserQuery.currentUser.hasConfirmedTermsAndConditions) {
       
       }
       else {
         return <span>
           <Popup modal open={!this.props.CurrentUserQuery.currentUser.hasConfirmedTermsAndConditions && this.state.terms_open}>
-            <div className="modal">
-              <h2 className="header"> Accept Terms & Conditions </h2>
-              <div className="content">
-                {" "}
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-                Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-                delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-                <br />
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-                commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-                explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+            <div id="termsPopup" className="modal reactjs-popup">
+              <div className="modal-header">
+                <span className="editAreaClose"><a onClick={this.declineTerms}><CloseLinkX/></a></span>
+                <h3 className="header">We Value Transparency and Privacy</h3>
               </div>
-              <div className="actions">
-                <button className="button" onClick={this.confirmTerms}>Agree</button>
-                <button className="button" onClick={this.declineTerms}>Decline/Logout</button>
+              <div className="modal-body text-content">
+                <p>Click "Agree" when you're ready —</p>
+                <p>To comply with data protection laws — and our values — we ask you to review the key points of our Privacy Policy:</p>
+                <ul>
+                  <li>* We store data including your content, preferences and votes (which we keep anonymous), plus data about how you use Whysaurus which we use to make it better. </li>
+                  <li>* We use cookies to help authenticate that you are you. </li>
+                  <li>* Our <a target="_blank" href="/privacyPolicy">Privacy Policy</a> is based on a template designed for GDPR and gives all users the rights required by the EU. If you have questions you can always <a target="_blank" href="/contact">contact us</a>. </li>
+                </ul>
+              </div>
+              <div className="modal-footer actions">
+                <button className="btn btn-primary pull-right" onClick={this.confirmTerms}>Agree</button>
               </div>
             </div>
           </Popup>
@@ -188,7 +191,7 @@ class Home extends React.Component {
     return <div className="infiniteWidth">
       {this.illustrations()}
       <div className="mainPageClaimCreationArea">
-        <h3 className="mainPageClaimCreationLabel">Make an Argument You Want to Prove</h3>
+        <h3 className="mainPageClaimCreationLabel">We love good arguments</h3>
         <QuickCreateClaim onSubmit={this.createNewPoint}/>
       </div>
       <div className="mainPageContentArea">

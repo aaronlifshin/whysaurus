@@ -211,6 +211,18 @@ query Search($query: String!) {
   }
 }`
 
+export const FullClaimSearch = gql`
+${pointFieldsFragment}
+query FullClaimSearch($q: String!, $cursor: String, $limit: Int) {
+  fullClaimSearch(q: $q, cursor: $cursor, limit: $limit) {
+    cursor
+    points {
+      ...pointFields
+    }
+    hasMore
+  }
+}`
+
 export const HomePage = gql`
 ${pointFieldsFragment}
 query HomePage {

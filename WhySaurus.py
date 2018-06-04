@@ -20,7 +20,7 @@ from handlers import MainPage, About, Help, Contact, Manifesto, PrivacyPolicy, L
     UpdateSupportingPointsSchema, AaronTask, BatchJobs, RebuildSearchIndex, \
     DBIntegrityCheck, Outliner, AddTree, Profile, AdminPage, Comments, \
     NotificationHandler, Chat, EventRecorder, CreatePrivateAreaPage, PointCard, \
-    Home, History
+    Home, History, HeaderSearch
 
 from handlers.whysaurusgraphql import WhysaurusGraphQL
 import schema
@@ -67,7 +67,8 @@ routes = [
     Route('/vote', Vote),
     Route('/relVote', handler='WhySaurus.Vote:relevanceVote', name='relevanceVote'),
     Route('/setribbon', SetRibbon),
-    Route('/search', Search),
+    Route('/oldsearch', Search),
+    Route('/search', HeaderSearch),
     Route('/admin', AdminPage),
     Route('/roster', handler='WhySaurus.AdminPage:get_pa', name='get_pa'),
     Route('/dailyReport', handler='WhySaurus.AdminPage:dailyReport', name='dailyReport'),

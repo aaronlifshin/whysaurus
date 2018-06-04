@@ -633,6 +633,15 @@ class Query(graphene.ObjectType):
         searchResults = searchResultsFuture.get_result() if searchResultsFuture else []
         return searchResults
 
+    full_claim_search = graphene.Field(PagedPoints, q=graphene.String(required=True), cursor=graphene.String(), limit=graphene.Int())
+    def resolve_full_claim_search(self, info, **args):
+        searchResultsFuture = PointModel.search(
+            user=info.context.current_user,
+            searchTerms="\"" + (args['q'] or "") + "\""
+        )
+        searchResults = searchResultsFuture.get_result() if searchResultsFuture else []
+        return PagedPoints(points=searchResults, hasMore=False)
+
 class Mutation(graphene.ObjectType):
     delete = Delete.Field()
     unlink = Unlink.Field()

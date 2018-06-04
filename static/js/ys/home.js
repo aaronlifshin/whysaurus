@@ -58,7 +58,7 @@ class Home extends React.Component {
     super(props);
     this.createNewPoint = this.createNewPoint.bind(this);
   }
-  
+
   state = {
     terms_open: true,
     tabIndex: 0
@@ -139,24 +139,24 @@ class Home extends React.Component {
       </MediaQuery>
     </div>;
   }
-  
+
   confirmTerms = () => {
     console.log('Accepting Terms..')
     this.setState({ terms_open: false })
     this.props.acceptTerms(this.props.CurrentUserQuery.currentUser.url)
   }
-  
+
   declineTerms = () => {
     console.log('Terms Declined')
     this.setState({ terms_open: false })
     window.location = '/logout';
   }
-  
+
   // <button className="button" onClick={this.declineTerms}>Decline/Logout</button>
   termsAndConditionsPopup() {
   if (this.props.CurrentUserQuery.currentUser) {
       if (this.props.CurrentUserQuery.currentUser.hasConfirmedTermsAndConditions) {
-      
+
       }
       else {
         return <span>

@@ -42,6 +42,8 @@ class EditPointComponent extends React.Component {
   handleClickSave = (values, e, formApi) => {
     values.url = this.point.url
     this.setState({saving: true})
+    ga('send', 'event', 'Point', 'Edit Point', 'Point Dialog Edit');
+    ga('send', 'event', 'Point Dialog', 'Publish to Library', 'Edit');
     this.props.save(values).
       then(null, (err) => this.setState({saving: false}))
   }

@@ -10,6 +10,7 @@ import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 
 import {PointListWithPoint} from './ys/components/PointList';
+import History from './ys/components/History';
 import {HomePage} from './ys/home';
 import {ExpandedIndexProvider} from './ys/components/ExpandedIndex'
 
@@ -18,7 +19,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-const homeURL = "/home"
+const homeURL = "/"
 
 class PointPage extends React.Component {
 
@@ -44,12 +45,25 @@ const alertOptions = {
   transition: 'scale'
 }
 
+class HistoryPage extends React.Component {
+
+  render(){
+      return <div className="row pointPageContainer infiniteWidth">
+        <div id="content" className="fullPageText">
+          <History url={this.props.match.params.url}/>
+        </div>
+       </div>
+  }
+}
+
+
 class App extends React.Component {
   render() {
     return (
         <Switch>
-        <Route exact path="/pointCard/:url" component={PointPage} />
         <Route exact path={homeURL} component={HomePage} />
+        <Route exact path="/claim/:url" component={PointPage} />
+        <Route exact path="/history/:url" component={HistoryPage} />
         </Switch>
     )
   }

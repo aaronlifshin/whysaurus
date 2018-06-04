@@ -1,47 +1,47 @@
 <div id="leftColumnPoint" >
 	<div class="dropdown pull-left">
-	    <a class="dropdown-toggle upstreamLinks upstreamSupporting {% if not supportedPoints %} disabled opacityZero {% endif %}" 
+	    <a class="dropdown-toggle upstreamLinks upstreamSupporting {% if not supportedPoints %} disabled opacityZero {% endif %}"
 	    id="supportedByMeMenu" data-toggle="dropdown">
-	     {% if supportedPoints %} 
-	        Supporting {{ supportedPoints|length }} Point{% if supportedPoints|length != 1 %}s{% endif %}   
-	        <span class="caret linkBlue"></span>              
-	     {% else %} 
-	        Supporting 0 Points 
+	     {% if supportedPoints %}
+	        Supporting {{ supportedPoints|length }} Point{% if supportedPoints|length != 1 %}s{% endif %}
+	        <span class="caret linkBlue"></span>
+	     {% else %}
+	        Supporting 0 Points
 	     {% endif %}
 	    </a>
 	      <ul class="dropdown-menu" role="menu" aria-labelledby="supportedByMeMenu">
 	          {% for supPoint in supportedPoints %}
 	              <li><a name="pointNavMenu" tabindex="-1"
 	              alt="View {{ supPoint.title|escape }}"
-	              href="/point/{{ supPoint.url }}">{{supPoint.title|escape}}</a></li>
+	              href="/claim/{{ supPoint.url }}">{{supPoint.title|escape}}</a></li>
 	          {% endfor %}
 	      </ul>
 	</div>
-            
+
 	<div class="dropdown pull-right">
 		<a class="dropdown-toggle upstreamLinks upstreamCountering {% if not counteredPoints %} disabled opacityZero {% endif %} "
 		id="counteredByMeToggle" data-toggle="dropdown">
 		{% if counteredPoints %}
 		  Countering {{ counteredPoints|length }} Point{% if counteredPoints|length != 1 %}s{% endif %}
-		  <span class="caret linkBlue"></span>            
-		{% else %} 
+		  <span class="caret linkBlue"></span>
+		{% else %}
 		  Countering 0 Points
-		{% endif %} 
+		{% endif %}
 		</a>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="counteredByMeMenu">
 		    {% for cnPoint in counteredPoints %}
 		        <li><a name="pointNavMenu" tabindex="-1"
 		        alt="View {{ cnPoint.title|escape }}"
-		        href="/point/{{ cnPoint.url }}">{{cnPoint.title|escape}}</a></li>
+		        href="/claim/{{ cnPoint.url }}">{{cnPoint.title|escape}}</a></li>
 		    {% endfor %}
 		</ul>
 	</div>
 
-    
+
 <div id="pointArea" class="boxedElement span8" data-pointurl="{{point.url}}" data-rootus="{{point.rootURLsafe}}">
 	<div id="pointSummary" class = "span5">
 
-        <div class="mainPointTitleAndScore">            
+        <div class="mainPointTitleAndScore">
 	          <span id="mainPointTitle" class="editable"><span class="mainPointTitleText">{{ point.title|escape }}</span></span>
               <span class="mainPointScore">
                   <span class="scoreAnimContainerMax">
@@ -64,13 +64,13 @@
         </div>
 			  <div class="mainPointContent editable">{{ point.content|safe }}</div>
 	          {% include 'sources.html' %}
-              <div id="timestampAndEditLink" >			  
+              <div id="timestampAndEditLink" >
                     <div class="byline">
                         <!--<span class="contributor">Most Recent Contributor: </span><a href='/user/{{point.authorURL}}'>{{ point.authorName }}</a><br>-->
-                        <span id="pointCreator" class="contributor">							
+                        <span id="pointCreator" class="contributor">
 							{% if point.creatorURL %}
 								By <a target="_blank" href="../user/{{point.creatorURL}}">{{point.creatorName}}</a>
-							{% else %} 
+							{% else %}
 								Most recent contributor: <a target="_blank" href="../user/{{point.authorURL}}">{{point.authorName}}</a>
 							{% endif %}
                         </span>
@@ -84,9 +84,9 @@
               </div>
 	          <!-- Hacky way to get imageurl into the edit dialog. :/ -->
 	          <div class="mainPointImageURL" style="display: none">{{point.imageURL}}</div>
-	</div>    
-	{% if point.imageURL and point.imageURL.strip %}	
-	<!-- update insertImage in point.js if editing this HTML -->		  
+	</div>
+	{% if point.imageURL and point.imageURL.strip %}
+	<!-- update insertImage in point.js if editing this HTML -->
 	<div id="mainPointImageArea" class="span3" >
         <div class="imageAreaMaxHeight">
             <img class="pointDisplay" src="{{ point.fullPointImage }}" />
@@ -95,11 +95,11 @@
         <div class="mainPointImageCaption">{{point.imageDescription}}</div>
         <div class="mainPointImageAuthor">{{point.imageAuthor}}</div>
     </div>
-	{% endif %}			
-	  
+	{% endif %}
+
 	<div id="scoreAndVotingSection" class="pointAreaActions span8">
 		<div class="span5 responsiveInline">
-            <div class="span3 responsiveRightMargin topPointVotingArea">        
+            <div class="span3 responsiveRightMargin topPointVotingArea">
                 <span class= "{% if voteValue == 1 %} greenVote {% else %} inactiveVote {% endif %}">
                   <a id="upVote" alt="Agree" > <span class="scaleDownOnClick">Agree</span></a>
                 </span>
@@ -107,19 +107,19 @@
                 <span class= "{% if voteValue == -1 %} redVote {% else %} inactiveVote {% endif %}">
                   <a id="downVote" alt="Disagree"  ><span class="scaleDownOnClick">Disagree</span></a>
                 </span>
-                <!-- old handshake icon: 
+                <!-- old handshake icon:
                     <img class="iconAgreesSmall iconAgreesSmallMainPoint" src="/static/img/agreesIconSmall_blue.png"/> -->
                 <!-- this id is used by the js that controls styling on the agree/disagree buttons, functionality which could be combined with the mainPointScore above -->
-                <span id="voteTotal" class="hidden" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>                               
-            </div>		   
+                <span id="voteTotal" class="hidden" data-myvote='{{voteValue}}'>{{ point.voteTotal }}</span>
+            </div>
 			<!-- <a id="blueRibbon" data-ribbonvalue="{{ribbonValue|lower}}" alt="Award ribbon for Well Written" class="{% if ribbonValue %}awarded{% else %}notAwarded{% endif %}">Is this well written?
 			<span id="ribbonTotal">{{point.ribbonTotal}}</span></a>-->
 
-        {% if user.isAdmin %}		   
-            <div class="span2 dropdown responsiveInline responsiveRightMargin iphone5-adminLink">             
+        {% if user.isAdmin %}
+            <div class="span2 dropdown responsiveInline responsiveRightMargin iphone5-adminLink">
                 <a class="dropdown-toggle" id="pointAdminMenu" data-toggle="dropdown">
                 <span class="hidden-phone hidden-xs">Admin</span><img class="" src="/static/img/wrench_icon_blue.png"/>
-                </a>                
+                </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="pointAdminMenu">
                     <li><a tabindex="-1"
                         alt="Delete Point"
@@ -129,41 +129,41 @@
                     <li><a href='/job/addMissingBacklinks/{{point.url}}'>Add Missing Backlinks</a></li>
                     <li><a href='/job/DBcheckPoint/{{point.url}}'>DB Check This Point</a></li>
                     <li><a href='/job/updateCachedValues/{{point.url}}'>Update Cached Values</a></li>
-                    <li><a href='/job/cleanCurrents/{{point.url}}'>Clean Multiple Current Versions</a></li>                      
+                    <li><a href='/job/cleanCurrents/{{point.url}}'>Clean Multiple Current Versions</a></li>
                     <li><a id='changeEditorsPickTrigger'>
-                        Editors Pick: 
+                        Editors Pick:
                         {{pointRoot.editorsPick}}{%if pointRoot.editorsPick %} - {{pointRoot.editorsPickSort}} {% endif %}
                     </a>
-                    </li>       
+                    </li>
                     <li><a id='makeFeaturedPick'>Make Featured</a></li>
                     <li><a id='refreshTopStatus'>Refresh Top Status</a></li>
                     <li><a id='changeLowQualityAdminTrigger'>Low Quality:{{point.isLowQualityAdmin}}</a></li>
                 </ul>
-            </div>	
-            {% include 'changeEditorsPick.html' %}             			
+            </div>
+            {% include 'changeEditorsPick.html' %}
             {% include 'changeLowQualityAdmin.html' %}
         {% endif %}
 
 		</div>
         <div class="span2 responsiveInline">
-            <div class="shareMenu dropdown responsiveInline responsiveRightMargin">	
+            <div class="shareMenu dropdown responsiveInline responsiveRightMargin">
                 <a class="dropdown-toggle" data-toggle="dropdown">
                 <span class="hidden-xxs">Share</span><img class="shareIcon" src="/static/img/share_icon_blue.png"/>
                 </a>
                 <!--<span class="caret linkBlue"></span> -->
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                    <li><a id="tweet" href='javascript:;'><img class="iconDropdown" src="/static/img/icon_twitter_blue_16px.png"/>Tweet this</a></li> 
-                    <li><a id="postOnFacebook" href='javascript:;'><img class="iconDropdown" src="/static/img/icon_fb_blue_16px.png"/>Post on Facebook</a></li>  
-                    <li><a href="mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: {{ point.title|escape }}. %0D%0A View it here: (https://www.whysaurus.com/point/{{point.url}})"><img class="iconDropdown" src="/static/img/icon_email_blue_16px.png"/>Email a friend</a></li>                                                             
-                </ul>                       
-            </div>         
+                    <li><a id="tweet" href='javascript:;'><img class="iconDropdown" src="/static/img/icon_twitter_blue_16px.png"/>Tweet this</a></li>
+                    <li><a id="postOnFacebook" href='javascript:;'><img class="iconDropdown" src="/static/img/icon_fb_blue_16px.png"/>Post on Facebook</a></li>
+                    <li><a href="mailto:?subject=What do you think of this idea?&body=Hello,%0D%0A%0D%0A There is a point on Whysaurus that you might find interesting: {{ point.title|escape }}. %0D%0A View it here: (https://www.whysaurus.com/claim/{{point.url}})"><img class="iconDropdown" src="/static/img/icon_email_blue_16px.png"/>Email a friend</a></li>
+                </ul>
+            </div>
             <div class="statsMenu dropdown responsiveInline responsiveRightMargin hidden-xxs">
-                <a class="dropdown-toggle" data-toggle="dropdown">Stats </a><span class="caret linkBlue"></span> 
+                <a class="dropdown-toggle" data-toggle="dropdown">Stats </a><span class="caret linkBlue"></span>
                 <ul id="stats" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                     <li>STATISTICS</li>
-                    <li class="divider"></li>                      				
+                    <li class="divider"></li>
                     <li>Agreed: <span id='upVoteStat'>{{ point.upVotes }}</span> </li>
-                    <li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>	
+                    <li>Disagreed: <span id='downVoteStat'>{{ point.downVotes }}</span></li>
                     <li>Viewed: {{ pointRoot.viewCount }}</li>
                     <li>Score: {{point.pointValueCached}}</li>
                     {% if user.isAdmin %}
@@ -171,14 +171,14 @@
                         <li>Engagement: {{point.engagementScoreCached}}</li>
                         <li>Engagement Cache: {{point.cachedEngagementScore}}</li>
                     {% endif %}
-                </ul>  
+                </ul>
             </div>
-         </div>  
+         </div>
 		<div class="editPointArea pull-right">
 	        <a id="editPoint" ><span class="hidden-xxs">Edit</span><img class="editIcon" src="/static/img/pencil_icon_blue.png"/></a>
-		</div>		
+		</div>
 
-	</div>  		                
+	</div>
 </div>
 </div> <!-- id="leftColumnPoint" class="tabbedArea"-->
 
@@ -207,4 +207,3 @@
 
 
 <div id="historyArea" class="tabbedArea"> </div>
-

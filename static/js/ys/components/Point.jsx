@@ -85,9 +85,9 @@ class ShareIconAreaComponent extends React.Component {
     var dialogParams = {
         app_id: 144595249045851,
         method: 'feed',
-        link: "https://www.whysaurus.com/point/" + url,
+        link: "https://www.whysaurus.com/claim/" + url,
         name: pointTitle,
-        description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?'
+        description: 'Argument on Whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add?'
     };
     var imageUrl = this.props.point.imageURL || null;
     if (!imageUrl) {
@@ -107,9 +107,9 @@ class ShareIconAreaComponent extends React.Component {
     var len = pointTitle.length;
     var text = "";
     if (len > 115) {
-        text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/point/" + url;
+        text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/claim/" + url;
     } else {
-        text = pointTitle + " https://www.whysaurus.com/point/" + url;
+        text = pointTitle + " — here's why: https://www.whysaurus.com/claim/" + url;
     }
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');
@@ -133,7 +133,7 @@ class ShareIconAreaComponent extends React.Component {
   
   fullLinkUrl = () => {
     var url = this.props.point.url;
-    return "https://www.whysaurus.com/pointCard/" + url + "/";
+    return "https://www.whysaurus.com/claim/" + url + "/";
   }
   
   render(){
@@ -147,7 +147,7 @@ class ShareIconAreaComponent extends React.Component {
       <a onClick={this.sharePointOnTwitter}>
         <div className="claimShareIcon fab fa-twitter"></div>
       </a>
-      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Hi,%0D%0A%0D%0ACheck out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/point/" + this.props.point.url + ""}>
+      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Hi,%0D%0A%0D%0ACheck out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/claim/" + this.props.point.url + ""}>
         <div className="claimShareIcon far fa-envelope"></div>
       </a>
     </span>
@@ -355,6 +355,12 @@ class AgreeDisagreeComponent extends React.Component {
   handleClickAgree(e) {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
     console.log("AgreeDisagreeComponent : agree");
+    if (this.props.point.currentUserVote == 1) {
+      ga('send', 'event', 'Vote', 'NeutralFromUp', this.props.point.url, 0);
+    }
+    else {
+      ga('send', 'event', 'Vote', 'Up', this.props.point.url, 1);
+    }
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -372,6 +378,12 @@ class AgreeDisagreeComponent extends React.Component {
   handleClickDisagree(e) {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
     console.log("AgreeDisagreeComponent : disagree");
+    if (this.props.point.currentUserVote == -1) {
+      ga('send', 'event', 'Vote', 'NeutralFromDown', this.props.point.url, 0);
+    }
+    else {
+      ga('send', 'event', 'Vote', 'Down', this.props.point.url, -1);
+    }
     if (this.props.data.currentUser){
       this.props.mutate({
         variables: {url: this.props.point.url,
@@ -446,10 +458,15 @@ class PointCardComponent extends React.Component {
   }
   handleClickEditComments(e) {
     e.stopPropagation();
-    if (this.state.editingComments)
-      this.setState({editingComments: false})
-    else
-      this.setState({editingComments: true})
+    const expansion = this.props.expansion
+    if (expansion.isExpanded(this.point, this.commentPrefix())) {
+      expansion.collapse(this.point, this.commentPrefix())
+      ga('send', 'event', 'Comment', 'Hide Comments', this.point.url);
+    }
+    else {
+      expansion.expand(this.point, this.commentPrefix())
+      ga('send', 'event', 'Comment', 'Show Comments', this.point.url);
+    }
   }
 
   handleCancelEditClaimText(e) {
@@ -467,6 +484,7 @@ class PointCardComponent extends React.Component {
   handleCloseComments(e) {
     e && e.stopPropagation()
     this.setState({editingComments: false})
+    ga('send', 'event', 'Comment', 'Hide Comments', this.point.url);
   }
 
   editingSomething() {
@@ -713,6 +731,8 @@ class PointCardComponent extends React.Component {
 
   childPrefix = () => this.prefix() + this.props.point.url
 
+  commentPrefix = () => this.prefix() + 'comments-'
+
   supportingPoints(){
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport evidenceBlockFirstColAlignment">
@@ -839,7 +859,8 @@ class PointCardComponent extends React.Component {
         <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat"><span className="far fa-image"></span></span>{moreMenuImageLabel}</a></li>
         <li className="divider"></li>
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
-        <li><a onClick={this.handleClickNoProp} target="_blank" href={"/pointCard/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
+        <li><a onClick={this.handleClickNoProp} target="_blank" href={"/history/" + this.point.url}><span className="iconWithStat"><span className="fas fa-history"></span></span>History</a></li>
+        <li><a onClick={this.handleClickNoProp} target="_blank" href={"/claim/" + this.point.url}><span className="iconWithStat"><span className="fas fa-external-link-alt"></span></span>Open in new tab</a></li>
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickDelete}><span className="iconWithStat"><span className="far fa-trash-alt"></span></span>Delete</a></li>  }
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickMakeFeatured}><span className="iconWithStat"><span className="fas fa-star"></span></span>Make Featured</a></li>  }
         { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickSetEditorsPick}><span className="iconWithStat"><span className="fas fa-ribbon"></span></span>Set Editor's Pick</a></li>  }
@@ -964,7 +985,7 @@ class PointCardComponent extends React.Component {
                                </div>
                               {this.image()}
                             </div>
-                            { this.state.editingComments && <Comments point={point} onCancel={this.handleCloseComments}/> }
+        { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} onCancel={this.handleCloseComments}/> }
                             </div>
                           </div>
                         </div>

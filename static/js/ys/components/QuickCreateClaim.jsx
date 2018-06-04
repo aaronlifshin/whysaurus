@@ -12,6 +12,8 @@ export default class QuickCreateClaim extends React.Component {
 
   submit = (values, e, formApi) => {
     this.setState({submitting: true});
+    ga('send', 'event', 'Main Page Action', 'Quick Create Point', 'Main Page Make A Point');
+    ga('send', 'event', 'Point', 'Create Point', 'Create Point Main Page');
     this.props.onSubmit(values).then(
       (val) => {
         this.setState({submitting: false});
@@ -60,7 +62,7 @@ export default class QuickCreateClaim extends React.Component {
       { ({validationFailures, values: {title}, submitForm}) => (
           <form onSubmit={submitForm} id="mainPageClaimCreationForm">
             <div className="claimCreationFormFieldBlock">
-              <TitleText id="newPointTextField" className="inputFieldUX2 titleTextField" onSubmit={submitForm} placeholder='Make a claim, eg "Dogs are better than cats."' />
+              <TitleText id="newPointTextField" className="inputFieldUX2 titleTextField" onSubmit={submitForm} placeholder='Start with a claim, eg "Dogs are better than cats."' />
             </div>
             <div className="claimCreationFormButtonBlock">
               {this.submitButton({disabled: (!title || (title == "") || (title.length > validations.titleMaxCharacterCount) ) || (validationFailures > 0)})}

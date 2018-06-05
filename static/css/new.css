@@ -662,7 +662,7 @@ li:hover .Submenu_SmallText {
   color: black;
 }
 .notificationCleared {
-  background-color: #F0F0F0;
+  background-color: #F0F0F0 !important;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END NOTIFICATION DROPDOWN STUFF
@@ -687,7 +687,7 @@ li:hover .Submenu_SmallText {
 When I was building the cardstack, placing this class on multiple cards gave me a
 JSON error related to displaying comments. But when I don't use this class, the error goes away... -JF */
 .pointCard {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   position: relative;
   top: 8px;
   left: -5px;
@@ -703,6 +703,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .pointCardHidden {
   top: -2px;
+  background-color: transparent;
 }
 .pointCardTop {
   word-wrap: break-word;

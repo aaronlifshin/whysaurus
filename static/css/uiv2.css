@@ -281,6 +281,9 @@ a.headerSocialMediaIcon:hover {
   padding-bottom: 4px;
   padding-left: 3px;
 }
+.notificationMenuItem {
+  background: white;
+}
 #userMenuArea {
   padding-right: 6.66666667px;
   margin-top: 6px;

@@ -31,7 +31,12 @@ const SearchResultPointList = graphql(schema.FullClaimSearch, {
 
 class SearchResults extends React.Component {
   render() {
-    return <SearchResultPointList q={this.props.q}/>
+    return <div className=""> 
+      <h2  id="searchResultsHeader" >Search Results</h2>    
+      <div id="searchResultsArea">
+        <SearchResultPointList q={this.props.q}/>
+      </div>
+    </div>
   }
 }
 

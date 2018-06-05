@@ -602,9 +602,10 @@ a:visited {
   box-sizing: border-box;
   margin-left: 6px;
   padding-left: 3px;
-  width: 270px;
+  width: 80%;
   margin-top: -1px;
   white-space: normal;
+  line-height: 145%;
 }
 .vertalignmiddle {
   vertical-align: middle;
@@ -662,7 +663,7 @@ li:hover .Submenu_SmallText {
   color: black;
 }
 .notificationCleared {
-  background-color: #F0F0F0 !important;
+  background-color: #F0F0F0;
 }
 /* +++++++++++++++++++++++++++++++++++++++++++++++
    END NOTIFICATION DROPDOWN STUFF
@@ -2908,6 +2909,9 @@ h2.idLinkOffset:before {
 .infoNonToggle,
 li {
   margin-left: 8px;
+}
+#notificationsArea {
+  background-color: white;
 }
 #notificationsArea > li > a {
   padding-left: 10px;

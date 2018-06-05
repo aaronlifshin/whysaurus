@@ -18,8 +18,9 @@
         <div class="notificationText">
           <div>
           {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-              {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} Someone {% endif %}
-              {{notification.notificationReasonText}} a claim you {{notification.followReason}}:
+              {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} A user {% endif %}
+              {{notification.notificationReasonText}}
+              <br>
               <em>{{notification.referencePoint.title}}</em>
           {% else %}
               {% if notification.additionalUserCount > 0 %}
@@ -27,8 +28,8 @@
               {% else %}
                   {{notification.sourceUserFull.name}} {{notification.notificationReasonText}}
               {% endif %}
-              a claim you {{notification.followReason}}:
-            <em>{{notification.referencePoint.title}}</em>
+              <br>
+              <em>{{notification.referencePoint.title}}</em>
           {% endif %}
           </div>
           <div class="Submenu_SmallText notificationTimeStamp">

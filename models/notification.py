@@ -68,13 +68,13 @@ class Notification(ndb.Model):
         elif c == 3:
             return "commented on"
         elif c == 4:
-            return "added supporting claims to" if plural else "added a supporting claim to"
+            return "added evidence for" if plural else "added evidence for"
         elif c == 5:
-            return "added counter claims to" if plural else "added a counter claim to"
+            return "added evidence against" if plural else "added evidence against"
         elif c == 6:
-            return "unlinked counter claims from" if plural else "unlinked a counter claim from"
+            return "unlinked evidence against" if plural else "unlinked evidence against"
         elif c == 7:
-            return "unlinked supporting claims from" if plural else "unlinked a supporting claim from"
+            return "unlinked evidence from" if plural else "unlinked evidence from"
         elif c == 8:
             return "disagreed with"
         else:

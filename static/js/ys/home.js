@@ -185,6 +185,14 @@ class Home extends React.Component {
     }
   }
 
+  componentDidMount(){
+    const params = new URLSearchParams(this.props.location.search)
+    const focus = params.get("focusQuickCreate")
+    if (focus == "true") {
+      QuickCreateClaim.focus()
+    }
+  }
+
   render(){
     let homePage = this.props.data.homePage;
     let featuredPoint = homePage && homePage.featuredPoint;

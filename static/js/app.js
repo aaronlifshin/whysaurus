@@ -12,6 +12,7 @@ import History from './ys/components/History';
 import SearchResults from './ys/components/SearchResults';
 import {HomePage} from './ys/home';
 import {ExpandedIndexProvider} from './ys/components/ExpandedIndex'
+import QuickCreateClaim from './ys/components/QuickCreateClaim'
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: '/graphql', credentials: 'same-origin' }),
@@ -84,9 +85,26 @@ class SearchBoxComponent extends React.Component {
 
 const SearchBox = withRouter(SearchBoxComponent)
 
+class MakeArgumentComponent extends React.Component {
+  // since the make argument button is currently not under react control, just create a
+  // function that the classical JS can call into and make it globally available.
+  //
+  // once we convert the entire page to react this component should actually render the make argument button
+  render(){
+    window.makeArgument = () => {
+      this.props.history.push(homeURL + "?focusQuickCreate=true");
+      QuickCreateClaim.focus()
+    }
+    return <div></div>
+  }
+}
+
+const MakeArgument = withRouter(MakeArgumentComponent)
+
 class App extends React.Component {
   render() {
     return (<div>
+        <MakeArgument/>
         <SearchBox/>
         <Switch>
         <Route exact path={homeURL} component={HomePage} />

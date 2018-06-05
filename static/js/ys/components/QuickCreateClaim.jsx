@@ -8,6 +8,10 @@ import Spinner from './Spinner'
 
 
 export default class QuickCreateClaim extends React.Component {
+  static focus(){
+    document.getElementById("newPointTextField").focus()
+  }
+
   state = {submitting: false}
 
   submit = (values, e, formApi) => {

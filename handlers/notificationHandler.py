@@ -4,8 +4,8 @@ from google.appengine.ext import ndb
 from google.appengine.api import app_identity
 
 from authhandler import AuthHandler
-from models.whysaurususer import WhysaurusUser 
-from models.whysaurusexception import WhysaurusException 
+from models.whysaurususer import WhysaurusUser
+from models.whysaurusexception import WhysaurusException
 from models.timezones import PST
 from models.notification import Notification
 from models.follow import Follow
@@ -16,21 +16,21 @@ class NotificationHandler(AuthHandler):
         rootKeyUrlsafe = self.request.get('rootKey')
         notifyReasonCode = self.request.get('notifyReasonCode')
         sourceUserUrlsafe = self.request.get('userKey')
-        additionalText = self.request.get('additionalText')        
+        additionalText = self.request.get('additionalText')
 
         pointRootKey = ndb.Key(urlsafe=rootKeyUrlsafe)
         sourceUserKey = ndb.Key(urlsafe=sourceUserUrlsafe)
         follows = Follow.getActiveFollowsForPoint(pointRootKey)
-        
+
         for f in follows:
             if f.user != sourceUserKey:
-                Notification.createNotificationFromFollow(self, 
-                                                          f, pointRootKey, 
-                                                          sourceUserKey, 
+                Notification.createNotificationFromFollow(self,
+                                                          f, pointRootKey,
+                                                          sourceUserKey,
                                                           int(notifyReasonCode),
                                                           additionalText,
                                                            )
-                
+
     def NewNotificationChannel(self):
         user = self.current_user
         results = {'result': False}
@@ -43,7 +43,7 @@ class NotificationHandler(AuthHandler):
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)
 
-           
+
     def ClearNotifications(self):
         user = self.current_user
         latestTimestamp = self.request.get('latest')
@@ -52,7 +52,7 @@ class NotificationHandler(AuthHandler):
         if not user:
             results = {'result': False, 'error': 'User not logged in'}
         else:
-            user.clearNotifications(float(latestTimestamp), 
+            user.clearNotifications(float(latestTimestamp),
                                     float(earliestTimestamp) if earliestTimestamp else None)
             results = {'result': True}
         resultJSON = json.dumps(results)
@@ -77,11 +77,3 @@ class NotificationHandler(AuthHandler):
         logging.info('Sending notification email for user %s' % user.name)
         user.sendSingleNotificationEmail(self)
         self.response.out.write('')  # succeed!
-        
-        
-        
-        
-        
-        
-
-        

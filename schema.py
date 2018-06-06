@@ -66,7 +66,11 @@ class NewComment(graphene.Mutation):
     comment = graphene.Field(Comment)
 
     def mutate(self, info, comment_data):
-        comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), comment_data.parentCommentID)
+        point_root = PointRootModel.getByUrlsafe(comment_data.pointID)
+        user = info.context.current_user
+        text = comment_data.text
+        comment = CommentModel.create(text, user, point_root, comment_data.parentCommentID)
+        PointModel.addNotificationTask(point_root.key, user.key, 3, text)
         return NewComment(comment=comment)
 
 class ArchiveComment(graphene.Mutation):

@@ -58,7 +58,7 @@ class Home extends React.Component {
     super(props);
     this.createNewPoint = this.createNewPoint.bind(this);
   }
-  
+
   state = {
     terms_open: true,
     tabIndex: 0
@@ -139,24 +139,24 @@ class Home extends React.Component {
       </MediaQuery>
     </div>;
   }
-  
+
   confirmTerms = () => {
     console.log('Accepting Terms..')
     this.setState({ terms_open: false })
     this.props.acceptTerms(this.props.CurrentUserQuery.currentUser.url)
   }
-  
+
   declineTerms = () => {
     console.log('Terms Declined')
     this.setState({ terms_open: false })
     window.location = '/logout';
   }
-  
+
   // <button className="button" onClick={this.declineTerms}>Decline/Logout</button>
   termsAndConditionsPopup() {
   if (this.props.CurrentUserQuery.currentUser) {
       if (this.props.CurrentUserQuery.currentUser.hasConfirmedTermsAndConditions) {
-      
+
       }
       else {
         return <span>
@@ -168,9 +168,9 @@ class Home extends React.Component {
               </div>
               <div className="modal-body text-content">
                 <p>Click "Agree" when you're ready —</p>
-                <p>To comply with data protection laws — and our values — we ask you to review the key points of our Privacy Policy:</p>
+                <p>Here are the key points:</p>
                 <ul>
-                  <li>* We store data including your content, preferences and votes (which we keep anonymous), plus data about how you use Whysaurus which we use to make it better. </li>
+                  <li>* We store data including content you make, preferences and votes (which we keep anonymous), plus data about how you use Whysaurus which we use to make it better. </li>
                   <li>* We use cookies to help authenticate that you are you. </li>
                   <li>* Our <a target="_blank" href="/privacyPolicy">Privacy Policy</a> is based on a template designed for GDPR and gives all users the rights required by the EU. If you have questions you can always <a target="_blank" href="/contact">contact us</a>. </li>
                 </ul>
@@ -182,6 +182,14 @@ class Home extends React.Component {
           </Popup>
         </span>;
       }
+    }
+  }
+
+  componentDidMount(){
+    const params = new URLSearchParams(this.props.location.search)
+    const focus = params.get("focusQuickCreate")
+    if (focus == "true") {
+      QuickCreateClaim.focus()
     }
   }
 

@@ -127,9 +127,6 @@
                     CONTRIBUTED TO
                 </button>
                 {% if viewingOwnPage %}                    
-                    <button class="tab" id="recentlyViewedTab">
-                    RECENTLY VIEWED
-                    </button>
                     <button class="tab selectedTab" id="notificationView" >
                         NOTIFICATIONS
                     </button>
@@ -147,11 +144,6 @@
         </div>
         {% if viewingOwnPage %}                            
             <script>var viewingOwnPage = true;</script>
-            <div id="recentlyViewedArea" class="tabbedArea">
-                {% for point in recentlyViewed %}
-                    {% include 'pointBox.html' %}            
-                {% endfor %}
-            </div>
             <div id="notificationsArea" class="tabbedArea">
                 {% for notification in notifications %}
                     {% include 'notificationMenu.html' %}            

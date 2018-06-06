@@ -15,8 +15,8 @@ The community has been jumping into your arguments:<br>
         <div>
         <!-- ReasonCode 1 = agree, ReasonCode 2 = ribbon -->
         {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} Someone {% endif %}
-            {{notification.notificationReasonText}}
+            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} A user {% endif %}
+            {{notification.notificationReasonText}}<br>
             <a href="http://www.whysaurus.com/claim/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
             (a claim you {{notification.followReason}})
         {% else %}
@@ -24,11 +24,11 @@ The community has been jumping into your arguments:<br>
                 {{notification.sourceUserFull.name}} and {{notification.additionalUserCount}} other{% if notification.additionalUserCount > 1 %}s{% endif %} {{notification.notificationReasonText}}
             {% else %}
                 {{notification.sourceUserFull.name}} {{notification.notificationReasonText}}
-            {% endif %}
-            <a href="http://www.whysaurus.com/claim/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
-            <span style="font-weight:400;	font-size:0.75em;	color:#5d5d5d;	line-height:120%;">
-              a claim you {{notification.followReason}}.
-            </span>
+            {% endif %}<br>
+            <a href="http://www.whysaurus.com/claim/{{notification.referencePoint.url}}{% if notification.notificationReasonCode == 3 %}?expanded=comments-{{notification.referencePoint.url}}{% endif %}">{{notification.referencePoint.title}}</a><br>
+            <!-- <span style="font-weight:400;	font-size:0.75em;	color:#5d5d5d;	line-height:120%;">
+                 an argument you {{notification.followReason}}.
+                 </span> -->
         {% endif %}
         </div>
         <div style="font-weight:400;	font-size:0.75em;	color:#bdbdbd;	line-height:120%; margin-top: 4px; margin-bottom: 10px;">

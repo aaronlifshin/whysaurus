@@ -767,9 +767,10 @@ a:visited {
     //float: left;
     margin-left: 6px;
     padding-left: 3px;
-    width: 270px;
+    width: 80%;
     margin-top: -1px;
     white-space: normal;
+    line-height: 145%;
 }
 
 .vertalignmiddle {
@@ -863,7 +864,7 @@ li:hover .Submenu_SmallText {
 When I was building the cardstack, placing this class on multiple cards gave me a
 JSON error related to displaying comments. But when I don't use this class, the error goes away... -JF */
 .pointCard {
-    margin-bottom: @spaceBtPointCards;
+    margin-bottom: @spaceBtPointCards - 4px; //subtracting 4px just for the hybrid classic/react profile page 
     position: relative;
     top: 8px;
     left: -5px;
@@ -881,7 +882,8 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 
 .pointCardHidden {
-        top:-2px;
+    top:-2px;
+    background-color: transparent;
 }
 
 .pointCardTop {
@@ -3699,6 +3701,9 @@ h2.idLinkOffset:before {
 }
 .infoToggle, .subInfoToggle, .infoNonToggle, li {
     margin-left:8px;
+}
+#notificationsArea {
+  background-color: white;
 }
 
 #notificationsArea>li>a {

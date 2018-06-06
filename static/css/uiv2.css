@@ -2139,6 +2139,13 @@ control-arrow control-prev {
   min-height: 960px;
   margin-top: 32px;
 }
+#searchResultsArea {
+  margin-top: 32px;
+}
+#searchResultsHeader {
+  margin-top: 16px;
+  margin-left: 27px;
+}
 .react-tabs__tab-list {
   margin-left: 15px;
   margin-bottom: 16px;

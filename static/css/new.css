@@ -602,9 +602,10 @@ a:visited {
   box-sizing: border-box;
   margin-left: 6px;
   padding-left: 3px;
-  width: 270px;
+  width: 80%;
   margin-top: -1px;
   white-space: normal;
+  line-height: 145%;
 }
 .vertalignmiddle {
   vertical-align: middle;
@@ -687,7 +688,7 @@ li:hover .Submenu_SmallText {
 When I was building the cardstack, placing this class on multiple cards gave me a
 JSON error related to displaying comments. But when I don't use this class, the error goes away... -JF */
 .pointCard {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   position: relative;
   top: 8px;
   left: -5px;
@@ -703,6 +704,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .pointCardHidden {
   top: -2px;
+  background-color: transparent;
 }
 .pointCardTop {
   word-wrap: break-word;
@@ -2907,6 +2909,9 @@ h2.idLinkOffset:before {
 .infoNonToggle,
 li {
   margin-left: 8px;
+}
+#notificationsArea {
+  background-color: white;
 }
 #notificationsArea > li > a {
   padding-left: 10px;

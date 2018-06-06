@@ -66,7 +66,11 @@ class NewComment(graphene.Mutation):
     comment = graphene.Field(Comment)
 
     def mutate(self, info, comment_data):
-        comment = CommentModel.create(comment_data.text, info.context.current_user, PointRootModel.getByUrlsafe(comment_data.pointID), comment_data.parentCommentID)
+        point_root = PointRootModel.getByUrlsafe(comment_data.pointID)
+        user = info.context.current_user
+        text = comment_data.text
+        comment = CommentModel.create(text, user, point_root, comment_data.parentCommentID)
+        PointModel.addNotificationTask(point_root.key, user.key, 3, text)
         return NewComment(comment=comment)
 
 class ArchiveComment(graphene.Mutation):
@@ -632,6 +636,15 @@ class Query(graphene.ObjectType):
         )
         searchResults = searchResultsFuture.get_result() if searchResultsFuture else []
         return searchResults
+
+    full_claim_search = graphene.Field(PagedPoints, q=graphene.String(required=True), cursor=graphene.String(), limit=graphene.Int())
+    def resolve_full_claim_search(self, info, **args):
+        searchResultsFuture = PointModel.search(
+            user=info.context.current_user,
+            searchTerms="\"" + (args['q'] or "") + "\""
+        )
+        searchResults = searchResultsFuture.get_result() if searchResultsFuture else []
+        return PagedPoints(points=searchResults, hasMore=False)
 
 class Mutation(graphene.ObjectType):
     delete = Delete.Field()

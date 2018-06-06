@@ -40,6 +40,7 @@
     "jquery.tabbable": "^1.0.1",
     "npm": "^6.0.1",
     "pretty-immutable": "^1.0.1",
+    "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-alert": "^4.0.4",
     "react-alert-template-basic": "^1.0.0",
@@ -54,7 +55,7 @@
     "react-router-dom": "^4.2.2",
     "react-tabs": "^2.2.1",
     "react-timeago": "^4.1.9",
-    "react-transition-group": "^1.2.1",
+    "react-transition-group": "^2.3.1",
     "reactjs-popup": "^1.1.1",
     "validator": "^10.2.0",
     "webpack": "^3.5.1"

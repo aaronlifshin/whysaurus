@@ -26,12 +26,12 @@ class ExpandedIndexProviderComponent extends React.Component {
   }
 
   expandedIndex2Param = (index) => {
-    return JSON.stringify(Object.keys(index).filter(key => index[key]))
+    return Object.keys(index).filter(key => index[key]).toString()
   }
 
   expandedParam2Index = (param) => {
     try {
-      return param ? JSON.parse(param).reduce((i, k) => {i[k] = true; return i}, {}) : {}
+      return param ? param.split(",").reduce((i, k) => {i[k] = true; return i}, {}) : {}
     } catch (err) {
       console.log("Error parsing URL expanded index:")
       console.log(param)

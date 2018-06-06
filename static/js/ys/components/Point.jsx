@@ -5,6 +5,7 @@ import { Form, Text } from 'react-form';
 import MediaQuery from 'react-responsive';
 import { CSSTransitionGroup } from 'react-transition-group' // ES6
 import AnimateOnChange from 'react-animate-on-change';
+import { withAlert } from "react-alert";
 
 import * as validations from '../validations';
 import * as schema from '../schema';
@@ -72,7 +73,7 @@ class Byline extends React.Component {
   }
 }
 
-class ShareIconArea extends React.Component {
+class ShareIconAreaComponent extends React.Component {
   constructor(props) {
     super(props)
     //this.handleClickNoProp = this.handleClickNoProp.bind(this);
@@ -113,10 +114,31 @@ class ShareIconArea extends React.Component {
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');
   }
-
+  
+  copyPointUrl = (e) => {
+    e.preventDefault();
+    var fullUrl = this.fullLinkUrl();
+    
+    navigator.clipboard.writeText(fullUrl).then(function() {
+      console.log('Copied URL to clipboard: ' + fullUrl);
+      //this.props.alert.show('Copied URL to clipboard: ' + fullUrl)
+    }, function(err) {
+      console.error('Couldnt copy URL to clipboard: ' + fullUrl, err);
+      //this.props.alert.show('URL (unable to copy): ' + fullUrl)
+    });
+    
+    //showAlert('Copied URL: ' + fullUrl);
+    this.props.alert.show('Copied URL: ' + fullUrl);
+  }
+  
+  fullLinkUrl = () => {
+    var url = this.props.point.url;
+    return "https://www.whysaurus.com/claim/" + url + "/";
+  }
+  
   render(){
     return <span className="shareIconArea">
-       <a href={"https://www.whysaurus.com/claim/" + this.props.point.url + "/"}>
+       <a onClick={this.copyPointUrl} href={this.fullLinkUrl()}>
         <div className="claimShareIcon fas fa-link"></div>
        </a>
       <a onClick={this.postOnFacebook}>
@@ -131,6 +153,10 @@ class ShareIconArea extends React.Component {
     </span>
   }
 }
+
+const ShareIconArea = compose(
+  withAlert,
+)(ShareIconAreaComponent)
 
 function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span><span className="number">{props.point.supportedCount}</span> Other Links</span>
@@ -969,7 +995,7 @@ class PointCardComponent extends React.Component {
                 </div>
               </div>
               <MediaQuery minWidth={config.extraextraSmallScreenThreshold}>
-                { this.expanded() && this.numSupportingPlusCounter() > 0 && <ShareIconArea point={point}/> }
+                { this.expanded() && this.numSupportingPlusCounter() > 0 && <ShareIconArea point={point} /> }
               </MediaQuery>
               <div className="evidenceRow row-fluid">
                 {this.evidence()}

@@ -114,11 +114,11 @@ class ShareIconAreaComponent extends React.Component {
     var webUrl = "http://twitter.com/intent/tweet?text="+encodeURIComponent(text);
     window.open(webUrl,'_blank');
   }
-  
+
   copyPointUrl = (e) => {
     e.preventDefault();
     var fullUrl = this.fullLinkUrl();
-    
+
     navigator.clipboard.writeText(fullUrl).then(function() {
       console.log('Copied URL to clipboard: ' + fullUrl);
       //this.props.alert.show('Copied URL to clipboard: ' + fullUrl)
@@ -126,16 +126,16 @@ class ShareIconAreaComponent extends React.Component {
       console.error('Couldnt copy URL to clipboard: ' + fullUrl, err);
       //this.props.alert.show('URL (unable to copy): ' + fullUrl)
     });
-    
+
     //showAlert('Copied URL: ' + fullUrl);
     this.props.alert.show('Copied URL: ' + fullUrl);
   }
-  
+
   fullLinkUrl = () => {
     var url = this.props.point.url;
     return "https://www.whysaurus.com/claim/" + url + "/";
   }
-  
+
   render(){
     return <span className="shareIconArea">
        <a onClick={this.copyPointUrl} href={this.fullLinkUrl()}>
@@ -456,15 +456,20 @@ class PointCardComponent extends React.Component {
     e.stopPropagation();
     this.setState({editingClaimImage: true})
   }
+
+  showComments = () => this.props.expansion.expand(this.point, this.commentPrefix())
+
+  hideComments = () => this.props.expansion.collapse(this.point, this.commentPrefix())
+
   handleClickEditComments(e) {
     e.stopPropagation();
     const expansion = this.props.expansion
     if (expansion.isExpanded(this.point, this.commentPrefix())) {
-      expansion.collapse(this.point, this.commentPrefix())
+      this.hideComments()
       ga('send', 'event', 'Comment', 'Hide Comments', this.point.url);
     }
     else {
-      expansion.expand(this.point, this.commentPrefix())
+      this.showComments()
       ga('send', 'event', 'Comment', 'Show Comments', this.point.url);
     }
   }
@@ -483,7 +488,7 @@ class PointCardComponent extends React.Component {
   }
   handleCloseComments(e) {
     e && e.stopPropagation()
-    this.setState({editingComments: false})
+    this.hideComments()
     ga('send', 'event', 'Comment', 'Hide Comments', this.point.url);
   }
 

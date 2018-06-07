@@ -39,7 +39,7 @@ class CommentComponent extends React.Component {
       <div className="byline"><a href={userUrl}>@{userName}</a> · <TimeAgo date={date + "Z"} minPeriod={300}/></div>
       <div className="commentText">{text}</div>
       {replies && replies.sort((a, b) => a.date > b.date).map(reply => <Comment key={reply.id} comment={reply}/>)}
-      {this.commentActions()}
+      {this.props.user && this.commentActions()}
     </div>
   }
 }
@@ -78,7 +78,7 @@ class CommentsListComponent extends React.Component {
     ga('send', 'event', 'Comment', 'Submit Comment', this.point.url);
     console.log('GA Comment Event Sent')
   }
-  
+
   newComment = () => {
     const {point, add} = this.props
     if (this.state.commenting) {
@@ -110,7 +110,7 @@ class CommentsListComponent extends React.Component {
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
       <div className="claimEditAreaNote">Discuss how to improve this claim.</div>
-      {this.newComment()}
+      {this.props.user && this.newComment()}
       <div className="commentsList">
         {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
       </div>
@@ -149,6 +149,13 @@ const CommentsList = compose(
                 refetchQueries: [{query: schema.Comments, variables: {pointID, showArchived: !!showArchived}}]})
     })
 
+  }),
+  graphql(schema.CurrentUserQuery, {
+    props: ({ownProps, data: {loading, currentUser, refetch}}) => ({
+      userLoading: loading,
+      user: currentUser,
+      refetchUser: refetch
+    })
   })
 )(CommentsListComponent)
 
@@ -165,7 +172,7 @@ export default class Comments extends React.Component {
   }
 
   render(){
-    return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea" >
+    return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea" onClick={e => e.stopPropagation()}>
       <CommentsList point={this.props.point} onCancel={this.props.onCancel}
                     showArchived={this.state.showArchived}
                     toggleArchived={this.toggleShowArchived}/>

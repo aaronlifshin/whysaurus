@@ -17,7 +17,7 @@ handlers:
 
 - url: /static/css
   static_dir: static/css
-  
+
 - url: /static/js
   static_dir: static/js
 
@@ -25,7 +25,7 @@ handlers:
   script: WhySaurus.app
   login: admin
   secure: always
-  
+
 - url: /admin
   script: WhySaurus.app
   secure: always
@@ -34,11 +34,11 @@ handlers:
   static_dir: gae_mini_profiler/static
 - url: /gae_mini_profiler/.*
   script: gae_mini_profiler.main.application
-  
+
 - url: /.*
   script: WhySaurus.app
   secure: always
-  
+
 
 
 libraries:
@@ -55,6 +55,11 @@ libraries:
   version: 1.2.3
 - name: webapp2
   version: latest
-  
+
 skip_files:
-- node_modules
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^.*/node_modules/.*$

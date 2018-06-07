@@ -12,14 +12,14 @@ Basic Setup Instructions:
 1. Clone
 2. Get `constants.py` from a collaborator and put it in the root directory of this project (the directory this file lives in)
 3. Follow steps 1-5 on https://cloud.google.com/appengine/docs/standard/python/download
-4. Install `less` 
+4. Install `less`
 - OSX: `brew install npm && npm install -g less`
 - OSX Alternative: SimpLESS, but have needed to apply this patch: https://gist.github.com/hlop/4951717
 - Windows: try [WinLESS](http://www.winless.org), and only compile the files listed in bin/compilelessc.sh, and set their output (by right clicking on the files) to /static/css.
 5. Run `bin/compilelessc.sh` to compile CSS resources
    For Linux just run `npm install -g less`
-6. `bin/run.sh` to deploy locally
-
+6. Set the data storage location for local development
+7. `bin/run.sh` or run in the Google App Engine Launcher and set to port 8081
 
 Detailed Setup Instructions:
 
@@ -38,7 +38,7 @@ Detailed Setup Instructions:
 * OSX Homebrew
   * Install (Homebrew)[https://brew.sh/]
   * Install npm: `brew install npm`
-  * Install less: `npm install -g less` 
+  * Install less: `npm install -g less`
 * SimpLESS:
   * Download and install SimpLESS: http://wearekiss.com/simpless
   * Open SimpLESS
@@ -52,12 +52,17 @@ Detailed Setup Instructions:
 5. Create a Whysaurus account using email (google and facebook don't work locally, currently)
 
 6. Make your local Whysaurus account an admin
-(Currently a different procedure than making a user admin on staging or production!) 
+(Currently a different procedure than making a user admin on staging or production!)
 * Go to the local console at http://localhost:8000/console
 * Select WhysaurusUser from the Entity Kind drop-down menu and click list entries
-* Go to Datastore Viewer, click on the key for your user
-* Set admin = true, click save
-* Flush memcache
-* Refresh browser
+* Click on the key of your new Whysaurus account
+* Change Admin to true
+* Scroll down to click save
+* Click Flush Memcache
 
-
+7. Data storage for local development environment
+* If you'd like to prevent your local database and search indexes from being truncated every few days, add the following option to the dev_appserver.py command in bin/run.sh:
+  * --storage_path=~/<directory_in_your_user_tree>
+* If at some point you need to clear your local database and/or search indexes, start dev_appserver.py with one or both of these options:
+  * --clear_datastore True
+  * --clear_search_indexes True

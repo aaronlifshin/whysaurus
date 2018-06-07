@@ -1,24 +1,23 @@
-import 'babel-polyfill';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Popup from "reactjs-popup";
-const { Map, List, Seq } = require('immutable');
-const prettyI = require("pretty-immutable");
-import gql from 'graphql-tag';
-import { graphql, compose } from 'react-apollo';
-import { PointList } from './components/PointList';
-import * as schema from './schema';
-import { Form, Text } from 'react-form';
-import { Carousel } from 'react-responsive-carousel';
-import MediaQuery from 'react-responsive';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import * as validations from './validations';
-import config from './config';
-import QuickCreateClaim from './components/QuickCreateClaim'
-import NewClaim from './components/NewClaim'
-import Spinner from './components/Spinner'
-import { CloseLinkX } from './components/common'
-import {withExpandedIndex} from './components/ExpandedIndex.jsx'
+import 'babel-polyfill'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Popup from "reactjs-popup"
+import gql from 'graphql-tag'
+import { Form, Text } from 'react-form'
+import { Carousel } from 'react-responsive-carousel'
+import MediaQuery from 'react-responsive'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import { graphql, compose } from 'react-apollo'
+
+import { PointList } from './PointList'
+import * as schema from '../schema'
+import * as validations from '../validations'
+import config from '../config';
+import QuickCreateClaim from './QuickCreateClaim'
+import NewClaim from './NewClaim'
+import Spinner from './Spinner'
+import { CloseLinkX } from './common'
+import {withExpandedIndex} from './ExpandedIndex'
 
 const EditorsPicks = graphql(schema.EditorsPicks, {
   props: ({ownProps, data: { loading, homePage }}) => ({
@@ -226,7 +225,7 @@ class Home extends React.Component {
   }
 }
 
-export const HomePage = compose(
+export default compose(
   withExpandedIndex,
   graphql(schema.CurrentUserQuery, {name: 'CurrentUserQuery'}),
   graphql(schema.HomePage),

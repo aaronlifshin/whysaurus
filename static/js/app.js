@@ -11,7 +11,7 @@ import { Provider as AlertProvider } from 'react-alert'
 import {PointListWithPoint} from './ys/components/PointList';
 import History from './ys/components/History';
 import SearchResults from './ys/components/SearchResults';
-import {HomePage} from './ys/home';
+import HomePage from './ys/components/HomePage';
 import {ExpandedIndexProvider} from './ys/components/ExpandedIndex'
 import QuickCreateClaim from './ys/components/QuickCreateClaim'
 

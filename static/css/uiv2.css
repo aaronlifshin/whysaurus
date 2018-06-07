@@ -350,7 +350,7 @@ li {
 }
 .dropdown-menu .divider {
   border: none;
-  height: 0.75px;
+  height: 1.5px;
 }
 .dropdownMenuCategory {
   padding-top: 2px;
@@ -1009,7 +1009,7 @@ li .iconWithStat {
   font-size: 90%;
 }
 .bylineOtherUsers {
-  margin-left: 8px;
+  margin-left: 6px;
 }
 .commentLink {
   position: relative;
@@ -1035,7 +1035,9 @@ li .iconWithStat {
   margin-bottom: 2px;
 }
 .bylineAuthor {
-  max-width: 112px;
+  display: inline-block;
+  vertical-align: bottom;
+  max-width: 144px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

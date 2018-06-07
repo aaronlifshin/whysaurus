@@ -526,7 +526,7 @@ li {
 
 .dropdown-menu .divider {
   border: none;
-  height: 0.75px; // this seems to render better on high-res retina-style displays
+  height: 1.5px; // this seems to render better on high-res retina-style displays
   //height: 2px;
  // margin: 0;
   //background-color: rgba(0,0,0,.09);
@@ -1377,7 +1377,7 @@ li .iconWithStat {
 
 .bylineOtherUsers {
     //margin-right: -6px; // not totally clear on why this is needed
-    margin-left: 8px;
+    margin-left: 6px;
 }
 
 .commentLink {
@@ -1414,7 +1414,9 @@ li .iconWithStat {
   //margin-right: 8px;
 }
 .bylineAuthor {
-  max-width: 112px; // need to leave room for number of contributors and number of comments
+  display: inline-block;
+  vertical-align: bottom;
+  max-width: 144px; // need to leave room for number of contributors and number of comments
   text-overflow: ellipsis;
   white-space: nowrap; // needed for text-overflow: ellipsis;
   overflow: hidden; // needed for text-overflow: ellipsis;

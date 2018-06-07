@@ -569,6 +569,11 @@ li .policySectionNumber {
   position: relative;
   vertical-align: top;
 }
+.evidenceBlockCounter,
+.evidenceBlockSupport,
+.evidenceBlockBoth {
+  margin-bottom: 24px;
+}
 .evidenceBlockCounter {
   margin-left: 6px;
 }

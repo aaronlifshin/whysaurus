@@ -67,7 +67,7 @@ class PointCard(AuthHandler):
         self.response.headers["Pragma"]="no-cache"
         self.response.headers["Cache-Control"]="no-cache, no-store, must-revalidate, pre-check=0, post-check=0"
         self.response.headers["Expires"]="Thu, 01 Dec 1994 16:00:00"
-        html = self.template_render('message.html' if 'message' in template_values else 'pointCard.html', template_values)
+        html = self.template_render('message.html' if 'message' in template_values else 'react.html', template_values)
         self.response.out.write(html)
 
     def get(self, pointURL):

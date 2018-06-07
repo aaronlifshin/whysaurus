@@ -11,7 +11,7 @@ import { Provider as AlertProvider } from 'react-alert'
 import {PointListWithPoint} from './ys/components/PointList';
 import History from './ys/components/History';
 import SearchResults from './ys/components/SearchResults';
-import {HomePage} from './ys/home';
+import HomePage from './ys/components/HomePage';
 import {ExpandedIndexProvider} from './ys/components/ExpandedIndex'
 import QuickCreateClaim from './ys/components/QuickCreateClaim'
 
@@ -59,13 +59,6 @@ class HistoryPage extends React.Component {
 class SearchPage extends React.Component {
   render(){
     const params = new URLSearchParams(this.props.location.search)
-    this.props.history.listen((location, action) => {
-      console.log(
-        `The current URL is ${location.pathname}${location.search}${location.hash}`
-      )
-      console.log(`The last navigation action was ${action}`)
-    })
-    console.log("rerendering searhc")
     return <div className="row pointPageContainer infiniteWidth">
       <div id="infiniteOrFiniteWidth" className="">
         <SearchResults q={params.get("q")}/>

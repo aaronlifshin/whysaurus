@@ -31,25 +31,17 @@ export const EvidenceType = Object.freeze({
 
 
 class Byline extends React.Component {
-  constructor(props) {
-    super(props)
-    this.handleClickNoProp = this.handleClickNoProp.bind(this);
-  }
 
-  handleClickNoProp(e) {
+  handleClickNoProp = (e) => {
     e.stopPropagation();
   }
 
-  get point() {
-    return this.props.point;
-  }
-
-  contributorsPlusAuthor() {
-    let contributorsPlusAuthor = this.point.numUsersContributed + 1
+  contributorsPlusAuthor = () => {
+    let contributorsPlusAuthor = this.props.point.numUsersContributed + 1
     return contributorsPlusAuthor;
   }
 
-  contributorsDropdown() {
+  contributorsDropdown = () => {
     return <span>
       { (this.contributorsPlusAuthor() > 1) && <span className="bylineOtherUsers dropdown">
           <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i></a>
@@ -66,7 +58,7 @@ class Byline extends React.Component {
     let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
     return <span className={topClass}>
       <span className="byline">
-        <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + this.point.authorURL}>@{this.point.authorName}</a>{this.contributorsDropdown()}
+        <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + this.props.point.authorURL}>@{this.props.point.authorName}</a>{this.contributorsDropdown()}
         </span>
       </span>
     </span>
@@ -74,11 +66,6 @@ class Byline extends React.Component {
 }
 
 class ShareIconAreaComponent extends React.Component {
-  constructor(props) {
-    super(props)
-    //this.handleClickNoProp = this.handleClickNoProp.bind(this);
-  }
-
   postOnFacebook = (e) => {
     var url = this.props.point.url;
     var pointTitle = this.props.point.title;
@@ -162,13 +149,6 @@ function SupportingCount(props){
   return <span className="cardTopRowItem"><span className="iconWithStat"><span className="fas fa-level-up-alt"></span></span><span className="number">{props.point.supportedCount}</span> Other Links</span>
 }
 
-/*
-        Code to check if current user is the point Author
-          {this.props.data.currentUser &&
-          this.props.data.currentUser.url == this.point.authorURL &&
-          <a onClick={this.handleClickEditClaimText} className="editLink" >Edit</a>}
-*/
-
 // thanks, https://stackoverflow.com/questions/29981236/how-do-you-hover-in-reactjs-onmouseleave-not-registered-during-fast-hover-ove
 const Hover = ({ onHover, children }) => (
     <span className="hover">
@@ -217,36 +197,25 @@ export const LinkedItemBullet = () => (
 )
 
 class PointComponent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {saving: false}
-    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
-  }
-
-  get point() {
-    return this.props.point;
-  }
-
-  handleToggleEvidence(e) {
+  handleToggleEvidence = (e) => {
     e.stopPropagation(); // prevents click from passing up to parent, which seems to break the functionality (even though they do the same thing)
-    console.log("PointComponent : toggle evidence!")
     this.props.onClick && this.props.onClick()
   }
 
-  titleUI() {
+  titleUI = () => {
     return <span className="pointTitle">
-      <a tabIndex="-1" onClick={this.handleToggleEvidence}>{this.point.title}</a>
+      <a tabIndex="-1" onClick={this.handleToggleEvidence}>{this.props.point.title}</a>
     </span>
   }
 
   // TODO: make it not animate when card redraws
   render(){
-    const score = this.point.pointValue
+    const score = this.props.point.pointValue
     return <div className="claimTextDisplay pointCardPaddingH pointCardPaddingHExtra">
       {this.titleUI()}
         <span className="scoreAnimContainerMax score">
           <span className="scoreAnimContainerReset">
-            <Hover onHover={<VoteStats point={this.point}/>}>
+            <Hover onHover={<VoteStats point={this.props.point}/>}>
              <span className="ux2ScoreInLine number">
                <span className={score < 0 ? "negativeScore": "positiveScore"}>
                 <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score.diff != 0}>
@@ -283,10 +252,6 @@ class Sources extends React.Component {
 
 
 class CommentsLink extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render(){
     return <span className="cardTopRowItem">
       <a className="commentLink easierToClickOn" onClick={this.props.onClick}>
@@ -340,19 +305,12 @@ class EvidenceLink extends React.Component {
 }
 
 class AgreeDisagreeComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    // This binding is necessary to make `this` work in the callback
-    this.handleClickAgree = this.handleClickAgree.bind(this);
-    this.handleClickDisagree = this.handleClickDisagree.bind(this);
-  }
-
   // move focus to the next point card, uses tabbable.js plugin
-  focusOnNextCard() {
+  focusOnNextCard = () => {
     setTimeout(function () { $.tabNext() } , 900)
   }
 
-  handleClickAgree(e) {
+  handleClickAgree = (e) => {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
     console.log("AgreeDisagreeComponent : agree");
     if (this.props.point.currentUserVote == 1) {
@@ -375,7 +333,7 @@ class AgreeDisagreeComponent extends React.Component {
     }
   }
 
-  handleClickDisagree(e) {
+  handleClickDisagree = (e) => {
     e.stopPropagation(); // prevents click from passing up to the parent, which would toggle expansion
     console.log("AgreeDisagreeComponent : disagree");
     if (this.props.point.currentUserVote == -1) {
@@ -398,13 +356,9 @@ class AgreeDisagreeComponent extends React.Component {
     }
   }
 
-  agreeClass(){
-    return "cardBottomAction agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
-  }
+  agreeClass = () => "cardBottomAction agree" + (this.props.point.currentUserVote == 1 ? " current-vote" : "")
 
-  disagreeClass(){
-    return "cardBottomAction disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
-  }
+  disagreeClass = () => "cardBottomAction disagree" + (this.props.point.currentUserVote == -1 ? " current-vote" : "")
 
   render(){
     return <span>
@@ -420,39 +374,24 @@ const AgreeDisagree = compose(
 )(AgreeDisagreeComponent)
 
 class PointCardComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      relevanceRater: false
-    }
-    this.handleSeeEvidence = this.handleSeeEvidence.bind(this);
-    this.handleHideEvidence = this.handleHideEvidence.bind(this);
-    this.handleToggleEvidence = this.handleToggleEvidence.bind(this);
-    this.handleRelClick = this.handleRelClick.bind(this);
-    this.handleClickEditClaimText = this.handleClickEditClaimText.bind(this);
-    this.handleClickEditClaimSources = this.handleClickEditClaimSources.bind(this);
-    this.handleClickEditClaimImage = this.handleClickEditClaimImage.bind(this);
-    this.handleClickEditComments = this.handleClickEditComments.bind(this);
-    this.handleCancelEditClaimText = this.handleCancelEditClaimText.bind(this);
-    this.handleCancelEditClaimSources = this.handleCancelEditClaimSources.bind(this);
-    this.handleCloseComments = this.handleCloseComments.bind(this);
-    this.handleClickNoProp = this.handleClickNoProp.bind(this);
+  state = {
+    relevanceRater: false
   }
-
-  // TODO: this simple function is also defined in the EditPointComponent component - can/should it be declared in a single place somehow?
-  handleClickNoProp(e) {
+  handleClickNoProp = (e) => {
     e.stopPropagation();
   }
 
-  handleClickEditClaimText(e) {
+  handleClickEditClaimText = (e) => {
     e.stopPropagation();
     this.setState({editingClaimText: true})
   }
-  handleClickEditClaimSources(e) {
+
+  handleClickEditClaimSources = (e) => {
     e.stopPropagation();
     this.setState({editingClaimSources: true})
   }
-  handleClickEditClaimImage(e) {
+
+  handleClickEditClaimImage = (e) => {
     e.stopPropagation();
     this.setState({editingClaimImage: true})
   }
@@ -461,7 +400,7 @@ class PointCardComponent extends React.Component {
 
   hideComments = () => this.props.expansion.collapse(this.point, this.commentPrefix())
 
-  handleClickEditComments(e) {
+  handleClickEditComments = (e) => {
     e.stopPropagation();
     const expansion = this.props.expansion
     if (expansion.isExpanded(this.point, this.commentPrefix())) {
@@ -474,11 +413,11 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  handleCancelEditClaimText(e) {
+  handleCancelEditClaimText = (e) => {
     e.stopPropagation()
     this.setState({editingClaimText: false})
   }
-  handleCancelEditClaimSources(e) {
+  handleCancelEditClaimSources = (e) => {
     e.stopPropagation()
     this.setState({editingClaimSources: false})
   }
@@ -486,42 +425,15 @@ class PointCardComponent extends React.Component {
     e && e.stopPropagation()
     this.setState({editingClaimImage: false})
   }
-  handleCloseComments(e) {
+  handleCloseComments = (e) => {
     e && e.stopPropagation()
     this.hideComments()
     ga('send', 'event', 'Comment', 'Hide Comments', this.point.url);
   }
 
-  editingSomething() {
+  editingSomething = () => {
     return (this.state.editingClaimText || this.state.editingClaimSources || this.state.editingClaimImage || this.state.editingComments)
   }
-
-   //Assign focus - WIP
-
-  // TO DO: make focus on the 1st point loaded (not the last one, as its currently doing) --> may need to happen in Evidence?
-  scroll() {
-    // this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-  }
-
-  componentDidMount() {
-    console.log("pointCard: componentDidMount()");
-    //this.cardToFocusOn.focus();
-
-    // scroll browser to unfolded claim
-    // TO DO: currently scrolling to get bottom unfolded claim into view, but maybe we should be scrolling to get the
-    //        unfolded claim into view and as many of its children as possible; wait till focus() is sorted before pursuing
-    // TO DO: Note that our two refs inputs are writing over eachother; we need to build a container to hold them and edit that as per https://github.com/react-native-training/react-native-elements/issues/392
-    // TO DO: "smooth" option not currently supported by Safari or iOS Safari
-    //this.cardToScrollTo.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-    //setTimeout( this.scroll() , 3600);
-  }
-/*
-  // uses tabbable.js plugin
-  focusOnNextCard() {
-    setTimeout(function () { $.tabNext() } , 1200);
-    console.log("pointCard : focusOnNextCard() ")
-  }
-*/
 
   get point() {
     return (this.props.data && this.props.data.point) ? this.props.data.point : this.props.point
@@ -540,20 +452,6 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  // TODO: the "root" case doesn't seem to be working -JF
-  evidenceTypeClass() {
-    switch (this.evidenceType){
-      case EvidenceType.ROOT:
-        return "root";
-      case EvidenceType.SUPPORT:
-        return "support";
-      case EvidenceType.COUNTER:
-        return "counter";
-      default:
-        return "";
-    }
-  }
-
   get relevance() {
     return this.props.link && this.props.link.relevance
   }
@@ -566,8 +464,22 @@ class PointCardComponent extends React.Component {
     return this.props.link && this.props.link.voteCount
   }
 
+  // TODO: the "root" case doesn't seem to be working -JF
+  evidenceTypeClass = () => {
+    switch (this.evidenceType){
+      case EvidenceType.ROOT:
+        return "root";
+      case EvidenceType.SUPPORT:
+        return "support";
+      case EvidenceType.COUNTER:
+        return "counter";
+      default:
+        return "";
+    }
+  }
+
   // toggle Relevance Rater
-  handleRelClick(e) {
+  handleRelClick = (e) => {
     //console.log("toggle relevance ui");
     e.stopPropagation();
     if (this.state.relevanceRater) {
@@ -587,7 +499,7 @@ class PointCardComponent extends React.Component {
     this.setState({ relevanceRater: false })
   }
 
-  relevanceCtrlUI() {
+  relevanceCtrlUI = () => {
     if (this.props.parentPoint) {
       return <span>
         { this.state.relevanceRater ?
@@ -602,7 +514,7 @@ class PointCardComponent extends React.Component {
 
   // TODO: make animation only occur on the claim being manipulated (rather than on all relevance)
   //  code with animation:  <AnimateOnChange baseClassName="relevanceDisplay" animationClassName="Score--bounce" animate={this.relevance != -1}>{this.relevance}%</AnimateOnChange>
-  relevanceLinkUI() {
+  relevanceLinkUI = () => {
     if (this.props.parentPoint) {
       let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
       return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
@@ -617,25 +529,25 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  expand(){
+  expand = () => {
     this.props.onExpand()
   }
 
-  collapse(){
+  collapse = () => {
     this.props.onCollapse()
   }
 
-  handleSeeEvidence() {
+  handleSeeEvidence = () => {
     this.expand();
   }
 
-  handleHideEvidence() {
+  handleHideEvidence = () => {
     this.collapse();
   }
 
   // When user clicks on the pointTitle or the stackGroup
   // Disabled when the claim is being edited
-  handleToggleEvidence() {
+  handleToggleEvidence = () => {
     if (!this.editingSomething()) {
       if (this.expanded()) {
         this.collapse()
@@ -645,22 +557,22 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  expanded() {
+  expanded = () => {
     return this.props.expanded && !this.props.expansionLoading;
   }
   // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
-  hasImage() {
+  hasImage = () => {
     //console.log("hasImage() : " + this.point.imageURL  )
     return this.point.imageURL
   }
-  displayImage() {
+  displayImage = () => {
     return (this.hasImage() && !this.state.editingClaimText && !this.state.editingClaimSources)
   }
-  image() {
+  image = () => {
   if (this.displayImage())
     return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img></div>
   }
-  textContentWidth() {
+  textContentWidth = () => {
     if (this.displayImage()) {
       return "span9"
     } else {
@@ -669,7 +581,7 @@ class PointCardComponent extends React.Component {
   }
 
   // TODO: this is declared as a local function in two different componants - should it be a global fuction or a const? -JF
-  numSupportingPlusCounter(){
+  numSupportingPlusCounter = () => {
     return ( this.point.numSupporting + this.point.numCounter)
   }
   hasSupportingEvidence = () => (
@@ -693,7 +605,7 @@ class PointCardComponent extends React.Component {
 
   relevantChildrenExpanded = (point) => this.childrenExpanded('relevantPoints')
 
-  evidence() {
+  evidence = () => {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
       let classesEvidenceBlock = `evidenceBlock ${!this.props.parentPoint ? "removeOneIndent" : ""}`
@@ -719,7 +631,7 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  renderDottedLinesEvidenceHeaderOrMargin() {
+  renderDottedLinesEvidenceHeaderOrMargin = () => {
     return <div className="dottedLinesSplitEvidenceHeader">
       <MediaQuery minWidth={config.singleColumnThreshold}>
         {this.hasSupportingEvidence() && this.hasCounterEvidence() &&
@@ -738,7 +650,7 @@ class PointCardComponent extends React.Component {
 
   commentPrefix = () => this.prefix() + 'comments-'
 
-  supportingPoints(){
+  supportingPoints = () => {
     if (this.expanded() && this.point.supportingPoints) {
       return <div className="evidenceBlockSupport evidenceBlockFirstColAlignment">
         <div className="evidenceList">
@@ -750,7 +662,7 @@ class PointCardComponent extends React.Component {
     }
   }
 
-  counterPoints(){
+  counterPoints = () => {
     if (this.expanded() && this.point.counterPoints){
       let evidenceBlockCounterClasses = `evidenceBlockCounter ${this.point.supportingPoints.edges.length < 1 ? "evidenceBlockFirstColAlignment" : ""}`
       return <div className={evidenceBlockCounterClasses}>
@@ -765,7 +677,7 @@ class PointCardComponent extends React.Component {
   }
 
   // TODO: if users ask about this, add <span className="sortBy">Sorted by Relevance</span>
-  relevantPoints(){
+  relevantPoints = () => {
     if (this.expanded() && this.point.relevantPoints){
       return <div className="evidenceBlockBoth evidenceBlockFirstColAlignment">
         <div className="evidenceList">
@@ -779,7 +691,7 @@ class PointCardComponent extends React.Component {
 
 
   // TODO: this is defined in the model point.py, so we could pass it up through GraphQL if that would be faster
-  linksRatio() {
+  linksRatio = () => {
     let sup = this.point.numSupporting
     let cou = this.point.numCounter
     if (sup == 0 && cou == 0)
@@ -796,7 +708,7 @@ class PointCardComponent extends React.Component {
   }
 
   // TODO: this could be removed by moving its logic into render() and its DOM into <Sources>
-  sources(){
+  sources = () => {
     if (this.point.sources){
       return <div className="row-fluid">
         <div className="pointText span12">
@@ -852,7 +764,7 @@ class PointCardComponent extends React.Component {
 
   // TODO: Make SupportingCount work and move out of admin
   // using ascii &#9776; instead of font-awesome "bars" icon bc its more elegant
-  moreMenu() {
+  moreMenu = () => {
     let moreMenuSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
     let moreMenuImageLabel = `${this.hasImage() ? "Edit Image" : "Add Image"}`
     return <span className="cardTopRowItem dropdown">
@@ -881,7 +793,7 @@ class PointCardComponent extends React.Component {
           <a onClick={this.handleClickEditClaimText} className="editLink" >Edit</a>}
 */
 
-  shareMenu() {
+  shareMenu = () => {
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickNoProp} className="shareMenuLink dropdown-toggle"  data-toggle="dropdown"><i className="fas fa-share-alt"></i></a>
       <ul id="" className="dropdown-menu dropdown-menu-with-caret shareMenu" role="menu" aria-labelledby="dropdownMenu">
@@ -894,7 +806,7 @@ class PointCardComponent extends React.Component {
     </span>
   }
 
- pointTextComponent() {
+ pointTextComponent = () => {
     const point = this.point;
     if (this.state.editingClaimText){
       return <EditPoint point={point} onCancel={this.handleCancelEditClaimText}/>
@@ -912,7 +824,6 @@ class PointCardComponent extends React.Component {
   }
 
 
-  // TODO: ref being used on the pointCard to grab it for focus assignment, though that's not fully implemented yet
   render(){
     if (this.state.deleting) {
       return <div className="progressStateFeedback"><Spinner />Deleting...</div>
@@ -920,7 +831,6 @@ class PointCardComponent extends React.Component {
       return <div>Unlinking...</div>
     } else if (this.point){
       const point = this.point;
-//      console.log("rendering " + point.url)
       let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`
       let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}  ${this.state.editingComments && "commentsMarginBottom"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
@@ -929,9 +839,6 @@ class PointCardComponent extends React.Component {
       let classesPointCard = `point-card ${!this.editingSomething() && "pointCardActive"} stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
-      //console.log("linksRatio " + this.linksRatio() )
-
-      //<div className="quickTestRect">Test rectangle!</div>
 
       return <div className={`listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'}`}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>

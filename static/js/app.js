@@ -59,13 +59,6 @@ class HistoryPage extends React.Component {
 class SearchPage extends React.Component {
   render(){
     const params = new URLSearchParams(this.props.location.search)
-    this.props.history.listen((location, action) => {
-      console.log(
-        `The current URL is ${location.pathname}${location.search}${location.hash}`
-      )
-      console.log(`The last navigation action was ${action}`)
-    })
-    console.log("rerendering searhc")
     return <div className="row pointPageContainer infiniteWidth">
       <div id="infiniteOrFiniteWidth" className="">
         <SearchResults q={params.get("q")}/>

@@ -62,6 +62,8 @@ class WhysaurusUser(auth_models.User):
     tokenExpires = ndb.DateTimeProperty()
     TERMS_AND_CONDITIONS_VERSION = 1
     hasConfirmedTermsVersion = ndb.IntegerProperty(default=0)
+    HEADER_WALKTHROUGH_VERSION = 2
+    hasConfirmedHeaderWalthroughVersion = ndb.IntegerProperty(default=0)
     lastLogin = ndb.DateTimeProperty()
     loginCount = ndb.IntegerProperty(default=0)
     loginAvgIntervalDays = ndb.FloatProperty(default=0)
@@ -122,6 +124,10 @@ class WhysaurusUser(auth_models.User):
     def hasConfirmedTermsAndConditions(self):
         return self.hasConfirmedTermsVersion >= self.TERMS_AND_CONDITIONS_VERSION
 
+    @property
+    def hasConfirmedHeaderWalkthrough(self):
+        return self.hasConfirmedHeaderWalthroughVersion >= self.HEADER_WALKTHROUGH_VERSION
+    
     def getActiveNotifications(self):
         self._notifications, self._newNotificationCount, \
             self._moreNotificationsExist = \
@@ -172,6 +178,29 @@ class WhysaurusUser(auth_models.User):
         self.hasConfirmedTermsVersion = self.TERMS_AND_CONDITIONS_VERSION
         self.put()
         logging.info('Terms Accepted: %s' % self.url)
+        return True
+    
+    def setConfirmedHeaderWalkthrough(self):
+        self.hasConfirmedHeaderWalthroughVersion = self.HEADER_WALKTHROUGH_VERSION
+        self.put()
+        logging.info('Header Walkthrough Confirmed: %s' % self.url)
+        return True
+        
+    def setUserFlag(self, flag, value):
+        logging.info('Set User (%s) Flag (%s): %d' % (self.url, flag, value))
+        if flag == 'confirmHeaderWalkthrough':
+            if value == 1:
+                self.setConfirmedHeaderWalkthrough()
+            else:
+                raise WhysaurusException('Invalid User (%s) Flag (%s) Value: %d' % (self.url, flag, value))
+        elif flag == 'setTermsAccepted':
+            if value == 1:
+                self.setTermsAccepted()
+            else:
+                raise WhysaurusException('Invalid User (%s) Flag (%s) Value: %d' % (self.url, flag, value))
+        else:
+            logging.error('Unknown User (%s) Flag To Handle: %s' % (self.url, flag))
+            raise WhysaurusException('Unknown User (%s) Flag To Handle: %s' % (self.url, flag))
         return True
 
     def setUserGaid(self, newGaid):

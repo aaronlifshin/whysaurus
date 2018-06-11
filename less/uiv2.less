@@ -2106,10 +2106,12 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   position: relative;
   left: 27px;
 }
-.imagePickerButton:hover{
-  transform: @buttonUX2ScaleDownOnClick * @buttonUX2Big;
-
+.imagePickerButton:active:enabled {
+  transform: scale(@buttonUX2ScaleDownOnClick * @buttonUX2Big);
 }
+
+
+
 
 .imageBigDisplay {
   margin-bottom: @marginVerticalForms * 2;

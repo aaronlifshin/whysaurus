@@ -1157,6 +1157,14 @@ li .iconWithStat {
 .sources {
   margin-bottom: 4px;
 }
+.sourceLabel {
+  max-width: 250px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: bottom;
+}
 a.source {
   font-size: 12px;
   color: #a9a9a9;
@@ -1176,6 +1184,7 @@ a.source:hover {
 }
 .editSourcesList .source {
   font-size: 17.008px;
+  display: inline-block;
 }
 .removeSourceLink {
   color: #cc0008;

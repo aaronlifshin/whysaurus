@@ -21,8 +21,13 @@ class EditSourceComponent extends React.Component {
     } else {
       const {id, url, name} = this.props.source
       return <div>
+          <a className="source" tabIndex="-1" target="_blank" href={url}>
+             <span className="iconSourcesSmall">
+              <span className="fas fa-book"></span>
+            </span>
+            <span className="sourceLabel">{name || url}</span>
+          </a>
           <a className="removeSourceLink easierToClickOn" onClick={() => this.deleteSource(id)}><CloseLinkX/></a>
-          <a className="source" tabIndex="-1" target="_blank" href={url}>{name || url}</a>
         </div>
     }
   }

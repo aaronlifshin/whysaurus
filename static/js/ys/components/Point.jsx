@@ -570,7 +570,9 @@ class PointCardComponent extends React.Component {
   }
   image = () => {
   if (this.displayImage())
-    return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img></div>
+    return  <div className="span3 pointCardImageContainer">
+        <img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img>
+      </div>
   }
   textContentWidth = () => {
     if (this.displayImage()) {

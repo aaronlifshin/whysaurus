@@ -1140,8 +1140,7 @@ li .iconWithStat {
   padding: 9px;
   padding-left: 0;
   width: 23%;
-  height: 100%;
-  position: absolute;
+  max-height: 100%;
   right: 0;
 }
 .pointCardImage {

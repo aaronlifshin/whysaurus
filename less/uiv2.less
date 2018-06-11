@@ -1343,9 +1343,20 @@ a:hover .perctSignSmall {
 
 // FUNCTIONALITY INSIDE CARDS
 
-.fullWidthContent {
+.claimContent {
+  //display: table-row;
+}
+
+.contentNoImage {
   //padding-right: 12px;
 }
+
+.contentWithImage {
+  display: table-cell;
+  width: 100%;
+} 
+
+
 
 .cardTopRow {
   font-size: @fontSizeTertiaryUX2;
@@ -1543,8 +1554,9 @@ li .iconWithStat {
     //-ms-flex: 1;  /* IE 10 */
   //background-color: blue;
   width: 23%;
-  max-height: 100%;
-  //position: absolute;
+  //max-height: 100%;
+  height: 100%;
+  position: absolute;
   right: 0;
 }
 
@@ -1721,6 +1733,9 @@ a.source {
 .commentsArea {
   //width: 100%;
   animation-name: commentsAreaReveal;
+  display: block;
+  position: relative;
+  z-index: 10;
 }
 
 

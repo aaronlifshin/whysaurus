@@ -285,14 +285,14 @@ class EvidenceLink extends React.Component {
         if (this.props.expansionLoading) {
           return <span className="cardBottomAction">Loading...</span>
         } else {
-          return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Evidence</a>
+          return <a className="cardBottomAction" onClick={this.handleClickHide}><MediaQuery minWidth={config.extraextraSmallScreenThreshold}>Hide </MediaQuery>Evidence</a>
         }
       } else {
-        return <a className="cardBottomAction seeEvidence" onClick={this.handleClickSee} onMouseOver={this.props.mouseOverPreload}>See Evidence</a>
+        return <a className="cardBottomAction" onClick={this.handleClickSee} onMouseOver={this.props.mouseOverPreload}><MediaQuery minWidth={config.extraextraSmallScreenThreshold}>See </MediaQuery>Evidence</a>
       }
     } else {
       if (this.props.expanded) {
-        return <a className="cardBottomAction hideEvidence" onClick={this.handleClickHide}>Hide Buttons</a>
+        return <a className="cardBottomAction" onClick={this.handleClickHide}>Hide Buttons</a>
       } else {
         return <a className="cardBottomAction" onClick={this.handleClickSee}>Add Evidence</a>
       }
@@ -815,6 +815,18 @@ class PointCardComponent extends React.Component {
     }
   }
 
+  
+  relevanceBottomLinkLabel = () => {
+    return <span>
+      <MediaQuery maxWidth={config.extraextraSmallScreenThreshold - 1 }>
+        Relv
+      </MediaQuery>
+      <MediaQuery minWidth={config.extraextraSmallScreenThreshold}>
+        Relevance
+      </MediaQuery>       
+      </span>
+  }                                                                     
+  
   preloadPoint = () => {
     console.log("preloading data for " + this.point.url)
     this.props.client && this.props.client.query({
@@ -823,6 +835,7 @@ class PointCardComponent extends React.Component {
     })
   }
 
+  
 
   render(){
     if (this.state.deleting) {
@@ -890,7 +903,7 @@ class PointCardComponent extends React.Component {
                                       <span className="cardBottomAction bottomActionDot">·</span>
                                       <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
                                       <span className={classesRelevanceDot}>·</span>
-                                      <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>Relevance</a>
+                                      <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>{this.relevanceBottomLinkLabel()}</a>
                                     </div>
                                   </div>
 

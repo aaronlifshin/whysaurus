@@ -1158,13 +1158,13 @@ li .iconWithStat {
 }
 .contentWithImage {
   display: inline-block;
-  width: 75%;
+  width: 78%;
 }
 .pointCardImageContainer {
   display: block;
   padding: 9px;
   padding-left: 0;
-  width: 25%;
+  width: 22%;
   height: 100%;
   position: absolute;
   right: 0;
@@ -2390,6 +2390,9 @@ body {
   }
 }
 @media (max-width: 640px) {
+  .hidden-smallWidthDisplays {
+    display: none !important;
+  }
   #signupDialog {
     width: unset;
   }

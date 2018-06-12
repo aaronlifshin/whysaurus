@@ -1564,7 +1564,7 @@ li .iconWithStat {
   display: inline-block;
   width: 100%;
 }
-@imageWidth: 25%;
+@imageWidth: 22%;
 .contentWithImage {
   display: inline-block;
   width: 100% - @imageWidth;
@@ -2972,6 +2972,7 @@ body  {
 // display utilities
 .hidden-wideDisplays { display: none !important; }
 .hidden-mediumWidthDisplays { display: inherit !important; }
+.hidden-smallWidthDisplays {  }
 @media (max-width: 979px) {
   .hidden-mediumWidthDisplays { display: none !important; }
   .hidden-wideDisplays { display: inherit !important; }
@@ -3214,6 +3215,7 @@ body  {
 
 @media (max-width: 640px) {
 
+  .hidden-smallWidthDisplays { display: none !important; }
 
   #signupDialog {
     width: unset;

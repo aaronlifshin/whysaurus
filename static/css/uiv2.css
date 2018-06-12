@@ -650,6 +650,7 @@ li .policySectionNumber {
 }
 .editAreaClose a:hover {
   color: #009dd6;
+  text-decoration: none;
 }
 .relevanceLinkArea {
   display: inline-block;

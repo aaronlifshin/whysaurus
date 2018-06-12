@@ -959,7 +959,7 @@ a.toggleLowRelClaims:hover {
   padding-right: 12px;
 }
 .pointCardPaddingHExtra {
-  padding-right: 16px;
+  padding-right: 24px;
 }
 .relExtraMarginBottom {
   margin-bottom: 8px;
@@ -1158,13 +1158,13 @@ li .iconWithStat {
 }
 .contentWithImage {
   display: inline-block;
-  width: 72%;
+  width: 75%;
 }
 .pointCardImageContainer {
   display: block;
   padding: 9px;
   padding-left: 0;
-  width: 28%;
+  width: 25%;
   height: 100%;
   position: absolute;
   right: 0;
@@ -1276,9 +1276,6 @@ a.source:hover {
 .point-card .disagree.current-vote {
   color: #cc0008;
   font-weight: bold;
-}
-.relevanceVoteBottomAction {
-  margin-right: 18px;
 }
 .evidenceBlockEmpty .addEvidenceButtonGrp {
   margin-top: 0;

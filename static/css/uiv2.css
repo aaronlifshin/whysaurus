@@ -1135,11 +1135,19 @@ li .iconWithStat {
   margin-bottom: 0;
   font-size: 14px;
 }
+.contentNoImage {
+  display: inline-block;
+  width: 100%;
+}
+.contentWithImage {
+  display: inline-block;
+  width: 72%;
+}
 .pointCardImageContainer {
   display: block;
   padding: 9px;
   padding-left: 0;
-  width: 23%;
+  width: 28%;
   height: 100%;
   position: absolute;
   right: 0;
@@ -1153,11 +1161,20 @@ li .iconWithStat {
 .sources {
   margin-bottom: 4px;
 }
+.sourceLabel {
+  max-width: 250px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: bottom;
+}
 a.source {
   font-size: 12px;
   color: #a9a9a9;
   display: block;
   margin-bottom: 4px;
+  max-width: 100%;
   width: max-content;
 }
 .source:hover,
@@ -1172,6 +1189,7 @@ a.source:hover {
 }
 .editSourcesList .source {
   font-size: 17.008px;
+  display: inline-block;
 }
 .removeSourceLink {
   color: #cc0008;
@@ -1294,6 +1312,9 @@ a.source:hover {
 }
 .commentsArea {
   animation-name: commentsAreaReveal;
+  display: block;
+  position: relative;
+  z-index: 10;
 }
 .commentsList {
   width: 100%;
@@ -1611,8 +1632,8 @@ a.buttonUX2:focus:enabled {
   position: relative;
   left: 27px;
 }
-.imagePickerButton:hover {
-  transform: 1.41375;
+.imagePickerButton:active:enabled {
+  transform: scale(1.41375);
 }
 .imageBigDisplay {
   margin-bottom: 20px;
@@ -2343,9 +2364,6 @@ body {
   .stackCard {
     width: 69vw;
   }
-  .pointCardImageContainer {
-    width: 25% !important;
-  }
 }
 @media (max-width: 640px) {
   #signupDialog {
@@ -2371,7 +2389,10 @@ body {
     width: 82vw;
   }
   .pointCardImageContainer {
-    width: 16% !important;
+    width: 18%;
+  }
+  .contentWithImage {
+    width: 82%;
   }
   .control-prev {
     margin-left: 10%;
@@ -2381,5 +2402,10 @@ body {
   }
   .policySectionCopy {
     width: 85%;
+  }
+}
+@media (max-width: 480px) {
+  .sourceLabel {
+    max-width: 144px;
   }
 }

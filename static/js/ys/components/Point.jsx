@@ -570,13 +570,15 @@ class PointCardComponent extends React.Component {
   }
   image = () => {
   if (this.displayImage())
-    return  <div className="span3 pointCardImageContainer"><img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img></div>
+    return  <div className="pointCardImageContainer">
+        <img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img>
+      </div>
   }
   textContentWidth = () => {
     if (this.displayImage()) {
-      return "span9"
+      return "contentWithImage"
     } else {
-      return "span12 fullWidthContent"
+      return "contentNoImage"
     }
   }
 
@@ -711,7 +713,7 @@ class PointCardComponent extends React.Component {
   sources = () => {
     if (this.point.sources){
       return <div className="row-fluid">
-        <div className="pointText span12">
+        <div className="pointText">
           <Sources point={this.point}/>
         </div>
       </div>
@@ -856,7 +858,7 @@ class PointCardComponent extends React.Component {
                             <div className="row-fluid inlineflexBox">
                             <div className={ this.textContentWidth()  }>
                                 <div className="row-fluid">
-                                  <div className="cardTopRow pointCardPaddingH span12">
+                                  <div className="cardTopRow pointCardPaddingH">
                                     { this.hasBadge() &&
                                       <div className="fullWidth">
                                         <span className="claimBadge">
@@ -874,7 +876,7 @@ class PointCardComponent extends React.Component {
 
 
                                  <div className="row-fluid">
-                                  <div className="pointText span12">
+                                  <div className="pointText">
                                     { this.pointTextComponent() }
                                   </div>
                                  </div>

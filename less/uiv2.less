@@ -1343,9 +1343,10 @@ a:hover .perctSignSmall {
 
 // FUNCTIONALITY INSIDE CARDS
 
-.fullWidthContent {
-  //padding-right: 12px;
+.claimContent {
+  //display: table-row;
 }
+
 
 .cardTopRow {
   font-size: @fontSizeTertiaryUX2;
@@ -1516,7 +1517,6 @@ li .iconWithStat {
   100% { transform:scale(1) }
 }
 
-
 .vote-stats {
     background: white;
     border: 1px grey solid;
@@ -1532,6 +1532,18 @@ li .iconWithStat {
   font-size: @fontSizeSecondaryUX2;
 }
 
+
+.contentNoImage {
+  display: inline-block;
+  width: 100%;
+}
+@imageWidth: 28%;
+.contentWithImage {
+  display: inline-block;
+  width: 100% - @imageWidth;
+  //display: table-cell;
+} 
+
 .pointCardImageContainer {
   display: block;
   padding: @cardPaddingTop;
@@ -1542,7 +1554,8 @@ li .iconWithStat {
   //-webkit-flex: 1; /* Safari 6.1+ */
     //-ms-flex: 1;  /* IE 10 */
   //background-color: blue;
-  width: 23%;
+  width: @imageWidth;
+  //max-height: 100%;
   height: 100%;
   position: absolute;
   right: 0;
@@ -1559,12 +1572,22 @@ li .iconWithStat {
   margin-bottom: 4px;
 }
 
+.sourceLabel {
+  max-width: 250px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
 a.source {
   font-size: @fontSizeTertiaryUX2;
   color: @smallGreyLinkColor; 
   display: block;
   margin-bottom: 4px;
-  width: max-content;
+  max-width: 100%;
+  width: max-content; // so the link doesn't expand across the whole div when the source label is brief 
 }
 
 .source:hover, a.source:hover {
@@ -1581,6 +1604,7 @@ a.source {
 
 .editSourcesList .source {
   font-size: @fontSizePointTitle;
+  display: inline-block;
 }
 
 
@@ -1721,6 +1745,9 @@ a.source {
 .commentsArea {
   //width: 100%;
   animation-name: commentsAreaReveal;
+  display: block;
+  position: relative;
+  z-index: 10;
 }
 
 
@@ -2106,10 +2133,12 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   position: relative;
   left: 27px;
 }
-.imagePickerButton:hover{
-  transform: @buttonUX2ScaleDownOnClick * @buttonUX2Big;
-
+.imagePickerButton:active:enabled {
+  transform: scale(@buttonUX2ScaleDownOnClick * @buttonUX2Big);
 }
+
+
+
 
 .imageBigDisplay {
   margin-bottom: @marginVerticalForms * 2;
@@ -3137,7 +3166,7 @@ body  {
   }
 
   .pointCardImageContainer {
-    width: 25% !important;
+    //width: 25% !important;
   }
 
 }
@@ -3174,9 +3203,14 @@ body  {
     width: @cardWidthExtraSmallScreens;
   }
   
+  @imageWidthNarrow: 18%;
   .pointCardImageContainer {
-    width: 16% !important;
+    width: @imageWidthNarrow;
   }
+  
+  .contentWithImage {
+    width: 100% - @imageWidthNarrow;
+  } 
   
   .control-prev {
     margin-left: 10%;
@@ -3189,4 +3223,10 @@ body  {
     width:85%;
   }
 
+}
+
+@media (max-width: 480px) {
+  .sourceLabel {
+    max-width: 144px;
+  }
 }

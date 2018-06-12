@@ -1347,18 +1347,6 @@ a:hover .perctSignSmall {
   //display: table-row;
 }
 
-.contentNoImage {
-  //padding-right: 12px;
-}
-
-.contentWithImage {
-  //display: table-cell;
-  //width: 100%;
-  width: 72%;
-  display: inline-block;
-} 
-
-
 
 .cardTopRow {
   font-size: @fontSizeTertiaryUX2;
@@ -1529,7 +1517,6 @@ li .iconWithStat {
   100% { transform:scale(1) }
 }
 
-
 .vote-stats {
     background: white;
     border: 1px grey solid;
@@ -1545,6 +1532,18 @@ li .iconWithStat {
   font-size: @fontSizeSecondaryUX2;
 }
 
+
+.contentNoImage {
+  display: inline-block;
+  width: 100%;
+}
+@imageWidth: 28%;
+.contentWithImage {
+  display: inline-block;
+  width: 100% - @imageWidth;
+  //display: table-cell;
+} 
+
 .pointCardImageContainer {
   display: block;
   padding: @cardPaddingTop;
@@ -1555,7 +1554,7 @@ li .iconWithStat {
   //-webkit-flex: 1; /* Safari 6.1+ */
     //-ms-flex: 1;  /* IE 10 */
   //background-color: blue;
-  width: 23%;
+  width: @imageWidth;
   //max-height: 100%;
   height: 100%;
   position: absolute;
@@ -1587,7 +1586,8 @@ a.source {
   color: @smallGreyLinkColor; 
   display: block;
   margin-bottom: 4px;
-  width: max-content;
+  max-width: 100%;
+  width: max-content; // so the link doesn't expand across the whole div when the source label is brief 
 }
 
 .source:hover, a.source:hover {
@@ -3166,7 +3166,7 @@ body  {
   }
 
   .pointCardImageContainer {
-    width: 25% !important;
+    //width: 25% !important;
   }
 
 }
@@ -3203,9 +3203,14 @@ body  {
     width: @cardWidthExtraSmallScreens;
   }
   
+  @imageWidthNarrow: 18%;
   .pointCardImageContainer {
-    width: 16% !important;
+    width: @imageWidthNarrow;
   }
+  
+  .contentWithImage {
+    width: 100% - @imageWidthNarrow;
+  } 
   
   .control-prev {
     margin-left: 10%;
@@ -3218,4 +3223,10 @@ body  {
     width:85%;
   }
 
+}
+
+@media (max-width: 480px) {
+  .sourceLabel {
+    max-width: 144px;
+  }
 }

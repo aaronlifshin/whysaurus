@@ -576,9 +576,9 @@ class PointCardComponent extends React.Component {
   }
   textContentWidth = () => {
     if (this.displayImage()) {
-      return "span9"
+      return "span9 contentWithImage"
     } else {
-      return "span12 fullWidthContent"
+      return "span12 contentNoImage"
     }
   }
 

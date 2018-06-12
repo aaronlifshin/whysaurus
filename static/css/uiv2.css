@@ -988,8 +988,8 @@ a.toggleLowRelClaims:hover {
 }
 */
 .contentWithImage {
-  display: table-cell;
-  width: 100%;
+  width: 72%;
+  display: inline-block;
 }
 .cardTopRow {
   font-size: 12px;

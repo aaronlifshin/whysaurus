@@ -868,7 +868,7 @@ class PointCardComponent extends React.Component {
                                     <Byline point={point}/>
                                     <CommentsLink point={point} onClick={this.handleClickEditComments}/>
                                     { this.moreMenu() }
-                                    <MediaQuery maxWidth={config.extraextraSmallScreenThreshold}>
+                                    <MediaQuery maxWidth={config.extraextraSmallScreenThreshold - 1 }>
                                       { this.expanded() && this.numSupportingPlusCounter() > 0 && this.shareMenu() }
                                     </MediaQuery>
                                   </div>
@@ -909,7 +909,7 @@ class PointCardComponent extends React.Component {
                 </div>
               </div>
               <MediaQuery minWidth={config.extraextraSmallScreenThreshold}>
-                { this.expanded() && this.numSupportingPlusCounter() > 0 && <ShareIconArea point={point} /> }
+                { this.expanded() && this.numSupportingPlusCounter() > 0 && !this.state.relevanceRater && <ShareIconArea point={point} /> }
               </MediaQuery>
               <div className="evidenceRow row-fluid">
                 {this.evidence()}

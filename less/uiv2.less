@@ -1891,7 +1891,7 @@ a.source {
 }
 
 .shareIconArea {
-  display: inline-block;
+  display: none; // revealed on .listedClaimAndShare:hover below
   position: relative;
   left: -9px;
   top: -6px;
@@ -1902,6 +1902,10 @@ a.source {
   animation-duration: @evidenceBlockRevealDuration * .6; // complete before evidence reveal so that the eye lands on the evidence
   animation-timing-function: ease;
   animation-iteration-count: 1;
+}
+
+.listedClaimAndShare:hover .shareIconArea {
+  display: inline-block;
 }
 
 a .claimShareIcon {

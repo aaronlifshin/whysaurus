@@ -1419,7 +1419,7 @@ a.source:hover {
   }
 }
 .shareIconArea {
-  display: inline-block;
+  display: none;
   position: relative;
   left: -9px;
   top: -6px;
@@ -1429,6 +1429,9 @@ a.source:hover {
   animation-duration: 0.216s;
   animation-timing-function: ease;
   animation-iteration-count: 1;
+}
+.listedClaimAndShare:hover .shareIconArea {
+  display: inline-block;
 }
 a .claimShareIcon {
   display: block;

@@ -855,62 +855,63 @@ class PointCardComponent extends React.Component {
 
       return <div className={`listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'}`}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-          <div className="relCtrlAndLinkAndStackCards">
-            <div className={classesListedClaim} tabIndex="-1" >
-              {this.relevanceCtrlUI()}
-               <div className="relLinkAndStackCards">
-                {this.relevanceLinkUI()}
-                <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
-                  <div className={classesStackCard1} tabIndex="-1">
-                    <div className={classesStackCard2} tabIndex="-1">
-                       <div className={classesStackCard3} tabIndex="-1">
-                          <div className={classesPointCard} tabIndex="-1">
-                            { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
-                            <div className="row-fluid inlineflexBox">
-                            <div className={ this.textContentWidth()  }>
-                                <div className="row-fluid">
-                                  <div className="cardTopRow pointCardPaddingH">
-                                    { this.hasBadge() &&
-                                      <div className="fullWidth">
-                                        <span className="claimBadge">
-                                          <span className="claimBadgeIcon fas fa-star"></span><span className="claimBadgeLabel">{this.props.badge}</span>
-                                        </span>
-                                      </div> }
-                                    <Byline point={point}/>
-                                    <CommentsLink point={point} onClick={this.handleClickEditComments}/>
-                                    { this.moreMenu() }
-                                    <MediaQuery maxWidth={config.extraextraSmallScreenThreshold - 1 }>
-                                      { this.expanded() && this.numSupportingPlusCounter() > 0 && this.shareMenu() }
-                                    </MediaQuery>
-                                  </div>
-                                 </div>
-
-
-                                 <div className="row-fluid">
-                                  <div className="pointText">
-                                    { this.pointTextComponent() }
-                                  </div>
-                                 </div>
-
-                                 { !this.state.editingClaimSources ? this.sources() : <EditSources point={point} onCancel={this.handleCancelEditClaimSources}/> }
-
+          <div className="listedClaimAndShare">
+            <div className="relCtrlAndLinkAndStackCards">
+              <div className={classesListedClaim} tabIndex="-1" >
+                {this.relevanceCtrlUI()}
+                 <div className="relLinkAndStackCards">
+                  {this.relevanceLinkUI()}
+                  <div className={classesStackCardGroup} tabIndex="0" onClick={this.handleToggleEvidence} ref={(input) => { this.cardToFocusOn = input;}}>
+                    <div className={classesStackCard1} tabIndex="-1">
+                      <div className={classesStackCard2} tabIndex="-1">
+                         <div className={classesStackCard3} tabIndex="-1">
+                            <div className={classesPointCard} tabIndex="-1">
+                              { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
+                              <div className="row-fluid inlineflexBox">
+                              <div className={ this.textContentWidth()  }>
                                   <div className="row-fluid">
-                                    <div className="cardBottomActionRow pointCardPaddingH" >
-                                      <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
-                                                        onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
-                                                        mouseOverPreload={this.preloadPoint}/>
-                                      </span>
-                                      <span className="cardBottomAction bottomActionDot">·</span>
-                                      <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
-                                      <span className={classesRelevanceDot}>·</span>
-                                      <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>{this.relevanceBottomLinkLabel()}</a>
+                                    <div className="cardTopRow pointCardPaddingH">
+                                      { this.hasBadge() &&
+                                        <div className="fullWidth">
+                                          <span className="claimBadge">
+                                            <span className="claimBadgeIcon fas fa-star"></span><span className="claimBadgeLabel">{this.props.badge}</span>
+                                          </span>
+                                        </div> }
+                                      <Byline point={point}/>
+                                      <CommentsLink point={point} onClick={this.handleClickEditComments}/>
+                                      { this.moreMenu() }
+                                      <MediaQuery maxWidth={config.extraextraSmallScreenThreshold - 1 }>
+                                        { this.expanded() && this.numSupportingPlusCounter() > 0 && this.shareMenu() }
+                                      </MediaQuery>
                                     </div>
-                                  </div>
+                                   </div>
 
-                               </div>
-                              {this.image()}
-                            </div>
-        { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} onCancel={this.handleCloseComments}/> }
+                                   <div className="row-fluid">
+                                    <div className="pointText">
+                                      { this.pointTextComponent() }
+                                    </div>
+                                   </div>
+
+                                   { !this.state.editingClaimSources ? this.sources() : <EditSources point={point} onCancel={this.handleCancelEditClaimSources}/> }
+
+                                    <div className="row-fluid">
+                                      <div className="cardBottomActionRow pointCardPaddingH" >
+                                        <span><EvidenceLink point={point} expanded={this.props.expanded} expansionLoading={this.props.expansionLoading}
+                                                          onSee={this.handleSeeEvidence} onHide={this.handleHideEvidence}
+                                                          mouseOverPreload={this.preloadPoint}/>
+                                        </span>
+                                        <span className="cardBottomAction bottomActionDot">·</span>
+                                        <span><AgreeDisagree point={point} parentPoint={this.props.parentPoint}/></span>
+                                        <span className={classesRelevanceDot}>·</span>
+                                        <a className={classesRelevanceBottomLink} onClick={this.handleRelClick}>{this.relevanceBottomLinkLabel()}</a>
+                                      </div>
+                                    </div>
+
+                                 </div>
+                                {this.image()}
+                              </div>
+                              { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} onCancel={this.handleCloseComments}/> }
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -918,10 +919,10 @@ class PointCardComponent extends React.Component {
                     </div>
                   </div>
                 </div>
+                <MediaQuery minWidth={config.extraextraSmallScreenThreshold}>
+                  { this.expanded() && !this.state.relevanceRater && <ShareIconArea point={point} /> }
+                </MediaQuery>
               </div>
-              <MediaQuery minWidth={config.extraextraSmallScreenThreshold}>
-                { this.expanded() && this.numSupportingPlusCounter() > 0 && !this.state.relevanceRater && <ShareIconArea point={point} /> }
-              </MediaQuery>
               <div className="evidenceRow row-fluid">
                 {this.evidence()}
               </div>

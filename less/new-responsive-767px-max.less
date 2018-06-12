@@ -351,9 +351,13 @@
 
     @loginDialogWidth: 400px;
     #loginDialog {
-      width: @loginDialogWidth;
+      //width: @loginDialogWidth;
       margin-left: auto;
       margin-right: auto;
+      width: 92vw;
+      position: absolute;
+      //top: -1px;
+      //left: -1px;
     }
     .signWithInButtons {
       width: auto;
@@ -361,9 +365,11 @@
       padding-right: 0;
       padding-bottom: 20px;
       padding-top: 8px;
+      margin: 0 auto; // center  horizontally
+      display: block;
     }
     [id^=signInWith] {
-      width: 90.5% !important;
+      width: -webkit-fill-available !important;
       text-align: center !important;
     }
     #signInWithEmail_Dlg {
@@ -373,11 +379,16 @@
       margin-right: 0;
       width: 100% !important;
     }    
-    .dialogVerticalLine {
-      display: none;
+    .loginDialogDividerLine {
+      //display: none;
+      height: 0;
+      width: 80%;
+      border-top-style: solid;
+      display: block;
+      margin: 0 auto;
     }
     .backToLoginArea {
-      max-width: 40%;
+      //max-width: 40%;
     }
     .returningUserSignIn {
       margin-left: 0;  
@@ -386,9 +397,12 @@
     .returningUsersHeading {
       text-align: center;
       padding-left: 0;
+      margin-top: 36px;
+      margin-bottom: 16px;
     }
     #login_userEmail, #login_userPassword {
       text-align: center;
+      width:  -webkit-fill-available;
     }
     #forgot_emailLoginDialog {
         //float: left;

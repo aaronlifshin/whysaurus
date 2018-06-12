@@ -233,7 +233,7 @@ a .blackLink:hover {
   z-index: 1060 !important;
 }
 
-@termsPopupWidth: 585px;
+@termsPopupWidth: 556px;
 #termsPopup {
   position: absolute;
   display: block;
@@ -248,26 +248,48 @@ a .blackLink:hover {
   padding-top: 24px;
   padding-bottom: 18px;
   padding-left: 32px;
-  padding-right: 24px;
+  padding-right: 32px;
 }
 .modal-body, .modal-footer {
   padding-top: 18px;
 }
+.modal-footer {
+  padding-bottom: 24px;
+}
+
+.modalHeadlineCopy {
+  display: inline-block;
+  width: max-content;
+}
 
 .modal-body.text-content {
   padding-left: 32px;
-  padding-right: 32px;
-  max-width: 500px;
+  padding-right: 72px;
+  margin-top: 6px;
+  //max-width: 500px;
 }
 .modalBodySignInWith {
   padding-right: 32px;
 }
 
-
-
 .modal-body.text-content li {
   margin-bottom: 16px;
 }
+
+#frm_signupDialog input, #frm_signupDialog textarea  {
+  //background-color: pink;
+  width: 308px;
+}
+
+
+
+
+.signInFooterItems {
+  display: block;
+  width: max-content;
+  float: right;
+}
+
 
 
 //////////////////////////////////////////////
@@ -895,6 +917,10 @@ li .policySectionNumber {
   color: @blue;
   text-decoration: none;
 }
+.modalCloseX {
+
+}
+
 
 .relevanceLinkArea {
   display: inline-block;
@@ -3128,6 +3154,10 @@ body  {
     //position: absolute;
   }
 
+  @frm_signupDialogOffset: 148px;
+  #frm_signupDialog input, #frm_signupDialog textarea {
+    width: ~"calc(100% - @{frm_signupDialogOffset})"; // subtract width of labels and padding
+  }
 
   .claimCreationFormFieldBlock {
     width: @cardWidthSmallScreens;
@@ -3171,6 +3201,16 @@ body  {
   }
 
 }
+
+
+@media (max-width: 675px) {
+  .signInFooterItems {
+    margin: 0 auto;
+    float: none;
+  }
+}
+
+
 @media (max-width: 640px) {
 
 
@@ -3179,7 +3219,7 @@ body  {
   }
   
   @buttonPaddingExtraSmallScreens: 9px;
-  .buttonUX2 {
+  .buttonUX2:not(#submit_emailLoginDialog, #submit_signupDialog) {
     padding-left: @buttonPaddingExtraSmallScreens;
     padding-right: @buttonPaddingExtraSmallScreens;
   }
@@ -3229,5 +3269,16 @@ body  {
 @media (max-width: 480px) {
   .sourceLabel {
     max-width: 144px;
+  }
+    @frm_signupDialogOffset: 148px;
+  #frm_signupDialog input, #frm_signupDialog textarea {
+    width: -webkit-fill-available;
+  }
+  
+  .backToLoginArea {
+    max-width: 174px;
+    height: 27px;
+    text-overflow: clip;
+    overflow: hidden;
   }
 }

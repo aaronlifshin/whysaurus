@@ -2522,7 +2522,7 @@ button#counter_addPointWhenNonZero {
    Login dialog stuff
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 
-@loginDialogWidth: 672px;
+@loginDialogWidth: 650px;
 #loginDialog {
     /* new custom width */
     width: @loginDialogWidth;
@@ -2598,8 +2598,11 @@ button#counter_addPointWhenNonZero {
 
 [id^=signInWith] a {
   line-height: 2em;
+}
+#signInWithFacebook_Dlg a, #signInWithGoogle_Dlg a {
   text-decoration: none;
 }
+
 
 [id^=signInWith]:hover {
         //-webkit-box-shadow: -1px 1px 10px rgba(50, 50, 50, 0.75);
@@ -2610,20 +2613,21 @@ button#counter_addPointWhenNonZero {
     transform: scale(.975);
 }
 
-.dialogVerticalLine {
+.loginDialogDividerLine {
     height: 171px;
     //margin-left: 8px;
     //margin-right: 8px;
     display: inline-block;
     vertical-align: top;
+    border-style: none;
     border-left-style: solid;
-    border-left-color: #bdbdbd;
-    border-left-width: 1px;
+    border-color: #d5d5d5;
+    border-width: 1px;
 }
 
 
 .returningUserSignIn {
-    //width: 200px;
+    width: 300px;
     //height: 200px;
     //color: pink;
     display: inline-block;
@@ -2643,6 +2647,7 @@ button#counter_addPointWhenNonZero {
   margin-top: -4px;
   padding-right: 0;
   padding-bottom: 16px;
+  padding-left: 0 !important;
   padding-right: 0 !important;
 }
 
@@ -2668,10 +2673,10 @@ button#counter_addPointWhenNonZero {
 
 #forgot_emailLoginDialog {
   margin-top: 7px;
-  margin-right: 8px;
+  margin-right: 24px;
   font-size: 15px;
   color: hsl(0, 0%, 59%);
-  float: right;
+  //float: right;
 }
 
 #cancel_emailLoginDialog {

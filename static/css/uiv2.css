@@ -136,11 +136,11 @@ a .blackLink:hover {
 #termsPopup {
   position: absolute;
   display: block;
-  width: 585px;
+  width: 556px;
   left: 50%;
   top: 10%;
-  margin-left: -292.5px;
-  margin-top: -292.5px;
+  margin-left: -278px;
+  margin-top: -278px;
 }
 .modal-header,
 .modal-body,
@@ -148,22 +148,38 @@ a .blackLink:hover {
   padding-top: 24px;
   padding-bottom: 18px;
   padding-left: 32px;
-  padding-right: 24px;
+  padding-right: 32px;
 }
 .modal-body,
 .modal-footer {
   padding-top: 18px;
 }
+.modal-footer {
+  padding-bottom: 24px;
+}
+.modalHeadlineCopy {
+  display: inline-block;
+  width: max-content;
+}
 .modal-body.text-content {
   padding-left: 32px;
-  padding-right: 32px;
-  max-width: 500px;
+  padding-right: 72px;
+  margin-top: 6px;
 }
 .modalBodySignInWith {
   padding-right: 32px;
 }
 .modal-body.text-content li {
   margin-bottom: 16px;
+}
+#frm_signupDialog input,
+#frm_signupDialog textarea {
+  width: 308px;
+}
+.signInFooterItems {
+  display: block;
+  width: max-content;
+  float: right;
 }
 .headerBGColorDefault {
   background: #F0F0F0;
@@ -2345,6 +2361,10 @@ body {
   .infiniteWidth {
     margin-left: 0;
   }
+  #frm_signupDialog input,
+  #frm_signupDialog textarea {
+    width: calc(100% - 148px);
+  }
   .claimCreationFormFieldBlock {
     width: 69vw;
   }
@@ -2366,11 +2386,17 @@ body {
     width: 69vw;
   }
 }
+@media (max-width: 675px) {
+  .signInFooterItems {
+    margin: 0 auto;
+    float: none;
+  }
+}
 @media (max-width: 640px) {
   #signupDialog {
     width: unset;
   }
-  .buttonUX2 {
+  .buttonUX2:not(#submit_emailLoginDialog, #submit_signupDialog) {
     padding-left: 9px;
     padding-right: 9px;
   }
@@ -2408,5 +2434,15 @@ body {
 @media (max-width: 480px) {
   .sourceLabel {
     max-width: 144px;
+  }
+  #frm_signupDialog input,
+  #frm_signupDialog textarea {
+    width: -webkit-fill-available;
+  }
+  .backToLoginArea {
+    max-width: 174px;
+    height: 27px;
+    text-overflow: clip;
+    overflow: hidden;
   }
 }

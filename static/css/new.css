@@ -1966,9 +1966,9 @@ button#counter_addPointWhenNonZero {
    +++++++++++++++++++++++++++++++++++++++++++++++ */
 #loginDialog {
   /* new custom width */
-  width: 672px;
+  width: 650px;
   /* must be half of the width, minus scrollbar on the left (30px) */
-  margin-left: -336px;
+  margin-left: -325px;
 }
 [id^=signInWith] {
   height: 2em;
@@ -2023,20 +2023,25 @@ button#counter_addPointWhenNonZero {
 }
 [id^=signInWith] a {
   line-height: 2em;
+}
+#signInWithFacebook_Dlg a,
+#signInWithGoogle_Dlg a {
   text-decoration: none;
 }
 [id^=signInWith]:active {
   transform: scale(0.975);
 }
-.dialogVerticalLine {
+.loginDialogDividerLine {
   height: 171px;
   display: inline-block;
   vertical-align: top;
+  border-style: none;
   border-left-style: solid;
-  border-left-color: #bdbdbd;
-  border-left-width: 1px;
+  border-color: #d5d5d5;
+  border-width: 1px;
 }
 .returningUserSignIn {
+  width: 300px;
   display: inline-block;
   vertical-align: top;
   margin-left: 30px;
@@ -2052,6 +2057,7 @@ button#counter_addPointWhenNonZero {
   margin-top: -4px;
   padding-right: 0;
   padding-bottom: 16px;
+  padding-left: 0 !important;
   padding-right: 0 !important;
 }
 #loginDialog .alert {
@@ -2070,10 +2076,9 @@ button#counter_addPointWhenNonZero {
 }
 #forgot_emailLoginDialog {
   margin-top: 7px;
-  margin-right: 8px;
+  margin-right: 24px;
   font-size: 15px;
   color: #969696;
-  float: right;
 }
 #cancel_emailLoginDialog {
   margin-left: 5px;
@@ -3253,9 +3258,10 @@ a.feedbackFooterLink {
 }
 @media (max-width: 675px) {
   #loginDialog {
-    width: 400px;
     margin-left: auto;
     margin-right: auto;
+    width: 92vw;
+    position: absolute;
   }
   .signWithInButtons {
     width: auto;
@@ -3263,9 +3269,11 @@ a.feedbackFooterLink {
     padding-right: 0;
     padding-bottom: 20px;
     padding-top: 8px;
+    margin: 0 auto;
+    display: block;
   }
   [id^=signInWith] {
-    width: 90.5% !important;
+    width: -webkit-fill-available !important;
     text-align: center !important;
   }
   #signInWithEmail_Dlg {
@@ -3275,11 +3283,12 @@ a.feedbackFooterLink {
     margin-right: 0;
     width: 100% !important;
   }
-  .dialogVerticalLine {
-    display: none;
-  }
-  .backToLoginArea {
-    max-width: 40%;
+  .loginDialogDividerLine {
+    height: 0;
+    width: 80%;
+    border-top-style: solid;
+    display: block;
+    margin: 0 auto;
   }
   .returningUserSignIn {
     margin-left: 0;
@@ -3288,10 +3297,13 @@ a.feedbackFooterLink {
   .returningUsersHeading {
     text-align: center;
     padding-left: 0;
+    margin-top: 36px;
+    margin-bottom: 16px;
   }
   #login_userEmail,
   #login_userPassword {
     text-align: center;
+    width: -webkit-fill-available;
   }
 }
 @media (max-width: 540px) {

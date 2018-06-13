@@ -866,7 +866,7 @@ li .policySectionNumber {
   margin-bottom: @stackMarginBottomBase;
 }
 .stackMarginBottom1 {
-  margin-bottom: @stackMarginBottomBase + @@stackMarginBottomInterval;
+  margin-bottom: @stackMarginBottomBase + @stackMarginBottomInterval;
 }
 .stackMarginBottom2 {
   margin-bottom: @stackMarginBottomBase + (@stackMarginBottomInterval * 2);
@@ -2610,9 +2610,10 @@ a:hover .arrowAddEvidenceButton {
 
 .dottedLineExpansionIndicator {
     height: calc(~"100% + 8px"); // TODO: set this more programmatically; eg calc(100% ~"-" @addEvidenceUI_marginV);
-    color: hsla(0, 0%, 80%, 1); // orange;
+    //color: hsla(0, 0%, 80%, 1); // orange;
+    opacity: 0.25;
     margin-left: -21px; // @cardStackWidth;
-    bottom: 42px;
+    bottom: 27px;
 }
 
 @dottedLineElbowIndent:  24px;

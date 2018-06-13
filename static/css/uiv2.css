@@ -1982,9 +1982,9 @@ a:hover .arrowAddEvidenceButton {
 }
 .dottedLineExpansionIndicator {
   height: calc(100% + 8px);
-  color: #cccccc;
+  opacity: 0.25;
   margin-left: -21px;
-  bottom: 42px;
+  bottom: 27px;
 }
 .dottedLineRelevanceLink {
   height: 32px;
@@ -2178,6 +2178,7 @@ control-arrow control-prev {
 .mainPageClaimCreationLabel {
   margin-left: 12px;
   font-size: 24px;
+  margin-bottom: 14px;
 }
 .claimCreationFormFieldBlock {
   display: inline-block;

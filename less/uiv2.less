@@ -1785,7 +1785,7 @@ a.source {
   animation-name: commentsAreaReveal;
   display: block;
   position: relative;
-  width: @cardWidth !important;
+  width: @cardWidth ;
   box-sizing: border-box;
   //z-index: 10;
   top: (-2 * @stackCardOffset) - @cardBorderWidth; // not sure why this needs its own unique equation
@@ -1854,12 +1854,15 @@ a.source {
 
 .claimEditArea {
   background-color: @editingAreaBG;
-  width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
-  //min-height: 64px; // sets height for the saving state with the spinner
   padding-top: @cardPaddingTop;
   padding-bottom: @cardPadding * 1.2;
   padding-left: @cardPadding;
   padding-right: @cardPadding;
+}
+
+.editClaimText, .editImage, .editSources {
+  width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
+  //min-height: 64px; // sets height for the saving state with the spinner
 }
 
 .claimEditAreaHeading {
@@ -3196,12 +3199,10 @@ body  {
   }
 
   .point-card {
-    //background-color: red;
     display: inline-block;
-    width: @cardWidthSmallScreens;
   }
 
-  .stackCard {
+  .stackCard, .commentsArea  {
     width: @cardWidthSmallScreens;
   }
   
@@ -3256,11 +3257,7 @@ body  {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px - 36px)"; // subtract width of button + an extra amount for the indent
   }
 
-  .stackCard {
-    width: @cardWidthExtraSmallScreens;
-  }
-  .point-card {
-  //background-color: red;
+  .stackCard, .commentsArea {
     width: @cardWidthExtraSmallScreens;
   }
   

@@ -1332,7 +1332,7 @@ a.source:hover {
   animation-name: commentsAreaReveal;
   display: block;
   position: relative;
-  width: 420px !important;
+  width: 420px;
   box-sizing: border-box;
   top: -7px;
   left: 15px;
@@ -1383,11 +1383,15 @@ a.source:hover {
 }
 .claimEditArea {
   background-color: #d5fcfa;
-  width: calc(99.9%);
   padding-top: 9px;
   padding-bottom: 18px;
   padding-left: 15px;
   padding-right: 15px;
+}
+.editClaimText,
+.editImage,
+.editSources {
+  width: calc(99.9%);
 }
 .claimEditAreaHeading {
   width: 100%;
@@ -2385,9 +2389,9 @@ body {
   }
   .point-card {
     display: inline-block;
-    width: 69vw;
   }
-  .stackCard {
+  .stackCard,
+  .commentsArea {
     width: 69vw;
   }
 }
@@ -2418,10 +2422,8 @@ body {
   .addEvidenceForm .claimCreationFormFieldBlock {
     width: calc(84vw - 48px - 36px);
   }
-  .stackCard {
-    width: 84vw;
-  }
-  .point-card {
+  .stackCard,
+  .commentsArea {
     width: 84vw;
   }
   .pointCardImageContainer {

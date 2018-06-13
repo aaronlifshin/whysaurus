@@ -178,12 +178,12 @@ a .blackLink:hover {
 
     &:hover &__no-hover {
         //opacity: 0;
-    text-decoration:underline;
+      text-decoration:underline;
     }
 
     &:hover &__hover {
-        opacity: 1;
-    transform: scale(1); // undos the scale(0) in &__hover below
+      opacity: 1;
+      transform: scale(1); // undos the scale(0) in &__hover below
     }
 
     &__hover {
@@ -828,6 +828,7 @@ li .policySectionNumber {
   //float: left; // was using this earlier... but doesn't seem necessary with the vertical-align
   //transition: 1s;
   //width: @cardListWidth;
+  //border-style: solid;
 }
 .evidenceBlockCounter, .evidenceBlockSupport, .evidenceBlockBoth {
   margin-bottom: 24px;
@@ -857,6 +858,27 @@ li .policySectionNumber {
 .listedClaimGroup {
   //margin-top: 1px;
 }
+
+
+@stackMarginBottomBase: 15px;
+@stackMarginBottomInterval: @stackCardOffset ;
+.stackMarginBottom0 {
+  margin-bottom: @stackMarginBottomBase;
+}
+.stackMarginBottom1 {
+  margin-bottom: @stackMarginBottomBase + @@stackMarginBottomInterval;
+}
+.stackMarginBottom2 {
+  margin-bottom: @stackMarginBottomBase + (@stackMarginBottomInterval * 2);
+}
+.stackMarginBottom3 {
+  margin-bottom: @stackMarginBottomBase + (@stackMarginBottomInterval * 3);
+}
+
+
+
+
+
 .listedClaim {
   //padding-left: 3px;
   padding-right: @cardPadding * 2;;
@@ -2855,7 +2877,7 @@ a:hover .arrowAddEvidenceButton {
 .mainPageClaimCreationLabel {
   margin-left: 12px;
   font-size: @fontSizeBigHeading;
-  //margin-bottom: 0px;
+  margin-bottom: 14px;
 }
 
 .claimCreationFormFieldBlock {
@@ -2922,7 +2944,7 @@ a:hover .arrowAddEvidenceButton {
 
 .react-tabs__tab-list {
   margin-left: @cardStackWidth;
-  margin-bottom: 16px;
+  margin-bottom: 21px;
 }
 
 
@@ -3157,7 +3179,7 @@ body  {
   }
 
   #mainContainer {
-    margin-left: -4px;
+    margin-left: 0px;
   }
 
   .feedbackFooterLink {

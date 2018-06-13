@@ -606,6 +606,18 @@ li .policySectionNumber {
 .evidenceList {
   margin-top: 10px;
 }
+.stackMarginBottom0 {
+  margin-bottom: 15px;
+}
+.stackMarginBottom1 {
+  margin-bottom: 18px;
+}
+.stackMarginBottom2 {
+  margin-bottom: 21px;
+}
+.stackMarginBottom3 {
+  margin-bottom: 24px;
+}
 .listedClaim {
   padding-right: 30px;
   outline-style: none;
@@ -2214,7 +2226,7 @@ control-arrow control-prev {
 }
 .react-tabs__tab-list {
   margin-left: 15px;
-  margin-bottom: 16px;
+  margin-bottom: 21px;
 }
 body {
   zoom: .9;
@@ -2362,7 +2374,7 @@ body {
     margin-right: 10%;
   }
   #mainContainer {
-    margin-left: -4px;
+    margin-left: 0px;
   }
   #explanationRowHomepage {
     width: 90vw;

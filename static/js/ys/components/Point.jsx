@@ -834,8 +834,17 @@ class PointCardComponent extends React.Component {
       variables: {url: this.point.url}
     })
   }
-
   
+  // Is there a crafty way to do this with concatenation?
+  stackMarginBottomClass = () => {
+    if (this.numSupportingPlusCounter() == 0)
+      return "stackMarginBottom0"
+    else if (this.numSupportingPlusCounter() == 1)
+      return "stackMarginBottom1"  
+    else if (this.numSupportingPlusCounter() == 2)
+      return "stackMarginBottom2"
+    else return "stackMarginBottom3"
+  }  
 
   render(){
     if (this.state.deleting) {
@@ -844,6 +853,7 @@ class PointCardComponent extends React.Component {
       return <div>Unlinking...</div>
     } else if (this.point){
       const point = this.point;
+      let classesListedClaimGroup = `listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'} ${!this.props.parentPoint && this.stackMarginBottomClass() }`
       let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`
       let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
@@ -853,7 +863,7 @@ class PointCardComponent extends React.Component {
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
 
-      return <div className={`listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'}`}>
+      return <div className={classesListedClaimGroup}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
           <div className="listedClaimAndShare">
             <div className="relCtrlAndLinkAndStackCards">

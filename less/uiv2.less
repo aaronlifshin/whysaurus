@@ -165,7 +165,11 @@ a .blackLink:hover {
 
 .inlineflexBox {
   display: inline-flex;
+  //display: table;
+  //display: block;
   vertical-align: top;
+  //background-image: url("//d38pzqn4b9ae2a.cloudfront.net/FullPoint-4AK0vn0RxCNMR2yoFEgw_Haifa_White_Tigers-9129-13.jpg");
+  //background-size: cover;
 }
 
 .hover {
@@ -233,7 +237,7 @@ a .blackLink:hover {
   z-index: 1060 !important;
 }
 
-@termsPopupWidth: 585px;
+@termsPopupWidth: 556px;
 #termsPopup {
   position: absolute;
   display: block;
@@ -248,26 +252,48 @@ a .blackLink:hover {
   padding-top: 24px;
   padding-bottom: 18px;
   padding-left: 32px;
-  padding-right: 24px;
+  padding-right: 32px;
 }
 .modal-body, .modal-footer {
   padding-top: 18px;
 }
+.modal-footer {
+  padding-bottom: 24px;
+}
+
+.modalHeadlineCopy {
+  display: inline-block;
+  width: max-content;
+}
 
 .modal-body.text-content {
   padding-left: 32px;
-  padding-right: 32px;
-  max-width: 500px;
+  padding-right: 72px;
+  margin-top: 6px;
+  //max-width: 500px;
 }
 .modalBodySignInWith {
   padding-right: 32px;
 }
 
-
-
 .modal-body.text-content li {
   margin-bottom: 16px;
 }
+
+#frm_signupDialog input, #frm_signupDialog textarea  {
+  //background-color: pink;
+  width: 308px;
+}
+
+
+
+
+.signInFooterItems {
+  display: block;
+  width: max-content;
+  float: right;
+}
+
 
 
 //////////////////////////////////////////////
@@ -893,7 +919,12 @@ li .policySectionNumber {
 }
 .editAreaClose a:hover {
   color: @blue;
+  text-decoration: none;
 }
+.modalCloseX {
+
+}
+
 
 .relevanceLinkArea {
   display: inline-block;
@@ -1273,7 +1304,7 @@ a:hover .perctSignSmall {
   padding-right: @cardPaddingRight;
 }
 .pointCardPaddingHExtra {
-  padding-right: @cardPaddingRight + 4px;
+  padding-right: @cardPaddingRight + 12px;
 }
 
 
@@ -1343,9 +1374,10 @@ a:hover .perctSignSmall {
 
 // FUNCTIONALITY INSIDE CARDS
 
-.fullWidthContent {
-  //padding-right: 12px;
+.claimContent {
+  //display: table-row;
 }
+
 
 .cardTopRow {
   font-size: @fontSizeTertiaryUX2;
@@ -1516,7 +1548,6 @@ li .iconWithStat {
   100% { transform:scale(1) }
 }
 
-
 .vote-stats {
     background: white;
     border: 1px grey solid;
@@ -1532,6 +1563,18 @@ li .iconWithStat {
   font-size: @fontSizeSecondaryUX2;
 }
 
+
+.contentNoImage {
+  display: inline-block;
+  width: 100%;
+}
+@imageWidth: 22%;
+.contentWithImage {
+  //display: inline-block;
+  display: table-cell;
+  width: 100% - @imageWidth;
+} 
+
 .pointCardImageContainer {
   display: block;
   padding: @cardPaddingTop;
@@ -1541,11 +1584,13 @@ li .iconWithStat {
 
   //-webkit-flex: 1; /* Safari 6.1+ */
     //-ms-flex: 1;  /* IE 10 */
-  //background-color: blue;
-  width: 23%;
+  //background-color: green;
+  width: @imageWidth;
+  //max-height: 100%;
   height: 100%;
   position: absolute;
   right: 0;
+  
 }
 
 .pointCardImage {
@@ -1557,6 +1602,16 @@ li .iconWithStat {
 
 .sources {
   margin-bottom: 4px;
+  //margin-top: 2px;
+}
+
+.sourceLabel {
+  max-width: 250px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: bottom;
 }
 
 a.source {
@@ -1564,7 +1619,8 @@ a.source {
   color: @smallGreyLinkColor; 
   display: block;
   margin-bottom: 4px;
-  width: max-content;
+  max-width: 100%;
+  width: max-content; // so the link doesn't expand across the whole div when the source label is brief 
 }
 
 .source:hover, a.source:hover {
@@ -1581,6 +1637,7 @@ a.source {
 
 .editSourcesList .source {
   font-size: @fontSizePointTitle;
+  display: inline-block;
 }
 
 
@@ -1679,7 +1736,7 @@ a.source {
 }
 
 .relevanceVoteBottomAction {
-  margin-right: 18px;
+  //margin-right: 18px;
 }
 
 .evidenceBlockEmpty .addEvidenceButtonGrp {
@@ -1721,9 +1778,15 @@ a.source {
 .commentsArea {
   //width: 100%;
   animation-name: commentsAreaReveal;
+  display: block;
+  position: relative;
+  width: @cardWidth !important;
+  box-sizing: border-box;
+  //z-index: 10;
+  top: (-2 * @stackCardOffset) - @cardBorderWidth; // not sure why this needs its own unique equation
+  left: @cardStackWidth;
+  margin-bottom: 32px;
 }
-
-
 
 
 
@@ -1819,9 +1882,7 @@ a.source {
   font-style: italic;
 }
 
-.commentsMarginBottom {
-  margin-bottom: 16px;
-}
+
 ///////////////////////////////////////////////////////
 
 .relCtrlAndLinkAndStackCards {
@@ -1836,7 +1897,7 @@ a.source {
 }
 
 .shareIconArea {
-  display: inline-block;
+  display: none; // revealed on .listedClaimAndShare:hover below
   position: relative;
   left: -9px;
   top: -6px;
@@ -1847,6 +1908,10 @@ a.source {
   animation-duration: @evidenceBlockRevealDuration * .6; // complete before evidence reveal so that the eye lands on the evidence
   animation-timing-function: ease;
   animation-iteration-count: 1;
+}
+
+.listedClaimAndShare:hover .shareIconArea {
+  display: inline-block;
 }
 
 a .claimShareIcon {
@@ -2106,10 +2171,12 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   position: relative;
   left: 27px;
 }
-.imagePickerButton:hover{
-  transform: @buttonUX2ScaleDownOnClick * @buttonUX2Big;
-
+.imagePickerButton:active:enabled {
+  transform: scale(@buttonUX2ScaleDownOnClick * @buttonUX2Big);
 }
+
+
+
 
 .imageBigDisplay {
   margin-bottom: @marginVerticalForms * 2;
@@ -2915,6 +2982,7 @@ body  {
 // display utilities
 .hidden-wideDisplays { display: none !important; }
 .hidden-mediumWidthDisplays { display: inherit !important; }
+.hidden-smallWidthDisplays {  }
 @media (max-width: 979px) {
   .hidden-mediumWidthDisplays { display: none !important; }
   .hidden-wideDisplays { display: inherit !important; }
@@ -3060,7 +3128,7 @@ body  {
   }
 
   #mainContainer {
-    margin-left: 2%;
+    margin-left: -4px;
   }
 
   .feedbackFooterLink {
@@ -3098,6 +3166,10 @@ body  {
     //position: absolute;
   }
 
+  @frm_signupDialogOffset: 148px;
+  #frm_signupDialog input, #frm_signupDialog textarea {
+    width: ~"calc(100% - @{frm_signupDialogOffset})"; // subtract width of labels and padding
+  }
 
   .claimCreationFormFieldBlock {
     width: @cardWidthSmallScreens;
@@ -3137,28 +3209,40 @@ body  {
   }
 
   .pointCardImageContainer {
-    width: 25% !important;
+    //width: 25% !important;
   }
 
 }
+
+
+@media (max-width: 675px) {
+  .signInFooterItems {
+    margin: 0 auto;
+    float: none;
+  }
+}
+
+@cardWidthExtraSmallScreens: 84vw;
+
 @media (max-width: 640px) {
 
-
+  .hidden-smallWidthDisplays { display: none !important; }
+ 
   #signupDialog {
     width: unset;
   }
   
   @buttonPaddingExtraSmallScreens: 9px;
-  .buttonUX2 {
+  .buttonUX2:not(#submit_emailLoginDialog, #submit_signupDialog) {
     padding-left: @buttonPaddingExtraSmallScreens;
     padding-right: @buttonPaddingExtraSmallScreens;
   }
 
   .buttonUX2RespIcon {
-    padding-right: @buttonPaddingExtraSmallScreens - 2px;
+    padding-right: 8px; // @buttonPaddingExtraSmallScreens - 2px;
+    padding-left: 8px; 
   }
 
-  @cardWidthExtraSmallScreens: 82vw;
   .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
   }
@@ -3174,9 +3258,14 @@ body  {
     width: @cardWidthExtraSmallScreens;
   }
   
+  @imageWidthNarrow: 18%;
   .pointCardImageContainer {
-    width: 16% !important;
+    width: @imageWidthNarrow;
   }
+  
+  .contentWithImage {
+    width: 100% - @imageWidthNarrow;
+  } 
   
   .control-prev {
     margin-left: 10%;
@@ -3190,3 +3279,38 @@ body  {
   }
 
 }
+
+@media (max-width: 480px) {
+
+  .sourceLabel {
+    max-width: 144px;
+  }
+    @frm_signupDialogOffset: 148px;
+  #frm_signupDialog input, #frm_signupDialog textarea {
+    width: -webkit-fill-available;
+  }
+  
+  .backToLoginArea {
+    max-width: 174px;
+    height: 27px;
+    text-overflow: clip;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 360px) {
+
+  #mainContainer {
+    margin-left: -6px;
+  }
+  
+  .claimCreationFormFieldBlock {
+    width: @cardWidthExtraSmallScreens;
+  }
+  
+  
+}
+
+
+
+

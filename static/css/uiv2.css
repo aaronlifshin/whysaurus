@@ -136,11 +136,11 @@ a .blackLink:hover {
 #termsPopup {
   position: absolute;
   display: block;
-  width: 585px;
+  width: 556px;
   left: 50%;
   top: 10%;
-  margin-left: -292.5px;
-  margin-top: -292.5px;
+  margin-left: -278px;
+  margin-top: -278px;
 }
 .modal-header,
 .modal-body,
@@ -148,22 +148,38 @@ a .blackLink:hover {
   padding-top: 24px;
   padding-bottom: 18px;
   padding-left: 32px;
-  padding-right: 24px;
+  padding-right: 32px;
 }
 .modal-body,
 .modal-footer {
   padding-top: 18px;
 }
+.modal-footer {
+  padding-bottom: 24px;
+}
+.modalHeadlineCopy {
+  display: inline-block;
+  width: max-content;
+}
 .modal-body.text-content {
   padding-left: 32px;
-  padding-right: 32px;
-  max-width: 500px;
+  padding-right: 72px;
+  margin-top: 6px;
 }
 .modalBodySignInWith {
   padding-right: 32px;
 }
 .modal-body.text-content li {
   margin-bottom: 16px;
+}
+#frm_signupDialog input,
+#frm_signupDialog textarea {
+  width: 308px;
+}
+.signInFooterItems {
+  display: block;
+  width: max-content;
+  float: right;
 }
 .headerBGColorDefault {
   background: #F0F0F0;
@@ -650,6 +666,7 @@ li .policySectionNumber {
 }
 .editAreaClose a:hover {
   color: #009dd6;
+  text-decoration: none;
 }
 .relevanceLinkArea {
   display: inline-block;
@@ -942,7 +959,7 @@ a.toggleLowRelClaims:hover {
   padding-right: 12px;
 }
 .pointCardPaddingHExtra {
-  padding-right: 16px;
+  padding-right: 24px;
 }
 .relExtraMarginBottom {
   margin-bottom: 8px;
@@ -1135,11 +1152,19 @@ li .iconWithStat {
   margin-bottom: 0;
   font-size: 14px;
 }
+.contentNoImage {
+  display: inline-block;
+  width: 100%;
+}
+.contentWithImage {
+  display: table-cell;
+  width: 78%;
+}
 .pointCardImageContainer {
   display: block;
   padding: 9px;
   padding-left: 0;
-  width: 23%;
+  width: 22%;
   height: 100%;
   position: absolute;
   right: 0;
@@ -1153,11 +1178,20 @@ li .iconWithStat {
 .sources {
   margin-bottom: 4px;
 }
+.sourceLabel {
+  max-width: 250px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: bottom;
+}
 a.source {
   font-size: 12px;
   color: #a9a9a9;
   display: block;
   margin-bottom: 4px;
+  max-width: 100%;
   width: max-content;
 }
 .source:hover,
@@ -1172,6 +1206,7 @@ a.source:hover {
 }
 .editSourcesList .source {
   font-size: 17.008px;
+  display: inline-block;
 }
 .removeSourceLink {
   color: #cc0008;
@@ -1242,9 +1277,6 @@ a.source:hover {
   color: #cc0008;
   font-weight: bold;
 }
-.relevanceVoteBottomAction {
-  margin-right: 18px;
-}
 .evidenceBlockEmpty .addEvidenceButtonGrp {
   margin-top: 0;
 }
@@ -1294,6 +1326,13 @@ a.source:hover {
 }
 .commentsArea {
   animation-name: commentsAreaReveal;
+  display: block;
+  position: relative;
+  width: 420px !important;
+  box-sizing: border-box;
+  top: -7px;
+  left: 15px;
+  margin-bottom: 32px;
 }
 .commentsList {
   width: 100%;
@@ -1366,9 +1405,6 @@ a.source:hover {
 .hotTip {
   font-style: italic;
 }
-.commentsMarginBottom {
-  margin-bottom: 16px;
-}
 .relCtrlAndLinkAndStackCards {
   display: inline-block;
 }
@@ -1384,7 +1420,7 @@ a.source:hover {
   }
 }
 .shareIconArea {
-  display: inline-block;
+  display: none;
   position: relative;
   left: -9px;
   top: -6px;
@@ -1394,6 +1430,9 @@ a.source:hover {
   animation-duration: 0.216s;
   animation-timing-function: ease;
   animation-iteration-count: 1;
+}
+.listedClaimAndShare:hover .shareIconArea {
+  display: inline-block;
 }
 a .claimShareIcon {
   display: block;
@@ -1611,8 +1650,8 @@ a.buttonUX2:focus:enabled {
   position: relative;
   left: 27px;
 }
-.imagePickerButton:hover {
-  transform: 1.41375;
+.imagePickerButton:active:enabled {
+  transform: scale(1.41375);
 }
 .imageBigDisplay {
   margin-bottom: 20px;
@@ -2303,7 +2342,7 @@ body {
     margin-right: 10%;
   }
   #mainContainer {
-    margin-left: 2%;
+    margin-left: -4px;
   }
   #explanationRowHomepage {
     width: 90vw;
@@ -2322,6 +2361,10 @@ body {
   }
   .infiniteWidth {
     margin-left: 0;
+  }
+  #frm_signupDialog input,
+  #frm_signupDialog textarea {
+    width: calc(100% - 148px);
   }
   .claimCreationFormFieldBlock {
     width: 69vw;
@@ -2343,35 +2386,45 @@ body {
   .stackCard {
     width: 69vw;
   }
-  .pointCardImageContainer {
-    width: 25% !important;
+}
+@media (max-width: 675px) {
+  .signInFooterItems {
+    margin: 0 auto;
+    float: none;
   }
 }
 @media (max-width: 640px) {
+  .hidden-smallWidthDisplays {
+    display: none !important;
+  }
   #signupDialog {
     width: unset;
   }
-  .buttonUX2 {
+  .buttonUX2:not(#submit_emailLoginDialog, #submit_signupDialog) {
     padding-left: 9px;
     padding-right: 9px;
   }
   .buttonUX2RespIcon {
-    padding-right: 7px;
+    padding-right: 8px;
+    padding-left: 8px;
   }
   .claimCreationFormFieldBlock {
-    width: calc(82vw - 48px);
+    width: calc(84vw - 48px);
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
-    width: calc(82vw - 48px - 36px);
+    width: calc(84vw - 48px - 36px);
   }
   .stackCard {
-    width: 82vw;
+    width: 84vw;
   }
   .point-card {
-    width: 82vw;
+    width: 84vw;
   }
   .pointCardImageContainer {
-    width: 16% !important;
+    width: 18%;
+  }
+  .contentWithImage {
+    width: 82%;
   }
   .control-prev {
     margin-left: 10%;
@@ -2381,5 +2434,28 @@ body {
   }
   .policySectionCopy {
     width: 85%;
+  }
+}
+@media (max-width: 480px) {
+  .sourceLabel {
+    max-width: 144px;
+  }
+  #frm_signupDialog input,
+  #frm_signupDialog textarea {
+    width: -webkit-fill-available;
+  }
+  .backToLoginArea {
+    max-width: 174px;
+    height: 27px;
+    text-overflow: clip;
+    overflow: hidden;
+  }
+}
+@media (max-width: 360px) {
+  #mainContainer {
+    margin-left: -6px;
+  }
+  .claimCreationFormFieldBlock {
+    width: 84vw;
   }
 }

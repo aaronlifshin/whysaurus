@@ -167,7 +167,7 @@ class Home extends React.Component {
               </div>
               <div className="modal-body text-content">
                 <p>Click "Agree" when you're ready —</p>
-                <p>Here are the key points:</p>
+                <p>The key points:</p>
                 <ul>
                   <li>* We store data including content you make, preferences and votes (which we keep anonymous), plus data about how you use Whysaurus which we use to make it better. </li>
                   <li>* We use cookies to help authenticate that you are you. </li>
@@ -175,7 +175,7 @@ class Home extends React.Component {
                 </ul>
               </div>
               <div className="modal-footer actions">
-                <button className="btn btn-primary pull-right" onClick={this.confirmTerms}>Agree</button>
+                <button className="btn btn-primary buttonUX2 pull-right" onClick={this.confirmTerms}>Agree</button>
               </div>
             </div>
           </Popup>

@@ -3122,7 +3122,7 @@ body  {
   }
 
   #mainContainer {
-    margin-left: 2%;
+    margin-left: -4px;
   }
 
   .feedbackFooterLink {
@@ -3216,11 +3216,12 @@ body  {
   }
 }
 
+@cardWidthExtraSmallScreens: 84vw;
 
 @media (max-width: 640px) {
 
   .hidden-smallWidthDisplays { display: none !important; }
-
+ 
   #signupDialog {
     width: unset;
   }
@@ -3232,10 +3233,10 @@ body  {
   }
 
   .buttonUX2RespIcon {
-    padding-right: @buttonPaddingExtraSmallScreens - 2px;
+    padding-right: 8px; // @buttonPaddingExtraSmallScreens - 2px;
+    padding-left: 8px; 
   }
 
-  @cardWidthExtraSmallScreens: 82vw;
   .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
   }
@@ -3274,6 +3275,7 @@ body  {
 }
 
 @media (max-width: 480px) {
+
   .sourceLabel {
     max-width: 144px;
   }
@@ -3289,3 +3291,20 @@ body  {
     overflow: hidden;
   }
 }
+
+@media (max-width: 360px) {
+
+  #mainContainer {
+    margin-left: -6px;
+  }
+  
+  .claimCreationFormFieldBlock {
+    width: @cardWidthExtraSmallScreens;
+  }
+  
+  
+}
+
+
+
+

@@ -2341,7 +2341,7 @@ body {
     margin-right: 10%;
   }
   #mainContainer {
-    margin-left: 2%;
+    margin-left: -4px;
   }
   #explanationRowHomepage {
     width: 90vw;
@@ -2404,19 +2404,20 @@ body {
     padding-right: 9px;
   }
   .buttonUX2RespIcon {
-    padding-right: 7px;
+    padding-right: 8px;
+    padding-left: 8px;
   }
   .claimCreationFormFieldBlock {
-    width: calc(82vw - 48px);
+    width: calc(84vw - 48px);
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
-    width: calc(82vw - 48px - 36px);
+    width: calc(84vw - 48px - 36px);
   }
   .stackCard {
-    width: 82vw;
+    width: 84vw;
   }
   .point-card {
-    width: 82vw;
+    width: 84vw;
   }
   .pointCardImageContainer {
     width: 18%;
@@ -2447,5 +2448,13 @@ body {
     height: 27px;
     text-overflow: clip;
     overflow: hidden;
+  }
+}
+@media (max-width: 360px) {
+  #mainContainer {
+    margin-left: -6px;
+  }
+  .claimCreationFormFieldBlock {
+    width: 84vw;
   }
 }

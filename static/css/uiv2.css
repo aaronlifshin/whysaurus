@@ -1420,7 +1420,7 @@ a.source:hover {
   }
 }
 .shareIconArea {
-  display: none;
+  display: inline-block;
   position: relative;
   left: -9px;
   top: -6px;

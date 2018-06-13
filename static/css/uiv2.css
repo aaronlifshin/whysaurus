@@ -1056,6 +1056,7 @@ li .iconWithStat {
 .commentLink {
   position: relative;
   top: 1px;
+  margin-left: 1px;
 }
 .claimBadge {
   display: block;
@@ -1104,13 +1105,13 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 6px;
+  right: 8px;
 }
 .moreMenuLink:hover {
   text-decoration: none;
 }
 .moreMenu {
-  left: -8px;
+  left: -14px;
 }
 .contributorsMenu {
   width: max-content;

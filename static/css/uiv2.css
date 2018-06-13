@@ -610,6 +610,10 @@ li .policySectionNumber {
   position: relative;
   left: -45px;
 }
+.addOneIndent {
+  position: relative;
+  left: 45px;
+}
 @keyframes relGroupHiliteReveal {
   0% {
     background-color: #fffbd100;

@@ -392,6 +392,10 @@ li {
   font-weight: 800;
   background-image: none;
 }
+.notificationMenuItem:hover,
+.notificationMenuItem:focus {
+  font-weight: normal !important;
+}
 .dropdown-menu-with-caret {
   top: 27px;
   left: -12px;
@@ -601,6 +605,18 @@ li .policySectionNumber {
 }
 .evidenceList {
   margin-top: 10px;
+}
+.stackMarginBottom0 {
+  margin-bottom: 15px;
+}
+.stackMarginBottom1 {
+  margin-bottom: 18px;
+}
+.stackMarginBottom2 {
+  margin-bottom: 21px;
+}
+.stackMarginBottom3 {
+  margin-bottom: 24px;
 }
 .listedClaim {
   padding-right: 30px;
@@ -1040,6 +1056,7 @@ li .iconWithStat {
 .commentLink {
   position: relative;
   top: 1px;
+  margin-left: 1px;
 }
 .claimBadge {
   display: block;
@@ -1088,13 +1105,13 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 6px;
+  right: 8px;
 }
 .moreMenuLink:hover {
   text-decoration: none;
 }
 .moreMenu {
-  left: -8px;
+  left: -14px;
 }
 .contributorsMenu {
   width: max-content;
@@ -1204,6 +1221,14 @@ a.source:hover {
 }
 .iconSourcesSmall {
   margin-right: 6px;
+  font-size: 13px;
+  top: 1px;
+  position: relative;
+  margin-left: 4px;
+}
+.iconWithStat .fa-book-open {
+  position: relative;
+  left: -1px;
 }
 .editSourcesList {
   margin-bottom: 15px;
@@ -1958,9 +1983,9 @@ a:hover .arrowAddEvidenceButton {
 }
 .dottedLineExpansionIndicator {
   height: calc(100% + 8px);
-  color: #cccccc;
+  opacity: 0.25;
   margin-left: -21px;
-  bottom: 42px;
+  bottom: 27px;
 }
 .dottedLineRelevanceLink {
   height: 32px;
@@ -2154,6 +2179,7 @@ control-arrow control-prev {
 .mainPageClaimCreationLabel {
   margin-left: 12px;
   font-size: 24px;
+  margin-bottom: 14px;
 }
 .claimCreationFormFieldBlock {
   display: inline-block;
@@ -2202,7 +2228,7 @@ control-arrow control-prev {
 }
 .react-tabs__tab-list {
   margin-left: 15px;
-  margin-bottom: 16px;
+  margin-bottom: 21px;
 }
 body {
   zoom: .9;
@@ -2350,7 +2376,7 @@ body {
     margin-right: 10%;
   }
   #mainContainer {
-    margin-left: -4px;
+    margin-left: 0px;
   }
   #explanationRowHomepage {
     width: 90vw;
@@ -2469,5 +2495,11 @@ body {
   }
   .claimCreationFormFieldBlock {
     width: 84vw;
+  }
+  .relVoteLink,
+  .relVoteLink button {
+    font-size: 20px;
+    padding-left: 8px;
+    padding-right: 6px;
   }
 }

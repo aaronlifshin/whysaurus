@@ -134,7 +134,7 @@ class ShareIconAreaComponent extends React.Component {
       <a onClick={this.sharePointOnTwitter}>
         <div className="claimShareIcon fab fa-twitter"></div>
       </a>
-      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Hi,%0D%0A%0D%0ACheck out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/claim/" + this.props.point.url + ""}>
+      <a target="_blank" href={"mailto:?subject=Someone is wrong on the internet&body=Check out this argument on Whysaurus and add your voice!%0D%0A%0D%0A" + this.props.point.title + ". %0D%0Ahttps://www.whysaurus.com/claim/" + this.props.point.url + ""}>
         <div className="claimShareIcon far fa-envelope"></div>
       </a>
     </span>
@@ -241,7 +241,7 @@ class Sources extends React.Component {
       {sources && sources.map(({name, url}, i) =>
         <a key={i} className="source" tabIndex="-1" target="_blank" href={url}>
           <span className="iconSourcesSmall">
-            <span className="fas fa-book"></span>
+            <span className="fas fa-book-open"></span>
           </span>
           <span className="sourceLabel">{name || url}</span>
         </a>
@@ -764,15 +764,16 @@ class PointCardComponent extends React.Component {
 
   // TODO: Make SupportingCount work and move out of admin
   // using ascii &#9776; instead of font-awesome "bars" icon bc its more elegant
+  //      <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
   moreMenu = () => {
     let moreMenuSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
     let moreMenuImageLabel = `${this.hasImage() ? "Edit Image" : "Add Image"}`
     return <span className="cardTopRowItem dropdown">
-      <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
+      <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown"><span className="fas fa-ellipsis-h"></span></a>
       <ul id="" className="moreMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
-        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book"></span></span>{moreMenuSourcesLabel}</a></li>
+        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book-open"></span></span>{moreMenuSourcesLabel}</a></li>
         <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat"><span className="far fa-image"></span></span>{moreMenuImageLabel}</a></li>
         <li className="divider"></li>
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
@@ -834,8 +835,17 @@ class PointCardComponent extends React.Component {
       variables: {url: this.point.url}
     })
   }
-
   
+  // Is there a crafty way to do this with concatenation?
+  stackMarginBottomClass = () => {
+    if (this.numSupportingPlusCounter() == 0)
+      return "stackMarginBottom0"
+    else if (this.numSupportingPlusCounter() == 1)
+      return "stackMarginBottom1"  
+    else if (this.numSupportingPlusCounter() == 2)
+      return "stackMarginBottom2"
+    else return "stackMarginBottom3"
+  }  
 
   render(){
     if (this.state.deleting) {
@@ -844,6 +854,7 @@ class PointCardComponent extends React.Component {
       return <div>Unlinking...</div>
     } else if (this.point){
       const point = this.point;
+      let classesListedClaimGroup = `listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'} ${!this.props.parentPoint && this.stackMarginBottomClass() }`
       let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`
       let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
@@ -853,7 +864,7 @@ class PointCardComponent extends React.Component {
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
 
-      return <div className={`listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'}`}>
+      return <div className={classesListedClaimGroup}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
           <div className="listedClaimAndShare">
             <div className="relCtrlAndLinkAndStackCards">

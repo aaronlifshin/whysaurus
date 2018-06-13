@@ -673,12 +673,12 @@ li .policySectionNumber {
   vertical-align: top;
   width: 45px;
   text-align: right;
-  -o-transition: 0.08s;
-  -ms-transition: 0.08s;
-  -moz-transition: 0.08s;
-  -webkit-transition: 0.08s;
+  -o-transition: 0.066s;
+  -ms-transition: 0.066s;
+  -moz-transition: 0.066s;
+  -webkit-transition: 0.066s;
   /* ...and now for the proper property */
-  transition: 0.08s;
+  transition: 0.066s;
   transform-origin: bottom center;
 }
 .relLinkAndStackCards {
@@ -1215,7 +1215,7 @@ a.source:hover {
 }
 .cardBottomAction {
   font-size: 14px;
-  color: #2e2e2e;
+  color: #a9a9a9;
   /*font-weight: bold;*/
   margin-right: 0;
   margin-top: 4px;
@@ -1230,7 +1230,7 @@ a.source:hover {
   margin-left: 8px;
 }
 .cardBottomAction:active {
-  transform: scale(1.0128) !important;
+  transform: scale(0.99168) !important;
 }
 /*.point-card:hover .cardBottomAction, .point-card:focus .cardBottomAction {
     color: @blue ;
@@ -1238,12 +1238,12 @@ a.source:hover {
 .cardBottomActionRow {
   margin-top: 14px;
   padding-bottom: 12px;
-  -o-transition: 0.08s;
-  -ms-transition: 0.08s;
-  -moz-transition: 0.08s;
-  -webkit-transition: 0.08s;
+  -o-transition: 0.066s;
+  -ms-transition: 0.066s;
+  -moz-transition: 0.066s;
+  -webkit-transition: 0.066s;
   /* ...and now for the proper property */
-  transition: 0.08s;
+  transition: 0.066s;
   transform-origin: bottom left;
 }
 .stackCardGroupActive:focus .cardBottomActionRow,
@@ -1259,7 +1259,7 @@ a.source:hover {
 }*/
 .pointCardActive:hover .cardBottomActionRow,
 .pointCardActive:hover .cardBottomAction {
-  transform: scale(1.055);
+  transform: scale(1.033);
   font-weight: bold;
   color: #009dd6;
 }
@@ -1624,7 +1624,7 @@ a.buttonUX2:focus:enabled {
   text-decoration: none !important;
   transform: scale(1.025);
   transform-origin: top left;
-  transition: 0.08s;
+  transition: 0.066s;
   background-color: black;
 }
 .addEvidenceButtonGrp:hover .buttonUX2Red {
@@ -2026,23 +2026,23 @@ a:hover .arrowAddEvidenceButton {
 .transitionDashedLine {
   transform: scaleY(2);
   transform-origin: bottom;
-  transition: 0.08s;
+  transition: 0.066s;
 }
 .addEvidenceUI {
   margin-bottom: 88px;
   width: fit-content;
 }
 .addEvidenceUI:hover .arrowStemEvidence:not(.arrowStemEvidenceShort) {
-  transition: 0.0528s;
+  transition: 0.04356s;
   height: 123px;
 }
 .addEvidenceUI:hover .verticalOffsetForLongEvidenceArrow {
   top: -62px;
-  transition: 0.0528s;
+  transition: 0.04356s;
 }
 .addEvidenceUI:hover {
   margin-bottom: 71px;
-  transition: 0.0528s;
+  transition: 0.04356s;
 }
 .evidenceBlockEmpty .addEvidenceUI:hover {
   margin-bottom: 88px;

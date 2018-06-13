@@ -2384,7 +2384,7 @@ body {
     width: 159vw;
   }
   .relGroupHilite {
-    width: 88vw;
+    width: 77vw;
     max-width: unset;
   }
   .point-card {
@@ -2426,6 +2426,9 @@ body {
   .commentsArea {
     width: 84vw;
   }
+  .relGroupHilite {
+    width: 92vw;
+  }
   .pointCardImageContainer {
     width: 18%;
   }
@@ -2455,6 +2458,9 @@ body {
     height: 27px;
     text-overflow: clip;
     overflow: hidden;
+  }
+  .relGroupHilite {
+    width: 100vw;
   }
 }
 @media (max-width: 360px) {

@@ -2988,6 +2988,14 @@ body  {
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 
+
+@cardWidthSmallScreens: 69vw;
+@cardWidthExtraSmallScreens: 84vw;
+@relWidthSmallScreenOffset: 8vw;
+@headerMarginNarrow: 12px;
+
+
+
 // display utilities
 .hidden-wideDisplays { display: none !important; }
 .hidden-mediumWidthDisplays { display: inherit !important; }
@@ -3026,7 +3034,6 @@ body  {
   }
 }
 
-@headerMarginNarrow: 12px;
 
 
 @media (max-width: 979px) and (min-width: 767.01px) {
@@ -3074,8 +3081,7 @@ body  {
 
 @media (max-width: 767px) {
 
- @cardWidthSmallScreens: 69vw;
-
+ 
   body {
     padding-left:10px;
   }
@@ -3169,7 +3175,6 @@ body  {
     margin-left: 0;
   }
 
-
   .container {
     //left: 10px;
     //position: absolute;
@@ -3194,7 +3199,7 @@ body  {
   }
 
   .relGroupHilite {
-    width: 88vw;
+    width: @cardWidthSmallScreens + @relWidthSmallScreenOffset;
     max-width: unset;
   }
 
@@ -3229,7 +3234,6 @@ body  {
   }
 }
 
-@cardWidthExtraSmallScreens: 84vw;
 
 @media (max-width: 640px) {
 
@@ -3259,6 +3263,10 @@ body  {
 
   .stackCard, .commentsArea {
     width: @cardWidthExtraSmallScreens;
+  }
+  
+  .relGroupHilite {
+    width: @cardWidthExtraSmallScreens + @relWidthSmallScreenOffset;
   }
   
   @imageWidthNarrow: 18%;
@@ -3299,6 +3307,11 @@ body  {
     text-overflow: clip;
     overflow: hidden;
   }
+  
+  .relGroupHilite {
+    width: 100vw; // not sure why this is needed
+  }
+  
 }
 
 @media (max-width: 360px) {

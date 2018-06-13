@@ -1157,7 +1157,7 @@ li .iconWithStat {
   width: 100%;
 }
 .contentWithImage {
-  display: inline-block;
+  display: table-cell;
   width: 78%;
 }
 .pointCardImageContainer {
@@ -1328,7 +1328,11 @@ a.source:hover {
   animation-name: commentsAreaReveal;
   display: block;
   position: relative;
-  z-index: 10;
+  width: 420px !important;
+  box-sizing: border-box;
+  top: -7px;
+  left: 15px;
+  margin-bottom: 32px;
 }
 .commentsList {
   width: 100%;
@@ -1400,9 +1404,6 @@ a.source:hover {
 }
 .hotTip {
   font-style: italic;
-}
-.commentsMarginBottom {
-  margin-bottom: 16px;
 }
 .relCtrlAndLinkAndStackCards {
   display: inline-block;

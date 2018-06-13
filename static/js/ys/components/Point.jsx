@@ -845,7 +845,7 @@ class PointCardComponent extends React.Component {
     } else if (this.point){
       const point = this.point;
       let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`
-      let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}  ${this.state.editingComments && "commentsMarginBottom"}`
+      let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
       let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
       let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
@@ -909,9 +909,8 @@ class PointCardComponent extends React.Component {
 
                                  </div>
                                 {this.image()}
-                              </div>
-                              { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} onCancel={this.handleCloseComments}/> }
-                              </div>
+                              </div>                             
+                              </div>                           
                             </div>
                           </div>
                         </div>
@@ -923,6 +922,7 @@ class PointCardComponent extends React.Component {
                   { this.expanded() && !this.state.relevanceRater && <ShareIconArea point={point} /> }
                 </MediaQuery>
               </div>
+              { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} onCancel={this.handleCloseComments}/> }
               <div className="evidenceRow row-fluid">
                 {this.evidence()}
               </div>

@@ -165,7 +165,11 @@ a .blackLink:hover {
 
 .inlineflexBox {
   display: inline-flex;
+  //display: table;
+  //display: block;
   vertical-align: top;
+  //background-image: url("//d38pzqn4b9ae2a.cloudfront.net/FullPoint-4AK0vn0RxCNMR2yoFEgw_Haifa_White_Tigers-9129-13.jpg");
+  //background-size: cover;
 }
 
 .hover {
@@ -1566,9 +1570,9 @@ li .iconWithStat {
 }
 @imageWidth: 22%;
 .contentWithImage {
-  display: inline-block;
+  //display: inline-block;
+  display: table-cell;
   width: 100% - @imageWidth;
-  //display: table-cell;
 } 
 
 .pointCardImageContainer {
@@ -1580,12 +1584,13 @@ li .iconWithStat {
 
   //-webkit-flex: 1; /* Safari 6.1+ */
     //-ms-flex: 1;  /* IE 10 */
-  //background-color: blue;
+  //background-color: green;
   width: @imageWidth;
   //max-height: 100%;
   height: 100%;
   position: absolute;
   right: 0;
+  
 }
 
 .pointCardImage {
@@ -1775,10 +1780,13 @@ a.source {
   animation-name: commentsAreaReveal;
   display: block;
   position: relative;
-  z-index: 10;
+  width: @cardWidth !important;
+  box-sizing: border-box;
+  //z-index: 10;
+  top: (-2 * @stackCardOffset) - @cardBorderWidth; // not sure why this needs its own unique equation
+  left: @cardStackWidth;
+  margin-bottom: 32px;
 }
-
-
 
 
 
@@ -1874,9 +1882,7 @@ a.source {
   font-style: italic;
 }
 
-.commentsMarginBottom {
-  margin-bottom: 16px;
-}
+
 ///////////////////////////////////////////////////////
 
 .relCtrlAndLinkAndStackCards {

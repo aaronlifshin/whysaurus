@@ -172,10 +172,14 @@ export default class Comments extends React.Component {
   }
 
   render(){
-    return <div className="row-fluid claimEditArea pointCardPaddingH commentsArea" onClick={e => e.stopPropagation()}>
-      <CommentsList point={this.props.point} onCancel={this.props.onCancel}
-                    showArchived={this.state.showArchived}
-                    toggleArchived={this.toggleShowArchived}/>
+    let classesCommentsIndent = `${this.props.parentPoint && "addOneIndent"}` 
+    console.log('parentPoint: ' + this.props.parentPoint);    
+    return <div className={classesCommentsIndent}>
+      <div className="row-fluid claimEditArea pointCardPaddingH commentsArea" onClick={e => e.stopPropagation()}>      
+        <CommentsList point={this.props.point} onCancel={this.props.onCancel}
+                      showArchived={this.state.showArchived}
+                      toggleArchived={this.toggleShowArchived}/>
+      </div>
     </div>
   }
 }

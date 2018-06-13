@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6, body {
 
 
 // Animation
-@hoverTransitionDuration: .08s;
+@hoverTransitionDuration: .066s;
 
 // For testing
 .quickTestRect {
@@ -863,6 +863,11 @@ li .policySectionNumber {
   position:relative;
   left: -1 * @indent;
 }
+.addOneIndent {
+  position:relative;
+  left: @indent;
+}
+
 
 @editAreaRevealDuration: .33s;
 @editingAreaBG: hsla(178, 85%, 91%, 1); 
@@ -1650,7 +1655,7 @@ a.source {
 
 .cardBottomAction {
   font-size: @fontSizeSecondaryUX2;
-  color: @nearBlack; //black; // @grayTextLighter ;  /*@blue ;*/
+  color: @smallGreyLinkColor; // @nearBlack; //black; // @grayTextLighter ;  /*@blue ;*/
     /*font-weight: bold;*/
   //margin-bottom:2px;
   margin-right: 0;
@@ -1672,7 +1677,7 @@ a.source {
 
 
 // scale down on click
-@cardBottomActionScaleUpOnHover: 1.055;
+@cardBottomActionScaleUpOnHover: 1.033;
 @cardBottomActionScaleDownOnClick: 0.96 * @cardBottomActionScaleUpOnHover;
 .cardBottomAction:active {
     transform: scale(@cardBottomActionScaleDownOnClick) !important ;
@@ -1780,7 +1785,7 @@ a.source {
   animation-name: commentsAreaReveal;
   display: block;
   position: relative;
-  width: @cardWidth !important;
+  width: @cardWidth ;
   box-sizing: border-box;
   //z-index: 10;
   top: (-2 * @stackCardOffset) - @cardBorderWidth; // not sure why this needs its own unique equation
@@ -1849,12 +1854,15 @@ a.source {
 
 .claimEditArea {
   background-color: @editingAreaBG;
-  width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
-  //min-height: 64px; // sets height for the saving state with the spinner
   padding-top: @cardPaddingTop;
   padding-bottom: @cardPadding * 1.2;
   padding-left: @cardPadding;
   padding-right: @cardPadding;
+}
+
+.editClaimText, .editImage, .editSources {
+  width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
+  //min-height: 64px; // sets height for the saving state with the spinner
 }
 
 .claimEditAreaHeading {
@@ -1897,7 +1905,8 @@ a.source {
 }
 
 .shareIconArea {
-  display: none; // revealed on .listedClaimAndShare:hover below
+  //display: none; // revealed on .listedClaimAndShare:hover below
+  display: inline-block;
   position: relative;
   left: -9px;
   top: -6px;
@@ -2979,6 +2988,14 @@ body  {
 
 // RESPONSIVE -- TO DO: move this to a separate css file
 
+
+@cardWidthSmallScreens: 69vw;
+@cardWidthExtraSmallScreens: 84vw;
+@relWidthSmallScreenOffset: 8vw;
+@headerMarginNarrow: 12px;
+
+
+
 // display utilities
 .hidden-wideDisplays { display: none !important; }
 .hidden-mediumWidthDisplays { display: inherit !important; }
@@ -3017,7 +3034,6 @@ body  {
   }
 }
 
-@headerMarginNarrow: 12px;
 
 
 @media (max-width: 979px) and (min-width: 767.01px) {
@@ -3065,8 +3081,7 @@ body  {
 
 @media (max-width: 767px) {
 
- @cardWidthSmallScreens: 69vw;
-
+ 
   body {
     padding-left:10px;
   }
@@ -3160,7 +3175,6 @@ body  {
     margin-left: 0;
   }
 
-
   .container {
     //left: 10px;
     //position: absolute;
@@ -3185,17 +3199,15 @@ body  {
   }
 
   .relGroupHilite {
-    width: 88vw;
+    width: @cardWidthSmallScreens + @relWidthSmallScreenOffset;
     max-width: unset;
   }
 
   .point-card {
-    //background-color: red;
     display: inline-block;
-    width: @cardWidthSmallScreens;
   }
 
-  .stackCard {
+  .stackCard, .commentsArea  {
     width: @cardWidthSmallScreens;
   }
   
@@ -3222,7 +3234,6 @@ body  {
   }
 }
 
-@cardWidthExtraSmallScreens: 84vw;
 
 @media (max-width: 640px) {
 
@@ -3250,12 +3261,12 @@ body  {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px - 36px)"; // subtract width of button + an extra amount for the indent
   }
 
-  .stackCard {
+  .stackCard, .commentsArea {
     width: @cardWidthExtraSmallScreens;
   }
-  .point-card {
-  //background-color: red;
-    width: @cardWidthExtraSmallScreens;
+  
+  .relGroupHilite {
+    width: @cardWidthExtraSmallScreens + @relWidthSmallScreenOffset;
   }
   
   @imageWidthNarrow: 18%;
@@ -3296,6 +3307,11 @@ body  {
     text-overflow: clip;
     overflow: hidden;
   }
+  
+  .relGroupHilite {
+    width: 100vw; // not sure why this is needed
+  }
+  
 }
 
 @media (max-width: 360px) {

@@ -922,7 +922,7 @@ class PointCardComponent extends React.Component {
                   { this.expanded() && !this.state.relevanceRater && <ShareIconArea point={point} /> }
                 </MediaQuery>
               </div>
-              { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} onCancel={this.handleCloseComments}/> }
+              { this.props.expansion.isExpanded(point, this.commentPrefix()) && <Comments point={point} parentPoint={this.props.parentPoint} onCancel={this.handleCloseComments}/> }
               <div className="evidenceRow row-fluid">
                 {this.evidence()}
               </div>

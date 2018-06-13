@@ -1204,6 +1204,14 @@ a.source:hover {
 }
 .iconSourcesSmall {
   margin-right: 6px;
+  font-size: 13px;
+  top: 1px;
+  position: relative;
+  margin-left: 4px;
+}
+.iconWithStat .fa-book-open {
+  position: relative;
+  left: -1px;
 }
 .editSourcesList {
   margin-bottom: 15px;

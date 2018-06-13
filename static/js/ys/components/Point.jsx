@@ -241,7 +241,7 @@ class Sources extends React.Component {
       {sources && sources.map(({name, url}, i) =>
         <a key={i} className="source" tabIndex="-1" target="_blank" href={url}>
           <span className="iconSourcesSmall">
-            <span className="fas fa-book"></span>
+            <span className="fas fa-book-open"></span>
           </span>
           <span className="sourceLabel">{name || url}</span>
         </a>
@@ -772,7 +772,7 @@ class PointCardComponent extends React.Component {
       <ul id="" className="moreMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
         <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
-        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book"></span></span>{moreMenuSourcesLabel}</a></li>
+        <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book-open"></span></span>{moreMenuSourcesLabel}</a></li>
         <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat"><span className="far fa-image"></span></span>{moreMenuImageLabel}</a></li>
         <li className="divider"></li>
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }

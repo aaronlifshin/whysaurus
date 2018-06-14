@@ -2320,9 +2320,9 @@ body {
     margin-left: calc(2% + 54px);
   }
   #searchArea {
-    width: -moz-calc(100% - 565px);
-    width: -webkit-calc(100% - 565px);
-    width: calc(100% - 565px);
+    width: -moz-calc(100% - 575px);
+    width: -webkit-calc(100% - 575px);
+    width: calc(100% - 575px);
   }
   #signInFromHeader {
     right: 18px;

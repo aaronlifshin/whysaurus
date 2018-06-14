@@ -58,7 +58,7 @@ class Byline extends React.Component {
     let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
     return <span className={topClass}>
       <span className="byline">
-        <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + this.props.point.authorURL}>@{this.props.point.authorName}</a>{this.contributorsDropdown()}
+        <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + this.props.point.creatorURL}>@{this.props.point.creatorName}</a>{this.contributorsDropdown()}
         </span>
       </span>
     </span>
@@ -74,7 +74,8 @@ class ShareIconAreaComponent extends React.Component {
         method: 'feed',
         link: "https://www.whysaurus.com/claim/" + url,
         name: pointTitle,
-        description: 'Argument on Whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add?'
+        description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?',
+        display: 'popup'
     };
     var imageUrl = this.props.point.imageURL || null;
     if (!imageUrl) {

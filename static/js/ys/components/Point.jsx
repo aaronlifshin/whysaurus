@@ -44,7 +44,7 @@ class Byline extends React.Component {
   contributorsDropdown = () => {
     return <span>
       { (this.contributorsPlusAuthor() > 1) && <span className="bylineOtherUsers dropdown">
-          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i></a>
+          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i>{this.contributorsPlusAuthor()}</a>
           <ul id="" className="contributorsMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
             <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
             <li><span><span className="number">{this.contributorsPlusAuthor()}</span> Contributors</span></li>

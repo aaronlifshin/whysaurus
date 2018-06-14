@@ -1006,7 +1006,8 @@ function postOnFacebook() {
         method: 'feed',
         link: "https://www.whysaurus.com/point/" + url,
         name: pointTitle,        
-        description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?'
+        description: 'Debating on whysaurus: ' + pointTitle + ' \n Do you agree? Disagree? Got something to add to the debate?',
+        display: 'popup'
     };
     var imageUrl = $(".pointDisplay").attr('src') || null;
 

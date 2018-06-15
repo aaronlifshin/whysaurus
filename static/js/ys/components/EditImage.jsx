@@ -17,34 +17,35 @@ class EditImageForm  extends React.Component {
   render() {
     const {point, onSubmit, onClick, heightClass} = this.props
     let captionButtonLabel = `${point.imageDescription ? "Update Caption" : "Add Caption" }`
-  return ( 
-      <Form onSubmit={onSubmit}
-            defaultValues={{imageURL: point.imageURL, imageDescription: point.imageDescription}}
-            validate={values => ({imageDescription: validations.validateCaption(values.imageDescription)})}>
-        { ({submitForm, values: {imageDescription, imageURL}, touched, validationFailures}) => (
-          <form onSubmit={submitForm} id="form1" className="">
-            <ImagePicker field="imageURL"
-              onUploaded={(file) => {
-                this.setState({imageUpdated: true})
-                submitForm()
-              }}
-              onTransformed={(result) => {
-                console.log("Saved transformed versions of image:")
-                console.log(result)
-              }}
-              />
-             {imageURL && <img className="imageBigDisplay" src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}           
-              <div className="">
-                <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption, credit, description, etc"/>
-              </div>
-              <div className="">
-                <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 pull-right" type="submit">{captionButtonLabel}</button>
-              </div>
+    return ( 
+        <Form onSubmit={onSubmit}
+              defaultValues={{imageURL: point.imageURL, imageDescription: point.imageDescription}}
+              validate={values => ({imageDescription: validations.validateCaption(values.imageDescription)})}>
+          { ({submitForm, values: {imageDescription, imageURL}, touched, validationFailures}) => (
+            <form onSubmit={submitForm} id="form1" className="">
+              <ImagePicker field="imageURL"
+                onUploaded={(file) => {
+                  this.setState({imageUpdated: true})
+                  submitForm()
+                }}
+                onTransformed={(result) => {
+                  console.log("Saved transformed versions of image:")
+                  console.log(result)
+                }}
+                />
+               {imageURL && <img className="imageBigDisplay" src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}           
+                <div className="">
+                  <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption, credit, description, etc"/>
+                </div>
+                <div className="">
+                  <button onClick={this.props.onClose} className="buttonUX2 pull-right">Done</button>                
+                  <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 pull-right buttonUX2marginR" type="submit">{captionButtonLabel}</button>
+                </div>
 
-          </form>
-        )}
-      </Form>
-  );
+            </form>
+          )}
+        </Form>
+    );
   }
 }
 
@@ -66,7 +67,7 @@ class EditImageComponent extends React.Component {
     this.props.save(values).
       then((result) => {
         this.setState({saving: false})
-        this.props.onClose(e)
+        //this.props.onClose(e)
       },
            (err) => this.setState({saving: false}))
   }
@@ -79,23 +80,25 @@ class EditImageComponent extends React.Component {
       </div>;
     } else {
       return <div className={editImageFormClasses}>
-        <EditImageForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} point={this.point} />
+        <EditImageForm onClick={this.handleClickNoProp} onSubmit={this.handleClickSave} onClose={this.props.onClose} point={this.point} />
       </div>;
     }
   }
-
+ 
   render() {
+    let classesEditImageIndent = `${this.props.parentPoint && "addOneIndent"}` 
     let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
-    return <div className="row-fluid claimEditArea editImage ">
-      <span className="claimEditAreaHeading">
-        <span className="heading">{editImageLabel}</span>
-        <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
-      </span>
-      <div className="imageEditForm">    
-        {this.renderForm()}
+    return <div className={classesEditImageIndent}>      
+        <div className="row-fluid claimEditArea editImage">
+          <span className="claimEditAreaHeading">
+            <span className="heading">{editImageLabel}</span>
+            <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
+          </span>
+          <div className="imageEditForm">    
+            {this.renderForm()}
+          </div>
+        </div>
       </div>
-    </div>
-
   }
 }
 

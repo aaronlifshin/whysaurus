@@ -113,6 +113,15 @@ h1, h2, h3, h4, h5, h6, body {
 .number {
   font-family: "usual", sans-serif !important;
 }
+
+// for editImage and comments areas
+.hideBorderTop {
+  border-top-style: none !important;
+}
+.hideBorderBottom {
+  border-bottom-style: none !important;
+}
+
 .cardTopRow .number, .vote-stats .number {
   font-size: 85%;
 }
@@ -1608,29 +1617,37 @@ li .iconWithStat {
   width: 100% - @imageWidth;
 } 
 
-.pointCardImageContainer {
+.imageContainer {
   display: block;
   padding: @cardPaddingTop;
   padding-left: 0;
- // -webkit-inline-flex: 1;
-  //-ms-inline-flexbox: 1;
-
-  //-webkit-flex: 1; /* Safari 6.1+ */
-    //-ms-flex: 1;  /* IE 10 */
-  //background-color: green;
   width: @imageWidth;
-  //max-height: 100%;
   height: 100%;
   position: absolute;
   right: 0;
-  
 }
-
-.pointCardImage {
+.imageContainerBig {
+  position: relative;
+  width: 100%;
+  padding: @cardPadding;
+  padding-bottom: @cardPadding * 1.66;
+}
+.claimImage {
   width: 100%;
   height: 100%;
-  max-height: 200px; // is this necessary?
   object-fit: cover;
+}
+.imageFaded {
+  opacity: 0.24;
+}
+.imageCaption {
+  display: inline-block;
+  width: fit-content;
+  //float:right;
+  font-size: @fontSizeSecondaryUX2;
+  color: @smallGreyLinkColor;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 
 .sources {
@@ -1696,11 +1713,11 @@ a.source {
     /*font-weight: bold;*/
   //margin-bottom:2px;
   margin-right: 0;
-    //margin-right:4px;
-    margin-top:4px;
-    display:inline-block;
-    z-index:1000;
-    //font-weight: bold
+  //margin-right:4px;
+  margin-top:4px;
+  display:inline-block;
+  z-index:1000;
+  //font-weight: bold
 }
 .pointCardActive .cardBottomAction:hover {
   text-decoration: underline;
@@ -1731,7 +1748,6 @@ a.source {
   -ms-transition:@hoverTransitionDuration;
   -moz-transition:@hoverTransitionDuration;
   -webkit-transition:@hoverTransitionDuration;
-  /* ...and now for the proper property */
   transition:@hoverTransitionDuration;
   transform-origin: bottom left;
 }
@@ -1798,7 +1814,7 @@ a.source {
 
 @keyframes editAreaReveal {
    0% { max-height: 0; opacity: 0; padding-top: 0; }
-   75% { max-height: 550px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   75% { max-height: 900px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
 @keyframes commentsAreaReveal {
@@ -1817,24 +1833,31 @@ a.source {
   //width: 100%;
   animation-name: editAreaReveal;
 }
+.editImage, .commentsArea  {
+  width: @cardWidth ;
+  box-sizing: border-box;
+  position: relative;
+  left: @cardStackWidth;
+  border-color: #bfbfbf;
+  border-width: 1px;
+  border-style: solid;
+}
+
+// Positioning math is wrong on editImage area on sub-points. I don't know why. But this fixes it. -JF
+.addOneIndent > .editImage {
+  left: @cardStackWidth + 2px; 
+}
+
+
 .commentsArea {
   //width: 100%;
   animation-name: commentsAreaReveal;
   display: block;
-  position: relative;
-  width: @cardWidth ;
-  box-sizing: border-box;
   //z-index: 10;
   top: (-2 * @stackCardOffset) - @cardBorderWidth; // not sure why this needs its own unique equation
-  left: @cardStackWidth;
   margin-bottom: 32px;
 }
 
-
-
-.editImage, .editSources, .commentsArea {
-  //min-height: 64px;
-}
 
 .commentsList {
   width: 100%;
@@ -1897,7 +1920,7 @@ a.source {
   padding-right: @cardPadding;
 }
 
-.editClaimText, .editImage, .editSources {
+.editClaimText, .editSources {
   width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
   //min-height: 64px; // sets height for the saving state with the spinner
 }
@@ -2022,6 +2045,10 @@ a .claimShareIcon {
   padding-left: @buttonUX2_paddingLeft;
   padding-right: @buttonUX2_paddingRight;
   padding-bottom: @buttonUX2_paddingBottom;
+}
+
+.buttonUX2marginR {
+  margin-right: 6px;
 }
 
 .tabUX2 {
@@ -2160,7 +2187,6 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 .addEvidenceButton {
   display: inline-block; //table; // seems necessary for scaling on hover to work, but also causes underline
   width: auto;
-  margin-right: 4px;
   padding-left: @buttonUX2_paddingLeftRightLongLabel;
   padding-right: @buttonUX2_paddingLeftRightLongLabel;
 }
@@ -2220,9 +2246,6 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 .imagePickerButton:active:enabled {
   transform: scale(@buttonUX2ScaleDownOnClick * @buttonUX2Big);
 }
-
-
-
 
 .imageBigDisplay {
   margin-bottom: @marginVerticalForms * 2;
@@ -3245,20 +3268,15 @@ body  {
     display: inline-block;
   }
 
-  .stackCard, .commentsArea  {
+  .stackCard, .editImage, .commentsArea  {
     width: @cardWidthSmallScreens;
   }
   
-  .pointCardImage {
-    //margin-top: @marginVerticalStandard;
-    //width: 100%;
-  }
-
   .byline {
     //max-width: 20%;
   }
 
-  .pointCardImageContainer {
+  .imageContainer {
     //width: 25% !important;
   }
 
@@ -3299,7 +3317,7 @@ body  {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px - 36px)"; // subtract width of button + an extra amount for the indent
   }
 
-  .stackCard, .commentsArea {
+  .stackCard, .editImage, .commentsArea {
     width: @cardWidthExtraSmallScreens;
   }
   
@@ -3308,8 +3326,11 @@ body  {
   }
   
   @imageWidthNarrow: 18%;
-  .pointCardImageContainer {
+  .imageContainer {
     width: @imageWidthNarrow;
+  }
+  .imageContainerBig {
+    width: 100%;
   }
   
   .contentWithImage {
@@ -3348,6 +3369,22 @@ body  {
   
   .relGroupHilite {
     width: 100vw; // not sure why this is needed
+  }
+  
+  // put the image container at the top of the claim card
+  .imageContainer {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 72px;
+    padding-left: @cardPadding;
+    padding-bottom: @cardPadding * .66;
+  }
+  .imageContainerBig {
+    height: unset;  
+  }
+  .contentWithImage {
+    width: 100%; // expand to fill space bc image is shown up top
   }
   
 }

@@ -376,7 +376,8 @@ const AgreeDisagree = compose(
 
 class PointCardComponent extends React.Component {
   state = {
-    relevanceRater: false
+    relevanceRater: false,
+    displayImageBig: false // is declaring this up here needed/best practice? -JF
   }
   handleClickNoProp = (e) => {
     e.stopPropagation();
@@ -561,6 +562,16 @@ class PointCardComponent extends React.Component {
   expanded = () => {
     return this.props.expanded && !this.props.expansionLoading;
   }
+  
+  // bigImage
+  handleImageClick = (e) => {
+    e.stopPropagation();
+    if (this.state.displayImageBig) {
+      this.setState({ displayImageBig: false })
+    } else {
+      this.setState({ displayImageBig: true })
+    }
+  }
   // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
   hasImage = () => {
     //console.log("hasImage() : " + this.point.imageURL  )
@@ -570,13 +581,18 @@ class PointCardComponent extends React.Component {
     return (this.hasImage() && !this.state.editingClaimText && !this.state.editingClaimSources)
   }
   image = () => {
-  if (this.displayImage())
-    return  <div className="pointCardImageContainer">
-        <img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img>
-      </div>
+    if (this.displayImage()) {
+      let classesImageContainer = `imageContainer hideBorderBottom ${this.state.displayImageBig && !this.state.editingClaimImage && "imageContainerBig"}`
+      let classesImage = `claimImage ${this.state.editingClaimImage && "imageFaded"}`
+      let classesImageCaption = `${this.state.displayImageBig ? "imageCaption" : "hidden"}`      
+      return  <div className={classesImageContainer}>
+          <a onClick={this.handleImageClick}><img className={classesImage} src={this.point.fullPointImage} alt={this.point.imageDescription}></img></a>
+          <span className={classesImageCaption}>{this.point.imageDescription}</span>
+        </div>
+    }
   }
   textContentWidth = () => {
-    if (this.displayImage()) {
+    if (this.displayImage() && (!this.state.displayImageBig || this.state.editingClaimImage) ) {
       return "contentWithImage"
     } else {
       return "contentNoImage"
@@ -861,12 +877,13 @@ class PointCardComponent extends React.Component {
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
       let classesStackCard2 = `stackCard ${this.numSupportingPlusCounter() < 2 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.50 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
       let classesStackCard3 = `stackCard ${this.numSupportingPlusCounter() < 1 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.25 ? "counter" : ""} ${this.expanded() ? "stackCardDealInvertXform stackCardDealFade" : ""}`
-      let classesPointCard = `point-card ${!this.editingSomething() && "pointCardActive"} stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} row-fluid toggleChildVisOnHover`
+      let classesPointCard = `point-card ${!this.editingSomething() && "pointCardActive"} stackCard ${this.expanded() ? "stackCardDealInvertXform" : ""} ${this.evidenceTypeClass()} ${this.state.editingClaimImage && "hideBorderTop"} ${this.props.expansion.isExpanded(point, this.commentPrefix()) && "hideBorderBottom"}  row-fluid toggleChildVisOnHover`
       let classesRelevanceDot = `${this.props.parentPoint ? "cardBottomAction bottomActionDot" : "hidden" }`
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
 
       return <div className={classesListedClaimGroup}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
+          { this.state.editingClaimImage && <EditImage point={point} parentPoint={this.props.parentPoint} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
           <div className="listedClaimAndShare">
             <div className="relCtrlAndLinkAndStackCards">
               <div className={classesListedClaim} tabIndex="-1" >
@@ -878,7 +895,7 @@ class PointCardComponent extends React.Component {
                       <div className={classesStackCard2} tabIndex="-1">
                          <div className={classesStackCard3} tabIndex="-1">
                             <div className={classesPointCard} tabIndex="-1">
-                              { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
+                              {this.image()}
                               <div className="row-fluid inlineflexBox">
                               <div className={ this.textContentWidth()  }>
                                   <div className="row-fluid">
@@ -897,7 +914,7 @@ class PointCardComponent extends React.Component {
                                       </MediaQuery>
                                     </div>
                                    </div>
-
+                                   
                                    <div className="row-fluid">
                                     <div className="pointText">
                                       { this.pointTextComponent() }
@@ -920,7 +937,7 @@ class PointCardComponent extends React.Component {
                                     </div>
 
                                  </div>
-                                {this.image()}
+                                
                               </div>                             
                               </div>                           
                             </div>

@@ -45,6 +45,12 @@ body {
 .number {
   font-family: "usual", sans-serif !important;
 }
+.hideBorderTop {
+  border-top-style: none !important;
+}
+.hideBorderBottom {
+  border-bottom-style: none !important;
+}
 .cardTopRow .number,
 .vote-stats .number {
   font-size: 85%;
@@ -1181,7 +1187,7 @@ li .iconWithStat {
   display: table-cell;
   width: 78%;
 }
-.pointCardImageContainer {
+.imageContainer {
   display: block;
   padding: 9px;
   padding-left: 0;
@@ -1190,11 +1196,27 @@ li .iconWithStat {
   position: absolute;
   right: 0;
 }
-.pointCardImage {
+.imageContainerBig {
+  position: relative;
+  width: 100%;
+  padding: 15px;
+  padding-bottom: 24.9px;
+}
+.claimImage {
   width: 100%;
   height: 100%;
-  max-height: 200px;
   object-fit: cover;
+}
+.imageFaded {
+  opacity: 0.24;
+}
+.imageCaption {
+  display: inline-block;
+  width: fit-content;
+  font-size: 14px;
+  color: #a9a9a9;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 .sources {
   margin-bottom: 4px;
@@ -1271,7 +1293,6 @@ a.source:hover {
   -ms-transition: 0.066s;
   -moz-transition: 0.066s;
   -webkit-transition: 0.066s;
-  /* ...and now for the proper property */
   transition: 0.066s;
   transform-origin: bottom left;
 }
@@ -1319,7 +1340,7 @@ a.source:hover {
     padding-top: 0;
   }
   75% {
-    max-height: 550px;
+    max-height: 900px;
     padding-top: 9px;
   }
   100% {
@@ -1353,14 +1374,23 @@ a.source:hover {
 .editSources {
   animation-name: editAreaReveal;
 }
+.editImage,
+.commentsArea {
+  width: 420px;
+  box-sizing: border-box;
+  position: relative;
+  left: 15px;
+  border-color: #bfbfbf;
+  border-width: 1px;
+  border-style: solid;
+}
+.addOneIndent > .editImage {
+  left: 17px;
+}
 .commentsArea {
   animation-name: commentsAreaReveal;
   display: block;
-  position: relative;
-  width: 420px;
-  box-sizing: border-box;
   top: -7px;
-  left: 15px;
   margin-bottom: 32px;
 }
 .commentsList {
@@ -1414,7 +1444,6 @@ a.source:hover {
   padding-right: 15px;
 }
 .editClaimText,
-.editImage,
 .editSources {
   width: calc(99.9%);
 }
@@ -1509,6 +1538,9 @@ a .claimShareIcon {
   padding-left: 13px;
   padding-right: 13px;
   padding-bottom: 5px;
+}
+.buttonUX2marginR {
+  margin-right: 6px;
 }
 .tabUX2 {
   padding-top: 6px;
@@ -1639,7 +1671,6 @@ a.buttonUX2:focus:enabled {
 .addEvidenceButton {
   display: inline-block;
   width: auto;
-  margin-right: 4px;
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -2417,6 +2448,7 @@ body {
     display: inline-block;
   }
   .stackCard,
+  .editImage,
   .commentsArea {
     width: 69vw;
   }
@@ -2449,14 +2481,18 @@ body {
     width: calc(84vw - 48px - 36px);
   }
   .stackCard,
+  .editImage,
   .commentsArea {
     width: 84vw;
   }
   .relGroupHilite {
     width: 92vw;
   }
-  .pointCardImageContainer {
+  .imageContainer {
     width: 18%;
+  }
+  .imageContainerBig {
+    width: 100%;
   }
   .contentWithImage {
     width: 82%;
@@ -2487,6 +2523,20 @@ body {
   }
   .relGroupHilite {
     width: 100vw;
+  }
+  .imageContainer {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 72px;
+    padding-left: 15px;
+    padding-bottom: 9.9px;
+  }
+  .imageContainerBig {
+    height: unset;
+  }
+  .contentWithImage {
+    width: 100%;
   }
 }
 @media (max-width: 360px) {

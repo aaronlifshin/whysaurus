@@ -122,7 +122,7 @@ class AddEvidence extends React.Component {
   }
 
   renderAddEvidenceButton = (evidenceType) => {
-    let classesButton = `buttonUX2 ${evidenceType=="counter" ? "buttonUX2Red" : ""} addEvidenceButton`
+    let classesButton = `buttonUX2 ${evidenceType=="counter" && "buttonUX2Red"} addEvidenceButton buttonUX2marginR`
     let nameButton = `${evidenceType=="counter" ? "addCounterEvidenceButton" : "addSupportingEvidenceButton" }`
     let buttonLabel = this.addText(evidenceType)
     let classesAnchor = ""

@@ -67,7 +67,7 @@ class EditImageComponent extends React.Component {
     this.props.save(values).
       then((result) => {
         this.setState({saving: false})
-        this.props.onClose(e)
+        //this.props.onClose(e)
       },
            (err) => this.setState({saving: false}))
   }

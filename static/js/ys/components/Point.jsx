@@ -570,7 +570,7 @@ class PointCardComponent extends React.Component {
   }
   image = () => {
   if (this.displayImage())
-    return  <div className="pointCardImageContainer">
+    return  <div className="imageContainer">
         <img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img>
       </div>
   }

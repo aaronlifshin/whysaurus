@@ -1181,7 +1181,7 @@ li .iconWithStat {
   display: table-cell;
   width: 78%;
 }
-.pointCardImageContainer {
+.imageContainer {
   display: block;
   padding: 9px;
   padding-left: 0;
@@ -2455,7 +2455,7 @@ body {
   .relGroupHilite {
     width: 92vw;
   }
-  .pointCardImageContainer {
+  .imageContainer {
     width: 18%;
   }
   .contentWithImage {
@@ -2488,13 +2488,16 @@ body {
   .relGroupHilite {
     width: 100vw;
   }
-  .pointCardImageContainer {
+  .imageContainer {
     display: block;
     position: relative;
     width: 100%;
     height: 72px;
     padding-left: 9px;
     padding-bottom: 5.94px;
+  }
+  .contentWithImage {
+    width: 100%;
   }
 }
 @media (max-width: 360px) {

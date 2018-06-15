@@ -1608,7 +1608,7 @@ li .iconWithStat {
   width: 100% - @imageWidth;
 } 
 
-.pointCardImageContainer {
+.imageContainer {
   display: block;
   padding: @cardPaddingTop;
   padding-left: 0;
@@ -3258,7 +3258,7 @@ body  {
     //max-width: 20%;
   }
 
-  .pointCardImageContainer {
+  .imageContainer {
     //width: 25% !important;
   }
 
@@ -3308,7 +3308,7 @@ body  {
   }
   
   @imageWidthNarrow: 18%;
-  .pointCardImageContainer {
+  .imageContainer {
     width: @imageWidthNarrow;
   }
   
@@ -3351,13 +3351,16 @@ body  {
   }
   
   // put the image container at the top of the claim card
-  .pointCardImageContainer {
+  .imageContainer {
     display: block;
     position: relative;
     width: 100%;
     height: 72px;
     padding-left: @cardPaddingTop;
     padding-bottom:  @cardPaddingTop * .66;
+  }
+  .contentWithImage {
+    width: 100%; // expand to fill space bc image is shown up top
   }
   
 }

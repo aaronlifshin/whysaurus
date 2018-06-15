@@ -1528,6 +1528,9 @@ a .claimShareIcon {
   padding-right: 13px;
   padding-bottom: 5px;
 }
+.buttonUX2marginR {
+  margin-right: 6px;
+}
 .tabUX2 {
   padding-top: 6px;
   padding-left: 15px;
@@ -1657,7 +1660,6 @@ a.buttonUX2:focus:enabled {
 .addEvidenceButton {
   display: inline-block;
   width: auto;
-  margin-right: 4px;
   padding-left: 15px;
   padding-right: 15px;
 }

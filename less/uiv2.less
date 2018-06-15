@@ -113,6 +113,15 @@ h1, h2, h3, h4, h5, h6, body {
 .number {
   font-family: "usual", sans-serif !important;
 }
+
+// for editImage and comments areas
+.hideBorderTop {
+  border-top-style: none !important;
+}
+.hideBorderBottom {
+  border-bottom-style: none !important;
+}
+
 .cardTopRow .number, .vote-stats .number {
   font-size: 85%;
 }
@@ -1622,10 +1631,13 @@ li .iconWithStat {
   width: 100%;
   padding-left: 9px;
 }
-.pointCardImage {
+.claimImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.imageFaded {
+  opacity: 0.24;
 }
 
 .sources {
@@ -1793,7 +1805,7 @@ a.source {
 
 @keyframes editAreaReveal {
    0% { max-height: 0; opacity: 0; padding-top: 0; }
-   75% { max-height: 550px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
+   75% { max-height: 900px; padding-top: @cardPaddingTop; } // max-height needs to be set manually to be >= height of the block
    100% { opacity: 1;  }
 }
 @keyframes commentsAreaReveal {
@@ -1812,16 +1824,21 @@ a.source {
   //width: 100%;
   animation-name: editAreaReveal;
 }
+.editImage, .commentsArea  {
+  width: @cardWidth ;
+  box-sizing: border-box;
+  position: relative;
+  left: @cardStackWidth;
+  border-color: #bfbfbf;
+  border-width: 1px;
+  border-style: solid;
+}
 .commentsArea {
   //width: 100%;
   animation-name: commentsAreaReveal;
   display: block;
-  position: relative;
-  width: @cardWidth ;
-  box-sizing: border-box;
   //z-index: 10;
   top: (-2 * @stackCardOffset) - @cardBorderWidth; // not sure why this needs its own unique equation
-  left: @cardStackWidth;
   margin-bottom: 32px;
 }
 
@@ -1892,7 +1909,7 @@ a.source {
   padding-right: @cardPadding;
 }
 
-.editClaimText, .editImage, .editSources {
+.editClaimText, .editSources {
   width: calc(100% - 0.1px); // so the bg color doesn't overlap with the border of the parent on hires displays
   //min-height: 64px; // sets height for the saving state with the spinner
 }
@@ -3240,15 +3257,10 @@ body  {
     display: inline-block;
   }
 
-  .stackCard, .commentsArea  {
+  .stackCard, .editImage, .commentsArea  {
     width: @cardWidthSmallScreens;
   }
   
-  .pointCardImage {
-    //margin-top: @marginVerticalStandard;
-    //width: 100%;
-  }
-
   .byline {
     //max-width: 20%;
   }
@@ -3294,7 +3306,7 @@ body  {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px - 36px)"; // subtract width of button + an extra amount for the indent
   }
 
-  .stackCard, .commentsArea {
+  .stackCard, .editImage, .commentsArea {
     width: @cardWidthExtraSmallScreens;
   }
   

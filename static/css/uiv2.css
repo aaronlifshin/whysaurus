@@ -1199,7 +1199,8 @@ li .iconWithStat {
 .imageContainerBig {
   position: relative;
   width: 100%;
-  padding-left: 9px;
+  padding: 15px;
+  padding-bottom: 24.9px;
 }
 .claimImage {
   width: 100%;
@@ -1208,6 +1209,14 @@ li .iconWithStat {
 }
 .imageFaded {
   opacity: 0.24;
+}
+.imageCaption {
+  display: inline-block;
+  width: fit-content;
+  font-size: 14px;
+  color: #a9a9a9;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 .sources {
   margin-bottom: 4px;
@@ -1284,7 +1293,6 @@ a.source:hover {
   -ms-transition: 0.066s;
   -moz-transition: 0.066s;
   -webkit-transition: 0.066s;
-  /* ...and now for the proper property */
   transition: 0.066s;
   transform-origin: bottom left;
 }
@@ -2518,8 +2526,8 @@ body {
     position: relative;
     width: 100%;
     height: 72px;
-    padding-left: 9px;
-    padding-bottom: 5.94px;
+    padding-left: 15px;
+    padding-bottom: 9.9px;
   }
   .imageContainerBig {
     height: unset;

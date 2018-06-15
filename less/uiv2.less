@@ -1629,7 +1629,8 @@ li .iconWithStat {
 .imageContainerBig {
   position: relative;
   width: 100%;
-  padding-left: 9px;
+  padding: @cardPadding;
+  padding-bottom: @cardPadding * 1.66;
 }
 .claimImage {
   width: 100%;
@@ -1638,6 +1639,15 @@ li .iconWithStat {
 }
 .imageFaded {
   opacity: 0.24;
+}
+.imageCaption {
+  display: inline-block;
+  width: fit-content;
+  //float:right;
+  font-size: @fontSizeSecondaryUX2;
+  color: @smallGreyLinkColor;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 
 .sources {
@@ -1738,7 +1748,6 @@ a.source {
   -ms-transition:@hoverTransitionDuration;
   -moz-transition:@hoverTransitionDuration;
   -webkit-transition:@hoverTransitionDuration;
-  /* ...and now for the proper property */
   transition:@hoverTransitionDuration;
   transform-origin: bottom left;
 }
@@ -2235,9 +2244,6 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 .imagePickerButton:active:enabled {
   transform: scale(@buttonUX2ScaleDownOnClick * @buttonUX2Big);
 }
-
-
-
 
 .imageBigDisplay {
   margin-bottom: @marginVerticalForms * 2;
@@ -3369,8 +3375,8 @@ body  {
     position: relative;
     width: 100%;
     height: 72px;
-    padding-left: @cardPaddingTop;
-    padding-bottom:  @cardPaddingTop * .66;
+    padding-left: @cardPadding;
+    padding-bottom: @cardPadding * .66;
   }
   .imageContainerBig {
     height: unset;  

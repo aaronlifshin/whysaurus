@@ -583,8 +583,10 @@ class PointCardComponent extends React.Component {
     if (this.displayImage()) {
       let classesImageContainer = `imageContainer hideBorderBottom ${this.state.displayImageBig && !this.state.editingClaimImage && "imageContainerBig"}`
       let classesImage = `claimImage ${this.state.editingClaimImage && "imageFaded"}`
+      let classesImageCaption = `${this.state.displayImageBig ? "imageCaption" : "hidden"}`      
       return  <div className={classesImageContainer}>
           <a onClick={this.handleImageClick}><img className={classesImage} src={this.point.fullPointImage} alt={this.point.imageDescription}></img></a>
+          <span className={classesImageCaption}>{this.point.imageDescription}</span>
         </div>
     }
   }

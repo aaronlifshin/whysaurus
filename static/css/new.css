@@ -41,7 +41,11 @@ h5 {
   font-size: 12.54528px;
 }
 h6 {
-  font-size: 9.504px;
+  font-size: 16px;
+  font-weight: 800;
+  font-style: italic;
+  margin-top: 24px;
+  margin-bottom: 6px;
 }
 h1 {
   line-height: 125%;
@@ -933,6 +937,13 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin-top: -20px;
   z-index: 100000;
 }
+.manifestoContent h4 {
+  margin-top: 48px;
+  margin-bottom: 12px;
+}
+.manifestoContent li {
+  margin-bottom: 6px;
+}
 #manifestoText {
   color: black;
   background-color: white;
@@ -942,14 +953,19 @@ JSON error related to displaying comments. But when I don't use this class, the 
 }
 .twitter-share-button {
   margin-top: 16px;
+  height: 24px !important;
+  width: 68px !important;
 }
 .fb-share-button {
   bottom: 4px;
   margin-left: 4px;
   display: inline !important;
+  height: 24px !important;
+  width: 68px !important;
 }
 .textPageBulletList {
-  margin-top: 8px;
+  margin-top: 16px;
+  margin-bottom: 24px;
 }
 .explanationColumn {
   position: relative;

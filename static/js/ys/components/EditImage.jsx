@@ -84,19 +84,21 @@ class EditImageComponent extends React.Component {
       </div>;
     }
   }
-
+ 
   render() {
+    let classesEditImageIndent = `${this.props.parentPoint && "addOneIndent"}` 
     let editImageLabel = `${this.props.hasImage ? "Edit Image" : "Add Image"}`
-    return <div className="row-fluid claimEditArea editImage ">
-      <span className="claimEditAreaHeading">
-        <span className="heading">{editImageLabel}</span>
-        <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
-      </span>
-      <div className="imageEditForm">    
-        {this.renderForm()}
+    return <div className={classesEditImageIndent}>      
+        <div className="row-fluid claimEditArea editImage">
+          <span className="claimEditAreaHeading">
+            <span className="heading">{editImageLabel}</span>
+            <span className="editAreaClose"><a onClick={this.props.onClose}><CloseLinkX/></a></span>
+          </span>
+          <div className="imageEditForm">    
+            {this.renderForm()}
+          </div>
+        </div>
       </div>
-    </div>
-
   }
 }
 

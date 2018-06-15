@@ -1842,6 +1842,13 @@ a.source {
   border-width: 1px;
   border-style: solid;
 }
+
+// Positioning math is wrong on editImage area on sub-points. I don't know why. But this fixes it. -JF
+.addOneIndent > .editImage {
+  left: @cardStackWidth + 2px; 
+}
+
+
 .commentsArea {
   //width: 100%;
   animation-name: commentsAreaReveal;
@@ -1851,11 +1858,6 @@ a.source {
   margin-bottom: 32px;
 }
 
-
-
-.editImage, .editSources, .commentsArea {
-  //min-height: 64px;
-}
 
 .commentsList {
   width: 100%;

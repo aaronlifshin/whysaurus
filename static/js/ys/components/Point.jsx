@@ -882,7 +882,7 @@ class PointCardComponent extends React.Component {
 
       return <div className={classesListedClaimGroup}>
         <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
-          { this.state.editingClaimImage && <EditImage point={point} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
+          { this.state.editingClaimImage && <EditImage point={point} parentPoint={this.props.parentPoint} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
           <div className="listedClaimAndShare">
             <div className="relCtrlAndLinkAndStackCards">
               <div className={classesListedClaim} tabIndex="-1" >

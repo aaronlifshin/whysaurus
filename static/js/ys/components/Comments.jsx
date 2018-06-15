@@ -172,8 +172,7 @@ export default class Comments extends React.Component {
   }
 
   render(){
-    let classesCommentsIndent = `${this.props.parentPoint && "addOneIndent"}` 
-    console.log('parentPoint: ' + this.props.parentPoint);    
+    let classesCommentsIndent = `${this.props.parentPoint && "addOneIndent"}`   
     return <div className={classesCommentsIndent}>
       <div className="row-fluid claimEditArea pointCardPaddingH commentsArea hideBorderTop" onClick={e => e.stopPropagation()}>      
         <CommentsList point={this.props.point} onCancel={this.props.onCancel}

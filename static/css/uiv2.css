@@ -1384,6 +1384,9 @@ a.source:hover {
   border-width: 1px;
   border-style: solid;
 }
+.addOneIndent > .editImage {
+  left: 17px;
+}
 .commentsArea {
   animation-name: commentsAreaReveal;
   display: block;

@@ -37,7 +37,7 @@ h2 { font-size: @fontSizeLarge * 1.9; margin: 48px 0 0px 0;}
 h3 { font-size: @fontSizeLarge * 1.66; }
 h4 { font-size: @fontSizeLargeShave; margin: 28px 0 8px 0; }
 h5 { font-size: @fontSizeLarge * 0.66; }
-h6 { font-size: @fontSizeLarge * 0.50; }
+h6 { font-size: @baseFontSize; font-weight: 800; font-style: italic; margin-top: 24px; margin-bottom: 6px;}
 
 
 h1 {
@@ -1208,26 +1208,41 @@ JSON error related to displaying comments. But when I don't use this class, the 
     //font-size: @fontSizeXXXL;
 }
 
+.manifestoContent h4 {
+  margin-top: 48px;
+  margin-bottom: 12px;
+}
+.manifestoContent li, {
+  margin-bottom: 6px;
+}
+
+
+
 #manifestoText {
-    color: black;
-    background-color:white;
-    border-bottom-color:@grayOutlinesMid;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+  color: black;
+  background-color:white;
+  border-bottom-color:@grayOutlinesMid;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 
 .twitter-share-button {
-    margin-top:16px;
+  margin-top:16px;
+  height: 24px !important;
+  width: 68px !important;
 }
 
 .fb-share-button {
-    bottom: 4px;
-    margin-left: 4px;
-    display:inline !important; // need to override facebook's automated restyling for mobile
+  bottom: 4px;
+  margin-left: 4px;
+  display:inline !important; // need to override facebook's automated restyling for mobile
+  height: 24px !important;
+  width: 68px !important;
 }
 
 .textPageBulletList {
-    margin-top:8px;
+    margin-top: 16px;
+    margin-bottom: 24px;
 }
 
 .explanationColumn {

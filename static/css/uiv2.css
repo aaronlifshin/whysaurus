@@ -2488,6 +2488,14 @@ body {
   .relGroupHilite {
     width: 100vw;
   }
+  .pointCardImageContainer {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 72px;
+    padding-left: 9px;
+    padding-bottom: 5.94px;
+  }
 }
 @media (max-width: 360px) {
   #mainContainer {

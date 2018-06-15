@@ -3350,6 +3350,16 @@ body  {
     width: 100vw; // not sure why this is needed
   }
   
+  // put the image container at the top of the claim card
+  .pointCardImageContainer {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 72px;
+    padding-left: @cardPaddingTop;
+    padding-bottom:  @cardPaddingTop * .66;
+  }
+  
 }
 
 @media (max-width: 360px) {

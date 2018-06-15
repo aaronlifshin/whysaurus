@@ -375,7 +375,8 @@ const AgreeDisagree = compose(
 
 class PointCardComponent extends React.Component {
   state = {
-    relevanceRater: false
+    relevanceRater: false,
+    displayImageBig: false // is declaring this up here needed/best practice? -JF
   }
   handleClickNoProp = (e) => {
     e.stopPropagation();
@@ -560,6 +561,16 @@ class PointCardComponent extends React.Component {
   expanded = () => {
     return this.props.expanded && !this.props.expansionLoading;
   }
+  
+  // bigImage
+  handleImageClick = (e) => {
+    e.stopPropagation();
+    if (this.state.displayImageBig) {
+      this.setState({ displayImageBig: false })
+    } else {
+      this.setState({ displayImageBig: true })
+    }
+  }
   // TODO old django pointBox.html also checks if point.imageURL.strip exists - is that necessary here? -JF
   hasImage = () => {
     //console.log("hasImage() : " + this.point.imageURL  )
@@ -569,13 +580,15 @@ class PointCardComponent extends React.Component {
     return (this.hasImage() && !this.state.editingClaimText && !this.state.editingClaimSources)
   }
   image = () => {
-  if (this.displayImage())
-    return  <div className="imageContainer">
-        <img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img>
-      </div>
+    if (this.displayImage()) {
+      let classesImageContainer = `imageContainer ${this.state.displayImageBig && "imageContainerBig"}`
+      return  <div className={classesImageContainer}>
+          <a onClick={this.handleImageClick}><img className="pointCardImage" src={this.point.fullPointImage} alt={this.point.imageDescription}></img></a>
+        </div>
+    }
   }
   textContentWidth = () => {
-    if (this.displayImage()) {
+    if (this.displayImage() && !this.state.displayImageBig) {
       return "contentWithImage"
     } else {
       return "contentNoImage"

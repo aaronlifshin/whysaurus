@@ -1376,16 +1376,17 @@ function processNotification(notificationData) {
 
 function processMessageFirebase(dataObj) {
     if (dataObj == null) {
-        console.log('NULL Firebase Message Received! ');
+        //console.log('NULL Firebase Message Received! ');
         return;
     }
 
     console.log('Firebase Message Received: ' + dataObj.type);
     if (dataObj.type == 'notification') {
         processNotification(dataObj);
-    } else if (dataObj.type == 'chat') {
-        processChat(dataObj);
     }
+    // else if (dataObj.type == 'chat') {
+    //     processChat(dataObj);
+    // }
 }
 
 function notificationChannelOpen() {
@@ -1438,19 +1439,21 @@ function markNotificationsRead() {
 
 
 function activateNotificationMenuItems() {
-    $('.notificationMenuItem').off(".ys").on("click.ys", function(ev) {
-        if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
-            return;
-        } else if (ev.which == 2) { // Middle mouse button
-            return;
-        } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
-            return;
-        } else {
-            $(this).addClass("notificationCleared");
-            loadPoint($(this).data('pointurl'), true);
-            ev.preventDefault();
-        }
-    });
+    // $('.notificationMenuItem').off(".ys").on("click.ys", function(ev) {
+    //     // if (ev.metaKey || ev.ctrlKey) { // Modified clicks pass through to anchor
+    //     //     return;
+    //     // } else if (ev.which == 2) { // Middle mouse button
+    //     //     return;
+    //     // } else if ($('#leftColumn').length == 0 ) { // We are not in 2-column layout, so cannot dynamic load
+    //     //     return;
+    //     // } else {
+    //     //     $(this).addClass("notificationCleared");
+    //     //     loadPoint($(this).data('pointurl'), true);
+    //     //     ev.preventDefault();
+    //     // }
+    //     markNotificationsRead();
+    //     ev.preventDefault();
+    // });
 }
 
 function makeNotificationMenuClickable() {

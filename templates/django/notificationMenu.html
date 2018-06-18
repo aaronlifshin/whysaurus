@@ -1,5 +1,5 @@
 <li>
-    <a href="/claim/{{notification.referencePoint.url}}{% if notification.notificationReasonCode == 3 %}?expanded=comments-{{notification.referencePoint.url}}{% endif %}" class="notificationMenuItem row-fluid Submenu_text_main {%if notification.cleared %}notificationCleared{% endif %}">
+    <a href="/claim/{{notification.referencePoint.url}}{% if notification.notificationReasonCode == 3 %}?expanded=comments-{{notification.referencePoint.url}}{% endif %}" class="notificationMenuItem row-fluid Submenu_text_main {%if notification.cleared %}notificationCleared{% endif %}" onClick="markNotificationsRead();">
         <div class="notificationLeft">
             {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
                 <img class="notificationAvatar" src="/static/img/icon_triceratops_black_47px.png"/>

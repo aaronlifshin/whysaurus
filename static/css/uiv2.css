@@ -2216,7 +2216,8 @@ control-arrow control-prev {
 }
 .mainPageClaimCreationArea {
   margin-left: 14px;
-  margin-bottom: 21px;
+  margin-top: 48px;
+  margin-bottom: 32px;
 }
 .mainPageClaimCreationLabel {
   margin-left: 12px;

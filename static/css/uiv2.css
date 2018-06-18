@@ -2530,8 +2530,8 @@ body {
     display: block;
     position: relative;
     width: 100%;
-    height: 72px;
-    padding-left: 15px;
+    height: 192px;
+    padding: 15px;
     padding-bottom: 9.9px;
   }
   .imageContainerBig {

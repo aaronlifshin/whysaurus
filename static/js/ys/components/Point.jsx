@@ -58,7 +58,7 @@ class Byline extends React.Component {
     let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
     return <span className={topClass}>
       <span className="byline">
-        <span>By <a className="bylineAuthor" target="_blank" tabIndex="-1" href={"/user/" + this.props.point.authorURL}>@{this.props.point.authorName}</a>{this.contributorsDropdown()}
+        <span>By <a className="bylineAuthor" onClick={this.handleClickNoProp} target="_blank" tabIndex="-1" href={"/user/" + this.props.point.authorURL}>@{this.props.point.authorName}</a>{this.contributorsDropdown()}
         </span>
       </span>
     </span>

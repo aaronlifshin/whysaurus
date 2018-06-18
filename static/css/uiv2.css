@@ -1717,7 +1717,7 @@ a.buttonUX2:focus:enabled {
   left: 27px;
 }
 .imagePickerButton:active:enabled {
-  transform: scale(1.41375);
+  transform: scale(1.431875);
 }
 .imageBigDisplay {
   margin-bottom: 20px;

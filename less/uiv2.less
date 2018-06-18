@@ -2249,8 +2249,10 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   position: relative;
   left: 27px;
 }
+
+@buttonUX2BigScaleDownOnClick: 0.9875;
 .imagePickerButton:active:enabled {
-  transform: scale(@buttonUX2ScaleDownOnClick * @buttonUX2Big);
+  transform: scale(@buttonUX2BigScaleDownOnClick * @buttonUX2Big);
 }
 
 .imageBigDisplay {
@@ -2390,7 +2392,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 
 .inputFieldUX2::placeholder {
   color: grey;
-  font-family: arial, sans-serif;
+  font-family: arial, sans-serif; // switching to arial bc meta looks bad in italic, the f's drop too low, the dots in the lowercase i's blend with the stalks, etc
   font-style: italic;
   font-size: 16px; // temp; consider moving back up to 17 to match PointTitle once we move to a multi-line textarea
   vertical-align: top; // why isn't this working?

@@ -16,7 +16,7 @@ class EditImageForm  extends React.Component {
 
   render() {
     const {point, onSubmit, onClick, heightClass} = this.props
-    let captionButtonLabel = `${point.imageDescription ? "Update Caption" : "Add Caption" }`
+    let captionButtonLabel = `${point.imageDescription ? "Update " : "Add a " }`
     return ( 
         <Form onSubmit={onSubmit}
               defaultValues={{imageURL: point.imageURL, imageDescription: point.imageDescription}}
@@ -35,12 +35,11 @@ class EditImageForm  extends React.Component {
                 />
                {imageURL && <img className="imageBigDisplay" src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}           
                 <div className="">
-                  <label className="inputLabel">Add a caption, credit, description, etc</label>
+                  <label className="inputLabel">{captionButtonLabel} caption, credit, description, etc</label>
                   <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Neil Leifer for TIME"/>
                 </div>
                 <div className="">
-                  <button onClick={this.props.onClose} className="buttonUX2 pull-right">Done</button>                
-                  <button onClick={onClick} disabled={(!this.state.imageUpdated) && (imageDescription == point.imageDescription)} className="buttonUX2 pull-right buttonUX2marginR" type="submit">{captionButtonLabel}</button>
+                  <button onClick={(this.state.imageUpdated) || (imageDescription != point.imageDescription) ? onClick : this.props.onClose} className="buttonUX2 pull-right buttonUX2marginR" type="submit">Done</button>
                 </div>
 
             </form>
@@ -49,6 +48,8 @@ class EditImageForm  extends React.Component {
     );
   }
 }
+//                  <button onClick={this.props.onClose} className="buttonUX2 pull-right">Done</button>                
+
 
 
 class EditImageComponent extends React.Component {

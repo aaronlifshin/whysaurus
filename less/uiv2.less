@@ -54,6 +54,14 @@ h1, h2, h3, h4, h5, h6, body {
 @lineHeightExtra: 125%;
 
 
+h4 {
+  margin-bottom: 12px;
+  margin-top: 0;
+  padding-top: 64px; // using padding instead of margin so that links the content isn't obscured behind the fixed header when users jump to h4 ids
+}
+
+
+
 // Animation
 @hoverTransitionDuration: .066s;
 
@@ -691,10 +699,6 @@ body {
 .policyContent {
   position: relative;
   left: -24px;
-}
-
-.policyContent h4 {
-  margin-bottom: 12px;
 }
 
 .policySection {

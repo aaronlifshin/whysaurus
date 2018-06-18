@@ -2,234 +2,162 @@
 
 {% block mainPageContent %}
 
-<div id="content">
+<div id="content" class="fullPageText">
 
-<div id="helpHeading" class="fullPageText">
-<!--
-    <h4>Table Of Contents</h4>
-    <ol>
-    <li><a id="basicsLink" href="#basics">What is Whysaurus?</a></li>
-    <li><a id="nutsAndBoltsLink" href="#nutsAndBolts">Nuts and Bolts</a></li>
-    <li><a id="bestLink" href="#best">Best Practices</a></li>
-    </ol>
--->
-<h2 id="basics" class="h2">FAQ</h2>
+<h2 id="faqTop" class="h2">FAQ</h2>
 <br>   
 <br> 
 <h4>What Is Whysaurus?</h4>    
-<p><strong>Whysaurus</strong> is an intuitive platform for building evidence-based arguments. It is also free, collaborative and open-source.<br>
-<br>
-The problem we’re addressing is that argument doesn’t work well on the internet: the structure of forums and comment threads naturally lend themselves to vitriol and incoherence. This is bad for users and bad for society. Thoughtful, evidence-based argument is how we collectively figure out answers to difficult problems.<br>
-<br>
-So we are creating tools to make productive argument easier, for schools and the internet broadly, and improve the way we - the public - debate important questions facing our society.</p>
+<p><strong>Whysaurus</strong> is a place to enjoy a good argument, meet smart folks with new perspectives, and find the best arguments.</p>
+<p>It’s designed to make online argument fun.</p>
 
-<h4>How Does it Work?</h4>                
-<strong>Whysaurus is made of claims</strong>
-<p>Whysaurus helps you explain ideas by dividing them into bite-size claims. 
-Each claim can be supported or countered by other claims, as well as rated and commented.</p>
+<h4>Why Argument?</h4>                
+<p>Argument is failing online and it’s getting worse offline.</p>
+<p>This is bad — and the stakes are high:</p>
+<p>Argument, based in evidence, is how we collectively figure out answers to difficult problems. The internet is our new public square, and for democracy to function, we desperately need a platform that cultivates good argument.</p>
+<p>For more, check out our <a href="/manifesto">Manifesto</a>.</p>
 
-<strong>Claims are reusable</strong>
-<p>  When you create a good explanation, others can use 
-it to support or counter another Whysaurus claim.  
-When adding a supporting or counter claim, you can search the system to see what's 
-already out there.</p>
+<h4>What’s the goal?</h4>                
+<p>To create a community and work together to create <em>The Library of The Best Arguments for Every Idea</em>.</p>
 
-<strong>Creation is collaborative</strong>
-<p>Users create and refine claims together, to arrive 
-at the best explanation over time. Any user can edit any claim, and all work is saved in 
-the history, so that it is never lost and can be recovered.</p>
+<h4>What about the trolls?</h4>                
+<p>Whysaurus' design uses principles from "structured argument" — this makes it way easier for us to filter trolling than traditional comment threads.</p>
 
-<strong>A repository of explanations</strong>
-<p>Over time, we hope that Whysaurus will collect convincing arguments for positions and opinions on many subjects.  
-Together, we can create a reference repository of the best explanations accessible to all.
+<h4>What is Evidence in Whysaurus?</h4>                
+<p>Evidence on Whysaurus is a chain of bite-sized claims.</p>
+
+<h4>What are Claims in Whysaurus?</h4>
+<p>Claims can be:</p>
+<ul>
+  <li><span class="bullet">•</span>Supported or countered by other claims </li> 
+  <li><span class="bullet">•</span>Rated with agree/disagree</li>
+  <li><span class="bullet">•</span>Re-used (along with their networks of evidence!)</li>
+</ul>
+
+<h4>What are Sources in Whysaurus?</h4>
+<p>Each claim can link to sources. But remember — IRL and on Whysaurus — arguments work best when you explain the best claims made by your sources. </p>
+<p>“Because they said so” doesn’t work when we don’t agree on who to trust. Plus, even the best sources are wrong sometimes.</p> 
+<p>The good news is that we can all get behind “show me the evidence!”</p>
+
+<h4>I want to state a “fact” — how do I do that in Whysaurus?</h4>
+<p>A fact is a claim with real strong evidence. So make your claim and back it up! No claims are sacred cows — we must protect the right to argue against any claim. </p>
+
+<h4>How are Claims scored in Whysaurus?</h4>
+<p>A claim’s score is based on:</p>
+<ul>
+<li><span class="bullet">•</span>The scores of its Evidence (multiplied by Relevance)</li>
+<li><span class="bullet">•</span>Agrees and Disagrees</li>
+<li><span class="bullet">•</span>Sources</li>
+</ul>
+<p>Supporting evidence makes scores go up; counter evidence makes scores go down. The algorithm is a work-in-progress. Currently it only “looks” one level down. In the future, it will be possible to defend a claim by attacking its counter points!
 </p>
 
-<h4>What is your Mission?</h4>
-<p>Whysaurus seeks to connect people who are passionate about reason, 
-    to create tools for illustrating the relationships between ideas, 
-    to share the world's best explanations and to help us all to organize our thoughts. 
-    For more about what we believe, check out our <a href="https://www.whysaurus.com/manifesto" target="_blank">Manifesto</a>
+<h4 id="whatIsRelevance" class="offsetForJump">What is Relevance and how’s it differ from Agree/Disagree?</h4>
+<p>Relevance is one of the most powerful weapons in Whysaurus.</p>
+<p>The links between claim are rated with Relevance. If someone claims “Tom Brady is a cheater” and supports that with “Star Wars stole ideas from Asimov’s Foundation series”, you might click “agree” on both, but rate Relevance as 0%.
+</p>
+<p>Claims with low relevance are hidden by default.</p>
+
+<h4>How does Relevance impact scores?</h4>
+<p>Relevance impacts scoring dramatically. For example:</p> 
+<p>a +10 Supporting claim with 20% Relevance adds only +2 to the claim above it (10 &#xd7; 20% = 2).</p> 
+<p>When a piece of evidence is 0% Relevant, it has no effect on scores.</p>
+
+<h4>What if the score of a claim is wrong?</h4>
+<p>Set the record straight! Add evidence or counter evidence. Vote on relevance and click agree/ disagree. Share the argument with friends and ask them to do the same!</p>
+
+<h4>Why should I trust the crowd when it comes to truth?
+</h4>
+<p>So far, we’ve found that asking for evidence makes folks argue in good faith. Research by smart people at Harvard has shown that when you ask people to explain a problem, they take more moderate positions than they would otherwise. 
+</p>
+<p>That said, if we see crowds of users clicking agree/disagree on iffy claims, we reserve the right to ask for evidence before tallying those votes. 
 </p>
 
-<h4>What can I use Whysaurus for?</h4>
-<strong>Collaborate</strong>
-<p>When working with a team, the Whysaurus format allows for collaboration: edit as a team, 
-vote on what works and what doesn't, and reuse already completed work by linking it into your tree.</p>
+<h4>How will Whysaurus prevent arguments from being overrun by trolls, bots, demons and armies of special interest lemmings?
+</h4>
+<p>We can compare suspicious activity to known humans acting in good faith. Our estimations will get better as we grow — so help us slay trolls by adding your voice to arguments you dig!
+</p>
 
-<strong>Make Decisions</strong>
-<p>Whysaurus can be used to decide a difficult question by building one explanation 
-for the pros and another for the cons.  When you present your recommendations to a 
-decision-maker, they can navigate the tree and see the reasoning behind your explanation.</p>
+<h4>How is Evidence sorted?
+</h4>
+<p>Supporting- and counter-claims are sorted by Relevance. So the most relevant claims rise to the top. In the case of ties, we look at scores. 
+</p>
 
-<strong>Explain complex concepts</strong>
-<p>Whether you are looking to consider great philosophical questions or the latest political conundrum, a 
-Whysaurus claim can help simplify, clarify and get to the heart of the matter. </p>
-
-<strong>Publish your opinion</strong>
-<p>The internet is moving away from the essay or article format.  
-Why not illustrate  your thesis as a tree of Whysaurus claims?  
-There is no tl;dr, your readers can focus on the claim in your argument that 
-is most of interest, and can help improve it.</p>
-
-<strong>Make a convincing argument</strong>
-<p>Sometimes you just need to argue on the internet.  You may want to convince your
-friends or a recalcitrant family member of an idea you believe in.  
-With Whysaurus, your explanation remains online to be reused, and can 
-be refined and added to by others.</p>
-
-<!-- header is obscuring id links so I'm being hacky and linking to the previous id -->
-<h4 id="PointStrengthLink">How can I make Whysaurus better?</h4>
+<h4>Why are claims reusable and why is Whysaurus collaborative?
+</h4>
+<p>So you can build good arguments faster!</p>
+<p>Imagine:</p>
 <ul>
-<li>Voice your opinion on claims by clicking agree or disagree</li>
-<!--<li>Award ribbons to claims that you believe are well-made</li>-->
-<li>Make your own claims</li>
-<li>Edit claims made by others if you see ways to make them better</li>
-<li>Recommend Whysaurus to your friends</li>
-<li><a href="contact" target="_blank">Send us a suggestion</a> for improving the site</li>
-<li>Contribute code - Whysaurus is open-source. If you're interested, let us know.</li>
+  <li>1.  Gus argues “No one ever died from overdosing on marijuana” and adds evidence. </li>
+  <li>2.  Later, Susannah argues “Marijuana is safer than alcohol” and links to Gus’s claim.</li>
+  <li>3.  All of Gus’ supporting evidence comes in automatically.</li>
+</ul>
+<p>Why should we start from scratch when we can stand on the shoulders of the best work thats been done so far? </p>
+
+<h4>How does Clarification work in Whysaurus?
+</h4>
+<p>Click the little speech bubble icon in the byline. That opens up the Meta-Discussion, where contributors can figure out the best way to phrase the claim. 
+</p>
+<p>If you don’t agree with how other users are framing an idea, start your own argument!
+</p>
+
+<br>
+<br>
+<br>
+<h2 id="faqBestPractices">Best Practices</a></h2>
+<br>  
+ 
+<h4>Community rules
+</h4>
+<ul>
+  <li><span class="bullet">•</span>This is a civil community — be respectful.</li>
+  <li><span class="bullet">•</span>No claims about other users. </li>
+  <li><span class="bullet">•</span>Have fun!</li>
 </ul>
 
-<h4 id="WhatMakesAPointStrong">What makes a claim strong?</h4>
-<ul>
-<li>A strong claim is specific, concise and connected to a set of strong 
-supporting claims, thus making it convincing.</li>
-<li>A strong claim is supported by linked sources.</li>
-<li>A strong claim is, if possible, a standalone statement, phrased to be understood in any context</li>
-</ul>
+<h4>Divide big ideas into multiple bite-sized claims</h4>
+<p>Make it easy for everyone to agree with the parts of your argument we all agree with, and zero in on the juicy stuff — the places where there’s conflict. Plus, your argument score will get higher faster with many short claims than it would with a few bloated ones.
+</p>
+<h4>Be Specific </h4>
+<p>Make sure everyone knows what you mean.</p>
+<h4>Use simple words</h4>
+<p>Only use big words when shorter synonyms don’t exist. </p>
+<h4>Be Concise
+</h4>
+<p>Life is short.
+</p>
+<h4>Write claims so that they can be re-used in multiple arguments (when you can)
+</h4>
+<p>Certain fundamental claims contribute to a variety big ideas. If your claim is written so that it can "stand alone" — i.e. it doesn't require the context of other claims in order to be understood —  then other users can link to it in their own arguments.
+</p>
+<h4>Contest semantics only when the author’s intent is truly unclear</h4>
+<p>When a grammatical error or hasty word choice prevents a clear interpretation of a user’s intent, use the meta-discussion to iron it out. But if the intent of a claim can be understood by a reasonable person, there's no need to call in the semantics police.
+</p>
 
-<h4>What makes a claim weak?</h4>
-A claim can be weak for a variety of reasons. It might be:
-<ul>
-<li>Vague or unclear without further explanation </li>
-<li>Based on insufficient or irrelevant supporting claims </li>
-<li>Not supported by sources</li>
-</ul>
-<!--
-<h4>Opinions and Subjective Claims</h4>
-Whysaurus can be used to illustrate opinions and subjective ideas. The key is to make sure that you create a sufficient body of supporting claims to prove your idea.
--->
-<h4>How is Whysaurus different than Wikipedia?</h4>
-Wikipedia collects facts and Whysaurus is designed for opinions and topics of debate - grey areas where it's unclear what is true and what isn't. By breaking complex ideas down into a series of bite-size claims, Whysaurus helps us navigate the murky waters of uncertainty.
+<br>
+<br>
+<br>
+<h2 id="faqAppendix">Appendix</a></h2>
+<br>  
 
 <h4>What's up with with dinosaurs?</h4>
-Dinosaurs are awesome. 
+<p>Dinosaurs are awesome.</p> 
 
+<h4>Who made Whysaurus?</h4>
+<p>Whysaurus was founded by Joshua Frankel, an artist and designer, and Aaron Lifshin, a software engineer.</p>
 
+<h4>I’ve got an idea that could make Whysaurus better, how can I share it with you?</h4>
+<p><a href="contact" target="_blank">Contact us here</a>. Bonus points if you create a Whysaurus argument to back-up your suggestion!</p>
 
-<h2 id="nutsAndBolts">Nuts and Bolts</h2>
-
-<h4 id="scoringAlgorithm">How is a claim's score calculated?</h4>
-<p>The factors that influence the score of a claim are:
-<ul> 
-<li>Agrees</li>
-<li>Disagrees</li>
-<li>Sources</li>
-<li>Scores of Evidence claims, multiplied by their Relevance</li>
-</ul>
-eg, A +10 Supporting Claim with 50% Relevance contributes +5 (+10 * 50%) to the claim above it. If it were a Counter Claim, then it would contribute -5.<br/>
-<br/>
-The scoring algorithm is a work-in-progress. Currently the algorithm only “looks” one level down. In the future, it may be possible to defend a point’s score by attacking its counter points.
-</p>
-
-<h4>Why is there a Relevance rating in addition to Agree/Disagree?</h4>
-Relevance score allows us to find the most important ideas quickly and easy.
-For example, if the claim "The Earth's atmosphere is getting warmer" were supported by "It snows often in Finland",
-we might agree with both claims, but mark this particular link with a low relevance.<br/><br/>
-
-Every link between two claims has a unique relevance score.
-
-<h4>How are claims sorted?</h4>
-<p>By relevance.</p>
-
-<!--
-<h4>How is the color of the score determined?</h4>
-The color is based solely on the value of the score; it allows the value of a group of claims to be surmised at a glance. 
-The color system is based on the traffic light: green is strong and red is weak. 
-The current thresholds are:The current thresholds are:<br>
-<br>
-3 and higher = <span class="greenScore">green</span><br>
--2 to 2 = <span class="yellowScore">yellow</span><br>
--3 and lower = <span class="redScore">red</span><br>
-<br>
-Whysaurus is a work-in-progress, so expect these thresholds to change as we improve the site. 
-This means that the score colors of claims may change occasionally as we experiment.
--->
-<h4>Can a claim be part of multiple explanations?</h4>
-Yes! For example, a claim about wind might feature in one explanation about kites, one about weather and another about sailboats. 
-
-<h4>Why are there limits on the length of the titles of claims?</h4>
-Shorter claim titles are easier to understand. Also, it's easier to identify strengths (and weaknesses) in an explanation that is 
-divided into many bite-sized claims. Short titles can also be shared on twitter without getting truncated. 
-If your title doesn't fit inside the limit, consider dividing the idea into several smaller claims, or just put 
-some of the text you had in mind into the body of the claim. 
-
-<h4>Is it possible to unlink or disconnect a Supporting or Counter Claim</h4>
-Yes. There is a control do this at the bottom of the Relevance widget, which you can get to by clicking on the "Relevance" tab of
-any Supporting or Counter Claim.
-
-<!--
-<h4>Why do you have two rating systems - agree/disagree and the blue ribbons?</h4>
-Whether or not one agrees with a claim and whether or not a claim is well-made are two different questions. 
-A user who can disagree with a claim while also awarding it a blue-ribbon embodies the spirit we hope to foster on Whysaurus. 
--->
-<h2 id="best">Best Practices</a></h2>
-<h4>Goals for this section</h4>
-This goal of this section is to collect guidelines for how Whysaurus can be used most effectively. 
-It is a work-in-progress. If you have a suggestion for how to improve this page we'd love to hear it! 
-Leave us a note <a href="contact" target="_blank">here</a>.
-
-<h4>Try to keep each claim as simple as you can</h4>
-A great way to explain a complex idea is to divide it into a series of easily digestible bits. If your claim is complex, see if you can divide it into a group of simpler claims supporting each other.
-
-<h4>Try to write claims so that they can be used in multiple explanations</h4>
-One of the fun things about Whysaurus is how it allows us to see how some fundamental thoughts are part of many different big ideas. 
-If your claim is written so that it can "stand alone" - that is it doesn't require the context 
-of other claims in order to be understood - then other users will be more likely to link to it in their own explanations. 
-
-<h4>Note your sources (and illustrate them!)</h4>
-Readers are more likely to agree with your claim if it has good sources. Sources can be books, papers, studies or other websites.
-
-<h4>Be Specific</h4>
-<p>Try to make your claims and your comments as specific as possible. Whether you agree or disagree, always tells us WHY.</p>
-<!--
-For example, rather than writing<br>
-<em>This claim goes overboard</em><br>
-instead try:<br>
-<em>This claim is overreaching. It might true in some cases, but there is not enough evidence in the supporting claims 
-to prove that the statement is true all of the time.</em>
--->
-<h2 id="best">Community rules</a></h2>
-
-<h4>Tone</h4>
-Whysaurus is a civil community. Please act respectfully and do your best to make the claims you encounter stronger.
-
-<h4>Commenting: Always comment on content, not people</h4>
-Critical comments should always critique a Whysaurus claim but never a Whysaurus user. Comments that break this rule will be removed.
-
-<h4>Contest semantics only when intent is truly unclear</h4>
-When a grammatical error or hasty choice of words prevents a clear interpretation of a claim's intent, work together with your fellow users to iron that out. But if the intent of a claim can be understood, there's no need to call in the semantics police. 
-
-<h2 id="license">License</a></h2>
-<br>
-This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
-
-<h2 id="team">Team</a></h2>
-<br>
-Whysaurus was founded by Aaron Lifshin, a software architect, and Joshua Frankel, an artist. 
-
-<br>
-<br>
-<h4>What else should be on this page?</h4>
-Please send us a suggestion <a href="contact" target="_blank">here</a>.
 <br>
 <br>
 <br>
 <br>
 <br>
 </div>
-</div>
+
+<!-- not being used at the moment -->
 <script>
-
 function goToAnchor(targetAnchor) {
   var offset = $("#" + targetAnchor).offset();
   var scrollto = offset.top - 60; // fixed_top_bar_height = 52px
@@ -252,10 +180,7 @@ $(document).ready(function() {
     goToAnchor("best");
     return false;
   });  
-});
-              
-
-
+});           
 </script>
 
 {% endblock %}

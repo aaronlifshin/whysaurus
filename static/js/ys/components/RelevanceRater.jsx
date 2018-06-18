@@ -89,7 +89,7 @@ class RelevanceComponent extends React.Component {
        </div>
       <div className="relevanceExplanation">
         <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} {this.relevanceVoteCount == 1 ? 'vote' : 'votes'} so far</div> 
-        <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#nutsAndBolts">Learn more</a>.</div>
+        <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#whatIsRelevance">Learn more</a>.</div>
         {user && user.admin && <div className="admin">Sort score: {this.sortScore}</div>}
       </div>
     </div>

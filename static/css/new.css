@@ -200,8 +200,11 @@ a:visited {
   margin-left: 1px;
 }
 .fullPageText {
-  max-width: 540px;
+  max-width: 480px;
   margin-bottom: 120px;
+}
+.fullPageText p {
+  line-height: 133%;
 }
 .fixOffset2 {
   position: relative;
@@ -937,11 +940,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   margin-top: -20px;
   z-index: 100000;
 }
-.manifestoContent h4 {
-  margin-top: 48px;
-  margin-bottom: 12px;
-}
-.manifestoContent li {
+.fullPageText li {
   margin-bottom: 6px;
 }
 #manifestoText {
@@ -963,9 +962,12 @@ JSON error related to displaying comments. But when I don't use this class, the 
   height: 24px !important;
   width: 68px !important;
 }
-.textPageBulletList {
+.fullPageText ul {
   margin-top: 16px;
   margin-bottom: 24px;
+}
+.fullPageText .bullet {
+  margin-right: 8px;
 }
 .explanationColumn {
   position: relative;

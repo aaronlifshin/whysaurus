@@ -313,7 +313,7 @@ function openLoginDialog() {
     $(this).dialog("close");
   };
   $("#loginDialog").dialog({
-    title: "Sign In",
+    //title: "Sign In",
     buttons: dialogButtons
   });
   $("#loginDialog").dialog("open");

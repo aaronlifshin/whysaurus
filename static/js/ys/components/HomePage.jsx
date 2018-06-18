@@ -119,8 +119,8 @@ class Home extends React.Component {
     }
   }
   renderIllustrationClose = () => {
-    return <div id="closeExplanationRow" onClick={this.closeExplanation}>
-      <a href='#' data-toggle="tooltip" title="Got It!">X</a>
+    return <div id="gotItExplanation" className="explanationBlock" onClick={this.closeExplanation}>    
+      <span className="editAreaClose"> <a href='#' data-toggle="tooltip" title="Got It!"><CloseLinkX/></a></span>
     </div>
   }
 

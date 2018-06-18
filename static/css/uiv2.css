@@ -2192,6 +2192,11 @@ a:hover .arrowAddEvidenceButton {
   height: 40px;
   margin-right: 10px;
 }
+#gotItExplanation {
+  margin-top: 12px;
+  margin-left: 10px;
+  margin-right: 12px;
+}
 .carousel {
   max-width: 80vw;
 }

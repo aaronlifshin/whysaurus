@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const CurrentUserQuery = gql`
 query CurrentUser {
-  currentUser { url, admin, hasConfirmedTermsAndConditions, role, recentlyViewed { id, url, title } }
+  currentUser { url, admin, hasConfirmedTermsAndConditions, hasConfirmedHeaderWalkthrough, role, recentlyViewed { id, url, title } }
 }`
 
 export const pointFieldsFragment = gql`
@@ -281,6 +281,14 @@ mutation NewPoint($title: String!, $imageURL: String, $imageAuthor: String, $ima
 export const AcceptTerms = gql`
 mutation AcceptTerms($userUrl: String!) {
   acceptTerms(userUrl: $userUrl) {
+    success
+  }
+}
+`
+
+export const SetUserFlag = gql`
+mutation SetUserFlag($userUrl: String!, $flag: String!, $value: Int!) {
+  setUserFlag(userUrl: $userUrl, flag: $flag, value: $value) {
     success
   }
 }

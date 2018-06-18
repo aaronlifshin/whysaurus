@@ -28,6 +28,10 @@ class User(NdbObjectType):
     def resolve_hasConfirmedTermsAndConditions(self, info):
         return self.hasConfirmedTermsAndConditions
 
+    hasConfirmedHeaderWalkthrough = graphene.Boolean()
+    def resolve_hasConfirmedHeaderWalkthrough(self, info):
+        return self.hasConfirmedHeaderWalkthrough
+
     recentlyViewed = graphene.List(lambda: Point)
     def resolve_recentlyViewed(self, info):
         return self.getRecentlyViewed()
@@ -520,6 +524,29 @@ class AcceptTerms(graphene.Mutation):
         return AcceptTerms(success=True)
 
 
+class SetUserFlag(graphene.Mutation):
+    class Arguments:
+        userUrl = graphene.String(required=True)
+        flag = graphene.String(required=True)
+        value = graphene.Int(required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(self, info, userUrl, flag, value):
+        user = info.context.current_user
+        if not user:
+            raise Exception("User Not Logged In")
+
+        if user.url != userUrl:
+            raise Exception("Invalid User Url: Mismatches Current User")
+
+        logging.info('Set User (%s) Flag (%s): %d' % (userUrl, flag, value))
+
+        user.setUserFlag(flag, value)
+
+        return SetUserFlag(success=True)
+
+
 class RelevanceVote(graphene.Mutation):
     class Arguments:
         linkType = graphene.String(required=True)
@@ -663,6 +690,7 @@ class Mutation(graphene.ObjectType):
     set_editors_pick = SetEditorsPick.Field()
     make_featured = MakeFeatured.Field()
     accept_terms = AcceptTerms.Field()
+    set_user_flag = SetUserFlag.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -60,6 +60,7 @@ class Home extends React.Component {
 
   state = {
     terms_open: true,
+    explanation_visible: true,
     tabIndex: 0
   }
 
@@ -109,34 +110,58 @@ class Home extends React.Component {
        <div className="explanationTextCentered lessWidth">Find useful<br/>Arguments</div>
      </div>
   }
+  closeExplanation = (e) => {
+    this.setState({ explanation_visible: false })
+    if (this.props.user) {
+      this.props.setUserFlag(this.props.CurrentUserQuery.currentUser.url, 'confirmHeaderWalkthrough', 1)
+    } else {
+      // Do we want to force/prompt a login?
+    }
+  }
+  renderIllustrationClose = () => {
+    return <div id="closeExplanationRow" onClick={this.closeExplanation}>
+      <a href='#' data-toggle="tooltip" title="Got It!">X</a>
+    </div>
+  }
 
   illustrations = () => {
-    return <div className="row" id="explanationRowHomepage">
-      <MediaQuery minWidth={singleColumnThresholdForCarousel}>
-        <div className="">
-            {this.renderIllustration1()}
-            {this.renderIllustration2()}
-            {this.renderIllustration3()}
-            {this.renderIllustration4()}
-        </div>
-      </MediaQuery>
-      <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
-      <Carousel autoPlay={false} interval={2500} infiniteLoop={true} showIndicators={true} showArrows={true} showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
-          <div>
-            {this.renderIllustration1()}
-          </div>
-          <div>
-            {this.renderIllustration2()}
-          </div>
-          <div>
-            {this.renderIllustration3()}
-          </div>
-          <div>
-            {this.renderIllustration4()}
-          </div>
-        </Carousel>
-      </MediaQuery>
-    </div>;
+    if (this.props.CurrentUserQuery.currentUser && this.props.CurrentUserQuery.currentUser.hasConfirmedHeaderWalkthrough) {
+    
+    }
+    else {
+      return this.state.explanation_visible &&
+        <div className="row" id="explanationRowHomepage">
+          <MediaQuery minWidth={singleColumnThresholdForCarousel}>
+            <div className="">
+              {this.renderIllustration1()}
+              {this.renderIllustration2()}
+              {this.renderIllustration3()}
+              {this.renderIllustration4()}
+              {this.renderIllustrationClose()}
+            </div>
+          </MediaQuery>
+          <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
+            <Carousel autoPlay={false} interval={2500} infiniteLoop={true} showIndicators={true} showArrows={true}
+                      showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
+              <div>
+                {this.renderIllustration1()}
+              </div>
+              <div>
+                {this.renderIllustration2()}
+              </div>
+              <div>
+                {this.renderIllustration3()}
+              </div>
+              <div>
+                {this.renderIllustration4()}
+              </div>
+              <div>
+                {this.renderIllustrationClose()}
+              </div>
+            </Carousel>
+          </MediaQuery>
+        </div>;
+    }
   }
 
   confirmTerms = () => {
@@ -233,6 +258,11 @@ export default compose(
   graphql(schema.AcceptTerms, {
     props: ({ mutate }) => ({
       acceptTerms: (userUrl) => mutate({variables: {userUrl}})
+    })
+  }),
+  graphql(schema.SetUserFlag, {
+    props: ({ mutate }) => ({
+      setUserFlag: (userUrl, flag, value) => mutate({variables: {userUrl, flag, value}})
     })
   })
 )(Home);

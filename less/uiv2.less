@@ -541,6 +541,8 @@ textarea {
   resize: none;
 }
 
+
+
 //////////////////////////////////////////////
 // DROPDOWNS
 
@@ -2332,7 +2334,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 
 .addEvidenceFormLabel {
   color: @darkerGreyColor;
-    font-size: @baseFontSize * 0.813; // ~13px
+  font-size: @baseFontSize * 0.813; // ~13px
 }
 
 .addEvidenceControlsArea {
@@ -2344,6 +2346,16 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 .addEvidenceControlsAreaNoEvidence {
     top: 18px;
 }
+
+.inputLabel {
+  display: block;
+  position: relative;
+  font-size: @fontSizeSecondaryUX2;
+  color: @darkerGreyColor;
+  padding: @cardPadding;
+  padding-bottom: 6px;
+}
+
 
 .inputFieldUX2 {
   display: block;
@@ -2378,6 +2390,7 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 
 .inputFieldUX2::placeholder {
   color: grey;
+  font-family: arial, sans-serif;
   font-style: italic;
   font-size: 16px; // temp; consider moving back up to 17 to match PointTitle once we move to a multi-line textarea
   vertical-align: top; // why isn't this working?

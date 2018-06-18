@@ -35,7 +35,8 @@ class EditImageForm  extends React.Component {
                 />
                {imageURL && <img className="imageBigDisplay" src={config.cdn.baseURL + imageURL} alt={imageDescription}/>}           
                 <div className="">
-                  <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Add a caption, credit, description, etc"/>
+                  <label className="inputLabel">Add a caption, credit, description, etc</label>
+                  <Text className="inputFieldUX2 inputFieldUX2multi" field="imageDescription" onClick={onClick} onSubmit={submitForm} placeholder="Neil Leifer for TIME"/>
                 </div>
                 <div className="">
                   <button onClick={this.props.onClose} className="buttonUX2 pull-right">Done</button>                

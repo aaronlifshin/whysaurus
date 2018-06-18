@@ -1794,6 +1794,14 @@ a.buttonUX2:focus:enabled {
 .addEvidenceControlsAreaNoEvidence {
   top: 18px;
 }
+.inputLabel {
+  display: block;
+  position: relative;
+  font-size: 14px;
+  color: #5d5d5d;
+  padding: 15px;
+  padding-bottom: 6px;
+}
 .inputFieldUX2 {
   display: block;
   position: relative;
@@ -1822,6 +1830,7 @@ a.buttonUX2:focus:enabled {
 }
 .inputFieldUX2::placeholder {
   color: grey;
+  font-family: arial, sans-serif;
   font-style: italic;
   font-size: 16px;
   vertical-align: top;

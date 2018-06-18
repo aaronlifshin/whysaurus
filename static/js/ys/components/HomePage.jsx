@@ -141,7 +141,7 @@ class Home extends React.Component {
             </div>
           </MediaQuery>
           <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
-            <Carousel autoPlay={false} interval={2500} infiniteLoop={true} showIndicators={true} showArrows={true}
+            <Carousel autoPlay={false} interval={2500} infiniteLoop={false} showIndicators={true} showArrows={true}
                       showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
               <div>
                 {this.renderIllustration1()}

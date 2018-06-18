@@ -2376,8 +2376,11 @@ body {
     right: 18px;
   }
   #explanationRowHomepage {
-    margin-left: -27px;
+    margin-left: -64px;
     width: auto;
+  }
+  .explanationBlock {
+    margin-right: 32px;
   }
   .explanationTextCentered {
     width: unset;

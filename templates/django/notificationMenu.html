@@ -15,7 +15,7 @@
         <div class="notificationText">
           <div>
           {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-              {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} users {% else %} A user {% endif %}
+              {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} People {% else %} Someone {% endif %}
               {{notification.notificationReasonText}}
               <br>
               <em>{{notification.referencePoint.title}}</em>

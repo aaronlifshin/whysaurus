@@ -15,7 +15,7 @@ The community has been jumping into your arguments:<br>
         <div>
         <!-- ReasonCode 1 = agree, ReasonCode 2 = ribbon -->
         {% if notification.notificationReasonCode == 1 or notification.notificationReasonCode == 2 %}
-            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} Users {% else %} A user {% endif %}
+            {% if notification.additionalUserCount > 0 %} {{notification.additionalUserCount|add:1}} People {% else %} Someone {% endif %}
             {{notification.notificationReasonText}}<br>
             <a href="http://www.whysaurus.com/claim/{{notification.referencePoint.url}}">{{notification.referencePoint.title}}</a><br>
             (a claim you {{notification.followReason}})

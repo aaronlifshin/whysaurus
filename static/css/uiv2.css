@@ -2207,17 +2207,6 @@ a:hover .arrowAddEvidenceButton {
 .carousel {
   max-width: 80vw;
 }
-.carousel.carousel-slider .control-arrow,
-control-arrow control-prev {
-  transition: none !important;
-  opacity: .6 !important;
-}
-.carousel .control-next.control-arrow:before {
-  border-left-color: #009dd6 !important;
-}
-.carousel .control-prev.control-arrow:before {
-  border-right-color: #009dd6 !important;
-}
 .carousel .slide {
   background: none !important;
   min-width: none !important;
@@ -2229,6 +2218,49 @@ control-arrow control-prev {
 .carouselLastSlide {
   position: relative;
   left: 32px;
+}
+.carousel.carousel-slider .control-arrow,
+control-arrow control-prev {
+  transition: none !important;
+  opacity: 1 !important;
+}
+/* old styling
+.carousel.carousel-slider .control-arrow, control-arrow control-prev {
+  opacity: .6 !important;
+}
+
+.carousel .control-next.control-arrow:before {
+  border-left-color: @blue !important;
+}
+.carousel .control-prev.control-arrow:before {
+  border-right-color: @blue !important;
+}
+*/
+.carousel .control-arrow::before,
+.carousel.carousel-slider .control-arrow::before {
+  border: none !important;
+}
+.carousel .control-next::after,
+.carousel .control-prev::after {
+  position: absolute;
+  color: #2e2e2e;
+  opacity: .9;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  content: "➜";
+  top: 8px;
+}
+.carousel .control-prev:after {
+  transform: scale(-1);
+  top: 10px;
+}
+.carousel .control-next:hover::after,
+.carousel .control-prev:hover::after {
+  color: black;
+  opacity: 1;
+}
+.carousel.carousel-slider .control-arrow:hover {
+  background: none !important;
 }
 .carousel .buttonGotIt {
   background: #2e2e2e;

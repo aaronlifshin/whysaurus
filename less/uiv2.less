@@ -2899,17 +2899,6 @@ a:hover .arrowAddEvidenceButton {
   max-width: 80vw; // match to cardstacks
 }
 
-.carousel.carousel-slider .control-arrow, control-arrow control-prev {
-  transition: none !important;
-  opacity: .6 !important;
-}
-
-.carousel .control-next.control-arrow:before {
-  border-left-color: @blue !important;
-}
-.carousel .control-prev.control-arrow:before {
-  border-right-color: @blue !important;
-}
 
 .carousel .slide {
   background: none !important;
@@ -2927,11 +2916,57 @@ a:hover .arrowAddEvidenceButton {
   left: 32px;
 }
 
+
+.carousel.carousel-slider .control-arrow, control-arrow control-prev {
+  transition: none !important;
+  opacity: 1 !important;
+}
+
+/* old styling
+.carousel.carousel-slider .control-arrow, control-arrow control-prev {
+  opacity: .6 !important;
+}
+
+.carousel .control-next.control-arrow:before {
+  border-left-color: @blue !important;
+}
+.carousel .control-prev.control-arrow:before {
+  border-right-color: @blue !important;
+}
+*/
+
+.carousel .control-arrow::before, .carousel.carousel-slider .control-arrow::before {
+  border: none !important;
+}
+
+.carousel .control-next::after, .carousel .control-prev::after {
+  position:absolute;
+  color: @nearBlack;
+  opacity: .9; // on this icon the diff bt black and nearBlack isn't noticeable enough
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  content: "➜"; // U+279C
+  top: 8px;
+}
+.carousel .control-prev:after {
+  transform: scale(-1);   
+  top: 10px;
+}
+.carousel .control-next:hover::after, .carousel .control-prev:hover::after {
+  color: black;
+  opacity: 1;
+}
+.carousel.carousel-slider .control-arrow:hover {
+  background: none !important;
+}
+
+
 .carousel .buttonGotIt {
   background: @nearBlack;
   left: 42px;
   top: -8px;
 }
+
 
 
 ///////////////////////////////////////////

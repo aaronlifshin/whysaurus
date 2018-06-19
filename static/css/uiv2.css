@@ -98,6 +98,13 @@ a .blackLink:hover {
   display: inline-flex;
   vertical-align: top;
 }
+/*
+a[title]:hover:after {
+  content: attr(title);
+  background-color: pink;
+  //position: absolute;
+}
+*/
 .hover {
   position: relative;
   cursor: pointer;
@@ -1536,19 +1543,19 @@ a .claimShareIcon {
 }
 .buttonUX2,
 .buttonSecondaryUX2blue {
-  padding-top: 4px;
+  padding-top: 5px;
   padding-left: 13px;
   padding-right: 13px;
-  padding-bottom: 5px;
+  padding-bottom: 6px;
 }
 .buttonUX2marginR {
   margin-right: 6px;
 }
 .tabUX2 {
-  padding-top: 6px;
+  padding-top: 7px;
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 7px;
+  padding-bottom: 8px;
   color: #009dd6;
   border: none !important;
   background: none;
@@ -2219,9 +2226,18 @@ control-arrow control-prev {
   height: 40px !important;
   width: unset !important;
 }
+.carouselLastSlide {
+  position: relative;
+  left: 32px;
+}
+.carousel .buttonGotIt {
+  background: #2e2e2e;
+  left: 42px;
+  top: -8px;
+}
 .mainPageClaimCreationArea {
   margin-left: 14px;
-  margin-top: 48px;
+  margin-top: 45px;
   margin-bottom: 32px;
 }
 .mainPageClaimCreationLabel {

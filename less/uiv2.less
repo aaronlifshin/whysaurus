@@ -189,6 +189,15 @@ a .blackLink:hover {
   //background-size: cover;
 }
 
+// styled tooltips
+/*
+a[title]:hover:after {
+  content: attr(title);
+  background-color: pink;
+  //position: absolute;
+}
+*/
+
 .hover {
     position: relative;
   cursor:pointer;
@@ -2011,7 +2020,7 @@ a .claimShareIcon {
 
 // BUTTONS
 
-@buttonUX2_paddingTop: 4px;
+@buttonUX2_paddingTop: 5px;
 @buttonUX2_paddingLeft: @cardPadding - 2px;
 @buttonUX2_paddingRight: @buttonUX2_paddingLeft;
 @buttonUX2_paddingBottom: @buttonUX2_paddingTop + 1px;
@@ -2913,6 +2922,18 @@ a:hover .arrowAddEvidenceButton {
   width: unset !important;
 }
 
+.carouselLastSlide {
+  position: relative;
+  left: 32px;
+}
+
+.carousel .buttonGotIt {
+  background: @nearBlack;
+  left: 42px;
+  top: -8px;
+}
+
+
 ///////////////////////////////////////////
 
 // HOME PAGE
@@ -2921,7 +2942,7 @@ a:hover .arrowAddEvidenceButton {
 @mainPageClaimCreationButtonCalculatedWidth: 84px;
 .mainPageClaimCreationArea {
   margin-left: 14px;
-  margin-top: 48px;
+  margin-top: 45px;
   margin-bottom: 32px;
 }
 

@@ -1008,7 +1008,7 @@ JSON error related to displaying comments. But when I don't use this class, the 
   width: 796px;
 }
 .explanationBlock {
-  display: block;
+  display: inline-block;
   float: left;
   margin-left: 98px;
 }

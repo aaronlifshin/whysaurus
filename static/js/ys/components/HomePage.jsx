@@ -120,11 +120,18 @@ class Home extends React.Component {
       console.log('No user to confirm')
     }
   }
-  renderIllustrationClose = () => {
+  renderIllustrationCloseX = () => {
     return <div id="gotItExplanation" className="explanationBlock" onClick={this.closeExplanation}>    
-      <span className="editAreaClose"> <a href='#' data-toggle="tooltip" title="Got It!"><CloseLinkX/></a></span>
+      <span className="editAreaClose">
+        <a href='#' data-toggle="tooltip" title="Got It!"><CloseLinkX/></a>
+      </span>
     </div>
   }
+  renderIllustrationCloseButton = () => {
+    return <div id="gotItExplanation" className="explanationBlock">  
+      <button className="buttonUX2 buttonGotIt" onClick={this.closeExplanation}>Got It!</button>    
+    </div>
+  }  
 
   illustrations = () => {
     if (this.props.CurrentUserQuery.currentUser && this.props.CurrentUserQuery.currentUser.hasConfirmedHeaderWalkthrough) {
@@ -139,7 +146,7 @@ class Home extends React.Component {
               {this.renderIllustration2()}
               {this.renderIllustration3()}
               {this.renderIllustration4()}
-              {this.renderIllustrationClose()}
+              {this.renderIllustrationCloseX()}
             </div>
           </MediaQuery>
           <MediaQuery maxWidth={singleColumnThresholdForCarousel}>
@@ -155,10 +162,10 @@ class Home extends React.Component {
                 {this.renderIllustration3()}
               </div>
               <div>
-                {this.renderIllustration4()}
-              </div>
-              <div>
-                {this.renderIllustrationClose()}
+                <div className="carouselLastSlide">
+                  {this.renderIllustration4()}
+                  {this.renderIllustrationCloseButton()}
+                </div>
               </div>
             </Carousel>
           </MediaQuery>

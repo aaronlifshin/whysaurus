@@ -2897,6 +2897,8 @@ a:hover .arrowAddEvidenceButton {
 
 .carousel {
   max-width: 80vw; // match to cardstacks
+  left: -10vw;
+  //left: ~"calc((100vw - 480px) *    )"; // subtract enough for button
 }
 
 
@@ -2916,6 +2918,13 @@ a:hover .arrowAddEvidenceButton {
   left: 32px;
 }
 
+.explanationLabel {
+  display: inline-block;
+  position: relative;
+  left: -39px;
+  top: -6px;
+  font-style: italic;
+}
 
 .carousel.carousel-slider .control-arrow, control-arrow control-prev {
   transition: none !important;
@@ -3296,7 +3305,7 @@ body  {
   #explanationRowHomepage {
     width: 90vw;
     position: relative;
-    left: -12px;
+    //left: -12px;
   }
   .control-prev {
     //position: relative;
@@ -3391,6 +3400,10 @@ body  {
     padding-right: 8px; // @buttonPaddingExtraSmallScreens - 2px;
     padding-left: 8px; 
   }
+  
+  .carousel {
+    left: 0;
+  }
 
   .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
@@ -3434,6 +3447,18 @@ body  {
 
 @media (max-width: 480px) {
 
+  
+  #explanationRowHomepage {
+    width: 100vw;
+  }
+  .carousel {
+    max-width: 100vw;
+    left: 0;
+  }
+  .carousel .control-next {
+    margin-right: 6%;
+  } 
+  
   .sourceLabel {
     max-width: 144px;
   }
@@ -3476,6 +3501,24 @@ body  {
   #mainContainer {
     margin-left: -6px;
   }
+
+  .carousel {
+    left: -11%;
+  }
+  .carousel .slide {
+    left: 3%;
+  }
+  .carousel .buttonGotIt {
+    left: 21px;
+  }
+  
+  .explanationLabel {
+    display: none;
+    //width: 48px;
+  }
+  .carousel .control-next {
+    margin-right: 8%;
+  } 
   
   .claimCreationFormFieldBlock {
     width: @cardWidthExtraSmallScreens;

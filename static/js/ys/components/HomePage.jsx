@@ -112,10 +112,12 @@ class Home extends React.Component {
   }
   closeExplanation = (e) => {
     this.setState({ explanation_visible: false })
-    if (this.props.user) {
+    if (this.props.CurrentUserQuery.currentUser) {
+      console.log('Confirming walkthrough')
       this.props.setUserFlag(this.props.CurrentUserQuery.currentUser.url, 'confirmHeaderWalkthrough', 1)
     } else {
       // Do we want to force/prompt a login?
+      console.log('No user to confirm')
     }
   }
   renderIllustrationClose = () => {

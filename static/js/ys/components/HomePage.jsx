@@ -156,10 +156,10 @@ class Home extends React.Component {
                 <span className="explanationLabel">How to argue online:</span>
                 {this.renderIllustration1()}
               </div>
-              <div>
+              <div className="carouselMiddleSlide">
                 {this.renderIllustration2()}
               </div>
-              <div>
+              <div className="carouselMiddleSlide">
                 {this.renderIllustration3()}
               </div>
               <div>

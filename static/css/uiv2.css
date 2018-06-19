@@ -2205,8 +2205,7 @@ a:hover .arrowAddEvidenceButton {
   margin-right: 12px;
 }
 .carousel {
-  max-width: 80vw;
-  left: calc( (100vw - 500px) * -0.36 );
+  left: -7%;
 }
 .carousel .slide {
   background: none !important;
@@ -2215,6 +2214,10 @@ a:hover .arrowAddEvidenceButton {
 .carousel .slide img {
   height: 40px !important;
   width: unset !important;
+}
+.carouselMiddleSlide {
+  position: relative;
+  left: 16px;
 }
 .carouselLastSlide {
   position: relative;
@@ -2228,7 +2231,7 @@ a:hover .arrowAddEvidenceButton {
   font-style: italic;
 }
 .carousel.carousel-slider .control-arrow,
-control-arrow control-prev {
+.control-arrow .control-prev {
   transition: none !important;
   opacity: 1 !important;
 }
@@ -2256,7 +2259,7 @@ control-arrow control-prev {
   display: inline-block;
   -webkit-font-smoothing: antialiased;
   content: "➜";
-  top: 8px;
+  top: 9px;
 }
 .carousel .control-prev:after {
   transform: scale(-1);
@@ -2272,7 +2275,7 @@ control-arrow control-prev {
 }
 .carousel .buttonGotIt {
   background: #2e2e2e;
-  left: 42px;
+  left: 79px;
   top: -8px;
 }
 .mainPageClaimCreationArea {
@@ -2442,7 +2445,7 @@ body {
     width: unset;
   }
   .control-arrow .control-next {
-    margin-right: 20%;
+    margin-right: 7%;
   }
 }
 @media (max-width: 767px) {
@@ -2486,14 +2489,15 @@ body {
     margin-left: 0px;
   }
   #explanationRowHomepage {
-    width: 90vw;
+    width: 420px;
+    margin-left: 2%;
     position: relative;
   }
-  .control-prev {
-    margin-left: 20%;
+  .carousel .control-prev {
+    margin-left: 3%;
   }
-  .control-next {
-    margin-right: 20%;
+  .carousel .control-next {
+    margin-right: 5%;
   }
   .explanationBlock {
     float: none;
@@ -2572,26 +2576,23 @@ body {
   .contentWithImage {
     width: 82%;
   }
-  .control-prev {
-    margin-left: 10%;
-  }
-  .control-next {
-    margin-right: 10%;
-  }
   .policySectionCopy {
     width: 85%;
   }
 }
 @media (max-width: 480px) {
   #explanationRowHomepage {
-    width: 100vw;
+    margin-left: 2%;
+    width: 395px;
   }
-  .carousel {
-    max-width: 100vw;
-    left: calc( (100vw - 360px) * -0.36 );
+  .carousel .control-prev {
+    margin-left: 5%;
   }
   .carousel .control-next {
-    margin-right: 6%;
+    margin-right: 8%;
+  }
+  .carousel .buttonGotIt {
+    left: 56px;
   }
   .sourceLabel {
     max-width: 144px;
@@ -2635,13 +2636,19 @@ body {
     left: 3%;
   }
   .carousel .buttonGotIt {
-    left: 21px;
+    left: 18px;
   }
   .explanationLabel {
     display: none;
   }
+  .carousel .control-prev {
+    margin-left: 11%;
+  }
   .carousel .control-next {
-    margin-right: 8%;
+    margin-right: 14%;
+  }
+  .carouselMiddleSlide {
+    left: 6px;
   }
   .claimCreationFormFieldBlock {
     width: 84vw;

@@ -2896,11 +2896,15 @@ a:hover .arrowAddEvidenceButton {
 
 
 .carousel {
-  max-width: 80vw; // match to cardstacks
-  //left: -10%;
-  left: ~"calc( (100vw - 500px) * -0.36 )"; // subtract enough for button
+  //max-width: 80vw; // match to cardstacks
+  //width: 420px;
+  left: -7%;
+  //left: ~"calc( (100vw - 500px) * -0.36 )"; // subtract enough for button
 }
-
+.carousel .control-next {
+  //right: ~"calc( (100vw - 640px) * -0.1 )" !important;
+  //right: -36px !important;
+}
 
 .carousel .slide {
   background: none !important;
@@ -2911,6 +2915,10 @@ a:hover .arrowAddEvidenceButton {
 .carousel .slide img {
   height: @homepageIllustrationHeight !important;
   width: unset !important;
+}
+.carouselMiddleSlide {
+  position: relative;
+  left: 16px;
 }
 
 .carouselLastSlide {
@@ -2926,10 +2934,12 @@ a:hover .arrowAddEvidenceButton {
   font-style: italic;
 }
 
-.carousel.carousel-slider .control-arrow, control-arrow control-prev {
+.carousel.carousel-slider .control-arrow, .control-arrow .control-prev {
   transition: none !important;
   opacity: 1 !important;
 }
+
+
 
 /* old styling
 .carousel.carousel-slider .control-arrow, control-arrow control-prev {
@@ -2955,7 +2965,7 @@ a:hover .arrowAddEvidenceButton {
   display: inline-block;
   -webkit-font-smoothing: antialiased;
   content: "➜"; // U+279C
-  top: 8px;
+  top: 9px;
 }
 .carousel .control-prev:after {
   transform: scale(-1);   
@@ -2972,7 +2982,7 @@ a:hover .arrowAddEvidenceButton {
 
 .carousel .buttonGotIt {
   background: @nearBlack;
-  left: 42px;
+  left: 79px;
   top: -8px;
 }
 
@@ -3227,7 +3237,7 @@ body  {
   }
 
   .control-arrow .control-next {
-    margin-right: 20%;
+    margin-right: 7%;
   }
 }
 
@@ -3303,17 +3313,18 @@ body  {
   }
 
   #explanationRowHomepage {
-    width: 90vw;
+    width: 420px;
+    margin-left: 2%;
     position: relative;
     //left: -12px;
   }
-  .control-prev {
+  .carousel .control-prev {
     //position: relative;
     //left: -2px !important;
-    margin-left: 20%;
+    margin-left: 3%;
   }
-  .control-next {
-    margin-right: 20%;
+  .carousel .control-next {
+    margin-right: 5%;
   }
 
   .explanationBlock {
@@ -3433,12 +3444,12 @@ body  {
   } 
   
   .control-prev {
-    margin-left: 10%;
+    //margin-left: 10%;
   }
-  .control-next {
-    margin-right: 10%;
+  .carousel .control-next {
+    //margin-right: 10%;
   }
-  
+
   .policySectionCopy {
     width:85%;
   }
@@ -3449,16 +3460,24 @@ body  {
 
   
   #explanationRowHomepage {
-    width: 100vw;
+    //width: 100vw;
+    margin-left: 2%;
+    width: 395px;
   }
   .carousel {
-    max-width: 100vw;
-    left: ~"calc( (100vw - 360px) * -0.36 )"; // subtract enough for button
+    //max-width: 100vw;
+    //left: ~"calc( (100vw - 360px) * -0.36 )"; // subtract enough for button
     //left: 0;
   }
+  .carousel .control-prev {
+    margin-left: 5%;  
+  }
   .carousel .control-next {
-    margin-right: 6%;
+    margin-right: 8%;
   } 
+  .carousel .buttonGotIt {
+    left: 56px;
+  }
   
   .sourceLabel {
     max-width: 144px;
@@ -3510,16 +3529,23 @@ body  {
     left: 3%;
   }
   .carousel .buttonGotIt {
-    left: 21px;
+    left: 18px;
   }
   
   .explanationLabel {
     display: none;
     //width: 48px;
   }
+  .carousel .control-prev {
+    margin-left: 11%;  
+  }
   .carousel .control-next {
-    margin-right: 8%;
+    margin-right: 14%;
   } 
+  
+  .carouselMiddleSlide {
+    left: 6px;
+  }
   
   .claimCreationFormFieldBlock {
     width: @cardWidthExtraSmallScreens;

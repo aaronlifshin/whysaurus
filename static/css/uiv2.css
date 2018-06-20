@@ -345,6 +345,7 @@ a.headerSocialMediaIcon:hover {
 #signInFromHeader {
   position: relative;
   top: 10px;
+  right: 8px;
 }
 #footer {
   padding-right: 6.66666667px;
@@ -2436,9 +2437,6 @@ body {
     width: -webkit-calc(100% - 575px);
     width: calc(100% - 575px);
   }
-  #signInFromHeader {
-    right: 18px;
-  }
   #explanationRowHomepage {
     margin-left: -64px;
     width: auto;
@@ -2472,7 +2470,7 @@ body {
     margin-left: 32px;
   }
   #signInFromHeader {
-    right: 18px;
+    right: 24px;
   }
   #userMenuSignedIn {
     left: -42px;

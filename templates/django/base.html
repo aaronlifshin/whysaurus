@@ -212,7 +212,7 @@
                             data-earliest="{% with user.notifications|last as n %}{{ n.raisedDateSecs }}{% endwith %}"
                         {% endif %}
                     {% endif %}
-                        >NOTIFICATIONS <div class="pull-right Submenu_SmallText">(click to view all)</div></li>
+                        >NOTIFICATIONS <div class="pull-right notificationsSeeAll">See All</div></li>
 
                     {% if user.notifications %}
                      {% for notification in user.notifications %}
@@ -221,9 +221,7 @@
                    {% endif %}
 
                    {% if user.moreNotificationsExist  %}
-                      <li id="notificationMenuFooter" class="Heading_GreyMid_Caps">
-                          View all notifications
-                      </li>
+                      <li id="notificationMenuFooter" class="Heading_GreyMid_Caps notificationsSeeAll">See All</li>
                     {% endif %}
                   </ul>
                 </div>

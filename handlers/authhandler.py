@@ -21,6 +21,7 @@ from webapp2_extras.auth import InvalidPasswordError
 
 from models.reportEvent import ReportEvent
 from models.point import Point
+from models.point import Tag
 from models.reportEvent import ReportEvent
 from models.privateArea import PrivateArea
 from models.areauser import AreaUser
@@ -369,6 +370,22 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 if u:
                     newPassword = u.resetPassword()
                     results = {'result': True, 'username': u.name, 'password': newPassword}
+        resultJSON = json.dumps(results)
+        self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
+        self.response.out.write(resultJSON)
+    
+    def addAdminTag(self):
+        results = {'result': False}
+        loggedInUser = self.current_user
+        if loggedInUser and loggedInUser.isAdmin:
+            tagId = self.request.get('tagId')
+            if tagId:
+                logging.info('Admin: Adding Tag:' + tagId)
+                tag = Tag.addTagId(tagId)
+                if tag:
+                    results = {'result': True, 'tagUrl': tag.url, 'tagText': tag.text}
+                else:
+                    results = {'result': True, 'error': 'Tag Creation Failed - Returned Null'}
         resultJSON = json.dumps(results)
         self.response.headers["Content-Type"] = 'application/json; charset=utf-8'
         self.response.out.write(resultJSON)

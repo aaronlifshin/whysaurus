@@ -92,6 +92,48 @@ def getCurrent_async(pointRoot):
     else:
         raise ndb.Return(None)
 
+
+class Tag(ndb.Model):
+    # The unique url - should not be changed
+    url = ndb.StringProperty()
+    text = ndb.StringProperty()
+    active = ndb.BooleanProperty(default=True)
+    isCategory = ndb.BooleanProperty(default=False)
+    summaryText = ndb.TextProperty(indexed=False)
+    description = ndb.StringProperty(indexed=False)
+
+    @classmethod
+    def addTagId(cls, tagId):
+        # TODO: Gene: Validation please! Existing tags?
+        if not tagId or not re.match("^[\w\d_]*$", tagId):
+            raise WhysaurusException('Invalid Tag Id: ' + tagId)
+        
+        eTag = Tag.getByUrl(tagId)
+        if eTag:
+            raise WhysaurusException('Tag already exists: ' + tagId)
+        
+        logging.info('Adding Tag: ' + tagId)
+        
+        tag = Tag(id=tagId, url=tagId, text=tagId)
+        key = tag.put()
+    
+        return tag
+
+    @classmethod
+    def getByUrlsafe(cls, urlsafe):
+        tag_key = ndb.Key(cls, urlsafe=urlsafe)
+        # Use get_multi() to save a RPC call.
+        tag = tag_key.get()
+        
+        return tag
+
+    @staticmethod
+    def getByUrl(url):
+        logging.info('Tag getByUrl URL=%s' % url)
+        qry = Tag.gql("WHERE url= :1", url)
+        return qry.get()
+
+
 class Link(ndb.Model):
     version = ndb.KeyProperty(indexed=False)
     root = ndb.KeyProperty(indexed=False)
@@ -144,7 +186,8 @@ class Point(ndb.Model):
     supportingLinks = ndb.StructuredProperty(Link, repeated=True)
     counterLinks = ndb.StructuredProperty(Link, repeated=True)
     usersContributed = ndb.StringProperty(repeated=True)
-
+    
+    tags = ndb.KeyProperty(repeated=True, kind=Tag)
     sources = ndb.KeyProperty(repeated=True, indexed=False, kind=Source)
     current = ndb.BooleanProperty() # used in filter queries
     url = ndb.StringProperty(indexed=False)
@@ -912,6 +955,7 @@ class Point(ndb.Model):
             newPoint.supportingLinks = list(self.supportingLinks)
             newPoint.counterLinks = list(self.counterLinks)
 
+            newPoint.tags = self.tags
             newPoint.sources = self.sources
             keysToRemove = convertListToKeys(sourceKeysToRemove)
             if keysToRemove:
@@ -1027,6 +1071,7 @@ class Point(ndb.Model):
             newPoint.counterLinks = list(self.counterLinks)
 
             newPoint.sources = list(self.sources)
+            newPoint.tags = list(self.tags)
 
             try:
                 newPoint.removeLink(unlinkPointRoot, linkType)
@@ -1086,6 +1131,50 @@ class Point(ndb.Model):
             self.put()
             logging.info('addContributingUser: %s -> %s' % (userUrlContributed, self.url))
 
+    def addTag(self, tagUrl):
+        logging.info('Attempting To Add Tag (%s) To Point (%s)' % (tagUrl, self.url))
+        
+        tag = Tag.getByUrl(tagUrl)
+        if not tag:
+            raise WhysaurusException('Attempted to add invalid tag url: ' + tagUrl)
+        
+        if self.tags and tag.key in self.tags:
+            raise WhysaurusException('Attempted to add existing tag (%s) to point (%s)' % (tagUrl, self.url))
+        
+        self.tags = self.tags + [tag.key]
+        self.put()
+
+        logging.info('Added tag (%s) to point (%s)' % (tagUrl, self.url))
+        
+        # TODO: Gene: Probably want to make this transactional/versioned eventually
+        return self
+    
+    def deleteTag(self, tagUrl):
+        logging.info('Attempting To Delete Tag (%s) From Point (%s)' % (tagUrl, self.url))
+    
+        tag = Tag.getByUrl(tagUrl)
+        if not tag:
+            raise WhysaurusException('Attempted to delete invalid tag url: ' + tagUrl)
+            return
+    
+        if not self.tags or tag.key not in self.tags:
+            raise WhysaurusException('Tag (%s) not present for point (%s) to delete: ' % (tagUrl, self.url))
+            return
+        
+        self.tags.remove(tag.key)
+        self.put()
+    
+        logging.info('Removed tag (%s) from point (%s)' % (tagUrl, self.url))
+    
+        # TODO: Gene: Probably want to make this transactional/versioned eventually
+        return self
+
+    def getTags(self):
+        if len(self.tags) > 0:
+            tags = ndb.get_multi(self.tags)
+            return tags
+        else:
+            return None
 
     def updateLowQualityAdmin(self, lowQuality):
         # TODO: Gene: Use transactional update to include versioning

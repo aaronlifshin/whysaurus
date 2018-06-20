@@ -12,6 +12,7 @@ from models.point import Point as PointModel
 from models.point import PointRoot as PointRootModel
 from models.point import Link as LinkModel
 from models.point import FeaturedPoint
+from models.point import Tag as TagModel
 from models.uservote import RelevanceVote as RelevanceVoteModel
 from models.source import Source as SourceModel
 from models.whysaurususer import WhysaurusUser
@@ -43,6 +44,14 @@ class Source(NdbObjectType):
     id = graphene.NonNull(graphene.ID)
     def resolve_id(self, info):
         return self.key.urlsafe()
+    
+class Tag(NdbObjectType):
+    class Meta:
+        model = TagModel
+
+    id = graphene.NonNull(graphene.ID)
+    def resolve_id(self, info):
+        return self.url
 
 class Comment(NdbObjectType):
     class Meta:
@@ -136,6 +145,10 @@ class Point(NdbObjectType):
     sources = graphene.List(Source)
     def resolve_sources(self, info):
         return self.getSources()
+
+    tags = graphene.List(Tag)
+    def resolve_tags(self, info):
+        return self.getTags()
 
     # numContributors = graphene.Int()
     # def resolve_numContributors(self, info):
@@ -403,6 +416,36 @@ class DeleteSource(graphene.Mutation):
         newPointVersion = point.update(user=info.context.current_user,
                                        sourceKeysToRemove=[id])
         return AddSource(point=newPointVersion)
+
+class AddTag(graphene.Mutation):
+    class Arguments:
+        pointID = graphene.String(required=True)
+        tagUrl = graphene.String(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, pointID, tagUrl):
+        logging.info('AddTag Mutation: ' + tagUrl + ' Point: ' + pointID)
+        point, pointRoot = PointModel.getCurrentByRootKey(pointID)
+        # newPointVersion = point.update(user=info.context.current_user,
+        #                                tagsToAdd=[TagModel(parent=point.key, url=tagUrl)])
+        newPoint = point.addTag(tagUrl)
+        return AddTag(point=newPoint)
+
+class DeleteTag(graphene.Mutation):
+    class Arguments:
+        pointID = graphene.String(required=True)
+        id = graphene.String(required=True)
+
+    point = graphene.Field(Point)
+
+    def mutate(self, info, pointID, id):
+        point, pointRoot = PointModel.getCurrentByRootKey(pointID)
+        # newPointVersion = point.update(user=info.context.current_user,
+        #                                sourceKeysToRemove=[id])
+        newPoint = point.deleteTag(id)
+        return DeleteTag(point=newPoint)
+
 
 class Vote(graphene.Mutation):
     class Arguments:
@@ -687,6 +730,8 @@ class Mutation(graphene.ObjectType):
     archive_comment = ArchiveComment.Field()
     add_source = AddSource.Field()
     delete_source = DeleteSource.Field()
+    add_tag = AddTag.Field()
+    delete_tag = DeleteTag.Field()
     set_editors_pick = SetEditorsPick.Field()
     make_featured = MakeFeatured.Field()
     accept_terms = AcceptTerms.Field()

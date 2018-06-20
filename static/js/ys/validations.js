@@ -37,3 +37,11 @@ export function validateSourceURL(url){
     return null;
   }
 }
+
+export function validateTagId(url){
+  if (!url || !/^\w+$/.test(url)) {
+    return "Only characters/numbers are permitted"
+  } else {
+    return null;
+  }
+}

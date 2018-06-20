@@ -17,6 +17,7 @@ import AddEvidence from './AddEvidence'
 import EditPoint from './EditPoint'
 import EditImage from './EditImage'
 import EditSources from './EditSources'
+import EditTags from './EditTags'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
 import { CloseLinkX } from './common'
@@ -251,6 +252,22 @@ class Sources extends React.Component {
   }
 }
 
+class Tags extends React.Component {
+  render(){
+    const tags = this.props.point.tags
+    return <div className="tags pointCardPaddingH">
+      {tags && tags.map(({text, url}, i) =>
+        <span key={i} className="tag" tabIndex="-1" >
+          {/*<a key={i} className="tag" tabIndex="-1" target="_blank" href={"/tags/" + url} />*/}
+          <span className="iconTagsSmall">
+            <span className="fas fa-tag"></span>
+          </span>
+          <span className="tagLabel">{text || url}</span>
+        </span>
+      )}
+    </div>
+  }
+}
 
 class CommentsLink extends React.Component {
   render(){
@@ -393,6 +410,11 @@ class PointCardComponent extends React.Component {
     this.setState({editingClaimSources: true})
   }
 
+  handleClickEditClaimTags = (e) => {
+    e.stopPropagation();
+    this.setState({editingClaimTags: true})
+  }
+
   handleClickEditClaimImage = (e) => {
     e.stopPropagation();
     this.setState({editingClaimImage: true})
@@ -423,6 +445,10 @@ class PointCardComponent extends React.Component {
     e.stopPropagation()
     this.setState({editingClaimSources: false})
   }
+  handleCancelEditClaimTags = (e) => {
+    e.stopPropagation()
+    this.setState({editingClaimTags: false})
+  }
   handleCloseEditClaimImage = (e) => {
     e && e.stopPropagation()
     this.setState({editingClaimImage: false})
@@ -434,7 +460,7 @@ class PointCardComponent extends React.Component {
   }
 
   editingSomething = () => {
-    return (this.state.editingClaimText || this.state.editingClaimSources || this.state.editingClaimImage || this.state.editingComments)
+    return (this.state.editingClaimText || this.state.editingClaimSources || this.state.editingClaimTags || this.state.editingClaimImage || this.state.editingComments)
   }
 
   get point() {
@@ -578,7 +604,7 @@ class PointCardComponent extends React.Component {
     return this.point.imageURL
   }
   displayImage = () => {
-    return (this.hasImage() && !this.state.editingClaimText && !this.state.editingClaimSources)
+    return (this.hasImage() && !this.state.editingClaimText && !this.state.editingClaimSources && !this.state.editingClaimTags)
   }
   image = () => {
     if (this.displayImage()) {
@@ -734,6 +760,14 @@ class PointCardComponent extends React.Component {
         </div>
     }
   }
+  
+  tags = () => {
+    if (this.point.tags){
+      return <div className="row-fluid">
+          <Tags point={this.point}/>
+        </div>
+    }
+  }
 
   currentUserIsAdmin = () => (
     this.props.currentUser && this.props.currentUser.admin
@@ -784,6 +818,7 @@ class PointCardComponent extends React.Component {
   //      <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown">&#9776;</a>
   moreMenu = () => {
     let moreMenuSourcesLabel = `${this.point.sources ? "Edit Sources" : "Add Sources"}`
+    let moreMenuTagsLabel = `${this.point.tags ? "Edit Tags" : "Add Tags"}`
     let moreMenuImageLabel = `${this.hasImage() ? "Edit Image" : "Add Image"}`
     return <span className="cardTopRowItem dropdown">
       <a onClick={this.handleClickNoProp} className="moreMenuLink easierToClickOn dropdown-toggle"  data-toggle="dropdown"><span className="fas fa-ellipsis-h"></span></a>
@@ -792,6 +827,7 @@ class PointCardComponent extends React.Component {
         <li><a onClick={this.handleClickEditClaimText} className="" ><span className="iconWithStat"><span className="fas fa-pencil-alt"></span></span>Edit Claim</a></li>
         <li><a onClick={this.handleClickEditClaimSources} className="" ><span className="iconWithStat"><span className="fas fa-book-open"></span></span>{moreMenuSourcesLabel}</a></li>
         <li><a onClick={this.handleClickEditClaimImage} className="" ><span className="iconWithStat"><span className="far fa-image"></span></span>{moreMenuImageLabel}</a></li>
+        { this.currentUserIsAdmin() && <li className="admin"><a onClick={this.handleClickEditClaimTags}><span className="iconWithStat"><span className="fas fa-tag"></span></span>{moreMenuTagsLabel}</a></li> }
         <li className="divider"></li>
         { this.hasParent() && <li><a onClick={this.handleClickUnlink}><span className="iconWithStat"><span className="fa fa-unlink"></span></span>Unlink</a></li>  }
         <li><a onClick={this.handleClickNoProp} target="_blank" href={"/history/" + this.point.url}><span className="iconWithStat"><span className="fas fa-history"></span></span>History</a></li>
@@ -922,6 +958,8 @@ class PointCardComponent extends React.Component {
                                    </div>
 
                                    { !this.state.editingClaimSources ? this.sources() : <EditSources point={point} onCancel={this.handleCancelEditClaimSources}/> }
+
+                                   { !this.state.editingClaimTags ? this.tags() : <EditTags point={point} onCancel={this.handleCancelEditClaimTags}/> }
 
                                     <div className="row-fluid">
                                       <div className="cardBottomActionRow pointCardPaddingH" >

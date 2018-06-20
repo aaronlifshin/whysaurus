@@ -208,6 +208,42 @@ function setUserGaid(clickedElem) {
     }
 }
 
+function adminAddTag() {
+    var tagId = prompt("New Tag Id/Url?");
+    if (tagId == null || tagId == "") {
+        console.log("Tag Add Bypassed!")
+        return;
+    }
+    
+    console.log('Admin: Attempting To Create Tag: ' + tagId)
+
+    {
+        $.ajaxSetup({
+    		url: "/addAdminTag",
+    		global: false,
+    		type: "POST",
+    		data: {
+    		    'tagId': tagId
+    		},
+        success: function(obj){
+    			if (obj.result == true) {
+            showSuccessAlert('Added Tag: ' + obj.tagUrl);
+    			} else {
+    				if (obj.error) {
+              showAlert(obj.error);
+            } else {
+              showAlert("There was an error");
+            }
+    			}
+    		},
+    		error: function(xhr, textStatus, error){
+          showAlert('The server returned an error. You may try again. ' + error);
+        }
+    	});
+    	$.ajax();
+    }
+}
+
 function setInternalUser(clickedElem) {
     var userURL =  $(clickedElem).data('userurl');
     var r = confirm("Set user as an internal user (non-reversible): " + userURL + "?");
@@ -254,6 +290,10 @@ $(document).ready(function() {
     
     $('#createPrivateArea').click(function() {
         $("#privateAreaDialog").modal('show');        
+    });
+    
+    $('#addTag').click(function() {
+        adminAddTag();
     });
         
     $('[name=resetPassword]').click(function() {

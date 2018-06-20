@@ -1714,9 +1714,57 @@ a.source {
   display: inline-block;
 }
 
-
-
 .removeSourceLink {
+  color: @red;
+  font-size: 27px;
+  right: 0;
+}
+
+.tags {
+  margin-bottom: 4px;
+  //margin-top: 2px;
+}
+
+.tagLabel {
+  max-width: 250px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+a.tag {
+  font-size: @fontSizeTertiaryUX2;
+  color: @smallGreyLinkColor;
+  display: block;
+  margin-bottom: 4px;
+  max-width: 100%;
+  width: max-content; // so the link doesn't expand across the whole div when the source label is brief
+}
+
+.tag:hover, a.tag:hover {
+  color: @blue;
+}
+.iconTagsSmall {
+  //font-size: 13.5px;
+  margin-right: 6px;
+  font-size: 13px;
+  top: 1px;
+  position: relative;
+  margin-left: 4px;
+}
+
+.editTagsList {
+  margin-bottom: @cardPadding;
+}
+
+.editTagsList .source {
+  font-size: @fontSizePointTitle;
+  display: inline-block;
+}
+
+.removeTagLink {
   color: @red;
   font-size: 27px;
   right: 0;

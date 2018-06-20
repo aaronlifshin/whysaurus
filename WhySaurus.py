@@ -140,6 +140,7 @@ routes = [
     Route('/resetPassword', 'WhySaurus.AuthHandler:resetPassword', name='change'),
     Route('/setUserGaid', 'WhySaurus.AuthHandler:setUserGaid', name='setGaid'),
     Route('/setInternalUser', 'WhySaurus.AuthHandler:setInternalUser', name='setInternalUser'),
+    Route('/addAdminTag', 'WhySaurus.AuthHandler:addAdminTag', name='addAdminTag'),
     Route('/changePassword', 'WhySaurus.AuthHandler:passwordChangePage', name='changePage'),
     Route('/<type:v|p>/<user_id:\d+>-<signup_token:.+>', handler='WhySaurus.AuthHandler:verify', name='verification'),
     Route('/auth/<provider>', handler='WhySaurus.AuthHandler:_simple_auth', name='auth_login'),

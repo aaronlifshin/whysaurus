@@ -26,6 +26,7 @@ fragment pointFields on Point {
   supportedCount,
   engagementScore,
   sources { id, url, name },
+  tags { id, url, text },
   rootURLsafe,
   currentUserVote,
   root {
@@ -129,6 +130,28 @@ mutation DeleteSource($pointID: String!, $id: String!) {
     point {
       id
       sources { id, name, url }
+    }
+  }
+}
+`
+
+export const AddTag = gql`
+mutation AddTag($pointID: String!, $tagUrl: String!) {
+  addTag(pointID: $pointID, tagUrl: $tagUrl) {
+    point {
+      id
+      tags { id, text, url }
+    }
+  }
+}
+
+`
+export const DeleteTag = gql`
+mutation DeleteTag($pointID: String!, $id: String!) {
+  deleteTag(pointID: $pointID, id: $id) {
+    point {
+      id
+      tags { id, text, url }
     }
   }
 }

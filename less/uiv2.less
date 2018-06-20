@@ -687,16 +687,31 @@ li {
 // BG Pattern
 //
 // B/W version
-@bgColor: hsla(0, 0%, 99%, 1);
-@bgGridColor: hsla(0, 0%, 96%, 1);
 @bgGridWidth: 4px;
-@bgGridStroke: 2px;
+@bgColor: hsla(0, 0%, 99%, 1);
+@bgGridStroke: 40%; //2px;
+@bgGridColor: hsla(0, 0%, 96%, 1);
+
+// ideal grid rendering for most browsers
 body {
   background-color: @bgColor;
   background-size: @bgGridWidth @bgGridWidth;
-    background-image: linear-gradient(to right, @bgGridColor @bgGridStroke, transparent @bgGridStroke),
+  background-image: linear-gradient(to right, @bgGridColor @bgGridStroke, transparent @bgGridStroke),
                     linear-gradient(to bottom, @bgGridColor @bgGridStroke, transparent @bgGridStroke);
 }
+
+/* Mozilla renders ugly dark line artifacts with the grid method above, so using a different approach for that browser */
+@bgGridColorMoz: hsla(0, 0%, 0%, 3%); 
+@-moz-document url-prefix() {
+  body { 
+     background-image: linear-gradient(to right, @bgGridColorMoz @bgGridStroke, transparent @bgGridStroke),
+                       linear-gradient(to bottom, @bgGridColorMoz @bgGridStroke, transparent @bgGridStroke);
+  } 
+}
+
+
+
+
 // BLUE version
 /*
 @bgColor: #F3FCFF;
@@ -3084,10 +3099,10 @@ a:hover .arrowAddEvidenceButton {
 // ZOOM
 
 // maybe we need to be able to fit more content on the page
-@bgGridWidth: 5px;
+@bgGridWidthZoomed: 5px;
 body  {
   zoom: .9;
-  background-size: @bgGridWidth @bgGridWidth; // compensating for zoom
+  background-size: @bgGridWidthZoomed @bgGridWidthZoomed; // compensating for zoom
 }
 
 // zoom out a bit for smaller monitors

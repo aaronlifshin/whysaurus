@@ -153,7 +153,7 @@ class Home extends React.Component {
             <Carousel autoPlay={false} interval={2500} infiniteLoop={false} showIndicators={true} showArrows={true}
                       showThumbs={false} showStatus={false} showIndicators={false} useKeyboardArrows={true}>
               <div>
-                <span className="explanationLabel">How to argue online:</span>
+                <span className="explanationLabel">This is how we do it:</span>
                 {this.renderIllustration1()}
               </div>
               <div className="carouselMiddleSlide">

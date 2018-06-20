@@ -1830,7 +1830,7 @@ a.buttonUX2:focus:enabled {
   margin-bottom: 10px;
 }
 .titleTextField {
-  height: 64px;
+  height: 66px;
   padding-bottom: 30px;
   padding-top: 10px;
   margin-bottom: 0;
@@ -1839,6 +1839,7 @@ a.buttonUX2:focus:enabled {
   color: grey;
   font-family: arial, sans-serif;
   font-style: italic;
+  -webkit-font-smoothing: antialiased ;
   font-size: 16px;
   vertical-align: top;
   display: block;
@@ -1916,14 +1917,14 @@ a.buttonUX2:focus:enabled {
 .existingClaimPickerHeading {
   font-weight: bold;
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 16.8px;
 }
 .existingClaimList {
   margin: 0;
 }
 .existingClaimList li {
   line-height: 125%;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 .existingClaimList li:hover {
   text-decoration: underline;
@@ -2275,7 +2276,7 @@ a:hover .arrowAddEvidenceButton {
 }
 .carousel .buttonGotIt {
   background: #2e2e2e;
-  left: 79px;
+  left: 81px;
   top: -8px;
 }
 .mainPageClaimCreationArea {

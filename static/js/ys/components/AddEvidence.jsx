@@ -27,6 +27,7 @@ class AddEvidence extends React.Component {
       this.setState({addingSupport: true, addingCounter: false})
     } else {
       $("#loginDialog").modal("show");
+      ga('send', 'event', 'Required login ',  'Require login add evidence supporting')
     }
   }
 
@@ -35,6 +36,7 @@ class AddEvidence extends React.Component {
       this.setState({addingSupport: false, addingCounter: true})
     } else {
       $("#loginDialog").modal("show");
+      ga('send', 'event', 'Required login ',  'Require login add evidence counter')
     }
   }
 

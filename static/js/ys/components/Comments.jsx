@@ -78,6 +78,16 @@ class CommentsListComponent extends React.Component {
     ga('send', 'event', 'Comment', 'Submit Comment', this.point.url);
     console.log('GA Comment Event Sent')
   }
+  
+  onNewCommentClick = () => {
+    if (this.props.user){
+      this.setState({commenting: true})
+    } else {
+      console.log('Login Required To Comment')
+      $("#loginDialog").modal("show");
+      ga('send', 'event', 'Required login ',  'Require login create comment')
+    }
+  }
 
   newComment = () => {
     const {point, add} = this.props
@@ -85,9 +95,9 @@ class CommentsListComponent extends React.Component {
       return <NewComment onSubmit={({text}) => add(point.id, text).then(this.onAddContinue)} onCancel={() => this.setState({commenting: false})}/>
     } else {
       return <span className="newCommentButons">
-          <button className="buttonSecondaryUX2blue newCommentButton" onClick={() => this.setState({commenting: true})}>Clarification</button>
-          <button className="buttonSecondaryUX2blue newCommentButton" onClick={() => this.setState({commenting: true})}>Needs Evidence</button>
-          <button className="buttonSecondaryUX2blue newCommentButton" onClick={() => this.setState({commenting: true})}>Other Comment</button>
+          <button className="buttonSecondaryUX2blue newCommentButton" onClick={this.onNewCommentClick}>Clarification</button>
+          <button className="buttonSecondaryUX2blue newCommentButton" onClick={this.onNewCommentClick}>Needs Evidence</button>
+          <button className="buttonSecondaryUX2blue newCommentButton" onClick={this.onNewCommentClick}>Other Comment</button>
         </span>
     }
   }
@@ -110,7 +120,7 @@ class CommentsListComponent extends React.Component {
         <span className="editAreaClose"><a onClick={onCancel}><CloseLinkX/></a></span>
       </span>
       <div className="claimEditAreaNote">Discuss how to improve this claim.</div>
-      {this.props.user && this.newComment()}
+      {this.newComment()}
       <div className="commentsList">
         {comments && comments.filter(comment => comment.level == 0).map(comment => <Comment key={comment.id} comment={comment} replies={replies[comment.id]} addReply={text => add(point.id, text, comment.id)} archive={() => archive(point.id, comment.id)}/>)}
       </div>

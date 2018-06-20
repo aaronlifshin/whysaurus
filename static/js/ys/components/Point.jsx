@@ -385,17 +385,34 @@ class PointCardComponent extends React.Component {
 
   handleClickEditClaimText = (e) => {
     e.stopPropagation();
-    this.setState({editingClaimText: true})
+    if (this.props.currentUser){
+      this.setState({editingClaimText: true})
+    } else {
+      console.log('Logon Required')
+      $("#loginDialog").modal("show");
+      ga('send', 'event', 'Required login ',  'Require login add source')
+    }
   }
 
   handleClickEditClaimSources = (e) => {
     e.stopPropagation();
-    this.setState({editingClaimSources: true})
+    if (this.props.currentUser){
+      this.setState({editingClaimSources: true})
+    } else {
+      console.log('Logon Required')
+      $("#loginDialog").modal("show");
+    }
   }
 
   handleClickEditClaimImage = (e) => {
     e.stopPropagation();
-    this.setState({editingClaimImage: true})
+    if (this.props.currentUser){
+      this.setState({editingClaimImage: true})
+    } else {
+      console.log('Logon Required')
+      $("#loginDialog").modal("show");
+      ga('send', 'event', 'Required login ',  'Require login add image')
+    }
   }
 
   showComments = () => this.props.expansion.expand(this.point, this.commentPrefix())

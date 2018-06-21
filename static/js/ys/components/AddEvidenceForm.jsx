@@ -20,8 +20,8 @@ class AddEvidenceForm extends React.Component {
 
   // TODO: add multiple options for each type and randomize to give it some fun magic!
   generatePlaceholderText(evidenceType) {
-    let placeholderSupport = `Make a claim, eg "Dogs can learn more tricks than cats."`
-    let placeholderCounter= `Make a claim, eg "Cats are funnier than dogs."`
+    let placeholderSupport = `Make a claim, eg "Dogs can bring you tasty drinks in little barrels around their necks."`
+    let placeholderCounter= `Make a claim, eg "Cats gifs are the world's greatest technological and artistic achievement."`
     if (this.props.evidenceType=="counter") {
         return placeholderCounter
     } else {

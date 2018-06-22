@@ -2065,14 +2065,34 @@ a .claimShareIcon {
 }
 .moreClaimsLabel {
 }
-.moreClaimsLabel {
-  padding-left: @cardPadding;
-  margin-left: (@indent *.5 ) - @mysteriousMarginOffset;
-  margin-top: 18px;
+.moreClaimsDivision {
+  display: block;
+  position: relative;
+  margin-left: (@indent *.5 ) - @mysteriousMarginOffset + @cardPadding; // add @cardPadding bc we're setting padding-left to 0 for the border
+  //padding-top: 16px;
+  padding-bottom: 0; // @cardPadding * 0.5;
+  padding-left: 0;  
+  //border-bottom-style: solid;
+  //border-top-width: 4px;
+  margin-top: 48px;
+  margin-bottom: 12px;
+  //font-size: @fontSizePointTitle;
+  
+  width: @cardWidth - (2 * @cardPadding);
+  margin-top: 32px;
+  margin-bottom: 6px;
+  background-color: @stackCardDefaultBorderColor; //hsla(0, 0%, 82.5%, 1);
+  height: 1px;  
 }
-.evidenceBlockEmpty .moreClaimsLabel {
-  margin-left: @indent *.5;
+.evidenceBlockEmpty .moreClaimsDivision {
+  margin-left: @indent *.5  + @cardPadding; // add @cardPadding bc we're setting padding-left to 0 for the border
+  margin-top: 96px; // bc of funny positioning stuff being done with the buttons on empty evidence blocks
 }
+
+
+
+
+/* width: 100%; */
 
 
 

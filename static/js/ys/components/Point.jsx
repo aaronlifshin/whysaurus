@@ -658,7 +658,7 @@ class PointCardComponent extends React.Component {
       if (this.numSupportingPlusCounter() == 0) {
         return <div className={classesEvidenceBlock + " evidenceBlockEmpty"}>
           <AddEvidence point={this.point} type={"DUAL"}/>
-          { !this.hasParent() && <div className="moreClaimsLabel">More Arguments</div> }
+          { !this.hasParent() && <div className="moreClaimsDivision"></div> }
         </div>
       } else {
         return <div className={classesEvidenceBlock}>
@@ -671,7 +671,7 @@ class PointCardComponent extends React.Component {
          <MediaQuery maxWidth={config.singleColumnThreshold}>
           {this.point.relevantPoints && this.relevantPoints()}
          </MediaQuery>
-          { !this.hasParent() && <div className="moreClaimsLabel">More Arguments</div> }
+          { !this.hasParent() && <div className="moreClaimsDivision"></div> }
         </div>
       }
     }

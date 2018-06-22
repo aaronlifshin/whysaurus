@@ -1545,14 +1545,25 @@ a .claimShareIcon {
   font-size: 15.008px;
   font-style: normal;
 }
-.moreClaimsLabel {
-  padding-left: 15px;
-  margin-left: 13.5px;
-  margin-top: 18px;
+.moreClaimsDivision {
+  display: block;
+  position: relative;
+  margin-left: 28.5px;
+  padding-bottom: 0;
+  padding-left: 0;
+  margin-top: 48px;
+  margin-bottom: 12px;
+  width: 390px;
+  margin-top: 32px;
+  margin-bottom: 6px;
+  background-color: #bfbfbf;
+  height: 1px;
 }
-.evidenceBlockEmpty .moreClaimsLabel {
-  margin-left: 22.5px;
+.evidenceBlockEmpty .moreClaimsDivision {
+  margin-left: 37.5px;
+  margin-top: 96px;
 }
+/* width: 100%; */
 .buttonUX2,
 .tabUX2,
 .buttonSecondaryUX2blue {

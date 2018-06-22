@@ -39,30 +39,42 @@ class Byline extends React.Component {
 
   contributorsPlusAuthor = () => {
     let contributorsPlusAuthor = this.props.point.numUsersContributed + 1
-    return contributorsPlusAuthor;
+      return contributorsPlusAuthor;
   }
-
+  
+  contributorsToDisplayOnByline = () => {
+    if (this.contributorsPlusAuthor() > 1)
+      return this.contributorsPlusAuthor();
+    else return "";
+  }
+  
   contributorsDropdown = () => {
-    return <span>
-      { (this.contributorsPlusAuthor() > 1) && <span className="bylineOtherUsers dropdown">
-          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" data-toggle="dropdown"><i className="far fa-user iconWithStat"></i>{this.contributorsPlusAuthor()}</a>
+    let contributorsTooltip = `${this.contributorsPlusAuthor()} Contributor${(this.contributorsPlusAuthor() > 1) ? "s" : ""}`
+    return <span className="cardTopRowItem">
+      <span className="dropdown">
+          <a onClick={this.handleClickNoProp} className="easierToClickOn dropdown-toggle" title={contributorsTooltip} data-toggle="dropdown"><i className="far fa-user iconWithStat"></i><span className="number">{this.contributorsToDisplayOnByline()}</span></a>         
           <ul id="" className="contributorsMenu dropdown-menu dropdown-menu-with-caret" role="menu" aria-labelledby="dropdownMenu">
             <div className="dropdown-caret"><div className="caret-outer"></div><div className="caret-inner"></div></div>
             <li><span><span className="number">{this.contributorsPlusAuthor()}</span> Contributors</span></li>
           </ul>
         </span>
-      }
       </span>
   }
+  
+  timestampLastEdit = () => {
+    let timestampTooltip = `Last Updated  ${timeAgoTitle(this.props.point.dateEdited)}`
+    return <span className="cardTopRowItem easierToClickOn number"><TimeAgo date={this.props.point.dateEdited + "Z"} title={timestampTooltip} minPeriod={300} formatter={timeAgoFormatter}/></span>
+  }
+  
+  author = () => {
+    return <span className="cardTopRowItem">By <a className="bylineAuthor" onClick={this.handleClickNoProp} target="_blank" tabIndex="-1" href={"/user/" + this.props.point.creatorURL}>@{this.props.point.creatorName}</a></span> 
+  }
 
+  // · 
   render(){
-    let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
-    return <span className={topClass}>
-      <span className="byline">
-        <span>By <a className="bylineAuthor" onClick={this.handleClickNoProp} target="_blank" tabIndex="-1" href={"/user/" + this.props.point.creatorURL}>@{this.props.point.creatorName}</a> · <TimeAgo date={this.props.point.dateEdited + "Z"} title={timeAgoTitle(this.props.point.dateEdited)} minPeriod={300} formatter={timeAgoFormatter}/>{this.contributorsDropdown()}
-        </span>
+    return <span className="byline">
+        {this.author()}{this.contributorsDropdown()}{this.timestampLastEdit()}
       </span>
-    </span>
   }
 }
 

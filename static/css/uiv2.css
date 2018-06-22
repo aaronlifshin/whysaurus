@@ -1053,11 +1053,11 @@ a.toggleLowRelClaims:hover {
 .cardTopRow {
   font-size: 12px;
   color: #a9a9a9;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
   padding-top: 9px;
 }
 .cardTopRowItem {
-  margin-right: 10px;
+  margin-right: 4px;
 }
 .cardTopRowItem a {
   color: #a9a9a9;
@@ -1076,13 +1076,8 @@ li .iconWithStat {
 .bylineOtherUsers .iconWithStat {
   font-size: 90%;
 }
-.bylineOtherUsers {
-  margin-left: 5px;
-}
 .commentLink {
   position: relative;
-  top: 1px;
-  margin-left: 1px;
 }
 .claimBadge {
   display: block;
@@ -1110,6 +1105,7 @@ li .iconWithStat {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  margin-right: 2px;
 }
 .bylineAuthor:hover {
   text-decoration: underline;
@@ -1131,7 +1127,6 @@ li .iconWithStat {
   font-size: 13px;
   position: relative;
   top: 1px;
-  right: 8px;
 }
 .moreMenuLink:hover {
   text-decoration: none;

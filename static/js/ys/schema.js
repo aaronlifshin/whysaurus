@@ -14,6 +14,7 @@ fragment pointFields on Point {
   authorURL,
   creatorName,
   creatorURL,
+  dateEdited,
   imageURL,
   imageDescription,
   fullPointImage,

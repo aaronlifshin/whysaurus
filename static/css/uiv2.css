@@ -1538,11 +1538,24 @@ a .claimShareIcon {
 }
 .buttonUX2,
 .tabUX2,
-.buttonSecondaryUX2blue {
+.buttonSecondaryUX2blue,
+.moreClaimsLabel {
   margin-bottom: 0;
   font-weight: 700;
   font-size: 15.008px;
   font-style: normal;
+}
+.moreClaimsLabel {
+  padding-left: 15px;
+  margin-left: 13.5px;
+  margin-top: 18px;
+}
+.evidenceBlockEmpty .moreClaimsLabel {
+  margin-left: 22.5px;
+}
+.buttonUX2,
+.tabUX2,
+.buttonSecondaryUX2blue {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;

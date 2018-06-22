@@ -832,12 +832,6 @@ li .policySectionNumber {
   animation-timing-function: ease;
 }
 
-
-
-
-
-
-
 .heading {
   color: @darkerGreyColor;
   text-transform: uppercase;
@@ -886,8 +880,9 @@ li .policySectionNumber {
 .evidenceBlockEmpty {
   margin-left: @indent - 7px; // not sure why the 7px is nec
 }
+@mysteriousMarginOffset: 9px;
 .removeOneIndent.evidenceBlockEmpty {
-  margin-left: @indent - 9px; // not sure why this wants to be different when its at the top level
+  margin-left: @indent - @mysteriousMarginOffset; // not sure why this wants to be different when its at the top level
 }
 
 @evidenceListMarginTop: @marginVerticalStandard - 6px; // subtract some for the arrow
@@ -2061,12 +2056,27 @@ a .claimShareIcon {
 }
 
 
-.buttonUX2, .tabUX2, .buttonSecondaryUX2blue {
+.buttonUX2, .tabUX2, .buttonSecondaryUX2blue, .moreClaimsLabel {
   margin-bottom: 0;
   //font-family: ff-meta-web-pro-condensed,sans-serif;
   font-weight: @buttonUX2_fontWeight;
   font-size: @fontSizeButtonsUX2;
   font-style: normal;
+}
+.moreClaimsLabel {
+}
+.moreClaimsLabel {
+  padding-left: @cardPadding;
+  margin-left: (@indent *.5 ) - @mysteriousMarginOffset;
+  margin-top: 18px;
+}
+.evidenceBlockEmpty .moreClaimsLabel {
+  margin-left: @indent *.5;
+}
+
+
+
+.buttonUX2, .tabUX2, .buttonSecondaryUX2blue {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;

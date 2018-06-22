@@ -19,9 +19,10 @@ import EditImage from './EditImage'
 import EditSources from './EditSources'
 import RelevanceRater from './RelevanceRater'
 import Comments from './Comments'
-import { CloseLinkX } from './common'
+import { CloseLinkX, timeAgoFormatter, timeAgoTitle } from './common'
 import Spinner from './Spinner'
 import { withExpandedIndexForPoint } from './ExpandedIndex'
+import TimeAgo from 'react-timeago'
 
 export const EvidenceType = Object.freeze({
     ROOT: Symbol("root"),
@@ -58,7 +59,7 @@ class Byline extends React.Component {
     let topClass = `${(this.contributorsPlusAuthor() <= 1) && "cardTopRowItem" }`
     return <span className={topClass}>
       <span className="byline">
-        <span>By <a className="bylineAuthor" onClick={this.handleClickNoProp} target="_blank" tabIndex="-1" href={"/user/" + this.props.point.creatorURL}>@{this.props.point.creatorName}</a>{this.contributorsDropdown()}
+        <span>By <a className="bylineAuthor" onClick={this.handleClickNoProp} target="_blank" tabIndex="-1" href={"/user/" + this.props.point.creatorURL}>@{this.props.point.creatorName}</a> · <TimeAgo date={this.props.point.dateEdited + "Z"} title={timeAgoTitle(this.props.point.dateEdited)} minPeriod={300} formatter={timeAgoFormatter}/>{this.contributorsDropdown()}
         </span>
       </span>
     </span>

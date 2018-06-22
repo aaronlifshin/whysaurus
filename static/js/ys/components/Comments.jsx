@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo';
-import { CloseLinkX } from './common'
+import { CloseLinkX, timeAgoFormatter, timeAgoTitle } from './common'
 import * as schema from '../schema';
 import NewComment from './NewComment'
 import TimeAgo from 'react-timeago'
@@ -36,7 +36,7 @@ class CommentComponent extends React.Component {
     let classes = `comment ${(this.props.comment.level > 0) ? "commentIndent" : ""}`
     return <div className={classes}>
       { (this.props.comment.level == 0) && <div className="divider"></div> }
-      <div className="byline"><a href={userUrl}>@{userName}</a> · <TimeAgo date={date + "Z"} minPeriod={300}/></div>
+      <div className="byline"><a href={userUrl}>@{userName}</a> · <TimeAgo date={date + "Z"} title={timeAgoTitle(date)} minPeriod={300} formatter={timeAgoFormatter}/></div>
       <div className="commentText">{text}</div>
       {replies && replies.sort((a, b) => a.date > b.date).map(reply => <Comment key={reply.id} comment={reply}/>)}
       {this.props.user && this.commentActions()}

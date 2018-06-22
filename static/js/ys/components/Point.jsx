@@ -642,6 +642,14 @@ class PointCardComponent extends React.Component {
 
   relevantChildrenExpanded = (point) => this.childrenExpanded('relevantPoints')
 
+  currentUserIsAdmin = () => (
+    this.props.currentUser && this.props.currentUser.admin
+  )
+
+  hasParent = () => (this.props.parentPoint)
+
+  hasBadge = () => (this.props.badge)
+  
   evidence = () => {
     if (this.expanded() ) {
       // If this is the first level down, remove an indent bc the Relevance widget effectively creates one when it appears for the first time
@@ -651,6 +659,7 @@ class PointCardComponent extends React.Component {
       if (this.numSupportingPlusCounter() == 0) {
         return <div className={classesEvidenceBlock + " evidenceBlockEmpty"}>
           <AddEvidence point={this.point} type={"DUAL"}/>
+          { !this.hasParent() && <div className="moreClaimsDivision"></div> }
         </div>
       } else {
         return <div className={classesEvidenceBlock}>
@@ -663,6 +672,7 @@ class PointCardComponent extends React.Component {
          <MediaQuery maxWidth={config.singleColumnThreshold}>
           {this.point.relevantPoints && this.relevantPoints()}
          </MediaQuery>
+          { !this.hasParent() && <div className="moreClaimsDivision"></div> }
         </div>
       }
     }
@@ -752,14 +762,6 @@ class PointCardComponent extends React.Component {
         </div>
     }
   }
-
-  currentUserIsAdmin = () => (
-    this.props.currentUser && this.props.currentUser.admin
-  )
-
-  hasParent = () => (this.props.parentPoint)
-
-  hasBadge = () => (this.props.badge)
 
   handleClickDelete = (e) => {
     e.stopPropagation();

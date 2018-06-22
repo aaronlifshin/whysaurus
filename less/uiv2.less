@@ -832,12 +832,6 @@ li .policySectionNumber {
   animation-timing-function: ease;
 }
 
-
-
-
-
-
-
 .heading {
   color: @darkerGreyColor;
   text-transform: uppercase;
@@ -886,8 +880,9 @@ li .policySectionNumber {
 .evidenceBlockEmpty {
   margin-left: @indent - 7px; // not sure why the 7px is nec
 }
+@mysteriousMarginOffset: 9px;
 .removeOneIndent.evidenceBlockEmpty {
-  margin-left: @indent - 9px; // not sure why this wants to be different when its at the top level
+  margin-left: @indent - @mysteriousMarginOffset; // not sure why this wants to be different when its at the top level
 }
 
 @evidenceListMarginTop: @marginVerticalStandard - 6px; // subtract some for the arrow
@@ -2061,12 +2056,59 @@ a .claimShareIcon {
 }
 
 
-.buttonUX2, .tabUX2, .buttonSecondaryUX2blue {
+.buttonUX2, .tabUX2, .buttonSecondaryUX2blue, .moreClaimsLabel {
   margin-bottom: 0;
   //font-family: ff-meta-web-pro-condensed,sans-serif;
   font-weight: @buttonUX2_fontWeight;
   font-size: @fontSizeButtonsUX2;
   font-style: normal;
+}
+.moreClaimsLabel {
+}
+
+
+@keyframes moreClaimsDivisionFadeOn {
+   0% { opacity: 0;  }
+   40% { opacity: 0; } 
+   100% { opacity: 1; }
+}
+
+.moreClaimsDivision {
+  display: block;
+  position: relative;
+  margin-left: (@indent *.5 ) - @mysteriousMarginOffset + @cardPadding; // add @cardPadding bc we're setting padding-left to 0 for the border
+  //padding-top: 16px;
+  padding-bottom: 0; // @cardPadding * 0.5;
+  padding-left: 0;  
+  //border-bottom-style: solid;
+  //border-top-width: 4px;
+  margin-top: 48px;
+  margin-bottom: 12px;
+  //font-size: @fontSizePointTitle;
+  width: @cardWidth - (2 * @cardPadding);
+  margin-top: 32px;
+  margin-bottom: 6px;
+  background-color: @stackCardDefaultBorderColor; //hsla(0, 0%, 82.5%, 1);
+  height: 1px; 
+  animation-name: moreClaimsDivisionFadeOn;  
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-duration: @evidenceBlockRevealDuration * 1.4;
+  
+}
+.evidenceBlockEmpty .moreClaimsDivision {
+  margin-left: @indent *.5  + @cardPadding; // add @cardPadding bc we're setting padding-left to 0 for the border
+  margin-top: 96px; // bc of funny positioning stuff being done with the buttons on empty evidence blocks
+}
+
+
+
+
+/* width: 100%; */
+
+
+
+.buttonUX2, .tabUX2, .buttonSecondaryUX2blue {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;

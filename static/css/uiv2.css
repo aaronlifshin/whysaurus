@@ -1545,6 +1545,17 @@ a .claimShareIcon {
   font-size: 15.008px;
   font-style: normal;
 }
+@keyframes moreClaimsDivisionFadeOn {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .moreClaimsDivision {
   display: block;
   position: relative;
@@ -1558,6 +1569,10 @@ a .claimShareIcon {
   margin-bottom: 6px;
   background-color: #bfbfbf;
   height: 1px;
+  animation-name: moreClaimsDivisionFadeOn;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-duration: 0.504s;
 }
 .evidenceBlockEmpty .moreClaimsDivision {
   margin-left: 37.5px;

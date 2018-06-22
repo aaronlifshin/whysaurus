@@ -2065,6 +2065,14 @@ a .claimShareIcon {
 }
 .moreClaimsLabel {
 }
+
+
+@keyframes moreClaimsDivisionFadeOn {
+   0% { opacity: 0;  }
+   40% { opacity: 0; } 
+   100% { opacity: 1; }
+}
+
 .moreClaimsDivision {
   display: block;
   position: relative;
@@ -2077,12 +2085,16 @@ a .claimShareIcon {
   margin-top: 48px;
   margin-bottom: 12px;
   //font-size: @fontSizePointTitle;
-  
   width: @cardWidth - (2 * @cardPadding);
   margin-top: 32px;
   margin-bottom: 6px;
   background-color: @stackCardDefaultBorderColor; //hsla(0, 0%, 82.5%, 1);
-  height: 1px;  
+  height: 1px; 
+  animation-name: moreClaimsDivisionFadeOn;  
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-duration: @evidenceBlockRevealDuration * 1.4;
+  
 }
 .evidenceBlockEmpty .moreClaimsDivision {
   margin-left: @indent *.5  + @cardPadding; // add @cardPadding bc we're setting padding-left to 0 for the border

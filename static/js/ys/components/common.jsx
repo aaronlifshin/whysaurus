@@ -3,7 +3,7 @@ import React from 'react'
 export const CloseLinkX  = () => <span>&#xd7;</span>
 
 export const timeAgoFormatter = (value, unit, suffix, date) => {
-  let unitMap = {"second": "s", "minute": "m", "hour": "h", "day": "d", "week": "w", "mon": "mo", "year": "y"}
+  let unitMap = {"second": "s", "minute": "m", "hour": "h", "day": "d", "week": "w", "month": "mo", "year": "y"}
   return `${value}${unitMap[unit]}`
 }
 

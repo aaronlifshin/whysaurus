@@ -903,6 +903,7 @@ class PointCardComponent extends React.Component {
     } else if (this.point){
       const point = this.point;
       let classesListedClaimGroup = `listedClaimGroup ${this.props.latestQuickCreate && 'latestQuickCreate'} ${!this.props.parentPoint && this.stackMarginBottomClass() }`
+      let classesListedClaimAndEvidence = `listedClaimAndItsEvidence ${this.evidenceTypeClass()}`
       let classesListedClaim = `listedClaim ${this.state.relevanceRater ? "relGroupHilite" : "relNotClicked"} ${this.evidenceTypeClass()=="support" ? "linkedClaim" : "rootClaim"}`
       let classesStackCardGroup = `stackCardGroup ${!this.editingSomething() && "stackCardGroupActive"} ${this.state.relevanceRater ? "relExtraMarginBottom" : "relNotClicked"}`
       let classesStackCard1 = `stackCard ${this.numSupportingPlusCounter() < 3 ? "stackCardHidden" : ""} ${this.linksRatio() <= 0.75 ? "counter" : ""} ${this.expanded() ? "stackCardDealBottom stackCardDealFade" : ""}`
@@ -913,7 +914,7 @@ class PointCardComponent extends React.Component {
       let classesRelevanceBottomLink = `${this.props.parentPoint ? "cardBottomAction relevanceVoteBottomAction" : "hidden" }`
 
       return <div className={classesListedClaimGroup}>
-        <div className="listedClaimAndItsEvidence" ref={(input) => { this.cardToScrollTo = input; }}>
+        <div className={classesListedClaimAndEvidence} ref={(input) => { this.cardToScrollTo = input; }}>
           { this.state.editingClaimImage && <EditImage point={point} parentPoint={this.props.parentPoint} hasImage={this.hasImage()} onClose={this.handleCloseEditClaimImage}/> }
           <div className="listedClaimAndShare">
             <div className="relCtrlAndLinkAndStackCards">

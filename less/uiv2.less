@@ -1417,26 +1417,37 @@ a:hover .perctSignSmall {
 /*.listedClaim:focus .stackCard {*/
   //background-color:green !important; // for testing
   //background-color:white; // for testing
-    background-color: hsla(0, 0%, 97%, 1); //white; // #f6fdff; //rgb(244, 253, 255);
+  background-color: hsla(0, 0%, 97%, 1); //white; // #f6fdff; //rgb(244, 253, 255);
   outline-style: none;
 }
 
 // red styling on CPs
-@stackCardCounterBG: hsla(348, 100%, 96%, 1);
+@stackCardCounterBG: hsla(348, 100%, 91%, 1); // old @stackCardCounterBG: hsla(348, 100%, 96%, 1);
 @stackCardCounterBorderColor: #f6a3a3 ;
 .stackCard.counter {
   border-color: @stackCardCounterBorderColor ;
   background-color: @stackCardCounterBG;
 }
+
+.counter  .stackCard.support {
+  background-color: hsla(348, 100%, 97%, 1);
+}
+
+
+
+.stackCardGroupActive:hover .stackCard.counter {
+/*.listedClaim:focus .stackCard.counter {*/
+  background-color: hsla(348, 100%, 88%, 1);//background-color: hsla(348, 100%, 92%, 1);
+}
 .stackCardGroupActive:focus .stackCard.counter {
 /*.listedClaim:focus .stackCard.counter {*/
   //background-color: hsla(330,50%, 97%, 1);
-  background-color: hsla(348, 100%, 94%, 1);
+  background-color: hsla(348, 100%, 85%, 1); //background-color: hsla(348, 100%, 94%, 1);
 }
-.stackCardGroupActive:hover .stackCard.counter {
-/*.listedClaim:focus .stackCard.counter {*/
-  background-color: hsla(348, 100%, 92%, 1);
-}
+
+
+
+
 /*
 .point-card.counter:hover {
   background-color: hsla(330, 100%, 96%, 1) ;

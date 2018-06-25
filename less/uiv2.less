@@ -2068,6 +2068,7 @@ a .claimShareIcon {
 }
 
 .moreClaimsDivision {
+  width: @cardWidth - (2 * @cardPadding);
   display: block;
   position: relative;
   margin-left: (@indent *.5 ) - @mysteriousMarginOffset + @cardPadding; // add @cardPadding bc we're setting padding-left to 0 for the border
@@ -2079,7 +2080,6 @@ a .claimShareIcon {
   margin-top: 48px;
   margin-bottom: 12px;
   //font-size: @fontSizePointTitle;
-  width: @cardWidth - (2 * @cardPadding);
   margin-top: 32px;
   margin-bottom: 6px;
   background-color: @stackCardDefaultBorderColor; //hsla(0, 0%, 82.5%, 1);
@@ -3431,6 +3431,9 @@ body  {
   .stackCard, .editImage, .commentsArea  {
     width: @cardWidthSmallScreens;
   }
+  .moreClaimsDivision {
+    width: ~"calc(@{cardWidthSmallScreens} - (2 * @{cardPadding}))";
+  }
   
   .byline {
     //max-width: 20%;
@@ -3483,6 +3486,9 @@ body  {
 
   .stackCard, .editImage, .commentsArea {
     width: @cardWidthExtraSmallScreens;
+  }
+  .moreClaimsDivision {
+    width: ~"calc(@{cardWidthExtraSmallScreens} - (2 * @{cardPadding}))";
   }
   
   .relGroupHilite {

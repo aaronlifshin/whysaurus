@@ -1552,6 +1552,7 @@ a .claimShareIcon {
   }
 }
 .moreClaimsDivision {
+  width: 390px;
   display: block;
   position: relative;
   margin-left: 28.5px;
@@ -1559,7 +1560,6 @@ a .claimShareIcon {
   padding-left: 0;
   margin-top: 48px;
   margin-bottom: 12px;
-  width: 390px;
   margin-top: 32px;
   margin-bottom: 6px;
   background-color: #bfbfbf;
@@ -2574,6 +2574,9 @@ body {
   .commentsArea {
     width: 69vw;
   }
+  .moreClaimsDivision {
+    width: calc(69vw - (2 * 15px));
+  }
 }
 @media (max-width: 675px) {
   .signInFooterItems {
@@ -2606,6 +2609,9 @@ body {
   .editImage,
   .commentsArea {
     width: 84vw;
+  }
+  .moreClaimsDivision {
+    width: calc(84vw - (2 * 15px));
   }
   .relGroupHilite {
     width: 92vw;

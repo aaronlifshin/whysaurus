@@ -2146,7 +2146,7 @@ a:hover .arrowAddEvidenceButton {
   margin-left: 0;
   color: #cc0008;
 }
-.counter .dottedLine {
+.counter.dottedLine {
   color: #cc0008;
 }
 .relCtrlAndLinkAndStackCards:hover .dottedLineRelevanceLink,

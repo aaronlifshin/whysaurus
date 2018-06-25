@@ -549,9 +549,10 @@ class PointCardComponent extends React.Component {
   relevanceLinkUI = () => {
     if (this.props.parentPoint) {
       let classesRelevanceLink = `relevanceLink ${this.evidenceTypeClass()}`
+      let classesDottedLine = `${this.evidenceTypeClass()} dottedLine dottedLineRelevanceLink`
       return <a className={classesRelevanceLink} onClick={this.handleRelClick}>
         <div className="relevanceLinkArea">
-          <div className="dottedLine dottedLineRelevanceLink"></div>
+          <div className={classesDottedLine}></div>
           <span className="relevanceDisplay number"><span className="positionRelDisplay">{this.relevance}<span className="perctSignSmallRelLink">%</span></span></span>
           <LinkedItemBullet />
         </div>

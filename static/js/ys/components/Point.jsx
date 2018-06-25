@@ -63,7 +63,7 @@ class Byline extends React.Component {
   
   timestampLastEdit = () => {
     let timestampTooltip = `Last Updated  ${timeAgoTitle(this.props.point.dateEdited)}`
-    return <span className="cardTopRowItem easierToClickOn number"><TimeAgo date={this.props.point.dateEdited + "Z"} title={timestampTooltip} minPeriod={300} formatter={timeAgoFormatter}/></span>
+    return <span className="cardTopRowItem easierToClickOn"><TimeAgo date={this.props.point.dateEdited + "Z"} title={timestampTooltip} minPeriod={300} formatter={timeAgoFormatter}/></span>
   }
   
   author = () => {
@@ -671,7 +671,6 @@ class PointCardComponent extends React.Component {
       if (this.numSupportingPlusCounter() == 0) {
         return <div className={classesEvidenceBlock + " evidenceBlockEmpty"}>
           <AddEvidence point={this.point} type={"DUAL"}/>
-          { !this.hasParent() && <div className="moreClaimsDivision"></div> }
         </div>
       } else {
         return <div className={classesEvidenceBlock}>

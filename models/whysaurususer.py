@@ -359,12 +359,11 @@ class WhysaurusUser(auth_models.User):
             to=email,
             subject='Whysaurus Email Verification',
             body="Thank you for %s. \n\
-                Please verify your email address by navigating to this link: \
+                Please verify your email address by clicking this link: \
                 %s\n\nThanks, \nWhysaurus" % (reason, verification_url),
             html="Thank you for %s. <br>\
                 Please verify your email address by clicking on \
-                <a href=\"%s\">this link</a>.<br><br>Thanks,<br>Whysaurus<br> \
-                CTO" % (reason, verification_url),
+                <a href=\"%s\">this link</a>.<br><br>Thanks,<br>Whysaurus<br> \ " % (reason, verification_url),
             reply_to="community@whysaurus.com"
         )
         logging.info('Sending verification email for %s. Email: %s. Verification URL was: %s' % \

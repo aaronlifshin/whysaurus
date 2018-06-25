@@ -130,7 +130,7 @@ h4 {
   border-bottom-style: none !important;
 }
 
-.cardTopRow .number, .vote-stats .number {
+.byline .number, .cardTopRow .number, .vote-stats .number {
   font-size: 85%;
 }
 
@@ -796,7 +796,7 @@ li .policySectionNumber {
 @keyframes evidenceBlockReveal {
    0% { max-height: 20px; opacity: 0;  }
    40% { opacity: 0; transform: translateY(-20px); } //  transform: scaleY(.5)
-   80% {  max-height: 500px; transform: translateY(0) } //  transform: scaleY(1
+   80% {  max-height: 2000px; transform: translateY(0) } //  transform: scaleY(1
    100% { max-height: 5000px; opacity: 1; }
 }
 
@@ -2068,6 +2068,7 @@ a .claimShareIcon {
 }
 
 .moreClaimsDivision {
+  width: @cardWidth - (2 * @cardPadding);
   display: block;
   position: relative;
   margin-left: (@indent *.5 ) - @mysteriousMarginOffset + @cardPadding; // add @cardPadding bc we're setting padding-left to 0 for the border
@@ -2079,7 +2080,6 @@ a .claimShareIcon {
   margin-top: 48px;
   margin-bottom: 12px;
   //font-size: @fontSizePointTitle;
-  width: @cardWidth - (2 * @cardPadding);
   margin-top: 32px;
   margin-bottom: 6px;
   background-color: @stackCardDefaultBorderColor; //hsla(0, 0%, 82.5%, 1);
@@ -2120,7 +2120,11 @@ a .claimShareIcon {
 }
 
 .buttonUX2marginR {
-  margin-right: 6px;
+  margin-right: @marginVerticalStandard * .4;
+}
+.buttonUX2responsiveStack {
+  margin-bottom: @marginVerticalStandard * .4;
+  display: inline-block;
 }
 
 .tabUX2 {
@@ -2446,14 +2450,18 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
 .inputFieldUX2multi {
   margin-bottom: @marginVerticalForms;
 }
-
+@titleTextFieldInitial: 66px;
+@titleTextfieldAdditional: 30px;
 .titleTextField {
   //height: 28px;
-  height: 66px;
+  height: @titleTextFieldInitial;
   padding-bottom: @cardPadding * 2;
   padding-top: 10px;
   margin-bottom: 0; //8px;
   //background-color: hsla(169, 100%, 97%, 1);
+}
+.titleTextField:active, .titleTextField:focus {
+  height: @titleTextFieldInitial + @titleTextfieldAdditional;
 }
 
 .inputFieldUX2::placeholder {
@@ -2482,12 +2490,10 @@ a.buttonUX2:active:enabled, a.buttonUX2:focus:enabled {
   border-width: @inputFieldUX2ActiveBorderWidth;
   outline: none;
 }
-.titleTextField:active, .titleTextField:focus {
-  height: 92px;
-}
+
+
 .inputFieldUX2multi:active, .inputFieldUX2multi:focus {
   margin-bottom: @marginVerticalForms - @titleTextFieldActiveBorderWidth;
-
 }
 
 
@@ -3066,8 +3072,15 @@ a:hover .arrowAddEvidenceButton {
 
 .claimCreationFormFieldBlock {
   display: inline-block;
-  width: @cardWidth;
   margin-right: 6px;
+}
+
+.mainPageClaimCreationArea .claimCreationFormFieldBlock {
+  width: @cardWidth;
+}
+
+.addEvidenceForm .claimCreationFormFieldBlock {
+  width: @cardWidth - 37px; // subtract some to align right edge of Add button with right edge of the card above
 }
 
 .editPointTextForm .claimCreationFormFieldBlock {
@@ -3406,8 +3419,8 @@ body  {
     width: ~"calc(100% - @{frm_signupDialogOffset})"; // subtract width of labels and padding
   }
 
-  .claimCreationFormFieldBlock {
-    width: @cardWidthSmallScreens;
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: @cardWidthSmallScreens - 5.75vw; //subtract enough to make right edge of button align
   }
 
   .pointPageContainer {
@@ -3430,6 +3443,9 @@ body  {
 
   .stackCard, .editImage, .commentsArea  {
     width: @cardWidthSmallScreens;
+  }
+  .moreClaimsDivision {
+    width: ~"calc(@{cardWidthSmallScreens} - (2 * @{cardPadding}))";
   }
   
   .byline {
@@ -3474,15 +3490,26 @@ body  {
     //left: 0;
   }
 
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
-    width: ~"calc(@{cardWidthExtraSmallScreens} - 48px - 36px)"; // subtract width of button + an extra amount for the indent
+    width: ~"calc(@{cardWidthExtraSmallScreens} - 42px)"; 
   }
-
+  
+  @titleTextFieldResponsive: 96px; 
+  .addEvidenceForm .titleTextField {
+    height: @titleTextFieldResponsive;
+  }
+  .addEvidenceForm .titleTextField:active, .addEvidenceForm .titleTextField:focus {
+    height: @titleTextFieldResponsive + @titleTextfieldAdditional;
+  }
+  
   .stackCard, .editImage, .commentsArea {
     width: @cardWidthExtraSmallScreens;
+  }
+  .moreClaimsDivision {
+    width: ~"calc(@{cardWidthExtraSmallScreens} - (2 * @{cardPadding}))";
   }
   
   .relGroupHilite {
@@ -3571,6 +3598,11 @@ body  {
   .contentWithImage {
     width: 100%; // expand to fill space bc image is shown up top
   }
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: ~"calc(@{cardWidthExtraSmallScreens} - 64px)"; 
+  }
+
+  
   
 }
 
@@ -3605,14 +3637,37 @@ body  {
     left: 6px;
   }
   
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: @cardWidthExtraSmallScreens;
   }
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: ~"calc(@{cardWidthExtraSmallScreens} - 69px)"; 
+  }
+  
+  @titleTextFieldResponsive: 144px; 
+  .addEvidenceForm .titleTextField {
+    height: @titleTextFieldResponsive;
+  }
+  .addEvidenceForm .titleTextField:active, .addEvidenceForm .titleTextField:focus {
+    height: @titleTextFieldResponsive + @titleTextfieldAdditional;
+  }
+  #newPointTextField:active, #newPointTextField:focus {
+    height: 96px;  
+  }
+  
+  
+  
+  
   
   .relVoteLink, .relVoteLink button {
     font-size: 20px;
     padding-left: 8px;
     padding-right: 6px;
+  }
+  
+  // to make evidence buttons stack on narrow widths
+  .addEvidenceControlsArea {
+    width:  @cardWidthExtraSmallScreens;
   }
   
   

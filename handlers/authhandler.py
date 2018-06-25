@@ -252,7 +252,7 @@ class AuthHandler(WhysaurusRequestHandler, SimpleAuthHandler):
                 user.verified = True
                 user.put()
     
-            message = 'User email address has been verified.'
+            message = 'Email address verified!'
             self.response.out.write(
                 self.template_render('message.html', {
                     'message': message, 'user': user } ))

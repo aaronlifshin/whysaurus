@@ -837,7 +837,7 @@ function loadMainPageLeftColumn(shouldPushState) {
         function(shouldPushState) {
             $('#mainContainer').data('contentpath', '/');
             if (shouldPushState) {
-      		    history.pushState({whysaurus: true, }, 'Whysaurus - A better way to explain ideas', '/');
+      		    history.pushState({whysaurus: true, }, 'Whysaurus - We love good argument', '/');
                 ga('send', 'pageview', "/");
       		}
 			activateMainPageLeftColumn();

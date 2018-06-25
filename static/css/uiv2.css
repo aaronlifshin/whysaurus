@@ -56,6 +56,7 @@ h4 {
 .hideBorderBottom {
   border-bottom-style: none !important;
 }
+.byline .number,
 .cardTopRow .number,
 .vote-stats .number {
   font-size: 85%;
@@ -541,7 +542,7 @@ li .policySectionNumber {
     transform: translateY(-20px);
   }
   80% {
-    max-height: 500px;
+    max-height: 2000px;
     transform: translateY(0);
   }
   100% {
@@ -1552,6 +1553,7 @@ a .claimShareIcon {
   }
 }
 .moreClaimsDivision {
+  width: 390px;
   display: block;
   position: relative;
   margin-left: 28.5px;
@@ -1559,7 +1561,6 @@ a .claimShareIcon {
   padding-left: 0;
   margin-top: 48px;
   margin-bottom: 12px;
-  width: 390px;
   margin-top: 32px;
   margin-bottom: 6px;
   background-color: #bfbfbf;
@@ -1594,7 +1595,11 @@ a .claimShareIcon {
   padding-bottom: 6px;
 }
 .buttonUX2marginR {
-  margin-right: 6px;
+  margin-right: 6.4px;
+}
+.buttonUX2responsiveStack {
+  margin-bottom: 6.4px;
+  display: inline-block;
 }
 .tabUX2 {
   padding-top: 7px;
@@ -1880,6 +1885,10 @@ a.buttonUX2:focus:enabled {
   padding-top: 10px;
   margin-bottom: 0;
 }
+.titleTextField:active,
+.titleTextField:focus {
+  height: 96px;
+}
 .inputFieldUX2::placeholder {
   color: grey;
   font-family: arial, sans-serif;
@@ -1907,10 +1916,6 @@ a.buttonUX2:focus:enabled {
   border-color: #2e2e2e;
   border-width: 2px;
   outline: none;
-}
-.titleTextField:active,
-.titleTextField:focus {
-  height: 92px;
 }
 .inputFieldUX2multi:active,
 .inputFieldUX2multi:focus {
@@ -2336,8 +2341,13 @@ a:hover .arrowAddEvidenceButton {
 }
 .claimCreationFormFieldBlock {
   display: inline-block;
-  width: 420px;
   margin-right: 6px;
+}
+.mainPageClaimCreationArea .claimCreationFormFieldBlock {
+  width: 420px;
+}
+.addEvidenceForm .claimCreationFormFieldBlock {
+  width: 383px;
 }
 .editPointTextForm .claimCreationFormFieldBlock {
   width: calc(100% - 72px);
@@ -2553,8 +2563,8 @@ body {
   #frm_signupDialog textarea {
     width: calc(100% - 148px);
   }
-  .claimCreationFormFieldBlock {
-    width: 69vw;
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: 63.25vw;
   }
   .pointPageContainer {
     margin-top: 24px;
@@ -2573,6 +2583,9 @@ body {
   .editImage,
   .commentsArea {
     width: 69vw;
+  }
+  .moreClaimsDivision {
+    width: calc(69vw - (2 * 15px));
   }
 }
 @media (max-width: 675px) {
@@ -2596,16 +2609,26 @@ body {
     padding-right: 8px;
     padding-left: 8px;
   }
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: calc(84vw - 48px);
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
-    width: calc(84vw - 48px - 36px);
+    width: calc(84vw - 42px);
+  }
+  .addEvidenceForm .titleTextField {
+    height: 96px;
+  }
+  .addEvidenceForm .titleTextField:active,
+  .addEvidenceForm .titleTextField:focus {
+    height: 126px;
   }
   .stackCard,
   .editImage,
   .commentsArea {
     width: 84vw;
+  }
+  .moreClaimsDivision {
+    width: calc(84vw - (2 * 15px));
   }
   .relGroupHilite {
     width: 92vw;
@@ -2667,6 +2690,9 @@ body {
   .contentWithImage {
     width: 100%;
   }
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: calc(84vw - 64px);
+  }
 }
 @media (max-width: 360px) {
   #mainContainer {
@@ -2693,13 +2719,30 @@ body {
   .carouselMiddleSlide {
     left: 6px;
   }
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: 84vw;
+  }
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: calc(84vw - 69px);
+  }
+  .addEvidenceForm .titleTextField {
+    height: 144px;
+  }
+  .addEvidenceForm .titleTextField:active,
+  .addEvidenceForm .titleTextField:focus {
+    height: 174px;
+  }
+  #newPointTextField:active,
+  #newPointTextField:focus {
+    height: 96px;
   }
   .relVoteLink,
   .relVoteLink button {
     font-size: 20px;
     padding-left: 8px;
     padding-right: 6px;
+  }
+  .addEvidenceControlsArea {
+    width: 84vw;
   }
 }

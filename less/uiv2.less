@@ -3072,8 +3072,15 @@ a:hover .arrowAddEvidenceButton {
 
 .claimCreationFormFieldBlock {
   display: inline-block;
-  width: @cardWidth - 37px; // subtract some to align right edge of Add button with right edge of the card above
   margin-right: 6px;
+}
+
+.mainPageClaimCreationArea .claimCreationFormFieldBlock {
+  width: @cardWidth;
+}
+
+.addEvidenceForm .claimCreationFormFieldBlock {
+  width: @cardWidth - 37px; // subtract some to align right edge of Add button with right edge of the card above
 }
 
 .editPointTextForm .claimCreationFormFieldBlock {
@@ -3412,7 +3419,7 @@ body  {
     width: ~"calc(100% - @{frm_signupDialogOffset})"; // subtract width of labels and padding
   }
 
-  .claimCreationFormFieldBlock {
+  .addEvidenceForm .claimCreationFormFieldBlock {
     width: @cardWidthSmallScreens - 5.75vw; //subtract enough to make right edge of button align
   }
 
@@ -3483,7 +3490,7 @@ body  {
     //left: 0;
   }
 
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: ~"calc(@{cardWidthExtraSmallScreens} - 48px)"; // subtract width of button
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
@@ -3630,7 +3637,7 @@ body  {
     left: 6px;
   }
   
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: @cardWidthExtraSmallScreens;
   }
   .addEvidenceForm .claimCreationFormFieldBlock {

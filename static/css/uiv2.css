@@ -2341,8 +2341,13 @@ a:hover .arrowAddEvidenceButton {
 }
 .claimCreationFormFieldBlock {
   display: inline-block;
-  width: 383px;
   margin-right: 6px;
+}
+.mainPageClaimCreationArea .claimCreationFormFieldBlock {
+  width: 420px;
+}
+.addEvidenceForm .claimCreationFormFieldBlock {
+  width: 383px;
 }
 .editPointTextForm .claimCreationFormFieldBlock {
   width: calc(100% - 72px);
@@ -2558,7 +2563,7 @@ body {
   #frm_signupDialog textarea {
     width: calc(100% - 148px);
   }
-  .claimCreationFormFieldBlock {
+  .addEvidenceForm .claimCreationFormFieldBlock {
     width: 63.25vw;
   }
   .pointPageContainer {
@@ -2604,7 +2609,7 @@ body {
     padding-right: 8px;
     padding-left: 8px;
   }
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: calc(84vw - 48px);
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
@@ -2714,7 +2719,7 @@ body {
   .carouselMiddleSlide {
     left: 6px;
   }
-  .claimCreationFormFieldBlock {
+  .mainPageClaimCreationArea .claimCreationFormFieldBlock {
     width: 84vw;
   }
   .addEvidenceForm .claimCreationFormFieldBlock {

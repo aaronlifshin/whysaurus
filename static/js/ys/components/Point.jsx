@@ -671,7 +671,6 @@ class PointCardComponent extends React.Component {
       if (this.numSupportingPlusCounter() == 0) {
         return <div className={classesEvidenceBlock + " evidenceBlockEmpty"}>
           <AddEvidence point={this.point} type={"DUAL"}/>
-          { !this.hasParent() && <div className="moreClaimsDivision"></div> }
         </div>
       } else {
         return <div className={classesEvidenceBlock}>

@@ -107,8 +107,8 @@ class ShareIconAreaComponent extends React.Component {
     var pointTitle = this.props.point.title;
     var len = pointTitle.length;
     var text = "";
-    if (len > 115) {
-        text = pointTitle.substring(0,114) + "..." + "https://www.whysaurus.com/claim/" + url;
+    if (len > 275) {
+        text = pointTitle.substring(0,275) + "..." + "https://www.whysaurus.com/claim/" + url;
     } else {
         text = pointTitle + " — here's why: https://www.whysaurus.com/claim/" + url;
     }
@@ -134,7 +134,7 @@ class ShareIconAreaComponent extends React.Component {
 
   fullLinkUrl = () => {
     var url = this.props.point.url;
-    return "https://www.whysaurus.com/claim/" + url + "/";
+    return "https://www.whysaurus.com/claim/" + url;
   }
 
   render(){

@@ -63,7 +63,7 @@ class Byline extends React.Component {
   
   timestampLastEdit = () => {
     let timestampTooltip = `Last Updated  ${timeAgoTitle(this.props.point.dateEdited)}`
-    return <span className="cardTopRowItem easierToClickOn number"><TimeAgo date={this.props.point.dateEdited + "Z"} title={timestampTooltip} minPeriod={300} formatter={timeAgoFormatter}/></span>
+    return <span className="cardTopRowItem easierToClickOn"><TimeAgo date={this.props.point.dateEdited + "Z"} title={timestampTooltip} minPeriod={300} formatter={timeAgoFormatter}/></span>
   }
   
   author = () => {

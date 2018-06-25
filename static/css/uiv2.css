@@ -56,6 +56,7 @@ h4 {
 .hideBorderBottom {
   border-bottom-style: none !important;
 }
+.byline .number,
 .cardTopRow .number,
 .vote-stats .number {
   font-size: 85%;

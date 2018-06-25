@@ -1036,18 +1036,15 @@ a.toggleLowRelClaims:hover {
 }
 .stackCard.counter {
   border-color: #f6a3a3;
-  background-color: #ffd1da;
-}
-.counter .stackCard.support {
-  background-color: #fff0f3;
-}
-.stackCardGroupActive:hover .stackCard.counter {
-  /*.listedClaim:focus .stackCard.counter {*/
-  background-color: #ffc2ce;
+  background-color: #ffebef;
 }
 .stackCardGroupActive:focus .stackCard.counter {
   /*.listedClaim:focus .stackCard.counter {*/
-  background-color: #ffb3c2;
+  background-color: #ffe0e7;
+}
+.stackCardGroupActive:hover .stackCard.counter {
+  /*.listedClaim:focus .stackCard.counter {*/
+  background-color: #ffd6de;
 }
 /*
 .point-card.counter:hover {

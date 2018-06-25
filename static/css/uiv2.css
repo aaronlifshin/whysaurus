@@ -1594,7 +1594,11 @@ a .claimShareIcon {
   padding-bottom: 6px;
 }
 .buttonUX2marginR {
-  margin-right: 6px;
+  margin-right: 6.4px;
+}
+.buttonUX2responsiveStack {
+  margin-bottom: 6.4px;
+  display: inline-block;
 }
 .tabUX2 {
   padding-top: 7px;
@@ -1880,6 +1884,10 @@ a.buttonUX2:focus:enabled {
   padding-top: 10px;
   margin-bottom: 0;
 }
+.titleTextField:active,
+.titleTextField:focus {
+  height: 96px;
+}
 .inputFieldUX2::placeholder {
   color: grey;
   font-family: arial, sans-serif;
@@ -1907,10 +1915,6 @@ a.buttonUX2:focus:enabled {
   border-color: #2e2e2e;
   border-width: 2px;
   outline: none;
-}
-.titleTextField:active,
-.titleTextField:focus {
-  height: 92px;
 }
 .inputFieldUX2multi:active,
 .inputFieldUX2multi:focus {
@@ -2336,7 +2340,7 @@ a:hover .arrowAddEvidenceButton {
 }
 .claimCreationFormFieldBlock {
   display: inline-block;
-  width: 420px;
+  width: 383px;
   margin-right: 6px;
 }
 .editPointTextForm .claimCreationFormFieldBlock {
@@ -2554,7 +2558,7 @@ body {
     width: calc(100% - 148px);
   }
   .claimCreationFormFieldBlock {
-    width: 69vw;
+    width: 63.25vw;
   }
   .pointPageContainer {
     margin-top: 24px;
@@ -2603,7 +2607,14 @@ body {
     width: calc(84vw - 48px);
   }
   .addEvidenceForm .claimCreationFormFieldBlock {
-    width: calc(84vw - 48px - 36px);
+    width: calc(84vw - 42px);
+  }
+  .addEvidenceForm .titleTextField {
+    height: 96px;
+  }
+  .addEvidenceForm .titleTextField:active,
+  .addEvidenceForm .titleTextField:focus {
+    height: 126px;
   }
   .stackCard,
   .editImage,
@@ -2673,6 +2684,9 @@ body {
   .contentWithImage {
     width: 100%;
   }
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: calc(84vw - 64px);
+  }
 }
 @media (max-width: 360px) {
   #mainContainer {
@@ -2702,10 +2716,27 @@ body {
   .claimCreationFormFieldBlock {
     width: 84vw;
   }
+  .addEvidenceForm .claimCreationFormFieldBlock {
+    width: calc(84vw - 69px);
+  }
+  .addEvidenceForm .titleTextField {
+    height: 144px;
+  }
+  .addEvidenceForm .titleTextField:active,
+  .addEvidenceForm .titleTextField:focus {
+    height: 174px;
+  }
+  #newPointTextField:active,
+  #newPointTextField:focus {
+    height: 96px;
+  }
   .relVoteLink,
   .relVoteLink button {
     font-size: 20px;
     padding-left: 8px;
     padding-right: 6px;
+  }
+  .addEvidenceControlsArea {
+    width: 84vw;
   }
 }

@@ -35,15 +35,6 @@ class RelevanceComponent extends React.Component {
     return this.props.link.relevanceVote
   }
 
-  get sortScore() {
-    if (this.props && this.props.link) {
-      return this.props.link.sortScore
-    }
-    else {
-      return -1
-    }
-  }
-
   handleClickFn = (vote) => (event) => {
     const {point, parentPoint, link} = this.props
     if (this.props.user){
@@ -90,7 +81,6 @@ class RelevanceComponent extends React.Component {
       <div className="relevanceExplanation">
         <div className="relevanceStats">{this.relevance}% average on {this.relevanceVoteCount} {this.relevanceVoteCount == 1 ? 'vote' : 'votes'} so far</div> 
         <div className="relevanceEquation">Relevance impacts argument scores dramatically. <a target="_blank" href="../WhatIsWhysaurus#whatIsRelevance">Learn more</a>.</div>
-        {user && user.admin && <div className="admin">Sort score: {this.sortScore}</div>}
       </div>
     </div>
   }

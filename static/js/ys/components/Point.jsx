@@ -180,30 +180,49 @@ function EngagementScore(props){
 }
 
 // Perhaps we should rename this to StatsCompontent? -JF
-const VoteStatsComponent = ({point, user}) => (
-    <div className="vote-stats">
+class StatsComponent extends React.Component {
+  
+  get sortScore() {
+    if (this.props && this.props.link) {
+      return this.props.link.sortScore
+    }
+    else {
+      return -1
+    }
+  }
+
+  adminStats() {
+    if (this.props.user && this.props.user.admin)
+      return <p className="admin">
+          <EngagementScore point={this.props.point} /><br/>
+          { this.props && this.props.link &&  <span><span className="number">{this.sortScore}</span> Sort<br/></span> }
+        </p>
+  }
+  
+  render() { 
+    return <div className="stats">
       <p>
-        <span className="number">{point.upVotes}</span> Agrees<br/>
-        <span className="number">{point.downVotes}</span> Disagrees<br/>
+        <span className="number">{this.props.point.upVotes}</span> Agrees<br/>
+        <span className="number">{this.props.point.downVotes}</span> Disagrees<br/>
       </p>
       <div className="menuDivider"></div>
       <p>
-        <span className="number">{point.numSupporting}</span> Supporting Claim{point.numSupporting != 1 ? "s" : null}<br/>
-        <span className="number">{point.numCounter}</span> Counter Claim{point.numCounter != 1 ? "s" : null}<br/>
+        <span className="number">{this.props.point.numSupporting}</span> Supporting Claim{this.props.point.numSupporting != 1 ? "s" : null}<br/>
+        <span className="number">{this.props.point.numCounter}</span> Counter Claim{this.props.point.numCounter != 1 ? "s" : null}<br/>
       </p>
-      {user && user.admin && <p className="admin">
-          <span><EngagementScore point={point} /></span>
-        </p>}
+      {this.adminStats()}
     </div>
-)
+  }
+}
 
-const VoteStats = graphql(schema.CurrentUserQuery, {
+
+const Stats = graphql(schema.CurrentUserQuery, {
   props: ({ownProps, data: {loading, currentUser, refetch}}) => ({
     userLoading: loading,
     user: currentUser,
     refetchUser: refetch
   })
-})(VoteStatsComponent)
+})(StatsComponent)
 
 // used in PointCard and in PointList for the irrelevant claims links
 export const LinkedItemBullet = () => (
@@ -229,7 +248,7 @@ class PointComponent extends React.Component {
       {this.titleUI()}
         <span className="scoreAnimContainerMax score">
           <span className="scoreAnimContainerReset">
-            <Hover onHover={<VoteStats point={this.props.point}/>}>
+            <Hover onHover={<Stats point={this.props.point} link={this.props.link} />}>
              <span className="ux2ScoreInLine number">
                <span className={score < 0 ? "negativeScore": "positiveScore"}>
                 <AnimateOnChange baseClassName="scorePreAnimate" animationClassName="Score--bounce" animate={score.diff != 0}>
@@ -536,7 +555,7 @@ class PointCardComponent extends React.Component {
       return <span>
         { this.state.relevanceRater ?
             <div className="relevanceCtrlArea">
-              <RelevanceRater point={this.point} parentPoint={this.props.parentPoint} link={this.props.link}  onClose={this.hideRelevanceRater}/>
+              <RelevanceRater point={this.point} parentPoint={this.props.parentPoint} link={this.props.link} onClose={this.hideRelevanceRater}/>
             </div> :
             <span className="noRelevanceCtrl"></span>
         }
@@ -861,7 +880,7 @@ class PointCardComponent extends React.Component {
     if (this.state.editingClaimText){
       return <EditPoint point={point} onCancel={this.handleCancelEditClaimText}/>
     } else {
-      return <Point point={point} onClick={this.handleToggleEvidence}/>
+      return <Point point={point} link={this.props.link} onClick={this.handleToggleEvidence}/>
     }
   }
 
